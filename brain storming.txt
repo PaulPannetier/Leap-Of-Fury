@@ -1,0 +1,88 @@
+Name : Party Game
+
+2 mode de jeu :
+Campagne (solo ou coop)
+Duel local (2 a 4 joueurs)
+
+Plusieurs perso jouable (objectif 4)
+Plusieurs cartes (meme pour la campagne et le mode duel) (objectif 5 cartes min)
+ATTENTION : chaque carte et chaque perso doivent etre VRAIMENT different niveau gameplay et visuel.
+
+Perso :
+-Une couleur par perso
+-Un passif
+-Une attaque physique (puissance faible), limité par un moyen quelconque et pas méga lent.
+-Une attaque magique (puissance forte) qui utilise de la mana qui se régène petit à petit avec cooldown.
+-Un bouclier.
+-Un dash (invincibilité) et un double jump.
+-Un ulti wtf (type le perso trace uktra vite sa mère, invocation chelou, se dédouble en clone useless, faire tourner la map lentement)
+
+Compétences des perso : 
+perso 1 : attack faible : dash coup de poing américain lent à incanté mais qui dash.
+	  attack forte : clone du joueur qui fait ces attaque avec un delai de x sec.
+	  Bouclier : basique
+	  Passif : le joueur laisse un trainé de flamme sur le sol.
+
+perso 2 : attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.
+	  attack forte : tir laser a retardement qui ricoche sur les murs x fois, des fiole spawn augmentant le x si le joueur les ramasse.
+	  Bouclier : basique
+	  Passif : Des fioles spawn donnant + 1 au x et augmente la vitesse de attack magique
+
+perso 3 : attack faible : tir de flèche à récup.
+	  attack forte : tp a moyenne porté (traversé de mur possible) qui exposle puis rejette des projectile tournoyant(lent et qui tourne)
+	  	qui explose en tourchant un joueur ou un mur.
+	  Bouclier : basique
+	  Passif : jsp
+
+perso 4 : attack faible : jsp.
+	  attack forte : jsp
+	  Bouclier : basique
+	  Passif : jsp
+
+
+Attaques :
+un niveau de puissance x entre 0 et 100.
+si x < 75, enlève x sur le bouclier sinon enlève x sur le bouclier et qui stun.
+
+Carte :
+-Homéomorphe à un tore.
+-Une mécanique de gameplay propre à chaque carte:
+
+Carte 1 :
+Méca : Certain sol glisse, de temps en temps la tempète/brouillard se lève, cachant une partie de la carte.
+DA : la grotte du yéti, glace neige.
+Name : Yeti's Cave
+
+Carte 2 :
+Méca : Des totems (2 avec un marteau et 2 avec une boule de magie) s'allumant de la couleur du perso permettant l'activation des attaques physiques et magiques.
++ trampoline.
+DA : Un temple maya/jungle amazonienne.
+Name :Maya's Temple
+
+Carte 3 : 
+Méca : De temps en temps, un portail temporel apparait au milieu de la map, un joueur peut le prendre, il reste dedans pendant quelques secondes
+puis plusieurs portail apparaisse et le joueur se tp devant un (au choix selon la direction de son input), crée une explosion devant 
+le portail, 
+debient invinsible pendant quelques seconde, et ralentie le temps(sauf pour lui).
+De + le pendule de l'hormoge tangue et tue tout sur son passage
+DA : L'atelier d'in horloger / sommet d'un cathédrale avec cloche.
+
+Carte 4 :
+Méca : Un clown transparent effraye(stun) les joueurs.
+DA : Une fete foraine
+
+Carte 5 :
+Méca : Cycle jour/nuit, au début c'est le jour, tout est visible, puis un peu après la nuit tombe (annomcé pas le bruit d'unn corbeau), tout deviens noir, seul les joueurs
+crée de la lumière en touchant le sol. Des luciole se promère créant un pêu de lumière.
+DA : Dans la foret. Plateforme sont les brache des arbre.
+Name : Into the jungle
+
+Dernière carte (carte n):
+Méca : réunnit toute les méca de toutes les autres cartes
+DA : jsp
+Name : Chaos
+
+Combat de boss:
+-Un boss par niveau de campagne.
+-Boss a x point de vie.
+

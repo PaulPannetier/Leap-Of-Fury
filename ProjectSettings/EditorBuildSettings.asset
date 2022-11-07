@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/UIs/Screen Title/Screen Title.unity
+    guid: 95ca349782007214fb012e85db33a963
+  - enabled: 0
+    path: Assets/Scenes/UIs/Selection Char/Selection Char.unity
+    guid: e3f090a10911b754087beff83b20acc2
+  - enabled: 0
+    path: Assets/Scenes/UIs/Selection Map/Selection Map.unity
+    guid: 61461d4bc41af1348ab49cc35c3deed7
+  - enabled: 0
+    path: Assets/Scenes/Transition/GrowingCircles.unity
+    guid: fb1e1a6da4d52394e83a5f49784dae7c
+  - enabled: 0
+    path: Assets/Scenes/Gameplay/Yeti's Cave/Yeti's Cave.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 0
+    path: Assets/Scenes/Gameplay/Maya's Temple/Maya's Temple.unity
+    guid: 27f17e27e441c6d41b1f6d57c7e7eba3
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: b3401402397a0484da801286af4df00b, type: 2}
