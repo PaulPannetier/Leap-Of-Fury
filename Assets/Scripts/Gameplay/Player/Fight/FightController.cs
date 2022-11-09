@@ -43,6 +43,8 @@ public class FightController : MonoBehaviour
         eventController.callBackHitAttack += OnKillPlayerAttack;
         eventController.callBackBeenTouchAttack += OnBeenTouchAttack;
         eventController.callBackTouchByEnvironnement += OnBeenTouchByEnvironnement;
+        eventController.callBackKillByEnvironnement += OnBeenKillByEnvironnement;
+        eventController.callBackBeenKillInstant += OnBeenKillInstant;
     }
 
     #endregion
@@ -309,9 +311,18 @@ public class FightController : MonoBehaviour
         if (!isInvicible)
         {
             eventController.OnBeenKillByEnvironnement(go);
-            EventManager.instance.OnTriggerPlayerDeathByEnvironnement(gameObject, go);
-            Death();
         }
+    }
+
+    private void OnBeenKillByEnvironnement(GameObject go)
+    {
+        EventManager.instance.OnTriggerPlayerDeathByEnvironnement(gameObject, go);
+        Death();
+    }
+
+    private void OnBeenKillInstant(GameObject killer)
+    {
+        Death();
     }
 
     private void Death()

@@ -22,6 +22,7 @@ public class EventController : MonoBehaviour
 
     public Action<GameObject> callBackTouchByEnvironnement;
     public Action<GameObject> callBackKillByEnvironnement;
+    public Action<GameObject> callBackBeenKillInstant;
 
     private void Awake()
     {
@@ -46,6 +47,7 @@ public class EventController : MonoBehaviour
         callBackExitTimePortal = new Action<TimePortal>((TimePortal arg1) => { });
         callBackTouchByEnvironnement = new Action<GameObject>((GameObject arg1) => { });
         callBackKillByEnvironnement = new Action<GameObject>((GameObject arg1) => { });
+        callBackBeenKillInstant = new Action<GameObject>((GameObject arg1) => { });
     }
 
     public void OnTriggerAnimatorSetFloat(string name, in float value)
@@ -130,5 +132,10 @@ public class EventController : MonoBehaviour
     public void OnBeenKillByEnvironnement(GameObject go)
     {
         callBackKillByEnvironnement.Invoke(go);
+    }
+
+    public void OnBeenKillInstant(GameObject killer)
+    {
+        callBackBeenKillInstant.Invoke(killer);
     }
 }

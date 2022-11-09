@@ -28,6 +28,7 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField, Tooltip("lerp de la vitesse en  %age vMax / sec")] private float speedLerp = 0.6f;
     [SerializeField] private float detectionColliderScale = 1.1f;
     [SerializeField] private float minSpeedToTriggerMovement = 1f;
+    [SerializeField] private float rayMultiplier = 1.1f;
     [SerializeField] private LayerMask charMask, groundMask;
 
     private void Awake()
@@ -67,16 +68,21 @@ public class MovablePlatefrom : MonoBehaviour
                     if ((closestPoint - charCenter).Dot(charRb.velocity) > 0f)
                     {
                         //on calcule quelle face de la plateforme est touché
-                        if(CanMovePlateform(charCenter, charHitbox.size, charRb.velocity, out PlateformeSide plateformeSide))
+                        if(CanMovePlateform(charCenter, charHitbox.size, charRb.velocity, out PlateformeSide ps))
                         {
-                            moveDir = convertSideToDir[(int)plateformeSide];
-                            isMoving = true;
-                            charWhoActivate = charMov;
-                            break;
+                            if((ps == PlateformeSide.Up && enableUp) || (ps == PlateformeSide.Down && enableDown)
+                                || (ps == PlateformeSide.Right && enableRight) || (ps == PlateformeSide.Left && enableLeft))
+                            {
+                                moveDir = convertSideToDir[(int)ps];
+                                isMoving = true;
+                                charWhoActivate = charMov;
+                                break;
+                            }
                         }
                     }  
                 }
             }
+            charInFrontLastFrame.Clear();
             charInFrontLastFrame = charInFront;
 
             bool CanMovePlateform(in Vector2 center, in Vector2 size, in Vector2 speed, out PlateformeSide plateformeSide)
@@ -173,7 +179,39 @@ public class MovablePlatefrom : MonoBehaviour
             Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * detectionColliderScale, 0f, groundMask);
             foreach (Collider2D col in cols)
             {
+                MovablePlatefrom mp = col.GetComponent<MovablePlatefrom>();
+                if(mp != null && mp != this)
+                {
+                    isMoving = false;
+                    charWhoActivate = null;
+                    rb.velocity = Vector2.zero;
+                    return;
+                }
+            }
 
+            cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * detectionColliderScale, 0f, charMask);
+            foreach (Collider2D col in cols)
+            {
+                if (col.CompareTag("Char"))
+                {
+                    BoxCollider2D charHitbox = col.GetComponent<BoxCollider2D>();
+                    Vector2 point = (Vector2)transform.position + 0.5f * (moveDir.x >= moveDir.y ? new Vector2(hitbox.size.x * moveDir.x.Sign(), 0f) : new Vector2(0f, hitbox.size.y * moveDir.y.Sign()));
+                    float dst = rayMultiplier * (moveDir.x >= moveDir.y ? charHitbox.size.x : charHitbox.size.y);
+                    RaycastHit2D raycast = PhysicsToric.Raycast(point, moveDir, dst, groundMask);
+                    if(raycast.collider != null)
+                    {
+                        //collision!
+                        if(col.GetComponent<PlayerCommon>().id == charWhoActivate.GetComponent<PlayerCommon>().id)
+                        {
+                            charWhoActivate.GetComponent<EventController>().OnBeenKillByEnvironnement(gameObject);
+                        }
+                        else
+                        {
+                            col.GetComponent<EventController>().OnBeenKillInstant(charWhoActivate.gameObject);
+                            charWhoActivate.GetComponent<EventController>().OnKill(col.gameObject);
+                        }
+                    }
+                }
             }
         }
     }    
