@@ -23,6 +23,8 @@ public abstract class Attack : MonoBehaviour
         eventController.callBackAnimatorSetBool += OnTriggerAnimatorSetBool;
         eventController.callBackAnimatorSetTrigger += OnTriggerAnimatorSetTrigger;
         eventController.callBackLauchAttack += OnLauchAttack;
+
+        cooldown.ForceActivate();
     }
 
     protected virtual void Update()

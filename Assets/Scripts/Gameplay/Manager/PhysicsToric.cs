@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class PhysicsToric
@@ -32,6 +33,9 @@ public static class PhysicsToric
 
         return p2.Distance(new Vector2(x, y));
     }
+
+    public static Collider2D OverlapPoint(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPoint(GetPointInsideBounds(point), layerMask);
+    public static Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
 
     public static Collider2D OverlapCircle(in Vector2 center, float radius, in LayerMask layerMask)
     {
@@ -296,26 +300,29 @@ public static class PhysicsToric
 
     public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask)
     {
+        List<Vector2> points = new List<Vector2>();
         float reachDistance = 0f;
-        RaycastHit2D raycast = RaycastRecur(GetPointInsideBounds(from), direction.normalized, distance, layerMask, ref reachDistance);
+        RaycastHit2D raycast = RaycastRecur(from, direction.normalized, distance, layerMask, ref reachDistance, ref points);
         raycast.distance = raycast.collider != null ? reachDistance : 0f;
         return raycast;
     }
 
-    private static RaycastHit2D RaycastNormalizeDir(in Vector2 from, in Vector2 direction, in float distance, in int layerMask)
+    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask, out Vector2[] toricHitboxIntersectionsPoints)
     {
+        List<Vector2> points = new List<Vector2>();
         float reachDistance = 0f;
-        RaycastHit2D raycast = RaycastRecur(from, direction, distance, layerMask, ref reachDistance);
+        RaycastHit2D raycast = RaycastRecur(from, direction.normalized, distance, layerMask, ref reachDistance, ref points);
         raycast.distance = raycast.collider != null ? reachDistance : 0f;
+        toricHitboxIntersectionsPoints = points.ToArray();
         return raycast;
     }
 
-    private static RaycastHit2D RaycastRecur(Vector2 from, Vector2 direction, in float distance, in int layerMask, ref float reachDistance)
+    private static RaycastHit2D RaycastRecur(Vector2 from, Vector2 direction, in float distance, in int layerMask, ref float reachDistance, ref List<Vector2> points)
     {
         RaycastHit2D raycast = Physics2D.Raycast(from, direction, distance, layerMask);
         Line ray;
 
-        if(raycast.collider == null)
+        if (raycast.collider == null)
         {
             Vector2 B = from + direction * distance;
             if (cameraHitbox.Contains(B))
@@ -335,8 +342,9 @@ public static class PhysicsToric
                     {
                         cp += step;
                     }
+                    points.Add(cp);
                     cp = GetPointInsideBounds(cp);
-                    return RaycastRecur(cp, direction, distance - tmpDist, layerMask, ref reachDistance);
+                    return RaycastRecur(cp, direction, distance - tmpDist, layerMask, ref reachDistance, ref points);
                 }
                 else
                 {
@@ -348,7 +356,7 @@ public static class PhysicsToric
             }
         }
         //raycast.collider != null
-        if(cameraHitbox.Contains(raycast.point))
+        if (cameraHitbox.Contains(raycast.point))
         {
             reachDistance += raycast.distance;
             return raycast;
@@ -363,8 +371,9 @@ public static class PhysicsToric
             {
                 cp2 += step;
             }
+            points.Add(cp2);
             cp2 = GetPointInsideBounds(cp2);
-            return RaycastRecur(cp2, direction, distance - tmpDist, layerMask, ref reachDistance);
+            return RaycastRecur(cp2, direction, distance - tmpDist, layerMask, ref reachDistance, ref points);
         }
         else
         {

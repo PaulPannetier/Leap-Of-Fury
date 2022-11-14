@@ -515,7 +515,7 @@ MonoBehaviour:
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
   shieldPressedUp: 0
-  controllerType: 0
+  controllerType: 1
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 8
   inputsKeyCode: 11010000130100001201000014010000630000002000000076000000640000006600000062000000

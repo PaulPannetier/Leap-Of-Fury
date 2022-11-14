@@ -27,9 +27,11 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField, Tooltip("lerp de la vitesse en  %age vMax / sec")] private float speedLerp = 0.6f;
     [SerializeField] private float detectionColliderScale = 1.1f;
+    [SerializeField, Range(0f, 1)] private float detectionGroundColliderScale = 0.9f;
     [SerializeField] private float minSpeedToTriggerMovement = 1f;
-    [SerializeField] private float rayMultiplier = 1.1f;
-    [SerializeField] private LayerMask charMask, groundMask;
+    [SerializeField] private float rayDistOffset = 0.1f;
+    [SerializeField] private uint rayCount = 4;
+    [SerializeField] private LayerMask charMask, groundMask, groundAndCharMask;
 
     private void Awake()
     {
@@ -47,7 +49,7 @@ public class MovablePlatefrom : MonoBehaviour
         if(!isMoving)
         {
             List<Movement> charInFront = new List<Movement>();
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * detectionColliderScale, 0f, charMask);
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitbox.offset, hitbox.size * detectionColliderScale, 0f, charMask);
             foreach (Collider2D col in cols)
             {
                 if (col.CompareTag("Char"))
@@ -62,8 +64,8 @@ public class MovablePlatefrom : MonoBehaviour
                 {
                     Rigidbody2D charRb = charMov.GetComponent<Rigidbody2D>();
                     BoxCollider2D charHitbox = charMov.GetComponent<BoxCollider2D>();
-                    Vector2 charCenter = (Vector2)charMov.transform.position + charHitbox.offset;
-                    Vector2 closestPoint = charHitbox.ClosestPoint(charCenter);
+                    Vector2 charCenter = (Vector2)charHitbox.transform.position + charHitbox.offset;
+                    Vector2 closestPoint = hitbox.ClosestPoint(charCenter);
 
                     if ((closestPoint - charCenter).Dot(charRb.velocity) > 0f)
                     {
@@ -176,39 +178,70 @@ public class MovablePlatefrom : MonoBehaviour
         else
         {
             rb.velocity = Vector2.MoveTowards(rb.velocity, moveDir * speed, speedLerp * speed * Time.deltaTime);
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * detectionColliderScale, 0f, groundMask);
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitbox.offset, hitbox.size * detectionGroundColliderScale, 0f, groundMask);
             foreach (Collider2D col in cols)
             {
                 MovablePlatefrom mp = col.GetComponent<MovablePlatefrom>();
-                if(mp != null && mp != this)
+                if(mp == null || mp != this)
                 {
                     isMoving = false;
                     charWhoActivate = null;
+                    rb.MovePosition((Vector2)transform.position - rb.velocity * Time.deltaTime * (2f - detectionGroundColliderScale));
                     rb.velocity = Vector2.zero;
                     return;
                 }
             }
 
-            cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * detectionColliderScale, 0f, charMask);
-            foreach (Collider2D col in cols)
+            List<Collider2D> charInFrontOf = new List<Collider2D>();
+            Vector2 step = Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(0f, hitbox.size.y / (rayCount - 1)) : new Vector2(hitbox.size.x / (rayCount - 1), 0f);
+            Vector2 beg = (Vector2)transform.position + hitbox.offset +
+                (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(hitbox.size.x * 0.5f * moveDir.x.Sign(), hitbox.size.y * -0.5f) :
+                 new Vector2(hitbox.size.x * -0.5f, hitbox.size.y * 0.5f * moveDir.y.Sign()));
+            
+            List<uint> lstCharAlreadyKill = new List<uint>();
+            for (int i = 0; i < rayCount; i++)
             {
-                if (col.CompareTag("Char"))
+                Vector2 point = beg + i * step + moveDir * rayDistOffset;
+                RaycastHit2D raycast = PhysicsToric.Raycast(point, moveDir, Mathf.Max(PhysicsToric.cameraSize.x, PhysicsToric.cameraSize.y), groundAndCharMask);
+
+                if(raycast.collider != null && raycast.collider.CompareTag("Char"))
                 {
-                    BoxCollider2D charHitbox = col.GetComponent<BoxCollider2D>();
-                    Vector2 point = (Vector2)transform.position + 0.5f * (moveDir.x >= moveDir.y ? new Vector2(hitbox.size.x * moveDir.x.Sign(), 0f) : new Vector2(0f, hitbox.size.y * moveDir.y.Sign()));
-                    float dst = rayMultiplier * (moveDir.x >= moveDir.y ? charHitbox.size.x : charHitbox.size.y);
-                    RaycastHit2D raycast = PhysicsToric.Raycast(point, moveDir, dst, groundMask);
-                    if(raycast.collider != null)
+                    uint id = raycast.collider.GetComponent<PlayerCommon>().id;
+                    if (lstCharAlreadyKill.Contains(id))
+                        continue;
+                    float dst = 0.5f * detectionColliderScale * (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? hitbox.size.x : hitbox.size.y);
+                    if (raycast.point.SqrDistance(point) <= dst * dst)
                     {
-                        //collision!
-                        if(col.GetComponent<PlayerCommon>().id == charWhoActivate.GetComponent<PlayerCommon>().id)
+                        BoxCollider2D charHitbox = raycast.collider.GetComponent<BoxCollider2D>();
+                        Vector2 p1, p2, p3;
+                        if(Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
                         {
-                            charWhoActivate.GetComponent<EventController>().OnBeenKillByEnvironnement(gameObject);
+                            Vector2 center = (Vector2)charHitbox.transform.position + charHitbox.offset;
+                            p1 = center + new Vector2(charHitbox.size.x * 0.5f * moveDir.x.Sign(), charHitbox.size.y * 0.5f);
+                            p2 = center + new Vector2(charHitbox.size.x * 0.5f * moveDir.x.Sign(), 0f);
+                            p3 = center + new Vector2(charHitbox.size.x * 0.5f * moveDir.x.Sign(), charHitbox.size.y * -0.5f);
                         }
                         else
                         {
-                            col.GetComponent<EventController>().OnBeenKillInstant(charWhoActivate.gameObject);
-                            charWhoActivate.GetComponent<EventController>().OnKill(col.gameObject);
+                            Vector2 center = (Vector2)charHitbox.transform.position + charHitbox.offset;
+                            p1 = center + new Vector2(charHitbox.size.x * -0.5f, charHitbox.size.y * 0.5f * moveDir.y.Sign());
+                            p2 = center + new Vector2(0f, charHitbox.size.y * 0.5f * moveDir.y.Sign());
+                            p3 = center + new Vector2(charHitbox.size.x * 0.5f, charHitbox.size.y * 0.5f * moveDir.y.Sign());
+                        }
+
+                        if(PhysicsToric.OverlapPoint(p1, groundMask) != null || PhysicsToric.OverlapPoint(p2, groundMask) != null || PhysicsToric.OverlapPoint(p3, groundMask) != null)
+                        {
+                            //collision!
+                            lstCharAlreadyKill.Add(id);
+                            if (charHitbox.GetComponent<PlayerCommon>().id == charWhoActivate.GetComponent<PlayerCommon>().id)
+                            {
+                                charWhoActivate.GetComponent<EventController>().OnBeenKillByEnvironnement(gameObject);
+                            }
+                            else
+                            {
+                                charHitbox.GetComponent<EventController>().OnBeenKillInstant(charWhoActivate.gameObject);
+                                charWhoActivate.GetComponent<EventController>().OnKill(charHitbox.gameObject);
+                            }
                         }
                     }
                 }
@@ -219,6 +252,7 @@ public class MovablePlatefrom : MonoBehaviour
     private void OnValidate()
     {
         detectionColliderScale = Mathf.Max(1f, detectionColliderScale);
+        rayCount = (uint)Mathf.Max(2f, rayCount);
     }
 
     private void OnDrawGizmosSelected()
@@ -227,5 +261,19 @@ public class MovablePlatefrom : MonoBehaviour
             hitbox = GetComponent<BoxCollider2D>();
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position, hitbox.size * detectionColliderScale);
+        Gizmos.DrawWireCube(transform.position, hitbox.size * detectionGroundColliderScale);
+
+ /*       moveDir = Vector2.left;
+        Vector2 step = Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(0f, hitbox.size.y / (rayCount - 1)) : new Vector2(hitbox.size.x / (rayCount - 1), 0f);
+        Vector2 beg = (Vector2)transform.position + hitbox.offset +
+            (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(hitbox.size.x * 0.5f * moveDir.x.Sign(), hitbox.size.y * -0.5f) :
+             new Vector2(hitbox.size.x * -0.5f, hitbox.size.y * 0.5f * moveDir.y.Sign()));
+
+        for (int i = 0; i < rayCount; i++)
+        {
+            Vector2 point = beg + i * step + moveDir * rayDistOffset;
+            Gizmos.DrawLine(point, point + moveDir * 3f);
+        }
+        moveDir = Vector2.zero;*/
     }
 }

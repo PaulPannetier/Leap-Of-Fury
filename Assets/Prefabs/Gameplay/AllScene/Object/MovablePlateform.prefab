@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4909847896574820869}
   - component: {fileID: 4909847896574820868}
   - component: {fileID: 2621172564464478623}
+  - component: {fileID: 2329972634777868312}
   - component: {fileID: 4909847896574820867}
   - component: {fileID: 4909847896574820866}
   m_Layer: 3
@@ -82,6 +83,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2329972634777868312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4909847896574820865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  boundsOffset: {x: 0, y: 0}
+  componentsToDisableInClone:
+  - {fileID: 4909847896574820866}
+  chidrenToRemoveInClone: []
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  lstClones: []
+  cloner: {fileID: 0}
 --- !u!114 &4909847896574820867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,17 +137,22 @@ MonoBehaviour:
   enableRight: 1
   enableUp: 1
   enableDown: 1
-  speed: 3
+  speed: 6
   speedLerp: 0.6
-  detectionColliderScale: 1.1
-  minSpeedToTriggerMovement: 3
-  rayMultiplier: 1.1
+  detectionColliderScale: 1.3
+  detectionGroundColliderScale: 0.96
+  minSpeedToTriggerMovement: 1
+  rayDistOffset: 0.25
+  rayCount: 8
   charMask:
     serializedVersion: 2
     m_Bits: 256
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
+  groundAndCharMask:
+    serializedVersion: 2
+    m_Bits: 16648
 --- !u!1 &4909847898038514376
 GameObject:
   m_ObjectHideFlags: 0

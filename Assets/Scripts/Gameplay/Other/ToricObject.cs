@@ -16,7 +16,7 @@ public class ToricObject : MonoBehaviour
 
     [SerializeField] private Bounds bounds;
     [SerializeField] private Vector2 boundsOffset;
-    public List<MonoBehaviour> componentsToDisableInClone;
+    public List<Component> componentsToDisableInClone;
     public List<GameObject> chidrenToRemoveInClone;
     [SerializeField] private bool enableHorizontal = true, enableVertical = true;
     [HideInInspector] public bool isAClone;
@@ -97,9 +97,12 @@ public class ToricObject : MonoBehaviour
             {
                 GameObject tmpGO = Instantiate(gameObject, CloneParent.cloneParent);
                 ObjectClone clone = new ObjectClone(tmpGO, gameObject, offset, i);
-                foreach(MonoBehaviour component in clone.toricObject.componentsToDisableInClone)
+                foreach(Component component in clone.toricObject.componentsToDisableInClone)
                 {
-                    component.enabled = false;
+                    if (component is MonoBehaviour m)
+                        m.enabled = false;
+                    else
+                        Destroy(component);
                 }
                 foreach(GameObject go in clone.toricObject.chidrenToRemoveInClone)
                 {

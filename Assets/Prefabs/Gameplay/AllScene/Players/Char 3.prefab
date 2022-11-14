@@ -513,7 +513,7 @@ MonoBehaviour:
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
   shieldPressedUp: 0
-  controllerType: 1
+  controllerType: 3
   useMovementLerpForKeyboard: 1
   movementLerpForKeyboard: 8
   inputsKeyCode: 11010000130100001201000014010000630000002000000076000000640000006600000062000000
@@ -543,9 +543,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charIndex: 3
-  playerIndex: 2
+  playerIndex: 3
   color: {r: 3.6078432, g: 0, b: 2.6980393, a: 1}
-  id: 1
+  id: 2
 --- !u!114 &7598047637200888153
 MonoBehaviour:
   m_ObjectHideFlags: 0

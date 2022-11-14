@@ -61,8 +61,6 @@ public class Line
         //equetion de la droite (A,B)
         return new Vector2((B.y - A.y) / (B.x - A.x), -1f).normalized;
     }
-
-
 }
 
 public class Droite

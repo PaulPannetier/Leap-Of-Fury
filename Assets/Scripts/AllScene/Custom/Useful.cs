@@ -217,6 +217,8 @@ public static class Random
     private static System.Random random = new System.Random();
     private static readonly float twoPi = 2f * Mathf.PI;
 
+    #region Seed
+
     public static void SetSeed(in int seed)
     {
         random = new System.Random(seed);
@@ -229,6 +231,11 @@ public static class Random
     {
         SetSeed((int)DateTime.Now.Ticks);
     }
+
+    #endregion
+
+    #region Random Value and vector
+
     /// <returns> A random integer between a and b, [|a, b|]</returns>
     public static int Rand(in int a, in int b) => random.Next(a, b + 1);
     /// <returns> A random float between 0 and 1, [0, 1]</returns>
@@ -312,98 +319,132 @@ public static class Random
         }
     }
 
+    #endregion
+
     #region Noise
 
-    public enum NoiseType
+    public static float[,] PerlinNoise(in int width, in int height, in Vector2 scale)
     {
-        Perlin = 0,
-        MarchingSquare = 1,
-        Regular = 2
+        float[,] res = new float[width, height];
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                res[x, y] = (PerlinNoise(x / (width * scale.x), y / (height * scale.y)) + 1f) * 0.5f;
+            }
+        }
+        return res;
     }
 
+    public static Array2D<float> RegularNoise(in int width, in int height)
+    {
+        Array2D<float> res = new Array2D<float>(width, height);
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                res[x, y] = Rand();
+            }
+        }
+        return res;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <param name="scale"></param>
-    /// <returns>NoiseMap with value between 0 and 1 include</returns>
-    public static float[,] GenerateNoise(in int width, in int height, in Vector2 scale, in NoiseType noiseType = NoiseType.Perlin)
+    /// <returns>A Worley noise map that can reapte itself infinitely</returns>
+    public static Array2D<float> CellsNoise(int width, int height, in Vector2 scale)
     {
-        switch(noiseType)
-        {
-            case NoiseType.Perlin:
-                return GeneratePerlinNoise(width, height, scale);
-            case NoiseType.MarchingSquare:
-                return GenerateSquareNoise(width, height, scale);
-            case NoiseType.Regular:
-                return GenerateRegularNoise(width, height);
-            default:
-                return null;
-        }
-    }
+        Array2D<float> res = new Array2D<float>(width, height);
 
-    public static float[,] GeneratePerlinNoise(in int width, in int height, in Vector2 scale)
-    {
-        float[,] res = new float[width, height];
-        for (int x = 0; x < width; x++)
+        //avec un scale de 1 <=> 1 point par 100 pixels
+        int nbPointsX = Mathf.Max(1, ((width * 0.01f) * Mathf.Sqrt(scale.x)).Round());
+        int nbPointsY = Mathf.Min(((height * 0.01f) * Mathf.Sqrt(scale.y)).Round());
+        Vector2 recSize = new Vector2((float)width / nbPointsX, (float)height / nbPointsY);
+
+        Array2D<Vector2> samplepoints = new Array2D<Vector2>(nbPointsX, nbPointsY);
+        Vector2 offset = recSize * 0.5f;
+        for (int x = 0; x < samplepoints.width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < samplepoints.height; y++)
             {
-                res[x, y] = (PerlinNoise(x/ (width * scale.x), y / (height * scale.y)) + 1f) * 0.5f;
+                samplepoints[x, y] = Random.PointInRectangle(new Vector2(x * recSize.x + offset.x, y * recSize.y + offset.y), recSize);
             }
         }
-        return res;
-    }
 
-    public static float[,] GenerateRegularNoise(in int width, in int height)
-    {
-        float[,] res = new float[width, height];
-        for (int x = 0; x < width; x++)
+        Array2D<Vector2> points = new Array2D<Vector2>(3 * nbPointsX, 3 * nbPointsY);
+        for (int x = 0; x < points.width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < points.height; y++)
             {
-                res[x, y] = Random.Rand();
-            }
-        }
-        return res;
-    }
-
-    public static float[,] GenerateSquareNoise(int width, in int height, in Vector2 scale)
-    {
-        float[,] res = new float[width, height];
-
-        int nbPoints = Useful.Round((width * height) / (scale.x * scale.y * 625f));
-        Vector2[] points = new Vector2[nbPoints];
-
-        for (int i = 0; i < nbPoints; i++)
-        {
-            points[i] = new Vector2(Rand(0f, width), Rand(0f, height));    
-        }
-
-        float dist, dist2;
-        float maxDist = Mathf.Sqrt(width * width + height * height);
-        float minValue = float.MaxValue, maxValue = float.MinValue;
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                dist = float.MaxValue;
-                for (int i = 0; i < nbPoints; i++)
+                offset = UnityEngine.Vector2.zero;
+                if(x < nbPointsX)
                 {
-                    dist2 = new Vector2(points[i].x - x, points[i].y - y).sqrMagnitude;
-                    if(dist2 < dist)
-                        dist = dist2;
+                    offset += new Vector2(-nbPointsX * recSize.x, 0f);
                 }
-                res[x, y] = Mathf.Sqrt(dist) / maxDist;
-                maxValue = Mathf.Max(maxValue, res[x, y]);
-                minValue = Mathf.Min(minValue, res[x, y]);
+                if (x >= 2 * nbPointsX)
+                {
+                    offset += new Vector2(nbPointsX * recSize.x, 0f);
+                }
+                if (y < nbPointsY)
+                {
+                    offset += new Vector2(0f, -nbPointsY * recSize.y);
+                }
+                if (y >= 2 * nbPointsY)
+                {
+                    offset += new Vector2(0f, nbPointsY * recSize.y);
+                }
+
+                points[x, y] = samplepoints[x % nbPointsX, y % nbPointsY] + offset;
             }
         }
-        for (int x = 0; x < width; x++)
+        samplepoints = null;
+
+        int xRec, yRec;
+        Vector2 currentPixel;
+        float minSqrDist, currentSqrDist;
+        float minValue = float.MaxValue, maxValue = float.MinValue;
+
+        for (int x = 0; x < res.width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < res.height; y++)
+            {
+                currentPixel = new Vector2(x, y);
+                xRec = Mathf.FloorToInt(x / recSize.x);
+                yRec = Mathf.FloorToInt(y / recSize.y);
+
+                minSqrDist = float.MaxValue;
+
+                for (int i = -1; i <= 1; i++)
+                {
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        currentSqrDist = currentPixel.SqrDistance(points[xRec + nbPointsX + i, yRec + nbPointsY + j]);
+                        if(currentSqrDist < minSqrDist)
+                        {
+                            minSqrDist = currentSqrDist;
+                        }
+
+                    }
+                }
+
+                res[x, y] = Mathf.Sqrt(minSqrDist);
+                minValue = Mathf.Min(minValue, res[x, y]);
+                maxValue = Mathf.Max(maxValue, res[x, y]);
+            }
+        }
+
+        for (int x = 0; x < res.width; x++)
+        {
+            for (int y = 0; y < res.height; y++)
             {
                 res[x, y] = Mathf.InverseLerp(minValue, maxValue, res[x, y]);
             }
         }
+
         return res;
     }
 
@@ -498,6 +539,8 @@ public static class Random
 
     #endregion
 
+    #region Proba laws
+
     //Generer les lois de probas ! fonction non tester
     public static int Bernoulli(in float p) => Rand() <= p ? 1 : 0;
     public static int Binomial(in int n, in int p)
@@ -530,6 +573,9 @@ public static class Random
     }
     private static float N01() => Mathf.Sqrt(-2f * Mathf.Log(Rand())) * Mathf.Cos(twoPi * Rand());
     public static float Normal(in float esp, in float sigma) => N01() * sigma + esp;
+
+    #endregion
+
 }
 
 #endregion
@@ -540,34 +586,34 @@ public static class Random
 public class Array2D<T>
 {
     public T[] array;
-    public int w, h;
+    public int width, height;
 
     public Array2D(in int width, in int height)
     {
-        this.w = width; this.h = height;
-        array = new T[w * h];
+        this.width = width; this.height = height;
+        array = new T[width * height];
     }
 
     public T this[int line, int column]
     {
         get
         {
-            return array[column + line * w];
+            return array[column + line * width];
         }
         set
         {
-            array[column + line * w] = value;
+            array[column + line * width] = value;
         }
     }
 
     public T[,] ToArray()
     {
-        T[,] res = new T[h, w];
-        for (int i = 0; i < h; i++)
+        T[,] res = new T[height, width];
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < w; j++)
+            for (int j = 0; j < width; j++)
             {
-                res[i, j] = array[j + i * w];
+                res[i, j] = array[j + i * width];
             }
         }
         return res;
@@ -576,11 +622,11 @@ public class Array2D<T>
     public List<List<T>> ToList()
     {
         List<List<T>> res = new List<List<T>>();
-        for (int i = 0; i < h; i++)
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < w; j++)
+            for (int j = 0; j < width; j++)
             {
-                res[i][j] = array[j + i * w];
+                res[i][j] = array[j + i * width];
             }
         }
         return res;
@@ -588,6 +634,8 @@ public class Array2D<T>
 }
 
 #endregion
+
+#region Useful
 
 public static class Useful
 {
@@ -2172,3 +2220,5 @@ public static class Useful
 
     #endregion
 }
+
+#endregion

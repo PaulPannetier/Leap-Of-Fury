@@ -20,6 +20,11 @@ public class Cooldown
         counter += Time.deltaTime;
     }
 
+    public void ForceActivate()
+    {
+        counter = duration;
+    }
+
     public void Reset()
     {
         counter = 0f;

@@ -40,5 +40,6 @@ Material:
     - _Scale: 37.6
     m_Colors:
     - Color_e75733a1d55b4299a95cfeb1d4e63974: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 110.13088, g: 53.623936, b: 6.9192176, a: 0}
+    - _Color: {r: 147.03337, g: 82.1028, b: 28.435698, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
