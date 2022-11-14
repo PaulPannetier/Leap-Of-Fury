@@ -34,6 +34,32 @@ public static class PhysicsToric
         return p2.Distance(new Vector2(x, y));
     }
 
+    public static Vector2 Direction(Vector2 a, Vector2 b)
+    {
+        Vector2[] possibleDir = new Vector2[4]
+        {
+            b - a,
+            new Vector2((b.x >= 0f ? -cameraSize.x : cameraSize.x) - a.x, b.y - a.y),
+            new Vector2(b.x - a.x, (b.y >= 0f ? -cameraSize.y : cameraSize.y) - a.y),
+            new Vector2((b.x >= 0f ? -cameraSize.x : cameraSize.x) - a.x, (b.y >= 0f ? -cameraSize.y : cameraSize.y) - a.y)
+        };
+
+        Vector2 minDir = possibleDir[0];
+        float minSqrMag = possibleDir[0].sqrMagnitude;
+        float mag;
+
+        for (int i = 1; i < 4; i++)
+        {
+            mag = possibleDir[i].sqrMagnitude;
+            if(mag < minSqrMag)
+            {
+                minSqrMag = mag;
+                minDir = possibleDir[i];
+            }
+        }
+        return minDir.normalized;
+    }
+
     public static Collider2D OverlapPoint(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPoint(GetPointInsideBounds(point), layerMask);
     public static Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
 

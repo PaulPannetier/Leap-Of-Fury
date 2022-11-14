@@ -3,10 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class MoveWhenMoverPassThrough : MonoBehaviour
 {
+    private Rigidbody2D rb;
+
     [SerializeField] private float forceMultiplier = 1f;
     [SerializeField] private Vector2 maxForce = new Vector2(800f, 800f);
 
-    private Rigidbody2D rb;
+    public bool moveOnExplosion = true;
 
     private void Awake()
     {
@@ -15,10 +17,10 @@ public class MoveWhenMoverPassThrough : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Mover mover = other.gameObject.GetComponent<Mover>();
+        Mover mover = other.GetComponent<Mover>();
         if(mover != null)
         {
-            Rigidbody2D rbOther = other.gameObject.GetComponent<Rigidbody2D>();
+            Rigidbody2D rbOther = other.GetComponent<Rigidbody2D>();
             Vector2 force = rbOther.velocity * (mover.moverForceCoeff * forceMultiplier);
 
             force.x = Mathf.Abs(force.x) > maxForce.x ? maxForce.x * force.x.Sign() : force.x;

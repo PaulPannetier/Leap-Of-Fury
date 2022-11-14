@@ -29,6 +29,7 @@ public class GrapplingAttack : WeakAttack
     [SerializeField] private float grapSpeed;
     [SerializeField, Tooltip("en %age Vmax/sec")] private float grapSpeedLerp;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private Bomb bombPrefabs;
 
     protected override void Awake()
     {
