@@ -34,7 +34,7 @@ perso 3 : attack faible : tir de flèche à récup.
 	  Bouclier : basique
 	  Passif : jsp
 
-perso 4 : attack faible : jsp.
+perso 4 : attack faible : Lance un grapin qui graipne un mur (direction via les input) qui  quans on le lace place une bombe au bout qui explose
 	  attack forte : jsp
 	  Bouclier : basique
 	  Passif : jsp

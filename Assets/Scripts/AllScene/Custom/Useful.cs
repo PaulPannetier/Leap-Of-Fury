@@ -151,6 +151,60 @@ public static class Save
         }
     }
 
+    public static void WriteStringMultiThread(string data, string fileName, Action<bool> callback, bool append = true)
+    {
+        //Thread thread = new Thread(new ThreadStart(func));
+        Thread thread = new Thread(func);
+        thread.Priority = System.Threading.ThreadPriority.BelowNormal;
+        WriteMultiTreadData threadData = new WriteMultiTreadData(Application.dataPath + fileName, callback);
+        thread.Start(threadData);
+
+        void func(object rawData)
+        {
+            WriteMultiTreadData threadData2 = (WriteMultiTreadData)rawData;
+            try
+            {
+                if(append)
+                {
+                    StreamWriter stream = new StreamWriter(threadData2.completeFilename, true);
+                    stream.Write(data);
+                }
+                else
+                {
+                    File.WriteAllText(threadData2.completeFilename, data);
+                }
+                threadData2.callbackWrite(true);
+            }
+            catch
+            {
+                threadData2.callbackWrite(false);
+                return;
+            }
+        }
+    }
+
+    public static void ReadJSONDataMultiThread(string fileName, Action<bool, string> callback)
+    {
+        Thread thread = new Thread(func);
+        thread.Priority = System.Threading.ThreadPriority.BelowNormal;
+        WriteMultiTreadData<string> data = new WriteMultiTreadData<string>(Application.dataPath + fileName, callback);
+        thread.Start(data);
+
+        void func(object rawData)
+        {
+            WriteMultiTreadData<string> data = (WriteMultiTreadData<string>)rawData;
+            try
+            {
+                string jsonString = File.ReadAllText(data.completeFilename);
+                data.callbackRead(true, jsonString);
+            }
+            catch (Exception)
+            {
+                data.callbackRead(false, string.Empty);
+            }
+        }
+    }
+
     public static void ImageInPNGFormat(in Color[] pixels, in int w, in int h, string path, string name, in FilterMode filterMode = FilterMode.Point, in TextureWrapMode textureWrapMode = TextureWrapMode.Clamp)
     {
         Texture2D texture = GenerateImage(pixels, w, h, filterMode, textureWrapMode);
