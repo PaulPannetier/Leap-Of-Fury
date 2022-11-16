@@ -168,6 +168,7 @@ public static class Save
                 {
                     StreamWriter stream = new StreamWriter(threadData2.completeFilename, true);
                     stream.Write(data);
+                    stream.Close();
                 }
                 else
                 {
@@ -1020,15 +1021,22 @@ public static class Useful
 
     public static void ShowArray<T>(this T[] tab, string begMessage = "", string endMessage = "")
     {
-        string text = "[ ";
-        for (int l = 0; l < tab.GetLength(0); l++)
-        {
-            text += tab[l].ToString() + ", ";
-        }
-        text = text.Remove(text.Length - 2, 2);
-        text += " ]";
-        Debug.Log(begMessage + text + endMessage);
+        Debug.Log(begMessage + tab.ToString<T>() + endMessage);
     }
+
+    public static string ToString<T>(this T[] arr)
+    {
+        StringBuilder sb = new StringBuilder("[ ");
+        for (int l = 0; l < arr.Length; l++)
+        {
+            sb.Append(arr[l].ToString());
+            sb.Append(", ");
+        }
+        sb.Remove(sb.Length - 2, 2);
+        sb.Append(" ]");
+        return sb.ToString();
+    }
+
     public static void ShowArray<T>(this T[,] tab)
     {
         string text = "";

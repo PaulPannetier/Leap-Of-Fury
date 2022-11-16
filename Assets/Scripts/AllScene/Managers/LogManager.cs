@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Text;
-using System.Reflection;
 using UnityEngine;
-using System.ComponentModel;
 using System;
-using static UnityEngine.Rendering.DebugUI;
-using UnityEditor.VersionControl;
 
 public class LogManager : MonoBehaviour
 {
@@ -30,15 +26,6 @@ public class LogManager : MonoBehaviour
     private void Start()
     {
         messages = new logMessages();
-
-        Vector2 myVector = new Vector2(-11.9532f, 3.45f);
-        string stringExp = "Hello world";
-        int aRandomNumber = 451;
-        float myFloat = 87.224f;
-        int[] anArr = new int[5] { 1, 2, 3, 4, 5 };
-
-        //WriteLog("An error occured", myVector, myFloat, anArr);
-        WriteLog("An error occured, but its just another", stringExp, aRandomNumber);
     }
 
     public void AddLog(string message, params object[] values)
@@ -98,39 +85,34 @@ public class LogManager : MonoBehaviour
         {
             this.errorMessage = errorMessage;
 
-            StringBuilder sb = new StringBuilder("Values : \n    {\n");
+            StringBuilder sb = new StringBuilder("    Params : ");
+            sb.Append(objs.Length);
+            sb.Append("\n    {\n");
             foreach (object obj in objs)
             {
-                /*
-                sb.Append(obj.GetType().Name + obj.ToString());
-
-                MemberInfo[] members = obj.GetType().GetMembers();
-                foreach (MemberInfo memberInfo in members)
-                {
-                    string propName = memberInfo.Name;
-                }
-                */
-
                 sb.Append("        Type : ");
                 sb.Append(obj.GetType().Name);
-                sb.Append(", Name : ");
-                sb.Append(nameof(obj));
-                sb.Append("\n        {\n");
-                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(obj))
+                sb.Append(",\n        Value : ");
+                if (obj.GetType().IsArray)
                 {
-                    sb.Append("            {\n                Name : ");
-                    string name = descriptor.Name;//Name
-                    sb.Append(name);
-                    sb.Append(",\n                Value : ");
-                    object value = descriptor.GetValue(obj);// Value
-                    sb.Append(value);
-                    sb.Append("\n            },\n");
-
-                    var type = descriptor.PropertyType;// Type
-                    Console.WriteLine($"{name}={value}={type}");
+                    Array arr = (Array)obj;
+                    StringBuilder sb2 = new StringBuilder("[ ");
+                    for (int l = 0; l < arr.Length; l++)
+                    {
+                        sb2.Append(arr.GetValue(l).ToString());
+                        sb2.Append(", ");
+                    }
+                    sb2.Remove(sb2.Length - 2, 2);
+                    sb2.Append(" ]");
+                    sb.Append(sb2.ToString());
                 }
-                sb.Append("        }\n\n");
+                else
+                {
+                    sb.Append(obj.ToString());
+                }
+                sb.Append("\n\n");
             }
+            sb.Remove(sb.Length - 1, 1);
             sb.Append("    }\n");
             valueMessage = sb.ToString();
         }
@@ -139,9 +121,9 @@ public class LogManager : MonoBehaviour
         {
             StringBuilder sb = new StringBuilder("LogMessage : \n{\n    Error : ");
             sb.Append(errorMessage);
-            sb.Append(",\n    ");
+            sb.Append(",\n");
             sb.Append(valueMessage);
-            sb.Append("\n}");
+            sb.Append("}\n");
             return sb.ToString();
         }
     }
