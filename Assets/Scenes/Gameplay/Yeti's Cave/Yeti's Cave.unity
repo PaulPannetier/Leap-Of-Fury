@@ -934,6 +934,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
     - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+      propertyPath: cooldown.duration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: gravityScaleWhenSwinging
       value: 3
       objectReference: {fileID: 0}
