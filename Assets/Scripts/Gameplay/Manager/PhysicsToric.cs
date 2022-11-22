@@ -60,6 +60,8 @@ public static class PhysicsToric
         return minDir.normalized;
     }
 
+    #region Overlap
+
     public static Collider2D OverlapPoint(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPoint(GetPointInsideBounds(point), layerMask);
     public static Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
 
@@ -259,10 +261,10 @@ public static class PhysicsToric
 
         if (containAll)//ez case
         {
-            return Physics2D.OverlapCapsule(c.center, new Vector2(c.hitbox.width, c.hitbox.height), c.direction, angle, layerMask);
+            return Physics2D.OverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
         }
 
-        Collider2D res = Physics2D.OverlapCapsule(c.center, new Vector2(c.hitbox.width, c.hitbox.height), c.direction, angle, layerMask);
+        Collider2D res = Physics2D.OverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
         if (res != null)
             return res;
 
@@ -271,7 +273,7 @@ public static class PhysicsToric
             if (collideWithCamHitbox[i])
             {
                 c.MoveAt(c.center - cameraHitboxArounds[i].center);
-                res = Physics2D.OverlapCapsule(c.center, new Vector2(c.hitbox.width, c.hitbox.height), c.direction, angle, layerMask);
+                res = Physics2D.OverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
                 if (res != null)
                     return res;
                 c.MoveAt(c.center + cameraHitboxArounds[i].center);
@@ -305,17 +307,17 @@ public static class PhysicsToric
 
         if (containAll)//ez case
         {
-            return Physics2D.OverlapCapsuleAll(c.center, new Vector2(c.hitbox.width, c.hitbox.height), c.direction, angle, layerMask);
+            return Physics2D.OverlapCapsuleAll(c.center, c.hitbox.size, c.direction, angle, layerMask);
         }
 
-        Collider2D[] res = Physics2D.OverlapCapsuleAll(c.center, new Vector2(c.hitbox.width, c.hitbox.height), c.direction, angle, layerMask);
+        Collider2D[] res = Physics2D.OverlapCapsuleAll(c.center, c.hitbox.size, c.direction, angle, layerMask);
 
         for (int i = 0; i < 4; i++)
         {
             if (collideWithCamHitbox[i])
             {
                 c.MoveAt(c.center - cameraHitboxArounds[i].center);
-                Collider2D[] res2 = Physics2D.OverlapCapsuleAll(c.center, new Vector2(c.hitbox.width, c.hitbox.height), c.direction, angle, layerMask);
+                Collider2D[] res2 = Physics2D.OverlapCapsuleAll(c.center, c.hitbox.size, c.direction, angle, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
                 c.MoveAt(c.center + cameraHitboxArounds[i].center);
@@ -323,6 +325,10 @@ public static class PhysicsToric
         }
         return res;
     }
+
+    #endregion
+
+    #region Cast
 
     public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask)
     {
@@ -409,4 +415,66 @@ public static class PhysicsToric
             return raycast;
         }
     }
+
+    public static RaycastHit2D CircleCast(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
+    {
+        RaycastHit2D[] raycasts = CircleCastRecur(start, dir, radius, distance, layerMask, true);
+        return raycasts.Length >= 1 ? raycasts[0] : default;
+    }
+
+    public static RaycastHit2D[] CircleCastAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
+    {
+        return CircleCastRecur(start, dir, radius, distance, layerMask, false);
+    }
+
+    private static RaycastHit2D[] CircleCastRecur(Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, bool onlyOne)
+    {
+        start = GetPointInsideBounds(start);
+        RaycastHit2D[] raycasts = Physics2D.CircleCastAll(start, radius, dir, distance, layerMask);
+
+        if (onlyOne && raycasts.Length > 0)
+            return raycasts;
+
+        Vector2 end = start + dir * distance;
+        if (cameraHitbox.Contains(end))
+        {
+            Circle c = new Circle(end, radius);
+            bool calculateEdge = false;
+            if(CustomCollider.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)) ||
+                CustomCollider.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)))
+            {
+                end += Vector2.right * (end.x >= 0f ? -cameraSize.x : cameraSize.x);
+                calculateEdge = true;
+            }
+
+            if (CustomCollider.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)) ||
+                CustomCollider.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)))
+            {
+                end += Vector2.up * (end.y >= 0f ? -cameraSize.y : cameraSize.y);
+                calculateEdge = true;
+            }
+            if(calculateEdge)
+                return raycasts.Merge(Physics2D.CircleCastAll(end, radius, dir, 0.01f, layerMask));
+            return raycasts;
+        }
+        else
+        {
+            if (CustomCollider.CollideHitboxLine(cameraHitbox, start, end, out Vector2 col))
+            {
+                while (cameraHitbox.Contains(col))
+                    col += dir * 0.01f;
+                col = GetPointInsideBounds(col);
+                return raycasts.Merge(CircleCastRecur(col, dir, radius, distance - start.Distance(col), layerMask, onlyOne));
+            }
+            else
+            {
+                Debug.LogWarning("must be collision");
+                LogManager.instance.WriteLog("must be collision between cameraHitbox and the line in PhysicToric.CircleCastRecur()", cameraHitbox, new Line(start, end));
+                return raycasts;
+            }
+        }
+    }
+
+    #endregion
+
 }

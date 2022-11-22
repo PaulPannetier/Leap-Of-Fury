@@ -2833,19 +2833,18 @@ public class Hitbox : CustomCollider
     public static void GizmosDraw(Hitbox hitbox) => Polygone.GizmosDraw(hitbox.rec);
 
     public Polygone rec;
-    public float width, height;
+    public Vector2 size;
     public override Circle inclusiveCircle => rec.inclusiveCircle;
 
     public Hitbox(in Vector2 center, in Vector2 size)
     {
-        width = size.x;
-        height = size.y;
+        this.size = size;
         List<Vector2> vertices = new List<Vector2>
         {
-            new Vector2(center.x - width * 0.5f, center.y - height * 0.5f),
-            new Vector2(center.x + width * 0.5f, center.y - height * 0.5f),
-            new Vector2(center.x + width * 0.5f, center.y + height * 0.5f),
-            new Vector2(center.x - width * 0.5f, center.y + height * 0.5f)
+            new Vector2(center.x - size.x * 0.5f, center.y - size.y * 0.5f),
+            new Vector2(center.x + size.x * 0.5f, center.y - size.y * 0.5f),
+            new Vector2(center.x + size.x * 0.5f, center.y + size.y * 0.5f),
+            new Vector2(center.x - size.x * 0.5f, center.y + size.y * 0.5f)
         };
         rec = new Polygone(vertices, center);
     }
@@ -2873,8 +2872,7 @@ public class Hitbox : CustomCollider
     public override void SetScale(in Vector2 newScale, in Vector2 oldScale)
     {
         rec.SetScale(newScale, oldScale);
-        width  *= newScale.x / oldScale.x;
-        height *= newScale.y / oldScale.y;
+        size *= newScale / oldScale;
         inclusiveCircle.SetScale(newScale, oldScale);
     }
 
@@ -2888,7 +2886,7 @@ public class Hitbox : CustomCollider
     }
 
     public override bool Contains(in Vector2 p) => rec.Contains(p);
-    public override CustomCollider Clone() => new Hitbox(center, new Vector2(width, height));
+    public override CustomCollider Clone() => new Hitbox(center, size);
     public override Circle ToCircle() => (Circle)rec.inclusiveCircle.Clone();
     public override string ToString() => rec.ToString();
     public override bool Normal(in Vector2 point, out Vector2 normal) => rec.Normal(point, out normal);
@@ -3069,7 +3067,7 @@ public class Capsule : CustomCollider
         inclusiveCircle = ToCircle();
     }
   
-    public override CustomCollider Clone() => new Capsule(center, new Vector2(hitbox.width, hitbox.height), direction);
+    public override CustomCollider Clone() => new Capsule(center, hitbox.size, direction);
 
     public override bool CollideLine(Line l) => CollideLine(l.A, l.B);
     public override bool CollideLine(in Vector2 A, in Vector2 B)
@@ -3113,9 +3111,9 @@ public class Capsule : CustomCollider
     public override Circle ToCircle()
     {
         if(direction == CapsuleDirection2D.Horizontal)
-            return new Circle(center, Mathf.Max(hitbox.width + c1.radius + c2.radius, hitbox.height) * 0.5f);
+            return new Circle(center, Mathf.Max(hitbox.size.x + c1.radius + c2.radius, hitbox.size.y) * 0.5f);
         else
-            return new Circle(center, Mathf.Max(hitbox.height + c1.radius + c2.radius, hitbox.width) * 0.5f);
+            return new Circle(center, Mathf.Max(hitbox.size.x + c1.radius + c2.radius, hitbox.size.y) * 0.5f);
     }
 
     public override void SetScale(in Vector2 newScale, in Vector2 oldScale)

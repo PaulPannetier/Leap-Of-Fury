@@ -130,7 +130,7 @@
     },
     "com.unity.shadergraph": {
       "version": "10.10.1",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.render-pipelines.core": "10.10.1",
