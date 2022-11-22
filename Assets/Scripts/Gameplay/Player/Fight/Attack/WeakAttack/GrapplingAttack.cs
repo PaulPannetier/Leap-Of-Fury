@@ -22,7 +22,7 @@ public class GrapplingAttack : WeakAttack
     [SerializeField] private float grapRange, circleCastRadius = 0.5f, gravityScaleWhenSwinging = 1f;
     [SerializeField] private float maxDurationAttach = 5f;
     [SerializeField] private float grapMovementForce = 5f;
-    [SerializeField, Tooltip("en %age Vmax/sec")] private float grapSpeedLerp;
+    [SerializeField] private float grapClimbUpSpeed = 2f, grapClimbDownSpeed = 4f;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Bomb bombPrefabs;
 
@@ -82,13 +82,11 @@ public class GrapplingAttack : WeakAttack
         if (playerInput.leftPressed)
         {
             rb.AddForce(Vector2.left * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
-            print("force");
         }
 
         if (playerInput.rightPressed)
         {
             rb.AddForce(Vector2.right * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
-            print("force");
         }
     }
 
@@ -99,6 +97,15 @@ public class GrapplingAttack : WeakAttack
             return;
 
         UpdateLinesRenderer();
+
+        if(playerInput.downPressed)
+        {
+            springJoint.distance += grapClimbDownSpeed * Time.deltaTime;
+        }
+        if(playerInput.upPressed)
+        {
+            springJoint.distance -= grapClimbUpSpeed * Time.deltaTime;
+        }
 
         if (Time.time - lastTimeGrap > maxDurationAttach || !playerInput.attackWeakPressed)
         {
@@ -180,7 +187,8 @@ public class GrapplingAttack : WeakAttack
 
     private void OnValidate()
     {
-        grapSpeedLerp = Mathf.Max(0f, grapSpeedLerp);
+        grapClimbUpSpeed = Mathf.Max(0f, grapClimbUpSpeed);
+        grapClimbDownSpeed = Mathf.Max(0f, grapClimbDownSpeed);
         grapRange = Mathf.Max(0f, grapRange);
         maxDurationAttach = Mathf.Max(0f, maxDurationAttach);
         circleCastRadius = Mathf.Max(0f, circleCastRadius);
