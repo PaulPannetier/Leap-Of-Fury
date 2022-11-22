@@ -353,7 +353,7 @@ public static class Random
     public static Vector2 PointInCircle(in Vector2 center, in float radius) => center + Vector2(Rand(0f, radius));
 
     public static Vector2 PointInRectangle(BoxCollider2D rec) => PointInRectangle(rec.transform.position, rec.size);
-    public static Vector2 PointInRectangle(Hitbox rec) => PointInRectangle(rec.center, new Vector2(rec.width, rec.height));
+    public static Vector2 PointInRectangle(Hitbox rec) => PointInRectangle(rec.center, rec.size);
     public static Vector2 PointInRectangle(in Vector2 center, in Vector2 size)
     {
         return new Vector2(center.x + Rand(-0.5f, 0.5f) * size.x, center.y + Rand(-0.5f, 0.5f) * size.y);
@@ -363,10 +363,10 @@ public static class Random
     public static Vector2 PointInCapsule(Capsule capsule)
     {
         float area1 = capsule.c1.radius * capsule.c1.radius * Mathf.PI;
-        float area2 = capsule.hitbox.height * capsule.hitbox.width;
+        float area2 = capsule.hitbox.size.y * capsule.hitbox.size.x;
         if(Rand(0f, 2f * area1 + area2) <= area2)
         {
-            return PointInRectangle(capsule.hitbox.center, new Vector2(capsule.hitbox.width, capsule.hitbox.height));
+            return PointInRectangle(capsule.hitbox.center, capsule.hitbox.size);
         }
         else
         {
