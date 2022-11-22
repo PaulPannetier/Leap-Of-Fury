@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class PhysicsToric
 {
+    #region Camera and general things
+
     public static Vector2 cameraSize = new Vector2(32f, 18f);
     private static Hitbox[] cameraHitboxArounds = new Hitbox[4]
     {
@@ -59,6 +62,8 @@ public static class PhysicsToric
         }
         return minDir.normalized;
     }
+
+    #endregion
 
     #region Overlap
 
@@ -330,6 +335,8 @@ public static class PhysicsToric
 
     #region Cast
 
+    #region Raycast
+
     public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask)
     {
         List<Vector2> points = new List<Vector2>();
@@ -416,23 +423,47 @@ public static class PhysicsToric
         }
     }
 
+    #endregion
+
+    #region CircleCast
+
     public static RaycastHit2D CircleCast(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
     {
-        RaycastHit2D[] raycasts = CircleCastRecur(start, dir, radius, distance, layerMask, true);
+        List<Vector2> _ = new List<Vector2>();
+        RaycastHit2D[] raycasts = CircleCastRecur(start, dir, radius, distance, layerMask, ref _, true).ToArray();
+        return raycasts.Length >= 1 ? raycasts[0] : default;
+    }
+
+    public static RaycastHit2D CircleCast(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, out Vector2[] torIntersections)
+    {
+        List<Vector2> inter = new List<Vector2>();
+        RaycastHit2D[] raycasts = CircleCastRecur(start, dir, radius, distance, layerMask, ref inter, true).ToArray();
+        torIntersections= inter.ToArray();
         return raycasts.Length >= 1 ? raycasts[0] : default;
     }
 
     public static RaycastHit2D[] CircleCastAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
     {
-        return CircleCastRecur(start, dir, radius, distance, layerMask, false);
+        List<Vector2> _ = new List<Vector2>();
+        return CircleCastRecur(start, dir, radius, distance, layerMask, ref _, false).ToArray();
     }
 
-    private static RaycastHit2D[] CircleCastRecur(Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, bool onlyOne)
+    public static RaycastHit2D[] CircleCastAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, out Vector2[] torIntersections)
+    {
+        List<Vector2> inter = new List<Vector2>();
+        RaycastHit2D[] raycast = CircleCastRecur(start, dir, radius, distance, layerMask, ref inter, false).ToArray();
+        torIntersections = inter.ToArray();
+        return raycast;
+    }
+
+    private static List<RaycastHit2D> CircleCastRecur(Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, ref List<Vector2> inters, bool onlyOne)
     {
         start = GetPointInsideBounds(start);
-        RaycastHit2D[] raycasts = Physics2D.CircleCastAll(start, radius, dir, distance, layerMask);
+        List<RaycastHit2D> raycasts = Physics2D.CircleCastAll(start, radius, dir, distance, layerMask).ToList();
 
-        if (onlyOne && raycasts.Length > 0)
+        RemoveUnvaillableRaycastHit(ref raycasts);
+
+        if (onlyOne && raycasts.Count > 0)
             return raycasts;
 
         Vector2 end = start + dir * distance;
@@ -453,18 +484,19 @@ public static class PhysicsToric
                 end += Vector2.up * (end.y >= 0f ? -cameraSize.y : cameraSize.y);
                 calculateEdge = true;
             }
-            if(calculateEdge)
-                return raycasts.Merge(Physics2D.CircleCastAll(end, radius, dir, 0.01f, layerMask));
+            if (calculateEdge)
+                return raycasts.Merge(Physics2D.CircleCastAll(end, radius, dir, 0.01f, layerMask).ToList());
             return raycasts;
         }
         else
         {
             if (CustomCollider.CollideHitboxLine(cameraHitbox, start, end, out Vector2 col))
             {
+                inters.Add(col);
                 while (cameraHitbox.Contains(col))
                     col += dir * 0.01f;
                 col = GetPointInsideBounds(col);
-                return raycasts.Merge(CircleCastRecur(col, dir, radius, distance - start.Distance(col), layerMask, onlyOne));
+                return raycasts.Merge(CircleCastRecur(col, dir, radius, distance - start.Distance(col), layerMask, ref inters, onlyOne));
             }
             else
             {
@@ -473,8 +505,20 @@ public static class PhysicsToric
                 return raycasts;
             }
         }
+
+        void RemoveUnvaillableRaycastHit(ref List<RaycastHit2D> raycasts)
+        {
+            for (int i = raycasts.Count - 1; i >= 0; i--)
+            {
+                if (raycasts[i].collider != null && !cameraHitbox.Contains(raycasts[i].point))
+                {
+                    raycasts.RemoveAt(i);
+                }
+            }
+        }
     }
 
     #endregion
 
+    #endregion
 }

@@ -17,10 +17,11 @@ public class GrapplingAttack : WeakAttack
     private Vector2 localFloorAttachPos;
     private GameObject goWhereGrapIsAttach;
     private float gravityScaleBeforeSwinging;//pour remettre la valeur de la gravité apres le swing
+    private Vector2[] toricIntersPoints;
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f, gravityScaleWhenSwinging = 1f;
     [SerializeField] private float maxDurationAttach = 5f;
-    [SerializeField] private float grapSpeed;
+    [SerializeField] private float grapMovementForce = 5f;
     [SerializeField, Tooltip("en %age Vmax/sec")] private float grapSpeedLerp;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Bomb bombPrefabs;
@@ -73,6 +74,24 @@ public class GrapplingAttack : WeakAttack
         return false;
     }
 
+    protected override void FixedUpdate()
+    {
+        if (!isSwinging)
+            return;
+
+        if (playerInput.leftPressed)
+        {
+            rb.AddForce(Vector2.left * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
+            print("force");
+        }
+
+        if (playerInput.rightPressed)
+        {
+            rb.AddForce(Vector2.right * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
+            print("force");
+        }
+    }
+
     protected override void Update()
     {
         base.Update();
@@ -81,13 +100,16 @@ public class GrapplingAttack : WeakAttack
 
         UpdateLinesRenderer();
 
+        if (Time.time - lastTimeGrap > maxDurationAttach || !playerInput.attackWeakPressed)
+        {
+            EndAttack();
+        }
+
         void UpdateLinesRenderer()
         {
-            //todo : calculer les point d'inter de la cammeraHitbox et du tracer du CircleCast;
+            RecalculateInterPoints();
 
-
-
-            int nbLineRenderer = 1;//intPoints.Length + 1;
+            int nbLineRenderer = toricIntersPoints.Length + 1;
             while (lstlineRenderers.Count < nbLineRenderer)
             {
                 lstlineRenderers.Add(Instantiate(lineRendererPrefabs, transform.GetChild(1)));
@@ -98,27 +120,34 @@ public class GrapplingAttack : WeakAttack
                 lstlineRenderers.RemoveAt(lstlineRenderers.Count - 1);
             }
             Vector2 beg = transform.position, end;
-            float totalDist = 0f;
             for (int i = 0; i < nbLineRenderer; i++)
             {
-                end = i == nbLineRenderer - 1 ? (raycast.collider != null ? raycast.point : beg + grapDir * (currentGrabDistance - totalDist)) : intPoints[i];
+                end = i != nbLineRenderer - 1 ? toricIntersPoints[i] : (Vector2)goWhereGrapIsAttach.transform.position + localFloorAttachPos;
                 lstlineRenderers[i].positionCount = 2;
                 lstlineRenderers[i].SetPositions(new Vector3[2] { beg, end });
-                totalDist += beg.Distance(end);
+                if(i != nbLineRenderer - 1)
+                {
+                    while (PhysicsToric.cameraHitbox.Contains(end))
+                    {
+                        end += new Vector2(0.01f * (end.x >= 0f ? 1f : -1), 0.01f * (end.y >= 0f ? 1f : -1f));
+                    }
+                }
                 beg = PhysicsToric.GetPointInsideBounds(end);
             }
         }
 
-        if(Time.time - lastTimeGrap > maxDurationAttach || !playerInput.attackWeakPressed)
+        void RecalculateInterPoints()
         {
-            EndAttack();
+            Vector2[] tmpInter = (Vector2[])toricIntersPoints.Clone();
+
+
         }
 
         void RemoveLineRenderer()
         {
             while (lstlineRenderers.Count > 1)
             {
-                Destroy(transform.GetChild(1).GetChild(transform.GetChild(1).childCount - 1));
+                Destroy(transform.GetChild(1).GetChild(transform.GetChild(1).childCount - 1).gameObject);
                 lstlineRenderers.RemoveAt(lstlineRenderers.Count - 1);
             }
             lstlineRenderers[0].positionCount = 0;
@@ -138,7 +167,7 @@ public class GrapplingAttack : WeakAttack
 
     private bool CalculateAttachPoint()
     {
-        RaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask);
+        RaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask, out toricIntersPoints);
         if(raycast.collider == null)
         {
             return false;
@@ -151,7 +180,6 @@ public class GrapplingAttack : WeakAttack
 
     private void OnValidate()
     {
-        grapSpeed = Mathf.Max(0f, grapSpeed);
         grapSpeedLerp = Mathf.Max(0f, grapSpeedLerp);
         grapRange = Mathf.Max(0f, grapRange);
         maxDurationAttach = Mathf.Max(0f, maxDurationAttach);

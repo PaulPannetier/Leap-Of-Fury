@@ -695,20 +695,44 @@ public class Array2D<T>
 public static class Useful
 {
     #region Colordeeper/lighter
+
     /// <summary>
     /// Return a Color deeper than the color in argument
     /// </summary>
     /// <param name="c">The color to change</param>
     /// <param name="percent">le coeff €[0, 1] d'assombrissement</param>
     /// <returns></returns>
-    public static Color ColorDeeper(in Color c, in float coeff) => new Color(c.r * (1f - coeff), c.g * (1f - coeff), c.b * (1f - coeff), c.a);
+    public static Color ColorDeeper(in Color c, float coeff) => new Color(c.r * (1f - coeff), c.g * (1f - coeff), c.b * (1f - coeff), c.a);
     /// <summary>
     /// Return a Color lighter than the color in argument
     /// </summary>
     /// <param name="c">The color to change</param>
     /// <param name="percent">le coeff €[0, 1] de luminosité</param>
     /// <returns></returns>
-    public static Color ColorLighter(Color c, float coeff) => new Color(((1f - c.r) * coeff) + c.r, ((1f - c.g) * coeff) + c.g, ((1f - c.b) * coeff) + c.b, c.a);
+    public static Color ColorLighter(in Color c, float coeff) => new Color(((1f - c.r) * coeff) + c.r, ((1f - c.g) * coeff) + c.g, ((1f - c.b) * coeff) + c.b, c.a);
+
+    public static Texture2D Lerp(Texture2D A, Texture2D B, float t)
+    {
+        if (A.width != B.width || A.height != B.height)
+        {
+            int w = Mathf.Min(A.width, B.width);
+            int h = Mathf.Min(A.height, B.height);
+            if (A.width < B.width || A.height < B.height)
+                A.Resize(w, h);
+            if (B.width < A.width || B.height < A.height)
+                B.Resize(w, h);
+        }
+        Texture2D texture = new Texture2D(A.width, A.height);
+        for (int x = 0; x < A.width; x++)
+        {
+            for (int y = 0; y < A.height; y++)
+            {
+                texture.SetPixel(x, y, Color.Lerp(A.GetPixel(x, y), B.GetPixel(x, y), t));
+            }
+        }
+        return texture;
+    }
+
     #endregion
 
     #region Vector and Maths
