@@ -901,70 +901,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_Anchor.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_Anchor.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_Distance
-      value: 8.15032
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_Frequency
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_DampingRatio
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_EnableCollision
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_ConnectedAnchor.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_ConnectedAnchor.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 447880469633971530, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_AutoConfigureDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: bombPrefabs
-      value: 
-      objectReference: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
-    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: grapClimbUpSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: cooldown.duration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: grapMovementForce
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: grapClimbDownSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: gravityScaleWhenSwinging
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6001260818544699278, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -2100,10 +2036,6 @@ PrefabInstance:
     - target: {fileID: 5034790997836796947, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 5034790997836796947, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5034790997836797167, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_RootOrder

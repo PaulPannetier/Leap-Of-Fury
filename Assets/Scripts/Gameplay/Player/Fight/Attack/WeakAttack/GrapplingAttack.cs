@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GrapplingAttack : WeakAttack
@@ -21,7 +22,7 @@ public class GrapplingAttack : WeakAttack
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f, gravityScaleWhenSwinging = 1f;
     [SerializeField] private float maxDurationAttach = 5f;
-    [SerializeField] private float grapMovementForce = 5f;
+    [SerializeField] private float grapMovementForce = 5f, linearDrag = 0.05f;
     [SerializeField] private float grapClimbUpSpeed = 2f, grapClimbDownSpeed = 4f;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Bomb bombPrefabs;
@@ -88,11 +89,14 @@ public class GrapplingAttack : WeakAttack
         {
             rb.AddForce(Vector2.right * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
         }
+        
+        rb.AddForce(rb.velocity * (-linearDrag * Time.fixedDeltaTime), ForceMode2D.Force);
     }
 
     protected override void Update()
     {
         base.Update();
+
         if (!isSwinging)
             return;
 
@@ -166,6 +170,7 @@ public class GrapplingAttack : WeakAttack
             rb.gravityScale = gravityScaleBeforeSwinging;
             movement.enableBehaviour = movement.enableInput = true;
             springJoint.enabled = false;
+            isSwinging = false;
             RemoveLineRenderer();
             callbackEnd.Invoke();
             return;
@@ -194,6 +199,7 @@ public class GrapplingAttack : WeakAttack
         circleCastRadius = Mathf.Max(0f, circleCastRadius);
     }
 
+    public Vector2 begCast = Vector2.zero;
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

@@ -411,9 +411,9 @@ SpringJoint2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8090791378756873177}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 0}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -422,8 +422,8 @@ SpringJoint2D:
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
   m_Distance: 8.15032
-  m_DampingRatio: 0.5
-  m_Frequency: 1
+  m_DampingRatio: 1
+  m_Frequency: 3
 --- !u!114 &7111324779284635613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -771,13 +771,20 @@ MonoBehaviour:
   attackForce: 100
   castDuration: 0
   cooldown:
-    duration: 5
+    duration: 1
   grapRange: 7.5
-  grapSpeed: 20
-  grapSpeedLerp: 5
+  circleCastRadius: 0.5
+  gravityScaleWhenSwinging: 3
+  maxDurationAttach: 5
+  grapMovementForce: 2000
+  linearDrag: 200
+  grapClimbUpSpeed: 2
+  grapClimbDownSpeed: 4
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
+  bombPrefabs: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
+  begCast: {x: 5, y: 2}
 --- !u!114 &8537409140581819227
 MonoBehaviour:
   m_ObjectHideFlags: 0
