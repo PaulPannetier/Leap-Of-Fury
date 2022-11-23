@@ -19,6 +19,8 @@ public class GrapplingAttack : WeakAttack
     private GameObject goWhereGrapIsAttach;
     private float gravityScaleBeforeSwinging;//pour remettre la valeur de la gravité apres le swing
     private Vector2[] toricIntersPoints;
+    private float lastTimeBombSpawn = -10f;
+    private bool doJump;
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f, gravityScaleWhenSwinging = 1f;
     [SerializeField] private float maxDurationAttach = 5f;
@@ -26,6 +28,7 @@ public class GrapplingAttack : WeakAttack
     [SerializeField] private float grapClimbUpSpeed = 2f, grapClimbDownSpeed = 4f;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Bomb bombPrefabs;
+    [SerializeField] private float timeBetweenBombSpawn = 0.4f;
 
     protected override void Awake()
     {
@@ -77,6 +80,12 @@ public class GrapplingAttack : WeakAttack
 
     protected override void FixedUpdate()
     {
+        if (doJump)
+        {
+            movement.RequestWallJump(playerInput.x < 0f);
+            doJump = false;
+        }
+
         if (!isSwinging)
             return;
 
@@ -109,6 +118,18 @@ public class GrapplingAttack : WeakAttack
         if(playerInput.upPressed)
         {
             springJoint.distance -= grapClimbUpSpeed * Time.deltaTime;
+        }
+
+        if(lastTimeBombSpawn - Time.time > timeBetweenBombSpawn)
+        {
+            lastTimeBombSpawn = Time.time;
+            Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent)
+        }
+
+        if(playerInput.jumpPressedDown)
+        {
+            doJump = true;
+            EndAttack();
         }
 
         if (Time.time - lastTimeGrap > maxDurationAttach || !playerInput.attackWeakPressed)

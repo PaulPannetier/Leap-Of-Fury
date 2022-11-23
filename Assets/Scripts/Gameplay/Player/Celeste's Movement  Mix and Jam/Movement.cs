@@ -182,6 +182,11 @@ public class Movement : MonoBehaviour
         rb.velocity += force;
     }
 
+    public void RequestWallJump(bool rightWallJump)
+    {
+        WallJump(rightWallJump);
+    }
+
     #endregion
 
     #region Awake
@@ -803,7 +808,11 @@ public class Movement : MonoBehaviour
                 return;
             }
         }
+        WallJump(right);
+    }
 
+    private void WallJump(bool right)
+    {
         //first case : jump along the wall
         if((right && playerInput.rawX >= 0) || (!right && playerInput.rawX <= 0) && wallGrab && playerInput.rawY >= 0)
         {
