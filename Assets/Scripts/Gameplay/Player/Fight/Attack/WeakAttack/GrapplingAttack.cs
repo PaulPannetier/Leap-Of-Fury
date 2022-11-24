@@ -123,7 +123,8 @@ public class GrapplingAttack : WeakAttack
         if(lastTimeBombSpawn - Time.time > timeBetweenBombSpawn)
         {
             lastTimeBombSpawn = Time.time;
-            Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent)
+            Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent);
+            bomb.Lauch(this);
         }
 
         if(playerInput.jumpPressedDown)
