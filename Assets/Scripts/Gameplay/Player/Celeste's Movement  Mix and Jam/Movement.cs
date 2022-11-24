@@ -120,6 +120,13 @@ public class Movement : MonoBehaviour
     [Tooltip("L'interpolation lorsqu'on ralentie en glissant sur un mur.")] [SerializeField] private float slideSpeedLerpDeceleration = 55f;
     [Tooltip("La vitesse initiale de glissement en %age de vitesse max lorsqu'on glisse a partir de 0.")] [SerializeField] [Range(0f, 1f)] private float initSlideSpeed = 0.1f;
 
+    [Header("Slope")]
+    [Tooltip("The maximum angle in degres we can walk"), SerializeField] private float maxSlopeAngle = 22.5f;
+    [SerializeField] private float slopeSpeed;
+    [SerializeField, Tooltip("acceleration during slope in %ageVMAX/sec ")] private float slopeSpeedLerp = 1f;
+    [SerializeField] private Vector2 slopeRaycastOffset = Vector2.zero;
+    [SerializeField] private float slopeRaycastLength = 0.5f;
+
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
     [SerializeField] private ParticleSystem jumpParticle;
@@ -138,6 +145,7 @@ public class Movement : MonoBehaviour
     public bool isJumpingAlongWall { get; private set; } //dans la phase montante d'un saut face au mur
     public bool isWallJumping { get; private set; } //dans la phase montante d'un saut depuis un mur
     public bool isFalling { get; private set; } //est en l'air sans saut ni grab ni rien d'autre.
+    public bool isSloping { get; private set; } //on est en pente.
 
     public int wallSide { get; private set; }
 
@@ -420,6 +428,8 @@ public class Movement : MonoBehaviour
         HandleGrab();
 
         HandleWallSlide();
+
+        HandleSlope();
 
         HandleJump();
 
@@ -1000,6 +1010,15 @@ public class Movement : MonoBehaviour
 
     #endregion
 
+    #region Slope
+
+    private void HandleSlope()
+    {
+
+    }
+
+    #endregion
+
     #region Detection
 
     private void GroundTouch()
@@ -1067,6 +1086,10 @@ public class Movement : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawLine((Vector2)transform.position + groundOffset + (grabRayLength * Vector2.left), (Vector2)transform.position + groundOffset + (grabRayLength * Vector2.right));
+
+        //Slope
+        Gizmos.DrawLine((Vector2)transform.position + slopeRaycastOffset, (Vector2)transform.position + slopeRaycastOffset + Vector2.down * slopeRaycastLength);
+        Gizmos.DrawLine((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), (Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y) + Vector2.down * slopeRaycastLength);
     }
 
     private void OnValidate()
@@ -1086,6 +1109,7 @@ public class Movement : MonoBehaviour
         grabRayLength = Mathf.Max(0f, grabRayLength);
         airSpeedLerp = Mathf.Max(0f, airSpeedLerp);
         jumpInitForce = Mathf.Max(0f, jumpInitForce);
+        slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
     }
 
     #endregion
