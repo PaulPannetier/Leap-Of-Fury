@@ -126,6 +126,7 @@ public class Movement : MonoBehaviour
     [SerializeField, Tooltip("acceleration during slope in %ageVMAX/sec ")] private float slopeSpeedLerp = 1f;
     [SerializeField] private Vector2 slopeRaycastOffset = Vector2.zero;
     [SerializeField] private float slopeRaycastLength = 0.5f;
+    private float slopeAngleLeft, slopeAngleRight;
 
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
@@ -146,6 +147,7 @@ public class Movement : MonoBehaviour
     public bool isWallJumping { get; private set; } //dans la phase montante d'un saut depuis un mur
     public bool isFalling { get; private set; } //est en l'air sans saut ni grab ni rien d'autre.
     public bool isSloping { get; private set; } //on est en pente.
+    public bool isSlopingRight, isSlopingLeft;
 
     public int wallSide { get; private set; }
 
@@ -221,6 +223,43 @@ public class Movement : MonoBehaviour
         onLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer) != null;
         onWall = onRightWall || onLeftWall;
         wallSide = onRightWall ? -1 : 1;
+
+        //Slope detecttion
+        RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + slopeRaycastOffset, Vector2.down, slopeRaycastLength, groundLayer);
+        if (rightSlopeRay.collider != null)
+        {
+            slopeAngleRight = Vector2.Angle(new Vector2(side, 0f), rightSlopeRay.normal);
+            if(slopeAngleRight > 2f)
+            {
+                isSlopingRight = true;
+                groundCollider = rightSlopeRay.collider;
+            }
+            else
+                isSlopingRight = false;
+        }
+        else
+        {
+            slopeAngleRight = 0f;
+            isSlopingRight = false;
+        }
+        RaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), Vector2.down, slopeRaycastLength, groundLayer);
+        if (leftSlopeRay.collider != null)
+        {
+            slopeAngleLeft = Vector2.Angle(new Vector2(side, 0f), rightSlopeRay.normal);
+            if (slopeAngleRight > 2f)
+            {
+                isSlopingLeft = true;
+                groundCollider = leftSlopeRay.collider;
+            }
+            else
+                isSlopingLeft = false;
+        }
+        else
+        {
+            slopeAngleLeft = 0f;
+            isSlopingLeft = false;
+        }
+        isSloping = isSlopingRight || isSlopingLeft;
 
         //Trigger leave plateform
         if (oldOnGround && !isGrounded)
@@ -450,70 +489,31 @@ public class Movement : MonoBehaviour
 
     private void HandleWalk()
     {
-        if (!enableInput || !isGrounded || !canMove || wallGrab || reachGrabApex || grabStayAtApex || isDashing || isJumping || isFalling || isSliding)
+        if (!enableInput || (!isGrounded && !isSloping) || !canMove || wallGrab || reachGrabApex || grabStayAtApex || isDashing || isJumping || isFalling || isSliding)
             return;
 
-        #region Debug
-
-        bool ok = false;
-        if (playerInput.x > 0.01f && playerInput.rawX == 1)
+        if(isSloping)
         {
-            //print("x OK");
-            ok = true;
+            HandleSlope();
         }
-        if (playerInput.x < -0.01f && playerInput.rawX == -1)
+        else
         {
-            //print("x OK");
-            ok = true;
-        }
-        if (playerInput.x <= 0.01f && playerInput.x >= -0.01f && playerInput.rawX == 0)
-        {
-            //print("x OK");
-            ok = true;
-        }
-        if (!ok)
-        {
-            print("x : " + playerInput.x + " y : " + playerInput.y + " rawX : " + playerInput.rawX + " rawY : " + playerInput.rawY);
-        }
-
-        ok = false;
-        if (playerInput.y > 0.01f && playerInput.rawY == 1)
-        {
-            //print("y OK");
-            ok = true;
-        }
-        if (playerInput.y < -0.01f && playerInput.rawY == -1)
-        {
-            //print("y OK");
-            ok = true;
-        }
-        if (playerInput.y <= 0.01f && playerInput.y >= -0.01f && playerInput.rawY == 0)
-        {
-            //print("y OK");
-            ok = true;
-        }
-        if (!ok)
-        {
-            print("x : " + playerInput.x + " y : " + playerInput.y + " rawX : " + playerInput.rawX + " rawY : " + playerInput.rawY);
+            switch (groundColliderData.groundType)
+            {
+                case MapColliderData.GroundType.normal:
+                    HandleNormalWalk();
+                    break;
+                case MapColliderData.GroundType.ice:
+                    HandleIceWalk();
+                    break;
+                case MapColliderData.GroundType.trampoline:
+                    HandleNormalWalk();
+                    break;
+                default:
+                    break;
+            }
         }
 
-        #endregion
-
-        switch (groundColliderData.groundType)
-        {
-            case MapColliderData.GroundType.normal:
-                HandleNormalWalk();
-                break;
-            case MapColliderData.GroundType.ice:
-                HandleIceWalk();
-                break;
-            case MapColliderData.GroundType.trampoline:
-                HandleNormalWalk();
-                break;
-            default:
-                break;
-        }
-        
         void HandleNormalWalk()
         {
             //Clamp, on est dans le mauvais sens
@@ -544,6 +544,28 @@ public class Movement : MonoBehaviour
             }
         }
         
+        void HandleSlope()
+        {
+            float slopeAngle = Mathf.Max(slopeAngleRight, slopeAngleLeft);
+            Vector2 velocityToAddIfNoSlope = Vector2.zero;
+            //Clamp, on est dans le mauvais sens
+            if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+            {
+                rb.velocity = new Vector2(0f, rb.velocity.y);
+                if (playerInput.rawX != 0)
+                    velocityToAddIfNoSlope += new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), 0f);
+            }
+
+            if (Mathf.Abs(rb.velocity.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0)
+            {
+                rb.velocity = new Vector2(0f, rb.velocity.y);
+                velocityToAddIfNoSlope += new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), 0f);
+            }
+            else
+            {
+                velocityToAddIfNoSlope += new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed, playerInput.x.Sign() * speedLerp * Time.fixedDeltaTime), 0f);
+            }
+        }
     }
 
     #endregion
@@ -1006,15 +1028,6 @@ public class Movement : MonoBehaviour
         {
             rb.velocity = new Vector2(0f, Mathf.MoveTowards(rb.velocity.y, -slideSpeed, slideSpeedLerp * Time.fixedDeltaTime));
         }
-    }
-
-    #endregion
-
-    #region Slope
-
-    private void HandleSlope()
-    {
-
     }
 
     #endregion
