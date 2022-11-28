@@ -337,20 +337,20 @@ public static class PhysicsToric
 
     #region Raycast
 
-    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask)
+    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask)//OK
     {
-        List<Vector2> points = new List<Vector2>();
+        List<Vector2> _ = new List<Vector2>();
         float reachDistance = 0f;
-        RaycastHit2D raycast = RaycastRecur(from, direction.normalized, distance, layerMask, ref reachDistance, ref points);
+        RaycastHit2D raycast = RaycastRecur(GetPointInsideBounds(from), direction.normalized, distance, layerMask, ref reachDistance, ref _);
         raycast.distance = raycast.collider != null ? reachDistance : 0f;
         return raycast;
     }
 
-    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask, out Vector2[] toricHitboxIntersectionsPoints)
+    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask, out Vector2[] toricHitboxIntersectionsPoints)//ok
     {
         List<Vector2> points = new List<Vector2>();
         float reachDistance = 0f;
-        RaycastHit2D raycast = RaycastRecur(from, direction.normalized, distance, layerMask, ref reachDistance, ref points);
+        RaycastHit2D raycast = RaycastRecur(GetPointInsideBounds(from), direction.normalized, distance, layerMask, ref reachDistance, ref points);
         raycast.distance = raycast.collider != null ? reachDistance : 0f;
         toricHitboxIntersectionsPoints = points.ToArray();
         return raycast;

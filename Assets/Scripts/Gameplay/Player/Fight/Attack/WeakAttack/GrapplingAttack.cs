@@ -221,7 +221,6 @@ public class GrapplingAttack : WeakAttack
         circleCastRadius = Mathf.Max(0f, circleCastRadius);
     }
 
-    public Vector2 begCast = Vector2.zero;
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;

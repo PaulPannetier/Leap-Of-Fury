@@ -445,28 +445,7 @@ public class Movement : MonoBehaviour
 
         // VIII-Debug
         
-        DebugText.instance.text += "isSloping : " + isSloping + "\n";
-        DebugText.instance.text += "isSlopingRight : " + isSlopingRight + "\n";
-        DebugText.instance.text += "isSlopingLeft : " + isSlopingLeft + "\n";
-        DebugText.instance.text += "toSteepR : " + isToSteepSlopeRight + "\n";
-        DebugText.instance.text += "toSteepL : " + isToSteepSlopeLeft + "\n";
-        DebugText.instance.text += "SlopeRightAngle : " + slopeAngleRight * Mathf.Rad2Deg + "\n";
-        DebugText.instance.text += "SlopeLeftAngle : " + slopeAngleLeft * Mathf.Rad2Deg + "\n";
-        DebugText.instance.text += rb.velocity + ", " + rb.velocity.magnitude.Round(1) + " m/s\n";
-
-        /*
-        DebugText.instance.text += rb.velocity + ", " + rb.velocity.magnitude.Round(1) + " m/s\n";
-        DebugText.instance.text += "isDashing : " + isDashing + "\n";
-        DebugText.instance.text += "isJumping : " + isJumping + "\n";
-        DebugText.instance.text += "isWallJumping : " + isWallJumping + "\n";
-        DebugText.instance.text += "isWallJumpingAlong : " + isJumpingAlongWall + "\n";
-        DebugText.instance.text += "isFalling : " + isFalling+ "\n";
-        DebugText.instance.text += "wallGrab : " + wallGrab + "\n";
-        DebugText.instance.text += "isSliding : " + isSliding + "\n";
-        DebugText.instance.text += "GrabstayAtApex : " + grabStayAtApex + "\n";
-        DebugText.instance.text += "isGrabApexEnable : " + isGrabApexEnable + "\n";
-        DebugText.instance.text += "reachGrabApex : " + reachGrabApex + "\n";
-        */
+        //DebugText.instance.text += rb.velocity + ", " + rb.velocity.magnitude.Round(1) + " m/s\n";
     }
 
     #endregion
@@ -503,7 +482,7 @@ public class Movement : MonoBehaviour
         if (!enableInput || (!isGrounded && !isSloping) || !canMove || wallGrab || reachGrabApex || grabStayAtApex || isDashing || isJumping || isFalling || isSliding)
             return;
 
-        if(isSloping)
+        if(isSloping && !onWall)
         {
             HandleSlope();
         }
