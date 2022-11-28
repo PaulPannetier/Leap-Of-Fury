@@ -52,6 +52,11 @@ public class LogManager : MonoBehaviour
         StartCoroutine(WriteLogAsync(str));
     }
 
+    public void ClearLog()
+    {
+        StartCoroutine(WriteLogAsync(""));
+    }
+
     private IEnumerator WriteLogAsync(string logData)
     {
         while (isWritingLogs)

@@ -356,7 +356,7 @@ public static class PhysicsToric
         return raycast;
     }
 
-    private static RaycastHit2D RaycastRecur(Vector2 from, Vector2 direction, in float distance, in int layerMask, ref float reachDistance, ref List<Vector2> points)
+    private static RaycastHit2D RaycastRecur(in Vector2 from, in Vector2 direction, in float distance, in int layerMask, ref float reachDistance, ref List<Vector2> points)
     {
         RaycastHit2D raycast = Physics2D.Raycast(from, direction, distance, layerMask);
         Line ray;

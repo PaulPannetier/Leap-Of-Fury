@@ -121,12 +121,16 @@ public class Movement : MonoBehaviour
     [Tooltip("La vitesse initiale de glissement en %age de vitesse max lorsqu'on glisse a partir de 0.")] [SerializeField] [Range(0f, 1f)] private float initSlideSpeed = 0.1f;
 
     [Header("Slope")]
-    [Tooltip("The maximum angle in degres we can walk"), SerializeField] private float maxSlopeAngle = 22.5f;
+    [Tooltip("The maximum angle in degres we can walk"), SerializeField, Range(0f, 90f)] private float maxSlopeAngle = 22.5f;
     [SerializeField] private float slopeSpeed;
+    [SerializeField, Range(0f, 1f)] private float initSlopeSpeed = 0.3f;
+    [SerializeField, Tooltip("La vitesse de monter selon l'angle de la pente : 0 => pente nulle, 1 => pente max en %ageVMAX")] private AnimationCurve slopeSpeedCurve;
     [SerializeField, Tooltip("acceleration during slope in %ageVMAX/sec ")] private float slopeSpeedLerp = 1f;
     [SerializeField] private Vector2 slopeRaycastOffset = Vector2.zero;
     [SerializeField] private float slopeRaycastLength = 0.5f;
+    [HideInInspector] public bool isSlopingRight, isSlopingLeft;
     private float slopeAngleLeft, slopeAngleRight;
+    private bool isToSteepSlopeRight, isToSteepSlopeLeft;
 
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
@@ -147,7 +151,6 @@ public class Movement : MonoBehaviour
     public bool isWallJumping { get; private set; } //dans la phase montante d'un saut depuis un mur
     public bool isFalling { get; private set; } //est en l'air sans saut ni grab ni rien d'autre.
     public bool isSloping { get; private set; } //on est en pente.
-    public bool isSlopingRight, isSlopingLeft;
 
     public int wallSide { get; private set; }
 
@@ -228,31 +231,40 @@ public class Movement : MonoBehaviour
         RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + slopeRaycastOffset, Vector2.down, slopeRaycastLength, groundLayer);
         if (rightSlopeRay.collider != null)
         {
-            slopeAngleRight = Vector2.Angle(new Vector2(side, 0f), rightSlopeRay.normal);
-            if(slopeAngleRight > 2f)
+            groundCollider = groundCollider == null ? rightSlopeRay.collider : groundCollider;
+            slopeAngleRight = Useful.WrapAngle((Vector2.Angle(Vector2.right, rightSlopeRay.normal) - 90f) * Mathf.Deg2Rad);
+            if (slopeAngleRight >= 1f * Mathf.Deg2Rad && slopeAngleRight <= maxSlopeAngle * Mathf.Deg2Rad)
             {
                 isSlopingRight = true;
-                groundCollider = rightSlopeRay.collider;
+                isToSteepSlopeRight = false;
             }
             else
+            {
                 isSlopingRight = false;
+                isToSteepSlopeRight = slopeAngleRight > maxSlopeAngle * Mathf.Deg2Rad && slopeAngleRight < Mathf.PI * 0.5f;
+            }
         }
         else
         {
             slopeAngleRight = 0f;
             isSlopingRight = false;
         }
+
         RaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), Vector2.down, slopeRaycastLength, groundLayer);
         if (leftSlopeRay.collider != null)
         {
-            slopeAngleLeft = Vector2.Angle(new Vector2(side, 0f), rightSlopeRay.normal);
-            if (slopeAngleRight > 2f)
+            groundCollider = groundCollider == null ? leftSlopeRay.collider : groundCollider;
+            slopeAngleLeft = Useful.WrapAngle((270f - Vector2.Angle(Vector2.left, rightSlopeRay.normal)) * Mathf.Deg2Rad);
+            if (slopeAngleLeft <= 179f * Mathf.Deg2Rad && slopeAngleLeft >= (180f - maxSlopeAngle) * Mathf.Deg2Rad)
             {
                 isSlopingLeft = true;
-                groundCollider = leftSlopeRay.collider;
+                isToSteepSlopeLeft = false;
             }
             else
+            {
                 isSlopingLeft = false;
+                isToSteepSlopeLeft = slopeAngleLeft < (180f - maxSlopeAngle) * Mathf.Deg2Rad && slopeAngleLeft > Mathf.PI * 0.5f;
+            }
         }
         else
         {
@@ -260,6 +272,7 @@ public class Movement : MonoBehaviour
             isSlopingLeft = false;
         }
         isSloping = isSlopingRight || isSlopingLeft;
+        isGrounded = isGrounded || (rightSlopeRay.collider != null || leftSlopeRay.collider != null);
 
         //Trigger leave plateform
         if (oldOnGround && !isGrounded)
@@ -432,14 +445,14 @@ public class Movement : MonoBehaviour
 
         // VIII-Debug
         
-        int count = isJumping ? 1 : 0;
-        count = isFalling ? count + 1 : count;
-        count = wallGrab ? count + 1 : count;
-        count = isSliding ? count + 1 : count;
-        if(count > 1)
-        {
-            print("!bug : " + "isJumping : " + isJumping + " isFalling : " + isFalling + " wallGrab : " + wallGrab + " isSliding : " + isSliding);
-        }
+        DebugText.instance.text += "isSloping : " + isSloping + "\n";
+        DebugText.instance.text += "isSlopingRight : " + isSlopingRight + "\n";
+        DebugText.instance.text += "isSlopingLeft : " + isSlopingLeft + "\n";
+        DebugText.instance.text += "toSteepR : " + isToSteepSlopeRight + "\n";
+        DebugText.instance.text += "toSteepL : " + isToSteepSlopeLeft + "\n";
+        DebugText.instance.text += "SlopeRightAngle : " + slopeAngleRight * Mathf.Rad2Deg + "\n";
+        DebugText.instance.text += "SlopeLeftAngle : " + slopeAngleLeft * Mathf.Rad2Deg + "\n";
+        DebugText.instance.text += rb.velocity + ", " + rb.velocity.magnitude.Round(1) + " m/s\n";
 
         /*
         DebugText.instance.text += rb.velocity + ", " + rb.velocity.magnitude.Round(1) + " m/s\n";
@@ -455,7 +468,7 @@ public class Movement : MonoBehaviour
         DebugText.instance.text += "reachGrabApex : " + reachGrabApex + "\n";
         */
     }
-    
+
     #endregion
 
     #region fixedUpdate
@@ -467,8 +480,6 @@ public class Movement : MonoBehaviour
         HandleGrab();
 
         HandleWallSlide();
-
-        HandleSlope();
 
         HandleJump();
 
@@ -529,6 +540,11 @@ public class Movement : MonoBehaviour
                 rb.velocity = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), rb.velocity.y);
             else
                 rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed, speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+
+            //Clamp is to steep slope
+            float xMin = isToSteepSlopeLeft ? 0f : float.MinValue;
+            float xMax = isToSteepSlopeRight ? 0f : float.MaxValue;
+            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, xMin, xMax), rb.velocity.y);
         }
 
         void HandleIceWalk()
@@ -546,24 +562,60 @@ public class Movement : MonoBehaviour
         
         void HandleSlope()
         {
-            float slopeAngle = Mathf.Max(slopeAngleRight, slopeAngleLeft);
-            Vector2 velocityToAddIfNoSlope = Vector2.zero;
-            //Clamp, on est dans le mauvais sens
-            if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+            if((isSlopingRight && isSlopingLeft) || (!isSlopingRight && !isSlopingLeft))
             {
-                rb.velocity = new Vector2(0f, rb.velocity.y);
-                if (playerInput.rawX != 0)
-                    velocityToAddIfNoSlope += new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), 0f);
+                Debug.LogWarning("isSlopingRight == isSlopingLeft == " + isSlopingRight);
+                LogManager.instance.WriteLog("Function HandleSlope in Movement script, paradox between sloping right and left", isSloping, isSlopingRight, isSlopingLeft, slopeAngleRight, slopeAngleLeft);
             }
 
-            if (Mathf.Abs(rb.velocity.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0)
+            if(playerInput.rawX != 0)
             {
-                rb.velocity = new Vector2(0f, rb.velocity.y);
-                velocityToAddIfNoSlope += new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), 0f);
+                float slopeAngle = isSlopingRight ? slopeAngleRight : slopeAngleLeft;
+                float negativeSlopeAngle = Useful.WrapAngle(slopeAngle + Mathf.PI);
+                float maxSlopeSpeed = slopeSpeed * slopeSpeedCurve.Evaluate(slopeAngle / (maxSlopeAngle * Mathf.Deg2Rad));
+
+                //Clamp, on est dans le mauvais sens
+                if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+                {
+                    ApplyMinSpeed(isSlopingRight, playerInput, rb);
+                }
+
+                if (rb.velocity.sqrMagnitude < (initSlopeSpeed * maxSlopeSpeed * initSlopeSpeed * maxSlopeSpeed * 0.95f * 0.95f))
+                {
+                    ApplyMinSpeed(isSlopingRight, playerInput, rb);
+                }
+                else
+                {
+                    float angle = GetAngle(isSlopingRight, playerInput);
+                    float mag = Mathf.MoveTowards(rb.velocity.magnitude, maxSlopeSpeed, slopeSpeedLerp * maxSlopeSpeed * Time.fixedDeltaTime);
+                    rb.velocity = new Vector2(mag * Mathf.Cos(angle), mag * Mathf.Sin(angle));
+                }
+
+                if (rb.velocity.sqrMagnitude >= maxSlopeSpeed * maxSlopeSpeed)
+                {
+                    rb.velocity = rb.velocity.normalized * maxSlopeSpeed;
+                }
+
+                void ApplyMinSpeed(bool isSlopingRight, CustomPlayerInput playerInput, Rigidbody2D rb)
+                {
+                    float mag = initSlopeSpeed * maxSlopeSpeed;
+                    float angle = GetAngle(isSlopingRight, playerInput);
+                    rb.velocity = new Vector2(mag * Mathf.Cos(angle), mag * Mathf.Sin(angle));
+                }
+
+                float GetAngle(bool isSlopingRight, CustomPlayerInput playerInput)
+                {
+                    float angle;
+                    if (isSlopingRight)
+                        angle = playerInput.rawX == 1 ? slopeAngle : negativeSlopeAngle;
+                    else//isSlopingLeft
+                        angle = playerInput.rawX == -1 ? slopeAngle : negativeSlopeAngle;
+                    return angle;
+                }
             }
             else
             {
-                velocityToAddIfNoSlope += new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed, playerInput.x.Sign() * speedLerp * Time.fixedDeltaTime), 0f);
+                rb.velocity = Vector2.zero;
             }
         }
     }
@@ -1110,6 +1162,7 @@ public class Movement : MonoBehaviour
         grabSpeed = Mathf.Max(0f, grabSpeed);
         walkSpeed = Mathf.Max(0f, walkSpeed);
         dashSpeed = Mathf.Max(0f, dashSpeed);
+        slopeSpeed = Mathf.Max(0f, slopeSpeed);
         fallSpeed = new Vector2(Mathf.Max(0f, fallSpeed.x), Mathf.Max(0f, fallSpeed.y));
         airHorizontalSpeed = Mathf.Max(0f, airHorizontalSpeed);
         jumpSpeed = new Vector2(Mathf.Max(0f, jumpSpeed.x), Mathf.Max(0f, jumpSpeed.y));
