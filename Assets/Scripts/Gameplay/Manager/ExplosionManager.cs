@@ -49,9 +49,12 @@ public class ExplosionManager : MonoBehaviour
         float dist;
         foreach (Rigidbody2D rb in moveWidthExplosion)
         {
-            dir = PhysicsToric.Direction(position, rb.transform.position);
-            dist = PhysicsToric.Distance(position, rb.transform.position);
-            rb.AddForce(dir * (explosionForceCurvePerDistance.Evaluate(Mathf.Clamp01(dist / maxDistance)) * force), ForceMode2D.Impulse);
+            if(rb != null)
+            {
+                dir = PhysicsToric.Direction(position, rb.transform.position);
+                dist = PhysicsToric.Distance(position, rb.transform.position);
+                rb.AddForce(dir * (explosionForceCurvePerDistance.Evaluate(Mathf.Clamp01(dist / maxDistance)) * force), ForceMode2D.Impulse);
+            }
         }
     }
 }
