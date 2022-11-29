@@ -2213,6 +2213,12 @@ public static class Useful
             UnityEngine.Object.Destroy(child.gameObject);
     }
 
+    public static void DestroyChildren(this GameObject t)
+    {
+        foreach (Transform child in t.transform)
+            UnityEngine.Object.Destroy(child.gameObject);
+    }
+
     private static Dictionary<float, WaitForSeconds> waitForSecondsCache = new Dictionary<float, WaitForSeconds>();
     public static WaitForSeconds GetWaitForSeconds(in float time)
     {

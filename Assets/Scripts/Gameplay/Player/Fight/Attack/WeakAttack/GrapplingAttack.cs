@@ -7,6 +7,7 @@ public class GrapplingAttack : WeakAttack
     private LineRenderer lineRendererPrefabs;
     private List<LineRenderer> lstlineRenderers;
     private Movement movement;
+    private Rigidbody2D rb;
     private Action callbackEnd;
     private CustomPlayerInput playerInput;
     private bool isSwinging;
@@ -33,7 +34,8 @@ public class GrapplingAttack : WeakAttack
     [SerializeField] private float timeBetweenBombSpawn = 0.4f;
 
     [Header("Physics simulation")]
-    [SerializeField] private float gravityScaleWhenSwinging = 1f, grapMovementForce = 5f, linearDrag = 0.05f;
+    [SerializeField] private float gravityScaleWhenSwinging = 1f;
+    [SerializeField] private float grapMovementForce = 5f, linearDrag = 0.05f;
     [SerializeField] private Component[] componentsToDestroyInPhysicsSimulateClone;
 
     protected override void Awake()
@@ -41,6 +43,7 @@ public class GrapplingAttack : WeakAttack
         base.Awake();
         lineRendererPrefabs = transform.GetChild(1).GetChild(0).GetComponent<LineRenderer>();
         movement = GetComponent<Movement>();
+        rb = GetComponent<Rigidbody2D>();
         lstlineRenderers = new List<LineRenderer>()
         {
             lineRendererPrefabs
@@ -79,9 +82,9 @@ public class GrapplingAttack : WeakAttack
         lastTimeGrap = Time.time;
 
         //mise en place du clone
-        physicSimulateClone = Instantiate(gameObject);
+        physicSimulateClone = Instantiate(gameObject, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+        physicSimulateClone.DestroyChildren();
         physicSimulateClone.name = "PhysicSimulateClone";
-        physicSimulateClone.transform.parent = CloneParent.cloneParent;
         foreach (Component c in componentsToDestroyInPhysicsSimulateClone)
         {
             Destroy(physicSimulateClone.GetComponent(c.GetType()));
@@ -130,6 +133,8 @@ public class GrapplingAttack : WeakAttack
 
         if (!isSwinging)
             return;
+
+        rb.position = physicSimulateClone.transform.position;
 
         if(!RecalculateInterPoint())
         {
