@@ -53,6 +53,10 @@ public class Movement : MonoBehaviour
     [Tooltip("La vitesse init horizontale en saut (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float jumpInitHorizontaSpeed = 0.4f;
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale de saut")] [SerializeField] private float jumpSpeedLerp = 20f;
     [Tooltip("Le temps apres avoir quité la plateforme ou le saut est possible")] [SerializeField] private float jumpCoyoteTime = 0.1f;
+    [Tooltip("La taille de la boite de collision détectant un saut sur le bord d'un mur"), SerializeField] private Vector2 knockHeadSize;
+    [Tooltip("L'offset de la boite de collision détectant un saut sur le bord d'un mur"), SerializeField] private Vector2 knockHeadOffset;
+    [Tooltip("La taille de la boite de collision du joueur sans celle détectant un saut blocker par le bord d'un mur"), SerializeField] private Vector2 hitbowWithoutKnockHeadSize;
+    [Tooltip("L'offset de la boite de collision du joueur sans celle détectant un saut blocker par le bord d'un mur"), SerializeField] private Vector2 hitboxWithoutKnockHeadOffset;
     private float lastTimeLeavePlateform = -10f, lastTimeJumpCommand = -10f, lastTimeBeginJump;
 
     [Header("Air")]//en chute mais en phase montante
@@ -202,7 +206,7 @@ public class Movement : MonoBehaviour
 
     #endregion
 
-    #region Awake
+    #region Awake an Start
 
     private void Awake()
     {
@@ -211,6 +215,11 @@ public class Movement : MonoBehaviour
         mainCam = Camera.main;
         playerInput = GetComponent<CustomPlayerInput>();
         fightController = GetComponent<FightController>();
+    }
+
+    private void Start()
+    {
+
     }
 
     #endregion
@@ -1134,6 +1143,11 @@ public class Movement : MonoBehaviour
         //Slope
         Gizmos.DrawLine((Vector2)transform.position + slopeRaycastOffset, (Vector2)transform.position + slopeRaycastOffset + Vector2.down * slopeRaycastLength);
         Gizmos.DrawLine((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), (Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y) + Vector2.down * slopeRaycastLength);
+
+        //KnockHead
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube((Vector2)transform.position + knockHeadOffset, knockHeadSize);
+        Gizmos.DrawCube((Vector2)transform.position + new Vector2(-knockHeadOffset.x, knockHeadOffset.y), knockHeadSize);
     }
 
     private void OnValidate()
@@ -1155,6 +1169,7 @@ public class Movement : MonoBehaviour
         airSpeedLerp = Mathf.Max(0f, airSpeedLerp);
         jumpInitForce = Mathf.Max(0f, jumpInitForce);
         slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
+        knockHeadOffset = new Vector2(Mathf.Max(0f, knockHeadOffset.x), Mathf.Max(0f, knockHeadOffset.y));
     }
 
     #endregion
