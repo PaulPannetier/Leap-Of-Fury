@@ -17,6 +17,18 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 007875f6949e48c469397704ae985ddb
   m_SerializeEntries:
+  - m_GUID: 61461d4bc41af1348ab49cc35c3deed7
+    m_Address: Assets/Scenes/UIs/Selection Map/Selection Map.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e3f090a10911b754087beff83b20acc2
+    m_Address: Assets/Scenes/UIs/Selection Char/Selection Char.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 95ca349782007214fb012e85db33a963
+    m_Address: Assets/Scenes/UIs/Screen Title/Screen Title.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   - m_GUID: 2cda990e2423bbf4892e6590ba056729
     m_Address: Assets/Scenes/Gameplay/Yeti's Cave/Yeti's Cave.unity
     m_ReadOnly: 0
@@ -25,16 +37,8 @@ MonoBehaviour:
     m_Address: Assets/Scenes/Gameplay/Maya's Temple/Maya's Temple.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 61461d4bc41af1348ab49cc35c3deed7
-    m_Address: Assets/Scenes/UIs/Selection Map/Selection Map.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 95ca349782007214fb012e85db33a963
-    m_Address: Assets/Scenes/UIs/Screen Title/Screen Title.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: e3f090a10911b754087beff83b20acc2
-    m_Address: Assets/Scenes/UIs/Selection Char/Selection Char.unity
+  - m_GUID: 9f7d60b145163b843b90ff61cc1b3e73
+    m_Address: Assets/Scenes/Gameplay/Into the Jungle/Into the Jungle.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
