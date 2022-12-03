@@ -244,7 +244,7 @@ public class GrapplingAttack : WeakAttack
         }
 
         goWhereGrapIsAttach = raycast.collider.gameObject;
-        localFloorAttachPos = raycast.point - (goWhereGrapIsAttach.transform.parent != null ? (Vector2)goWhereGrapIsAttach.transform.parent.position : Vector2.zero);
+        localFloorAttachPos = raycast.point - (Vector2)goWhereGrapIsAttach.transform.position;
         grapLength = raycast.distance;
         colliderWhereGrapIsAttach = raycast.collider;
         return true;
@@ -266,5 +266,15 @@ public class GrapplingAttack : WeakAttack
         Gizmos.color = Color.green;
         Circle.GizmosDraw(transform.position, grapRange);
         Circle.GizmosDraw((Vector2)transform.position + grapRange * Vector2.up, circleCastRadius);
+
+        if(Application.isPlaying && false)
+        {
+            grapDir = movement.GetCurrentDirection();
+            if(CalculateAttachPoint())
+            {
+                Gizmos.color = Color.red;
+                Circle.GizmosDraw((Vector2)goWhereGrapIsAttach.transform.position + localFloorAttachPos, 0.3f);
+            }
+        }
     }
 }
