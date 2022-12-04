@@ -97,7 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 2.5, y: 1.25, z: 0}
   boundsOffset: {x: 0, y: 0}
   componentsToDisableInClone:
   - {fileID: 4909847896574820866}
@@ -139,8 +139,8 @@ MonoBehaviour:
   enableDown: 1
   speed: 6
   speedLerp: 0.6
-  detectionColliderScale: 1.3
-  detectionGroundColliderScale: 0.96
+  detectionCharColliderScale: 1.3
+  detectionGroundColliderScale: 0.95
   minSpeedToTriggerMovement: 1
   rayDistOffset: 0.25
   rayCount: 8

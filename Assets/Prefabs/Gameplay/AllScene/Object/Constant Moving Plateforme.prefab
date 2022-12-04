@@ -58,7 +58,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4, y: 1.5}
   m_EdgeRadius: 0
 --- !u!114 &3793959443314985987
 MonoBehaviour:
@@ -85,6 +85,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 228ea3e3726e6544f83b3a86a25cbc19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  charAlreadyTouch: 
   checkPoints:
   - {x: 6, y: 1.25}
   - {x: 12, y: 1.25}
@@ -100,9 +101,13 @@ MonoBehaviour:
   - 4
   - 4
   - 4
+  detectionHitboxSize: 0.2
   charMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 16392
 --- !u!1 &4104767023369202155
 GameObject:
   m_ObjectHideFlags: 0

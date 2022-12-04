@@ -26,7 +26,7 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField] private bool enableLeft = true, enableRight = true, enableUp = true, enableDown = true;
     [SerializeField] private float speed;
     [SerializeField, Tooltip("lerp de la vitesse en  %age vMax / sec")] private float speedLerp = 0.6f;
-    [SerializeField] private float detectionColliderScale = 1.1f;
+    [SerializeField] private float detectionCharColliderScale = 1.1f;
     [SerializeField, Range(0f, 1)] private float detectionGroundColliderScale = 0.9f;
     [SerializeField] private float minSpeedToTriggerMovement = 1f;
     [SerializeField] private float rayDistOffset = 0.1f;
@@ -49,7 +49,7 @@ public class MovablePlatefrom : MonoBehaviour
         if(!isMoving)
         {
             List<Movement> charInFront = new List<Movement>();
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitbox.offset, hitbox.size * detectionColliderScale, 0f, charMask);
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitbox.offset, hitbox.size * detectionCharColliderScale, 0f, charMask);
             foreach (Collider2D col in cols)
             {
                 if (col.CompareTag("Char"))
@@ -91,10 +91,10 @@ public class MovablePlatefrom : MonoBehaviour
             {
                 void IsPointInCoor(in Vector2 point, out bool xCoord, out bool yCoord)
                 {
-                    xCoord = point.x >= transform.position.x - hitbox.size.x * 0.5f * detectionColliderScale &&
-                        point.x <= transform.position.x + hitbox.size.x * 0.5f * detectionColliderScale;
-                    yCoord = point.y >= transform.position.y - hitbox.size.y * 0.5f * detectionColliderScale &&
-                        point.y <= transform.position.y + hitbox.size.y * 0.5f * detectionColliderScale;
+                    xCoord = point.x >= transform.position.x - hitbox.size.x * 0.5f * detectionCharColliderScale &&
+                        point.x <= transform.position.x + hitbox.size.x * 0.5f * detectionCharColliderScale;
+                    yCoord = point.y >= transform.position.y - hitbox.size.y * 0.5f * detectionCharColliderScale &&
+                        point.y <= transform.position.y + hitbox.size.y * 0.5f * detectionCharColliderScale;
                 }
 
                 Vector2 topLeft = new Vector2(center.x - size.x * 0.5f, center.y + size.y * 0.5f);
@@ -178,6 +178,7 @@ public class MovablePlatefrom : MonoBehaviour
         else
         {
             rb.velocity = Vector2.MoveTowards(rb.velocity, moveDir * speed, speedLerp * speed * Time.deltaTime);
+
             Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitbox.offset, hitbox.size * detectionGroundColliderScale, 0f, groundMask);
             foreach (Collider2D col in cols)
             {
@@ -186,12 +187,15 @@ public class MovablePlatefrom : MonoBehaviour
                 {
                     isMoving = false;
                     charWhoActivate = null;
-                    rb.MovePosition((Vector2)transform.position - rb.velocity * Time.deltaTime * (2f - detectionGroundColliderScale));
+                    float toAddToPosX = Mathf.Abs(rb.velocity.x) > 1e-5f ? (hitbox.size.x * (1f - detectionGroundColliderScale)) * -0.5f * rb.velocity.x.Sign() : 0f;
+                    float toAddToPosY = Mathf.Abs(rb.velocity.y) > 1e-5f ? (hitbox.size.y * (1f - detectionGroundColliderScale)) * -0.5f * rb.velocity.y.Sign() : 0f;
+                    rb.MovePosition((Vector2)transform.position + new Vector2(toAddToPosX, toAddToPosY));
                     rb.velocity = Vector2.zero;
                     return;
                 }
             }
 
+            //Detection char ecrasé
             List<Collider2D> charInFrontOf = new List<Collider2D>();
             Vector2 step = Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(0f, hitbox.size.y / (rayCount - 1)) : new Vector2(hitbox.size.x / (rayCount - 1), 0f);
             Vector2 beg = (Vector2)transform.position + hitbox.offset +
@@ -209,7 +213,7 @@ public class MovablePlatefrom : MonoBehaviour
                     uint id = raycast.collider.GetComponent<PlayerCommon>().id;
                     if (lstCharAlreadyKill.Contains(id))
                         continue;
-                    float dst = 0.5f * detectionColliderScale * (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? hitbox.size.x : hitbox.size.y);
+                    float dst = 0.5f * detectionCharColliderScale * (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? hitbox.size.x : hitbox.size.y);
                     if (raycast.point.SqrDistance(point) <= dst * dst)
                     {
                         BoxCollider2D charHitbox = raycast.collider.GetComponent<BoxCollider2D>();
@@ -251,8 +255,9 @@ public class MovablePlatefrom : MonoBehaviour
 
     private void OnValidate()
     {
-        detectionColliderScale = Mathf.Max(1f, detectionColliderScale);
+        detectionCharColliderScale = Mathf.Max(1f, detectionCharColliderScale);
         rayCount = (uint)Mathf.Max(2f, rayCount);
+        speed = Mathf.Max(0f, speed);
     }
 
     private void OnDrawGizmosSelected()
@@ -260,7 +265,7 @@ public class MovablePlatefrom : MonoBehaviour
         if(hitbox == null)
             hitbox = GetComponent<BoxCollider2D>();
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, hitbox.size * detectionColliderScale);
+        Gizmos.DrawWireCube(transform.position, hitbox.size * detectionCharColliderScale);
         Gizmos.DrawWireCube(transform.position, hitbox.size * detectionGroundColliderScale);
 
  /*       moveDir = Vector2.left;

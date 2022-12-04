@@ -13,7 +13,7 @@ public class MovingPlateform : MonoBehaviour
     private Vector2 offsetHitboxDown, sizeHitboxDown;
     private Vector2 offsetHitboxRight, sizeHitboxRight;
     private Vector2 offsetHitboxLeft, sizeHitboxLeft;
-    private List<uint> charAlreadyTouch;
+    [SerializeField] private List<uint> charAlreadyTouch;
 
     [SerializeField] private Vector2[] checkPoints;
     [SerializeField] private float[] waitingTimeCheckPoints;
