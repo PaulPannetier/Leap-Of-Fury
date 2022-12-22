@@ -347,7 +347,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ae297123f091bbf4e8f1835eb98fb293, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
   sideCollisionRadius: 0.23
   groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
-  grabRayLength: 0.7
+  grabRayLength: 0.5
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -583,6 +583,38 @@ MonoBehaviour:
   slideSpeedLerp: 30
   slideSpeedLerpDeceleration: 100
   initSlideSpeed: 0.223
+  maxSlopeAngle: 22.5
+  slopeSpeed: 8.5
+  initSlopeSpeed: 0.3
+  slopeSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0000172
+      value: 0.64946747
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  slopeSpeedLerp: 2.5
+  slopeRaycastOffset: {x: 0.2, y: -0.7}
+  slopeRaycastLength: 0.2
+  isSlopingRight: 0
+  isSlopingLeft: 0
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
@@ -724,7 +756,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charIndex: 4
   playerIndex: 1
-  color: {r: 4.816754, g: 4.816754, b: 4.816754, a: 1}
+  color: {r: 51.44595, g: 29.426064, b: 0, a: 1}
   id: 3
 --- !u!114 &7598047637200888153
 MonoBehaviour:
@@ -774,17 +806,31 @@ MonoBehaviour:
     duration: 1
   grapRange: 7.5
   circleCastRadius: 0.5
-  gravityScaleWhenSwinging: 3
+  ropeElasticity: 0.2
   maxDurationAttach: 5
-  grapMovementForce: 2000
-  linearDrag: 200
   grapClimbUpSpeed: 2
   grapClimbDownSpeed: 4
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
   bombPrefabs: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
-  begCast: {x: 5, y: 2}
+  timeBetweenBombSpawn: 0.4
+  gravityScaleWhenSwinging: 3
+  grapMovementForce: 2000
+  linearDrag: 200
+  componentsToDestroyInPhysicsSimulateClone:
+  - {fileID: 1113869503384375398}
+  - {fileID: 4099738504158456230}
+  - {fileID: 7111324779284635613}
+  - {fileID: 3017698710242093834}
+  - {fileID: 4135942895386761519}
+  - {fileID: 3712884546189942275}
+  - {fileID: 6057168255707342057}
+  - {fileID: 5907287823364622964}
+  - {fileID: 7598047637200888153}
+  - {fileID: 7187370182271411996}
+  - {fileID: 4128551290350845197}
+  - {fileID: 8537409140581819227}
 --- !u!114 &8537409140581819227
 MonoBehaviour:
   m_ObjectHideFlags: 0

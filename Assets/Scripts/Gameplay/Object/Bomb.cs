@@ -1,12 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
     private Attack attacklauncher;
+    private bool isExplosing = false;
+    private List<uint> idAlreadyTouch;
+    private Animator anim;
+
     [SerializeField] private float explosionDelay = 1f;
     [SerializeField] private float explosionRange = 3f;
+    [SerializeField] private float explosionDuration = 0.5f;
     [SerializeField] private float shockWaveForce = 7f;
     [SerializeField] private LayerMask charMask;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        idAlreadyTouch = new List<uint>();
+        isExplosing = false;
+    }
 
     public void Lauch(Attack launcher)
     {
@@ -14,19 +31,34 @@ public class Bomb : MonoBehaviour
         Invoke(nameof(Explode), explosionDelay);
     }
 
-    private void Explode()
+    private void Update()
     {
+        if (!isExplosing)
+            return;
+
         Collider2D[] cols = PhysicsToric.OverlapCircleAll(transform.position, explosionRange, charMask);
         foreach (Collider2D col in cols)
         {
-            if(col.CompareTag("Char"))
+            if (col.CompareTag("Char"))
             {
                 GameObject charHit = col.GetComponent<ToricObject>().original;
-                attacklauncher.OnTouchEnemy(charHit);
+                PlayerCommon pc = charHit.GetComponent<PlayerCommon>();
+                if(!idAlreadyTouch.Contains(pc.id))
+                {
+                    attacklauncher.OnTouchEnemy(charHit);
+                    idAlreadyTouch.Add(pc.id);
+                }
             }
         }
+    }
+
+    private void Explode()
+    {
+        isExplosing = true;
+        anim.SetTrigger("Explode");
         ExplosionManager.instance.CreateExplosion(transform.position, shockWaveForce);
-        Destroy(gameObject, 0.5f);
+
+        Destroy(gameObject, explosionDuration);
     }
 
     private void OnDrawGizmosSelected()
