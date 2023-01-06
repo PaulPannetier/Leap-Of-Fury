@@ -130,7 +130,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &238728056774250366
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -143,10 +143,11 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!212 &1113869503384375398
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -269,7 +270,7 @@ MonoBehaviour:
   sideCollisionRadius: 0.23
   groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
-  grabRayLength: 0.7
+  grabRayLength: 0.5
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -400,10 +401,43 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  antiKnockHead: 0.35
   slideSpeed: 6
   slideSpeedLerp: 30
   slideSpeedLerpDeceleration: 100
   initSlideSpeed: 0.223
+  maxSlopeAngle: 22.5
+  slopeSpeed: 8.5
+  initSlopeSpeed: 0.3
+  slopeSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0000172
+      value: 0.64946747
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  slopeSpeedLerp: 2.5
+  slopeRaycastOffset: {x: 0.2, y: -0.7}
+  slopeRaycastLength: 0.2
+  isSlopingRight: 0
+  isSlopingLeft: 0
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}

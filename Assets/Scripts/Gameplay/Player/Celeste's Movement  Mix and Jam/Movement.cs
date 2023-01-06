@@ -4,12 +4,13 @@ using DG.Tweening;
 
 public class Movement : MonoBehaviour
 {
-    #region Attributs
+    #region Fields
 
     private Rigidbody2D rb;
     private AnimationScript anim;
     private Camera mainCam;
     private CustomPlayerInput playerInput;
+    private Collider2D hitbox;
     private Collider2D groundCollider;
     private MapColliderData groundColliderData;
     private FightController fightController;
@@ -111,7 +112,9 @@ public class Movement : MonoBehaviour
     [Tooltip("Le temps durant lequel un dash est impossible après avoir fini un dash")] [SerializeField] private float dashCooldown = 0.15f;
     [Tooltip("La durée d'invicibilité")] [SerializeField] private float dashInvicibilityDuration = 0.2f;
     [Tooltip("La courbe de vitesse de dash")] [SerializeField] private AnimationCurve dashSpeedCurve;
+    [Tooltip("%age de la hitbox qui est ignoré lors d'un dash vers le haut"), SerializeField, Range(0f, 0.5f)] private float antiKnockHead;
     private Vector2 lastDashDir;
+    private bool isLastDashUp = false;
     private float lastTimeDashCommand = -10f, lastTimeDashFinish = -10f, lastTimeDashBegin = -10f;
 
     [Header("Slide")]
@@ -170,7 +173,19 @@ public class Movement : MonoBehaviour
 
     #region public methods
 
-    public Vector2 GetCurrentDirection() => ((playerInput.rawX != 0 || playerInput.rawY != 0) ? new Vector2(playerInput.x, playerInput.y).normalized : new Vector2(side, 0f));
+    public Vector2 GetCurrentDirection(bool only8Dir = false)
+    {
+        if(only8Dir)
+        {
+            if (playerInput.rawX == 0 && playerInput.rawY == 0)
+                return new Vector2(side, 0f);
+
+            float x = playerInput.rawX == 0 ? 0f : playerInput.x.Sign();
+            float y = playerInput.rawY == 0 ? 0f : playerInput.y.Sign();
+            return new Vector2(x, y).normalized;
+        }
+        return ((playerInput.rawX != 0 || playerInput.rawY != 0) ? new Vector2(playerInput.x, playerInput.y).normalized : new Vector2(side, 0f));
+    }
 
     public void Teleport(in Vector2 newPosition)
     {
@@ -211,6 +226,7 @@ public class Movement : MonoBehaviour
         mainCam = Camera.main;
         playerInput = GetComponent<CustomPlayerInput>();
         fightController = GetComponent<FightController>();
+        hitbox = GetComponent<BoxCollider2D>();
     }
 
     #endregion
@@ -978,7 +994,8 @@ public class Movement : MonoBehaviour
         {
             if (!hasDashed && canMove && Time.time - lastTimeDashFinish >= dashCooldown)
             {
-                Vector2 dir = GetCurrentDirection();
+                Vector2 dir = GetCurrentDirection(true);
+                isLastDashUp = dir.SqrDistance(Vector2.up) <= 1e-6f;
                 Dash(dir);
                 doDash = false;
             }
@@ -994,6 +1011,31 @@ public class Movement : MonoBehaviour
 
         if(isDashing)
         {
+            //anti knockhead
+            if(isLastDashUp)
+            {
+                Vector2 detectSize = new Vector2(hitbox.bounds.size.x * antiKnockHead, hitbox.bounds.size.y);
+                Vector2 nonDetectSize = new Vector2(hitbox.bounds.size.x * (0.5f - antiKnockHead), hitbox.bounds.size.y);
+                Vector2 detectOffset = new Vector2(0.5f * (detectSize.x - hitbox.bounds.size.x), detectSize.y * 0.1f);//left
+                Vector2 nonDetectOffset = new Vector2(-nonDetectSize.x * 0.5f, nonDetectSize.y * 0.1f);
+
+                Collider2D detectCol = PhysicsToric.OverlapBox((Vector2)transform.position + detectOffset, detectSize, 0f, groundLayer);
+                Collider2D nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
+                if (detectCol != null && nonDetectCol == null)
+                {
+                    Teleport((Vector2)transform.position + Vector2.right * detectSize.x);
+                }
+
+                detectOffset = new Vector2(0.5f * (hitbox.bounds.size.x - detectSize.x), detectSize.y * 0.1f);//right
+                nonDetectOffset = new Vector2(nonDetectSize.x * 0.5f, nonDetectSize.y * 0.1f);
+                detectCol = PhysicsToric.OverlapBox((Vector2)transform.position + detectOffset, detectSize, 0f, groundLayer);
+                nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
+                if (detectCol != null && nonDetectCol == null)
+                {
+                    Teleport((Vector2)transform.position + Vector2.left * detectSize.x);
+                }
+            }
+
             lastTimeDashFinish = Time.time;
             float per100 = (Time.time - lastTimeDashBegin) / dashDuration;
             rb.velocity = lastDashDir * (dashSpeedCurve.Evaluate(per100) * dashSpeed);
