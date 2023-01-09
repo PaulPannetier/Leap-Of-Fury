@@ -734,7 +734,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8090791378756873177, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
@@ -1541,6 +1541,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 249455240, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
+      propertyPath: enemiesMask.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 6598177761008341971, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: controllerType
       value: 0
@@ -2433,7 +2437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5602198179201593308, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.9675686
+      value: 6.57
       objectReference: {fileID: 0}
     - target: {fileID: 5602198179201593308, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2477,7 +2481,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}

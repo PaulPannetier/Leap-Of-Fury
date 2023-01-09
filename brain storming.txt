@@ -19,7 +19,7 @@ Perso :
 Compétences des perso : 
 
 perso 1 : 
-	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose un peu et se récup + vite.
+	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose un peu et se récup + vite 'repetable 3fois).
 	  attack forte : clone du joueur qui fait ces attaque avec un delai de x sec.
 	  Passif : le joueur laisse un trainé de flamme sur le sol.
 
