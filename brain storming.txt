@@ -11,33 +11,35 @@ ATTENTION : chaque carte et chaque perso doivent etre VRAIMENT different niveau 
 Perso :
 -Une couleur par perso
 -Un passif
--Une attaque physique (puissance faible), limité par un moyen quelconque et pas méga lent.
--Une attaque magique (puissance forte) qui utilise de la mana qui se régène petit à petit avec cooldown.
--Un bouclier.
+-Une attaque faible
+-Une attaque forte
 -Un dash (invincibilité) et un double jump.
--Un ulti wtf (type le perso trace uktra vite sa mère, invocation chelou, se dédouble en clone useless, faire tourner la map lentement)
+-Un ulti wtf (type le perso trace ultra vite sa mère, invocation chelou, se dédouble en clone useless, faire tourner la map lentement)
 
 Compétences des perso : 
-perso 1 : attack faible : dash coup de poing américain lent à incanté mais qui dash.
+
+perso 1 : 
+	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose un peu et se récup + vite 'repetable 3fois).
 	  attack forte : clone du joueur qui fait ces attaque avec un delai de x sec.
-	  Bouclier : basique
 	  Passif : le joueur laisse un trainé de flamme sur le sol.
 
-perso 2 : attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.
-	  attack forte : tir laser a retardement qui ricoche sur les murs x fois, des fiole spawn augmentant le x si le joueur les ramasse.
-	  Bouclier : basique
-	  Passif : Des fioles spawn donnant + 1 au x et augmente la vitesse de attack magique
+perso 2 : 
+	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.
+	  attack forte : tir sphérique qui ricoche sur les murs x fois, des fiole spawn augmentant le x si le joueur les ramasse.
+	  	ou tir 3 projectiles en cone dans la dir inverse des input(8dir possible) et qui lui applique une forte de propulsion
+	  Passif : Des fioles spawn donnant + 1 au x et augmente la vitesse de attack forte
 
-perso 3 : attack faible : tir de flèche à récup.
-	  attack forte : tp a moyenne porté (traversé de mur possible) qui exposle puis rejette des projectile tournoyant(lent et qui tourne)
+perso 3 : 
+	  attack faible : tir de flèche téléguidé à récup.
+	  attack forte : tp a moyenne porté (traversé de mur possible) qui exposle puis rejette des projectile tournoyant(lent et qui tourne) téléguidé
 	  	qui explose en tourchant un joueur ou un mur.
-	  Bouclier : basique
 	  Passif : jsp
 
-perso 4 : attack faible : Lance un grapin qui grape un mur (8 directions via les input) qui laisse un trainé de bombe au bout qui explose
-	  attack forte : jsp
-	  Bouclier : basique
-	  Passif : jsp
+perso 4 : 
+	  attack faible : Lance un grapin qui grape un mur (8 directions via les input) qui laisse un trainé de bombe confeties au bout qui explose
+	  attack forte : pose un feux d'artifice magique dans une direction(8 dir selon les inputs) qui ne bouge pas pendant x sec et qui par
+		d'un coup (qui explose si il touche un ennemi).
+	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur
 
 
 Attaques :
