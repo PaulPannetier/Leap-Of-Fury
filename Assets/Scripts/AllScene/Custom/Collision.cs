@@ -573,6 +573,7 @@ public abstract class CustomCollider
         normal1 = normal2 = Vector2.zero;
         return false;
     }
+
     public static bool CollideCirclePolygone(Circle circle, Polygone polygone)//OK
     {
         for (int i = 0; i < polygone.vertices.Count; i++)

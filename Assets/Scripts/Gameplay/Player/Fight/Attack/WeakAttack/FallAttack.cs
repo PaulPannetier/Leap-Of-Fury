@@ -113,6 +113,10 @@ public class FallAttack : WeakAttack
     {
         if (!drawGizmo)
             return;
+
+        if(movement == null)
+            movement = GetComponent<Movement>();
+
         Gizmos.color = Color.black;
         Gizmos.DrawWireSphere((Vector2)transform.position + movement.groundOffset, explosionRadius);
         Gizmos.color = Color.red;
