@@ -30,7 +30,7 @@ perso 2 :
 	  Passif : Des fioles spawn donnant + 1 au x et augmente la vitesse de attack forte
 
 perso 3 : 
-	  attack faible : tir de flèche téléguidé à récup.
+	  attack faible : tir de flèche téléguidé à récup, si on reclick la flèche se divise en 3.
 	  attack forte : tp a moyenne porté (traversé de mur possible) qui exposle puis rejette des projectile tournoyant(lent et qui tourne) téléguidé
 	  	qui explose en tourchant un joueur ou un mur.
 	  Passif : jsp

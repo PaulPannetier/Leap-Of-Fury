@@ -9,7 +9,7 @@ public class BouncingBallAttack : StrongAttack
     private float speed;
 
     [SerializeField] private float initSpeed = 7f;
-    [SerializeField] private float maxSpeed = 7f;
+    [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float maxDuration = 2f;
     [SerializeField] private int initMaxBounce = 1;
     [SerializeField] private GameObject bouncingBallPrefabs;
@@ -46,7 +46,7 @@ public class BouncingBallAttack : StrongAttack
 
         GameObject ball = Instantiate(bouncingBallPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent);
         BouncingBall bb = ball.GetComponent<BouncingBall>();
-        bb.Launch(movement.GetCurrentDirection(), speed, maxBounce, maxDuration, this);
+        bb.Launch(movement.GetCurrentDirection(true), speed, maxBounce, maxDuration, this);
 
         callbackEnd.Invoke();
     }

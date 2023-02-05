@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private Animator animator;
     private ArrowAttack arrowAttack;
     private PlayerCommon playerCommon;
     private ToricObject toricObject;
     private bool isFlying;//true si la flèche vole, false si elle est a terre.
     private bool isDestroy = false;
-    [SerializeField] private CapsuleCollider2D capsuleCollider;
+    private bool isMainArrow;
 
+    [SerializeField] private CapsuleCollider2D capsuleCollider;
     [SerializeField] private LayerMask wallProjectileMask;
 
     private void Awake()
@@ -29,7 +30,7 @@ public class Arrow : MonoBehaviour
         }
     }
 
-    public void Launch(ArrowAttack physicAttack, in Vector2 dir, in float initSpeed)
+    public void Launch(ArrowAttack physicAttack, in Vector2 dir, in float initSpeed, bool isMainArrow = true)
     {
         arrowAttack = physicAttack;
         isFlying = true;
@@ -37,6 +38,12 @@ public class Arrow : MonoBehaviour
         SetRotation();
         playerCommon = physicAttack.GetComponent<PlayerCommon>();
         capsuleCollider.enabled = false;
+        this.isMainArrow = isMainArrow;
+    }
+
+    public void OnRelaunch()
+    {
+
     }
 
     private void SetRotation()
@@ -46,23 +53,44 @@ public class Arrow : MonoBehaviour
 
     private void HitPlayer(GameObject otherPlayer)
     {
-        toricObject.original.GetComponent<Arrow>().arrowAttack.OnTouchEnemy(otherPlayer);
-        PickUp();
-        //print("PickUp because hiting other player");
+        if(toricObject.isAClone)
+        {
+            toricObject.original.GetComponent<Arrow>().HitPlayer(otherPlayer);
+            return;
+        }
+
+        arrowAttack.OnTouchEnemy(otherPlayer);
+        arrowAttack.OnArrowTouchChar(otherPlayer);
+        if(isMainArrow)
+        {
+            PickUp();
+            //print("PickUp because hiting other player");
+        }
+        else
+        {
+            isDestroy = true;
+            toricObject.RemoveClones();
+            Destroy(gameObject);
+        }
     }
 
     private void PickUp()
     {
+        if(toricObject.isAClone)
+        {
+            toricObject.original.GetComponent<Arrow>().PickUp();
+            return;
+        }
+
         if(isDestroy)
         {
             //Debug.LogWarning("PTDR unity est destroy ca pue");
             return;
         }
-        Arrow arrow = toricObject.original.GetComponent<Arrow>();
-        arrow.arrowAttack.RecoverArrow();
-        arrow.isDestroy = true;
-        arrow.toricObject.RemoveClones();
-        Destroy(arrow.gameObject);
+        arrowAttack.RecoverArrow();
+        isDestroy = true;
+        toricObject.RemoveClones();
+        Destroy(gameObject);
     }
 
     private void LandOf()
@@ -72,6 +100,15 @@ public class Arrow : MonoBehaviour
             toricObject.original.GetComponent<Arrow>().LandOf();
             return;
         }
+
+        if(!isMainArrow)
+        {
+            isDestroy = true;
+            toricObject.RemoveClones();
+            Destroy(gameObject);
+            return;
+        }
+        arrowAttack.OnArrowLand();
 
         //On verif que la fleche n'est pas coincé dans un wall projectile
         capsuleCollider.enabled = true;
@@ -85,6 +122,7 @@ public class Arrow : MonoBehaviour
             (Vector2)transform.position + capsuleCollider.offset + new Vector2(l * Mathf.Cos(a + Mathf.PI + teta), l * Mathf.Sin(a + Mathf.PI + teta)),
             (Vector2)transform.position + capsuleCollider.offset + new Vector2(l * Mathf.Cos(a - teta), l * Mathf.Sin(a - teta))
         };
+
         int nbPointNotInWallProjectile = 0;
         foreach (Vector2 hotpoint in hotPosts)
         {
@@ -95,6 +133,7 @@ public class Arrow : MonoBehaviour
                     break;
             }
         }
+
         if(nbPointNotInWallProjectile < 2)
         {
             PickUp();
@@ -115,6 +154,7 @@ public class Arrow : MonoBehaviour
         isFlying = false;
         animator.SetTrigger("Land");
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isFlying)

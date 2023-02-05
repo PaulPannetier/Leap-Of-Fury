@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LineCounterConfig
   m_EditorClassIdentifier: 
   subfolderToCount:
-  - Scripts
   - Editor
+  - Scripts
   fileExtensionsAccepted:
   - .cs

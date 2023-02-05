@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class FightController : MonoBehaviour
 {
-    private Shield shield;
     private WeakAttack attackWeak;
     private StrongAttack attackStrong;
     private EventController eventController;
@@ -27,7 +26,6 @@ public class FightController : MonoBehaviour
 
     private void Awake()
     {
-        shield = GetComponent<Shield>();
         attackWeak = GetComponent<WeakAttack>();
         attackStrong = GetComponent<StrongAttack>();
         eventController = GetComponent<EventController>();
@@ -140,23 +138,6 @@ public class FightController : MonoBehaviour
             {
                 wantLaunchStrongAttack = false;
             }
-        }
-
-        //boucliers
-        if (canEnableShield)
-        {
-            if(playerInput.shieldPressed && enableShield)
-            {
-                shield.wantEnableShield = true;
-            }
-            else
-            {
-                shield.wantEnableShield = false;
-            }
-        }
-        else
-        {
-            shield.wantEnableShield = false;
         }
     }
 
@@ -290,20 +271,12 @@ public class FightController : MonoBehaviour
         if (isInvicible || attack.gameObject.GetComponent<PlayerCommon>().id == playerCommon.id)
             return;
 
-        if (shield.TryBlockAttack(attack))
-        {
-            eventController.OnBlockAttack(attack);
-            attack.GetComponent<EventController>().OnBeenBlockAttack(attack, gameObject);
-        }
-        else
-        {
-            EventController otherEventController = attack.GetComponent<EventController>();
-            otherEventController.OnHitAttack(attack, gameObject);
-            eventController.OnDeath();
-            otherEventController.OnKill(gameObject);
-            EventManager.instance.OnTriggerPlayerDeath(gameObject, attack.gameObject);
-            Death();
-        }
+        EventController otherEventController = attack.GetComponent<EventController>();
+        otherEventController.OnHitAttack(attack, gameObject);
+        eventController.OnDeath();
+        otherEventController.OnKill(gameObject);
+        EventManager.instance.OnTriggerPlayerDeath(gameObject, attack.gameObject);
+        Death();
     }
 
     private void OnBeenTouchByEnvironnement(GameObject go)

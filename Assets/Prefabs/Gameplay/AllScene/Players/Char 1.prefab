@@ -106,7 +106,6 @@ GameObject:
   - component: {fileID: 249455240}
   - component: {fileID: 4661732284580921915}
   - component: {fileID: 6907840903728363808}
-  - component: {fileID: 8783415352180659297}
   m_Layer: 8
   m_Name: Char 1
   m_TagString: Char
@@ -254,6 +253,10 @@ MonoBehaviour:
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   jumpCoyoteTime: 0.1
+  knockHeadSize: {x: 0, y: 0}
+  knockHeadOffset: {x: 0, y: 0}
+  hitbowWithoutKnockHeadSize: {x: 0, y: 0}
+  hitboxWithoutKnockHeadOffset: {x: 0, y: 0}
   airGravityMultiplier: 3
   airHorizontalSpeed: 4.5
   airInitHorizontaSpeed: 0.25
@@ -470,7 +473,7 @@ MonoBehaviour:
   - {fileID: 249455240}
   - {fileID: 4661732284580921915}
   - {fileID: 6907840903728363808}
-  - {fileID: 8783415352180659297}
+  - {fileID: 0}
   chidrenToRemoveInClone: []
   enableHorizontal: 1
   enableVertical: 1
@@ -735,22 +738,3 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
---- !u!114 &8783415352180659297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9211636111085214947}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25471ea9b0a8f804095daaa235d7daa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentValue: 0
-  wantEnableShield: 0
-  shieldGO: {fileID: 1318979643813966890}
-  shaderSpeed: {x: 1, y: 1}
-  shieldRegen: 15
-  shieldDeregen: 8
-  minShieldScale: {x: 0.7, y: 0.7, z: 1}

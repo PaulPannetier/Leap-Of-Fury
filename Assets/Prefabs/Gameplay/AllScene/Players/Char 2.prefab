@@ -273,7 +273,6 @@ GameObject:
   - component: {fileID: 3329611578031353287}
   - component: {fileID: 49532349443289084}
   - component: {fileID: 7830398315898069847}
-  - component: {fileID: 7533742647475202825}
   m_Layer: 8
   m_Name: Char 2
   m_TagString: Char
@@ -422,6 +421,10 @@ MonoBehaviour:
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   jumpCoyoteTime: 0.1
+  knockHeadSize: {x: 0, y: 0}
+  knockHeadOffset: {x: 0, y: 0}
+  hitbowWithoutKnockHeadSize: {x: 0, y: 0}
+  hitboxWithoutKnockHeadOffset: {x: 0, y: 0}
   airGravityMultiplier: 3
   airHorizontalSpeed: 4.5
   airInitHorizontaSpeed: 0.25
@@ -637,7 +640,7 @@ MonoBehaviour:
   - {fileID: 9027861815646793550}
   - {fileID: 3329611578031353287}
   - {fileID: 49532349443289084}
-  - {fileID: 7533742647475202825}
+  - {fileID: 0}
   - {fileID: 7830398315898069847}
   chidrenToRemoveInClone: []
   enableHorizontal: 1
@@ -717,7 +720,7 @@ MonoBehaviour:
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
   shieldPressedUp: 0
-  controllerType: 2
+  controllerType: 0
   useMovementLerpForKeyboard: 1
   movementLerpForKeyboard: 35
   inputsKeyCode: 
@@ -737,7 +740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charIndex: 2
-  playerIndex: 2
+  playerIndex: 1
   color: {r: 1, g: 0.042311423, b: 0.011612245, a: 1}
   id: 1
 --- !u!114 &8612698283953875211
@@ -785,11 +788,11 @@ MonoBehaviour:
   attackForce: 70
   castDuration: 0
   cooldown:
-    duration: 1
-  initSpeed: 20
-  maxSpeed: 7
-  maxDuration: 15
-  initMaxBounce: 3
+    duration: 2
+  initSpeed: 7
+  maxSpeed: 20
+  maxDuration: 3
+  initMaxBounce: 5
   bouncingBallPrefabs: {fileID: 646947081894951354, guid: 70e9b1f7d2292b74e994b5b2b4c28ab1, type: 3}
 --- !u!114 &49532349443289084
 MonoBehaviour:
@@ -851,22 +854,3 @@ MonoBehaviour:
   - {x: 0.45, y: -1.33}
   - {x: -9, y: 0.3}
   - {x: 9, y: 0.3}
---- !u!114 &7533742647475202825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7980238354382693259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25471ea9b0a8f804095daaa235d7daa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentValue: 0
-  wantEnableShield: 0
-  shieldGO: {fileID: 226369941669415746}
-  shaderSpeed: {x: 1, y: 1}
-  shieldRegen: 15
-  shieldDeregen: 8
-  minShieldScale: {x: 0.7, y: 0.7, z: 1}

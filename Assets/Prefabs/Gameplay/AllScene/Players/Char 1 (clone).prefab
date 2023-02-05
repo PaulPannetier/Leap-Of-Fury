@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 4122206886715545145}
   - component: {fileID: 7945613426209977072}
   - component: {fileID: 3574144944466291032}
-  - component: {fileID: 1702511197154133017}
   m_Layer: 0
   m_Name: Char 1 (clone)
   m_TagString: Untagged
@@ -41,7 +40,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7100577302219647036
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -54,10 +53,11 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!212 &7975649410831873828
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
   boundsOffset: {x: 0, y: -0.17}
   componentsToDisableInClone:
   - {fileID: 7945613426209977072}
-  - {fileID: 1702511197154133017}
+  - {fileID: 0}
   chidrenToRemoveInClone: []
   enableHorizontal: 1
   enableVertical: 1
@@ -262,25 +262,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
---- !u!114 &1702511197154133017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1266130988093312155}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25471ea9b0a8f804095daaa235d7daa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentValue: 0
-  wantEnableShield: 0
-  shieldGO: {fileID: 8937826321792181330}
-  shaderSpeed: {x: 1, y: 1}
-  shieldRegen: 15
-  shieldDeregen: 8
-  minShieldScale: {x: 0.7, y: 0.7, z: 1}
 --- !u!1 &8937826321792181330
 GameObject:
   m_ObjectHideFlags: 0
