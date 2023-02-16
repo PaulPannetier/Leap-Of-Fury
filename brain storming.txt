@@ -19,20 +19,20 @@ Perso :
 Compétences des perso : 
 
 perso 1 : 
-	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose un peu et se récup + vite 'repetable 3fois).
-	  attack forte : clone du joueur qui fait ces attaque avec un delai de x sec.
-	  Passif : le joueur laisse un trainé de flamme sur le sol.
+	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose un peu et se récup + vite 'repetable 3fois).//ok
+	  attack forte : clone du joueur qui fait ces attaque avec un delai de x sec.//ok
+	  Passif : le joueur laisse un trainé de flamme sur le sol.//ok
 
 perso 2 : 
-	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.
-	  attack forte : tir sphérique qui ricoche sur les murs x fois, des fiole spawn augmentant le x si le joueur les ramasse.
+	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
+	  attack forte : Le joueur tire X tir sphérique dans un cone devant lui sphérique qui ricoche sur les murs 3 fois.
 	  	ou tir 3 projectiles en cone dans la dir inverse des input(8dir possible) et qui lui applique une forte de propulsion
-	  Passif : Des fioles spawn donnant + 1 au x et augmente la vitesse de attack forte
+	  Passif : Des fioles spawn donnant + 1 au x, augmente la vitesse des tir.
 
 perso 3 : 
-	  attack faible : tir de flèche téléguidé à récup, si on reclick la flèche se divise en 3.
-	  attack forte : tp a moyenne porté (traversé de mur possible) qui exposle puis rejette des projectile tournoyant(lent et qui tourne) téléguidé
-	  	qui explose en tourchant un joueur ou un mur.
+	  attack faible : tir de flèche téléguidé à récup, si on reclick la flèche se divise en 3.//ok
+	  attack forte : tp a moyenne porté (traversé de mur possible) qui explose /* puis rejette des projectile tournoyant(lent et qui tourne)
+	  	qui explose en tourchant un joueur ou un mur.*/
 	  Passif : jsp
 
 perso 4 : 

@@ -7,6 +7,7 @@ public class FloorShockWave : MonoBehaviour
     private bool isFinish = false;
     private FallAttack fallAttack;
     private PlayerCommon playerCommon;
+    private ToricObject toricObject;
 
     [SerializeField] private Vector2 colliderOffset, colliderSize;
     [SerializeField] private LayerMask playersMask;
@@ -19,8 +20,12 @@ public class FloorShockWave : MonoBehaviour
     [SerializeField] private float rayLengthVerti = 1f;
     [SerializeField] private Vector2 offsetVertiRaycast = new Vector2(1f, 0.2f);
     [Tooltip("Stat")]
-    [HideInInspector] public float maxSpeed = 6f;
     [Range(0f, 100f)] public float attackForce = 30f;
+
+    private void Awake()
+    {
+        toricObject = GetComponent<ToricObject>();
+    }
 
     public void Launch(in Vector2 impactPoint, in bool right, in float maxSpeed, FallAttack fallAttack)
     {
@@ -31,7 +36,6 @@ public class FloorShockWave : MonoBehaviour
             return;
         }
         transform.position = raycast.point + Vector2.up * distanceFromFloor;
-        this.maxSpeed = maxSpeed;
         speedX = right ? maxSpeed : -maxSpeed;
         this.fallAttack = fallAttack;
         this.right = right;
@@ -39,30 +43,43 @@ public class FloorShockWave : MonoBehaviour
         playerCommon = fallAttack.GetComponent<PlayerCommon>();
     }
 
+    private void OnHitChar(GameObject player)
+    {
+        if(toricObject.isAClone)
+        {
+            toricObject.original.GetComponent<FloorShockWave>().OnHitChar(player);
+            return;
+        }
+
+        if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
+        {
+            fallAttack.OnTouchEnemyByShockWave(player, this);
+        }
+    }
+
     private void Update()
     {
-        Collider2D[] cols = Physics2D.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, playersMask);
+        Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, playersMask);
         foreach (Collider2D col in cols)
         {
             if(col.CompareTag("Char"))
             {
-                GameObject player = col.GetComponent<ToricObject>().original;
-                if(playerCommon.id != player.GetComponent<PlayerCommon>().id)
-                {
-                    fallAttack.OnTouchEnemyByShockWave(player, this);
-                }
+                OnHitChar(col.GetComponent<ToricObject>().original);
             }
         }
 
+        if (toricObject.isAClone)
+            return;
+
         Vector2 beg = (Vector2)transform.position + (right ? offsetVertiRaycast : new Vector2(-offsetVertiRaycast.x, offsetVertiRaycast.y));
-        RaycastHit2D raycast = Physics2D.Raycast(beg, Vector2.down, rayLengthVerti, groundMask);//en bas
+        RaycastHit2D raycast = PhysicsToric.Raycast(beg, Vector2.down, rayLengthVerti, groundMask);//en bas
         if(raycast.collider == null)
         {
             //on arréte la shockWave ici
             isFinish = true;
         }
         beg = (Vector2)transform.position + (right ? offsetHoriRaycast : new Vector2(-offsetHoriRaycast.x, offsetHoriRaycast.y));
-        raycast = Physics2D.Raycast(beg, right ? Vector2.right : Vector2.left, rayLengthHori, groundMask);
+        raycast = PhysicsToric.Raycast(beg, right ? Vector2.right : Vector2.left, rayLengthHori, groundMask);
         if(raycast.collider != null)
         {
             isFinish = true;
@@ -70,7 +87,7 @@ public class FloorShockWave : MonoBehaviour
 
         if (isFinish)
         {
-            //add some code ^^
+            toricObject.RemoveClones();
             Destroy(gameObject);
         }
         else
@@ -83,6 +100,7 @@ public class FloorShockWave : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube((Vector2)transform.position + colliderOffset, colliderSize);
+
         //en bas
         Vector2 beg = (Vector2)transform.position + offsetVertiRaycast;
         Gizmos.DrawLine(beg, beg + Vector2.down * rayLengthVerti);

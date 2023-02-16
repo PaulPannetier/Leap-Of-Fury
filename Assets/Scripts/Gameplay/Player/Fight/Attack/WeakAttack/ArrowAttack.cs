@@ -5,7 +5,7 @@ using UnityEngine;
 public class ArrowAttack : WeakAttack
 {
     private Movement movement;
-    private int nbArrow;
+    [SerializeField] private int nbArrow;
     private bool arrowIsFlying = false;
     private Arrow arrowWhoFly;
 
@@ -14,7 +14,7 @@ public class ArrowAttack : WeakAttack
     [SerializeField] private float arrowLaunchDistance = 0.2f;
     [SerializeField] private float arrowInitSpeed = 4f;
     [SerializeField] private int initArrow = 1;
-    [SerializeField, Tooltip("L'angle entre les arrow lors de la réactivation")] private float arrowActivationAngle = 15f;
+    [SerializeField, Tooltip("L'angle entre les arrow lors de la réactivation"), Range(0f, 180f)] private float arrowActivationAngle = 15f;
 
     protected override void Awake()
     {
@@ -36,14 +36,14 @@ public class ArrowAttack : WeakAttack
             Arrow newArrow1 = Instantiate(arrowPrefab, arrowPos, Quaternion.Euler(0f, 0f, a2), CloneParent.cloneParent).GetComponent<Arrow>();
             Arrow newArrow2 = Instantiate(arrowPrefab, arrowPos, Quaternion.Euler(0f, 0f, a3), CloneParent.cloneParent).GetComponent<Arrow>();
             newArrow1.Launch(this, Useful.Vector2FromAngle(a2 * Mathf.Deg2Rad), speed, false);
-            newArrow2.Launch(this, Useful.Vector2FromAngle(a2 * Mathf.Deg2Rad), speed, false);
+            newArrow2.Launch(this, Useful.Vector2FromAngle(a3 * Mathf.Deg2Rad), speed, false);
 
             arrowWhoFly.OnRelaunch();
 
             arrowWhoFly = null;
             arrowIsFlying = false;
             callbackEnd.Invoke();
-            return false;
+            return true;
         }
 
         if(!cooldown.isActive)
@@ -51,6 +51,7 @@ public class ArrowAttack : WeakAttack
             callbackEnd.Invoke();
             return false;
         }
+
         if(nbArrow > 0)
         {
             base.Launch(callbackEnd);
@@ -69,7 +70,7 @@ public class ArrowAttack : WeakAttack
 
     private IEnumerator WaitEndAttack(Action callbackEnd)
     {
-        yield return new WaitForSeconds(castDuration);
+        yield return Useful.GetWaitForSeconds(castDuration);
         callbackEnd.Invoke();
     }
 
@@ -87,6 +88,7 @@ public class ArrowAttack : WeakAttack
     public void OnArrowTouchChar(GameObject player)
     {
         arrowWhoFly = null;
+        arrowIsFlying = false;
     }
 
     private void OnValidate()

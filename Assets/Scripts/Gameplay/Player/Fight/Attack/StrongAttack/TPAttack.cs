@@ -126,7 +126,7 @@ public class TPAttack : StrongAttack
         explosion.transform.localScale = new Vector3(explosionRadius, explosionRadius, 1f);
         Destroy(explosion, 1.5f);
 
-        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, explosionRadius, ennemyPlayerMask);
+        Collider2D[] cols =  PhysicsToric.OverlapCircleAll(transform.position, explosionRadius, ennemyPlayerMask);
         foreach (Collider2D col in cols)
         {
             if(col.CompareTag("Char"))

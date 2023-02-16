@@ -768,10 +768,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canLauchAttack: 1
-  canEnableShield: 1
   enableAttackWeak: 1
   enableAttackStrong: 1
-  enableShield: 1
   castCoyoteTime: 0.2
 --- !u!114 &3329611578031353287
 MonoBehaviour:
@@ -810,9 +808,9 @@ MonoBehaviour:
   castDuration: 0.8
   cooldown:
     duration: 3
-  drawGizmo: 1
-  beginWaitingTime: 1
+  drawGizmos: 1
   explosionRadius: 1.5
+  minDistanceFromGround: 1.2
   playerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -822,7 +820,7 @@ MonoBehaviour:
   speedFall: 50
   floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}
   shockWaveHoriOffset: 0.2
-  shockWaveSpeed: 10
+  shockWaveSpeed: 15
 --- !u!114 &7830398315898069847
 MonoBehaviour:
   m_ObjectHideFlags: 0

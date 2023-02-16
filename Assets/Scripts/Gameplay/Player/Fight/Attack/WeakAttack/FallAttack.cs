@@ -8,9 +8,9 @@ public class FallAttack : WeakAttack
     private BoxCollider2D hitbox;
     private Movement movement;
 
-    [SerializeField] private bool drawGizmo = true;
-    [SerializeField] private float beginWaitingTime = 1f;
+    [SerializeField] private bool drawGizmos = true;
     [SerializeField] private float explosionRadius = 1f;
+    [SerializeField] private float minDistanceFromGround = 0.2f;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float speedFall = 3f;
@@ -34,16 +34,29 @@ public class FallAttack : WeakAttack
             return false;
         }
         base.Launch(callbackEnd);
+
+        if(!IsEnoughtHight())
+        {
+            callbackEnd.Invoke();
+            return false;
+        }
+
         cooldown.Reset();
         StartCoroutine(ApplyFallAttack(callbackEnd));
         return true;
+    }
+
+    private bool IsEnoughtHight()
+    {
+        RaycastHit2D raycast = PhysicsToric.Raycast((Vector2)transform.position + movement.groundOffset, Vector2.down, minDistanceFromGround, groundMask);
+        return raycast.collider == null;
     }
 
     private IEnumerator ApplyFallAttack(Action callbackEnd)
     {
         movement.Freeze();
 
-        yield return Useful.GetWaitForSeconds(beginWaitingTime);
+        yield return Useful.GetWaitForSeconds(castDuration);
 
         //phase tombante
         Collider2D[] cols;
@@ -95,6 +108,7 @@ public class FallAttack : WeakAttack
         FloorShockWave shockWave = shockWaveGO.GetComponent<FloorShockWave>();
         shockWave.Launch(transform.position, true, shockWaveSpeed, this);
 
+        //Left
         shockWavePos = (Vector2)transform.position + Vector2.left * shockWaveHoriOffset;
         shockWaveGO = Instantiate(floorShockWavePrefaps, shockWavePos, Quaternion.identity, CloneParent.cloneParent);
         shockWave = shockWaveGO.GetComponent<FloorShockWave>();
@@ -109,17 +123,25 @@ public class FallAttack : WeakAttack
         attackForce = tmp;
     }
 
+    private void OnValidate()
+    {
+        minDistanceFromGround = Mathf.Max(0f, minDistanceFromGround);
+        explosionRadius = Mathf.Max(0f, explosionRadius);
+    }
+
     private void OnDrawGizmosSelected()
     {
-        if (!drawGizmo)
+        if (!drawGizmos)
             return;
 
         if(movement == null)
             movement = GetComponent<Movement>();
 
         Gizmos.color = Color.black;
-        Gizmos.DrawWireSphere((Vector2)transform.position + movement.groundOffset, explosionRadius);
+        Circle.GizmosDraw((Vector2)transform.position + movement.groundOffset, explosionRadius);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere((Vector2)transform.position + movement.groundOffset, movement.groundCollisionRadius);
+        Circle.GizmosDraw((Vector2)transform.position + movement.groundOffset, movement.groundCollisionRadius);
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine((Vector2)transform.position + movement.groundOffset, (Vector2)transform.position + movement.groundOffset + Vector2.down * minDistanceFromGround);
     }
 }

@@ -13,13 +13,13 @@ public class FightController : MonoBehaviour
     private float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack;
     private bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
     private ToricObject toricObject;
-    [HideInInspector] public bool canLauchAttack = true, canEnableShield = true;
+    [HideInInspector] public bool canLauchAttack = true;
     private bool isInvicible = false;
-    private int invicibilityCounter = 0, canLaunchAttackCounter = 0, canEnableShieldCounter = 0;
+    private int invicibilityCounter = 0, canLaunchAttackCounter = 0;
 
     [Header("Inputs")]
     public bool enableAttackWeak = true;
-    public bool enableAttackStrong = true, enableShield = true;
+    public bool enableAttackStrong = true;
     [Tooltip("Temps ou l'on considère l'appuye sur un touche alors que le perso est occupé/ne peut pas lancé l'attaque")][SerializeField] private float castCoyoteTime = 0.2f;
 
     #region Awake and Start
@@ -95,7 +95,7 @@ public class FightController : MonoBehaviour
 
         if(wantLauchWeakAttack)
         {
-            if((Time.time - lastInputLauchingWeakAttack) < castCoyoteTime)
+            if(Time.time - lastInputLauchingWeakAttack < castCoyoteTime)
             {
                 if (canLauchAttack)
                 {
@@ -123,7 +123,7 @@ public class FightController : MonoBehaviour
                 if (canLauchAttack)
                 {
                     wantLaunchStrongAttack = false;
-                    if (!attackWeak.Launch(OnEndWeakAttack))
+                    if (!attackStrong.Launch(OnEndWeakAttack))
                     {
                         canLauchAttack = true;
                         wantLaunchStrongAttack = true;
@@ -179,18 +179,14 @@ public class FightController : MonoBehaviour
     {
         isLaunchingStrongAttack = true;
         canLaunchAttackCounter--;
-        canEnableShieldCounter--;
         canLauchAttack = canLaunchAttackCounter <= 0;
-        canEnableShield = canEnableShieldCounter <= 0;
     }
 
     private void OnBeginWeakAttack()
     {
         isLaunchingWeakAttack = true;
         canLaunchAttackCounter--;
-        canEnableShieldCounter--;
         canLauchAttack = canLaunchAttackCounter <= 0;
-        canEnableShield = canEnableShieldCounter <= 0;
     }
 
     private void OnEndStrongAttack()
@@ -199,9 +195,7 @@ public class FightController : MonoBehaviour
             return;
         isLaunchingStrongAttack = false;
         canLaunchAttackCounter++;
-        canEnableShieldCounter++;
         canLauchAttack = canLaunchAttackCounter <= 0;
-        canEnableShield = canEnableShieldCounter <= 0;
     }
 
     private void OnEndWeakAttack()
@@ -210,19 +204,16 @@ public class FightController : MonoBehaviour
             return;
         isLaunchingWeakAttack = false;
         canLaunchAttackCounter++;
-        canEnableShieldCounter++;
         canLauchAttack = canLaunchAttackCounter <= 0;
-        canEnableShield = canEnableShieldCounter <= 0;
     }
 
     #endregion
 
-    #region Disable Shield/attacking
+    #region Disable attacking
 
     private void DisableLauchingAttackAndEnablingShield(in float duration)
     {
         DisableLauchingAttack(duration);
-        DisableEnablingShield(duration);
     }
 
     private void DisableLauchingAttack(in float duration)
@@ -230,23 +221,11 @@ public class FightController : MonoBehaviour
         StartCoroutine(Dl(duration));
     }
 
-    private void DisableEnablingShield(in float duration)
-    {
-        StartCoroutine(Ds(duration));
-    }
-
     private IEnumerator Dl(float duration)
     {
         canLauchAttack = false;
         yield return Useful.GetWaitForSeconds(duration);
         canLauchAttack = true;
-    }
-
-    private IEnumerator Ds(float duration)
-    {
-        canEnableShield = false;
-        yield return Useful.GetWaitForSeconds(duration);
-        canEnableShield = true;
     }
 
     #endregion
