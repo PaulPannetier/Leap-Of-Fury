@@ -812,9 +812,14 @@ public static class Useful
         return Mathf.Min(diff, 2f * Mathf.PI - diff);
     }
 
-    public static float WrapAngle(in float angle) => ClampModulo(0f, 2f * Mathf.PI, angle);
+    public static float WrapAngle(float angle) => ClampModulo(0f, 2f * Mathf.PI, angle);
 
-    public static float AngleDist(in float a1, in float a2) => Mathf.Min(Mathf.Abs(a1 - a2), Mathf.Abs(Mathf.Abs(a1 - a2) - 2f * Mathf.PI));
+    public static float AngleDist(float a1, float a2)
+    {
+        a1 = WrapAngle(a1);
+        a2 = WrapAngle(a2);
+        return Mathf.Min(Mathf.Abs(a1 - a2), Mathf.Abs(Mathf.Abs(a1 - a2) - 2f * Mathf.PI));
+    }
 
     /// <returns> a like a = value % (end -  start) + start, a€[start, end[ /returns>
     public static float ClampModulo(in float start, in float end, in float value)

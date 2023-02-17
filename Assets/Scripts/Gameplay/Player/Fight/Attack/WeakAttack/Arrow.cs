@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -11,10 +12,11 @@ public class Arrow : MonoBehaviour
     private bool isFlying;//true si la flèche vole, false si elle est a terre.
     private bool isDestroy = false;
     private bool isMainArrow;
-    private bool isGuided = false;
+    private bool isGuiding = false;
 
     [SerializeField] private float charDetectionRange = 2f;
     [SerializeField, Range(0f, 180f)] private float charDetectionAngle = 2f;
+    [SerializeField] private float rotationDetectionSpeed = 180f;
     [SerializeField] private LayerMask wallProjectileMask;
     [SerializeField] private LayerMask charMask;
 
@@ -30,9 +32,53 @@ public class Arrow : MonoBehaviour
     {
         if(isFlying && !toricObject.isAClone)
         {
-            SetRotation();
-
             Collider2D[] cols = PhysicsToric.OverlapCircleAll(transform.position, charDetectionRange, charMask);
+            List<Vector2> playerAroundPos = new List<Vector2>();
+
+            float currentAngle = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
+            foreach (Collider2D col in cols)
+            {
+                if(col.CompareTag("Char"))
+                {
+                    float charAngle = Useful.AngleHori(transform.position, col.transform.position);
+                    if(Useful.AngleDist(currentAngle, charAngle) < charDetectionAngle &&
+                        col.GetComponent<ToricObject>().original.GetComponent<PlayerCommon>().id != playerCommon.id)
+                    {
+                        playerAroundPos.Add(col.transform.position);
+                    }
+                }
+            }
+
+            if(playerAroundPos.Count > 0)
+            {
+                isGuiding = true;
+                Vector2 minPos = playerAroundPos[0];
+                float minDist = PhysicsToric.Distance(playerAroundPos[0], transform.position);
+                for (int i = 1; i < playerAroundPos.Count; i++)
+                {
+                    float dist = PhysicsToric.Distance(playerAroundPos[i], transform.position);
+                    if(dist < minDist)
+                    {
+                        minDist = dist;
+                        minPos = playerAroundPos[i];
+                    }
+                }
+
+                float targetAngle = Useful.AngleHori(transform.position, minPos);
+                float newAngle = Mathf.MoveTowardsAngle(currentAngle * Mathf.Rad2Deg, targetAngle * Mathf.Rad2Deg, rotationDetectionSpeed * Time.fixedDeltaTime);
+                rb.SetRotation(newAngle);
+
+                rb.velocity = Useful.Vector2FromAngle(newAngle * Mathf.Deg2Rad, rb.velocity.magnitude);
+            }
+            else
+            {
+                isGuiding = false;
+            }
+
+            if(!isGuiding)
+            {
+                SetRotation();
+            }
         }
     }
 
@@ -196,6 +242,7 @@ public class Arrow : MonoBehaviour
     private void OnValidate()
     {
         charDetectionRange = Mathf.Max(charDetectionRange, 0f);
+        rotationDetectionSpeed = Mathf.Max(rotationDetectionSpeed, 0f);
     }
 
     private void OnDrawGizmosSelected()
