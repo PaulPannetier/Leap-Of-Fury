@@ -12,6 +12,7 @@ public class TPAttack : StrongAttack
     [SerializeField] private Vector2 collisionSize = new Vector2(0.5f, 1f);
     [SerializeField] private LayerMask ennemyPlayerMask;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private float explosionForce;
     [SerializeField] private GameObject explosionPrefabs;
 
     protected override void Awake()
@@ -115,6 +116,7 @@ public class TPAttack : StrongAttack
         }
 
         ApplyDamage();
+        ExplosionManager.instance.CreateExplosion(newPos, explosionForce);
         callbackEnd.Invoke();
     }
 
@@ -154,5 +156,6 @@ public class TPAttack : StrongAttack
         collisionSize = new Vector2(Mathf.Max(0.0000001f, collisionSize.x), Mathf.Max(0.0000001f, collisionSize.y));
         explosionRadius = Mathf.Max(0f, explosionRadius);
         tpRange = Mathf.Max(0f, tpRange);
+        explosionForce = Mathf.Max(explosionForce, 0f);
     }
 }

@@ -6,13 +6,17 @@ public class Arrow : MonoBehaviour
     private Animator animator;
     private ArrowAttack arrowAttack;
     private PlayerCommon playerCommon;
+    private CapsuleCollider2D capsuleCollider;
     private ToricObject toricObject;
     private bool isFlying;//true si la flèche vole, false si elle est a terre.
     private bool isDestroy = false;
     private bool isMainArrow;
+    private bool isGuided = false;
 
-    [SerializeField] private CapsuleCollider2D capsuleCollider;
+    [SerializeField] private float charDetectionRange = 2f;
+    [SerializeField, Range(0f, 180f)] private float charDetectionAngle = 2f;
     [SerializeField] private LayerMask wallProjectileMask;
+    [SerializeField] private LayerMask charMask;
 
     private void Awake()
     {
@@ -27,6 +31,8 @@ public class Arrow : MonoBehaviour
         if(isFlying && !toricObject.isAClone)
         {
             SetRotation();
+
+            Collider2D[] cols = PhysicsToric.OverlapCircleAll(transform.position, charDetectionRange, charMask);
         }
     }
 
@@ -187,9 +193,16 @@ public class Arrow : MonoBehaviour
         }
     }
 
+    private void OnValidate()
+    {
+        charDetectionRange = Mathf.Max(charDetectionRange, 0f);
+    }
+
     private void OnDrawGizmosSelected()
     {
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
+        if(capsuleCollider == null)
+            capsuleCollider = GetComponent<CapsuleCollider2D>();
+
         float a = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
         float l = capsuleCollider.size.magnitude * 0.5f;
         float teta = Mathf.Acos(Useful.ClampModulo(-1f, 1f, (capsuleCollider.size.x * 0.5f) / l));
@@ -206,5 +219,9 @@ public class Arrow : MonoBehaviour
         {
             Circle.GizmosDraw(hotpoint, 0.05f);
         }
+
+        Circle.GizmosDraw(transform.position, charDetectionRange, -charDetectionAngle * Mathf.Deg2Rad, charDetectionAngle * Mathf.Deg2Rad);
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(charDetectionAngle * Mathf.Deg2Rad, charDetectionRange));
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(-charDetectionAngle * Mathf.Deg2Rad, charDetectionRange));
     }
 }

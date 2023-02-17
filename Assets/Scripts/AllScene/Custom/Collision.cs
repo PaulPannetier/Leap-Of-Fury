@@ -2913,6 +2913,22 @@ public class Circle : CustomCollider
             lastPoint = p;
         }
     }
+
+    public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle)
+    {
+        int sides = Math.Max(((radius + 10f) * 7f * Mathf.Abs((endAngle - begAngle) / (2f * Mathf.PI))).Round(), 4);
+        float angleStep = Mathf.Abs(endAngle - begAngle) / sides;
+        Vector2 lastPoint = center + Useful.Vector2FromAngle(begAngle, radius);
+        Vector2 p;
+        for (int i = 1; i <= sides; i++)
+        {
+            float ang = begAngle + i * angleStep;
+            p = center + Useful.Vector2FromAngle(ang, radius);
+            Gizmos.DrawLine(lastPoint, p);
+            lastPoint = p;
+        }
+    }
+
     public static void GizmosDraw(Circle circle) => GizmosDraw(circle.center, circle.radius);
 
     protected Vector2 _center;
