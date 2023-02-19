@@ -240,7 +240,7 @@ public class GrapplingAttack : WeakAttack
         }
 
         grapLength = raycast.distance;
-        attachPoint = grapDir * grapLength;
+        attachPoint = raycast.point;//(Vector2)transform.position + grapDir * grapLength;
         colliderWhereGrapIsAttach = raycast.collider;
 
         return true;
@@ -269,8 +269,8 @@ public class GrapplingAttack : WeakAttack
             if(CalculateAttachPoint())
             {
                 Gizmos.color = Color.red;
-                Circle.GizmosDraw(attachPoint, 0.3f);
-                Gizmos.DrawLine(transform.position, (Vector2)transform.position + grapDir * grapLength);
+                Circle.GizmosDraw(attachPoint, circleCastRadius);
+                Gizmos.DrawLine(transform.position, attachPoint);
             }
         }
     }

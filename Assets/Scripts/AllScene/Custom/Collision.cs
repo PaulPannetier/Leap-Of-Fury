@@ -166,6 +166,19 @@ public abstract class CustomCollider
 {
     public const float accuracy = 1e-5f;
 
+    public static CustomCollider FromUnityCollider2D(Collider2D collider)
+    {
+        if (collider is BoxCollider2D hitbox)
+            return new Hitbox(hitbox);
+        else if (collider is CircleCollider2D circle)
+            return new Circle(circle);
+        else if (collider is CapsuleCollider2D capsule)
+            return new Capsule(capsule);
+        else if (collider is PolygonCollider2D poly)
+            return new Polygone(poly);
+        return null;
+    }
+
     #region Collision Functions
 
     private static readonly List<Vector2> cache = new List<Vector2>(), cache2 = new List<Vector2>(), cache3 = new List<Vector2>();
@@ -2558,6 +2571,9 @@ public abstract class CustomCollider
         protected set { _inclusiveCircle = value; }
     }
 
+    public CustomCollider() { }
+    public CustomCollider(Collider2D collider) { }
+
     public virtual CustomCollider Clone() => null;
     public virtual bool Collide(CustomCollider c) => false;
     public virtual bool CollideLine(Line l) => false;
@@ -2601,16 +2617,9 @@ public class Polygone : CustomCollider
 
     #region Builder
 
-    public Polygone(List<Vector2> vertices)
+    public Polygone(List<Vector2> vertices) : base()
     {
-        this.vertices = vertices.Clone();
-        for (int i = this.vertices.Count - 1; i >= 0; i--)
-        {
-            if (this.vertices[i] == this.vertices[(i+1)%this.vertices.Count])
-            {
-                this.vertices.RemoveAt(i);
-            }
-        }
+        Builder(vertices);
         center = Vector2.zero;
         foreach (Vector2 pos in vertices)
         {
@@ -2620,18 +2629,40 @@ public class Polygone : CustomCollider
         inclusiveCircle = ToCircle();
     }
 
-    public Polygone(List<Vector2> vertices, in Vector2 center)
+    public Polygone(List<Vector2> vertices, in Vector2 center) : base()
+    {
+        Builder(vertices);
+        this.center = center;
+        inclusiveCircle = ToCircle();
+    }
+
+    public Polygone(PolygonCollider2D poly) : base(poly)
+    {
+        poly.GetPath(0, vertices);
+        for (int i = 0; i < vertices.Count; i++)
+        {
+            vertices[i] += (Vector2)poly.transform.position;
+        }
+
+        center = Vector2.zero;
+        foreach (Vector2 pos in vertices)
+        {
+            center += pos;
+        }
+        center /= vertices.Count;
+        inclusiveCircle = ToCircle();
+    }
+
+    private void Builder(List<Vector2> vertices)
     {
         this.vertices = vertices.Clone();
         for (int i = this.vertices.Count - 1; i >= 0; i--)
         {
-            if (this.vertices[i] == this.vertices[(i + 1) % this.vertices.Count])
+            if (vertices[i] == this.vertices[(i + 1) % this.vertices.Count])
             {
-                this.vertices.RemoveAt(i);
+                vertices.RemoveAt(i);
             }
         }
-        this.center = center;
-        inclusiveCircle = ToCircle();
     }
 
     public override CustomCollider Clone() => new Polygone(vertices.Clone(), center);
@@ -2837,7 +2868,18 @@ public class Hitbox : CustomCollider
     public Vector2 size;
     public override Circle inclusiveCircle => rec.inclusiveCircle;
 
-    public Hitbox(in Vector2 center, in Vector2 size)
+    public Hitbox(in Vector2 center, in Vector2 size) : base()
+    {
+        Builder(center, size);
+    }
+
+    public Hitbox(BoxCollider2D hitbox) : base(hitbox)
+    {
+        Builder((Vector2)hitbox.transform.position + hitbox.offset, hitbox.size);
+        this.Rotate(hitbox.transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
+    }
+
+    private void Builder(in Vector2 center, in Vector2 size)
     {
         this.size = size;
         List<Vector2> vertices = new List<Vector2>
@@ -2943,11 +2985,16 @@ public class Circle : CustomCollider
     public float radius;
     public override Circle inclusiveCircle => this;
 
-    //Pour le CustomCollider
-    public Circle(in Vector2 center, in float radius)
+    public Circle(in Vector2 center, in float radius) : base()
     {
         this.center = center;
         this.radius = radius;
+    }
+
+    public Circle(CircleCollider2D circle) : base(circle)
+    {
+        radius = circle.radius;
+        center = (Vector2)circle.transform.position + circle.offset;
     }
 
     #region CollideLine
@@ -3050,36 +3097,35 @@ public class Capsule : CustomCollider
 
     public CapsuleDirection2D direction;
 
-    public Capsule(in Vector2 center, in Vector2 size)
+    public Capsule(in Vector2 center, in Vector2 size) : base()
     {
-        hitbox = new Hitbox(center, size);
         direction = size.x >= size.y ? CapsuleDirection2D.Horizontal : CapsuleDirection2D.Vertical;
-        if (direction == CapsuleDirection2D.Horizontal)
-        {
-            this.c1 = new Circle(new Vector2(center.x - size.x * 0.5f, center.y), size.y * 0.5f);
-            this.c2 = new Circle(new Vector2(center.x + size.x * 0.5f, center.y), size.y * 0.5f);
-        }
-        else
-        {
-            this.c1 = new Circle(new Vector2(center.x, center.y - size.y * 0.5f), size.x * 0.5f);
-            this.c2 = new Circle(new Vector2(center.x, center.y + size.y * 0.5f), size.x * 0.5f);
-        }
-        inclusiveCircle = ToCircle();
+        Builder(center, size, direction);
     }
 
-    public Capsule(in Vector2 center, in Vector2 size, CapsuleDirection2D direction)
+    public Capsule(in Vector2 center, in Vector2 size, CapsuleDirection2D direction) : base()
+    {
+        Builder(center, size, direction);
+    }
+
+    public Capsule(CapsuleCollider2D capsule) : base(capsule)
+    {
+        Builder((Vector2)capsule.transform.position + capsule.offset, capsule.size, capsule.direction);
+    }
+
+    private void Builder(in Vector2 center, in Vector2 size, CapsuleDirection2D direction)
     {
         hitbox = new Hitbox(center, size);
         this.direction = direction;
-        if(direction == CapsuleDirection2D.Horizontal)
+        if (direction == CapsuleDirection2D.Horizontal)
         {
-            this.c1 = new Circle(new Vector2(center.x - size.x * 0.5f, center.y), size.y * 0.5f);
-            this.c2 = new Circle(new Vector2(center.x + size.x * 0.5f, center.y), size.y * 0.5f);
+            c1 = new Circle(new Vector2(center.x - size.x * 0.5f, center.y), size.y * 0.5f);
+            c2 = new Circle(new Vector2(center.x + size.x * 0.5f, center.y), size.y * 0.5f);
         }
         else
         {
-            this.c1 = new Circle(new Vector2(center.x, center.y - size.y * 0.5f), size.x * 0.5f);
-            this.c2 = new Circle(new Vector2(center.x, center.y + size.y * 0.5f), size.x * 0.5f);
+            c1 = new Circle(new Vector2(center.x, center.y - size.y * 0.5f), size.x * 0.5f);
+            c2 = new Circle(new Vector2(center.x, center.y + size.y * 0.5f), size.x * 0.5f);
         }
         inclusiveCircle = ToCircle();
     }
@@ -3241,7 +3287,9 @@ public class Ellipse : CustomCollider
     }
 
     public override CustomCollider Clone() => new Ellipse(focus1, focus2, majorAxis);
+
     public override Circle ToCircle() => new Circle(center, majorAxis * 0.5f);
+
     public Polygone ToPolygone()
     {
         List<Vector2> verticesUp = new List<Vector2>();

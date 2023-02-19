@@ -906,6 +906,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+      propertyPath: maxRopeLength
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+      propertyPath: attackPointPrefaps
+      value: 
+      objectReference: {fileID: 5643303674285272075, guid: 2d509ff36d2c02045ba03cad79be9c54, type: 3}
+    - target: {fileID: 4128551290350845197, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: componentsToDestroyInPhysicsSimulateClone.Array.size
       value: 11
       objectReference: {fileID: 0}

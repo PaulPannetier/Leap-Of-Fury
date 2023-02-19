@@ -429,8 +429,9 @@ public static class PhysicsToric
 
     public static RaycastHit2D CircleCast(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
     {
-        List<Vector2> _ = new List<Vector2>();
-        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref _, true).ToArray();
+        List<Vector2> inter = new List<Vector2>();
+        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, true).ToArray();
+        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
         return raycasts.Length >= 1 ? raycasts[0] : default;
     }
 
@@ -439,21 +440,44 @@ public static class PhysicsToric
         List<Vector2> inter = new List<Vector2>();
         RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, true).ToArray();
         torIntersections= inter.ToArray();
+        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
         return raycasts.Length >= 1 ? raycasts[0] : default;
     }
 
     public static RaycastHit2D[] CircleCastAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
     {
-        List<Vector2> _ = new List<Vector2>();
-        return CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref _, false).ToArray();
+        List<Vector2> inter = new List<Vector2>();
+        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, false).ToArray();
+        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
+        return raycasts;
     }
 
     public static RaycastHit2D[] CircleCastAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, out Vector2[] torIntersections)
     {
         List<Vector2> inter = new List<Vector2>();
-        RaycastHit2D[] raycast = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, false).ToArray();
+        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, false).ToArray();
         torIntersections = inter.ToArray();
-        return raycast;
+        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
+        return raycasts;
+    }
+
+    private static void FixCircleCastRaycastPoints(in Vector2 start, float radius, ref RaycastHit2D[] raycasts, ref List<Vector2> inter)
+    {
+        if (raycasts.Length > 0)
+        {
+            CustomCollider collider = CustomCollider.FromUnityCollider2D(raycasts[raycasts.Length - 1].collider);
+            Circle circle = new Circle(raycasts.Last().point, radius);
+
+            if (CustomCollider.Collide(collider, circle, out Vector2 collisionPoint))
+            {
+                raycasts[raycasts.Length - 1].distance = inter.Count > 0 ? collisionPoint.Distance(inter.Last()) : collisionPoint.Distance(start);
+                raycasts[raycasts.Length - 1].point = collisionPoint;
+            }
+            else
+            {
+                Debug.LogWarning("Denug pls");
+            }
+        }
     }
 
     private static List<RaycastHit2D> CircleCastRecur(Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, ref List<Vector2> inters, bool onlyOne)
