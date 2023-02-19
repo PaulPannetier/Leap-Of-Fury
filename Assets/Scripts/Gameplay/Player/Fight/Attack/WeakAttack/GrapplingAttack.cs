@@ -8,25 +8,22 @@ public class GrapplingAttack : WeakAttack
     private List<LineRenderer> lstlineRenderers;
     private Movement movement;
     private Rigidbody2D rb;
-    private Action callbackEnd;
+    private SpringJoint2D springJoint;
     private CustomPlayerInput playerInput;
+    private Rigidbody2D rbAttachPoint;
     private bool isSwinging;
     private Vector2 grapDir;
-    private float grapLength;
-    private float lastTimeGrap = -10f;
-    private Vector2 localFloorAttachPos;
-    private GameObject goWhereGrapIsAttach;
+    private Vector2 attachPoint;
     private Collider2D colliderWhereGrapIsAttach;
+    private float grapLength;
     private Vector2[] toricIntersPoints;
     private float lastTimeBombSpawn = -10f;
-    private bool doJump;
-
-    private GameObject physicSimulateClone;
-    private SpringJoint2D physicSimulateCloneSpringJoint;
-    private Rigidbody2D physicSimulateCloneRb;
+    private bool doJump, doDash;
+    private Vector2 dashDir;
+    private float lastTimeGrap = -10f;
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
-    [SerializeField, Tooltip("%age d'élasticité max de la corde")] private float ropeElasticity = 0.2f;
+    [SerializeField] private float maxRopeLength;
     [SerializeField] private float maxDurationAttach = 5f;
     [SerializeField] private float grapClimbUpSpeed = 2f, grapClimbDownSpeed = 4f;
     [SerializeField] private LayerMask groundMask;
@@ -34,9 +31,10 @@ public class GrapplingAttack : WeakAttack
     [SerializeField] private float timeBetweenBombSpawn = 0.4f;
 
     [Header("Physics simulation")]
+    [SerializeField] private GameObject attackPointPrefaps;
+    [SerializeField] private float grapElasticity = 0.2f;
     [SerializeField] private float gravityScaleWhenSwinging = 1f;
     [SerializeField] private float grapMovementForce = 5f, linearDrag = 0.05f;
-    [SerializeField] private Component[] componentsToDestroyInPhysicsSimulateClone;
 
     protected override void Awake()
     {
@@ -44,16 +42,9 @@ public class GrapplingAttack : WeakAttack
         lineRendererPrefabs = transform.GetChild(1).GetChild(0).GetComponent<LineRenderer>();
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
-        lstlineRenderers = new List<LineRenderer>()
-        {
-            lineRendererPrefabs
-        };
+        springJoint = GetComponent<SpringJoint2D>();
+        lstlineRenderers = new List<LineRenderer>();
         playerInput = GetComponent<CustomPlayerInput>();
-    }
-
-    protected override void Start()
-    {
-        base.Start();
     }
 
     public override bool Launch(Action callbackEnd)
@@ -65,11 +56,10 @@ public class GrapplingAttack : WeakAttack
             return false;
         }
 
-        grapDir = movement.GetCurrentDirection();
         if (CalculateAttachPoint())
         {
             BeginSwing();
-            this.callbackEnd = callbackEnd;
+            callbackEnd.Invoke();
             return true;
         }
         return false;
@@ -79,28 +69,15 @@ public class GrapplingAttack : WeakAttack
     {
         isSwinging = true;
         movement.enableBehaviour = false;
+
+        GameObject attachPointGO = Instantiate(attackPointPrefaps, attachPoint, Quaternion.identity, CloneParent.cloneParent);
+        rbAttachPoint = attachPointGO.GetComponent<Rigidbody2D>();
+
+        springJoint.enabled = true;
+        springJoint.connectedBody = rbAttachPoint;
+        springJoint.distance = grapLength;
+
         lastTimeGrap = Time.time;
-
-        //mise en place du clone
-        physicSimulateClone = Instantiate(gameObject, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
-        physicSimulateClone.DestroyChildren();
-        physicSimulateClone.name = "PhysicSimulateClone";
-        foreach (Component c in componentsToDestroyInPhysicsSimulateClone)
-        {
-            Destroy(physicSimulateClone.GetComponent(c.GetType()));
-        }
-
-        physicSimulateCloneSpringJoint = physicSimulateClone.GetComponent<SpringJoint2D>();
-        physicSimulateCloneRb = physicSimulateClone.GetComponent<Rigidbody2D>();
-
-        physicSimulateCloneSpringJoint.enabled = true;
-        physicSimulateCloneSpringJoint.connectedBody = goWhereGrapIsAttach.GetComponentInChildren<Rigidbody2D>();
-        physicSimulateCloneSpringJoint.connectedAnchor = localFloorAttachPos;
-        physicSimulateCloneSpringJoint.distance = grapLength;
-        physicSimulateCloneRb.gravityScale = gravityScaleWhenSwinging;
-
-        Vector2 attachPos = (Vector2)goWhereGrapIsAttach.transform.position + localFloorAttachPos;
-        physicSimulateClone.transform.position = attachPos - grapDir * grapLength;
     }
 
     protected override void FixedUpdate()
@@ -111,20 +88,27 @@ public class GrapplingAttack : WeakAttack
             doJump = false;
         }
 
+        if(doDash)
+        {
+            movement.RequestDash(movement.GetCurrentDirection(true));
+            doDash= false;
+        }
+
         if (!isSwinging)
             return;
 
         if (playerInput.leftPressed)
         {
-            physicSimulateCloneRb.AddForce(Vector2.left * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
+            rb.AddForce(Vector2.left * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
         }
 
         if (playerInput.rightPressed)
         {
-            physicSimulateCloneRb.AddForce(Vector2.right * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
+            rb.AddForce(Vector2.right * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
         }
 
-        physicSimulateCloneRb.AddForce(physicSimulateCloneRb.velocity * (-linearDrag * Time.fixedDeltaTime), ForceMode2D.Force);
+        rb.AddForce(rb.velocity * (-linearDrag * Time.fixedDeltaTime), ForceMode2D.Force);
+        rb.AddForce(Physics2D.gravity * (gravityScaleWhenSwinging * Time.deltaTime), ForceMode2D.Force);
     }
 
     protected override void Update()
@@ -133,8 +117,6 @@ public class GrapplingAttack : WeakAttack
 
         if (!isSwinging)
             return;
-
-        rb.position = physicSimulateClone.transform.position;
 
         if(!RecalculateInterPoint())
         {
@@ -146,11 +128,14 @@ public class GrapplingAttack : WeakAttack
 
         if(playerInput.downPressed)
         {
-            physicSimulateCloneSpringJoint.distance += grapClimbDownSpeed * Time.deltaTime;
+            grapLength = Mathf.Min(grapLength + grapClimbDownSpeed * Time.deltaTime, maxRopeLength);
+            springJoint.distance = grapLength;
         }
+
         if(playerInput.upPressed)
         {
-            physicSimulateCloneSpringJoint.distance -= grapClimbUpSpeed * Time.deltaTime;
+            grapLength = Mathf.Max(grapLength - grapClimbDownSpeed * Time.deltaTime, 0f);
+            springJoint.distance = grapLength;
         }
 
         if(lastTimeBombSpawn - Time.time > timeBetweenBombSpawn)
@@ -167,7 +152,14 @@ public class GrapplingAttack : WeakAttack
             return;
         }
 
-        if (Time.time - lastTimeGrap > maxDurationAttach || !playerInput.attackWeakPressed)
+        if(playerInput.dashPressedDown)
+        {
+            doDash = true;
+            EndAttack();
+            return;
+        }
+
+        if (Time.time - lastTimeGrap > maxDurationAttach)
         {
             EndAttack();
             return;
@@ -175,8 +167,8 @@ public class GrapplingAttack : WeakAttack
 
         bool RecalculateInterPoint()
         {
-            grapDir = ((Vector2)goWhereGrapIsAttach.transform.position + localFloorAttachPos - (Vector2)physicSimulateClone.transform.position).normalized;
-            RaycastHit2D raycast = PhysicsToric.Raycast(transform.position, grapDir, grapLength * (1f + ropeElasticity), groundMask, out toricIntersPoints);
+            grapDir = (attachPoint - (Vector2)transform.position).normalized;
+            RaycastHit2D raycast = PhysicsToric.Raycast(transform.position, grapDir, grapLength * (1f + grapElasticity), groundMask, out toricIntersPoints);
             if(raycast.collider == null || raycast.collider != colliderWhereGrapIsAttach)
             {
                 return false;
@@ -196,10 +188,11 @@ public class GrapplingAttack : WeakAttack
                 Destroy(transform.GetChild(1).GetChild(transform.GetChild(1).childCount - 1));
                 lstlineRenderers.RemoveAt(lstlineRenderers.Count - 1);
             }
+
             Vector2 beg = transform.position, end;
             for (int i = 0; i < nbLineRenderer; i++)
             {
-                end = i != nbLineRenderer - 1 ? toricIntersPoints[i] : (Vector2)goWhereGrapIsAttach.transform.position + localFloorAttachPos;
+                end = i != nbLineRenderer - 1 ? toricIntersPoints[i] : attachPoint;
                 lstlineRenderers[i].positionCount = 2;
                 lstlineRenderers[i].SetPositions(new Vector3[2] { beg, end });
                 if(i != nbLineRenderer - 1)
@@ -227,26 +220,26 @@ public class GrapplingAttack : WeakAttack
         void EndAttack()
         {
             movement.enableBehaviour = movement.enableInput = true;
-            isSwinging = false;
+            isSwinging = doJump = doDash = false;
             RemoveLineRenderer();
             toricIntersPoints = null;
             cooldown.Reset();
-            callbackEnd.Invoke();
         }
     }
 
     private bool CalculateAttachPoint()
     {
+        grapDir = movement.GetCurrentDirection(true);
         RaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask, out toricIntersPoints);
         if(raycast.collider == null)
         {
             return false;
         }
 
-        goWhereGrapIsAttach = raycast.collider.gameObject;
-        localFloorAttachPos = raycast.point - (Vector2)goWhereGrapIsAttach.transform.position;
         grapLength = raycast.distance;
+        attachPoint = grapDir * grapLength;
         colliderWhereGrapIsAttach = raycast.collider;
+
         return true;
     }
 
@@ -258,7 +251,8 @@ public class GrapplingAttack : WeakAttack
         maxDurationAttach = Mathf.Max(0f, maxDurationAttach);
         circleCastRadius = Mathf.Max(0f, circleCastRadius);
         GetComponent<SpringJoint2D>().enabled = false;
-        ropeElasticity = Mathf.Max(0f, ropeElasticity);
+        grapElasticity = Mathf.Max(0f, grapElasticity);
+        maxRopeLength = Mathf.Max(grapRange, maxRopeLength);
     }
 
     private void OnDrawGizmosSelected()
@@ -269,11 +263,11 @@ public class GrapplingAttack : WeakAttack
 
         if(Application.isPlaying && false)
         {
-            grapDir = movement.GetCurrentDirection();
+            grapDir = movement.GetCurrentDirection(true);
             if(CalculateAttachPoint())
             {
                 Gizmos.color = Color.red;
-                Circle.GizmosDraw((Vector2)goWhereGrapIsAttach.transform.position + localFloorAttachPos, 0.3f);
+                Circle.GizmosDraw(attachPoint, 0.3f);
             }
         }
     }

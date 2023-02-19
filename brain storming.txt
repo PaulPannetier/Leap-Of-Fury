@@ -26,7 +26,6 @@ perso 1 :
 perso 2 : 
 	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
 	  attack forte : Le joueur tire X tir sphérique dans un cone devant lui sphérique qui ricoche sur les murs 3 fois.//ok
-	  	ou tir 3 projectiles en cone dans la dir inverse des input(8dir possible) et qui lui applique une forte de propulsion
 	  Passif : Des fioles spawn donnant + 1 au x, augmente la vitesse des tir.//ok
 
 perso 3 : 
@@ -37,8 +36,7 @@ perso 3 :
 
 perso 4 : 
 	  attack faible : Lance un grapin qui grape un mur (8 directions via les input) qui laisse un trainé de bombe confeties au bout qui explose
-	  attack forte : pose un feux d'artifice magique dans une direction(8 dir selon les inputs) qui ne bouge pas pendant x sec et qui par
-		d'un coup (qui explose si il touche un ennemi).
+	  attack forte : tir 3 projectiles en cone dans la dir inverse des input(8dir possible) et qui lui applique une forte de propulsion
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur
 
 

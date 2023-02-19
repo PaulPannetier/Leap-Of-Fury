@@ -219,6 +219,11 @@ public class Movement : MonoBehaviour
         WallJump(rightWallJump);
     }
 
+    public void RequestDash(in Vector2 dir)
+    {
+        Dash(dir);
+    }
+
     #endregion
 
     #region Awake an Start
