@@ -19,7 +19,6 @@ public class GrapplingAttack : WeakAttack
     private Vector2[] toricIntersPoints;
     private float lastTimeBombSpawn = -10f;
     private bool doJump, doDash;
-    private Vector2 dashDir;
     private float lastTimeGrap = -10f;
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
@@ -43,7 +42,10 @@ public class GrapplingAttack : WeakAttack
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
         springJoint = GetComponent<SpringJoint2D>();
-        lstlineRenderers = new List<LineRenderer>();
+        lstlineRenderers = new List<LineRenderer>()
+        { 
+            lineRendererPrefabs
+        };
         playerInput = GetComponent<CustomPlayerInput>();
     }
 
@@ -223,6 +225,7 @@ public class GrapplingAttack : WeakAttack
             isSwinging = doJump = doDash = false;
             RemoveLineRenderer();
             toricIntersPoints = null;
+            Destroy(rbAttachPoint.gameObject);
             cooldown.Reset();
         }
     }
@@ -261,13 +264,13 @@ public class GrapplingAttack : WeakAttack
         Circle.GizmosDraw(transform.position, grapRange);
         Circle.GizmosDraw((Vector2)transform.position + grapRange * Vector2.up, circleCastRadius);
 
-        if(Application.isPlaying && false)
+        if(Application.isPlaying)
         {
-            grapDir = movement.GetCurrentDirection(true);
             if(CalculateAttachPoint())
             {
                 Gizmos.color = Color.red;
                 Circle.GizmosDraw(attachPoint, 0.3f);
+                Gizmos.DrawLine(transform.position, (Vector2)transform.position + grapDir * grapLength);
             }
         }
     }
