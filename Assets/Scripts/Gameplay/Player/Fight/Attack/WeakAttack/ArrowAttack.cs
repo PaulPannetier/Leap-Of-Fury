@@ -23,7 +23,7 @@ public class ArrowAttack : WeakAttack
         nbArrow = initArrow;
     }
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         if(arrowIsFlying)
         {
@@ -42,19 +42,21 @@ public class ArrowAttack : WeakAttack
 
             arrowWhoFly = null;
             arrowIsFlying = false;
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return true;
         }
 
         if(!cooldown.isActive)
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
 
         if(nbArrow > 0)
         {
-            base.Launch(callbackEnd);
+            base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
             Vector2 dir = movement.GetCurrentDirection(true);
             arrowIsFlying = true;
             GameObject newArrow = Instantiate(arrowPrefab, transform.position + (Vector3)(dir * arrowLaunchDistance), Quaternion.identity, CloneParent.cloneParent);
@@ -62,16 +64,17 @@ public class ArrowAttack : WeakAttack
             arrowWhoFly.Launch(this, dir, arrowInitSpeed);
             nbArrow--;
             cooldown.Reset();
-            StartCoroutine(WaitEndAttack(callbackEnd));
+            StartCoroutine(WaitEndAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
             return true;
         }
         return false;
     }
 
-    private IEnumerator WaitEndAttack(Action callbackEnd)
+    private IEnumerator WaitEndAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         yield return Useful.GetWaitForSeconds(castDuration);
-        callbackEnd.Invoke();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
     }
 
     public void RecoverArrow()

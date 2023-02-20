@@ -171,22 +171,24 @@ public class AmericanFistAttack : WeakAttack
 
     #region Launch
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         if (!cooldown.isActive)
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
-        base.Launch(callbackEnd);
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         cooldown.Reset();
-        StartCoroutine(ApplyAttackCorout(movement.GetCurrentDirection(), callbackEnd));
+        StartCoroutine(ApplyAttackCorout(movement.GetCurrentDirection(), callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
     }
 
-    private IEnumerator ApplyAttackCorout(Vector2 dir, Action callbackEnd)
+    private IEnumerator ApplyAttackCorout(Vector2 dir, Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        callbackEnd.Invoke();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
         initSpeed = rb.velocity;
         movement.Freeze();
         yield return Useful.GetWaitForSeconds(castDuration);

@@ -33,24 +33,26 @@ public class BouncingBallAttack : StrongAttack
         nbBalls = initNbBalls;
     }
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         if (!cooldown.isActive)
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
-        base.Launch(callbackEnd);
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         cooldown.Reset();
-        StartCoroutine(DoBounceAttack(callbackEnd));
+        StartCoroutine(DoBounceAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
     }
 
-    private IEnumerator DoBounceAttack(Action callbackEnd)
+    private IEnumerator DoBounceAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         yield return Useful.GetWaitForSeconds(castDuration);
 
-        callbackEnd.Invoke();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
 
         Vector2 dir = movement.GetCurrentDirection(true);
         float dirAngle = Useful.AngleHori(Vector2.zero, dir);

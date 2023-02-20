@@ -170,17 +170,18 @@ public class CloneAttack : StrongAttack
 
     #endregion
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         if(!cooldown.isActive)
         {
-            base.Launch(callbackEnd);
+            base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
             return false;
         }
 
         StartCoroutine(EnableCloneAttack());
         cooldown.Reset();
-        callbackEnd.Invoke();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
         return true;
     }
 

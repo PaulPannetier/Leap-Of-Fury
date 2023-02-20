@@ -38,16 +38,17 @@ public class BounceShotAttack : StrongAttack
         data = new BounceShotMagicAttackData(Vector2.zero, null, null, 0f, 0, new List<LineRenderer> { goLinesRendererParent.transform.GetChild(0).GetComponent<LineRenderer>() });
     }
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         if (isBouncing || !cooldown.isActive)
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
-        base.Launch(callbackEnd);
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         cooldown.Reset();
-        StartCoroutine(DoBounceAttack(callbackEnd));
+        StartCoroutine(DoBounceAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
     }
 
@@ -219,10 +220,11 @@ public class BounceShotAttack : StrongAttack
         return false;
     }
 
-    private IEnumerator DoBounceAttack(Action callbackEnd)
+    private IEnumerator DoBounceAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         yield return Useful.GetWaitForSeconds(castDuration);
-        callbackEnd.Invoke();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
 
         isBouncing = true;
         bool isTouchingAnEnnemy = false;

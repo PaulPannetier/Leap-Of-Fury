@@ -37,7 +37,7 @@ public abstract class Attack : MonoBehaviour
 
     }
 
-    public virtual bool Launch(Action callbackEnd)
+    public virtual bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         eventController.OnLauchAttack(this);
         return true;

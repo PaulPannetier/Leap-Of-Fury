@@ -21,21 +21,22 @@ public class TPAttack : StrongAttack
         playerMovement = GetComponent<Movement>();
     }
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         if(!cooldown.isActive)
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
 
-        base.Launch(callbackEnd);
-        Teleport(callbackEnd);
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
+        Teleport(callbackEnableOtherAttack, callbackEnableThisAttack);
         cooldown.Reset();
         return true;
     }
 
-    private void Teleport(Action callbackEnd)
+    private void Teleport(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         Vector2 dir = playerMovement.GetCurrentDirection();
         Vector2 newPos = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + dir * tpRange);
@@ -72,7 +73,8 @@ public class TPAttack : StrongAttack
             if(raycasts[0].collider == null && raycasts[1].collider == null)
             {
                 print("debug pls");
-                callbackEnd.Invoke();
+                callbackEnableOtherAttack.Invoke();
+                callbackEnableThisAttack.Invoke();
                 return;
             }
             int minIndex = 0;
@@ -117,7 +119,8 @@ public class TPAttack : StrongAttack
 
         ApplyDamage();
         ExplosionManager.instance.CreateExplosion(newPos, explosionForce);
-        callbackEnd.Invoke();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
     }
 
     private void ApplyDamage()

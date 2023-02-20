@@ -20,6 +20,10 @@ public class GrapplingAttack : WeakAttack
     private float lastTimeBombSpawn = -10f;
     private bool doJump, doDash;
     private float lastTimeGrap = -10f;
+    private Action callbackEnableThisAttack;
+
+    //to rm
+    private Line lineToDraw;
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
     [SerializeField] private float maxRopeLength;
@@ -49,19 +53,21 @@ public class GrapplingAttack : WeakAttack
         playerInput = GetComponent<CustomPlayerInput>();
     }
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        base.Launch(callbackEnd);
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         if (!cooldown.isActive)
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
 
         if (CalculateAttachPoint())
         {
             BeginSwing();
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            this.callbackEnableThisAttack = callbackEnableThisAttack;
             return true;
         }
         return false;
@@ -122,6 +128,7 @@ public class GrapplingAttack : WeakAttack
 
         if(!RecalculateInterPoint())
         {
+            print("end du to wrong point");
             EndAttack();
             return;
         }
@@ -161,7 +168,7 @@ public class GrapplingAttack : WeakAttack
             return;
         }
 
-        if (Time.time - lastTimeGrap > maxDurationAttach)
+        if (playerInput.attackWeakPressedUp || Time.time - lastTimeGrap > maxDurationAttach)
         {
             EndAttack();
             return;
@@ -170,6 +177,7 @@ public class GrapplingAttack : WeakAttack
         bool RecalculateInterPoint()
         {
             grapDir = (attachPoint - (Vector2)transform.position).normalized;
+            lineToDraw = new Line(transform.position, (Vector2)transform.position + grapDir * grapLength * (1f + grapElasticity));
             RaycastHit2D raycast = PhysicsToric.Raycast(transform.position, grapDir, grapLength * (1f + grapElasticity), groundMask, out toricIntersPoints);
             if(raycast.collider == null || raycast.collider != colliderWhereGrapIsAttach)
             {
@@ -227,6 +235,7 @@ public class GrapplingAttack : WeakAttack
             toricIntersPoints = null;
             Destroy(rbAttachPoint.gameObject);
             cooldown.Reset();
+            callbackEnableThisAttack.Invoke();
         }
     }
 
@@ -240,7 +249,7 @@ public class GrapplingAttack : WeakAttack
         }
 
         grapLength = raycast.distance;
-        attachPoint = raycast.point;//(Vector2)transform.position + grapDir * grapLength;
+        attachPoint = raycast.point;
         colliderWhereGrapIsAttach = raycast.collider;
 
         return true;
@@ -266,12 +275,16 @@ public class GrapplingAttack : WeakAttack
 
         if(Application.isPlaying)
         {
+            if(lineToDraw != null)
+                Gizmos.DrawLine(lineToDraw.A, lineToDraw.B);
+            /*
             if(CalculateAttachPoint())
             {
                 Gizmos.color = Color.red;
                 Circle.GizmosDraw(attachPoint, circleCastRadius);
                 Gizmos.DrawLine(transform.position, attachPoint);
             }
+            */
         }
     }
 }

@@ -26,23 +26,25 @@ public class FallAttack : WeakAttack
         hitbox = GetComponent<BoxCollider2D>();
     }
 
-    public override bool Launch(Action callbackEnd)
+    public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         if(!cooldown.isActive || movement.isGrounded)
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
-        base.Launch(callbackEnd);
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
 
         if(!IsEnoughtHight())
         {
-            callbackEnd.Invoke();
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
 
         cooldown.Reset();
-        StartCoroutine(ApplyFallAttack(callbackEnd));
+        StartCoroutine(ApplyFallAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
     }
 
@@ -52,7 +54,7 @@ public class FallAttack : WeakAttack
         return raycast.collider == null;
     }
 
-    private IEnumerator ApplyFallAttack(Action callbackEnd)
+    private IEnumerator ApplyFallAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         movement.Freeze();
 
@@ -99,7 +101,8 @@ public class FallAttack : WeakAttack
         }
 
         movement.UnFreeze();
-        callbackEnd.Invoke();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
 
         //Instantiate wave attack
         //right
