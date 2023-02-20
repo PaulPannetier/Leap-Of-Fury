@@ -787,11 +787,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchAttack: 1
-  canEnableShield: 1
+  canLauchAttackWeakAttack: 1
+  canLaunchStrongAttack: 1
   enableAttackWeak: 1
   enableAttackStrong: 1
-  enableShield: 1
   castCoyoteTime: 0.2
 --- !u!114 &4128551290350845197
 MonoBehaviour:
@@ -811,28 +810,17 @@ MonoBehaviour:
     duration: 1
   grapRange: 7.5
   circleCastRadius: 0.5
-  ropeElasticity: 0.2
+  maxRopeLength: 8.5
   maxDurationAttach: 5
-  grapClimbUpSpeed: 2
-  grapClimbDownSpeed: 4
+  grapClimbUpSpeed: 4.5
+  grapClimbDownSpeed: 6.5
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
   bombPrefabs: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
-  timeBetweenBombSpawn: 0.4
-  gravityScaleWhenSwinging: 3
-  grapMovementForce: 2000
-  linearDrag: 200
-  componentsToDestroyInPhysicsSimulateClone:
-  - {fileID: 1113869503384375398}
-  - {fileID: 4099738504158456230}
-  - {fileID: 7111324779284635613}
-  - {fileID: 3017698710242093834}
-  - {fileID: 4135942895386761519}
-  - {fileID: 3712884546189942275}
-  - {fileID: 6057168255707342057}
-  - {fileID: 5907287823364622964}
-  - {fileID: 7598047637200888153}
-  - {fileID: 7187370182271411996}
-  - {fileID: 4128551290350845197}
-  - {fileID: 0}
+  timeBetweenBombSpawn: 0.3
+  attackPointPrefaps: {fileID: 5643303674285272075, guid: 2d509ff36d2c02045ba03cad79be9c54, type: 3}
+  grapElasticity: 0.2
+  gravityScaleWhenSwinging: 100
+  grapMovementForce: 1300
+  linearDrag: 75

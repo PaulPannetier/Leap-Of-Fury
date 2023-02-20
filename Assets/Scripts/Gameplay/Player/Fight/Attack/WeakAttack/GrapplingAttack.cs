@@ -128,7 +128,6 @@ public class GrapplingAttack : WeakAttack
 
         if(!RecalculateInterPoint())
         {
-            print("end du to wrong point");
             EndAttack();
             return;
         }
@@ -147,7 +146,7 @@ public class GrapplingAttack : WeakAttack
             springJoint.distance = grapLength;
         }
 
-        if(lastTimeBombSpawn - Time.time > timeBetweenBombSpawn)
+        if(Time.time - lastTimeBombSpawn > timeBetweenBombSpawn)
         {
             lastTimeBombSpawn = Time.time;
             Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent);
@@ -176,10 +175,11 @@ public class GrapplingAttack : WeakAttack
 
         bool RecalculateInterPoint()
         {
-            grapDir = (attachPoint - (Vector2)transform.position).normalized;
-            lineToDraw = new Line(transform.position, (Vector2)transform.position + grapDir * grapLength * (1f + grapElasticity));
-            RaycastHit2D raycast = PhysicsToric.Raycast(transform.position, grapDir, grapLength * (1f + grapElasticity), groundMask, out toricIntersPoints);
-            if(raycast.collider == null || raycast.collider != colliderWhereGrapIsAttach)
+            Vector2 pos = transform.position;
+            grapDir = (attachPoint - pos).normalized;
+            lineToDraw = new Line(pos, pos + grapDir * grapLength * (1f + grapElasticity));
+            RaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out toricIntersPoints);
+            if(raycast.collider != null && raycast.collider != colliderWhereGrapIsAttach)
             {
                 return false;
             }
