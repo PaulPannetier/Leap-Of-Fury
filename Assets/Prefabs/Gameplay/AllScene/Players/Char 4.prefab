@@ -263,6 +263,7 @@ GameObject:
   - component: {fileID: 7598047637200888153}
   - component: {fileID: 7187370182271411996}
   - component: {fileID: 4128551290350845197}
+  - component: {fileID: 4277522715158860269}
   m_Layer: 8
   m_Name: Char 4
   m_TagString: Char
@@ -824,3 +825,15 @@ MonoBehaviour:
   gravityScaleWhenSwinging: 100
   grapMovementForce: 1300
   linearDrag: 75
+--- !u!114 &4277522715158860269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090791378756873177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d061c27edc233a4d95c6a997709874f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
