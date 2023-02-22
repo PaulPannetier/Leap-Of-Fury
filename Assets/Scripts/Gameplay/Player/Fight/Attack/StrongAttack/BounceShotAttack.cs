@@ -46,6 +46,7 @@ public class BounceShotAttack : StrongAttack
             callbackEnableThisAttack.Invoke();
             return false;
         }
+
         base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         cooldown.Reset();
         StartCoroutine(DoBounceAttack(callbackEnableOtherAttack, callbackEnableThisAttack));

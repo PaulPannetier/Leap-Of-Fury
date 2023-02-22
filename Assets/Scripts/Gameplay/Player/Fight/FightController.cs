@@ -56,14 +56,11 @@ public class FightController : MonoBehaviour
         {
             if(canLauchAttackWeakAttack)
             {
-                if(!attackWeak.Launch(OnEndStrongAttack, OnEndWeakAttack))
+                OnBeginWeakAttack();
+                if (!attackWeak.Launch(OnEndStrongAttack, OnEndWeakAttack))
                 {
                     lastInputLauchingWeakAttack = Time.time;
                     wantLauchWeakAttack = true;
-                }
-                else
-                {
-                    OnBeginWeakAttack();
                 }
             }
             else
@@ -76,14 +73,11 @@ public class FightController : MonoBehaviour
         {
             if (canLaunchStrongAttack)
             {
+                OnBeginStrongAttack();
                 if (!attackStrong.Launch(OnEndWeakAttack, OnEndStrongAttack))
                 {
                     lastInputLauchingStrongAttack = Time.time;
                     wantLaunchStrongAttack = true;
-                }
-                else
-                {
-                    OnBeginStrongAttack();
                 }
             }
             else
@@ -100,14 +94,11 @@ public class FightController : MonoBehaviour
                 if (canLauchAttackWeakAttack)
                 {
                     wantLauchWeakAttack = false;
+                    OnBeginWeakAttack();
                     if (!attackWeak.Launch(OnEndStrongAttack, OnEndWeakAttack))
                     {
                         canLauchAttackWeakAttack = true;
                         wantLauchWeakAttack = true;
-                    }
-                    else
-                    {
-                        OnBeginWeakAttack();
                     }
                 }
             }
@@ -123,14 +114,11 @@ public class FightController : MonoBehaviour
                 if (canLaunchStrongAttack)
                 {
                     wantLaunchStrongAttack = false;
+                    OnBeginStrongAttack();
                     if (!attackStrong.Launch(OnEndWeakAttack, OnEndWeakAttack))
                     {
                         canLaunchStrongAttack = true;
                         wantLaunchStrongAttack = true;
-                    }
-                    else
-                    {
-                        OnBeginStrongAttack();
                     }
                 }
             }

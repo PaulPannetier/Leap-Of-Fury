@@ -174,10 +174,12 @@ public class CloneAttack : StrongAttack
     {
         if(!cooldown.isActive)
         {
-            base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
             return false;
         }
 
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         StartCoroutine(EnableCloneAttack());
         cooldown.Reset();
         callbackEnableOtherAttack.Invoke();

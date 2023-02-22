@@ -242,14 +242,18 @@ public static class PhysicsToric
         return res;
     }
 
-    public static Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask) => OverlapCapsule(new Capsule(center, size), angle, layerMask);
-
-    public static Collider2D OverlapCapsule(Capsule capsule, float angle, in LayerMask layerMask)
+    public static Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
     {
-        Capsule c = (Capsule)capsule.Clone();
+        Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
             c.Rotate(angle);
+        c.Rotate(angle);
+        return OverlapCapsule(c, layerMask);
+    }
 
+    public static Collider2D OverlapCapsule(Capsule capsule, in LayerMask layerMask)
+    {
+        Capsule c = (Capsule)capsule.Clone();
         c.MoveAt(GetPointInsideBounds(capsule.center));
 
         bool containAll = true;
@@ -264,6 +268,7 @@ public static class PhysicsToric
             }
         }
 
+        float angle = Useful.AngleHori(c.c1.center, c.c2.center);
         if (containAll)//ez case
         {
             return Physics2D.OverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
@@ -288,13 +293,17 @@ public static class PhysicsToric
         return null;
     }
 
-    public static Collider2D[] OverlapCapsuleAll(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask) => OverlapCapsuleAll(new Capsule(center, size), angle, layerMask);
-
-    public static Collider2D[] OverlapCapsuleAll(Capsule capsule, float angle, in LayerMask layerMask)
+    public static Collider2D[] OverlapCapsuleAll(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
     {
-        Capsule c = (Capsule)capsule.Clone();
+        Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
             c.Rotate(angle);
+        return OverlapCapsuleAll(c, layerMask);
+    }
+
+    public static Collider2D[] OverlapCapsuleAll(Capsule capsule, in LayerMask layerMask)
+    {
+        Capsule c = (Capsule)capsule.Clone();
 
         c.MoveAt(GetPointInsideBounds(capsule.center));
 
@@ -310,6 +319,7 @@ public static class PhysicsToric
             }
         }
 
+        float angle = Useful.AngleHori(c.c1.center, c.c2.center);
         if (containAll)//ez case
         {
             return Physics2D.OverlapCapsuleAll(c.center, c.hitbox.size, c.direction, angle, layerMask);

@@ -3129,8 +3129,15 @@ public class Capsule : CustomCollider
         }
         inclusiveCircle = ToCircle();
     }
-  
-    public override CustomCollider Clone() => new Capsule(center, hitbox.size, direction);
+
+    public override CustomCollider Clone()
+    {
+        Capsule clone = new Capsule(center, hitbox.size, direction);
+        clone.hitbox = (Hitbox)hitbox.Clone();
+        clone.c1 = (Circle)c1.Clone();
+        clone.c2 = (Circle)c2.Clone();
+        return clone;
+    }
 
     public override bool CollideLine(Line l) => CollideLine(l.A, l.B);
     public override bool CollideLine(in Vector2 A, in Vector2 B)

@@ -47,14 +47,14 @@ public class ArrowAttack : WeakAttack
             return true;
         }
 
-        if(!cooldown.isActive)
+        if (!cooldown.isActive)
         {
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();
             return false;
         }
 
-        if(nbArrow > 0)
+        if (nbArrow > 0)
         {
             base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
             Vector2 dir = movement.GetCurrentDirection(true);

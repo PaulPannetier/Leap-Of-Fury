@@ -55,13 +55,13 @@ public class GrapplingAttack : WeakAttack
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         if (!cooldown.isActive)
         {
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();
             return false;
         }
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
 
         if (CalculateAttachPoint())
         {

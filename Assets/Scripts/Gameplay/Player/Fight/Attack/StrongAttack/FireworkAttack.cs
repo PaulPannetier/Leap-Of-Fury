@@ -28,6 +28,7 @@ public class FireworkAttack : StrongAttack
             return false;
         }
         base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
+        cooldown.Reset();
 
         LaunchFirework();
 
@@ -66,8 +67,33 @@ public class FireworkAttack : StrongAttack
         distanceFromCharWhenLauch = Mathf.Max(distanceFromCharWhenLauch, 0f);
     }
 
+    [SerializeField] private LayerMask groundMaskToRm;
+    private float angleTest = 0f;
     private void OnDrawGizmosSelected()
     {
+        //test overlap capsule
+        if(Application.isPlaying)
+        {
+            Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Capsule c = new Capsule(mousePos, new Vector2(1.5f, 2.5f));
+            if(CustomInput.GetKey(KeyCode.A))
+            {
+                angleTest -= 1f;
+            }
+            if (CustomInput.GetKey(KeyCode.E))
+            {
+                angleTest += 1f;
+            }
+
+            c.Rotate(angleTest * Mathf.Deg2Rad);
+
+            bool b = PhysicsToric.OverlapCapsule(c, groundMaskToRm) == null;
+            Gizmos.color =  b ? Color.green : Color.red;
+            Capsule.GizmosDraw(c);
+        }
+
+
+
         Gizmos.color = Color.green;
         float a1 = (270f + fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;
         float a2 = (270f - fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;

@@ -94,13 +94,13 @@ public class Firework : MonoBehaviour
             transform.Translate(dir * (speed * Time.deltaTime));
 
             capsuleCollider.MoveAt((Vector2)transform.position + capsuleOffset);
-            Collider2D[] cols = PhysicsToric.OverlapCapsuleAll(capsuleCollider, 0f, charMask);
+            Collider2D[] cols = PhysicsToric.OverlapCapsuleAll(capsuleCollider, charMask);
             foreach (Collider2D col in cols)
             {
                 TouchChar(col);
             }
 
-            Collider2D colGround = PhysicsToric.OverlapCapsule(capsuleCollider, 0f, groundMask);
+            Collider2D colGround = PhysicsToric.OverlapCapsule(capsuleCollider, groundMask);
             if (colGround != null)
             {
                 StartExplode();
@@ -133,14 +133,6 @@ public class Firework : MonoBehaviour
             fireworkAttack.OnFireworkTouchEnnemy(this, player);
             if(!isExploding)
                 StartExplode();
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if(!isExploding)
-        {
-
         }
     }
 

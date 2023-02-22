@@ -42,6 +42,7 @@ public class BouncingBallAttack : StrongAttack
             return false;
         }
         base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
+
         cooldown.Reset();
         StartCoroutine(DoBounceAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;

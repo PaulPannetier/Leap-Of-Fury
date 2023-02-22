@@ -180,6 +180,7 @@ public class AmericanFistAttack : WeakAttack
             return false;
         }
         base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
+
         cooldown.Reset();
         StartCoroutine(ApplyAttackCorout(movement.GetCurrentDirection(), callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
