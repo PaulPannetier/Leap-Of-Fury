@@ -6,9 +6,8 @@ public class Firework : MonoBehaviour
     private ToricObject toricObject; 
     private FireworkAttack fireworkAttack;
     private PlayerCommon playerCommon;
-    private Rigidbody2D rb;
     private Capsule capsuleCollider;
-    private float angle;
+    private float angle, speed;
     private Vector2 dir;
     private float timeWhenIsLaunch;
     private List<uint> charAlreadyTouch = new List<uint>();
@@ -22,11 +21,12 @@ public class Firework : MonoBehaviour
     [SerializeField] private AnimationCurve speedCurve;
     [SerializeField] Vector2 capsuleOffset;
     [SerializeField] Vector2 capsuleSize;
+    [SerializeField] CapsuleDirection2D capsuleDirection;
     [SerializeField] private float maxDuration = 5f;
 
     [Header("Explosion")]
     [SerializeField] private float explosionDuration = 1f;
-    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private string explosionAnimName = "Explode";
     [SerializeField] private float explosioForce = 10f;
 
@@ -36,10 +36,9 @@ public class Firework : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         toricObject = GetComponent<ToricObject>();
         animator = GetComponent<Animator>();
-        capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize);
+        capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
     }
 
     private void Start()
@@ -64,7 +63,7 @@ public class Firework : MonoBehaviour
         capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize);
         capsuleCollider.Rotate(angle);
         dir = Useful.Vector2FromAngle(angle);
-        rb.velocity = dir * (maxSpeed * speedCurve.Evaluate(0f));
+        speed = maxSpeed * speedCurve.Evaluate(0f);
         timeWhenIsLaunch = Time.time;
     }
 
@@ -83,8 +82,18 @@ public class Firework : MonoBehaviour
         }
         else
         {
-            capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize);
-            capsuleCollider.Rotate(angle);
+            if (Time.time - timeWhenIsLaunch < accelerationDuration)
+            {
+                speed = (maxSpeed * speedCurve.Evaluate((Time.time - timeWhenIsLaunch) / accelerationDuration));
+            }
+            else
+            {
+                speed = maxSpeed * speedCurve.Evaluate(1);
+            }
+
+            transform.Translate(dir * (speed * Time.deltaTime));
+
+            capsuleCollider.MoveAt((Vector2)transform.position + capsuleOffset);
             Collider2D[] cols = PhysicsToric.OverlapCapsuleAll(capsuleCollider, 0f, charMask);
             foreach (Collider2D col in cols)
             {
@@ -131,14 +140,7 @@ public class Firework : MonoBehaviour
     {
         if(!isExploding)
         {
-            if (Time.time - timeWhenIsLaunch < accelerationDuration)
-            {
-                rb.velocity = dir * (maxSpeed * speedCurve.Evaluate((Time.time - timeWhenIsLaunch) / accelerationDuration));
-            }
-            else
-            {
-                rb.velocity = dir * maxSpeed;
-            }
+
         }
     }
 
@@ -174,8 +176,8 @@ public class Firework : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize);
-        capsuleCollider.Rotate(angle);
+        capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
+        capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
         Capsule.GizmosDraw(capsuleCollider);
         Circle.GizmosDraw(transform.position, explosionRadius);
     }

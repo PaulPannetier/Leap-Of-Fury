@@ -162,7 +162,6 @@ public class Droite
 
 #endregion
 
-[Serializable]
 public abstract class CustomCollider
 {
     public const float accuracy = 1e-5f;
@@ -2592,7 +2591,6 @@ public abstract class CustomCollider
 
 #region Polygone
 
-[Serializable]
 public class Polygone : CustomCollider
 {
     public static void GizmosDraw(List<Vector2> points)
@@ -2862,7 +2860,6 @@ public class Polygone : CustomCollider
 
 #region Hitbox
 
-[Serializable]
 public class Hitbox : CustomCollider
 {
     public static void GizmosDraw(Hitbox hitbox) => Polygone.GizmosDraw(hitbox.rec);
@@ -2942,7 +2939,6 @@ public class Hitbox : CustomCollider
 
 #region Circle
 
-[Serializable]
 public class Circle : CustomCollider
 {
     public static void GizmosDraw(in Vector2 center, in float radius)
@@ -3081,7 +3077,6 @@ public class Circle : CustomCollider
 
 #region Capsule
 
-[Serializable]
 public class Capsule : CustomCollider
 {
     public static void GizmosDraw(Capsule capsule)
@@ -3213,7 +3208,6 @@ public class Capsule : CustomCollider
 
 #region Ellipse
 
-[Serializable]
 public class Ellipse : CustomCollider
 {
     #region Gizmos

@@ -50,6 +50,8 @@ public class FireworkAttack : StrongAttack
             Firework firework = Instantiate(fireworkPrefaps, fireworkPos, Quaternion.Euler(0f, 0f, fireworkAngle), CloneParent.cloneParent);
             firework.Launch(fireworkAngle, playerCommon, this);
         }
+
+        rb.AddForce(-dir * bumpForce, ForceMode2D.Impulse);
     }
 
     public void OnFireworkTouchEnnemy(Firework firework, GameObject ennemy)
@@ -62,5 +64,15 @@ public class FireworkAttack : StrongAttack
         bumpForce = Mathf.Max(bumpForce, 0f);
         nbFireworkLaunch = Mathf.Max(nbFireworkLaunch, 0);
         distanceFromCharWhenLauch = Mathf.Max(distanceFromCharWhenLauch, 0f);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        float a1 = (270f + fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;
+        float a2 = (270f - fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(a1));
+        Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(a2));
+        Circle.GizmosDraw(transform.position, 1f, a2, a1);
     }
 }
