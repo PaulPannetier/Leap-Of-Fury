@@ -282,7 +282,6 @@ public static class PhysicsToric
         Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
             c.Rotate(angle);
-        c.Rotate(angle);
         return OverlapCapsule(c, layerMask);
     }
 
@@ -306,7 +305,6 @@ public static class PhysicsToric
         float angle = c.AngleHori();
         if (containAll)//ez case
         {
-            Debug.Log(angle * Mathf.Rad2Deg);
             return Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
         }
 

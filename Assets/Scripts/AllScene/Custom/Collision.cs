@@ -2902,7 +2902,7 @@ public class Hitbox : CustomCollider
 
     public float AngleHori()
     {
-        return Useful.Angle(center, (rec.vertices[2] + rec.vertices[1]) * 0.5f);
+        return Useful.AngleHori(center, (rec.vertices[2] + rec.vertices[1]) * 0.5f);
     }
 
     public override void MoveAt(in Vector2 position)
