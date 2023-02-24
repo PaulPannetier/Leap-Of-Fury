@@ -22,9 +22,6 @@ public class GrapplingAttack : WeakAttack
     private float lastTimeGrap = -10f;
     private Action callbackEnableThisAttack;
 
-    //to rm
-    private Line lineToDraw;
-
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
     [SerializeField] private float maxRopeLength;
     [SerializeField] private float maxDurationAttach = 5f;
@@ -177,7 +174,6 @@ public class GrapplingAttack : WeakAttack
         {
             Vector2 pos = transform.position;
             grapDir = (attachPoint - pos).normalized;
-            lineToDraw = new Line(pos, pos + grapDir * grapLength * (1f + grapElasticity));
             RaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out toricIntersPoints);
             if(raycast.collider != null && raycast.collider != colliderWhereGrapIsAttach)
             {
@@ -275,8 +271,6 @@ public class GrapplingAttack : WeakAttack
 
         if(Application.isPlaying)
         {
-            if(lineToDraw != null)
-                Gizmos.DrawLine(lineToDraw.A, lineToDraw.B);
             /*
             if(CalculateAttachPoint())
             {

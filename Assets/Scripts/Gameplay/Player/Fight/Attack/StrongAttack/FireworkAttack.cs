@@ -67,6 +67,7 @@ public class FireworkAttack : StrongAttack
         distanceFromCharWhenLauch = Mathf.Max(distanceFromCharWhenLauch, 0f);
     }
 
+    //to rm
     [SerializeField] private LayerMask groundMaskToRm;
     private float angleTest = 0f;
     private void OnDrawGizmosSelected()
@@ -91,8 +92,6 @@ public class FireworkAttack : StrongAttack
             Gizmos.color =  b ? Color.green : Color.red;
             Capsule.GizmosDraw(c);
         }
-
-
 
         Gizmos.color = Color.green;
         float a1 = (270f + fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;

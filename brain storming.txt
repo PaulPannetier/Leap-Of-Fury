@@ -1,4 +1,11 @@
-Name : Party Game
+Names : 
+Leap of Fury
+Sky Fighters
+Rampage Arena
+Brawl Brigade
+BattleLeap
+Airborne Assault
+Sky Warriors
 
 2 mode de jeu :
 Campagne (solo ou coop)
