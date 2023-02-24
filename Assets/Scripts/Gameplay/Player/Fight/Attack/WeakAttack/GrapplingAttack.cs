@@ -268,17 +268,5 @@ public class GrapplingAttack : WeakAttack
         Gizmos.color = Color.green;
         Circle.GizmosDraw(transform.position, grapRange);
         Circle.GizmosDraw((Vector2)transform.position + grapRange * Vector2.up, circleCastRadius);
-
-        if(Application.isPlaying)
-        {
-            /*
-            if(CalculateAttachPoint())
-            {
-                Gizmos.color = Color.red;
-                Circle.GizmosDraw(attachPoint, circleCastRadius);
-                Gizmos.DrawLine(transform.position, attachPoint);
-            }
-            */
-        }
     }
 }

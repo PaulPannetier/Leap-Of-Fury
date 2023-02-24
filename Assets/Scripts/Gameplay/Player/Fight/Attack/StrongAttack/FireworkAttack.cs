@@ -73,10 +73,11 @@ public class FireworkAttack : StrongAttack
     private void OnDrawGizmosSelected()
     {
         //test overlap capsule
-        if(Application.isPlaying)
+        if (Application.isPlaying)
         {
             Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            Capsule c = new Capsule(mousePos, new Vector2(1.5f, 2.5f));
+            Vector2 size = new Vector2(1.5f, 2.5f);
+            Capsule c = new Capsule(mousePos, size);
             if(CustomInput.GetKey(KeyCode.A))
             {
                 angleTest -= 1f;

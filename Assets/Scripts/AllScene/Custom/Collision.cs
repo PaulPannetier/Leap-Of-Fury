@@ -2900,6 +2900,11 @@ public class Hitbox : CustomCollider
         }
     }
 
+    public float AngleHori()
+    {
+        return Useful.Angle(center, (rec.vertices[2] + rec.vertices[1]) * 0.5f);
+    }
+
     public override void MoveAt(in Vector2 position)
     {
         rec.MoveAt(position);
@@ -3138,6 +3143,8 @@ public class Capsule : CustomCollider
         clone.c2 = (Circle)c2.Clone();
         return clone;
     }
+
+    public float AngleHori() => hitbox.AngleHori();
 
     public override bool CollideLine(Line l) => CollideLine(l.A, l.B);
     public override bool CollideLine(in Vector2 A, in Vector2 B)
