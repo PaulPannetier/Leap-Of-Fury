@@ -306,8 +306,11 @@ public static class PhysicsToric
         float angle = c.AngleHori();
         if (containAll)//ez case
         {
+            Debug.Log(angle * Mathf.Rad2Deg);
             return Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
         }
+
+        Debug.Log("!ez case");
 
         Collider2D res = Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
         if (res != null)
