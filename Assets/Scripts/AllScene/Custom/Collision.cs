@@ -2934,7 +2934,12 @@ public class Hitbox : CustomCollider
     }
 
     public override bool Contains(in Vector2 p) => rec.Contains(p);
-    public override CustomCollider Clone() => new Hitbox(center, size);
+    public override CustomCollider Clone()
+    {
+        Hitbox res = new Hitbox(center, size);
+        res.Rotate(AngleHori());
+        return res;
+    }
     public override Circle ToCircle() => (Circle)rec.inclusiveCircle.Clone();
     public override string ToString() => rec.ToString();
     public override bool Normal(in Vector2 point, out Vector2 normal) => rec.Normal(point, out normal);

@@ -90,9 +90,15 @@ public class FireworkAttack : StrongAttack
             angleTest = Useful.ClampModulo(0f, 360f, angleTest);
             c.Rotate(angleTest * Mathf.Deg2Rad);
             //print(angleTest + " =?= " + c.AngleHori() * Mathf.Rad2Deg);
+            Gizmos.color = Color.green;
+            Capsule.GizmosDraw(c);
+
+            Hitbox h1 = (Hitbox)c.hitbox.Clone();
+            Gizmos.color = Color.yellow;
+            Hitbox.GizmosDraw(h1);
 
             bool b = PhysicsToric.OverlapCapsule(c, groundMaskToRm) == null;
-            Gizmos.color =  b ? Color.green : Color.red;
+            Gizmos.color = b ? Color.green : Color.red;
             Capsule.GizmosDraw(c);
         }
 

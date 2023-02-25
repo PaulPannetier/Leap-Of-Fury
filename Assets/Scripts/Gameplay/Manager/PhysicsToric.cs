@@ -71,6 +71,8 @@ public static class PhysicsToric
 
     public static Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
 
+    public static Collider2D OverlapCircle(Circle circle, in LayerMask layerMask) => OverlapCircle(circle.center, circle.radius, layerMask);
+    
     public static Collider2D OverlapCircle(in Vector2 center, float radius, in LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
@@ -111,6 +113,8 @@ public static class PhysicsToric
         return null;
     }
 
+    public static Collider2D[] OverlapCircleAll(Circle circle, in LayerMask layerMask) => OverlapCircleAll(circle.center, circle.radius, layerMask);
+
     public static Collider2D[] OverlapCircleAll(in Vector2 center, float radius, in LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
@@ -149,7 +153,9 @@ public static class PhysicsToric
         return res == null ? null : res.Distinct().ToArray();
     }
 
-    public static Collider2D OverlapBox(in Vector2 point, in Vector2 size, in float angle, in LayerMask layerMask)
+    public static Collider2D OverlapBox(Hitbox hitbox, in LayerMask layerMask) => OverlapBox(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
+
+    public static Collider2D OverlapBox(in Vector2 point, in Vector2 size, float angle, in LayerMask layerMask)
     {
         Hitbox hitbox = new Hitbox(GetPointInsideBounds(point), size);
         hitbox.Rotate(angle);
@@ -166,10 +172,12 @@ public static class PhysicsToric
         if(containAll)
         {
             //cas simple
-            return Physics2D.OverlapBox(hitbox.center, size, angle, layerMask);
+            return Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         }
 
-        Collider2D res = Physics2D.OverlapBox(hitbox.center, size, angle, layerMask);
+        Debug.Log("!ez case");
+
+        Collider2D res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         if (res != null)
             return res;
 
@@ -188,7 +196,7 @@ public static class PhysicsToric
             if (contains[i])
             {
                 hitbox.MoveAt(hitbox.center - cameraHitboxArounds[i].center);
-                res = Physics2D.OverlapBox(hitbox.center, size, angle, layerMask);
+                res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
                 if (res != null)
                     return res;
                 hitbox.MoveAt(hitbox.center + cameraHitboxArounds[i].center);
@@ -196,6 +204,8 @@ public static class PhysicsToric
         }
         return res;
     }
+
+    public static Collider2D[] OverlapBoxAll(Hitbox hitbox, in LayerMask layerMask) => OverlapBoxAll(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
 
     public static Collider2D[] OverlapBoxAll(in Vector2 point, in Vector2 size, in float angle, in LayerMask layerMask)
     {
@@ -215,10 +225,10 @@ public static class PhysicsToric
         if (containAll)
         {
             //cas simple
-            return Physics2D.OverlapBoxAll(hitbox.center, size, angle, layerMask);
+            return Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         }
 
-        Collider2D[] res = Physics2D.OverlapBoxAll(hitbox.center, size, angle, layerMask);
+        Collider2D[] res = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         bool[] contains = new bool[4];
         foreach (Vector2 p in hitbox.rec.vertices)
         {
@@ -234,7 +244,7 @@ public static class PhysicsToric
             if (contains[i])
             {
                 hitbox.MoveAt(hitbox.center - cameraHitboxArounds[i].center);
-                Collider2D[] res2 = Physics2D.OverlapBoxAll(hitbox.center, size, angle, layerMask);
+                Collider2D[] res2 = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
                 hitbox.MoveAt(hitbox.center + cameraHitboxArounds[i].center);
@@ -246,7 +256,8 @@ public static class PhysicsToric
     private static Collider2D Physics2DOverlapCapsule(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size, dir);
-        c.Rotate(angle);
+        if(Mathf.Abs(angle) > 1e-5)
+            c.Rotate(angle);
         return Physics2DOverlapCapsule(c, layerMask);
     }
 
@@ -265,7 +276,8 @@ public static class PhysicsToric
     private static Collider2D[] Physics2DOverlapCapsuleAll(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size, dir);
-        c.Rotate(angle);
+        if(Mathf.Abs(angle) > 1e-5)
+            c.Rotate(angle);
         return Physic2DOverlapCapsuleAll(c, layerMask);
     }
 
@@ -307,8 +319,6 @@ public static class PhysicsToric
         {
             return Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
         }
-
-        Debug.Log("!ez case");
 
         Collider2D res = Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
         if (res != null)
