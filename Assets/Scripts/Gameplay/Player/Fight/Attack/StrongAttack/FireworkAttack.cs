@@ -41,14 +41,14 @@ public class FireworkAttack : StrongAttack
     {
         Vector2 dir = -movement.GetCurrentDirection(true);
         float angle = Useful.AngleHori(Vector2.zero, dir);
-        float angleStep = (fireworkDiffusionAngle / nbFireworkLaunch) * Mathf.Deg2Rad;
-        float begAngle = angle - fireworkDiffusionAngle * 0.5f * Mathf.Deg2Rad;
+        float angleStep = nbFireworkLaunch <= 1 ? 0f : (fireworkDiffusionAngle / (nbFireworkLaunch - 1)) * Mathf.Deg2Rad;
+        float begAngle = nbFireworkLaunch <= 1 ? angle : angle - fireworkDiffusionAngle * 0.5f * Mathf.Deg2Rad;
 
         for (int i = 0; i < nbFireworkLaunch; i++)
         {
             float fireworkAngle = begAngle + i * angleStep;
             Vector2 fireworkPos = (Vector2)transform.position + Useful.Vector2FromAngle(fireworkAngle, distanceFromCharWhenLauch);
-            Firework firework = Instantiate(fireworkPrefaps, fireworkPos, Quaternion.Euler(0f, 0f, fireworkAngle), CloneParent.cloneParent);
+            Firework firework = Instantiate(fireworkPrefaps, fireworkPos, Quaternion.Euler(0f, 0f, fireworkAngle * Mathf.Rad2Deg), CloneParent.cloneParent);
             firework.Launch(fireworkAngle, playerCommon, this);
         }
 
@@ -67,38 +67,34 @@ public class FireworkAttack : StrongAttack
         distanceFromCharWhenLauch = Mathf.Max(distanceFromCharWhenLauch, 0f);
     }
 
+    [SerializeField] private LayerMask groundMask;
+    private float tmpAngle = 0f;
     //to rm
-    [SerializeField] private LayerMask groundMaskToRm;
-    private float angleTest = 0f;
     private void OnDrawGizmosSelected()
     {
-        //test overlap capsule
-        if (Application.isPlaying)
+        //test overlap capsuleAll
+        if(Application.isPlaying)
         {
-            Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 size = new Vector2(1.5f, 2.5f);
-            Capsule c = new Capsule(mousePos, size);
             if(CustomInput.GetKey(KeyCode.A))
             {
-                angleTest -= 1f;
+                tmpAngle--;
             }
             if (CustomInput.GetKey(KeyCode.E))
             {
-                angleTest += 1f;
+                tmpAngle++;
             }
+            tmpAngle = Useful.ClampModulo(0f, 360f, tmpAngle);
 
-            angleTest = Useful.ClampModulo(0f, 360f, angleTest);
-            c.Rotate(angleTest * Mathf.Deg2Rad);
-            //print(angleTest + " =?= " + c.AngleHori() * Mathf.Rad2Deg);
-            Gizmos.color = Color.green;
-            Capsule.GizmosDraw(c);
+            Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Capsule c = new Capsule(mousePos, new Vector2(1, 2), CapsuleDirection2D.Vertical);
+            c.Rotate(tmpAngle * Mathf.Deg2Rad);
 
-            Hitbox h1 = (Hitbox)c.hitbox.Clone();
-            Gizmos.color = Color.yellow;
-            Hitbox.GizmosDraw(h1);
+            //Collider2D[] res = PhysicsToric.OverlapCapsuleAll(c, groundMask);
+            Collider2D[] res = Physics2D.OverlapBoxAll(c.hitbox.center, c.hitbox.size, c.hitbox.AngleHori() * Mathf.Rad2Deg, groundMask);
+            res.Merge(Physics2D.OverlapCircleAll(c.c1.center, c.c1.radius, groundMask));
+            res.Merge(Physics2D.OverlapCircleAll(c.c2.center, c.c2.radius, groundMask));
 
-            bool b = PhysicsToric.OverlapCapsule(c, groundMaskToRm) == null;
-            Gizmos.color = b ? Color.green : Color.red;
+            Gizmos.color = res.Length > 1 ? Color.red : (res.Length == 1 ? Color.yellow : Color.green);
             Capsule.GizmosDraw(c);
         }
 

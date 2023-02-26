@@ -60,8 +60,6 @@ public class Firework : MonoBehaviour
         this.playerCommon = playerCommon;
         this.angle = angle;
 
-        capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize);
-        capsuleCollider.Rotate(angle);
         dir = Useful.Vector2FromAngle(angle);
         speed = maxSpeed * speedCurve.Evaluate(0f);
         timeWhenIsLaunch = Time.time;
@@ -69,7 +67,7 @@ public class Firework : MonoBehaviour
 
     private void Update()
     {
-        if(isExploding)
+        if (isExploding)
         {
             if(Time.time - timeWhenIsLaunch <= explosionDuration)
             {
@@ -91,9 +89,10 @@ public class Firework : MonoBehaviour
                 speed = maxSpeed * speedCurve.Evaluate(1);
             }
 
-            transform.Translate(dir * (speed * Time.deltaTime));
+            transform.Translate(dir * (speed * Time.deltaTime), Space.World);
+            capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
+            capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
 
-            capsuleCollider.MoveAt((Vector2)transform.position + capsuleOffset);
             Collider2D[] cols = PhysicsToric.OverlapCapsuleAll(capsuleCollider, charMask);
             foreach (Collider2D col in cols)
             {
@@ -104,6 +103,7 @@ public class Firework : MonoBehaviour
             if (colGround != null)
             {
                 StartExplode();
+                print("explode touch the ground");
             }
 
             if (toricObject.isAClone)
@@ -112,6 +112,7 @@ public class Firework : MonoBehaviour
             if (Time.time - timeWhenIsLaunch > maxDuration)
             {
                 StartExplode();
+                print("explode max duration reach");
             }
         }
     }
@@ -132,7 +133,10 @@ public class Firework : MonoBehaviour
             charAlreadyTouch.Add(id);
             fireworkAttack.OnFireworkTouchEnnemy(this, player);
             if(!isExploding)
+            {
                 StartExplode();
+                print("explode touch a char");
+            }
         }
     }
 
@@ -165,11 +169,20 @@ public class Firework : MonoBehaviour
         explosionRadius = Mathf.Max(explosionRadius, 0f);
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
-        capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
+        if(Application.isPlaying)
+        {
+            capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
+            capsuleCollider.Rotate(angle);
+        }
+        else
+        {
+            capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
+            capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
+        }
+
         Capsule.GizmosDraw(capsuleCollider);
         Circle.GizmosDraw(transform.position, explosionRadius);
     }
