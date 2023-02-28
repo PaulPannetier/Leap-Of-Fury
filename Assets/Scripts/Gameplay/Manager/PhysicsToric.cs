@@ -177,8 +177,6 @@ public static class PhysicsToric
             return Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         }
 
-        Debug.Log("!ez case");
-
         Collider2D res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         if (res != null)
             return res;
@@ -299,64 +297,15 @@ public static class PhysicsToric
         return OverlapCapsule(c, layerMask);
     }
 
-    public static bool IsEZCase(Capsule capsule)
-    {
-        Capsule c = (Capsule)capsule.Clone();
-        c.MoveAt(GetPointInsideBounds(capsule.center));
-
-        bool containAll = true;
-        bool[] collideWithCamHitbox = new bool[4];
-        for (int i = 0; i < 4; i++)
-        {
-            Hitbox h = cameraHitboxArounds[i];
-            if (CustomCollider.Collide(h, c))
-            {
-                collideWithCamHitbox[i] = true;
-                containAll = false;
-            }
-        }
-        return containAll;
-    }
-
     public static Collider2D OverlapCapsule(Capsule capsule, in LayerMask layerMask)
     {
-        Capsule c = (Capsule)capsule.Clone();
-        c.MoveAt(GetPointInsideBounds(capsule.center));
-
-        bool containAll = true;
-        bool[] collideWithCamHitbox = new bool[4];
-        for (int i = 0; i < 4; i++)
-        {
-            Hitbox h = cameraHitboxArounds[i];
-            if (CustomCollider.Collide(h, c))
-            {
-                collideWithCamHitbox[i] = true;
-                containAll = false;
-            }
-        }
-
-        if (containAll)//ez case
-        {
-            return Physics2DOverlapCapsule(c, layerMask);
-        }
-
-        Collider2D res = Physics2DOverlapCapsule(c, layerMask);
+        Collider2D res = OverlapBox(capsule.hitbox, layerMask);
+        if(res != null)
+            return res;
+        res = OverlapCircle(capsule.c1, layerMask);
         if (res != null)
             return res;
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (collideWithCamHitbox[i])
-            {
-                c.MoveAt(c.center - cameraHitboxArounds[i].center);
-                res = Physics2DOverlapCapsule(c, layerMask);
-                if (res != null)
-                    return res;
-                c.MoveAt(c.center + cameraHitboxArounds[i].center);
-            }
-        }
-
-        return null;
+        return OverlapCircle(capsule.c2, layerMask);
     }
 
     public static Collider2D[] OverlapCapsuleAll(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
@@ -369,39 +318,9 @@ public static class PhysicsToric
 
     public static Collider2D[] OverlapCapsuleAll(Capsule capsule, in LayerMask layerMask)
     {
-        Capsule c = (Capsule)capsule.Clone();
-        c.MoveAt(GetPointInsideBounds(capsule.center));//BUG!
-
-        bool containAll = true;
-        bool[] collideWithCamHitbox = new bool[4];
-        for (int i = 0; i < 4; i++)
-        {
-            Hitbox h = cameraHitboxArounds[i];
-            if (CustomCollider.Collide(h, c))
-            {
-                collideWithCamHitbox[i] = true;
-                containAll = false;
-            }
-        }
-
-        if (containAll)//ez case
-        {
-            return Physics2DOverlapCapsuleAll(c, layerMask);
-        }
-
-        Collider2D[] res = Physics2DOverlapCapsuleAll(c, layerMask);
-        for (int i = 0; i < 4; i++)
-        {
-            if (collideWithCamHitbox[i])
-            {
-                c.MoveAt(c.center - cameraHitboxArounds[i].center);
-                Collider2D[] res2 =  Physics2DOverlapCapsuleAll(c, layerMask);
-                if (res2 != null && res2.Length > 0)
-                    res = res.Merge(res2);
-                c.MoveAt(c.center + cameraHitboxArounds[i].center);
-            }
-        }
-        return res == null ? null : res.Distinct().ToArray();
+        Collider2D[] res = OverlapBoxAll(capsule.hitbox, layerMask);
+        res = res.Merge(OverlapCircleAll(capsule.c1, layerMask));
+        return res.Merge(OverlapCircleAll(capsule.c2, layerMask));
     }
 
     #endregion

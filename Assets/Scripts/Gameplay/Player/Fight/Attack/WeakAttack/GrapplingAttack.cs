@@ -16,7 +16,7 @@ public class GrapplingAttack : WeakAttack
     private Vector2 attachPoint;
     private Collider2D colliderWhereGrapIsAttach;
     private float grapLength;
-    private Vector2[] toricIntersPoints;
+    private Vector2[] lineRendererPoints;
     private float lastTimeBombSpawn = -10f;
     private bool doJump, doDash;
     private float lastTimeGrap = -10f;
@@ -174,7 +174,7 @@ public class GrapplingAttack : WeakAttack
         {
             Vector2 pos = transform.position;
             grapDir = (attachPoint - pos).normalized;
-            RaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out toricIntersPoints);
+            RaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out lineRendererPoints);
             if(raycast.collider != null && raycast.collider != colliderWhereGrapIsAttach)
             {
                 return false;
@@ -184,7 +184,7 @@ public class GrapplingAttack : WeakAttack
 
         void UpdateLinesRenderer()
         {
-            int nbLineRenderer = toricIntersPoints.Length + 1;
+            int nbLineRenderer = lineRendererPoints.Length + 1;
             while (lstlineRenderers.Count < nbLineRenderer)
             {
                 lstlineRenderers.Add(Instantiate(lineRendererPrefabs, transform.GetChild(1)));
@@ -198,7 +198,7 @@ public class GrapplingAttack : WeakAttack
             Vector2 beg = transform.position, end;
             for (int i = 0; i < nbLineRenderer; i++)
             {
-                end = i != nbLineRenderer - 1 ? toricIntersPoints[i] : attachPoint;
+                end = i != nbLineRenderer - 1 ? lineRendererPoints[i] : attachPoint;
                 lstlineRenderers[i].positionCount = 2;
                 lstlineRenderers[i].SetPositions(new Vector3[2] { beg, end });
                 if(i != nbLineRenderer - 1)
@@ -228,7 +228,7 @@ public class GrapplingAttack : WeakAttack
             movement.enableBehaviour = movement.enableInput = true;
             isSwinging = doJump = doDash = false;
             RemoveLineRenderer();
-            toricIntersPoints = null;
+            lineRendererPoints = null;
             Destroy(rbAttachPoint.gameObject);
             cooldown.Reset();
             callbackEnableThisAttack.Invoke();
@@ -238,7 +238,7 @@ public class GrapplingAttack : WeakAttack
     private bool CalculateAttachPoint()
     {
         grapDir = movement.GetCurrentDirection(true);
-        RaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask, out toricIntersPoints);
+        RaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask, out lineRendererPoints);
         if(raycast.collider == null)
         {
             return false;

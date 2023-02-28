@@ -93,7 +93,6 @@ public class FireworkAttack : StrongAttack
 
             //Gizmos.color = res.Length > 1 ? Color.red : (res.Length == 1 ? Color.yellow : Color.green);
             Gizmos.color = res == null ? Color.green : Color.red;
-            Gizmos.color = PhysicsToric.IsEZCase(c) ? Color.green : Color.red;
             Capsule.GizmosDraw(c);
         }
 

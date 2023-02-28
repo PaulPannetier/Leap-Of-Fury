@@ -915,7 +915,11 @@ PrefabInstance:
       objectReference: {fileID: 8656721268289568354, guid: 0ff773371c0e3e44ebd9b5531232c400, type: 3}
     - target: {fileID: 4277522715158860269, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: nbFireworkLaunch
-      value: 1
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277522715158860269, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+      propertyPath: cooldown.duration
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4277522715158860269, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: groundMask.m_Bits

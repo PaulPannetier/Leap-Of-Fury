@@ -99,19 +99,10 @@ public class Firework : MonoBehaviour
                 TouchChar(col);
             }
 
-            //Collider2D colGround = PhysicsToric.OverlapCapsule(capsuleCollider, groundMask);
-            capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
-            capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
-            if (!PhysicsToric.IsEZCase(capsuleCollider))
-            {
-                bool b = PhysicsToric.IsEZCase(capsuleCollider);
-            }
-
             Collider2D colGround = PhysicsToric.OverlapCapsule(capsuleCollider, groundMask);
             if (colGround != null)
             {
                 StartExplode();
-                print("explode touch the ground");
             }
 
             if (toricObject.isAClone)
