@@ -3164,12 +3164,14 @@ public class Capsule : CustomCollider
 
     public override bool Collide(CustomCollider c) => CustomCollider.Collide(c, this);
 
-    public override void MoveAt(in Vector2 shift)
+    public override void MoveAt(in Vector2 pos)
     {
-        hitbox.MoveAt(shift);
-        c1.MoveAt(hitbox.center);
-        c2.MoveAt(hitbox.center);
-        inclusiveCircle.MoveAt(shift);
+        Vector2 distC1 = c1.center - center;
+        Vector2 distC2 = c2.center - center;
+        hitbox.MoveAt(pos);
+        c1.MoveAt(pos + distC1);
+        c2.MoveAt(pos + distC2);
+        inclusiveCircle.MoveAt(pos);
     }
 
     public override void Rotate(in float angle)

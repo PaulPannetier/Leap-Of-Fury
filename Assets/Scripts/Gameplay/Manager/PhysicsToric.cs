@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public static class PhysicsToric
@@ -284,17 +286,36 @@ public static class PhysicsToric
     private static Collider2D[] Physics2DOverlapCapsuleAll(Capsule capsule, LayerMask layerMask)
     {
         Collider2D[] res = Physics2D.OverlapBoxAll(capsule.hitbox.center, capsule.hitbox.size, capsule.AngleHori() * Mathf.Rad2Deg, layerMask);
-        res.Merge(Physics2D.OverlapCircleAll(capsule.c1.center, capsule.c1.radius, layerMask));
-        res.Merge(Physics2D.OverlapCircleAll(capsule.c2.center, capsule.c2.radius, layerMask));
-        return res == null ? null : res.Distinct().ToArray();
+        res = res.Merge(Physics2D.OverlapCircleAll(capsule.c1.center, capsule.c1.radius, layerMask));
+        res = res.Merge(Physics2D.OverlapCircleAll(capsule.c2.center, capsule.c2.radius, layerMask));
+        return res.Distinct().ToArray();
     }
 
-    public static Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
+    private static Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
             c.Rotate(angle);
         return OverlapCapsule(c, layerMask);
+    }
+
+    public static bool IsEZCase(Capsule capsule)
+    {
+        Capsule c = (Capsule)capsule.Clone();
+        c.MoveAt(GetPointInsideBounds(capsule.center));
+
+        bool containAll = true;
+        bool[] collideWithCamHitbox = new bool[4];
+        for (int i = 0; i < 4; i++)
+        {
+            Hitbox h = cameraHitboxArounds[i];
+            if (CustomCollider.Collide(h, c))
+            {
+                collideWithCamHitbox[i] = true;
+                containAll = false;
+            }
+        }
+        return containAll;
     }
 
     public static Collider2D OverlapCapsule(Capsule capsule, in LayerMask layerMask)
@@ -314,13 +335,12 @@ public static class PhysicsToric
             }
         }
 
-        float angle = c.AngleHori();
         if (containAll)//ez case
         {
-            return Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
+            return Physics2DOverlapCapsule(c, layerMask);
         }
 
-        Collider2D res = Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
+        Collider2D res = Physics2DOverlapCapsule(c, layerMask);
         if (res != null)
             return res;
 
@@ -329,7 +349,7 @@ public static class PhysicsToric
             if (collideWithCamHitbox[i])
             {
                 c.MoveAt(c.center - cameraHitboxArounds[i].center);
-                res = Physics2DOverlapCapsule(c.center, c.hitbox.size, c.direction, angle, layerMask);
+                res = Physics2DOverlapCapsule(c, layerMask);
                 if (res != null)
                     return res;
                 c.MoveAt(c.center + cameraHitboxArounds[i].center);
@@ -350,8 +370,7 @@ public static class PhysicsToric
     public static Collider2D[] OverlapCapsuleAll(Capsule capsule, in LayerMask layerMask)
     {
         Capsule c = (Capsule)capsule.Clone();
-
-        c.MoveAt(GetPointInsideBounds(capsule.center));
+        c.MoveAt(GetPointInsideBounds(capsule.center));//BUG!
 
         bool containAll = true;
         bool[] collideWithCamHitbox = new bool[4];
@@ -365,13 +384,10 @@ public static class PhysicsToric
             }
         }
 
-        float angle = c.AngleHori();
         if (containAll)//ez case
         {
             return Physics2DOverlapCapsuleAll(c, layerMask);
         }
-
-        Debug.Log("!ez case");
 
         Collider2D[] res = Physics2DOverlapCapsuleAll(c, layerMask);
         for (int i = 0; i < 4; i++)

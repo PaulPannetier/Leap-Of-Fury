@@ -73,7 +73,7 @@ public class FireworkAttack : StrongAttack
     private void OnDrawGizmosSelected()
     {
         //test overlap capsuleAll
-        if(Application.isPlaying)
+        if(Application.isPlaying && false)
         {
             if(CustomInput.GetKey(KeyCode.A))
             {
@@ -89,21 +89,11 @@ public class FireworkAttack : StrongAttack
             Capsule c = new Capsule(mousePos, new Vector2(1, 2), CapsuleDirection2D.Vertical);
             c.Rotate(tmpAngle * Mathf.Deg2Rad);
 
-            Collider2D[] res = PhysicsToric.OverlapCapsuleAll(c, groundMask);
-            Collider2D[] res1 = Physics2D.OverlapBoxAll(c.hitbox.center, c.hitbox.size, c.hitbox.AngleHori() * Mathf.Rad2Deg, groundMask);
-            Collider2D[] res2 = Physics2D.OverlapCircleAll(c.c1.center, c.c1.radius, groundMask);
-            Collider2D[] res3 = Physics2D.OverlapCircleAll(c.c2.center, c.c2.radius, groundMask);
+            Collider2D res = PhysicsToric.OverlapCapsule(c, groundMask);
 
-            Gizmos.color = res1.Length > 1 ? Color.red : (res1.Length == 1 ? Color.yellow : Color.green);
-            Hitbox.GizmosDraw(c.hitbox);
-
-            Gizmos.color = res2.Length > 1 ? Color.red : (res2.Length == 1 ? Color.yellow : Color.green);
-            Circle.GizmosDraw(c.c1);
-
-            Gizmos.color = res3.Length > 1 ? Color.red : (res3.Length == 1 ? Color.yellow : Color.green);
-            Circle.GizmosDraw(c.c2);
-
-            Gizmos.color = res.Length > 1 ? Color.red : (res.Length == 1 ? Color.yellow : Color.green);
+            //Gizmos.color = res.Length > 1 ? Color.red : (res.Length == 1 ? Color.yellow : Color.green);
+            Gizmos.color = res == null ? Color.green : Color.red;
+            Gizmos.color = PhysicsToric.IsEZCase(c) ? Color.green : Color.red;
             Capsule.GizmosDraw(c);
         }
 
