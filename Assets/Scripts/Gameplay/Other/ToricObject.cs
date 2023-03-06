@@ -14,17 +14,25 @@ public class ToricObject : MonoBehaviour
     private static Vector2[] camOffsets;
     private static int[] invertCamOffsetIndex = new int[4] { 1, 0, 3, 2 };
 
+    private bool[] oldCollideCamBounds = new bool[4];
+
     [SerializeField] private Bounds bounds;
     [SerializeField] private Vector2 boundsOffset;
-    public List<Component> componentsToDisableInClone;
-    public List<GameObject> chidrenToRemoveInClone;
     [SerializeField] private bool enableHorizontal = true, enableVertical = true;
-    [HideInInspector] public bool isAClone;
-    public GameObject original => isAClone ? cloner : gameObject;
 
+    [HideInInspector] public bool isAClone;
     [HideInInspector] public List<ObjectClone> lstClones;
     [HideInInspector] public GameObject cloner;
-    private bool[] oldCollideCamBounds = new bool[4];
+    [HideInInspector] public Action<Vector2, Vector2> onTeleportCallback;
+
+    public List<Component> componentsToDisableInClone;
+    public List<GameObject> chidrenToRemoveInClone;
+    public GameObject original => isAClone ? cloner : gameObject;
+
+    private void Awake()
+    {
+        onTeleportCallback = (Vector2 newPos, Vector2 oldPos) => { };
+    }
 
     private void Start()
     {
@@ -146,8 +154,11 @@ public class ToricObject : MonoBehaviour
                     {
                         Vector3 tmpPos = transform.position, tmpScale = transform.localScale;
                         Quaternion tmpRot = transform.rotation;
-                        transform.SetPositionAndRotation(transform.position + clone.offset, clone.go.transform.rotation);
+                        Vector2 newPos = transform.position + clone.offset;
+                        transform.SetPositionAndRotation(newPos, clone.go.transform.rotation);
                         transform.localScale = clone.go.transform.localScale;
+
+                        onTeleportCallback.Invoke(newPos, tmpPos);
 
                         clone.go.transform.position = tmpPos;
                         clone.go.transform.rotation = tmpRot;

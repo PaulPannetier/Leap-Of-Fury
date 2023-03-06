@@ -141,6 +141,11 @@ public class Firework : MonoBehaviour
 
     private void StartExplode()
     {
+        if(toricObject.isAClone)
+        {
+            toricObject.original.GetComponent<Firework>().StartExplode();
+            return;
+        }
         isExploding = true;
         animator.SetTrigger("Explode");
         timeWhenIsLaunch = Time.time;

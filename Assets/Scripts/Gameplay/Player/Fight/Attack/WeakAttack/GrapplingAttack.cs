@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class GrapplingAttack : WeakAttack
@@ -21,6 +22,7 @@ public class GrapplingAttack : WeakAttack
     private bool doJump, doDash;
     private float lastTimeGrap = -10f;
     private Action callbackEnableThisAttack;
+    private bool isWaiting; //true => on viens de ce tp, on attend 2 frame avant de reprendre les updates
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
     [SerializeField] private float maxRopeLength;
@@ -48,6 +50,12 @@ public class GrapplingAttack : WeakAttack
             lineRendererPrefabs
         };
         playerInput = GetComponent<CustomPlayerInput>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        GetComponent<ToricObject>().onTeleportCallback += OnTeleportByToricObjectScript;
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -123,64 +131,64 @@ public class GrapplingAttack : WeakAttack
         if (!isSwinging)
             return;
 
-        if(!RecalculateInterPoint())
+        if(!isWaiting)
         {
-            EndAttack();
-            return;
-        }
-
-        UpdateLinesRenderer();
-
-        if(playerInput.downPressed)
-        {
-            grapLength = Mathf.Min(grapLength + grapClimbDownSpeed * Time.deltaTime, maxRopeLength);
-            springJoint.distance = grapLength;
-        }
-
-        if(playerInput.upPressed)
-        {
-            grapLength = Mathf.Max(grapLength - grapClimbDownSpeed * Time.deltaTime, 0f);
-            springJoint.distance = grapLength;
-        }
-
-        if(Time.time - lastTimeBombSpawn > timeBetweenBombSpawn)
-        {
-            lastTimeBombSpawn = Time.time;
-            Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent);
-            bomb.Lauch(this);
-        }
-
-        if(playerInput.jumpPressedDown)
-        {
-            doJump = true;
-            EndAttack();
-            return;
-        }
-
-        if(playerInput.dashPressedDown)
-        {
-            doDash = true;
-            EndAttack();
-            return;
-        }
-
-        if (playerInput.attackWeakPressedUp || Time.time - lastTimeGrap > maxDurationAttach)
-        {
-            EndAttack();
-            return;
-        }
-
-        bool RecalculateInterPoint()
-        {
-            Vector2 pos = transform.position;
-            grapDir = (attachPoint - pos).normalized;
-            RaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out lineRendererPoints);
-            if(raycast.collider != null && raycast.collider != colliderWhereGrapIsAttach)
+            if (!RecalculateInterPoint())
             {
-                return false;
+                EndAttack();
+                return;
             }
-            return true;
+
+            //print(lineRendererPoints.Length);
+            UpdateLinesRenderer();
+
+            if (playerInput.downPressed)
+            {
+                grapLength = Mathf.Min(grapLength + grapClimbDownSpeed * Time.deltaTime, maxRopeLength);
+                springJoint.distance = grapLength;
+            }
+
+            if (playerInput.upPressed)
+            {
+                grapLength = Mathf.Max(grapLength - grapClimbDownSpeed * Time.deltaTime, 0f);
+                springJoint.distance = grapLength;
+            }
+
+            if (Time.time - lastTimeBombSpawn > timeBetweenBombSpawn)
+            {
+                lastTimeBombSpawn = Time.time;
+                Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent);
+                bomb.Lauch(this);
+            }
         }
+        else
+        {
+            if (playerInput.jumpPressedDown)
+            {
+                doJump = true;
+                EndAttack();
+                return;
+            }
+
+            if (playerInput.dashPressedDown)
+            {
+                doDash = true;
+                EndAttack();
+                return;
+            }
+
+            if (movement.isGrounded)
+            {
+                EndAttack();
+                return;
+            }
+
+            if (playerInput.attackWeakPressedUp || Time.time - lastTimeGrap > maxDurationAttach)
+            {
+                EndAttack();
+                return;
+            }
+        }        
 
         void UpdateLinesRenderer()
         {
@@ -191,14 +199,14 @@ public class GrapplingAttack : WeakAttack
             }
             while (lstlineRenderers.Count > nbLineRenderer)
             {
-                Destroy(transform.GetChild(1).GetChild(transform.GetChild(1).childCount - 1));
+                Destroy(transform.GetChild(1).GetChild(transform.GetChild(1).childCount - 1).gameObject);
                 lstlineRenderers.RemoveAt(lstlineRenderers.Count - 1);
             }
 
             Vector2 beg = transform.position, end;
             for (int i = 0; i < nbLineRenderer; i++)
             {
-                end = i != nbLineRenderer - 1 ? lineRendererPoints[i] : attachPoint;
+                end = i != nbLineRenderer - 1 ? lineRendererPoints[i] : PhysicsToric.GetPointInsideBounds(attachPoint);
                 lstlineRenderers[i].positionCount = 2;
                 lstlineRenderers[i].SetPositions(new Vector3[2] { beg, end });
                 if(i != nbLineRenderer - 1)
@@ -235,6 +243,28 @@ public class GrapplingAttack : WeakAttack
         }
     }
 
+    private void OnTeleportByToricObjectScript(Vector2 newPos, Vector2 oldPos)
+    {
+        if (!isSwinging)
+            return;
+
+        StopCoroutine(nameof(OnTeleportByToricObjectCorout));
+        StartCoroutine(OnTeleportByToricObjectCorout(newPos, oldPos));
+    }
+
+    private IEnumerator OnTeleportByToricObjectCorout(Vector2 newPos, Vector2 oldPos)
+    {
+        isWaiting = true;
+        yield return null;
+        yield return null;
+
+        isWaiting = false;
+        Vector2 shift = newPos - oldPos;
+        rbAttachPoint.transform.position = (Vector2)rbAttachPoint.transform.position + shift;
+        attachPoint += shift;
+        RecalculateInterPoint();
+    }
+
     private bool CalculateAttachPoint()
     {
         grapDir = movement.GetCurrentDirection(true);
@@ -245,10 +275,27 @@ public class GrapplingAttack : WeakAttack
         }
 
         grapLength = raycast.distance;
-        attachPoint = raycast.point;
+        attachPoint = (Vector2)transform.position + grapLength * grapDir;
         colliderWhereGrapIsAttach = raycast.collider;
 
         return true;
+    }
+
+    private bool RecalculateInterPoint()
+    {
+        Vector2 pos = transform.position;
+        grapDir = (attachPoint - pos).normalized;
+        RaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out lineRendererPoints);
+        if (raycast.collider != null && raycast.collider != colliderWhereGrapIsAttach)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void PauseTheGame()
+    {
+        Debug.Break();
     }
 
     private void OnValidate()
