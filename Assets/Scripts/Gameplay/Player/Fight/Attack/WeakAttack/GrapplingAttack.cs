@@ -203,7 +203,7 @@ public class GrapplingAttack : WeakAttack
                 lstlineRenderers.RemoveAt(lstlineRenderers.Count - 1);
             }
 
-            Vector2 beg = transform.position, end;
+            Vector2 beg = PhysicsToric.GetPointInsideBounds(transform.position), end;
             for (int i = 0; i < nbLineRenderer; i++)
             {
                 end = i != nbLineRenderer - 1 ? lineRendererPoints[i] : PhysicsToric.GetPointInsideBounds(attachPoint);

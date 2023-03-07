@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2084741186}
   - component: {fileID: 8438203938827837689}
   - component: {fileID: 1774091555500450334}
+  - component: {fileID: 5995405989369733801}
   m_Layer: 0
   m_Name: Bomb
   m_TagString: Untagged
@@ -35,7 +36,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2084741186
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -48,10 +49,11 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!212 &8438203938827837689
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -117,7 +119,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionDelay: 1
   explosionRange: 1
+  explosionDuration: 0.5
   shockWaveForce: 7
   charMask:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &5995405989369733801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774091555500450332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  boundsOffset: {x: 0, y: 0}
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  lstClones: []
+  cloner: {fileID: 0}
+  componentsToDisableInClone: []
+  chidrenToRemoveInClone: []

@@ -29,7 +29,7 @@ public class Firework : MonoBehaviour
     [SerializeField] private float explosionDuration = 1f;
     [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private string explosionAnimName = "Explode";
-    [SerializeField] private float explosioForce = 10f;
+    [SerializeField] private float explosionForce = 10f;
 
     [Header("Collision")]
     [SerializeField] private LayerMask charMask;
@@ -151,7 +151,7 @@ public class Firework : MonoBehaviour
         isExploding = true;
         animator.SetTrigger("Explode");
         timeWhenIsLaunch = Time.time;
-        ExplosionManager.instance.CreateExplosion(transform.position, explosioForce);
+        ExplosionManager.instance.CreateExplosion(transform.position, explosionForce);
         Invoke(nameof(Destroy), Mathf.Max(explosionAnimationLength * 1.1f, explosionDuration));
     }
 

@@ -80,7 +80,7 @@ MonoBehaviour:
   explosionDuration: 1
   explosionRadius: 1
   explosionAnimName: Explode
-  explosioForce: 1.5
+  explosionForce: 1
   charMask:
     serializedVersion: 2
     m_Bits: 256

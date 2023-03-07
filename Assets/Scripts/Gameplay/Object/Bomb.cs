@@ -7,6 +7,7 @@ public class Bomb : MonoBehaviour
     private bool isExplosing = false;
     private List<uint> idAlreadyTouch;
     private Animator anim;
+    private ToricObject toricObject;
 
     [SerializeField] private float explosionDelay = 1f;
     [SerializeField] private float explosionRange = 3f;
@@ -17,6 +18,7 @@ public class Bomb : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        toricObject = GetComponent<ToricObject>();
     }
 
     private void Start()
@@ -33,6 +35,9 @@ public class Bomb : MonoBehaviour
 
     private void Update()
     {
+        if (toricObject.isAClone)
+            return;
+
         if (!isExplosing)
             return;
 
