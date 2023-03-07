@@ -66,15 +66,18 @@ public class GrapplingAttack : WeakAttack
             callbackEnableThisAttack.Invoke();
             return false;
         }
-        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
 
         if (CalculateAttachPoint())
         {
             BeginSwing();
             callbackEnableOtherAttack.Invoke();
             this.callbackEnableThisAttack = callbackEnableThisAttack;
+            base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
             return true;
         }
+
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
         return false;
     }
 
@@ -139,7 +142,6 @@ public class GrapplingAttack : WeakAttack
                 return;
             }
 
-            //print(lineRendererPoints.Length);
             UpdateLinesRenderer();
 
             if (playerInput.downPressed)
@@ -161,34 +163,32 @@ public class GrapplingAttack : WeakAttack
                 bomb.Lauch(this);
             }
         }
-        else
+
+        if (playerInput.jumpPressedDown)
         {
-            if (playerInput.jumpPressedDown)
-            {
-                doJump = true;
-                EndAttack();
-                return;
-            }
+            doJump = true;
+            EndAttack();
+            return;
+        }
 
-            if (playerInput.dashPressedDown)
-            {
-                doDash = true;
-                EndAttack();
-                return;
-            }
+        if (playerInput.dashPressedDown)
+        {
+            doDash = true;
+            EndAttack();
+            return;
+        }
 
-            if (movement.isGrounded)
-            {
-                EndAttack();
-                return;
-            }
+        if (movement.isGrounded)
+        {
+            EndAttack();
+            return;
+        }
 
-            if (playerInput.attackWeakPressedUp || Time.time - lastTimeGrap > maxDurationAttach)
-            {
-                EndAttack();
-                return;
-            }
-        }        
+        if (playerInput.attackWeakPressedUp || Time.time - lastTimeGrap > maxDurationAttach)
+        {
+            EndAttack();
+            return;
+        }
 
         void UpdateLinesRenderer()
         {

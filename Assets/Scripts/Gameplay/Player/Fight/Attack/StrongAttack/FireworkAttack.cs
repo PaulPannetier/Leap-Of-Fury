@@ -6,7 +6,7 @@ public class FireworkAttack : StrongAttack
     private Rigidbody2D rb;
     private Movement movement;
 
-    [SerializeField] private float bumpForce = 150f;
+    [SerializeField] private float bumpVelocity = 2f;
     [SerializeField] private int nbFireworkLaunch = 3;
     [SerializeField, Range(0f, 360f)] private float fireworkDiffusionAngle = 90f;
     [SerializeField] private float distanceFromCharWhenLauch = 0.2f;
@@ -27,13 +27,14 @@ public class FireworkAttack : StrongAttack
             callbackEnableThisAttack.Invoke();
             return false;
         }
-        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         cooldown.Reset();
 
         LaunchFirework();
 
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
+        base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
+
         return true;
     }
 
@@ -52,7 +53,7 @@ public class FireworkAttack : StrongAttack
             firework.Launch(fireworkAngle, playerCommon, this);
         }
 
-        rb.AddForce(-dir * bumpForce, ForceMode2D.Impulse);
+        rb.velocity = -bumpVelocity * dir;
     }
 
     public void OnFireworkTouchEnnemy(Firework firework, GameObject ennemy)
@@ -62,40 +63,13 @@ public class FireworkAttack : StrongAttack
 
     private void OnValidate()
     {
-        bumpForce = Mathf.Max(bumpForce, 0f);
+        bumpVelocity = Mathf.Max(bumpVelocity, 0f);
         nbFireworkLaunch = Mathf.Max(nbFireworkLaunch, 0);
         distanceFromCharWhenLauch = Mathf.Max(distanceFromCharWhenLauch, 0f);
     }
 
-    [SerializeField] private LayerMask groundMask;
-    private float tmpAngle = 0f;
-    //to rm
     private void OnDrawGizmosSelected()
     {
-        //test overlap capsuleAll
-        if(Application.isPlaying && false)
-        {
-            if(CustomInput.GetKey(KeyCode.A))
-            {
-                tmpAngle--;
-            }
-            if (CustomInput.GetKey(KeyCode.E))
-            {
-                tmpAngle++;
-            }
-            tmpAngle = Useful.ClampModulo(0f, 360f, tmpAngle);
-
-            Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            Capsule c = new Capsule(mousePos, new Vector2(1, 2), CapsuleDirection2D.Vertical);
-            c.Rotate(tmpAngle * Mathf.Deg2Rad);
-
-            Collider2D res = PhysicsToric.OverlapCapsule(c, groundMask);
-
-            //Gizmos.color = res.Length > 1 ? Color.red : (res.Length == 1 ? Color.yellow : Color.green);
-            Gizmos.color = res == null ? Color.green : Color.red;
-            Capsule.GizmosDraw(c);
-        }
-
         Gizmos.color = Color.green;
         float a1 = (270f + fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;
         float a2 = (270f - fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;

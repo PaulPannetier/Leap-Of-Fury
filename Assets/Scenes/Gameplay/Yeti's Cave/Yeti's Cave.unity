@@ -922,6 +922,10 @@ PrefabInstance:
       value: 46.6
       objectReference: {fileID: 0}
     - target: {fileID: 4277522715158860269, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+      propertyPath: bumpVelocity
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4277522715158860269, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: fireworkPrefaps
       value: 
       objectReference: {fileID: 8656721268289568354, guid: 0ff773371c0e3e44ebd9b5531232c400, type: 3}
@@ -931,7 +935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4277522715158860269, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: cooldown.duration
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4277522715158860269, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: groundMask.m_Bits

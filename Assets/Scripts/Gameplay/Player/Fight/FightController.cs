@@ -13,7 +13,7 @@ public class FightController : MonoBehaviour
     private float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack;
     private bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
     private ToricObject toricObject;
-    [HideInInspector] public bool canLauchAttackWeakAttack = true, canLaunchStrongAttack = true;
+    [HideInInspector] public bool canLauchWeakAttack = true, canLaunchStrongAttack = true;
     private bool isInvicible = false;
     private int invicibilityCounter, canLaunchWeakAttackCounter, canLaunchStrongAttackCounter;
 
@@ -54,10 +54,11 @@ public class FightController : MonoBehaviour
         //attaques
         if(playerInput.attackWeakPressedDown && enableAttackWeak)
         {
-            if(canLauchAttackWeakAttack)
+            if(canLauchWeakAttack)
             {
                 OnBeginWeakAttack();
-                if (!attackWeak.Launch(OnEndStrongAttack, OnEndWeakAttack))
+                DisableStrongAttack();
+                if (!attackWeak.Launch(EnableStrongAttack, OnEndWeakAttack))
                 {
                     lastInputLauchingWeakAttack = Time.time;
                     wantLauchWeakAttack = true;
@@ -69,12 +70,14 @@ public class FightController : MonoBehaviour
                 wantLauchWeakAttack = true;
             }
         }
+
         if(playerInput.attackStrongPressedDown && enableAttackStrong)
         {
             if (canLaunchStrongAttack)
             {
                 OnBeginStrongAttack();
-                if (!attackStrong.Launch(OnEndWeakAttack, OnEndStrongAttack))
+                DisableWeakAttack();
+                if (!attackStrong.Launch(EnableWeakAttack, OnEndStrongAttack))
                 {
                     lastInputLauchingStrongAttack = Time.time;
                     wantLaunchStrongAttack = true;
@@ -91,13 +94,13 @@ public class FightController : MonoBehaviour
         {
             if(Time.time - lastInputLauchingWeakAttack < castCoyoteTime)
             {
-                if (canLauchAttackWeakAttack)
+                if (canLauchWeakAttack)
                 {
                     wantLauchWeakAttack = false;
                     OnBeginWeakAttack();
-                    if (!attackWeak.Launch(OnEndStrongAttack, OnEndWeakAttack))
+                    DisableStrongAttack();
+                    if (!attackWeak.Launch(EnableStrongAttack, OnEndWeakAttack))
                     {
-                        canLauchAttackWeakAttack = true;
                         wantLauchWeakAttack = true;
                     }
                 }
@@ -107,6 +110,7 @@ public class FightController : MonoBehaviour
                 wantLauchWeakAttack = false;
             }
         }
+
         if(wantLaunchStrongAttack)
         {
             if ((Time.time - lastInputLauchingStrongAttack) < castCoyoteTime)
@@ -115,9 +119,9 @@ public class FightController : MonoBehaviour
                 {
                     wantLaunchStrongAttack = false;
                     OnBeginStrongAttack();
-                    if (!attackStrong.Launch(OnEndWeakAttack, OnEndWeakAttack))
+                    DisableWeakAttack();
+                    if (!attackStrong.Launch(EnableWeakAttack, OnEndStrongAttack))
                     {
-                        canLaunchStrongAttack = true;
                         wantLaunchStrongAttack = true;
                     }
                 }
@@ -163,6 +167,30 @@ public class FightController : MonoBehaviour
 
     #region OnBegin/end Strong/Weak attack
 
+    private void DisableWeakAttack()
+    {
+        canLaunchWeakAttackCounter--;
+        canLauchWeakAttack = canLaunchWeakAttackCounter >= 0;
+    }
+
+    private void DisableStrongAttack()
+    {
+        canLaunchStrongAttackCounter--;
+        canLaunchStrongAttack = canLaunchStrongAttackCounter >= 0;
+    }
+
+    private void EnableWeakAttack()
+    {
+        canLaunchWeakAttackCounter++;
+        canLauchWeakAttack = canLaunchWeakAttackCounter >= 0;
+    }
+
+    private void EnableStrongAttack()
+    {
+        canLaunchStrongAttackCounter++;
+        canLaunchStrongAttack = canLaunchStrongAttackCounter >= 0;
+    }
+
     private void OnBeginStrongAttack()
     {
         isLaunchingStrongAttack = true;
@@ -174,13 +202,16 @@ public class FightController : MonoBehaviour
     {
         isLaunchingWeakAttack = true;
         canLaunchWeakAttackCounter--;
-        canLauchAttackWeakAttack = canLaunchWeakAttackCounter >= 0;
+        canLauchWeakAttack = canLaunchWeakAttackCounter >= 0;
     }
 
     private void OnEndStrongAttack()
     {
         if (!isLaunchingStrongAttack)
+        {
+            Debug.LogWarning("Debug pls");
             return;
+        }
         isLaunchingStrongAttack = false;
         canLaunchStrongAttackCounter++;
         canLaunchStrongAttack = canLaunchStrongAttackCounter >= 0;
@@ -189,10 +220,13 @@ public class FightController : MonoBehaviour
     private void OnEndWeakAttack()
     {
         if (!isLaunchingWeakAttack)
+        {
+            Debug.LogWarning("Debug pls");
             return;
+        }
         isLaunchingWeakAttack = false;
         canLaunchWeakAttackCounter++;
-        canLauchAttackWeakAttack = canLaunchWeakAttackCounter >= 0;
+        canLauchWeakAttack = canLaunchWeakAttackCounter >= 0;
     }
 
     #endregion
@@ -210,11 +244,11 @@ public class FightController : MonoBehaviour
         int strongAttackCount = canLaunchStrongAttackCounter + 1;
         canLaunchWeakAttackCounter -= weakAttackCount;
         canLaunchStrongAttackCounter -= strongAttackCount;
-        canLauchAttackWeakAttack = canLaunchStrongAttack = false;
+        canLauchWeakAttack = canLaunchStrongAttack = false;
         yield return Useful.GetWaitForSeconds(duration);
         canLaunchWeakAttackCounter += weakAttackCount;
         canLaunchStrongAttackCounter += strongAttackCount;
-        canLauchAttackWeakAttack = canLaunchWeakAttackCounter >= 0;
+        canLauchWeakAttack = canLaunchWeakAttackCounter >= 0;
         canLaunchStrongAttack = canLaunchStrongAttackCounter >= 0;
     }
 

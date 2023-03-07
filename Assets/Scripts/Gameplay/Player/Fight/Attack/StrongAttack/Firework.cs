@@ -18,6 +18,7 @@ public class Firework : MonoBehaviour
     [Header("first phase")]
     [SerializeField] private float maxSpeed = 2f;
     [SerializeField] private float accelerationDuration = 1f;
+    [SerializeField] private float gravityMultiplierForHorizontalMovement = 0.01f;
     [SerializeField] private AnimationCurve speedCurve;
     [SerializeField] Vector2 capsuleOffset;
     [SerializeField] Vector2 capsuleSize;
@@ -89,7 +90,8 @@ public class Firework : MonoBehaviour
                 speed = maxSpeed * speedCurve.Evaluate(1);
             }
 
-            transform.Translate(dir * (speed * Time.deltaTime), Space.World);
+            Vector2 shiftToAdd = Mathf.Abs(dir.y) < 1e-6 ? Time.deltaTime * gravityMultiplierForHorizontalMovement * Physics2D.gravity : Vector2.zero;
+            transform.Translate(dir * (speed * Time.deltaTime) + shiftToAdd, Space.World);
             capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
             capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
 
