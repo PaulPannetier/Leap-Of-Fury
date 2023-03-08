@@ -176,6 +176,7 @@ public abstract class CustomCollider
             return new Capsule(capsule);
         else if (collider is PolygonCollider2D poly)
             return new Polygone(poly);
+        Debug.LogWarning("Cant convert this unity collider2D : " + collider);
         return null;
     }
 
@@ -2863,6 +2864,16 @@ public class Polygone : CustomCollider
 public class Hitbox : CustomCollider
 {
     public static void GizmosDraw(Hitbox hitbox) => Polygone.GizmosDraw(hitbox.rec);
+    public static void GizmosDraw(in Vector2 center, in Vector2 size, float angle)
+    {
+        Hitbox h = new Hitbox(center, size);
+        h.Rotate(angle);
+        GizmosDraw(h);
+    }
+    public static void GizmosDraw(in Vector2 center, in Vector2 size)
+    {
+        GizmosDraw(new Hitbox(center, size));
+    }
 
     public Polygone rec;
     public Vector2 size;

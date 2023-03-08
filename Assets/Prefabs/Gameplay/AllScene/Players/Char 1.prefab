@@ -463,6 +463,11 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.1, y: 0.66, z: 0}
   boundsOffset: {x: 0, y: -0.17}
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  lstClones: []
+  cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 7867381648852789479}
   - {fileID: 4330454076875467065}
@@ -475,11 +480,6 @@ MonoBehaviour:
   - {fileID: 6907840903728363808}
   - {fileID: 0}
   chidrenToRemoveInClone: []
-  enableHorizontal: 1
-  enableVertical: 1
-  isAClone: 0
-  lstClones: []
-  cloner: {fileID: 0}
 --- !u!114 &3962006582592122389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,7 +552,7 @@ MonoBehaviour:
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
   shieldPressedUp: 0
-  controllerType: 1
+  controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 8
   inputsKeyCode: 11010000130100001201000014010000630000002000000076000000640000006600000062000000
@@ -609,11 +609,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchAttack: 1
-  canEnableShield: 1
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
   enableAttackWeak: 1
   enableAttackStrong: 1
-  enableShield: 1
   castCoyoteTime: 0.2
 --- !u!114 &249455240
 MonoBehaviour:
@@ -680,11 +679,16 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   nbDash: 3
+  explosionPrefabs: {fileID: 8565674110299712414, guid: 860caee9a72fd1344a67a5ee19dba4b6, type: 3}
   colliderOffset: {x: 0, y: -0.21}
   colliderSize: {x: 0.5, y: 1.14}
+  groundDetectionRadius: 0.25
   enemiesMask:
     serializedVersion: 2
     m_Bits: 256
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 16392
   activateCloneDash: 0
 --- !u!114 &4661732284580921915
 MonoBehaviour:
@@ -722,7 +726,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 0
-  enableBehaviour: 1
+  enableBehaviour: 0
   fireDecreasement: 0
   drawFireGizmos: 1
   fireSize: {x: 1, y: 1}

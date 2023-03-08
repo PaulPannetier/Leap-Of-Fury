@@ -462,6 +462,11 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.1, y: 0.66, z: 0}
   boundsOffset: {x: 0, y: -0.17}
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  lstClones: []
+  cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 7111324779284635613}
   - {fileID: 3712884546189942275}
@@ -473,11 +478,6 @@ MonoBehaviour:
   - {fileID: 8331574599252283194}
   - {fileID: 0}
   chidrenToRemoveInClone: []
-  enableHorizontal: 1
-  enableVertical: 1
-  isAClone: 0
-  lstClones: []
-  cloner: {fileID: 0}
 --- !u!114 &4135942895386761519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,7 +607,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchAttack: 1
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
   enableAttackWeak: 1
   enableAttackStrong: 1
   castCoyoteTime: 0.2
@@ -660,4 +661,5 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
+  explosionForce: 0
   explosionPrefabs: {fileID: 8542062651220399977, guid: 9c19b9e382562f841b697e6263e8dfc5, type: 3}

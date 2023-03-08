@@ -631,6 +631,11 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.1, y: 0.66, z: 0}
   boundsOffset: {x: 0, y: -0.17}
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  lstClones: []
+  cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 8955200401280636815}
   - {fileID: 3274420078070027857}
@@ -643,11 +648,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 7830398315898069847}
   chidrenToRemoveInClone: []
-  enableHorizontal: 1
-  enableVertical: 1
-  isAClone: 0
-  lstClones: []
-  cloner: {fileID: 0}
 --- !u!114 &2851360491922592125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -767,7 +767,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchAttack: 1
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
   enableAttackWeak: 1
   enableAttackStrong: 1
   castCoyoteTime: 0.2
@@ -787,10 +788,16 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 2
-  initSpeed: 7
-  maxSpeed: 20
-  maxDuration: 3
-  initMaxBounce: 5
+  shootDistanceFromChar: 0.35
+  initSpeed: 11
+  maxSpeed: 18
+  speedVariation: 0.2
+  maxBallDuration: 7
+  nbBounce: 3
+  initNbBalls: 2
+  maxNbBalls: 10
+  shootAngle: 11.5
+  shootTime: 0.08
   bouncingBallPrefabs: {fileID: 646947081894951354, guid: 70e9b1f7d2292b74e994b5b2b4c28ab1, type: 3}
 --- !u!114 &49532349443289084
 MonoBehaviour:

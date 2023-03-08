@@ -20,8 +20,7 @@ Perso :
 -Un passif
 -Une attaque faible
 -Une attaque forte
--Un dash (invincibilité) et un double jump.
--Un ulti wtf (type le perso trace ultra vite sa mère, invocation chelou, se dédouble en clone useless, faire tourner la map lentement)
+-Un dash (invincibilité) et un double jump.)
 
 Compétences des perso : 
 

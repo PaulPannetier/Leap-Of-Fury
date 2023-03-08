@@ -19,9 +19,14 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private float dashSpeed = 10f, dashDuration = 0.4f, minTimeBetweenDash = 0.2f, maxTimeBetweenDash = 0.7f, dashBufferTime = 0.1f;
     [SerializeField] private AnimationCurve dashSpeedCurve;
     [SerializeField] private int nbDash = 3;
+    [SerializeField] private Explosion explosionPrefabs;
+
+    [Header("Collission")]
     [SerializeField] private Vector2 colliderOffset;
     [SerializeField] private Vector2 colliderSize;
+    [SerializeField] private float groundDetectionRadius = 0.1f;
     [SerializeField] private LayerMask enemiesMask;
+    [SerializeField] private LayerMask groundMask;
 
     [HideInInspector] public bool activateCloneDash;//true one frame when the original char dash
     private GameObject _original;
@@ -137,6 +142,11 @@ public class AmericanFistAttack : WeakAttack
                         OnTouchEnemy(enemy);
                     }
                 }
+
+                if(CollideWithGround(out Vector2 collisionPoint))
+                {
+                    CreateExplosion(collisionPoint);
+                }
             }
             else if (playerInput.attackWeakPressedDown || wantDash)
             {
@@ -145,7 +155,7 @@ public class AmericanFistAttack : WeakAttack
                     cloneAttack.originalDashThisFrame = true;
                     isDashing = true;
                     wantDash = false;
-                    lastDir = movement.GetCurrentDirection();
+                    lastDir = movement.GetCurrentDirection(true);
                     lastTimeDash = Time.time;
                     initSpeed = rb.velocity;
                     movement.Freeze();
@@ -206,7 +216,7 @@ public class AmericanFistAttack : WeakAttack
 
     #endregion
 
-    #region Ennemies Collisions
+    #region Ennemies/Wall Collisions
 
     public override void OnTouchEnemy(GameObject enemy)
     {
@@ -253,6 +263,65 @@ public class AmericanFistAttack : WeakAttack
         return false;
     }
 
+    private bool CollideWithGround(out Vector2 collisionPoint)
+    {
+        Circle[] circles = new Circle[2];
+
+        if (Mathf.Abs(lastDir.x) > 1e-6f)
+        {
+            Vector2 center = (Vector2)transform.position + colliderOffset + new Vector2(lastDir.x.Sign() * colliderSize.x * 0.5f, 0f);
+            circles[0] = new Circle(center, groundDetectionRadius);
+        }
+        if (Mathf.Abs(lastDir.y) > 1e-6f)
+        {
+            Vector2 center = (Vector2)transform.position + colliderOffset + new Vector2(0f, lastDir.y.Sign() * colliderSize.y * 0.5f);
+            circles[1] = new Circle(center, groundDetectionRadius);
+        }
+
+        for (int i = 0; i < circles.Length; i++)
+        {
+            Circle circle = circles[i];
+            if(circle != null)
+            {
+                Collider2D col = PhysicsToric.OverlapCircle(circle, groundMask);
+                if(col != null)
+                {
+                    CustomCollider customCol = CustomCollider.FromUnityCollider2D(col);
+                    if(CustomCollider.Collide(circle, customCol, out collisionPoint))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Debug pls!");
+                    }
+                }
+            }
+        }
+
+        collisionPoint = Vector2.zero;
+        return false;
+    }
+
+    private void CreateExplosion(in Vector2 collisionPoint)
+    {
+        Explosion explosion = Instantiate(explosionPrefabs, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
+        explosion.callbackOnTouch += OnExplosionTouchEnemy;
+        explosion.Lauch();
+    }
+
+    private void OnExplosionTouchEnemy(Collider2D collider)
+    {
+        if(collider.CompareTag("Char"))
+        {
+            GameObject player = collider.GetComponent<ToricObject>().original;
+            if(player.GetComponent<PlayerCommon>().id != playerCommon.id)
+            {
+                OnTouchEnemy(player);
+            }
+        }
+    }
+
     #endregion
 
     #region OnValidate/Gizmos
@@ -260,7 +329,12 @@ public class AmericanFistAttack : WeakAttack
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube((Vector2)transform.position + colliderOffset, colliderSize);
+        Hitbox.GizmosDraw((Vector2)transform.position + colliderOffset, colliderSize);
+
+        Vector2 center = (Vector2)transform.position + colliderOffset + new Vector2(colliderSize.x * 0.5f, 0f);
+        Circle.GizmosDraw(center, groundDetectionRadius);
+        center = (Vector2)transform.position + colliderOffset + new Vector2(0f, colliderSize.y * 0.5f);
+        Circle.GizmosDraw(center, groundDetectionRadius);
     }
 
     private void OnValidate()

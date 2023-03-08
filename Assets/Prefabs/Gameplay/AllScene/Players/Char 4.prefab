@@ -642,6 +642,11 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.1, y: 0.66, z: 0}
   boundsOffset: {x: 0, y: -0.17}
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  lstClones: []
+  cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 447880469633971530}
   - {fileID: 7111324779284635613}
@@ -651,14 +656,8 @@ MonoBehaviour:
   - {fileID: 7598047637200888153}
   - {fileID: 7187370182271411996}
   - {fileID: 4128551290350845197}
-  - {fileID: 0}
   chidrenToRemoveInClone:
   - {fileID: 749809687}
-  enableHorizontal: 1
-  enableVertical: 1
-  isAClone: 0
-  lstClones: []
-  cloner: {fileID: 0}
 --- !u!114 &4135942895386761519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,7 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchAttackWeakAttack: 1
+  canLauchWeakAttack: 1
   canLaunchStrongAttack: 1
   enableAttackWeak: 1
   enableAttackStrong: 1
@@ -811,7 +810,7 @@ MonoBehaviour:
     duration: 1
   grapRange: 7.5
   circleCastRadius: 0.5
-  maxRopeLength: 8.5
+  maxRopeLength: 13
   maxDurationAttach: 5
   grapClimbUpSpeed: 4.5
   grapClimbDownSpeed: 6.5
@@ -819,7 +818,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16392
   bombPrefabs: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
-  timeBetweenBombSpawn: 0.3
+  timeBetweenBombSpawn: 0.15
   attackPointPrefaps: {fileID: 5643303674285272075, guid: 2d509ff36d2c02045ba03cad79be9c54, type: 3}
   grapElasticity: 0.2
   gravityScaleWhenSwinging: 100
@@ -837,3 +836,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d061c27edc233a4d95c6a997709874f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackForce: 46.6
+  castDuration: 0
+  cooldown:
+    duration: 0
+  bumpVelocity: 15
+  nbFireworkLaunch: 3
+  fireworkDiffusionAngle: 90
+  distanceFromCharWhenLauch: 0.2
+  fireworkPrefaps: {fileID: 8656721268289568354, guid: 0ff773371c0e3e44ebd9b5531232c400, type: 3}
