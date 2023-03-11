@@ -264,6 +264,7 @@ GameObject:
   - component: {fileID: 7187370182271411996}
   - component: {fileID: 4128551290350845197}
   - component: {fileID: 4277522715158860269}
+  - component: {fileID: 1455914444206811459}
   m_Layer: 8
   m_Name: Char 4
   m_TagString: Char
@@ -307,6 +308,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &1113869503384375398
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -845,3 +847,22 @@ MonoBehaviour:
   fireworkDiffusionAngle: 90
   distanceFromCharWhenLauch: 0.2
   fireworkPrefaps: {fileID: 8656721268289568354, guid: 0ff773371c0e3e44ebd9b5531232c400, type: 3}
+--- !u!114 &1455914444206811459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090791378756873177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a54806a00328a2448fe37f496088a81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackForce: 0
+  castDuration: 0
+  cooldown:
+    duration: 0
+  enableBehaviour: 1
+  minTransparency: 0.3
+  transitionTime: 0.2

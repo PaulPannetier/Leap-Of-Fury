@@ -41,9 +41,9 @@ perso 3 :
 	  Passif : jsp
 
 perso 4 : 
-	  attack faible : Lance un grapin qui grape un mur (8 directions via les input) qui laisse un trainé de bombe confeties au bout qui explose
-	  attack forte : tir 3 projectiles en cone dans la dir inverse des input(8dir possible) et qui lui applique une forte de propulsion
-	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur
+	  attack faible : Lance un grapin qui grape un mur (8 directions via les input) qui laisse un trainé de bombe confeties au bout qui explose//ok
+	  attack forte : tir 3 projectiles en cone dans la dir inverse des input (8dir possible) et qui lui applique une forte de propulsion//ok
+	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok
 
 
 Attaques :
