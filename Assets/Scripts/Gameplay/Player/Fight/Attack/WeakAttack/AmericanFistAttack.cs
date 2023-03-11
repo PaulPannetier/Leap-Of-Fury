@@ -286,8 +286,8 @@ public class AmericanFistAttack : WeakAttack
                 Collider2D col = PhysicsToric.OverlapCircle(circle, groundMask);
                 if(col != null)
                 {
-                    CustomCollider customCol = CustomCollider.FromUnityCollider2D(col);
-                    if(CustomCollider.Collide(circle, customCol, out collisionPoint))
+                    CustomCollider2D customCol = CustomCollider2D.FromUnityCollider2D(col);
+                    if(CustomCollider2D.Collide(circle, customCol, out collisionPoint))
                     {
                         return true;
                     }

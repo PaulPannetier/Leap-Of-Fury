@@ -52,7 +52,7 @@ public class TPAttack : StrongAttack
             //on se bouffe un mur
             RaycastHit2D raycasts1 = PhysicsToric.Raycast(transform.position, dir, 2f * tpRange, groundMask);
             RaycastHit2D raycasts2;
-            if (CustomCollider.CollideHitboxLine(PhysicsToric.cameraHitbox, transform.position, (Vector2)transform.position + (2f * tpRange) * dir, out Vector2 colP))
+            if (CustomCollider2D.CollideHitboxLine(PhysicsToric.cameraHitbox, transform.position, (Vector2)transform.position + (2f * tpRange) * dir, out Vector2 colP))
             {
                 Vector2 step = new Vector2(colP.x - PhysicsToric.cameraHitbox.center.x > 0f ? 0.01f : -0.01f, colP.y - PhysicsToric.cameraHitbox.center.y > 0f ? 0.01f : -0.01f);
                 while (PhysicsToric.cameraHitbox.Contains(colP))

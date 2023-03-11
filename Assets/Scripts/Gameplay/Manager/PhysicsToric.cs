@@ -84,7 +84,7 @@ public static class PhysicsToric
         for(int i = 0; i < 4; i++)
         {
             Hitbox h = cameraHitboxArounds[i];
-            if(CustomCollider.Collide(h, circle))
+            if(CustomCollider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
                 containAll = false;
@@ -126,7 +126,7 @@ public static class PhysicsToric
         for (int i = 0; i < 4; i++)
         {
             Hitbox h = cameraHitboxArounds[i];
-            if (CustomCollider.Collide(h, circle))
+            if (CustomCollider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
                 containAll = false;
@@ -364,7 +364,7 @@ public static class PhysicsToric
             else
             {
                 ray = new Line(from, B);
-                if (CustomCollider.CollideHitboxLine(cameraHitbox, ray, out Vector2 cp))
+                if (CustomCollider2D.CollideHitboxLine(cameraHitbox, ray, out Vector2 cp))
                 {
                     float tmpDist = from.Distance(cp);
                     reachDistance += tmpDist;
@@ -393,7 +393,7 @@ public static class PhysicsToric
             return raycast;
         }
         ray = new Line(from, from + direction * distance);
-        if (CustomCollider.CollideHitboxLine(cameraHitbox, ray, out Vector2 cp2))
+        if (CustomCollider2D.CollideHitboxLine(cameraHitbox, ray, out Vector2 cp2))
         {
             float tmpDist = from.Distance(cp2);
             reachDistance += tmpDist;
@@ -457,10 +457,10 @@ public static class PhysicsToric
     {
         if (raycasts.Length > 0)
         {
-            CustomCollider collider = CustomCollider.FromUnityCollider2D(raycasts[raycasts.Length - 1].collider);
+            CustomCollider2D collider = CustomCollider2D.FromUnityCollider2D(raycasts[raycasts.Length - 1].collider);
             Circle circle = new Circle(raycasts.Last().point, radius);
 
-            if (CustomCollider.Collide(collider, circle, out Vector2 collisionPoint))
+            if (CustomCollider2D.Collide(collider, circle, out Vector2 collisionPoint))
             {
                 raycasts[raycasts.Length - 1].distance = inter.Count > 0 ? collisionPoint.Distance(inter.Last()) : collisionPoint.Distance(start);
                 raycasts[raycasts.Length - 1].point = collisionPoint;
@@ -487,15 +487,15 @@ public static class PhysicsToric
         {
             Circle c = new Circle(end, radius);
             bool calculateEdge = false;
-            if(CustomCollider.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)) ||
-                CustomCollider.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)))
+            if(CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)) ||
+                CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)))
             {
                 end += Vector2.right * (end.x >= 0f ? -cameraSize.x : cameraSize.x);
                 calculateEdge = true;
             }
 
-            if (CustomCollider.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)) ||
-                CustomCollider.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)))
+            if (CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)) ||
+                CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)))
             {
                 end += Vector2.up * (end.y >= 0f ? -cameraSize.y : cameraSize.y);
                 calculateEdge = true;
@@ -506,7 +506,7 @@ public static class PhysicsToric
         }
         else
         {
-            if (CustomCollider.CollideHitboxLine(cameraHitbox, start, end, out Vector2 col))
+            if (CustomCollider2D.CollideHitboxLine(cameraHitbox, start, end, out Vector2 col))
             {
                 inters.Add(col);
                 float newDist = distance - start.Distance(col);

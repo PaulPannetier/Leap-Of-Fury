@@ -100,7 +100,7 @@ public class BounceShotAttack : StrongAttack
                 else
                 {
                     Line ray = new Line(oldPoint, raycast.point);
-                    if (CustomCollider.CollideHitboxLine(PhysicsToric.cameraHitbox, ray, out Vector2 edgePoint))
+                    if (CustomCollider2D.CollideHitboxLine(PhysicsToric.cameraHitbox, ray, out Vector2 edgePoint))
                     {
                         data.rayPoints.Add(edgePoint);
                         data.totalDist += oldPoint.Distance(edgePoint);
@@ -132,7 +132,7 @@ public class BounceShotAttack : StrongAttack
                 else
                 {
                     Line ray = new Line(oldPoint, endPoint);
-                    if (CustomCollider.CollideHitboxLine(PhysicsToric.cameraHitbox, ray, out Vector2 edgePoint))
+                    if (CustomCollider2D.CollideHitboxLine(PhysicsToric.cameraHitbox, ray, out Vector2 edgePoint))
                     {
                         data.rayPoints.Add(edgePoint);
                         data.totalDist += oldPoint.Distance(edgePoint);
