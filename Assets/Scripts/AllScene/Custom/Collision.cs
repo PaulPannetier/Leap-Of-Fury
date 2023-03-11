@@ -3442,6 +3442,8 @@ public class Ellipse : CustomCollider2D
 
 #region 3D Collisions
 
+#region customCollider3
+
 public abstract class CustomCollider3D
 {
     #region Collide Line3D/Droite3D
@@ -3490,10 +3492,59 @@ public abstract class CustomCollider3D
 
     #region Collisions Funtions
 
+    #region Dico
+
+    private static readonly Dictionary<Type, Dictionary<Type, Func<CustomCollider3D, CustomCollider3D, bool>>> collisionFunc1 = new Dictionary<Type, Dictionary<Type, Func<CustomCollider3D, CustomCollider3D, bool>>>()
+    {
+        {
+            typeof(Sphere),
+            new Dictionary<Type, Func<CustomCollider3D, CustomCollider3D, bool>>()
+            {
+                { typeof(Sphere),  (CustomCollider3D c1, CustomCollider3D c2) => CollideSpheres((Sphere)c1, (Sphere)c2) },
+                { typeof(Hitbox3D),  (CustomCollider3D c1, CustomCollider3D c2) => CollideSphereHitbox3D((Sphere)c1, (Hitbox3D)c2) }
+            }
+        },
+        {
+            typeof(Hitbox3D),
+            new Dictionary<Type, Func<CustomCollider3D, CustomCollider3D, bool>>()
+            {
+                { typeof(Sphere),  (CustomCollider3D c1, CustomCollider3D c2) => CollideSphereHitbox3D((Sphere)c2, (Hitbox3D)c1) },
+                { typeof(Hitbox3D),  (CustomCollider3D c1, CustomCollider3D c2) => CollideHitbox3D((Hitbox3D)c1, (Hitbox3D)c2) },
+            }
+        },
+    };
+
+    #endregion
+
+    #region GeneralCollision
+
+    private static bool FirstTestBeforeCollision(CustomCollider3D c1, CustomCollider3D c2) => CollideSpheres(c1.inclusiveSphere, c2.inclusiveSphere);
+
+    public static bool Collide(CustomCollider3D c1, CustomCollider3D c2)
+    {
+        if (!FirstTestBeforeCollision(c1, c2))
+            return false;
+
+        return collisionFunc1[c1.GetType()][c2.GetType()](c1, c2);
+    }
+
+    #endregion
+
+    #region Collide(Sphere, other)
+
     public static bool CollideSpheres(Sphere s1, Sphere s2)
     {
         return s1.center.SqrDistance(s2.center) <= (s1.radius + s2.radius) * (s1.radius + s2.radius);
     }
+
+    public static bool CollideSphereHitbox3D(Sphere s, Hitbox3D h)
+    {
+        return h.ClosestPoint(s.center).SqrDistance(s.center) <= s.radius * s.radius;
+    }
+
+    #endregion
+
+    #region Collide(Hitbox3D, other)
 
     public static bool CollideHitbox3D(Hitbox3D h1, Hitbox3D h2)
     {
@@ -3509,6 +3560,8 @@ public abstract class CustomCollider3D
 
         return false;
     }
+
+    #endregion
 
     #endregion
 
@@ -3551,8 +3604,57 @@ public abstract class CustomCollider3D
     public virtual void SetScale(in Vector3 scale) { }
     public virtual bool Normal(in Vector3 point, out Vector3 normal) { normal = Vector3.zero; return false; }
 
+    #region ApplyRot
+
+    protected Vector3 ApplyRotX(in Vector3 center, in Vector3 p, float angle)
+    {
+        return ApplyRotX(center, p, Mathf.Cos(angle), Mathf.Sin(angle));
+    }
+
+    protected Vector3 ApplyRotX(in Vector3 center, in Vector3 p, float cosAngle, float sinAngle)
+    {
+        Vector3 A = p - center;
+        return center + new Vector3(A.x, cosAngle * A.y - sinAngle * A.z, sinAngle * A.y + cosAngle * A.z);
+    }
+
+    protected Vector3 ApplyRotY(in Vector3 center, in Vector3 p, float angle)
+    {
+        return ApplyRotY(center, p, Mathf.Cos(angle), Mathf.Sin(angle));
+    }
+
+    protected Vector3 ApplyRotY(in Vector3 center, in Vector3 p, float cosAngle, float sinAngle)
+    {
+        Vector3 A = p - center;
+        return center + new Vector3(A.x * cosAngle + sinAngle * A.z, A.y, cosAngle * A.z - sinAngle * A.x);
+    }
+
+    protected Vector3 ApplyRotZ(in Vector3 center, in Vector3 p, float angle)
+    {
+        return ApplyRotZ(center, p, Mathf.Cos(angle), Mathf.Sin(angle));
+    }
+
+    protected Vector3 ApplyRotZ(in Vector3 center, in Vector3 p, float cosAngle, float sinAngle)
+    {
+        Vector3 A = p - center;
+        return center + new Vector3(cosAngle * A.x - sinAngle * A.y, sinAngle * A.x + cosAngle * A.y, A.z);
+    }
+
+    protected Vector3 ApplyRotXYZ(in Vector3 center, in Vector3 p, Vector3 rotation)
+    {
+        return ApplyRotXYZ(center, p, new Vector3(Mathf.Cos(rotation.x), Mathf.Cos(rotation.y), Mathf.Cos(rotation.z)), new Vector3(Mathf.Sin(rotation.x), Mathf.Sin(rotation.y), Mathf.Sin(rotation.z)));
+    }
+
+    protected Vector3 ApplyRotXYZ(in Vector3 center, in Vector3 p, Vector3 cosAngles, Vector3 sinAngles)
+    {
+        return ApplyRotZ(center, ApplyRotY(center, ApplyRotX(center, p, cosAngles.x, sinAngles.x), cosAngles.y, sinAngles.y), cosAngles.z, sinAngles.z);
+    }
+
+    #endregion
+
     #endregion
 }
+
+#endregion
 
 #region Line3D/Droite3D
 
@@ -3710,6 +3812,8 @@ public class Sphere : CustomCollider3D
 
 #endregion
 
+#region Hitbox3D
+
 public class Hitbox3D : CustomCollider3D
 {
     private Vector3 _size;
@@ -3796,53 +3900,6 @@ public class Hitbox3D : CustomCollider3D
         return baseVertices;
     }
 
-    #region ApplyRot
-
-    private Vector3 ApplyRotX(in Vector3 center, in Vector3 p, float angle)
-    {
-        return ApplyRotX(center, p, Mathf.Cos(angle), Mathf.Sin(angle));
-    }
-
-    private Vector3 ApplyRotX(in Vector3 center, in Vector3 p, float cosAngle, float sinAngle)
-    {
-        Vector3 A = p - center;
-        return center + new Vector3(A.x, cosAngle * A.y - sinAngle * A.z, sinAngle * A.y + cosAngle * A.z);
-    }
-
-    private Vector3 ApplyRotY(in Vector3 center, in Vector3 p, float angle)
-    {
-        return ApplyRotY(center, p, Mathf.Cos(angle), Mathf.Sin(angle));
-    }
-
-    private Vector3 ApplyRotY(in Vector3 center, in Vector3 p, float cosAngle, float sinAngle)
-    {
-        Vector3 A = p - center;
-        return center + new Vector3(A.x * cosAngle + sinAngle * A.z, A.y, cosAngle * A.z - sinAngle * A.x);
-    }
-
-    private Vector3 ApplyRotZ(in Vector3 center, in Vector3 p, float angle)
-    {
-        return ApplyRotZ(center, p, Mathf.Cos(angle), Mathf.Sin(angle));
-    }
-
-    private Vector3 ApplyRotZ(in Vector3 center, in Vector3 p, float cosAngle, float sinAngle)
-    {
-        Vector3 A = p - center;
-        return center + new Vector3(cosAngle * A.x - sinAngle * A.y, sinAngle * A.x + cosAngle * A.y, A.z);
-    }
-
-    private Vector3 ApplyRotXYZ(in Vector3 center, in Vector3 p, Vector3 rotation)
-    {
-        return ApplyRotXYZ(center, p, new Vector3(Mathf.Cos(rotation.x), Mathf.Cos(rotation.y), Mathf.Cos(rotation.z)), new Vector3(Mathf.Sin(rotation.x), Mathf.Sin(rotation.y), Mathf.Sin(rotation.z)));
-    }
-
-    private Vector3 ApplyRotXYZ(in Vector3 center, in Vector3 p, Vector3 cosAngles, Vector3 sinAngles)
-    {
-        return ApplyRotZ(center, ApplyRotY(center, ApplyRotX(center, p, cosAngles.x, sinAngles.x), cosAngles.y, sinAngles.y), cosAngles.z, sinAngles.z);
-    }
-
-    #endregion
-
     internal Vector3[,] GetFaces()
     {
         Vector3[] v = GetVertices();
@@ -3919,6 +3976,25 @@ public class Hitbox3D : CustomCollider3D
         return true;
     }
 
+    public Vector3 ClosestPoint(Vector3 p)
+    {
+        //rotate this to have 0 angle rot
+        Hitbox3D h = (Hitbox3D)Clone();
+        Vector3 cRot = new Vector3(Mathf.Cos(-rotation.x), Mathf.Cos(-rotation.y), Mathf.Cos(-rotation.z));
+        Vector3 sRot = new Vector3(Mathf.Sin(-rotation.x), Mathf.Sin(-rotation.y), Mathf.Sin(-rotation.z));
+        h.MoveAt(ApplyRotXYZ(Vector3.zero, h.center, cRot, sRot));
+        p = ApplyRotXYZ(Vector3.zero, p, cRot, sRot);
+        Vector3 min = h.center - h.size * 0.5f;
+        Vector3 max = h.center + h.size * 0.5f;
+
+        //calculate the point
+        float x = Mathf.Min(Mathf.Max(p.x, min.x), max.x);
+        float y = Mathf.Min(Mathf.Max(p.y, min.y), max.y);
+        float z = Mathf.Min(Mathf.Max(p.z, min.z), max.z);
+
+        return ApplyRotXYZ(Vector3.zero, new Vector3(x,y,z), rotation);
+    }
+
     public override bool CollideLine(Line3D l) => CustomCollider3D.CollideLineHitbox3D(this, l);
     public override bool CollideLine(in Vector3 A, in Vector3 B) => CollideLine(new Line3D(A, B));
     public override bool CollideDroite(Droite3D d) => CustomCollider3D.CollideDroiteHitbox3D(this, d);
@@ -3955,5 +4031,7 @@ public class Hitbox3D : CustomCollider3D
         throw new NotImplementedException();
     }
 }
+
+#endregion
 
 #endregion
