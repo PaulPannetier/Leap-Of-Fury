@@ -54,6 +54,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &8438203938827837689
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -120,7 +121,7 @@ MonoBehaviour:
   explosionDelay: 1
   explosionRange: 1
   explosionDuration: 0.5
-  shockWaveForce: 7
+  shockWaveForce: 1
   charMask:
     serializedVersion: 2
     m_Bits: 256

@@ -23,6 +23,7 @@ public class GrapplingAttack : WeakAttack
     private float lastTimeGrap = -10f;
     private Action callbackEnableThisAttack;
     private bool isWaiting; //true => on viens de ce tp, on attend 2 frame avant de reprendre les updates
+    private bool endAttack;
 
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
     [SerializeField] private float maxRopeLength;
@@ -102,12 +103,14 @@ public class GrapplingAttack : WeakAttack
         {
             movement.RequestWallJump(playerInput.x < 0f);
             doJump = false;
+            endAttack = true;
         }
 
         if(doDash)
         {
             movement.RequestDash(movement.GetCurrentDirection(true));
             doDash= false;
+            endAttack = true;
         }
 
         if (!isSwinging)
@@ -167,14 +170,12 @@ public class GrapplingAttack : WeakAttack
         if (playerInput.jumpPressedDown)
         {
             doJump = true;
-            EndAttack();
             return;
         }
 
         if (playerInput.dashPressedDown)
         {
             doDash = true;
-            EndAttack();
             return;
         }
 
@@ -185,6 +186,12 @@ public class GrapplingAttack : WeakAttack
         }
 
         if (playerInput.attackWeakPressedUp || Time.time - lastTimeGrap > maxDurationAttach)
+        {
+            EndAttack();
+            return;
+        }
+
+        if(endAttack)
         {
             EndAttack();
             return;
@@ -234,7 +241,7 @@ public class GrapplingAttack : WeakAttack
         void EndAttack()
         {
             movement.enableBehaviour = movement.enableInput = true;
-            isSwinging = doJump = doDash = false;
+            isSwinging = doJump = doDash = endAttack = false;
             RemoveLineRenderer();
             lineRendererPoints = null;
             Destroy(rbAttachPoint.gameObject);
