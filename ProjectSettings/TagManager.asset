@@ -14,6 +14,10 @@ TagManager:
   - WallProjectile
   - Char
   - Clone
+  - Global Light
+  - WeakAttackSlider
+  - StrongAttackSlider
+  - Canvas
   layers:
   - Default
   - TransparentFX

@@ -42,6 +42,7 @@ public class GrapplingAttack : WeakAttack
     protected override void Awake()
     {
         base.Awake();
+
         lineRendererPrefabs = transform.GetChild(1).GetChild(0).GetComponent<LineRenderer>();
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
