@@ -36,6 +36,7 @@ public class Movement : MonoBehaviour
     [Tooltip("La vitesse de marche")] [SerializeField] private float walkSpeed = 10f;
     [Tooltip("La vitesse d'interpolation de marche")] [SerializeField] private float speedLerp = 50f;
     [Tooltip("La propor de vitesse initiale de marche")] [SerializeField] [Range(0f, 1f)] private float initSpeed = 0.2f;
+    [SerializeField] private float groundBumpFrictionCoefficient = 0.1f;
     [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
 
     [Header("Collision")]
@@ -44,6 +45,7 @@ public class Movement : MonoBehaviour
     public float sideCollisionRadius = 0.28f;
     public Vector2 groundOffset, sideOffset = new Vector2(0.15f, 0f);
     [Tooltip("La longueur de détection de la plateforme lors d'une monté en grab")] [SerializeField] private float grabRayLength = 1f;
+    [SerializeField] private float maxBumpTime = 0.45f;
 
     [Header("Jumping")]
     [Tooltip("La hauteur min du saut.")] [SerializeField] private float jumpInitForce = 20f;
@@ -112,9 +114,7 @@ public class Movement : MonoBehaviour
     [Header("Dash")]
     [Tooltip("La vitesse maximal du dash")] [SerializeField] private float dashSpeed = 20f;
     [Tooltip("La durée du dash en sec")] [SerializeField] private float dashDuration = 0.4f;
-    [Tooltip("Le décalage temporel de l'invincibilité du dash en sec")] [SerializeField] private float invicibilityOffsetTime = 0.1f;
     [Tooltip("Le temps durant lequel un dash est impossible après avoir fini un dash")] [SerializeField] private float dashCooldown = 0.15f;
-    [Tooltip("La durée d'invicibilité")] [SerializeField] private float dashInvicibilityDuration = 0.2f;
     [Tooltip("La courbe de vitesse de dash")] [SerializeField] private AnimationCurve dashSpeedCurve;
     [Tooltip("%age de la hitbox qui est ignoré lors d'un dash vers le haut"), SerializeField, Range(0f, 0.5f)] private float antiKnockHead;
     private Vector2 lastDashDir;
@@ -158,6 +158,9 @@ public class Movement : MonoBehaviour
     public bool isWallJumping { get; private set; } //dans la phase montante d'un saut depuis un mur
     public bool isFalling { get; private set; } //est en l'air sans saut ni grab ni rien d'autre.
     public bool isSloping { get; private set; } //on est en pente.
+    public bool isBumping { get; private set; } //on est en train d'être bump.
+
+    private float lastTimeBump = -10f;
 
     public int wallSide { get; private set; }
 
@@ -222,6 +225,12 @@ public class Movement : MonoBehaviour
     public void RequestDash(in Vector2 dir)
     {
         Dash(dir);
+    }
+
+    public void ApplyBump(in Vector2 bumpForce)
+    {
+        rb.velocity = bumpForce;
+        lastTimeBump = Time.time;
     }
 
     #endregion
@@ -442,7 +451,21 @@ public class Movement : MonoBehaviour
             lastTimeDashFinish = Time.time;
         }
 
-        // VI-Inputs
+        //VI Bumps
+        if(isBumping)
+        {
+            if(isDashing || onWall || wallGrab)
+            {
+                isBumping = false;
+            }
+
+            if(Time.time - lastTimeBump >= maxBumpTime)
+            {
+                isBumping = false;
+            }
+        }
+
+        // VII-Inputs
         doJump = doJump ? true : playerInput.jumpPressedDown && enableInput;
         if (playerInput.jumpPressedDown && enableInput)
         {
@@ -518,19 +541,26 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            switch (groundColliderData.groundType)
+            if(isBumping)
             {
-                case MapColliderData.GroundType.normal:
-                    HandleNormalWalk();
-                    break;
-                case MapColliderData.GroundType.ice:
-                    HandleIceWalk();
-                    break;
-                case MapColliderData.GroundType.trampoline:
-                    HandleNormalWalk();
-                    break;
-                default:
-                    break;
+
+            }
+            else
+            {
+                switch (groundColliderData.groundType)
+                {
+                    case MapColliderData.GroundType.normal:
+                        HandleNormalWalk();
+                        break;
+                    case MapColliderData.GroundType.ice:
+                        HandleIceWalk();
+                        break;
+                    case MapColliderData.GroundType.trampoline:
+                        HandleNormalWalk();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -1068,15 +1098,7 @@ public class Movement : MonoBehaviour
         rb.velocity = dir * dashSpeedCurve.Evaluate(0);
         lastTimeDashBegin = Time.time;
         hasDashed = isDashing = dash = true;
-        StartCoroutine(DashInvicibility());
-    }
-
-    private IEnumerator DashInvicibility()
-    {
-        yield return Useful.GetWaitForSeconds(invicibilityOffsetTime);
-        fightController.EnableInvicibility();
-        yield return Useful.GetWaitForSeconds(dashInvicibilityDuration);
-        fightController.DisableInvicibility();
+        fightController.StartDashing();
     }
 
     private IEnumerator DisableMovement(float time)

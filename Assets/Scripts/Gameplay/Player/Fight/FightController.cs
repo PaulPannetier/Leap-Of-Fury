@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FightController : MonoBehaviour
@@ -17,9 +18,21 @@ public class FightController : MonoBehaviour
     private bool isInvicible = false;
     private int invicibilityCounter, canLaunchWeakAttackCounter, canLaunchStrongAttackCounter;
 
+    [Header("Fight")]
+    private List<uint> charAlreadyTouchByDash = new List<uint>();
+    private bool isDashing, isDashCollisionEnable = true;
+    private int dashCollisionCounter;
+    [SerializeField] private float dashBumpSpeed = 10f;
+    [SerializeField] private float dashInvicibilityOffset = 0.1f;
+    [SerializeField] private float invicibilityDurationWhenDashing = 0.2f;
+    [SerializeField] private Vector2 dashHitboxOffset;
+    [SerializeField] private Vector2 dashHitboxSize;
+    private int charMask = LayerMask.GetMask("Char");
+
     [Header("Inputs")]
     public bool enableAttackWeak = true;
     public bool enableAttackStrong = true;
+    public bool enableInvisibilityWhenDashing = true;
     [Tooltip("Temps ou l'on considère l'appuye sur un touche alors que le perso est occupé/ne peut pas lancé l'attaque")][SerializeField] private float castCoyoteTime = 0.2f;
 
     #region Awake and Start
@@ -40,6 +53,7 @@ public class FightController : MonoBehaviour
         eventController.callBackTouchAttack += OnTouchAttack;
         eventController.callBackHitAttack += OnKillPlayerAttack;
         eventController.callBackBeenTouchAttack += OnBeenTouchAttack;
+        eventController.callBackKillByDash += OnKillPlayerByDash;
         eventController.callBackTouchByEnvironnement += OnBeenTouchByEnvironnement;
         eventController.callBackKillByEnvironnement += OnBeenKillByEnvironnement;
         eventController.callBackBeenKillInstant += OnBeenKillInstant;
@@ -131,36 +145,110 @@ public class FightController : MonoBehaviour
                 wantLaunchStrongAttack = false;
             }
         }
+
+        //Dash
+        HandleDash();
     }
 
     #endregion
 
-    #region Invicibility
+    #region Dash/Invicibility
+
+    private void HandleDash()
+    {
+        if (!isDashing || !isDashCollisionEnable)
+            return;
+
+        Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position, dashHitboxSize, 0f, charMask);
+        foreach(Collider2D col in cols)
+        {
+            if(col.CompareTag("Char"))
+            {
+                GameObject player = col.GetComponent<ToricObject>().original;
+                uint playerID = player.GetComponent<PlayerCommon>().id;
+                
+                if(playerID != playerCommon.id && !charAlreadyTouchByDash.Contains(playerID))
+                {
+                    charAlreadyTouchByDash.Add(playerID);
+                    HandleDashCollision(player);
+                }
+            }
+        }
+
+        void HandleDashCollision(GameObject player)
+        {
+            FightController fc = player.GetComponent<FightController>();
+            if(fc.isDashing)
+            {
+                DisableDashCollision(0.2f);
+                fc.DisableDashCollision(0.2f);
+
+                //on applique les bumps
+                Vector2 bumpDir = (((Vector2)transform.position + dashHitboxOffset) - ((Vector2)fc.transform.position + fc.dashHitboxOffset)).normalized;
+
+            }
+            else
+            {
+                eventController.OnKillByDash(player);
+                player.GetComponent<EventController>().OnBeenKillByDash(gameObject);
+            }
+        }
+    }
+
+    private void DisableDashCollision(float duration)
+    {
+        StartCoroutine(DisableDashCollisionCorout(duration));   
+    }
+
+    private IEnumerator DisableDashCollisionCorout(float duration)
+    {
+        dashCollisionCounter++;
+        isDashCollisionEnable = dashCollisionCounter <= 0;
+        yield return Useful.GetWaitForSeconds(duration);
+        dashCollisionCounter--;
+        isDashCollisionEnable = dashCollisionCounter <= 0;
+    }
+
+    public void StartDashing()
+    {
+        StartCoroutine(StartDashingCorout());
+    }
+
+    private IEnumerator StartDashingCorout()
+    {
+        yield return Useful.GetWaitForSeconds(dashInvicibilityOffset);
+
+        EnableInvicibility();
+        isDashing = true;
+        yield return Useful.GetWaitForSeconds(invicibilityDurationWhenDashing);
+
+        isDashing = false;
+        charAlreadyTouchByDash.Clear();
+        DisableInvicibility();
+    }
 
     public void EnableInvicibility()
     {
         invicibilityCounter++;
-        isInvicible = true;
+        isInvicible = invicibilityCounter > 0;
     }
 
     public void DisableInvicibility()
     {
         invicibilityCounter--;
-        isInvicible = invicibilityCounter <= 0;
+        isInvicible = invicibilityCounter > 0;
     }
 
-    public void EnableInvicibility(in float duration)
+    public void EnableInvicibility(float duration)
     {
-        StartCoroutine(EnableInvicibility(duration));
+        StartCoroutine(EnableInvicibilityCorout(duration));
     }
 
-    private IEnumerator EnableInvicibility(float duration)
+    private IEnumerator EnableInvicibilityCorout(float duration)
     {
-        invicibilityCounter++;
-        isInvicible = true;
+        EnableInvicibility();
         yield return Useful.GetWaitForSeconds(duration);
-        invicibilityCounter--;
-        isInvicible = invicibilityCounter <= 0;
+        DisableInvicibility();
     }
 
     #endregion
@@ -264,6 +352,8 @@ public class FightController : MonoBehaviour
 
     private void OnKillPlayerAttack(Attack attack, GameObject player) { OnKillPlayer(); }
 
+    private void OnKillPlayerByDash(GameObject playerKilled) => OnKillPlayer();
+
     private void OnKillPlayer()
     {
         nbKill++;
@@ -305,5 +395,11 @@ public class FightController : MonoBehaviour
     {
         toricObject.RemoveClones();
         Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Hitbox.GizmosDraw((Vector2)transform.position + dashHitboxOffset, dashHitboxSize);
     }
 }
