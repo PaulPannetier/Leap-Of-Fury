@@ -36,7 +36,6 @@ public class Movement : MonoBehaviour
     [Tooltip("La vitesse de marche")] [SerializeField] private float walkSpeed = 10f;
     [Tooltip("La vitesse d'interpolation de marche")] [SerializeField] private float speedLerp = 50f;
     [Tooltip("La propor de vitesse initiale de marche")] [SerializeField] [Range(0f, 1f)] private float initSpeed = 0.2f;
-    [SerializeField] private float groundBumpFrictionCoefficient = 0.1f;
     [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
 
     [Header("Collision")]
@@ -45,7 +44,6 @@ public class Movement : MonoBehaviour
     public float sideCollisionRadius = 0.28f;
     public Vector2 groundOffset, sideOffset = new Vector2(0.15f, 0f);
     [Tooltip("La longueur de détection de la plateforme lors d'une monté en grab")] [SerializeField] private float grabRayLength = 1f;
-    [SerializeField] private float maxBumpTime = 0.45f;
 
     [Header("Jumping")]
     [Tooltip("La hauteur min du saut.")] [SerializeField] private float jumpInitForce = 20f;
@@ -139,6 +137,18 @@ public class Movement : MonoBehaviour
     private float slopeAngleLeft, slopeAngleRight;
     private bool isToSteepSlopeRight, isToSteepSlopeLeft;
 
+    [Header("Bump")]
+    [SerializeField] private float bumpDecreasementLerp = 7f;
+    [SerializeField] private float maxBumpDuration = 0.5f;
+    [SerializeField] private AnimationCurve extraBumpFrictionCauseBySpeed;
+    [SerializeField] private float groundBumpFrictionCoefficient = 1.2f;
+    [SerializeField, Tooltip("Le control au sol lorsque le char est bump")] private float groundControlWhereBump = 0.25f;
+    [SerializeField, Tooltip("Le %age de vitesse de marche on l'on n'est plus bump au sol")] private float minGroundSpeedWhereBump = 1.5f;
+    [SerializeField] private float airBumpFrictionCoefficient = 0.9f;
+    [SerializeField, Tooltip("Le control en l'air lorsque le char est bump en %age de quand il n'est pas bump")] private Vector2 airControlWhereBump = new Vector2(0.5f, 0.5f);
+    [SerializeField, Tooltip("La vitesse on l'on n'est plus bump en l'air")] private float minAirSpeedWhereBump = 10f;
+    private float lastTimeBump = -10f;
+
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
     [SerializeField] private ParticleSystem jumpParticle;
@@ -159,8 +169,6 @@ public class Movement : MonoBehaviour
     public bool isFalling { get; private set; } //est en l'air sans saut ni grab ni rien d'autre.
     public bool isSloping { get; private set; } //on est en pente.
     public bool isBumping { get; private set; } //on est en train d'être bump.
-
-    private float lastTimeBump = -10f;
 
     public int wallSide { get; private set; }
 
@@ -231,6 +239,8 @@ public class Movement : MonoBehaviour
     {
         rb.velocity = bumpForce;
         lastTimeBump = Time.time;
+        isBumping = true;
+        isDashing = false;
     }
 
     #endregion
@@ -341,7 +351,7 @@ public class Movement : MonoBehaviour
         // II-Grab
 
         //Trigger wallGrab
-        if (!wallGrab && onWall && (playerInput.grabPressed && enableInput) && (!isSliding || (playerInput.rawY >= 0 && enableInput)) && !isDashing && !isJumpingAlongWall && canMove)
+        if (!wallGrab && onWall && (playerInput.grabPressed && enableInput) && (!isSliding || (playerInput.rawY >= 0 && enableInput)) && !isDashing && !isJumpingAlongWall && !isBumping && canMove)
         {
             if (side != wallSide)
             {
@@ -352,7 +362,7 @@ public class Movement : MonoBehaviour
         }
 
         //Trigger reach grab Apex
-        if (oldOnWall && !onWall && wallGrab && !reachGrabApex && !isDashing && !isJumping && !isSliding)
+        if (oldOnWall && !onWall && wallGrab && !reachGrabApex && !isDashing && !isJumping && !isSliding && !isBumping)
         {
             reachGrabApex = true;
             timeReachGrabApex = Time.time;
@@ -369,7 +379,7 @@ public class Movement : MonoBehaviour
         // III-Fall and Jump
 
         //Trigger falling
-        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isSliding && !isDashing && !isGrounded)
+        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isSliding && !isDashing && !isGrounded && !isBumping)
         {
             isFalling = true;
         }
@@ -389,7 +399,7 @@ public class Movement : MonoBehaviour
         {
             isJumping = false;
             //cond  || rb.v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
-            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !isDashing && !isSliding)
+            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -399,7 +409,7 @@ public class Movement : MonoBehaviour
         {
             isWallJumping = false;
             //cond  || rb.v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
-            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !isDashing && !isSliding)
+            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -408,7 +418,7 @@ public class Movement : MonoBehaviour
         if (isJumpingAlongWall && (isDashing || (Time.time - lastTimeBeginWallJumpAlongWall > jumpAlongWallDuration)))
         {
             isJumpingAlongWall = false;
-            if (!isGrounded && !wallGrab && !isDashing && !isSliding)
+            if (!isGrounded && !wallGrab && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -418,13 +428,13 @@ public class Movement : MonoBehaviour
 
         //Trigger sliding
         //1case, wallGrab => isSliding
-        if (!isSliding && wallGrab && playerInput.rawY == -1 && enableInput && !reachGrabApex && !isDashing && !isJumping && !isFalling && !isGrounded)
+        if (!isSliding && wallGrab && playerInput.rawY == -1 && enableInput && !reachGrabApex && !isDashing && !isJumping && !isFalling && !isGrounded && !isBumping)
         {
             isSliding = true;
             wallGrab = grabStayAtApex = grabStayAtApexRight = grabStayAtApexLeft = reachGrabApex = isGrabApexEnable = isGrabApexLeftEnable = isGrabApexRightEnable =  false;
         }
         //2case, isFalling => isSliding
-        if (!isSliding && onWall && isFalling && rb.velocity.y < 0f && !isDashing && !isJumping && !wallGrab)
+        if (!isSliding && onWall && isFalling && rb.velocity.y < 0f && !isDashing && !isJumping && !wallGrab && !isBumping)
         {
             if (enableInput && (playerInput.rawX == 1 && onRightWall) || (playerInput.rawX == -1 && onLeftWall))
             {
@@ -459,7 +469,13 @@ public class Movement : MonoBehaviour
                 isBumping = false;
             }
 
-            if(Time.time - lastTimeBump >= maxBumpTime)
+            float velocity = rb.velocity.magnitude;
+            if((!isGrounded && velocity <= minAirSpeedWhereBump) || (isGrounded && velocity <= minGroundSpeedWhereBump))
+            {
+                isBumping = false;
+            }
+
+            if (Time.time - lastTimeBump >= maxBumpDuration)
             {
                 isBumping = false;
             }
@@ -519,6 +535,8 @@ public class Movement : MonoBehaviour
 
         HandleDash();
 
+        HandleBump();
+
         //pour éviter les mess ! dans la console
         if(groundTouch)
             groundTouch = false;
@@ -532,7 +550,7 @@ public class Movement : MonoBehaviour
 
     private void HandleWalk()
     {
-        if (!enableInput || (!isGrounded && !isSloping) || !canMove || wallGrab || reachGrabApex || grabStayAtApex || isDashing || isJumping || isFalling || isSliding)
+        if (!enableInput || (!isGrounded && !isSloping) || !canMove || wallGrab || reachGrabApex || grabStayAtApex || isDashing || isJumping || isFalling || isSliding || isBumping)
             return;
 
         if(isSloping && !onWall)
@@ -541,26 +559,19 @@ public class Movement : MonoBehaviour
         }
         else
         {
-            if(isBumping)
+            switch (groundColliderData.groundType)
             {
-
-            }
-            else
-            {
-                switch (groundColliderData.groundType)
-                {
-                    case MapColliderData.GroundType.normal:
-                        HandleNormalWalk();
-                        break;
-                    case MapColliderData.GroundType.ice:
-                        HandleIceWalk();
-                        break;
-                    case MapColliderData.GroundType.trampoline:
-                        HandleNormalWalk();
-                        break;
-                    default:
-                        break;
-                }
+                case MapColliderData.GroundType.normal:
+                    HandleNormalWalk();
+                    break;
+                case MapColliderData.GroundType.ice:
+                    HandleIceWalk();
+                    break;
+                case MapColliderData.GroundType.trampoline:
+                    HandleNormalWalk();
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -970,7 +981,7 @@ public class Movement : MonoBehaviour
 
     private void HandleFall()
     {
-        if (!isFalling || isJumping  || isWallJumping || isJumpingAlongWall || isSliding || wallGrab || !enableBehaviour)
+        if (!isFalling || isJumping  || isWallJumping || isJumpingAlongWall || isSliding || wallGrab || isBumping || !enableBehaviour)
             return;
 
         //phase montante en l'air
@@ -1008,7 +1019,6 @@ public class Movement : MonoBehaviour
                 float coeff = rb.velocity.y >= -fallSpeed.y * maxBeginFallSpeed ? fallGravityMultiplier * beginFallExtraGravity : fallGravityMultiplier;
                 coeff = enableInput && playerInput.rawY < 0 ? coeff * fallGravityMultiplierWhenDownPressed : coeff;
                 rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.fixedDeltaTime));
-                //rb.velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.fixedDeltaTime);
             }
 
             //Movement horizontal
@@ -1137,6 +1147,61 @@ public class Movement : MonoBehaviour
         {
             rb.velocity = new Vector2(0f, Mathf.MoveTowards(rb.velocity.y, -slideSpeed, slideSpeedLerp * Time.fixedDeltaTime));
         }
+    }
+
+    #endregion
+
+    #region Handle Bump
+
+    private void HandleBump()
+    {
+        if (!isBumping || !enableBehaviour)
+            return;
+
+        float decreasementCoeff = extraBumpFrictionCauseBySpeed.Evaluate(rb.velocity.magnitude);
+
+        if(isGrounded)
+        {
+            decreasementCoeff *= groundBumpFrictionCoefficient;
+            if(enableInput && playerInput.rawX != 0)
+                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed, groundControlWhereBump * speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+        }
+        else // be in air
+        {
+            //Apply fall
+            if(rb.velocity.y > 0f)
+            {
+                float coeff;
+                if (playerInput.rawY == -1 && enableInput)
+                    coeff = Mathf.Max(airControlWhereBump.y * fallGravityMultiplierWhenDownPressed * airGravityMultiplier, airGravityMultiplier);
+                else
+                    coeff = airGravityMultiplier;
+                rb.velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.fixedDeltaTime);
+
+                float targetSpeed = enableInput ? playerInput.x * airHorizontalSpeed : 0f;
+                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, airSpeedLerp * airControlWhereBump.x * Time.fixedDeltaTime), rb.velocity.y);
+            }
+            else
+            {
+                //Clamp the fall speed
+                float targetedSpeed = (playerInput.rawY == -1 && enableInput) ? -fallSpeed.y * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f) : -fallSpeed.y;
+                if (rb.velocity.y < targetedSpeed)//slow
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, targetedSpeed, fallDecelerationSpeedLerp * Time.fixedDeltaTime));
+                }
+                else
+                {
+                    float coeff = rb.velocity.y >= -fallSpeed.y * maxBeginFallSpeed ? fallGravityMultiplier * beginFallExtraGravity : fallGravityMultiplier;
+                    coeff = enableInput && playerInput.rawY < 0 ? coeff * fallGravityMultiplierWhenDownPressed : coeff;
+                    rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.fixedDeltaTime));
+                }
+            }
+
+            decreasementCoeff *= airBumpFrictionCoefficient;
+        }
+
+        //Friction
+        rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, bumpDecreasementLerp * decreasementCoeff * Time.fixedDeltaTime), rb.velocity.y);
     }
 
     #endregion

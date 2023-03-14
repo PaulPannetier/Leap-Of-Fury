@@ -9,6 +9,7 @@ public class FightController : MonoBehaviour
     private EventController eventController;
     private PlayerCommon playerCommon;
     private CustomPlayerInput playerInput;
+    private Movement movement;
 
     private int nbKill = 0;
     private float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack;
@@ -27,7 +28,7 @@ public class FightController : MonoBehaviour
     [SerializeField] private float invicibilityDurationWhenDashing = 0.2f;
     [SerializeField] private Vector2 dashHitboxOffset;
     [SerializeField] private Vector2 dashHitboxSize;
-    private int charMask = LayerMask.GetMask("Char");
+    private int charMask;
 
     [Header("Inputs")]
     public bool enableAttackWeak = true;
@@ -45,6 +46,7 @@ public class FightController : MonoBehaviour
         playerCommon = GetComponent<PlayerCommon>();
         toricObject = GetComponent<ToricObject>();
         playerInput = GetComponent<CustomPlayerInput>();
+        movement = GetComponent<Movement>();
         nbKill = 0;
     }
 
@@ -57,6 +59,7 @@ public class FightController : MonoBehaviour
         eventController.callBackTouchByEnvironnement += OnBeenTouchByEnvironnement;
         eventController.callBackKillByEnvironnement += OnBeenKillByEnvironnement;
         eventController.callBackBeenKillInstant += OnBeenKillInstant;
+        charMask = LayerMask.GetMask("Char");
     }
 
     #endregion
@@ -178,21 +181,35 @@ public class FightController : MonoBehaviour
         void HandleDashCollision(GameObject player)
         {
             FightController fc = player.GetComponent<FightController>();
-            if(fc.isDashing)
+            bool playerIsDashing = fc.isDashing;
+            fc.OnDashCollision(this);
+            if(playerIsDashing)
             {
                 DisableDashCollision(0.2f);
-                fc.DisableDashCollision(0.2f);
 
-                //on applique les bumps
+                //on applique le bump
                 Vector2 bumpDir = (((Vector2)transform.position + dashHitboxOffset) - ((Vector2)fc.transform.position + fc.dashHitboxOffset)).normalized;
-
-            }
-            else
-            {
-                eventController.OnKillByDash(player);
-                player.GetComponent<EventController>().OnBeenKillByDash(gameObject);
+                movement.ApplyBump(bumpDir * dashBumpSpeed);
             }
         }
+    }
+
+    private void OnDashCollision(FightController fc)
+    {
+        if(isDashing)
+        {
+            DisableDashCollision(0.2f);
+
+            //on applique le bump
+            Vector2 bumpDir = (((Vector2)transform.position + dashHitboxOffset) - ((Vector2)fc.transform.position + fc.dashHitboxOffset)).normalized;
+            movement.ApplyBump(bumpDir * dashBumpSpeed);
+        }
+        else
+        {
+            eventController.OnBeenKillByDash(fc.gameObject);
+            fc.GetComponent<EventController>().OnKillByDash(gameObject);
+        }
+
     }
 
     private void DisableDashCollision(float duration)
