@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 public static class PhysicsToric
@@ -24,6 +22,20 @@ public static class PhysicsToric
     {
         return new Vector2(Useful.ClampModulo(-cameraSize.x * 0.5f, cameraSize.x * 0.5f, point.x),
             Useful.ClampModulo(-cameraSize.y * 0.5f, cameraSize.y * 0.5f, point.y));
+    }
+
+    public static Vector2 GetComplementaryPoint(Vector2 point)
+    {
+        Vector2 step = new Vector2(point.x - cameraHitbox.center.x > 0f ? 0.01f : -0.01f, point.y - cameraHitbox.center.y > 0f ? 0.01f : -0.01f);
+        int i = 0;
+        while (cameraHitbox.Contains(point))
+        {
+            point += step;
+            i++;
+        }
+        point += step;
+        i++;
+        return GetPointInsideBounds(point) + i * step;
     }
 
     public static float Distance(Vector2 p1, Vector2 p2)
@@ -63,6 +75,23 @@ public static class PhysicsToric
             }
         }
         return minDir.normalized;
+    }
+
+    public static bool GetToricIntersection(in Vector2 a, in Vector2 b, out Vector2 toricInter)
+    {
+        float dist = Distance(a, b);
+        Vector2 dir = Direction(a, b);
+        Line line = new Line(a, a + dir * dist);
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (CustomCollider2D.CollideHitboxLine(cameraHitboxArounds[i], line, out toricInter))
+            {
+                return true;
+            }
+        }
+        toricInter = Vector2.zero;
+        return false;
     }
 
     #endregion
@@ -374,7 +403,9 @@ public static class PhysicsToric
                         cp += step;
                     }
                     points.Add(cp);
+                    cp += step;
                     cp = GetPointInsideBounds(cp);
+                    cp += step;
                     return RaycastRecur(cp, direction, distance - tmpDist, layerMask, ref reachDistance, ref points);
                 }
                 else
@@ -403,7 +434,9 @@ public static class PhysicsToric
                 cp2 += step;
             }
             points.Add(cp2);
+            cp2 += step;
             cp2 = GetPointInsideBounds(cp2);
+            cp2 += step;
             return RaycastRecur(cp2, direction, distance - tmpDist, layerMask, ref reachDistance, ref points);
         }
         else
@@ -412,6 +445,84 @@ public static class PhysicsToric
             reachDistance += raycast.distance;
             raycast.point = GetPointInsideBounds(raycast.point);
             return raycast;
+        }
+    }
+
+    public static RaycastHit2D[] RaycastAll(Vector2 from, in Vector2 dir, float distance, LayerMask layerMask)
+    {
+        from = GetPointInsideBounds(from);
+        List<List<Vector2>> interPoints = new List<List<Vector2>>();
+        List<Vector2> globalInterPoints = new List<Vector2>();
+        RaycastHit2D[] raycasts = RaycastAllRecur(from, dir.normalized, distance, layerMask, 0f, 0, ref globalInterPoints, ref interPoints);
+
+        return raycasts;
+    }
+
+    public static RaycastHit2D[] RaycastAll(Vector2 from, in Vector2 dir, float distance, LayerMask layerMask, out Vector2[][] toricHitboxIntersectionsPoints)
+    {
+        from = GetPointInsideBounds(from);
+        List<List<Vector2>> interPoints = new List<List<Vector2>>();
+        List<Vector2> globalInterPoints = new List<Vector2>();
+        RaycastHit2D[] raycasts = RaycastAllRecur(from, dir.normalized, distance, layerMask, 0f, 0, ref globalInterPoints, ref interPoints);
+
+        toricHitboxIntersectionsPoints = new Vector2[interPoints.Count][];
+        for (int i = 0; i < toricHitboxIntersectionsPoints.Length; i++)
+        {
+            toricHitboxIntersectionsPoints[i] = new Vector2[interPoints[i].Count];
+            for (int j = 0; j < toricHitboxIntersectionsPoints[i].Length; j++)
+            {
+                toricHitboxIntersectionsPoints[i][j] = interPoints[i][j];
+            }
+        }
+
+        return raycasts;
+    }
+
+    private static RaycastHit2D[] RaycastAllRecur(in Vector2 from, in Vector2 direction, float distance, int layerMask, float reachDistance, int raycastIndex,ref List<Vector2> globalInterPoints, ref List<List<Vector2>> interPoints)
+    {
+        Line line = new Line(from, from + direction * distance);
+        bool collide = false;
+        Vector2 inter = Vector2.zero;
+        float minInterSqrDist = float.MaxValue;
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (CustomCollider2D.CollideHitboxLine(cameraHitboxArounds[i], line, out Vector2 tmpInter))
+            {
+                collide = true;
+                float sqrDist = from.SqrDistance(tmpInter);
+                if(sqrDist < minInterSqrDist)
+                {
+                    minInterSqrDist = sqrDist;
+                    inter = tmpInter;
+                }
+            }
+        }
+
+        if(collide)
+        {
+            float lineDist = Mathf.Sqrt(minInterSqrDist);
+            RaycastHit2D[] raycasts = Physics2D.RaycastAll(from, direction, lineDist, layerMask);
+            globalInterPoints.Add(inter);
+
+            for (int i = 0; i < raycasts.Length; i++)
+            {
+                interPoints.Add(globalInterPoints.Clone());
+            }
+            raycastIndex += raycasts.Length;
+            reachDistance += lineDist;
+
+            inter = GetComplementaryPoint(inter);
+            return raycasts.Merge(RaycastAllRecur(inter, direction, distance - lineDist, layerMask, reachDistance, raycastIndex, ref globalInterPoints, ref interPoints));
+        }
+        else //ez case
+        {
+            RaycastHit2D[] raycasts = Physics2D.RaycastAll(from, direction, distance, layerMask);
+            for (int i = 0; i < raycasts.Length; i++)
+            {
+                interPoints.Add(new List<Vector2>());
+            }
+            return raycasts;
         }
     }
 
@@ -510,9 +621,7 @@ public static class PhysicsToric
             {
                 inters.Add(col);
                 float newDist = distance - start.Distance(col);
-                while (cameraHitbox.Contains(col))
-                    col += dir * 0.01f;
-                col = GetPointInsideBounds(col);
+                col = GetComplementaryPoint(col);
                 return raycasts.Merge(CircleCastRecur(col, dir, radius, newDist, layerMask, ref inters, onlyOne));
             }
             else

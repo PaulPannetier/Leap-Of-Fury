@@ -53,6 +53,8 @@ public class Movement : MonoBehaviour
     [Tooltip("La vitesse maximal de saut (VMAX en l'air).")] [SerializeField] private Vector2 jumpSpeed = new Vector2(4f, 20f);
     [Tooltip("La vitesse init horizontale en saut (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float jumpInitHorizontaSpeed = 0.4f;
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale de saut")] [SerializeField] private float jumpSpeedLerp = 20f;
+    [SerializeField] private bool enableDoubleJump = true;
+    [Tooltip("The speed of the second jump(magnitude of his velocity vector)"), SerializeField] private float doubleJumpSpeed = 6f;
     [Tooltip("Le temps apres avoir quité la plateforme ou le saut est possible")] [SerializeField] private float jumpCoyoteTime = 0.1f;
     [Tooltip("La taille de la boite de collision détectant un saut sur le bord d'un mur"), SerializeField] private Vector2 knockHeadSize;
     [Tooltip("L'offset de la boite de collision détectant un saut sur le bord d'un mur"), SerializeField] private Vector2 knockHeadOffset;
@@ -176,11 +178,16 @@ public class Movement : MonoBehaviour
     private bool oldOnWall, oldOnGround = false;
 
     private bool groundTouch = false;//vaut true la frame ou l'on touche le sol
-    private bool wallJump, jump, wallJumpAlongWall, dash;//vaut true la frame ou l'action est faite;
-    private bool hasDashed = false;
+    private bool hasDashed, hasDoubleJump;
 
-    public bool doJump { get; private set; }
-    public bool doDash { get; private set; }
+    public bool wallJump { get; private set; }//vaut true la frame ou l'action est faite;
+    public bool jump{ get; private set; }//vaut true la frame ou l'action est faite;
+    public bool doubleJump { get; private set; }//vaut true la frame ou l'action est faite;
+    public bool wallJumpAlongWall { get; private set; }//vaut true la frame ou l'action est faite;
+    public bool dash { get; private set; }//vaut true la frame ou l'action est faite;
+    private bool oldWallJump, oldJump, oldSecondJump, oldWallJumpAlongWall, oldDash;//use tu set var on top just for only one frame
+
+    private bool doJump, doSecondJump, doDash;
 
     [HideInInspector] public int side = 1;
 
@@ -389,7 +396,7 @@ public class Movement : MonoBehaviour
             isJumping = isWallJumping = isJumpingAlongWall = isFalling = false;
         }
         //Release Falling
-        if(jump || wallJump)
+        if(jump || wallJump || doubleJump)
         {
             isFalling = false;
         }
@@ -422,6 +429,11 @@ public class Movement : MonoBehaviour
             {
                 isFalling = true;
             }
+        }
+        //reset doubleJump
+        if(onWall || wallGrab)
+        {
+            hasDoubleJump = false;
         }
 
         // IV-Slide
@@ -510,7 +522,22 @@ public class Movement : MonoBehaviour
         }
 
         // VII-old / trigger
-        wallJump = dash = jump = wallJumpAlongWall = false;
+        if (oldDash)
+            dash = false;
+        if (oldJump)
+            jump = false;
+        if (oldWallJump)
+            wallJump = false;
+        if (oldSecondJump)
+            doubleJump = false;
+        if (oldWallJumpAlongWall)
+            wallJumpAlongWall = false;
+
+        oldDash = dash;
+        oldJump = jump;
+        oldWallJump = wallJump;
+        oldSecondJump = doubleJump;
+        oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
         
@@ -805,9 +832,14 @@ public class Movement : MonoBehaviour
                 WallJump();
                 doJump = false;
             }
-            else if (Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && canMove)
+            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && canMove)
             {
                 Jump(Vector2.up);
+                doJump = false;
+            }
+            else if (!isGrounded && Time.time - lastTimeBeginJump >= jumpMaxDuration && !(grabStayAtApex || reachGrabApex || wallGrab) && !hasDoubleJump && enableDoubleJump)
+            {
+                HandleDoubleJump();
                 doJump = false;
             }
             else if (Time.time - lastTimeJumpCommand <= timeUntilCommandIsInvalid)
@@ -888,6 +920,14 @@ public class Movement : MonoBehaviour
                 float targetSpeed = playerInput.x * speed.x;
                 rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, jumpSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
             }
+        }
+
+        void HandleDoubleJump()
+        {
+            float right = playerInput.rawX != 0 ? playerInput.rawX : side;
+            Vector2 dir = new Vector2(right, 1f).normalized;
+            rb.velocity = dir * doubleJumpSpeed;
+            hasDoubleJump = doubleJump = true;
         }
     }
 
@@ -1212,6 +1252,7 @@ public class Movement : MonoBehaviour
     {
         groundColliderData = groundCollider.GetComponent<MapColliderData>();
         hasDashed = false;
+        hasDoubleJump = false;
         isJumping = false;
         isFalling = false;
 
@@ -1293,6 +1334,7 @@ public class Movement : MonoBehaviour
         fallSpeed = new Vector2(Mathf.Max(0f, fallSpeed.x), Mathf.Max(0f, fallSpeed.y));
         airHorizontalSpeed = Mathf.Max(0f, airHorizontalSpeed);
         jumpSpeed = new Vector2(Mathf.Max(0f, jumpSpeed.x), Mathf.Max(0f, jumpSpeed.y));
+        doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);
         grabApexSpeed = new Vector2(Mathf.Max(0f, grabApexSpeed.x), Mathf.Max(0f, grabApexSpeed.y));
         grabApexSpeed2 = new Vector2(Mathf.Max(0f, grabApexSpeed2.x), Mathf.Max(0f, grabApexSpeed2.y));
         slideSpeed = Mathf.Max(0f, slideSpeed);

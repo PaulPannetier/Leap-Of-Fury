@@ -55,7 +55,7 @@ Carte :
 -Une mécanique de gameplay propre à chaque carte:
 
 Carte 1 :
-Méca : Certain sol glisse, de temps en temps la tempète/brouillard se lève, cachant une partie de la carte.
+Méca : Certain sol glisse, il y a des jumper.
 DA : la grotte du yéti, glace neige.
 Name : Yeti's Cave
 
@@ -71,7 +71,7 @@ puis plusieurs portail apparaisse et le joueur se tp devant un (au choix selon l
 le portail, 
 debient invinsible pendant quelques seconde, et ralentie le temps(sauf pour lui).
 De + le pendule de l'hormoge tangue et tue tout sur son passage
-DA : L'atelier d'in horloger / sommet d'un cathédrale avec cloche.
+DA : L'atelier d'un horloger / sommet d'une cathédrale avec cloche.
 
 Carte 4 :
 Méca : Un clown transparent effraye(stun) les joueurs.
@@ -80,15 +80,24 @@ DA : Une fete foraine
 Carte 5 :
 Méca : Cycle jour/nuit, au début c'est le jour, tout est visible, puis un peu après la nuit tombe (annomcé pas le bruit d'unn corbeau), tout deviens noir, seul les joueurs
 crée de la lumière en touchant le sol. Des luciole se promère créant un pêu de lumière.
-DA : Dans la foret. Plateforme sont les brache des arbre.
+DA : Dans la foret.
 Name : Into the jungle
 
 carte 6 :
-Méca : certaine plateforme boude dans la direction opposé quand on dash dessus (plateforme bleu de celeste) et rajoute une foorce au joueur la touchant donne la 
-bonne directiion pour qu'il évite le mouvement de la plateforme. Quand un plateforme s'écrase sur un mur, il tue les joueurs et le joueur ayant
-fait bouger la plateforme gagne un point. De + de temps en temps la gravité s'inverse pendant  un temps ~10sec(un métronome compte a rebourd est$
-au centre de la map, quand il sonne tout les joueur sont freeze quelques seconde le temps que la gravité s'inverse)
+Méca : certaine plateforme bouge dans la direction opposé quand on dash dessus (plateforme bleu de celeste)
+et rajoute une force au joueur la touchant donne la bonne direction pour qu'il évite le mouvement de la plateforme.
+Quand un plateforme s'écrase sur un mur, il tue/écrase les joueurs et le joueur ayant
+fait bouger la plateforme gagne un kill. 
 DA : jsp
+name : jsp
+
+carte 7 :
+Au centre de la map il y a un bouton, quand un joueur appuie dessus,
+la gravité s'inverse.
+De + des paires d'electrode d'active est crée un éclair en eux a un rythme régulier, 
+tuant les joueur entre les 2 électrode.
+DA : Une usine électrique/electromagnétique avec des bobine, des électrode des fil ect.
+name : Maxwell house ou Maxwell factory
 
 
 Dernière carte (carte n):

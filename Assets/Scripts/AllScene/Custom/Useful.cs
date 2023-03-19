@@ -1340,6 +1340,10 @@ public static class Useful
 
     public static T Last<T>(this List<T> lst) => lst[lst.Count - 1];
 
+    public static void RemoveLast<T>(this List<T> lst) => lst.RemoveAt(lst.Count - 1);
+
+    public static void RemoveBeg<T>(this List<T> lst) => lst.RemoveAt(0);
+
     /// <summary>
     /// Retourne lst1 union lst2
     /// </summary>
