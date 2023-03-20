@@ -1,0 +1,38 @@
+using UnityEngine;
+
+[RequireComponent (typeof(CircleCollider2D))]
+public class CircularBumpZone : BumpsZone
+{
+    protected CircleCollider2D circleCollider;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        circleCollider = GetComponent<CircleCollider2D>();
+    }
+
+    protected override Vector2 GetColliderNormal(Collider2D charCollider)
+    {
+        return (((Vector2)charCollider.transform.position + charCollider.offset) - (Vector2)transform.position).normalized;
+    }
+
+    protected override Collider2D[] GetTouchingChar()
+    {
+        return PhysicsToric.OverlapCircleAll(transform.position, circleCollider.radius * collisionDetectionScale, charMask);
+    }
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        circleCollider = GetComponent<CircleCollider2D>();
+        transform.GetChild(0).localScale = circleCollider.radius * 2f * Vector3.one;
+    }
+
+    protected override void OnDrawGizmosSelected()
+    {
+        base.OnDrawGizmosSelected();
+        circleCollider = GetComponent<CircleCollider2D>();
+        Gizmos.color = Color.green;
+        Circle.GizmosDraw((Vector2)transform.position + circleCollider.offset, circleCollider.radius * collisionDetectionScale);
+    }
+}

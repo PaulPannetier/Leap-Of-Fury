@@ -1,22 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public class BumpsZone : MonoBehaviour
+public abstract class BumpsZone : MonoBehaviour
 {
-    private LayerMask charMask;
+    protected LayerMask charMask;
     private List<uint> charAlreadyTouch = new List<uint>();
 
-    [SerializeField] private float radius = 3f;
-    [SerializeField] private float bumpSpeed = 20f;
+    [SerializeField] protected float collisionDetectionScale = 1.2f;
+    [SerializeField] protected float bumpSpeed = 20f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         charMask = LayerMask.GetMask("Char");
     }
 
-    private void Update()
+    protected abstract Collider2D[] GetTouchingChar();
+
+    protected abstract Vector2 GetColliderNormal(Collider2D charCollider);
+
+    protected virtual void Update()
     {
-        Collider2D[] cols = PhysicsToric.OverlapCircleAll(transform.position, radius, charMask);
+        Collider2D[] cols = GetTouchingChar();
         List<uint> newCharTouch = new List<uint>();
         foreach (Collider2D col in cols)
         {
@@ -28,7 +33,7 @@ public class BumpsZone : MonoBehaviour
                 if(!charAlreadyTouch.Contains(id))
                 {
                     charAlreadyTouch.Add(id);
-                    Vector2 dir = ((Vector2)(player.transform.position - transform.position)).normalized;
+                    Vector2 dir = GetColliderNormal(col);
                     player.GetComponent<Movement>().ApplyBump(dir * bumpSpeed);
                     Invoke(nameof(ClearCharAlreadyTouch), 1f);
                 }
@@ -49,14 +54,13 @@ public class BumpsZone : MonoBehaviour
         charAlreadyTouch.Clear();
     }
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
-        transform.localScale = Vector3.one * 2f * radius;
+        collisionDetectionScale = Mathf.Max(collisionDetectionScale, 0f);
     }
 
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Circle.GizmosDraw(transform.position, radius);
+
     }
 }

@@ -47,23 +47,31 @@ perso 4 :
 
 
 Attaques :
-un niveau de puissance x entre 0 et 100.
-si x < 75, enlève x sur le bouclier sinon enlève x sur le bouclier et qui stun.
+un niveau de puissance x entre 1 et 100 (utile que contre les boss)
+si x >= 75 => cancel les attaques cancellable des boss
 
 Carte :
 -Homéomorphe à un tore.
 -Une mécanique de gameplay propre à chaque carte:
 
+Carte 0 :
+Méca : rien, un carte simple pour les débutants ou les fdp qui désactive les jokers sur smash
+DA : jsp
+Name : jsp
+
 Carte 1 :
-Méca : Certain sol glisse, il y a des jumper.
+Méca : Certain sol glisse, il y a des jumper.//ok
 DA : la grotte du yéti, glace neige.
 Name : Yeti's Cave
 
 Carte 2 :
-Méca : Des totems (2 avec un marteau et 2 avec une boule de magie) s'allumant de la couleur du perso permettant l'activation des attaques physiques et magiques.
-+ trampoline.
+Méca : Il ya des trampolines/bumper.
++ certaine plateforme bouge dans la direction opposé quand on dash dessus (plateforme bleu de celeste)
+et rajoute une force au joueur la touchant donne la bonne direction pour qu'il évite le mouvement de la plateforme.
+Quand un plateforme s'écrase sur un mur, il tue/écrase les joueurs et le joueur ayant
+fait bouger la plateforme gagne un kill. 
 DA : Un temple maya/jungle amazonienne.
-Name :Maya's Temple
+Name : Maya's Temple
 
 Carte 3 : 
 Méca : De temps en temps, un portail temporel apparait au milieu de la map, un joueur peut le prendre, il reste dedans pendant quelques secondes
@@ -74,24 +82,12 @@ De + le pendule de l'hormoge tangue et tue tout sur son passage
 DA : L'atelier d'un horloger / sommet d'une cathédrale avec cloche.
 
 Carte 4 :
-Méca : Un clown transparent effraye(stun) les joueurs.
-DA : Une fete foraine
-
-Carte 5 :
 Méca : Cycle jour/nuit, au début c'est le jour, tout est visible, puis un peu après la nuit tombe (annomcé pas le bruit d'unn corbeau), tout deviens noir, seul les joueurs
 crée de la lumière en touchant le sol. Des luciole se promère créant un pêu de lumière.
 DA : Dans la foret.
 Name : Into the jungle
 
-carte 6 :
-Méca : certaine plateforme bouge dans la direction opposé quand on dash dessus (plateforme bleu de celeste)
-et rajoute une force au joueur la touchant donne la bonne direction pour qu'il évite le mouvement de la plateforme.
-Quand un plateforme s'écrase sur un mur, il tue/écrase les joueurs et le joueur ayant
-fait bouger la plateforme gagne un kill. 
-DA : jsp
-name : jsp
-
-carte 7 :
+carte 5 :
 Au centre de la map il y a un bouton, quand un joueur appuie dessus,
 la gravité s'inverse.
 De + des paires d'electrode d'active est crée un éclair en eux a un rythme régulier, 
@@ -99,6 +95,11 @@ tuant les joueur entre les 2 électrode.
 DA : Une usine électrique/electromagnétique avec des bobine, des électrode des fil ect.
 name : Maxwell house ou Maxwell factory
 
+Carte 6 :
+Méca : Un clown transparent effraye (stun) les joueurs.
++ des ascenseurs verticaux et/ou horizontaux.
+DA : Une fete foraine
+Name : La fete foraine
 
 Dernière carte (carte n):
 Méca : réunnit toute les méca de toutes les autres cartes

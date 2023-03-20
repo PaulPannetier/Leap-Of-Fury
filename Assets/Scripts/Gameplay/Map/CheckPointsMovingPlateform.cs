@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class MovingPlateform : MonoBehaviour
+public class CheckPointsMovingPlateform : MonoBehaviour
 {
     private bool isWaiting;
     private int targetIndex;
@@ -13,13 +13,13 @@ public class MovingPlateform : MonoBehaviour
     private Vector2 offsetHitboxDown, sizeHitboxDown;
     private Vector2 offsetHitboxRight, sizeHitboxRight;
     private Vector2 offsetHitboxLeft, sizeHitboxLeft;
-    [SerializeField] private List<uint> charAlreadyTouch;
+    private List<uint> charAlreadyTouch;
+    private LayerMask charMask, groundMask;
 
     [SerializeField] private Vector2[] checkPoints;
     [SerializeField] private float[] waitingTimeCheckPoints;
     [SerializeField] private float[] speeds;
     [SerializeField] private float detectionHitboxSize; 
-    [SerializeField] private LayerMask charMask, groundMask;
 
     private void Awake()
     {
@@ -38,6 +38,8 @@ public class MovingPlateform : MonoBehaviour
         isWaiting = true;
         targetIndex = 0;
         charAlreadyTouch = new List<uint>();
+        charMask = LayerMask.GetMask("Char");
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
 
         CalculateDetectionHitbox();
     }

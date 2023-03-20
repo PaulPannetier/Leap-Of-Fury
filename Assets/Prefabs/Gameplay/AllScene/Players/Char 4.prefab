@@ -460,6 +460,8 @@ MonoBehaviour:
   jumpSpeed: {x: 8, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
+  enableDoubleJump: 1
+  doubleJumpSpeed: 11
   jumpCoyoteTime: 0.1
   knockHeadSize: {x: 0, y: 0}
   knockHeadOffset: {x: 0, y: 0}
@@ -542,9 +544,7 @@ MonoBehaviour:
   grabInitSpeedOnApexStay: 0.228
   dashSpeed: 20
   dashDuration: 0.2
-  invicibilityOffsetTime: 0.05
   dashCooldown: 0.15
-  dashInvicibilityDuration: 0.2
   dashSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -624,6 +624,20 @@ MonoBehaviour:
   slopeRaycastLength: 0.2
   isSlopingRight: 0
   isSlopingLeft: 0
+  bumpDecreasementLerp: 7
+  maxBumpDuration: 0.5
+  extraBumpFrictionCauseBySpeed:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  groundBumpFrictionCoefficient: 1.2
+  groundControlWhereBump: 0.25
+  minGroundSpeedWhereBump: 1.5
+  airBumpFrictionCoefficient: 0.9
+  airControlWhereBump: {x: 0.5, y: 0.5}
+  minAirSpeedWhereBump: 10
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
@@ -792,8 +806,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canLauchWeakAttack: 1
   canLaunchStrongAttack: 1
+  dashBumpSpeed: 10
+  dashInvicibilityOffset: 0.1
+  invicibilityDurationWhenDashing: 0.2
+  dashHitboxOffset: {x: 0, y: 0}
+  dashHitboxSize: {x: 0, y: 0}
   enableAttackWeak: 1
   enableAttackStrong: 1
+  enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.2
 --- !u!114 &4128551290350845197
 MonoBehaviour:

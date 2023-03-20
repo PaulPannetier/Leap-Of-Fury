@@ -60,7 +60,8 @@ public class Movement : MonoBehaviour
     [Tooltip("L'offset de la boite de collision détectant un saut sur le bord d'un mur"), SerializeField] private Vector2 knockHeadOffset;
     [Tooltip("La taille de la boite de collision du joueur sans celle détectant un saut blocker par le bord d'un mur"), SerializeField] private Vector2 hitbowWithoutKnockHeadSize;
     [Tooltip("L'offset de la boite de collision du joueur sans celle détectant un saut blocker par le bord d'un mur"), SerializeField] private Vector2 hitboxWithoutKnockHeadOffset;
-    private float lastTimeLeavePlateform = -10f, lastTimeJumpCommand = -10f, lastTimeBeginJump;
+    private float lastTimeLeavePlateform = -10f, lastTimeJumpCommand = -10f, lastTimeBeginJump = -10f;
+    private bool isPressingJumpButtonDownForFixedUpdate;
 
     [Header("Air")]//en chute mais en phase montante
     [Tooltip("L'accélération continue dû au saut.")] [SerializeField] private float airGravityMultiplier = 1f;
@@ -430,8 +431,11 @@ public class Movement : MonoBehaviour
                 isFalling = true;
             }
         }
+        //set isPressingJumpButtonDownForFixedUpdate
+        isPressingJumpButtonDownForFixedUpdate = isPressingJumpButtonDownForFixedUpdate ? true : playerInput.jumpPressedDown;
+
         //reset doubleJump
-        if(onWall || wallGrab)
+        if (onWall || wallGrab)
         {
             hasDoubleJump = false;
         }
@@ -827,17 +831,17 @@ public class Movement : MonoBehaviour
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if ((grabStayAtApex || reachGrabApex || wallGrab) && !isGrounded && canMove)
-            {
-                WallJump();
-                doJump = false;
-            }
             else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && canMove)
             {
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if (!isGrounded && Time.time - lastTimeBeginJump >= jumpMaxDuration && !(grabStayAtApex || reachGrabApex || wallGrab) && !hasDoubleJump && enableDoubleJump)
+            else if ((grabStayAtApex || reachGrabApex || wallGrab) && !isGrounded && canMove)
+            {
+                WallJump();
+                doJump = false;
+            }
+            else if (!isGrounded && !(grabStayAtApex || reachGrabApex || wallGrab) && isPressingJumpButtonDownForFixedUpdate && !hasDoubleJump && enableDoubleJump)
             {
                 HandleDoubleJump();
                 doJump = false;
@@ -879,6 +883,8 @@ public class Movement : MonoBehaviour
             float per100 = (Time.time - lastTimeBeginWallJumpAlongWall) / jumpAlongWallDuration;
             rb.velocity = new Vector2(0f, wallJumpAlongSpeed * wallJumpAlongCurveSpeed.Evaluate(per100));
         }
+
+        isPressingJumpButtonDownForFixedUpdate = false;
 
         void HandleJumpGravity(in float GravityMultiplier, in float force, in Vector2 speed)
         {
@@ -941,7 +947,7 @@ public class Movement : MonoBehaviour
         Vector2 newVelocity;
         if(groundColliderData != null && groundColliderData.groundType == MapColliderData.GroundType.trampoline)
         {
-            Trampoline t = groundColliderData.GetComponent<Trampoline>();
+            Jumper t = groundColliderData.GetComponent<Jumper>();
             Vector2 newDir = new Vector2(Mathf.Cos(t.angleDir * Mathf.Deg2Rad), Mathf.Sin(t.angleDir * Mathf.Deg2Rad));
             newVelocity = new Vector2(rb.velocity.x + newDir.x * t.force, newDir.y * t.force);
         }

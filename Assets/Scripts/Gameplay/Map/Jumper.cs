@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Trampoline : MonoBehaviour
+public class Jumper : MonoBehaviour
 {
     [Range(0f, 360f)] public float angleDir;
     public float force;
