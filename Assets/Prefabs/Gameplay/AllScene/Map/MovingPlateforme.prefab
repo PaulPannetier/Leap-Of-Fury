@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6802703658552955033}
   - component: {fileID: 6802703658552955032}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 6802703658552955034}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4.15098}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6802703658873857574}
   m_RootOrder: 0
@@ -93,10 +93,11 @@ GameObject:
   - component: {fileID: 6802703658873857574}
   - component: {fileID: 6802703658873857572}
   - component: {fileID: 5885465544488251038}
+  - component: {fileID: 7810843951605262407}
   - component: {fileID: 6802703658873857573}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MovingPlateforme
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140,7 +141,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 1}
   m_EdgeRadius: 0
 --- !u!50 &5885465544488251038
 Rigidbody2D:
@@ -163,6 +164,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7810843951605262407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6802703658873857575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1.1, y: 0.6, z: 0}
+  boundsOffset: {x: 0, y: 0}
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  lstClones: []
+  cloner: {fileID: 0}
+  componentsToDisableInClone: []
+  chidrenToRemoveInClone: []
 --- !u!114 &6802703658873857573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,5 +200,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableBehaviour: 1
-  speedLerp: 0
-  targetVelocity: {x: 0, y: 1}
+  speedLerp: 20
+  targetVelocity: {x: 0, y: 5}

@@ -88,8 +88,7 @@ DA : Dans la foret.
 Name : Into the jungle
 
 carte 5 :
-Au centre de la map il y a un bouton, quand un joueur appuie dessus,
-la gravité s'inverse.
+Au centre de la map il y a un bouton, quand un joueur passe devant, active les tapis roulant de la map
 De + des paires d'electrode d'active est crée un éclair en eux a un rythme régulier, 
 tuant les joueur entre les 2 électrode.
 DA : Une usine électrique/electromagnétique avec des bobine, des électrode des fil ect.

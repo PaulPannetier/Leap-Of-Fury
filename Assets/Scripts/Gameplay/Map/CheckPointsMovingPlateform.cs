@@ -16,6 +16,7 @@ public class CheckPointsMovingPlateform : MonoBehaviour
     private List<uint> charAlreadyTouch;
     private LayerMask charMask, groundMask;
 
+    public bool enableBehaviour = true;
     [SerializeField] private Vector2[] checkPoints;
     [SerializeField] private float[] waitingTimeCheckPoints;
     [SerializeField] private float[] speeds;
@@ -58,6 +59,9 @@ public class CheckPointsMovingPlateform : MonoBehaviour
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         if(isWaiting)
         {
             if(Time.time - lastTimeBeginWait > waitingTimeCheckPoints[targetIndex])
