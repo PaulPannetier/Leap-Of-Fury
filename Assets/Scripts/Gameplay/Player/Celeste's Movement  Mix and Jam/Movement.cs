@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
     private Camera mainCam;
     private CustomPlayerInput playerInput;
     private Collider2D hitbox;
-    private Collider2D groundCollider;
+    private Collider2D groundCollider, oldGroundCollider;
     private MapColliderData groundColliderData;
     private FightController fightController;
     private int disableMovementCounter = 0;
@@ -152,6 +152,12 @@ public class Movement : MonoBehaviour
     [SerializeField, Tooltip("La vitesse on l'on n'est plus bump en l'air")] private float minAirSpeedWhereBump = 10f;
     private float lastTimeBump = -10f;
 
+    [Header("Map Object")]
+    [SerializeField] private float inertiaDurationWhenQuittingConvoyerBelt = 0.08f;
+    [SerializeField] private float inertiaSpeedWhenQuittingConvoyerBelt = 1f;
+    private float lastTimeQuittingConvoyerBelt = -10f;
+    private bool isQuittingConvoyerBelt, isQuittingConvoyerBeltRight, isQuittingConvoyerBeltLeft;
+
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
     [SerializeField] private ParticleSystem jumpParticle;
@@ -188,7 +194,7 @@ public class Movement : MonoBehaviour
     public bool dash { get; private set; }//vaut true la frame ou l'action est faite;
     private bool oldWallJump, oldJump, oldSecondJump, oldWallJumpAlongWall, oldDash;//use tu set var on top just for only one frame
 
-    private bool doJump, doSecondJump, doDash;
+    private bool doJump, doDash;
 
     [HideInInspector] public int side = 1;
 
@@ -267,7 +273,7 @@ public class Movement : MonoBehaviour
 
     private void Start()
     {
-
+        oldGroundCollider = null;
     }
 
     #endregion
@@ -277,12 +283,31 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         // I-Collision/detection
+        oldGroundCollider = groundCollider;
         groundCollider = Physics2D.OverlapCircle((Vector2)transform.position + groundOffset, groundCollisionRadius, groundLayer);
         isGrounded = groundCollider != null;
         onRightWall = Physics2D.OverlapCircle((Vector2)transform.position + sideOffset, sideCollisionRadius, groundLayer) != null;
         onLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer) != null;
         onWall = onRightWall || onLeftWall;
         wallSide = onRightWall ? -1 : 1;
+
+        //detect quitting convoyerBelt
+        if(groundCollider == null && oldGroundCollider != null)
+        {
+            MapColliderData mapColliderData = oldGroundCollider.GetComponent<MapColliderData>();
+            if (mapColliderData.groundType == MapColliderData.GroundType.convoyerBelt)
+            {
+                isQuittingConvoyerBelt = true;
+                isQuittingConvoyerBeltRight = oldGroundCollider.transform.position.x + oldGroundCollider.offset.x < transform.position.x;
+                isQuittingConvoyerBeltLeft = !isQuittingConvoyerBeltRight;
+                lastTimeQuittingConvoyerBelt = Time.time;
+            }
+        }
+
+        if(isQuittingConvoyerBelt && Time.time - lastTimeQuittingConvoyerBelt > inertiaDurationWhenQuittingConvoyerBelt)
+        {
+            isQuittingConvoyerBelt = isQuittingConvoyerBeltLeft = isQuittingConvoyerBelt = false;
+        }
 
         //Slope detecttion
         RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + slopeRaycastOffset, Vector2.down, slopeRaycastLength, groundLayer);
@@ -601,10 +626,15 @@ public class Movement : MonoBehaviour
                 case MapColliderData.GroundType.trampoline:
                     HandleNormalWalk();
                     break;
+                case MapColliderData.GroundType.convoyerBelt:
+                    HandleConvoyerBelt();
+                    break;
                 default:
                     break;
             }
         }
+
+        #region HandleNormalWalk
 
         void HandleNormalWalk()
         {
@@ -628,6 +658,10 @@ public class Movement : MonoBehaviour
             rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, xMin, xMax), rb.velocity.y);
         }
 
+        #endregion
+
+        #region HandleIceWalk
+
         void HandleIceWalk()
         {
             if (playerInput.rawX != 0f)
@@ -640,7 +674,11 @@ public class Movement : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x * 0.985f * (Time.fixedDeltaTime / 0.02f) , rb.velocity.y);
             }
         }
-        
+
+        #endregion
+
+        #region HandleSlope
+
         void HandleSlope()
         {
             if((isSlopingRight && isSlopingLeft) || (!isSlopingRight && !isSlopingLeft))
@@ -699,6 +737,57 @@ public class Movement : MonoBehaviour
                 rb.velocity = Vector2.zero;
             }
         }
+
+        #endregion
+
+        #region HandleConvoyerBelt
+
+        void HandleConvoyerBelt()
+        {
+            ConvoyerBelt convoyer = groundColliderData.GetComponent<ConvoyerBelt>();
+            if(!convoyer.enableBehaviour)
+            {
+                HandleNormalWalk();
+                return;
+            }
+
+            //clamp, mauvais sens
+            if(playerInput.rawX != 0 && playerInput.rawX != convoyer.maxSpeed.Sign() && enableInput)
+            {
+                if (speedLerp > convoyer.speedLerp)
+                {
+                    if (rb.velocity.x.Sign() != playerInput.rawX)
+                    {
+                        rb.velocity = new Vector2(0f, rb.velocity.y);
+                    }
+                }
+                else
+                {
+                    if (rb.velocity.x.Sign() != convoyer.maxSpeed.Sign())
+                    {
+                        rb.velocity = new Vector2(0f, rb.velocity.y);
+                    }
+                }
+            }
+
+            if(playerInput.rawX == 0 || !enableInput)
+            {
+                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, convoyer.maxSpeed, convoyer.speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+            }
+            else if (playerInput.rawX == convoyer.maxSpeed.Sign())
+            {
+                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, walkSpeed * playerInput.x + convoyer.maxSpeed, (convoyer.speedLerp + speedLerp) * Time.fixedDeltaTime), rb.velocity.y);
+            }
+            else //playerInput.rawX != convoyer.maxSpeed.Sign()
+            {
+                float currentSpeedLerp = speedLerp - convoyer.speedLerp;
+                float targetedSpeed = Mathf.Abs(Mathf.Abs(walkSpeed * playerInput.x) - Mathf.Abs(convoyer.maxSpeed));
+                float sign = currentSpeedLerp > 0 ? playerInput.rawX : convoyer.maxSpeed.Sign();
+                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetedSpeed * sign, currentSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
+            }
+        }
+
+        #endregion
     }
 
     #endregion
@@ -1069,16 +1158,25 @@ public class Movement : MonoBehaviour
 
             //Movement horizontal
             //Clamp, on est dans le mauvais sens
-            if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
-                rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
-            if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+
+            if(isQuittingConvoyerBelt)
             {
-                rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
+                float speed = inertiaSpeedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
+                rb.velocity = new Vector2(speed, rb.velocity.y);
             }
             else
             {
-                float targetSpeed = !enableInput ? 0f : playerInput.x * fallSpeed.x;
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, fallSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+                    rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
+                if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+                {
+                    rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
+                }
+                else
+                {
+                    float targetSpeed = !enableInput ? 0f : playerInput.x * fallSpeed.x;
+                    rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, fallSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                }
             }
         }
     }

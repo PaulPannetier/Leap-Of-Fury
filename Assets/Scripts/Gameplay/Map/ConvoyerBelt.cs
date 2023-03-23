@@ -7,6 +7,8 @@ public class ConvoyerBelt : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     public bool enableBehaviour = true;
+    public float maxSpeed;
+    public float speedLerp;
 
     private void Awake()
     {
@@ -19,4 +21,8 @@ public class ConvoyerBelt : MonoBehaviour
         spriteRenderer.color = enableBehaviour ? Color.green : Color.red;
     }
 
+    private void OnValidate()
+    {
+        speedLerp = Mathf.Max(speedLerp, 0f);
+    }
 }

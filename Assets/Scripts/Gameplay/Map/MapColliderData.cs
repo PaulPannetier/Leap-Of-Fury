@@ -8,6 +8,7 @@ public class MapColliderData : MonoBehaviour
     {
         normal,
         ice,
-        trampoline
+        trampoline,
+        convoyerBelt
     }
 }

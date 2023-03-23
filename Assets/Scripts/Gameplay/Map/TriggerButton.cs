@@ -1,5 +1,4 @@
 using System;
-using UnityEngine.Events;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,11 +8,11 @@ public class TriggerButton : MonoBehaviour
     private LayerMask charMask;
     private bool isButtonEnable;
 
+    [SerializeField] private bool isButtonEnabledWhenStart = true;
     [SerializeField] private Vector2 colliderOffet;
     [SerializeField] private Vector2 colliderSize;
-    //public Action<GameObject, bool> triggeredButtonFunctions;
     
-    [Space] public UnityEvent<GameObject, bool> triggeredButtonFunctions;
+    [HideInInspector] public Action<GameObject, bool> callbackButtonFunctions;//le joueur activant le bouton, bool décrivant si le bouton vient d'etre activé/désactivé
 
     private void Awake()
     {
@@ -23,7 +22,8 @@ public class TriggerButton : MonoBehaviour
     private void Start()
     {
         charTouchLastFrame = new List<uint>();
-        isButtonEnable = false;
+        isButtonEnable = isButtonEnabledWhenStart;
+        callbackButtonFunctions.Invoke(null, isButtonEnable);
     }
 
     private void Update()
@@ -61,7 +61,7 @@ public class TriggerButton : MonoBehaviour
         void TriggerGravityButton(GameObject player)
         {
             isButtonEnable = !isButtonEnable;
-            triggeredButtonFunctions.Invoke(player, isButtonEnable);
+            callbackButtonFunctions.Invoke(player, isButtonEnable);
         }
     }
 

@@ -374,6 +374,8 @@ MonoBehaviour:
   airBumpFrictionCoefficient: 0.9
   airControlWhereBump: {x: 0.5, y: 0.5}
   minAirSpeedWhereBump: 10
+  inertiaDurationWhenQuittingConvoyerBelt: 0.08
+  inertiaSpeedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
