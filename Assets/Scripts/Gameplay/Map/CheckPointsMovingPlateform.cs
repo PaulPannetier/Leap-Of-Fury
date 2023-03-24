@@ -43,6 +43,9 @@ public class CheckPointsMovingPlateform : MonoBehaviour
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
 
         CalculateDetectionHitbox();
+
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
 
     private void CalculateDetectionHitbox()
@@ -132,6 +135,16 @@ public class CheckPointsMovingPlateform : MonoBehaviour
                 pc.GetComponent<EventController>().OnBeenKillByEnvironnement(gameObject);
             }
         }
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
+    }
+
+    private void Disable()
+    {
+        enableBehaviour = false;
     }
 
     #region Gizmos/OnValidate

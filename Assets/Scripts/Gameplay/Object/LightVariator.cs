@@ -19,6 +19,12 @@ public class LightVariator : MonoBehaviour
         yNoise = Random.Rand();
     }
 
+    private void Start()
+    {
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
+    }
+
     private void Update()
     {
         if (!enableBehaviour)
@@ -26,5 +32,15 @@ public class LightVariator : MonoBehaviour
         float noiseValue = Random.PerlinNoise(noiseIndexIntensity, yNoise) * intensityAmplitude;
         light.intensity = avgIntensity + noiseValue;
         noiseIndexIntensity += Time.deltaTime * intensityFrequency;
+    }
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
     }
 }

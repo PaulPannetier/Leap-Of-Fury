@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class LucioleManager : MonoBehaviour
@@ -25,6 +26,8 @@ public class LucioleManager : MonoBehaviour
     {
         CreateLuciole(lucioleCount);
         EventManager.instance.callbackOnLevelRestart += Restart;
+        PauseManager.instance.callBackOnPauseDisable += DisableLucioles;
+        PauseManager.instance.callBackOnPauseEnable += EnableLucioles;
     }
 
     private void Restart(string levelName)
@@ -34,7 +37,18 @@ public class LucioleManager : MonoBehaviour
             Destroy(luciole.gameObject);
         }
         lstLucioles.Clear();
-        CreateLuciole(lucioleCount);
+
+        StartCoroutine(CreateLucioleIn2FrameAfter());
+    }
+
+    private IEnumerator CreateLucioleIn2FrameAfter()
+    {
+        yield return null;
+        yield return null;
+        if (!CycleDayNightManager.instance.isDay)
+        {
+            CreateLuciole(lucioleCount);
+        }
     }
 
     private void CreateLuciole(int count)
@@ -45,6 +59,22 @@ public class LucioleManager : MonoBehaviour
         {
             Vector2 pos = Random.PointInRectangle(Vector2.zero, PhysicsToric.cameraSize);
             GameObject lucioleGO = Instantiate(luciolePrefab, pos, Quaternion.Euler(0f, 0f, Random.RandExclude(0f, 360f)), go.transform);
+        }
+    }
+
+    private void DisableLucioles()
+    {
+        foreach (Luciole l in lstLucioles)
+        {
+            l.enableBehaviour = false;
+        }
+    }
+
+    private void EnableLucioles()
+    {
+        foreach (Luciole l in lstLucioles)
+        {
+            l.enableBehaviour = true;
         }
     }
 }

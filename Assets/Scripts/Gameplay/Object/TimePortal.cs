@@ -13,6 +13,8 @@ public class TimePortal : MonoBehaviour
     //after entering
     private GameObject charToTP;
 
+    public bool enableBehaviour;
+
     [Header("Stats")]
     [SerializeField] private float sleepingTimeWhenEnterPortal = 2f;
     [SerializeField] private float timeToEnterPortal = 3f;
@@ -31,10 +33,15 @@ public class TimePortal : MonoBehaviour
     {
         lastTimeCreated = Time.time;
         charInFront = new List<PlayerCommon>();
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         if (tpChar)
             UpdateAfterEntering();
         else
@@ -178,6 +185,18 @@ public class TimePortal : MonoBehaviour
         movement.enableBehaviour = movement.enableInput = true;
     }
 
+    #region Gizmos/OnValidate
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
@@ -188,4 +207,6 @@ public class TimePortal : MonoBehaviour
     {
         size = new Vector2(Mathf.Max(0f, size.x), Mathf.Max(0f, size.y));
     }
+
+    #endregion
 }

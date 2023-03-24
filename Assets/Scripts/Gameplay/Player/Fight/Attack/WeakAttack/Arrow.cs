@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -14,6 +15,8 @@ public class Arrow : MonoBehaviour
     private bool isMainArrow;
     private bool isGuiding = false;
 
+    public bool enableBehaviour = true;
+
     [SerializeField] private float charDetectionRange = 2f;
     [SerializeField, Range(0f, 180f)] private float charDetectionAngle = 2f;
     [SerializeField] private float rotationDetectionSpeed = 180f;
@@ -28,8 +31,19 @@ public class Arrow : MonoBehaviour
         toricObject = GetComponent<ToricObject>();
     }
 
+    private void Start()
+    {
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
+    }
+
+    #region FixedUpdate
+
     private void FixedUpdate()
     {
+        if (!enableBehaviour)
+            return;
+
         if(isFlying && !toricObject.isAClone)
         {
             Collider2D[] cols = PhysicsToric.OverlapCircleAll(transform.position, charDetectionRange, charMask);
@@ -81,6 +95,8 @@ public class Arrow : MonoBehaviour
             }
         }
     }
+
+    #endregion
 
     public void Launch(ArrowAttack physicAttack, in Vector2 dir, in float initSpeed, bool isMainArrow = true)
     {
@@ -209,6 +225,9 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!enableBehaviour)
+            return;
+
         if (isFlying)
         {
             if (collision.CompareTag("Char"))
@@ -237,6 +256,35 @@ public class Arrow : MonoBehaviour
                 }
             }
         }
+    }
+
+    #region Gizmos/OnValidate
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+        StartCoroutine(PauseCorout());
+;    }
+
+    private IEnumerator PauseCorout()
+    {
+        Vector2 rbVel = rb.velocity;
+        float angularSpeed = rb.angularVelocity;
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+
+        while(!enableBehaviour)
+        {
+            yield return null;
+        }
+
+        rb.velocity = rbVel;
+        rb.angularVelocity = angularSpeed;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
     }
 
     private void OnValidate()
@@ -271,4 +319,6 @@ public class Arrow : MonoBehaviour
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(charDetectionAngle * Mathf.Deg2Rad, charDetectionRange));
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(-charDetectionAngle * Mathf.Deg2Rad, charDetectionRange));
     }
+
+    #endregion
 }

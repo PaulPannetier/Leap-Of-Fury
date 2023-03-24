@@ -6,11 +6,14 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    #region Fields
+
     private enum LevelType
     {
         YetisCave,
         MayasTemple,
-        IntoTheJungle
+        IntoTheJungle,
+        MaxwellHouse
     }
 
     private PlayerScore[] playersScore;
@@ -42,6 +45,12 @@ public class LevelManager : MonoBehaviour
     [Header("IntoTheJungle")]
     [SerializeField] private GameObject playerLightPrefabs;
 
+    [Header("MaxwellHouse")]
+    [SerializeField] private float MaxwellHouseVar;
+
+    #endregion
+
+    #region Start/Restart
 
     private void Start()
     {
@@ -56,6 +65,12 @@ public class LevelManager : MonoBehaviour
                 break;
             case LevelType.MayasTemple:
                 InitMayasTemple();
+                break;
+            case LevelType.IntoTheJungle:
+                InitIntoTheJungle();
+                break;
+            case LevelType.MaxwellHouse:
+                InitMaxwellHouse();
                 break;
             default:
                 break;
@@ -85,10 +100,15 @@ public class LevelManager : MonoBehaviour
             case LevelType.IntoTheJungle: 
                 InitIntoTheJungle();
                 break;
+            case LevelType.MaxwellHouse:
+                InitMaxwellHouse();
+                break;
             default:
                 break;
         }
     }
+
+    #endregion
 
     #region Init
 
@@ -157,6 +177,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    private void InitMaxwellHouse()
+    {
+
+    }
+
     private void LoadSpawnPoint()
     {
         string path = string.Empty;
@@ -223,10 +248,12 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
+    #region Menu
+
     private IEnumerator LaunchEndMatchMenu()
     {
         yield return Useful.GetWaitForSeconds(waitingTimeAfterLastKill);
-        //lancer music fin de menu
+        //TODO : lancer music fin de menu
         int indexPlayerWin = -1;
         for (int i = 0; i < playersScore.Length; i++)
         {
@@ -264,10 +291,15 @@ public class LevelManager : MonoBehaviour
     {
         PauseManager.instance.EnablePause();
 
-        yield return Useful.GetWaitForSeconds(1.5f);
+        yield return Useful.GetWaitForSeconds(2f);
 
+        PauseManager.instance.DisablePause();
         TransitionManager.instance.LoadScene("Selection Map", null);
     }
+
+    #endregion
+
+    #region SpawnConfigsData
 
     [System.Serializable]
     public class SpawnConfigsData : IEnumerable<SpawnConfigsData.SpawnConfigPoints>
@@ -300,6 +332,8 @@ public class LevelManager : MonoBehaviour
             public IEnumerator GetEnumerator() => points.GetEnumerator();
         }
     }
+
+    #endregion
 
     #region OnValidate/OnDrawGizmos
 
@@ -384,6 +418,8 @@ public class LevelManager : MonoBehaviour
     #endregion
 }
 
+#region PlayerScore
+
 public struct PlayerScore
 {
     public static int nbKillsToWin = 7;
@@ -396,3 +432,5 @@ public struct PlayerScore
         this.nbKills = nbKills;
     }
 }
+
+#endregion

@@ -4,6 +4,8 @@ public class Luciole : MonoBehaviour
 {
     private Vector2 targetedDir;
 
+    public bool enableBehaviour;
+
     [Header("Detection")]
     [SerializeField, Range(0f, 360f)] float visionAngle = 45f;
     [SerializeField] float detectionRange = 3f;
@@ -20,6 +22,8 @@ public class Luciole : MonoBehaviour
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
         Vector2? otherLuciolePos = GetClosestOtherLuciolePositionInDetectionRange();
         if(otherLuciolePos != null)
         {

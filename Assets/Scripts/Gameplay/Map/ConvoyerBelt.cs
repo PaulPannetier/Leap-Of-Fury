@@ -1,9 +1,8 @@
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D), typeof(MapColliderData))]
+[RequireComponent(typeof(MapColliderData))]
 public class ConvoyerBelt : MonoBehaviour
 {
-    private BoxCollider2D hitbox;
     private SpriteRenderer spriteRenderer;
 
     public bool enableBehaviour = true;
@@ -12,13 +11,30 @@ public class ConvoyerBelt : MonoBehaviour
 
     private void Awake()
     {
-        hitbox = GetComponent<BoxCollider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
 
     private void Update()
     {
         spriteRenderer.color = enableBehaviour ? Color.green : Color.red;
+        if (!enableBehaviour)
+            return;
+    }
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
     }
 
     private void OnValidate()

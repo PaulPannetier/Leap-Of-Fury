@@ -38,7 +38,11 @@ public class Electrode : MonoBehaviour
     {
         enableBehaviour = false;
         Invoke(nameof(ActiveSelf), timeOffset);
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
+
+    #region Update
 
     private void Update()
     {
@@ -147,6 +151,8 @@ public class Electrode : MonoBehaviour
         }
     }
 
+    #endregion
+
     private void ActiveSelf()
     {
         enableBehaviour = isActive = firstTimeIsActive = true;
@@ -155,12 +161,21 @@ public class Electrode : MonoBehaviour
 
     #region OnDrawizmos/OnValidate
 
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
+    }
+
     private void OnValidate()
     {
         timeOffset = Mathf.Max(timeOffset, 0f);
         durationBetween2Activation = Mathf.Max(durationBetween2Activation, 0f);
     }
-
 
     private void OnDrawGizmosSelected()
     {
@@ -202,7 +217,6 @@ public class Electrode : MonoBehaviour
         Gizmos.color = Color.green;
         Circle.GizmosDraw(testRaycastAllBeg, 0.5f);
         */
-
     }
 
     #endregion

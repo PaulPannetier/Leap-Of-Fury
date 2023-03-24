@@ -42,7 +42,11 @@ public class MovablePlatefrom : MonoBehaviour
     private void Start()
     {
         charInFrontLastFrame = new List<Movement>();
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
+
+    #region Update
 
     private void Update()
     {
@@ -251,7 +255,21 @@ public class MovablePlatefrom : MonoBehaviour
                 }
             }
         }
-    }    
+    }
+
+    #endregion
+
+    #region Gizmos/OnValidate
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
+    }
 
     private void OnValidate()
     {
@@ -267,18 +285,7 @@ public class MovablePlatefrom : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position, hitbox.size * detectionCharColliderScale);
         Gizmos.DrawWireCube(transform.position, hitbox.size * detectionGroundColliderScale);
-
- /*       moveDir = Vector2.left;
-        Vector2 step = Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(0f, hitbox.size.y / (rayCount - 1)) : new Vector2(hitbox.size.x / (rayCount - 1), 0f);
-        Vector2 beg = (Vector2)transform.position + hitbox.offset +
-            (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(hitbox.size.x * 0.5f * moveDir.x.Sign(), hitbox.size.y * -0.5f) :
-             new Vector2(hitbox.size.x * -0.5f, hitbox.size.y * 0.5f * moveDir.y.Sign()));
-
-        for (int i = 0; i < rayCount; i++)
-        {
-            Vector2 point = beg + i * step + moveDir * rayDistOffset;
-            Gizmos.DrawLine(point, point + moveDir * 3f);
-        }
-        moveDir = Vector2.zero;*/
     }
+
+    #endregion
 }

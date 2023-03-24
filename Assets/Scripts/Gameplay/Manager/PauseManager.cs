@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour
@@ -5,6 +6,10 @@ public class PauseManager : MonoBehaviour
     public static PauseManager instance;
 
     private int pauseCounter = 0;
+
+    public bool isPauseEnable => pauseCounter > 0;
+    public Action callBackOnPauseEnable;
+    public Action callBackOnPauseDisable;
 
     private void Awake()
     {
@@ -16,12 +21,17 @@ public class PauseManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        pauseCounter = 0;
+    }
+
     public void EnablePause()
     {
         pauseCounter++;
         if(pauseCounter > 0)
         {
-            Time.timeScale = 0f;
+            callBackOnPauseEnable.Invoke();
         }
     }
 
@@ -30,7 +40,7 @@ public class PauseManager : MonoBehaviour
         pauseCounter--;
         if(pauseCounter <= 0)
         {
-            Time.timeScale = 1f;
+            callBackOnPauseDisable.Invoke();
         }
     }
 }

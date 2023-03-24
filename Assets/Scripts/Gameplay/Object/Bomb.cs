@@ -9,6 +9,8 @@ public class Bomb : MonoBehaviour
     private Animator anim;
     private ToricObject toricObject;
 
+    public bool enableBehaviour = true;
+
     [SerializeField] private float explosionDelay = 1f;
     [SerializeField] private float explosionRange = 3f;
     [SerializeField] private float explosionDuration = 0.5f;
@@ -25,6 +27,8 @@ public class Bomb : MonoBehaviour
     {
         idAlreadyTouch = new List<uint>();
         isExplosing = false;
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
 
     public void Lauch(Attack launcher)
@@ -66,6 +70,8 @@ public class Bomb : MonoBehaviour
         Destroy(gameObject, explosionDuration);
     }
 
+    #region Gizmos/OnValidate
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
@@ -77,4 +83,6 @@ public class Bomb : MonoBehaviour
         explosionDelay = Mathf.Max(0f, explosionDelay);
         explosionRange = Mathf.Max(0f, explosionRange);
     }
+
+    #endregion
 }

@@ -1,9 +1,8 @@
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class MovingPlateform : MonoBehaviour
 {
-    private BoxCollider2D hitbox;
     private Rigidbody2D rb;
 
     public bool enableBehaviour = true;
@@ -14,8 +13,13 @@ public class MovingPlateform : MonoBehaviour
 
     private void Awake()
     {
-        hitbox = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
 
     private void FixedUpdate()
@@ -24,5 +28,15 @@ public class MovingPlateform : MonoBehaviour
             return;
 
         rb.velocity = Vector2.MoveTowards(rb.velocity, targetVelocity, speedLerp * Time.fixedDeltaTime);
+    }
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
     }
 }

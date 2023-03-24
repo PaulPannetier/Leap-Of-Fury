@@ -5,6 +5,7 @@ public class Pendulum : MonoBehaviour
     private float accAng, vAng, ang, MgOl;
     private GameObject line, pendulumCol;
 
+    public bool enableBehaviour = true;
     [SerializeField] private float length = 3f;
     [SerializeField] private float radius = 1.5f;
     [SerializeField, Range(0f, 360f)] private float angleInit = 45f;
@@ -24,10 +25,15 @@ public class Pendulum : MonoBehaviour
         vAng = initAngularVelocity;
         ang = angleInit * Mathf.Deg2Rad;
         MgOl = (Physics2D.gravity.y * gravityScale) / length;
+        PauseManager.instance.callBackOnPauseDisable += DisableBehaviour;
+        PauseManager.instance.callBackOnPauseEnable += EnableBehaviour;
     }
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         accAng = MgOl * Mathf.Sin(ang);
         vAng += accAng * Time.deltaTime;
         ang += vAng * Time.deltaTime;
@@ -43,6 +49,16 @@ public class Pendulum : MonoBehaviour
                 ec.OnBeenTouchByEnvironnement(gameObject);
             }
         }
+    }
+
+    private void EnableBehaviour()
+    {
+        enableBehaviour = true;
+    }
+
+    private void DisableBehaviour()
+    {
+        enableBehaviour = false;
     }
 
     private void OnDrawGizmosSelected()
