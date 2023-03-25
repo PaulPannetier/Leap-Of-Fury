@@ -274,6 +274,8 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         oldGroundCollider = null;
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
 
     #endregion
@@ -1407,6 +1409,34 @@ public class Movement : MonoBehaviour
     #endregion
 
     #region Gizmos and OnValidate
+
+    private IEnumerator PauseCorout()
+    {
+        Vector2 speed = rb.velocity;
+        float angularSpeed = rb.angularVelocity;
+
+        Freeze();
+
+        while(!enableBehaviour)
+        {
+            yield return null;
+        }
+
+        UnFreeze();
+
+        rb.velocity = speed;
+        rb.angularVelocity = angularSpeed;
+    }
+
+    private void Disable()
+    {
+        StartCoroutine(PauseCorout());
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
+    }
 
     private void OnDrawGizmosSelected()
     {

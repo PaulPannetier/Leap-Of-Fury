@@ -1486,14 +1486,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
-    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
-      propertyPath: enable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
-      propertyPath: musicName
-      value: Yeti's Cave Theme
-      objectReference: {fileID: 0}
     - target: {fileID: 7598418670503221542, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -1960,110 +1952,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ExplosionManager
       objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[1].time
-      value: 0.2437725
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[2].time
-      value: 0.5209068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[3].time
-      value: 1.0093808
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[0].value
-      value: 0.9994812
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[1].value
-      value: 0.9679294
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[2].value
-      value: 0.8241496
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[3].value
-      value: -0.011189252
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[0].inSlope
-      value: -0.12943125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[1].inSlope
-      value: -0.25178373
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[2].inSlope
-      value: -1.114454
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[3].inSlope
-      value: -1.7100989
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[0].outSlope
-      value: -0.12943125
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[1].outSlope
-      value: -0.25178373
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[2].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[2].outSlope
-      value: -1.114454
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[3].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[3].outSlope
-      value: -1.7100989
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[1].outWeight
-      value: 0.15301378
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[2].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[1].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[2].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 8695370427059668924, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
-      propertyPath: explosionForceCurvePerDistance.m_Curve.Array.data[3].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d33ed1de7c06b464b968613dec7087ec, type: 3}
 --- !u!1001 &5034790997806034031
@@ -2143,6 +2031,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jumper (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3789571925465732175, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4845021999119670034, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2163,6 +2055,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1617858475}
+    - target: {fileID: 5838678479817144445, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5838678480003020636, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_Name
       value: Map
@@ -2215,6 +2115,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jumper
       objectReference: {fileID: 0}
+    - target: {fileID: 5838678480415814457, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5838678480640160895, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5838678480674692756, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7374820873655701195, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
 --- !u!1001 &6315158215925298636
@@ -2227,14 +2143,6 @@ PrefabInstance:
     - target: {fileID: 6315158216322130732, guid: b94714bfe271c1c49b45fc8b57e1d4ef, type: 3}
       propertyPath: m_Name
       value: Global Volume
-      objectReference: {fileID: 0}
-    - target: {fileID: 6315158216322130732, guid: b94714bfe271c1c49b45fc8b57e1d4ef, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6315158216322130733, guid: b94714bfe271c1c49b45fc8b57e1d4ef, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6315158216322130734, guid: b94714bfe271c1c49b45fc8b57e1d4ef, type: 3}
       propertyPath: m_RootOrder

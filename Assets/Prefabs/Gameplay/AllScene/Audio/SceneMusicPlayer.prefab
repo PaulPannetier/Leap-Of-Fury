@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8abfb15403eea364195c611853fc7df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicName: Maya's Temple Theme
+  enable: 1
+  musicName: Yeti's Cave Theme
   musicVolume: 1

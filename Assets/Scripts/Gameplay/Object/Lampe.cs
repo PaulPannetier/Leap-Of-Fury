@@ -3,6 +3,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class Lampe : MonoBehaviour
 {
+    public bool enableBehaviour = true;
+
     [SerializeField] private float avgIntensity;
     [SerializeField] private float intensityVariation = 1f;
     [SerializeField] private float intensityFrequency = 1f;
@@ -46,10 +48,15 @@ public class Lampe : MonoBehaviour
         lamp.pointLightOuterRadius = radius;
         noiseIndexIntensity = Random.Rand(0f, 50f);
         noiseIndexWind = Random.Rand(0f, 50f);
+        PauseManager.instance.callBackOnPauseDisable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += Enable;
     }
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         float noiseValue = Random.PerlinNoise(noiseIndexIntensity, 0f) * intensityVariation;
         lamp.intensity = avgIntensity + noiseValue;
 
@@ -61,6 +68,18 @@ public class Lampe : MonoBehaviour
         noiseIndexWind += Time.deltaTime * windFrequency;
     }
 
+    #region OnValidate
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
+    }
+
     private void OnValidate()
     {
         avgIntensity = Mathf.Max(0f, avgIntensity);
@@ -69,4 +88,6 @@ public class Lampe : MonoBehaviour
         avgWindForce = Mathf.Max(0f, avgWindForce);
         windFrequency = Mathf.Max(0f, windFrequency);
     }
+
+    #endregion
 }

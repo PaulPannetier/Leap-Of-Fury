@@ -65,7 +65,7 @@ DA : la grotte du yéti, glace neige.
 Name : Yeti's Cave
 
 Carte 2 :
-Méca : Il ya des trampolines/bumper.
+Méca : Il ya des bumpers.
 + certaine plateforme bouge dans la direction opposé quand on dash dessus (plateforme bleu de celeste)
 et rajoute une force au joueur la touchant donne la bonne direction pour qu'il évite le mouvement de la plateforme.
 Quand un plateforme s'écrase sur un mur, il tue/écrase les joueurs et le joueur ayant

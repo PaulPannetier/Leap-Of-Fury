@@ -26,6 +26,17 @@ public class PauseManager : MonoBehaviour
         pauseCounter = 0;
     }
 
+    private void Update()
+    {
+        if(CustomInput.GetKeyDown(KeyCode.P))
+        {
+            if(isPauseEnable)
+                DisablePause();
+            else
+                EnablePause();
+        }
+    }
+
     public void EnablePause()
     {
         pauseCounter++;

@@ -195,7 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _masterVolume: 1
   _musicVolume: 1
-  _soundEffectsVoume: 1
+  _soundEffectsVolume: 1
   audioClips:
   - name: Screen Title
     audioClip: {fileID: 8300000, guid: c8347d99f0601914b9662b1afafbb6c7, type: 3}
@@ -221,8 +221,14 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     soundEffect: 0
-  musicSourcePrefab: {fileID: 160324979959570183, guid: 0a7f32685a478654e8d8a72a1a7434f2, type: 3}
-  soundEffectSourcePrefab: {fileID: 837524125875579689, guid: bedb528f517e4a2459d8d3e2162723ad, type: 3}
+  - name: Maxwell House Theme
+    audioClip: {fileID: 8300000, guid: 7262a3f7c788c6f40beecdae9d25b1d0, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    soundEffect: 0
+  musicSourcePrefab: {fileID: 160324979959570180, guid: 0a7f32685a478654e8d8a72a1a7434f2, type: 3}
+  soundEffectSourcePrefab: {fileID: 837524125875579688, guid: bedb528f517e4a2459d8d3e2162723ad, type: 3}
 --- !u!114 &8496452321927903596
 MonoBehaviour:
   m_ObjectHideFlags: 0

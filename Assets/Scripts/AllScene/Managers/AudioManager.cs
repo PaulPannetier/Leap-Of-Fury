@@ -11,13 +11,13 @@ public class AudioManager : MonoBehaviour
     private Dictionary<string, AudioSource> currentSounds;
     private Transform audioParent;
 
-    [SerializeField] [Range(0f, 1f)] private float _masterVolume = 1f, _musicVolume = 1f, _soundEffectsVoume = 1f;
+    [SerializeField] [Range(0f, 1f)] private float _masterVolume = 1f, _musicVolume = 1f, _soundEffectsVolume = 1f;
     public float masterVolume { get => _masterVolume; set { _masterVolume = Mathf.Clamp01(value); RecaculateSoundVolume(); } }
     public float musicVolume { get => _musicVolume; set { _musicVolume = Mathf.Clamp01(value); RecaculateSoundVolume(); } }
-    public float soundEffectsVoume { get => _soundEffectsVoume; set { _soundEffectsVoume = Mathf.Clamp01(value); RecaculateSoundVolume(); } }
+    public float soundEffectsVolume { get => _soundEffectsVolume; set { _soundEffectsVolume = Mathf.Clamp01(value); RecaculateSoundVolume(); } }
 
     [SerializeField] private Sound[] audioClips;
-    [SerializeField] private GameObject musicSourcePrefab, soundEffectSourcePrefab;
+    [SerializeField] private AudioSource musicSourcePrefab, soundEffectSourcePrefab;
 
     private void Awake()
     {
@@ -36,11 +36,11 @@ public class AudioManager : MonoBehaviour
         foreach (string key in currentSounds.Keys)
         {
             Sound sound = Array.Find(audioClips, item => item.name == key);
-            currentSounds[key].volume = sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVoume : musicVolume);
+            currentSounds[key].volume = sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVolume : musicVolume);
         }
     }
 
-    public void PlayMusic(string name, in float volume)
+    public void PlayMusic(string name, float volume)
     {
         Sound sound = Array.Find(audioClips, item => item.name == name);
         if(sound == null)
@@ -48,12 +48,12 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("The audioFile " + name + " wasn't find in the AudioManager's audioClips array.");
             return;
         }
-        GameObject audioSourceGO = Instantiate(sound.soundEffect ? soundEffectSourcePrefab : musicSourcePrefab, audioParent);
-        AudioSource audioSource = audioSourceGO.GetComponent<AudioSource>();
+        AudioSource audioSource = Instantiate(sound.soundEffect ? soundEffectSourcePrefab : musicSourcePrefab, audioParent);
         audioSource.clip = sound.audioClip;
         audioSource.pitch = sound.pitch;
         audioSource.loop = sound.loop;
-        audioSource.volume = sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVoume : musicVolume);
+        volume = Mathf.Clamp01(volume);
+        audioSource.volume = volume * sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVolume : musicVolume);
         currentSounds.Add(name, audioSource);
         if (!sound.loop)
             RemoveMusic(name, sound.audioClip.length);

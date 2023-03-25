@@ -59,94 +59,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d41f562c9e0ffc44e821819ae542f95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeOffset: 0.5
-  dayDyration: 15
-  nightDuration: 30
-  dayMinLuminosity: 0.5
-  dayMaxLuminosity: 1.3
-  nightMinLuminosity: 0.05
-  nightMaxLuminosity: 0.5
-  dayLuminosityOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.0000038146973
-      value: 0.00012207031
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.31350145
-      value: 0.88595366
-      inSlope: 1.1637931
-      outSlope: 1.1637931
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.17606783
-      outWeight: 0.15729733
-    - serializedVersion: 3
-      time: 0.6964923
-      value: 0.89227337
-      inSlope: -1.220163
-      outSlope: -1.220163
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.16651687
-    - serializedVersion: 3
-      time: 0.9999552
-      value: 0.00050354004
-      inSlope: -1.7922547
-      outSlope: -1.7922547
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.13815078
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  nightLuminosityOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.0000038146973
-      value: 1.0007019
-      inSlope: -1.8463472
-      outSlope: -1.8463472
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.17096157
-    - serializedVersion: 3
-      time: 0.29797807
-      value: 0.05678039
-      inSlope: -0.56777364
-      outSlope: -0.56777364
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.14201099
-      outWeight: 0.18839744
-    - serializedVersion: 3
-      time: 0.6695815
-      value: 0.044800222
-      inSlope: 0.442842
-      outSlope: 0.442842
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.10044855
-      outWeight: 0.18889554
-    - serializedVersion: 3
-      time: 0.9999769
-      value: 1.0010967
-      inSlope: 2.014432
-      outSlope: 2.014432
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.27880004
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  nbDay: 3
+  nbNight: 1
+  startLevelAtDay: 1
+  globalLightIntensityAtDay: 1
+  otherLightIntensityAtDay: 0.1
+  globalLightIntensityAtNight: 0.1
+  otherLightIntensityAtNight: 1.2
+  isDay: 0

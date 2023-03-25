@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using System;
 
 public class Bomb : MonoBehaviour
 {
@@ -34,11 +36,14 @@ public class Bomb : MonoBehaviour
     public void Lauch(Attack launcher)
     {
         this.attacklauncher = launcher;
-        Invoke(nameof(Explode), explosionDelay);
+        StartCoroutine(ExplodeCorout());
     }
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         if (toricObject.isAClone)
             return;
 
@@ -61,16 +66,73 @@ public class Bomb : MonoBehaviour
         }
     }
 
+    private IEnumerator ExplodeCorout()
+    {
+        float oldTime = Time.time;
+        float timeCount = 0f;
+        while (true)
+        {
+            yield return null;
+            if (enableBehaviour)
+            {
+                timeCount += Time.time - oldTime;
+                oldTime = Time.time;
+
+                if (timeCount > explosionDelay)
+                {
+                    Explode();
+                    break;
+                }
+            }
+        }
+    }
+
+    private IEnumerator DestroyCorout()
+    {
+        float oldTime = Time.time;
+        float timeCount = 0f;
+        while (true)
+        {
+            yield return null;
+            if (enableBehaviour)
+            {
+                timeCount += Time.time - oldTime;
+                oldTime = Time.time;
+
+                if (timeCount > explosionDuration)
+                {
+                    Destroy();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void Destroy()
+    {
+        toricObject.RemoveClones();
+        Destroy(gameObject);
+    }
+
     private void Explode()
     {
         isExplosing = true;
         anim.SetTrigger("Explode");
         ExplosionManager.instance.CreateExplosion(transform.position, shockWaveForce);
-
-        Destroy(gameObject, explosionDuration);
+        StartCoroutine(DestroyCorout());
     }
 
     #region Gizmos/OnValidate
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+    }
+
+    private void Enable()
+    {
+        enableBehaviour = true;
+    }
 
     private void OnDrawGizmosSelected()
     {
