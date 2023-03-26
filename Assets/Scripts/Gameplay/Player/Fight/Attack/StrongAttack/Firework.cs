@@ -136,7 +136,7 @@ public class Firework : MonoBehaviour
             if(!isExploding)
             {
                 StartExplode();
-                print("explode touch a char");
+                //print("explode touch a char");
             }
         }
     }

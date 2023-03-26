@@ -31,9 +31,13 @@ public class PauseManager : MonoBehaviour
         if(CustomInput.GetKeyDown(KeyCode.P))
         {
             if(isPauseEnable)
+            {
                 DisablePause();
+            }
             else
+            {
                 EnablePause();
+            }
         }
     }
 

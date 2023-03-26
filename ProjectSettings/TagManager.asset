@@ -18,6 +18,7 @@ TagManager:
   - WeakAttackSlider
   - StrongAttackSlider
   - Canvas
+  - CharsParent
   layers:
   - Default
   - TransparentFX

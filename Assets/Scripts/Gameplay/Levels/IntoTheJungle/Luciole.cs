@@ -4,7 +4,7 @@ public class Luciole : MonoBehaviour
 {
     private Vector2 targetedDir;
 
-    public bool enableBehaviour;
+    public bool enableBehaviour = true;
 
     [Header("Detection")]
     [SerializeField, Range(0f, 360f)] float visionAngle = 45f;

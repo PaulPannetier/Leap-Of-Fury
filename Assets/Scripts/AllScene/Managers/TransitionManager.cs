@@ -20,6 +20,8 @@ public class TransitionManager : MonoBehaviour
         { "Selection Map", "Assets/Scenes/UIs/Selection Map/Selection Map.unity" },
         { "Yeti's Cave", "Assets/Scenes/Gameplay/Yeti's Cave/Yeti's Cave.unity" },
         { "Maya's Temple", "Assets/Scenes/Gameplay/Maya's Temple/Maya's Temple.unity" },
+        { "Into the Jungle", "Assets/Scenes/Gameplay/Into the Jungle/Into the Jungle.unity" },
+        { "Maxwell House", "Assets/Scenes/Gameplay/Maxwell House/Maxwell House.unity" }
     };
 
     private void Awake()

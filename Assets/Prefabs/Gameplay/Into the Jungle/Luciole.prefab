@@ -133,14 +133,14 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.5, y: 1.5, z: 0}
   boundsOffset: {x: 0, y: 0}
-  componentsToDisableInClone:
-  - {fileID: 7476833607417149509}
-  chidrenToRemoveInClone: []
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
   lstClones: []
   cloner: {fileID: 0}
+  componentsToDisableInClone:
+  - {fileID: 7476833607417149509}
+  chidrenToRemoveInClone: []
 --- !u!114 &7476833607417149510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4d7006d24dfdb744987d35036138d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableBehaviour: 1
   visionAngle: 90
   detectionRange: 2.5
   rotationSpeed: 120

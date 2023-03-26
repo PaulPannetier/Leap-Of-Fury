@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 4325326427040636961}
   - component: {fileID: 4325326427040636984}
   - component: {fileID: 4325326427040636985}
+  - component: {fileID: 5423039870555577506}
   m_Layer: 7
   m_Name: Torch (4)
   m_TagString: Untagged
@@ -329,7 +330,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4325326427040636961
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -342,10 +343,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4325326427040636984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -404,6 +407,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325326427040636966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4325326427040636961}
 --- !u!1 &4325326427059316145
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +434,7 @@ GameObject:
   - component: {fileID: 4325326427059316150}
   - component: {fileID: 4325326427059316143}
   - component: {fileID: 4325326427059316142}
+  - component: {fileID: 5423039870555577504}
   m_Layer: 7
   m_Name: Torch (6)
   m_TagString: Untagged
@@ -491,7 +509,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4325326427059316150
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -504,10 +522,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4325326427059316143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +586,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325326427059316145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4325326427059316150}
 --- !u!1 &4325326427835219446
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +613,7 @@ GameObject:
   - component: {fileID: 4325326427835219441}
   - component: {fileID: 4325326427835219432}
   - component: {fileID: 4325326427835219433}
+  - component: {fileID: 5423039870555577507}
   m_Layer: 7
   m_Name: Torch (3)
   m_TagString: Untagged
@@ -653,7 +688,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4325326427835219441
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -666,10 +701,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4325326427835219432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,6 +765,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325326427835219446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4325326427835219441}
 --- !u!1 &4325326427982692086
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,6 +792,7 @@ GameObject:
   - component: {fileID: 4325326427982692081}
   - component: {fileID: 4325326427982692072}
   - component: {fileID: 4325326427982692073}
+  - component: {fileID: 5423039870555577508}
   m_Layer: 7
   m_Name: Torch (2)
   m_TagString: Untagged
@@ -815,7 +867,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4325326427982692081
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -828,10 +880,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4325326427982692072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -890,6 +944,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325326427982692086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4325326427982692081}
 --- !u!1 &4325326428376396954
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,6 +971,7 @@ GameObject:
   - component: {fileID: 4325326428376396957}
   - component: {fileID: 4325326428376396932}
   - component: {fileID: 4325326428376396933}
+  - component: {fileID: 5423039870555577509}
   m_Layer: 7
   m_Name: Torch (1)
   m_TagString: Untagged
@@ -977,7 +1046,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4325326428376396957
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -990,10 +1059,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4325326428376396932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,6 +1123,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325326428376396954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4325326428376396957}
 --- !u!1 &4325326428514852487
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1150,7 @@ GameObject:
   - component: {fileID: 4325326428514852480}
   - component: {fileID: 4325326428514852505}
   - component: {fileID: 4325326428514852504}
+  - component: {fileID: 5423039870555577505}
   m_Layer: 7
   m_Name: Torch (5)
   m_TagString: Untagged
@@ -1139,7 +1225,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4325326428514852480
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1152,10 +1238,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4325326428514852505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1214,6 +1302,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325326428514852487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4325326428514852480}
 --- !u!1 &4325326429035148249
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,6 +1329,7 @@ GameObject:
   - component: {fileID: 4325326429035148254}
   - component: {fileID: 4325326429035148231}
   - component: {fileID: 4325326429035148230}
+  - component: {fileID: 5423039870555577503}
   m_Layer: 7
   m_Name: Torch (7)
   m_TagString: Untagged
@@ -1301,7 +1404,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4325326429035148254
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1314,10 +1417,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4325326429035148231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1376,6 +1481,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4325326429035148249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4325326429035148254}
 --- !u!1 &4821203045737987287
 GameObject:
   m_ObjectHideFlags: 0
@@ -1389,6 +1508,7 @@ GameObject:
   - component: {fileID: 4821203045737987280}
   - component: {fileID: 4821203045737987273}
   - component: {fileID: 4821203045737987272}
+  - component: {fileID: 5423039870555577510}
   m_Layer: 7
   m_Name: Torch
   m_TagString: Untagged
@@ -1463,7 +1583,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &4821203045737987280
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1476,10 +1596,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4821203045737987273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1538,6 +1660,20 @@ MonoBehaviour:
   avgIntensity: 1
   intensityAmplitude: 0.3
   intensityFrequency: 0.75
+--- !u!114 &5423039870555577510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4821203045737987287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  componentsToDisable:
+  - {fileID: 4821203045737987280}
 --- !u!1 &5423039870223869074
 GameObject:
   m_ObjectHideFlags: 0

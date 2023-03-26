@@ -8,6 +8,7 @@ public class AnimationScript : MonoBehaviour
     private EventController eventController;
     [HideInInspector] public SpriteRenderer sr;
 
+    public bool enableBehaviour = true;
 
     private void Awake()
     {
@@ -18,8 +19,17 @@ public class AnimationScript : MonoBehaviour
         eventController = GetComponent<EventController>();
     }
 
+    private void Start()
+    {
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
+    }
+
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         anim.SetFloat("absXSpeed", Mathf.Abs(rb.velocity.x));
         eventController.OnTriggerAnimatorSetFloat("absXSpeed", Mathf.Abs(rb.velocity.x));
         anim.SetFloat("absYSpeed", Mathf.Abs(rb.velocity.y));
@@ -54,5 +64,23 @@ public class AnimationScript : MonoBehaviour
         }
 
         sr.flipX = side != 1;
+    }
+
+    private void Disable()
+    {
+        enableBehaviour = false;
+        anim.enabled = false;
+    }
+
+    private void Enable()
+    {
+        anim.enabled = true;
+        enableBehaviour = true;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 }

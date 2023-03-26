@@ -80,6 +80,7 @@ le portail,
 debient invinsible pendant quelques seconde, et ralentie le temps(sauf pour lui).
 De + le pendule de l'hormoge tangue et tue tout sur son passage
 DA : L'atelier d'un horloger / sommet d'une cathédrale avec cloche.
+Name : jsp
 
 Carte 4 :
 Méca : Cycle jour/nuit, au début c'est le jour, tout est visible, puis un peu après la nuit tombe (annomcé pas le bruit d'unn corbeau), tout deviens noir, seul les joueurs

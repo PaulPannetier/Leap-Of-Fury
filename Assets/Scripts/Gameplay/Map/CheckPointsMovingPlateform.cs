@@ -44,8 +44,8 @@ public class CheckPointsMovingPlateform : MonoBehaviour
 
         CalculateDetectionHitbox();
 
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     private void CalculateDetectionHitbox()
@@ -137,6 +137,8 @@ public class CheckPointsMovingPlateform : MonoBehaviour
         }
     }
 
+    #region Gizmos/OnValidate
+
     private void Enable()
     {
         enableBehaviour = true;
@@ -147,7 +149,11 @@ public class CheckPointsMovingPlateform : MonoBehaviour
         enableBehaviour = false;
     }
 
-    #region Gizmos/OnValidate
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
+    }
 
     private void OnValidate()
     {

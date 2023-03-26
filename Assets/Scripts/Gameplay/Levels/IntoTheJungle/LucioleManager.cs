@@ -16,7 +16,7 @@ public class LucioleManager : MonoBehaviour
         if(instance != null)
         {
             Debug.LogWarning("Another instance of LucioleManager is create in the scene");
-            Destroy(gameObject);
+            Destroy(this);
             return;
         }
         instance = this;
@@ -24,10 +24,14 @@ public class LucioleManager : MonoBehaviour
 
     private void Start()
     {
-        CreateLuciole(lucioleCount);
+        if(!CycleDayNightManager.instance.isDay)
+        {
+            CreateLuciole(lucioleCount);
+        }
+
         EventManager.instance.callbackOnLevelRestart += Restart;
-        PauseManager.instance.callBackOnPauseDisable += DisableLucioles;
-        PauseManager.instance.callBackOnPauseEnable += EnableLucioles;
+        PauseManager.instance.callBackOnPauseDisable += EnableLucioles;
+        PauseManager.instance.callBackOnPauseEnable += DisableLucioles;
     }
 
     private void Restart(string levelName)
@@ -76,5 +80,13 @@ public class LucioleManager : MonoBehaviour
         {
             l.enableBehaviour = true;
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (instance != this)
+            return;
+        PauseManager.instance.callBackOnPauseEnable -= DisableLucioles;
+        PauseManager.instance.callBackOnPauseDisable -= EnableLucioles;
     }
 }

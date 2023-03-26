@@ -254,7 +254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5034790997836797167, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5034790997836797167, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -305,6 +305,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
+    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
+      propertyPath: enable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
       propertyPath: musicName
       value: 
@@ -377,7 +385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1212375675141333562, guid: 20c51873747073248a228b6566e5976a, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1212375675141333562, guid: 20c51873747073248a228b6566e5976a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -430,7 +438,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1972974479605412338, guid: 52bcab3f0aa0e3944b0d1494bbf6936e, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1972974479605412338, guid: 52bcab3f0aa0e3944b0d1494bbf6936e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -612,11 +620,11 @@ PrefabInstance:
     - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: musicSourcePrefab
       value: 
-      objectReference: {fileID: 160324979959570183, guid: 0a7f32685a478654e8d8a72a1a7434f2, type: 3}
+      objectReference: {fileID: 160324979959570180, guid: 0a7f32685a478654e8d8a72a1a7434f2, type: 3}
     - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: soundEffectSourcePrefab
       value: 
-      objectReference: {fileID: 837524125875579689, guid: bedb528f517e4a2459d8d3e2162723ad, type: 3}
+      objectReference: {fileID: 837524125875579688, guid: bedb528f517e4a2459d8d3e2162723ad, type: 3}
     - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: audioClips.Array.data[2].audioClip
       value: 

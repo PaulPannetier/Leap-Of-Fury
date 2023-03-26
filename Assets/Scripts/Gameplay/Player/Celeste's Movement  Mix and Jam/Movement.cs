@@ -224,12 +224,14 @@ public class Movement : MonoBehaviour
     public void Freeze()
     {
         rb.velocity = Vector2.zero;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
         enableBehaviour = false;
     }
 
     public void UnFreeze()
     {
         enableBehaviour = enableInput = true;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     public void AddForce(in Vector2 dir, in float value) => AddForce(dir * value);
@@ -274,8 +276,8 @@ public class Movement : MonoBehaviour
     private void Start()
     {
         oldGroundCollider = null;
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     #endregion
@@ -1420,6 +1422,7 @@ public class Movement : MonoBehaviour
         while(!enableBehaviour)
         {
             yield return null;
+            Freeze();
         }
 
         UnFreeze();
@@ -1436,6 +1439,12 @@ public class Movement : MonoBehaviour
     private void Enable()
     {
         enableBehaviour = true;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
     private void OnDrawGizmosSelected()

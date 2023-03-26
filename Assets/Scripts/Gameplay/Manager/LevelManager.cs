@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour
     private int currentNbPlayer;
     private SpawnConfigsData charsSpawnPoints;
     private uint idCount = 0;
+    private Transform charParent;
 
     [Header("Level Management")]
     [SerializeField] private LevelType levelType;
@@ -88,6 +89,7 @@ public class LevelManager : MonoBehaviour
 
         EventManager.instance.OnLevelRestart(SceneManager.GetActiveScene().name);
         CloneParent.cloneParent.DestroyChildren();
+        charParent.DestroyChildren();
         InitLevelAll();
         switch (levelType)
         {
@@ -118,8 +120,6 @@ public class LevelManager : MonoBehaviour
 
         LoadSpawnPoint();
         List<Vector2> spawnPoints = charsSpawnPoints.spawnConfigPoints.GetRandom().points.ToList();
-        Transform charParent = GameObject.Find("Characters").transform;
-        charParent.DestroyChildren();
         idCount = 0;
 
         currentNbPlayer = playersData.Length;
@@ -128,6 +128,7 @@ public class LevelManager : MonoBehaviour
             playersScore = new PlayerScore[currentNbPlayer];
         }
 
+        charParent = GameObject.FindGameObjectWithTag("CharsParent").transform;
         for (int i = 0; i < playersData.Length; i++)
         {
             //get random position
@@ -195,6 +196,9 @@ public class LevelManager : MonoBehaviour
                 break;
             case LevelType.IntoTheJungle:
                 path = @"/Save/IntoTheJungleSpawnPoints" + SettingsManager.saveFileExtension;
+                break;
+            case LevelType.MaxwellHouse:
+                path = @"/Save/MaxwellHousePoints" + SettingsManager.saveFileExtension;
                 break;
             default:
                 break;

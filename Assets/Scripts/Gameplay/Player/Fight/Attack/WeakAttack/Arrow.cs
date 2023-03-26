@@ -33,8 +33,8 @@ public class Arrow : MonoBehaviour
 
     private void Start()
     {
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     #region FixedUpdate
@@ -285,6 +285,12 @@ public class Arrow : MonoBehaviour
     private void Enable()
     {
         enableBehaviour = true;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
     private void OnValidate()

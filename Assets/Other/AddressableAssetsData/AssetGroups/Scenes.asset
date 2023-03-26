@@ -41,6 +41,10 @@ MonoBehaviour:
     m_Address: Assets/Scenes/Gameplay/Into the Jungle/Into the Jungle.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 1692d21d0994297408cc12140eb9b113
+    m_Address: Assets/Scenes/Gameplay/Maxwell House/Maxwell House.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 7c828abd5162ad841bcf223f99f96299, type: 2}
   m_SchemaSet:

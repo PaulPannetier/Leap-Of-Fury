@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
@@ -14,14 +13,11 @@ public class SelectableUI : MonoBehaviour
     public SelectableUI leftSelectableUI;
 
     public bool isSelected = false;
-    public string EventFounctionName;
     public UnityEvent onPressed;
 
     private void Awake()
     {
         textMeshPro = GetComponent<TextMeshProUGUI>();
-        if(onPressed.GetPersistentEventCount() >= 1)
-            EventFounctionName = onPressed.GetPersistentMethodName(0);
     }
 
     public void OnPressed()

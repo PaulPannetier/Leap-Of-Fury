@@ -21,8 +21,8 @@ public class LightVariator : MonoBehaviour
 
     private void Start()
     {
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     private void Update()
@@ -42,5 +42,11 @@ public class LightVariator : MonoBehaviour
     private void Enable()
     {
         enableBehaviour = true;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 }

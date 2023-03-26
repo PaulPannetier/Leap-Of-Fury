@@ -25,6 +25,7 @@ public class CycleDayNightManager : MonoBehaviour
             return;
         }
         instance = this;
+        isDay = startLevelAtDay;
     }
 
     private void Start()
@@ -87,10 +88,5 @@ public class CycleDayNightManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    private void Update()
-    {
-
     }
 }

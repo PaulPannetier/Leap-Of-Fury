@@ -29,8 +29,8 @@ public class Bomb : MonoBehaviour
     {
         idAlreadyTouch = new List<uint>();
         isExplosing = false;
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     public void Lauch(Attack launcher)
@@ -132,6 +132,12 @@ public class Bomb : MonoBehaviour
     private void Enable()
     {
         enableBehaviour = true;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
     private void OnDrawGizmosSelected()

@@ -306,6 +306,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
     - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
+      propertyPath: enable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
       propertyPath: musicName
       value: 
       objectReference: {fileID: 0}
@@ -552,10 +556,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3797674857088782036, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: controllerSelector
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 6506177010344821274, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
       propertyPath: m_Name
       value: MapSelectorController
@@ -602,42 +602,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6506177010344821275, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[0].time
-      value: 0.0070877075
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[0].value
-      value: 0.32757568
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[1].inSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[1].inWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[1].outSlope
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6506177012140223670, guid: b9dad9725c81d7340b0069e5cc8f617c, type: 3}
-      propertyPath: itemScaleByDistance.m_Curve.Array.data[1].outWeight
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6124b956df78c9d498652d126c659116, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controllerSelector: 8
 --- !u!1 &6939463271291831193
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,42 +88,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a6277214fa37d46b63a16df19e7ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemsAngles: []
   itemsPrefabs:
   - {fileID: 4679069575590757550, guid: 744231faca1bbc0499124b5798da2332, type: 3}
   - {fileID: 4679069575590757550, guid: 7f2faf13336ca9340a8f2894327be1b4, type: 3}
-  radius: 5
+  - {fileID: 4679069575590757550, guid: 4bbafb9914bd2b244bc25866af21ef64, type: 3}
+  - {fileID: 4679069575590757550, guid: 0d15ebf50eadea3448bdcaa40d61599f, type: 3}
+  radius: 8
   minTimeBetweenMove: 0.2
   itemsScaleMultiplier: 1
   itemScaleByDistance:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 0
+      time: 0.0070877075
+      value: 0.32757568
       inSlope: 0
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 0.596109
-      value: 0.25373083
-      inSlope: 1.0688192
-      outSlope: 1.0688192
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.24442898
-    - serializedVersion: 3
-      time: 0.8651847
-      value: 0.6214731
-      inSlope: 1.9620197
-      outSlope: 1.9620197
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.36370236
     - serializedVersion: 3
       time: 1
       value: 1
@@ -136,6 +122,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   center: {x: 0, y: 0, z: 0}
-  turningLerp: 15
+  angularSpeed: 360
   isHorizontal: 1
+  isInvers: 0
   renderCanvasPrefabs: {fileID: 1282783504177710347, guid: 2194bd054ff06ec4fb1478e719cb32f6, type: 3}

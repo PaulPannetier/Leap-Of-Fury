@@ -25,8 +25,8 @@ public class Pendulum : MonoBehaviour
         vAng = initAngularVelocity;
         ang = angleInit * Mathf.Deg2Rad;
         MgOl = (Physics2D.gravity.y * gravityScale) / length;
-        PauseManager.instance.callBackOnPauseDisable += DisableBehaviour;
-        PauseManager.instance.callBackOnPauseEnable += EnableBehaviour;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     private void Update()
@@ -51,14 +51,20 @@ public class Pendulum : MonoBehaviour
         }
     }
 
-    private void EnableBehaviour()
+    private void Enable()
     {
         enableBehaviour = true;
     }
 
-    private void DisableBehaviour()
+    private void Disable()
     {
         enableBehaviour = false;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
     private void OnDrawGizmosSelected()

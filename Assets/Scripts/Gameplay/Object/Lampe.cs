@@ -32,6 +32,7 @@ public class Lampe : MonoBehaviour
     private float noiseIndexWind;
     private Rigidbody2D rb;
     private Transform lastChild;
+    private Animator[] anims;
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class Lampe : MonoBehaviour
         Transform child = transform.GetChild(0);
         lastChild = child.GetChild(child.childCount - 1);
         rb = lastChild.GetComponent<Rigidbody2D>();
+        anims = GetComponentsInChildren<Animator>();
     }
 
     private void Start()
@@ -48,8 +50,8 @@ public class Lampe : MonoBehaviour
         lamp.pointLightOuterRadius = radius;
         noiseIndexIntensity = Random.Rand(0f, 50f);
         noiseIndexWind = Random.Rand(0f, 50f);
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     private void Update()
@@ -73,11 +75,25 @@ public class Lampe : MonoBehaviour
     private void Disable()
     {
         enableBehaviour = false;
+        foreach(Animator a in anims)
+        {
+            a.enabled = false;
+        }
     }
 
     private void Enable()
     {
         enableBehaviour = true;
+        foreach (Animator a in anims)
+        {
+            a.enabled = true;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
     private void OnValidate()

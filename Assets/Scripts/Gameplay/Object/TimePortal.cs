@@ -33,8 +33,8 @@ public class TimePortal : MonoBehaviour
     {
         lastTimeCreated = Time.time;
         charInFront = new List<PlayerCommon>();
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     private void Update()
@@ -195,6 +195,12 @@ public class TimePortal : MonoBehaviour
     private void Enable()
     {
         enableBehaviour = true;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
     private void OnDrawGizmosSelected()

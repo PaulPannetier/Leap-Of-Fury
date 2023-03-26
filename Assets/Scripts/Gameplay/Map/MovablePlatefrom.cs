@@ -42,8 +42,8 @@ public class MovablePlatefrom : MonoBehaviour
     private void Start()
     {
         charInFrontLastFrame = new List<Movement>();
-        PauseManager.instance.callBackOnPauseDisable += Disable;
-        PauseManager.instance.callBackOnPauseEnable += Enable;
+        PauseManager.instance.callBackOnPauseDisable += Enable;
+        PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
     #region Update
@@ -269,6 +269,12 @@ public class MovablePlatefrom : MonoBehaviour
     private void Enable()
     {
         enableBehaviour = true;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseEnable -= Disable;
+        PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
     private void OnValidate()
