@@ -1996,7 +1996,7 @@ public static class CustomInput
     /// Convert a key into a string.
     /// </summary>
     /// <param name="key"> the key to convert to a string</param>
-    public static string KeyToString(in int key)
+    public static string KeyToString(int key)
     {
         return key >= 0 ? ((KeyCode)key).ToString() : negativeKeyToString[((-(key + 1)) % 14) + 1];
     }
