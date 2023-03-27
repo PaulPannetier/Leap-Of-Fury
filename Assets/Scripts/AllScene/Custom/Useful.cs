@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -2267,6 +2268,70 @@ public static class Useful
     /// <returns></returns>
     public static void InvokeParams(object obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, param);
 
+    public static void Invoke(this MonoBehaviour obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, param);
+    public static void Invoke(this MonoBehaviour obj, string methodName, object[] param, float delay)
+    {
+        obj.StartCoroutine(InvokeCorout(obj, methodName, param, delay));
+    }
+
+    private static IEnumerator InvokeCorout(MonoBehaviour obj, string methodName, object[] param, float delay)
+    {
+        yield return GetWaitForSeconds(delay);
+        Invoke(obj, methodName, param);
+    }
+
+    #region Invoke<T>
+
+    public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[1] { arg1 });
+    public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1, float delay)
+    {
+        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, delay));
+    }
+
+    private static IEnumerator InvokeCorout<T>(MonoBehaviour obj, string methodName,T arg1, float delay)
+    {
+        yield return GetWaitForSeconds(delay);
+        Invoke(obj, methodName, arg1);
+    }
+
+    public static void Invoke<T1, T2>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[2] { arg1, arg2 });
+    public static void Invoke<T1, T2>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, float delay)
+    {
+        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, delay));
+    }
+
+    private static IEnumerator InvokeCorout<T1, T2>(MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, float delay)
+    {
+        yield return GetWaitForSeconds(delay);
+        Invoke(obj, methodName, arg1, arg2);
+    }
+
+    public static void Invoke<T1, T2, T3>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[3] { arg1, arg2, arg3 });
+    public static void Invoke<T1, T2, T3>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, float delay)
+    {
+        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, arg3, delay));
+    }
+
+    private static IEnumerator InvokeCorout<T1, T2, T3>(MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, float delay)
+    {
+        yield return GetWaitForSeconds(delay);
+        Invoke(obj, methodName, arg1, arg2, arg3);
+    }
+
+    public static void Invoke<T1, T2, T3, T4>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[4] { arg1, arg2, arg3, arg4 });
+    public static void Invoke<T1, T2, T3, T4>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4, float delay)
+    {
+        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, arg3, arg4, delay));
+    }
+
+    private static IEnumerator InvokeCorout<T1, T2, T3, T4>(MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4, float delay)
+    {
+        yield return GetWaitForSeconds(delay);
+        Invoke(obj, methodName, arg1, arg2, arg3, arg4);
+    }
+
+    #endregion
+
     #endregion
 
     #region Extension
@@ -2320,6 +2385,21 @@ public static class Useful
         Gizmos.DrawLine(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
         a = 2f * Mathf.PI - (Mathf.PI - teta) - arrowAngle;
         Gizmos.DrawLine(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
+    }
+
+    public static bool GetAnimationLength(this Animator anim, string name, out float length)
+    {
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+        for (int i = 0; i < clips.Length; i++)
+        {
+            if (clips[i].name == name)
+            {
+                length = clips[i].length;
+                return true;
+            }
+        }
+        length = 0f;
+        return false;
     }
 
     #endregion

@@ -57,6 +57,8 @@ public class LevelManager : MonoBehaviour
     {
         if (!enableBehaviour)
             return;
+
+        EventManager.instance.OnLevelStart(SceneManager.GetActiveScene().name);
         InitLevelAll();
 
         switch (levelType)
@@ -298,6 +300,7 @@ public class LevelManager : MonoBehaviour
         yield return Useful.GetWaitForSeconds(2f);
 
         PauseManager.instance.DisablePause();
+
         TransitionManager.instance.LoadScene("Selection Map", null);
     }
 
