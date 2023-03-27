@@ -8,6 +8,8 @@ public class LevelManager : MonoBehaviour
 {
     #region Fields
 
+    public static LevelManager instance;
+
     private enum LevelType
     {
         YetisCave,
@@ -21,9 +23,11 @@ public class LevelManager : MonoBehaviour
     private SpawnConfigsData charsSpawnPoints;
     private uint idCount = 0;
     private Transform charParent;
+    private float lastTimeBeginLevel = -10f;
 
     [Header("Level Management")]
     [SerializeField] private LevelType levelType;
+    [SerializeField] private float durationToWaitAtBegining = 3f;
     [SerializeField] private int nbKillsToWin = 7;
     [SerializeField] private float waitingTimeAfterLastKill = 2f;
     [SerializeField] private float scoreMenuDuration = 5f;
@@ -51,7 +55,17 @@ public class LevelManager : MonoBehaviour
 
     #endregion
 
-    #region Start/Restart
+    #region Awake/Start/Restart
+
+    private void Awake()
+    {
+        if(instance != null)
+        {
+            Destroy(this);
+            return;
+        }
+        instance = this;
+    }
 
     private void Start()
     {
@@ -59,6 +73,7 @@ public class LevelManager : MonoBehaviour
             return;
 
         EventManager.instance.OnLevelStart(SceneManager.GetActiveScene().name);
+        lastTimeBeginLevel = Time.time;
         InitLevelAll();
 
         switch (levelType)
@@ -90,6 +105,7 @@ public class LevelManager : MonoBehaviour
             return;
 
         EventManager.instance.OnLevelRestart(SceneManager.GetActiveScene().name);
+        lastTimeBeginLevel = Time.time;
         CloneParent.cloneParent.DestroyChildren();
         charParent.DestroyChildren();
         InitLevelAll();
@@ -151,6 +167,8 @@ public class LevelManager : MonoBehaviour
 
             tmpGO.GetComponent<Movement>().Teleport(spawnPoint);
         }
+
+        BlockPlayer();
     }
 
     private void InitYetisCave()
@@ -207,6 +225,33 @@ public class LevelManager : MonoBehaviour
         }
 
         Save.ReadJSONData(path, out charsSpawnPoints);
+    }
+
+    private void BlockPlayer()
+    {
+        foreach (Transform t in charParent)
+        {
+            t.GetComponent<Movement>().canMove = false;
+        }
+    }
+
+    public void ReleasePlayer()
+    {
+        StopCoroutine(nameof(ReleasePlayerCorout));
+        StartCoroutine(ReleasePlayerCorout());
+    }
+
+    private IEnumerator ReleasePlayerCorout()
+    {
+        while (Time.time - lastTimeBeginLevel < durationToWaitAtBegining)
+        {
+            yield return null;
+        }
+
+        foreach (Transform t in charParent)
+        {
+            t.GetComponent<Movement>().canMove = true;
+        }
     }
 
     #endregion

@@ -169,7 +169,7 @@ public class Movement : MonoBehaviour
     public bool onRightWall { get; private set; } // touche le mur droit
     public bool onLeftWall { get; private set; }//touche le mur gauche
     public bool wallGrab { get; private set; } //accroche ou monte le mur droit/gauche, monte au dessus d'une plateforme
-    public bool canMove { get; private set; } = true; 
+    public bool canMove { get; set; } = true; 
     public bool isDashing { get; private set; } 
     public bool isSliding { get; private set; }//grab vers le bas ou chute contre un mur en appuyant la direction vers le mur
     public bool isJumping { get; private set; }//dans la phase montante apres un saut

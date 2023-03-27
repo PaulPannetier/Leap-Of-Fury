@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3950918267813311101}
   - component: {fileID: 9071503404528683171}
+  - component: {fileID: 661857354}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -43,10 +44,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4fffce717e1224b8f745a3779c997d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelType: 0
   nbKillsToWin: 7
   waitingTimeAfterLastKill: 2
   scoreMenuDuration: 3.5
   scoreCanvas: {fileID: 0}
   enableBehaviour: 1
-  isYetisCave: 1
-  isMayasTemple: 0
+  spawnConfig: []
+  saveSpawnConfig: 0
+  clearSpawnConfig: 0
+  YetisCaveVar: 0
+  MayasTempleVar: 0
+  playerLightPrefabs: {fileID: 0}
+  MaxwellHouseVar: 0
+--- !u!114 &661857354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3950918267813311090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24956b4a47b852c4bb8e9be43984a5c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -798,7 +798,7 @@ public static class Useful
     /// <param name="b">le point de fin du vecteur</param>
     /// <returns>l'angle en rad entre 0 et 2pi entre le vecteur (1,0) et (b-a) </returns>
     public static float AngleHori(this in Vector2 a, in Vector2 b) => Mathf.Atan2(a.y - b.y, a.x - b.x) + Mathf.PI;
-    public static float Angle(this in Vector2 a, in Vector2 b) => ClampModulo(-Mathf.PI, Mathf.PI, AngleHori(Vector2.zero, a) + AngleHori(Vector2.zero, b)); 
+    public static float Angle(this in Vector2 a, in Vector2 b) => ClampModulo(-Mathf.PI, Mathf.PI, AngleHori(Vector2.zero, a) + AngleHori(Vector2.zero, b));
     public static float Sign(this float a) => Mathf.Abs(a) <= Mathf.Epsilon ? 0f : (a > 0f ? 1f : -1f);
     public static int Sign(this int a) => a == 0 ? 0 : (a > 0 ? 1 : -1);
 
@@ -878,7 +878,7 @@ public static class Useful
     public static Vector3[] GetVertices(in this Bounds bounds)
     {
         Vector3[] res;
-        if(Mathf.Abs(bounds.extents.z) < Mathf.Epsilon)
+        if (Mathf.Abs(bounds.extents.z) < Mathf.Epsilon)
         {
             res = new Vector3[4]
             {
@@ -908,7 +908,7 @@ public static class Useful
     public static bool Contain(in this Bounds b, in Bounds bounds)
     {
         Vector3[] vertices = bounds.GetVertices();
-        foreach(Vector3 v in vertices)
+        foreach (Vector3 v in vertices)
         {
             if (!b.Contains(v))
                 return false;
@@ -962,7 +962,7 @@ public static class Useful
             xk = xk - (f(xk) / fPrime(xk));
             iter++;
         }
-        if(iter >= maxIter)
+        if (iter >= maxIter)
         {
             root = xk;
             return false;
@@ -1010,11 +1010,11 @@ public static class Useful
         return a;
     }
 
-    public static int GetIndexOf<T>(this T[] arr, T value)  where T : IComparable
+    public static int GetIndexOf<T>(this T[] arr, T value) where T : IComparable
     {
         for (int i = 0; i < arr.Length; i++)
         {
-            if(arr[i].CompareTo(value) == 0)
+            if (arr[i].CompareTo(value) == 0)
                 return i;
         }
         return -1;
@@ -2235,7 +2235,7 @@ public static class Useful
     private static Dictionary<float, WaitForSeconds> waitForSecondsCache = new Dictionary<float, WaitForSeconds>();
     public static WaitForSeconds GetWaitForSeconds(in float time)
     {
-        if(waitForSecondsCache.TryGetValue(time, out WaitForSeconds waitForSeconds))
+        if (waitForSecondsCache.TryGetValue(time, out WaitForSeconds waitForSeconds))
         {
             return waitForSeconds;
         }
@@ -2248,6 +2248,11 @@ public static class Useful
 
     #region Invoke
 
+    private static BindingFlags flag = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.IgnoreReturn |
+           BindingFlags.CreateInstance | BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Default | BindingFlags.ExactBinding | BindingFlags.FlattenHierarchy |
+           BindingFlags.IgnoreCase | BindingFlags.InvokeMethod | BindingFlags.OptionalParamBinding | BindingFlags.PutDispProperty | BindingFlags.PutRefDispProperty | BindingFlags.SetField |
+           BindingFlags.SetProperty | BindingFlags.SuppressChangeType;
+
     /// <summary>
     /// Lance la fonction methodName de l'instance obj avec les paramètres param, T est le type de retour de la methode methodName
     /// </summary>
@@ -2256,7 +2261,7 @@ public static class Useful
     /// <param name="methodName"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static T InvokeParams<T>(object obj, string methodName, object[] param) => (T)obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, param);
+    public static T InvokeParams<T>(object obj, string methodName, object[] param) => (T)obj.GetType().GetMethod(methodName, flag).Invoke(obj, param);
 
     /// <summary>
     /// Lance la fonction void methodName de l'instance obj avec les paramètres param
@@ -2266,9 +2271,9 @@ public static class Useful
     /// <param name="methodName"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static void InvokeParams(object obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, param);
+    public static void InvokeParams(object obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, param);
 
-    public static void Invoke(this MonoBehaviour obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, param);
+    public static void Invoke(this MonoBehaviour obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, param);
     public static void Invoke(this MonoBehaviour obj, string methodName, object[] param, float delay)
     {
         obj.StartCoroutine(InvokeCorout(obj, methodName, param, delay));
@@ -2282,7 +2287,8 @@ public static class Useful
 
     #region Invoke<T>
 
-    public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[1] { arg1 });
+    public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[1] { arg1 });
+
     public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1, float delay)
     {
         obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, delay));
@@ -2294,7 +2300,7 @@ public static class Useful
         Invoke(obj, methodName, arg1);
     }
 
-    public static void Invoke<T1, T2>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[2] { arg1, arg2 });
+    public static void Invoke<T1, T2>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[2] { arg1, arg2 });
     public static void Invoke<T1, T2>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, float delay)
     {
         obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, delay));
@@ -2306,7 +2312,7 @@ public static class Useful
         Invoke(obj, methodName, arg1, arg2);
     }
 
-    public static void Invoke<T1, T2, T3>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[3] { arg1, arg2, arg3 });
+    public static void Invoke<T1, T2, T3>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[3] { arg1, arg2, arg3 });
     public static void Invoke<T1, T2, T3>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, float delay)
     {
         obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, arg3, delay));
@@ -2318,7 +2324,7 @@ public static class Useful
         Invoke(obj, methodName, arg1, arg2, arg3);
     }
 
-    public static void Invoke<T1, T2, T3, T4>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4) => obj.GetType().GetMethod(methodName, BindingFlags.Instance).Invoke(obj, new object[4] { arg1, arg2, arg3, arg4 });
+    public static void Invoke<T1, T2, T3, T4>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[4] { arg1, arg2, arg3, arg4 });
     public static void Invoke<T1, T2, T3, T4>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4, float delay)
     {
         obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, arg3, arg4, delay));
@@ -2385,6 +2391,19 @@ public static class Useful
         Gizmos.DrawLine(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
         a = 2f * Mathf.PI - (Mathf.PI - teta) - arrowAngle;
         Gizmos.DrawLine(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
+    }
+
+    public static AnimationClip[] GetAnimationsClips(this Animator animator) => animator.runtimeAnimatorController.animationClips;
+
+    public static string[] GetAnimations(this Animator animator)
+    {
+        AnimationClip[] clips = animator.runtimeAnimatorController.animationClips;
+        string[] res = new string[clips.Length];
+        for (int i = 0; i < clips.Length; i++)
+        {
+            res[i] = clips[i].name;
+        }
+        return res;
     }
 
     public static bool GetAnimationLength(this Animator anim, string name, out float length)
