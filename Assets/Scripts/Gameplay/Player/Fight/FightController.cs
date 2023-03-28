@@ -16,13 +16,15 @@ public class FightController : MonoBehaviour
     private bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
     private ToricObject toricObject;
     [HideInInspector] public bool canLauchWeakAttack = true, canLaunchStrongAttack = true;
-    private bool isInvicible = false;
+    private bool isInvicible => invicibilityCounter > 0;
     private int invicibilityCounter, canLaunchWeakAttackCounter, canLaunchStrongAttackCounter;
 
-    [Header("Fight")]
     private List<uint> charAlreadyTouchByDash = new List<uint>();
-    private bool isDashing, isDashCollisionEnable = true;
-    private int dashCollisionCounter;
+    private bool isDashing;
+    private int dashCollisionCounter = 0;
+    private bool isDashCollisionEnable => dashCollisionCounter <= 0;
+
+    [Header("Fight")]
     [SerializeField] private float dashBumpSpeed = 10f;
     [SerializeField] private float dashInvicibilityOffset = 0.1f;
     [SerializeField] private float invicibilityDurationWhenDashing = 0.2f;
@@ -60,6 +62,7 @@ public class FightController : MonoBehaviour
         eventController.callBackKillByEnvironnement += OnBeenKillByEnvironnement;
         eventController.callBackBeenKillInstant += OnBeenKillInstant;
         charMask = LayerMask.GetMask("Char");
+        dashCollisionCounter = 0;
     }
 
     #endregion
@@ -181,9 +184,9 @@ public class FightController : MonoBehaviour
         void HandleDashCollision(GameObject player)
         {
             FightController fc = player.GetComponent<FightController>();
-            bool playerIsDashing = fc.isDashing;
+            bool playerIsInvicible = fc.isInvicible;
             fc.OnDashCollision(this);
-            if(playerIsDashing)
+            if(playerIsInvicible)
             {
                 DisableDashCollision(0.2f);
 
@@ -196,7 +199,7 @@ public class FightController : MonoBehaviour
 
     private void OnDashCollision(FightController fc)
     {
-        if(isDashing)
+        if(isInvicible)
         {
             DisableDashCollision(0.2f);
 
@@ -209,7 +212,6 @@ public class FightController : MonoBehaviour
             eventController.OnBeenKillByDash(fc.gameObject);
             fc.GetComponent<EventController>().OnKillByDash(gameObject);
         }
-
     }
 
     private void DisableDashCollision(float duration)
@@ -220,14 +222,13 @@ public class FightController : MonoBehaviour
     private IEnumerator DisableDashCollisionCorout(float duration)
     {
         dashCollisionCounter++;
-        isDashCollisionEnable = dashCollisionCounter <= 0;
         yield return Useful.GetWaitForSeconds(duration);
         dashCollisionCounter--;
-        isDashCollisionEnable = dashCollisionCounter <= 0;
     }
 
     public void StartDashing()
     {
+        StopCoroutine(nameof(StartDashing));
         StartCoroutine(StartDashingCorout());
     }
 
@@ -238,7 +239,6 @@ public class FightController : MonoBehaviour
         EnableInvicibility();
         isDashing = true;
         yield return Useful.GetWaitForSeconds(invicibilityDurationWhenDashing);
-
         isDashing = false;
         charAlreadyTouchByDash.Clear();
         DisableInvicibility();
@@ -247,13 +247,11 @@ public class FightController : MonoBehaviour
     public void EnableInvicibility()
     {
         invicibilityCounter++;
-        isInvicible = invicibilityCounter > 0;
     }
 
     public void DisableInvicibility()
     {
         invicibilityCounter--;
-        isInvicible = invicibilityCounter > 0;
     }
 
     public void EnableInvicibility(float duration)
