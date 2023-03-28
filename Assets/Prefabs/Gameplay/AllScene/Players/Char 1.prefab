@@ -441,6 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sr: {fileID: 0}
+  enableBehaviour: 1
 --- !u!114 &6598177761008341971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,8 +550,8 @@ MonoBehaviour:
   dashBumpSpeed: 10
   dashInvicibilityOffset: 0.1
   invicibilityDurationWhenDashing: 0.2
-  dashHitboxOffset: {x: 0, y: 0}
-  dashHitboxSize: {x: 0, y: 0}
+  dashHitboxOffset: {x: 0, y: -0.21}
+  dashHitboxSize: {x: 0.7, y: 1}
   enableAttackWeak: 1
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1

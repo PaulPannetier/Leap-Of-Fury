@@ -61,6 +61,7 @@ public class FightController : MonoBehaviour
         eventController.callBackTouchByEnvironnement += OnBeenTouchByEnvironnement;
         eventController.callBackKillByEnvironnement += OnBeenKillByEnvironnement;
         eventController.callBackBeenKillInstant += OnBeenKillInstant;
+        eventController.callBackBeenKillByDash += OnBeenKillByDash;
         charMask = LayerMask.GetMask("Char");
         dashCollisionCounter = 0;
     }
@@ -398,6 +399,11 @@ public class FightController : MonoBehaviour
     private void OnBeenKillByEnvironnement(GameObject go)
     {
         EventManager.instance.OnTriggerPlayerDeathByEnvironnement(gameObject, go);
+        Death();
+    }
+
+    private void OnBeenKillByDash(GameObject killer)
+    {
         Death();
     }
 

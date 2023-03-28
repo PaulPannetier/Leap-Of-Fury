@@ -128,11 +128,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3774851218374700069, guid: 5d25cf34e7ed9644cb417ad277367005, type: 3}
   m_PrefabInstance: {fileID: 3774851218201444838}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &264644553 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 850400899, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
-  m_PrefabInstance: {fileID: 1393366166460120882}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &292257864 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6001260818544699278, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
@@ -331,7 +326,7 @@ PrefabInstance:
     - target: {fileID: 661857354, guid: c7ed76cf6bc2dda49a903aff0b1678e3, type: 3}
       propertyPath: startLevelAnim
       value: 
-      objectReference: {fileID: 264644553}
+      objectReference: {fileID: 0}
     - target: {fileID: 3950918267813311090, guid: c7ed76cf6bc2dda49a903aff0b1678e3, type: 3}
       propertyPath: m_Name
       value: LevelManager
@@ -1595,10 +1590,6 @@ PrefabInstance:
     - target: {fileID: 9211636111085214947, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_Name
       value: Char 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9211636111085214947, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
