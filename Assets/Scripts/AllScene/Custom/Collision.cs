@@ -2586,6 +2586,7 @@ public abstract class CustomCollider2D
     public virtual bool CollideDroite(Droite d) => false;
     public virtual bool CollideDroite(in Vector2 A, in Vector2 B) => false;
     public virtual bool Contains(in Vector2 p) => false;
+    public virtual Vector2 ClosestPoint(in Vector2 point) => default;
     public virtual void MoveAt(in Vector2 position) { }
     public virtual void Rotate(in float angle) { }
     public virtual Hitbox ToHitbox() => null;
@@ -2677,6 +2678,49 @@ public class Polygone : CustomCollider2D
     #endregion
 
     public override bool Collide(CustomCollider2D c) => CustomCollider2D.Collide(c, this);
+
+    public override Vector2 ClosestPoint(in Vector2 point)
+    {
+        Vector2 A = vertices[0], B, projectOrto;
+        Vector2 res = A;
+        float minSqrDist = A.SqrDistance(point), d;
+
+        for (int i = 1; i < vertices.Count; i++)
+        {
+            B = vertices[i];
+            d = B.SqrDistance(point);
+            if (d < minSqrDist)
+            {
+                minSqrDist = d;
+                res = B;
+            }
+
+            projectOrto = Droite.OrthogonalProjection(point, new Droite(A, B));
+            if (Line.Contain(A, B, projectOrto))
+            {
+                d = projectOrto.SqrDistance(point);
+                if (d < minSqrDist)
+                {
+                    minSqrDist = d;
+                    res = projectOrto;
+                }
+            }
+        }
+
+        A = vertices[0];
+        B = vertices.Last();
+        projectOrto = Droite.OrthogonalProjection(point, new Droite(A, B));
+        if (Line.Contain(A, B, projectOrto))
+        {
+            d = projectOrto.SqrDistance(point);
+            if (d < minSqrDist)
+            {
+                minSqrDist = d;
+                res = projectOrto;
+            }
+        }
+        return res;
+    }
 
     #region Contain
 
@@ -2933,6 +2977,11 @@ public class Hitbox : CustomCollider2D
     public override bool CollideLine(Line l) => CollideHitboxLine(this, l);
     public override bool CollideLine(in Vector2 A, in Vector2 B) => CollideHitboxLine(this, A, B);
 
+    public override Vector2 ClosestPoint(in Vector2 point)
+    {
+        return rec.ClosestPoint(point);
+    }
+
     public override Hitbox ToHitbox() => this;
     public override void SetScale(in Vector2 newScale, in Vector2 oldScale)
     {
@@ -3059,6 +3108,12 @@ public class Circle : CustomCollider2D
     #endregion
 
     public override bool Collide(CustomCollider2D c) => CustomCollider2D.Collide(c, this);
+
+    public override Vector2 ClosestPoint(in Vector2 point)
+    {
+        return center + (point - center).normalized * radius;
+    }
+
     public override Hitbox ToHitbox() => new Hitbox(center, new Vector2(radius, radius));
     public override Circle ToCircle() => (Circle)Clone();
 
@@ -3180,6 +3235,25 @@ public class Capsule : CustomCollider2D
     }
 
     public override bool Collide(CustomCollider2D c) => CustomCollider2D.Collide(c, this);
+
+    public override Vector2 ClosestPoint(in Vector2 point)
+    {
+        Vector2 p1 = hitbox.ClosestPoint(point);
+        Vector2 p2 = c1.ClosestPoint(point);
+        Vector2 p3 = c2.ClosestPoint(point);
+        float d1 = p1.SqrDistance(point);
+        float d2 = p2.SqrDistance(point);
+        float d3 = p3.SqrDistance(point);
+
+        if(d1 < d2)
+        {
+            return d1 < d3 ? p1 : p3;
+        }
+        else
+        {
+            return d2 < d3 ? p2 : p3;
+        }
+    }
 
     public override void MoveAt(in Vector2 pos)
     {
@@ -3309,7 +3383,7 @@ public class Ellipse : CustomCollider2D
     public float c { get; private set; }
     public float minorAxis { get; private set; }
 
-    public Ellipse(in Vector2 focus1, in Vector2 focus2, in float majorAxis) : base()
+    public Ellipse(in Vector2 focus1, in Vector2 focus2, float majorAxis) : base()
     {
         this.focus1 = focus1;
         this.focus2 = focus2;
@@ -3322,6 +3396,13 @@ public class Ellipse : CustomCollider2D
     {
         c = focus1.Distance(focus2) * 0.5f;
         minorAxis = Mathf.Sqrt(majorAxis * majorAxis * 0.25f - c * c) * 2f;
+    }
+
+    public override Vector2 ClosestPoint(in Vector2 point)
+    {
+        Vector2 center = this.center;
+        Vector2 I = new Vector2((point.x - center.x) / majorAxis, (point.y - center.y) / minorAxis).normalized;
+        return new Vector2(I.x * majorAxis + center.x, I.y * minorAxis + center.y);
     }
 
     public override CustomCollider2D Clone() => new Ellipse(focus1, focus2, majorAxis);
