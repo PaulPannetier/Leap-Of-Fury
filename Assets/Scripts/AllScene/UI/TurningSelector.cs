@@ -5,13 +5,12 @@ public class TurningSelector : MonoBehaviour
     private float turningAngle;
     private int selectedIndex = 0;
     private GameObject[] itemsGO;
-    private GameObject[] canvasGO;
-    public float[] itemsAngles;
+    private float[] itemsAngles;
     private float lastTimeMove = -10f;
     private float turningSign = 1f;
     private float angle = 0f;
 
-    [SerializeField] private GameObject[] itemsPrefabs;
+    [SerializeField] private bool RecalculatePositionAndScale = false;
     [SerializeField] private float radius;
     [SerializeField] private float minTimeBetweenMove = 0.2f;
     [SerializeField] private float itemsScaleMultiplier = 1f;
@@ -20,38 +19,39 @@ public class TurningSelector : MonoBehaviour
     [Tooltip("Angular speed in degrees/sec")][SerializeField] private float angularSpeed = 360f;
     [SerializeField] private bool isHorizontal = true;
     [SerializeField] private bool isInvers = false;
-    [SerializeField] private GameObject renderCanvasPrefabs;
 
     public GameObject selectedItem => itemsGO[selectedIndex];
 
     private void Start()
     {
+        Initialized();
+    }
+
+    private void Initialized()
+    {
         selectedIndex = 0;
         angle = 0f;
-        turningAngle = (2f * Mathf.PI) / itemsPrefabs.Length;
-        itemsGO = new GameObject[itemsPrefabs.Length];
-        canvasGO = new GameObject[itemsPrefabs.Length];
-        itemsAngles = new float[itemsPrefabs.Length];
+        turningAngle = 2f * Mathf.PI / transform.childCount;
+        itemsGO = new GameObject[transform.childCount];
+        itemsAngles = new float[transform.childCount];
         for (int i = 0; i < itemsGO.Length; i++)
         {
             float angle = CalculateAngle(i);
             Vector3 pos = CalculateCanvasPosition(i);
-            GameObject tmpCanvasGO = Instantiate(renderCanvasPrefabs, pos, Quaternion.identity, CloneParent.cloneParent);
-            GameObject tmpGO = Instantiate(itemsPrefabs[i], pos, Quaternion.identity, tmpCanvasGO.transform);
-            float scale = itemScaleByDistance.Evaluate(CalculateDepthDistanceProportion(tmpCanvasGO.transform.position));
+            GameObject tmpGO = transform.GetChild(i).gameObject;
+            tmpGO.transform.position = pos;
+            float scale = itemScaleByDistance.Evaluate(CalculateDepthDistanceProportion(pos));
             tmpGO.transform.localScale = new Vector3(scale, scale, 1f);
-            tmpGO.transform.localPosition = Vector3.zero;
             itemsGO[i] = tmpGO;
-            canvasGO[i] = tmpCanvasGO;
             itemsAngles[i] = angle;
         }
     }
 
-    private float CalculateAngle(in int index) => Useful.WrapAngle(angle + (isHorizontal ? 1.5f * Mathf.PI + index * turningAngle : Mathf.PI + index * turningAngle));
+    private float CalculateAngle(int index) => Useful.WrapAngle(angle + (isHorizontal ? 1.5f * Mathf.PI + index * turningAngle : Mathf.PI + index * turningAngle));
 
-    private Vector3 CalculateCanvasPosition(in int index) => CalculateCanvasPosition(CalculateAngle(index));
+    private Vector3 CalculateCanvasPosition(int index) => CalculateCanvasPosition(CalculateAngle(index));
 
-    private Vector3 CalculateCanvasPosition(in float angle)
+    private Vector3 CalculateCanvasPosition(float angle)
     {
         return isHorizontal ? center + new Vector3(radius * Mathf.Cos(angle), 0f, radius * Mathf.Sin(angle)) :
             center + new Vector3(0f, radius * Mathf.Sin(angle), radius * Mathf.Cos(angle));
@@ -70,7 +70,7 @@ public class TurningSelector : MonoBehaviour
         {
             if(Useful.AngleDist(CalculateAngle(i), itemsAngles[i]) >= Time.deltaTime * angularSpeed * Mathf.Deg2Rad)
             {
-                GameObject tmpCanvasGO = canvasGO[i];
+                GameObject tmpCanvasGO = itemsGO[i];
                 itemsAngles[i] = Useful.WrapAngle(itemsAngles[i] + turningSign * Time.deltaTime * angularSpeed * Mathf.Deg2Rad);
                 tmpCanvasGO.transform.position = CalculateCanvasPosition(itemsAngles[i]);
                 GameObject tmpItemsGO = itemsGO[i];
@@ -85,7 +85,7 @@ public class TurningSelector : MonoBehaviour
         if (Time.time - lastTimeMove < minTimeBetweenMove)
             return;
         selectedIndex = (selectedIndex + 1) % itemsGO.Length;
-        turningSign = (isInvers ? -1f : 1f);
+        turningSign = isInvers ? -1f : 1f;
         angle = Useful.WrapAngle(angle + turningSign * turningAngle);
         lastTimeMove = Time.time;
     }
@@ -97,20 +97,31 @@ public class TurningSelector : MonoBehaviour
         selectedIndex--;
         if (selectedIndex < 0)
             selectedIndex = itemsGO.Length - 1;
-        turningSign = (isInvers ? 1f : -1f);
+        turningSign = isInvers ? 1f : -1f;
         angle = Useful.WrapAngle(angle + turningSign * turningAngle);
         lastTimeMove = Time.time;
     }
+
+    #region OnValidate/Gizmos
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(center, 0.5f);
+        Circle.GizmosDraw(center, 25f);
     }
 
     private void OnValidate()
     {
         radius = Mathf.Max(0f, radius);
         angularSpeed = Mathf.Max(0f, angularSpeed);
+
+        if(RecalculatePositionAndScale)
+        {
+            RecalculatePositionAndScale = false;
+            Initialized();
+        }
     }
+
+    #endregion
 }
