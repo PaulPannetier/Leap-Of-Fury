@@ -120,7 +120,6 @@ public class ToricObject : MonoBehaviour
                 lstClones.Add(clone);
             }
         }
-
         //Update des clones
         foreach (ObjectClone clone in lstClones)
         {

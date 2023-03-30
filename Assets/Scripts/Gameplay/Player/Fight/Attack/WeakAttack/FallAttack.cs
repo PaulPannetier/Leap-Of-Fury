@@ -60,6 +60,9 @@ public class FallAttack : WeakAttack
 
         yield return Useful.GetWaitForSeconds(castDuration);
 
+        movement.UnFreeze();
+        movement.enableBehaviour = false;
+
         //phase tombante
         Collider2D[] cols;
         bool hitGround = false;
