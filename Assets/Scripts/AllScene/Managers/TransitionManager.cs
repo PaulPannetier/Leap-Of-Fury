@@ -134,7 +134,6 @@ public class TransitionManager : MonoBehaviour
 
         loadSceneAsyncOperationHandle = Addressables.LoadSceneAsync(getSceneAddresseFromSceneName[sceneName], LoadSceneMode.Single, true, 100);
         loadSceneAsyncOperationHandle.Completed += OnSceneLoad;
-        //preloadSceneAsyncOperationHandle.Add(sceneName, loadSceneAsyncOperationHandle);
     }
 
     private void OnSceneLoad(AsyncOperationHandle<SceneInstance> asyncOperationHandle)

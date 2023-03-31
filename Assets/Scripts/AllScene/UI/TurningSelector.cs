@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TurningSelector : MonoBehaviour
@@ -11,11 +12,12 @@ public class TurningSelector : MonoBehaviour
     private float angle = 0f;
 
     [SerializeField] private bool RecalculatePositionAndScale = false;
+    public bool enableBehaviour = true;
     [SerializeField] private float radius;
     [SerializeField] private float minTimeBetweenMove = 0.2f;
     [SerializeField] private float itemsScaleMultiplier = 1f;
     [SerializeField] private AnimationCurve itemScaleByDistance;
-    [SerializeField] private Vector3 center = Vector3.zero;
+    [field:SerializeField] public Vector3 center { get; private set; } = Vector3.zero;
     [Tooltip("Angular speed in degrees/sec")][SerializeField] private float angularSpeed = 360f;
     [SerializeField] private bool isHorizontal = true;
     [SerializeField] private bool isInvers = false;
@@ -66,6 +68,9 @@ public class TurningSelector : MonoBehaviour
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         for (int i = 0; i < itemsGO.Length; i++)
         {
             if(Useful.AngleDist(CalculateAngle(i), itemsAngles[i]) >= Time.deltaTime * angularSpeed * Mathf.Deg2Rad)
@@ -100,6 +105,27 @@ public class TurningSelector : MonoBehaviour
         turningSign = isInvers ? 1f : -1f;
         angle = Useful.WrapAngle(angle + turningSign * turningAngle);
         lastTimeMove = Time.time;
+    }
+
+    private void SortChildren()
+    {
+        List<Transform> children = new List<Transform>()
+        {
+            transform.GetChild(0),
+            transform.GetChild(1),
+            transform.GetChild(2),
+            transform.GetChild(3)
+        };
+
+        children.Sort();
+    }
+
+    private class TransformComparer : IComparer<Transform>
+    {
+        public int Compare(Transform x, Transform y)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
     #region OnValidate/Gizmos

@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 7813528575848667592}
   - component: {fileID: 7813528575848667593}
   m_Layer: 0
-  m_Name: Char4
+  m_Name: char4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,5 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charPrefabs: {fileID: 8090791378756873177, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+  charNumber: 3
   playerIndex: 0
   controllerType: 0

@@ -1,15 +1,25 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class CharSelectorController : MonoBehaviour
 {
     private TurningSelector[] turningSelectors;
+    private GameObject[] helpCanvas;
     private ControllerType[] controllerIndexs;
     private bool[] isTurningSelectorInit;
     private bool[] isTurningSlectorsFinishSelection;
+    private bool[] isHelpCanvasOpen;
     private int indexToInit;
     private bool canLoadNextScene = false;
     private bool nextSceneIsLoading = false;
+
+    [SerializeField] private GameObject[] charHelperCanvasPrefabs;
+    [SerializeField] private KeyCode helpButtonKeyboard;
+    [SerializeField] private KeyCode helpButtonGamepad1;
+    [SerializeField] private KeyCode helpButtonGamepad2;
+    [SerializeField] private KeyCode helpButtonGamepad3;
+    [SerializeField] private KeyCode helpButtonGamepad4;
 
     private void Awake()
     {
@@ -24,6 +34,8 @@ public class CharSelectorController : MonoBehaviour
     {
         isTurningSelectorInit = new bool[4] { false, false, false, false };
         isTurningSlectorsFinishSelection = new bool[4] { false, false, false, false };
+        isHelpCanvasOpen = new bool[4] { false, false, false, false };
+        helpCanvas = new GameObject[4];
         controllerIndexs = new ControllerType[4];
         indexToInit = 0;
     }
@@ -34,6 +46,10 @@ public class CharSelectorController : MonoBehaviour
         {
             if (!isTurningSelectorInit[i])
                 break;
+
+            if (isHelpCanvasOpen[i])
+                continue;
+
             if(IsPressingUpOrDown(controllerIndexs[i], out bool up))
             {
                 if(up)
@@ -86,6 +102,7 @@ public class CharSelectorController : MonoBehaviour
                 break;
             }
         }
+
         canLoadNextScene = allIsSelected && isTurningSlectorsFinishSelection[0];
         if(canLoadNextScene && !nextSceneIsLoading)
         {
@@ -95,11 +112,40 @@ public class CharSelectorController : MonoBehaviour
 
         for (int i = 0; i < indexToInit; i++)
         {
-            if(IsPressingEscape(controllerIndexs[i]))
+            if (isHelpCanvasOpen[i])
+                continue;
+
+            if (IsPressingEscape(controllerIndexs[i]))
             {
                 TransitionManager.instance.LoadScene("Screen Title");
             }
         }
+
+        for (int i = 0; i < indexToInit; i++)
+        {
+            if (isHelpCanvasOpen[i])
+                continue;
+
+            if (IsPressingHelpButton(controllerIndexs[i]))
+            {
+                OpenHelpCanvas(i);
+            }
+        }
+    }
+
+    private void OpenHelpCanvas(int indexTuringSelector)
+    {
+        isHelpCanvasOpen[indexTuringSelector] = true;
+        GameObject selectedChar = turningSelectors[indexTuringSelector].selectedItem;
+        int charNumber = selectedChar.GetComponent<CharSelectorItemData>().charNumber;
+        helpCanvas[indexTuringSelector] = Instantiate(charHelperCanvasPrefabs[charNumber], transform);
+        CharHelpCanvas charHelpCanvas = helpCanvas[indexTuringSelector].GetComponent<CharHelpCanvas>();
+        charHelpCanvas.Lauch(turningSelectors[indexTuringSelector], controllerIndexs[indexTuringSelector], indexTuringSelector, OnCloseHelpCanvas);
+    }
+
+    private void OnCloseHelpCanvas(int indexHelpCanvas)
+    {
+        isHelpCanvasOpen[indexHelpCanvas] = false;
     }
 
     private IEnumerator TryLoadNextScene()
@@ -131,7 +177,7 @@ public class CharSelectorController : MonoBehaviour
         }
     }
 
-    private void RemoveSettingsIndex(in int index)
+    private void RemoveSettingsIndex(int index)
     {
         if (index >= turningSelectors.Length)
             return;
@@ -266,7 +312,7 @@ public class CharSelectorController : MonoBehaviour
 
     #region ControllerAlreadyInit / NewCOntrollerPress a key
 
-    private bool ControllerIsAlreadyInit(in ControllerType controllerType, out int index)
+    private bool ControllerIsAlreadyInit(ControllerType controllerType, out int index)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -280,7 +326,32 @@ public class CharSelectorController : MonoBehaviour
         return false;
     }
 
-    private bool IsPressingEscape(in ControllerType controllerType)
+    private bool IsPressingHelpButton(ControllerType controllerType)
+    {
+        switch (controllerType)
+        {
+            case ControllerType.Keyboard:
+                return CustomInput.GetKeyDown(helpButtonKeyboard);
+            case ControllerType.Gamepad1:
+                return CustomInput.GetKeyDown(helpButtonGamepad1);
+            case ControllerType.Gamepad2:
+                return CustomInput.GetKeyDown(helpButtonGamepad2);
+            case ControllerType.Gamepad3:
+                return CustomInput.GetKeyDown(helpButtonGamepad3);
+            case ControllerType.Gamepad4:
+                return CustomInput.GetKeyDown(helpButtonGamepad4);
+            case ControllerType.GamepadAll:
+                return CustomInput.GetKeyDown(helpButtonGamepad1) || CustomInput.GetKeyDown(helpButtonGamepad2) || 
+                    CustomInput.GetKeyDown(helpButtonGamepad3) || CustomInput.GetKeyDown(helpButtonGamepad4);
+            case ControllerType.All:
+                return CustomInput.GetKeyDown(helpButtonKeyboard) || CustomInput.GetKeyDown(helpButtonGamepad1) || CustomInput.GetKeyDown(helpButtonGamepad2) ||
+                        CustomInput.GetKeyDown(helpButtonGamepad3) || CustomInput.GetKeyDown(helpButtonGamepad4);
+            default:
+                return false;
+        }
+    }
+
+    private bool IsPressingEscape(ControllerType controllerType)
     {
         switch (controllerType)
         {
@@ -348,4 +419,5 @@ public class CharSelectorController : MonoBehaviour
     }
 
     #endregion
+
 }

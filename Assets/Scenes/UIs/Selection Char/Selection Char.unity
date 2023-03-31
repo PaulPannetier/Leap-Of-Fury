@@ -436,6 +436,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 347455454231233025, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.x
+      value: 1600
+      objectReference: {fileID: 0}
+    - target: {fileID: 347455454231233025, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.y
+      value: 540
+      objectReference: {fileID: 0}
+    - target: {fileID: 347455454416718822, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.x
+      value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 347455454416718822, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.y
+      value: 540
+      objectReference: {fileID: 0}
+    - target: {fileID: 347455455665279239, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.x
+      value: 1200
+      objectReference: {fileID: 0}
+    - target: {fileID: 347455455665279239, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.y
+      value: 540
+      objectReference: {fileID: 0}
+    - target: {fileID: 493629317185731645, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.x
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 493629317185731645, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: <center>k__BackingField.y
+      value: 540
+      objectReference: {fileID: 0}
     - target: {fileID: 2503747462559950868, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: m_Name
       value: CharSelectorCanvas
