@@ -107,7 +107,8 @@ public class CharSelectorController : MonoBehaviour
         if(canLoadNextScene && !nextSceneIsLoading)
         {
             nextSceneIsLoading = true;
-            StartCoroutine(TryLoadNextScene());
+            //StartCoroutine(TryLoadNextScene());Uncomment this lline to use preloader
+            LoadSelectoinMapScene(false);//comment this line to use preloader
         }
 
         for (int i = 0; i < indexToInit; i++)
@@ -164,17 +165,25 @@ public class CharSelectorController : MonoBehaviour
 
         if(loadNextScene)
         {
-            object[] data = new object[indexToInit];
-            for (int i = 0; i < data.Length; i++)
-            {
-                CharSelectorItemData tmp = turningSelectors[i].selectedItem.GetComponent<CharSelectorItemData>();
-                tmp.playerIndex = (PlayerIndex)(i + 1);
-                tmp.controllerType = controllerIndexs[i];
-                data[i] = tmp;
-            }
-            TransitionManager.instance.SetOldSceneData(data);
-            TransitionManager.instance.LoadPreloadedScene("Selection Map");
+            LoadSelectoinMapScene();
         }
+    }
+
+    private void LoadSelectoinMapScene(bool preloaded = true)
+    {
+        object[] data = new object[indexToInit];
+        for (int i = 0; i < data.Length; i++)
+        {
+            CharSelectorItemData tmp = turningSelectors[i].selectedItem.GetComponent<CharSelectorItemData>();
+            tmp.playerIndex = (PlayerIndex)(i + 1);
+            tmp.controllerType = controllerIndexs[i];
+            data[i] = tmp;
+        }
+        TransitionManager.instance.SetOldSceneData(data);
+        if (preloaded)
+            TransitionManager.instance.LoadPreloadedScene("Selection Map");
+        else
+            TransitionManager.instance.LoadScene("Selection Map");
     }
 
     private void RemoveSettingsIndex(int index)

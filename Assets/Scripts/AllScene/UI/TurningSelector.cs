@@ -47,6 +47,7 @@ public class TurningSelector : MonoBehaviour
             itemsGO[i] = tmpGO;
             itemsAngles[i] = angle;
         }
+        SortChildren();
     }
 
     private float CalculateAngle(int index) => Useful.WrapAngle(angle + (isHorizontal ? 1.5f * Mathf.PI + index * turningAngle : Mathf.PI + index * turningAngle));
@@ -83,6 +84,8 @@ public class TurningSelector : MonoBehaviour
                 tmpItemsGO.transform.localScale = new Vector3(scale, scale, 1f);
             }
         }
+
+        SortChildren();
     }
 
     public void SelectedNextItem()
@@ -109,22 +112,23 @@ public class TurningSelector : MonoBehaviour
 
     private void SortChildren()
     {
-        List<Transform> children = new List<Transform>()
+        List<Transform> children = new List<Transform> ();
+        foreach (Transform child in transform)
         {
-            transform.GetChild(0),
-            transform.GetChild(1),
-            transform.GetChild(2),
-            transform.GetChild(3)
-        };
-
-        children.Sort();
+            children.Add(child);
+        }
+        children.Sort(new TransformComparer());
+        for (int i = 0; i < children.Count; i++)
+        {
+            children[i].SetSiblingIndex(i);
+        }
     }
 
     private class TransformComparer : IComparer<Transform>
     {
         public int Compare(Transform x, Transform y)
         {
-            throw new System.NotImplementedException();
+            return Mathf.Abs(x.position.z - y.position.z) < 1e-5 ? 0 : (x.position.z - y.position.z > 0f ?  -1 : 1);
         }
     }
 

@@ -383,6 +383,7 @@ public class CurveGenerator : MonoBehaviour
 
 }
 
+/*
 [CustomEditor(typeof(CurveGenerator))]
 public class CurveGeneratorEditor : Editor
 {
@@ -400,7 +401,6 @@ public class CurveGeneratorEditor : Editor
 
     public override void OnInspectorGUI()
     {
-
         serializedObject.Update();
         EditorGUILayout.PropertyField(useCollider);
 
@@ -417,3 +417,4 @@ public class CurveGeneratorEditor : Editor
         base.OnInspectorGUI();
     }
 }
+*/

@@ -403,6 +403,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6669026758285812863, guid: 0bd462b250289b1409f8252bf6d46baa, type: 3}
+      propertyPath: enableBehaviour
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6669026758285812863, guid: 0bd462b250289b1409f8252bf6d46baa, type: 3}
       propertyPath: sceneToPreload.Array.size
       value: 1
       objectReference: {fileID: 0}
