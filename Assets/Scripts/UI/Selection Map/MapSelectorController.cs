@@ -74,13 +74,15 @@ public class MapSelectorController : MonoBehaviour
         {
             TransitionManager.instance.LoadScene("Selection Char");
         }
+
+        DebugText.instance.text += mapSelector.selectedItem.GetComponent<MapSelectorItemData>().sceneName;
     }
 
     private void TryLoadNextScene()
     {
         object[] data = TransitionManager.instance.GetOldSceneData("Selection Char");
         MapSelectorItemData mapSelectorItemData = mapSelector.selectedItem.GetComponent<MapSelectorItemData>();
-        TransitionManager.instance.LoadScene(mapSelectorItemData.sceneName, data);
+        TransitionManager.instance.LoadSceneAsync(mapSelectorItemData.sceneName, data);
     }
 
     private bool IsPressingEscape(in ControllerType controllerType)

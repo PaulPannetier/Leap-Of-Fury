@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TurningSelector : MonoBehaviour
 {
     private float turningAngle;
-    private int selectedIndex = 0;
-    private GameObject[] itemsGO;
+    [SerializeField] private int selectedIndex = 0;
+    [SerializeField] private GameObject[] itemsGO;
     private float[] itemsAngles;
+    [SerializeField] private float[] itemsDepth;
     private float lastTimeMove = -10f;
     private float turningSign = 1f;
     private float angle = 0f;
@@ -17,7 +19,7 @@ public class TurningSelector : MonoBehaviour
     [SerializeField] private float minTimeBetweenMove = 0.2f;
     [SerializeField] private float itemsScaleMultiplier = 1f;
     [SerializeField] private AnimationCurve itemScaleByDistance;
-    [field:SerializeField] public Vector3 center { get; private set; } = Vector3.zero;
+    [field:SerializeField] public Vector2 center { get; private set; } = Vector2.zero;
     [Tooltip("Angular speed in degrees/sec")][SerializeField] private float angularSpeed = 360f;
     [SerializeField] private bool isHorizontal = true;
     [SerializeField] private bool isInvers = false;
@@ -36,13 +38,15 @@ public class TurningSelector : MonoBehaviour
         turningAngle = 2f * Mathf.PI / transform.childCount;
         itemsGO = new GameObject[transform.childCount];
         itemsAngles = new float[transform.childCount];
+        itemsDepth = new float[transform.childCount];
         for (int i = 0; i < itemsGO.Length; i++)
         {
             float angle = CalculateAngle(i);
-            Vector3 pos = CalculateCanvasPosition(i);
+            (Vector2 pos, float depth) = CalculateCanvasPositionAndDepth(i);//depth € [-1, 1]
             GameObject tmpGO = transform.GetChild(i).gameObject;
             tmpGO.transform.position = pos;
-            float scale = itemScaleByDistance.Evaluate(CalculateDepthDistanceProportion(pos));
+            itemsDepth[i] = depth;
+            float scale = CalculateScale(depth);
             tmpGO.transform.localScale = new Vector3(scale, scale, 1f);
             itemsGO[i] = tmpGO;
             itemsAngles[i] = angle;
@@ -50,14 +54,13 @@ public class TurningSelector : MonoBehaviour
         SortChildren();
     }
 
-    private float CalculateAngle(int index) => Useful.WrapAngle(angle + (isHorizontal ? 1.5f * Mathf.PI + index * turningAngle : Mathf.PI + index * turningAngle));
+    private float CalculateAngle(int index) => Useful.WrapAngle(angle + index * turningAngle);
 
-    private Vector3 CalculateCanvasPosition(int index) => CalculateCanvasPosition(CalculateAngle(index));
+    private (Vector2, float) CalculateCanvasPositionAndDepth(int index) => CalculateCanvasPositionAndDepth(CalculateAngle(index));
 
-    private Vector3 CalculateCanvasPosition(float angle)
+    private (Vector2, float) CalculateCanvasPositionAndDepth(float angle)
     {
-        return isHorizontal ? center + new Vector3(radius * Mathf.Cos(angle), 0f, radius * Mathf.Sin(angle)) :
-            center + new Vector3(0f, radius * Mathf.Sin(angle), radius * Mathf.Cos(angle));
+        return isHorizontal ? (new Vector2(center.x + radius * Mathf.Sin(angle), center.y), Mathf.Cos(angle)) : (new Vector2(center.x, center.y - radius * Mathf.Sin(angle)), Mathf.Cos(angle));
     }
 
     /// <summary>
@@ -65,7 +68,7 @@ public class TurningSelector : MonoBehaviour
     /// </summary>
     /// <param name="pos"></param>
     /// <returns>a float between 0 and 1 proportional to the depth of the position</returns>
-    private float CalculateDepthDistanceProportion(in Vector3 pos) => (((center.z - pos.z) / radius) + 1f) * 0.5f;
+    private float CalculateScale(float depth) => itemsScaleMultiplier * itemScaleByDistance.Evaluate((depth + 1) * 0.5f);
 
     private void Update()
     {
@@ -78,10 +81,11 @@ public class TurningSelector : MonoBehaviour
             {
                 GameObject tmpCanvasGO = itemsGO[i];
                 itemsAngles[i] = Useful.WrapAngle(itemsAngles[i] + turningSign * Time.deltaTime * angularSpeed * Mathf.Deg2Rad);
-                tmpCanvasGO.transform.position = CalculateCanvasPosition(itemsAngles[i]);
-                GameObject tmpItemsGO = itemsGO[i];
-                float scale = itemScaleByDistance.Evaluate(CalculateDepthDistanceProportion(tmpCanvasGO.transform.position)) * itemsScaleMultiplier;
-                tmpItemsGO.transform.localScale = new Vector3(scale, scale, 1f);
+                (Vector2 pos, float depth) = CalculateCanvasPositionAndDepth(itemsAngles[i]);
+                itemsDepth[i] = depth;
+                tmpCanvasGO.transform.position = pos;
+                float scale = CalculateScale(depth);
+                tmpCanvasGO.transform.localScale = new Vector3(scale, scale, 1f);
             }
         }
 
@@ -112,23 +116,38 @@ public class TurningSelector : MonoBehaviour
 
     private void SortChildren()
     {
-        List<Transform> children = new List<Transform> ();
-        foreach (Transform child in transform)
+        List<SortingChildrenClass> sortingChildren = new List<SortingChildrenClass>();
+        for (int i = 0; i < itemsGO.Length; i++)
         {
-            children.Add(child);
+            sortingChildren.Add(new SortingChildrenClass(itemsGO[i].transform, itemsDepth[i]));
         }
-        children.Sort(new TransformComparer());
-        for (int i = 0; i < children.Count; i++)
+
+        sortingChildren.Sort(SortingChildrenClassComparer.instance);
+        for (int i = 0; i < sortingChildren.Count; i++)
         {
-            children[i].SetSiblingIndex(i);
+            sortingChildren[i].transform.SetSiblingIndex(i);
         }
     }
 
-    private class TransformComparer : IComparer<Transform>
+    private class SortingChildrenClass
     {
-        public int Compare(Transform x, Transform y)
+        public Transform transform;
+        public float depth;
+
+        public SortingChildrenClass(Transform transform, float depth)
         {
-            return Mathf.Abs(x.position.z - y.position.z) < 1e-5 ? 0 : (x.position.z - y.position.z > 0f ?  -1 : 1);
+            this.transform = transform;
+            this.depth = depth;
+        }   
+    }
+
+    private class SortingChildrenClassComparer : IComparer<SortingChildrenClass>
+    {
+        public static SortingChildrenClassComparer instance = new SortingChildrenClassComparer();
+
+        public int Compare(SortingChildrenClass x, SortingChildrenClass y)
+        {
+            return Mathf.Abs(x.depth - y.depth) < 1e-6 ? 0 : (x.depth - y.depth > 0f ?  1 : -1);
         }
     }
 

@@ -107,8 +107,7 @@ public class CharSelectorController : MonoBehaviour
         if(canLoadNextScene && !nextSceneIsLoading)
         {
             nextSceneIsLoading = true;
-            //StartCoroutine(TryLoadNextScene());Uncomment this lline to use preloader
-            LoadSelectoinMapScene(false);//comment this line to use preloader
+            LoadSelectoinMapScene();
         }
 
         for (int i = 0; i < indexToInit; i++)
@@ -118,7 +117,7 @@ public class CharSelectorController : MonoBehaviour
 
             if (IsPressingEscape(controllerIndexs[i]))
             {
-                TransitionManager.instance.LoadScene("Screen Title");
+                TransitionManager.instance.LoadSceneAsync("Screen Title", null);
             }
         }
 
@@ -149,27 +148,7 @@ public class CharSelectorController : MonoBehaviour
         isHelpCanvasOpen[indexHelpCanvas] = false;
     }
 
-    private IEnumerator TryLoadNextScene()
-    {
-        float beg = Time.time;
-        bool loadNextScene = true;
-        do
-        {
-            if (!canLoadNextScene)
-            {
-                loadNextScene = false;
-                break;
-            }
-            yield return null;
-        } while (Time.time - beg < 1f);
-
-        if(loadNextScene)
-        {
-            LoadSelectoinMapScene();
-        }
-    }
-
-    private void LoadSelectoinMapScene(bool preloaded = true)
+    private void LoadSelectoinMapScene()
     {
         object[] data = new object[indexToInit];
         for (int i = 0; i < data.Length; i++)
@@ -179,11 +158,7 @@ public class CharSelectorController : MonoBehaviour
             tmp.controllerType = controllerIndexs[i];
             data[i] = tmp;
         }
-        TransitionManager.instance.SetOldSceneData(data);
-        if (preloaded)
-            TransitionManager.instance.LoadPreloadedScene("Selection Map");
-        else
-            TransitionManager.instance.LoadScene("Selection Map");
+        TransitionManager.instance.LoadSceneAsync("Selection Map", data);
     }
 
     private void RemoveSettingsIndex(int index)

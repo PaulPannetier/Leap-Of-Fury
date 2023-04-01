@@ -19,7 +19,7 @@ public class CharHelpCanvas : MonoBehaviour
     {
         this.turningSelector = turningSelector;
         this.controllerType = controllerType;
-        transform.position = turningSelector.center + (Vector3)turningSelectorOffset;
+        transform.position = turningSelector.center + turningSelectorOffset;
         this.id = id;
         this.callbackCloseHelpCanvas = callbackCloseHelpCanvas;
     }
