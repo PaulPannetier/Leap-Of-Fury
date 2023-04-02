@@ -131,6 +131,8 @@ public class CharSelectorController : MonoBehaviour
                 OpenHelpCanvas(i);
             }
         }
+
+        //DebugText.instance.text += turningSelectors[0].selectedItem.GetComponent<CharSelectorItemData>().gameObject.name;
     }
 
     private void OpenHelpCanvas(int indexTuringSelector)

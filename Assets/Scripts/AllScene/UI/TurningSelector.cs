@@ -60,7 +60,7 @@ public class TurningSelector : MonoBehaviour
 
     private (Vector2, float) CalculateCanvasPositionAndDepth(float angle)
     {
-        return isHorizontal ? (new Vector2(center.x + radius * Mathf.Sin(angle), center.y), Mathf.Cos(angle)) : (new Vector2(center.x, center.y - radius * Mathf.Sin(angle)), Mathf.Cos(angle));
+        return isHorizontal ? (new Vector2(center.x + radius * Mathf.Sin(angle), center.y), Mathf.Cos(angle)) : (new Vector2(center.x, center.y + radius * Mathf.Sin(angle)), Mathf.Cos(angle));
     }
 
     /// <summary>
@@ -94,22 +94,23 @@ public class TurningSelector : MonoBehaviour
 
     public void SelectedNextItem()
     {
-        if (Time.time - lastTimeMove < minTimeBetweenMove)
+        if (Time.time - lastTimeMove < minTimeBetweenMove && minTimeBetweenMove > 0f)
             return;
         selectedIndex = (selectedIndex + 1) % itemsGO.Length;
-        turningSign = isInvers ? -1f : 1f;
+        turningSign = isInvers ? 1f : -1f;
+        turningSign = (isInvers ? -1f : 1f) * (isHorizontal ? -1f : 1f);
         angle = Useful.WrapAngle(angle + turningSign * turningAngle);
         lastTimeMove = Time.time;
     }
 
     public void SelectPreviousItem()
     {
-        if (Time.time - lastTimeMove < minTimeBetweenMove)
+        if (Time.time - lastTimeMove < minTimeBetweenMove && minTimeBetweenMove > 0f)
             return;
         selectedIndex--;
         if (selectedIndex < 0)
             selectedIndex = itemsGO.Length - 1;
-        turningSign = isInvers ? 1f : -1f;
+        turningSign = (isInvers ? -1f : 1f) * (isHorizontal ? 1f : -1f);
         angle = Useful.WrapAngle(angle + turningSign * turningAngle);
         lastTimeMove = Time.time;
     }

@@ -75,7 +75,7 @@ public class MapSelectorController : MonoBehaviour
             TransitionManager.instance.LoadScene("Selection Char");
         }
 
-        DebugText.instance.text += mapSelector.selectedItem.GetComponent<MapSelectorItemData>().sceneName;
+        //DebugText.instance.text += mapSelector.selectedItem.GetComponent<MapSelectorItemData>().sceneName;
     }
 
     private void TryLoadNextScene()
