@@ -767,6 +767,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16392
   speedFall: 50
+  maxFallDuration: 1.5
+  upForceWhenCancelFalling: 10
+  explosionForce: 1.2
   floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}
   shockWaveHoriOffset: 0.2
   shockWaveSpeed: 15

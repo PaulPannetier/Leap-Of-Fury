@@ -14,6 +14,9 @@ public class FallAttack : WeakAttack
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float speedFall = 3f;
+    [SerializeField] private float maxFallDuration = 3f;
+    [SerializeField] private float upForceWhenCancelFalling = 10f;
+    [SerializeField] private float explosionForce = 1.2f;
     [SerializeField] private GameObject floorShockWavePrefaps;
     [SerializeField] private float shockWaveHoriOffset = 0.2f;
     [SerializeField] private float shockWaveSpeed = 10f;
@@ -67,6 +70,9 @@ public class FallAttack : WeakAttack
         Collider2D[] cols;
         bool hitGround = false;
         Vector2 fallSpeed = Vector2.down * speedFall;
+        float timeBegFall = Time.time;
+        bool fallStopByOvertime = false;
+
         while(!hitGround)
         {
             //collision avec le sol
@@ -85,6 +91,12 @@ public class FallAttack : WeakAttack
                     }
                 }
             }
+            if(Time.time -  timeBegFall > maxFallDuration)
+            {
+                fallStopByOvertime = true;
+                break;
+            }
+
             yield return null;
         }
 
@@ -93,7 +105,7 @@ public class FallAttack : WeakAttack
 
         foreach (Collider2D col in cols)
         {
-            if(col.gameObject.CompareTag("Char"))
+            if (col.gameObject.CompareTag("Char"))
             {
                 GameObject player = col.GetComponent<ToricObject>().original;
                 if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
@@ -103,22 +115,31 @@ public class FallAttack : WeakAttack
             }
         }
 
+        ExplosionManager.instance.CreateExplosion(transform.position, explosionForce);
+
+        if (fallStopByOvertime)
+        {
+            rb.velocity = Vector2.zero;
+            movement.AddForce(Vector2.up * upForceWhenCancelFalling);
+        }
+        else
+        {
+            //Instantiate wave attack
+            //right
+            Vector2 shockWavePos = (Vector2)transform.position + Vector2.right * shockWaveHoriOffset;
+            GameObject shockWaveGO = Instantiate(floorShockWavePrefaps, shockWavePos, Quaternion.identity, CloneParent.cloneParent);
+            FloorShockWave shockWave = shockWaveGO.GetComponent<FloorShockWave>();
+            shockWave.Launch(transform.position, true, shockWaveSpeed, this);
+
+            //Left
+            shockWavePos = (Vector2)transform.position + Vector2.left * shockWaveHoriOffset;
+            shockWaveGO = Instantiate(floorShockWavePrefaps, shockWavePos, Quaternion.identity, CloneParent.cloneParent);
+            shockWave = shockWaveGO.GetComponent<FloorShockWave>();
+            shockWave.Launch(transform.position, false, shockWaveSpeed, this);
+        }
         movement.UnFreeze();
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
-
-        //Instantiate wave attack
-        //right
-        Vector2 shockWavePos = (Vector2)transform.position + Vector2.right * shockWaveHoriOffset;
-        GameObject shockWaveGO = Instantiate(floorShockWavePrefaps, shockWavePos, Quaternion.identity, CloneParent.cloneParent);
-        FloorShockWave shockWave = shockWaveGO.GetComponent<FloorShockWave>();
-        shockWave.Launch(transform.position, true, shockWaveSpeed, this);
-
-        //Left
-        shockWavePos = (Vector2)transform.position + Vector2.left * shockWaveHoriOffset;
-        shockWaveGO = Instantiate(floorShockWavePrefaps, shockWavePos, Quaternion.identity, CloneParent.cloneParent);
-        shockWave = shockWaveGO.GetComponent<FloorShockWave>();
-        shockWave.Launch(transform.position, false, shockWaveSpeed, this);
     }
 
     public void OnTouchEnemyByShockWave(GameObject enemy, FloorShockWave shockWave)

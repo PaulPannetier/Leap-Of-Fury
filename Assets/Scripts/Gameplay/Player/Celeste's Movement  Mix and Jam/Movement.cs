@@ -234,7 +234,7 @@ public class Movement : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
-    public void AddForce(in Vector2 dir, in float value) => AddForce(dir * value);
+    public void AddForce(in Vector2 dir, float value) => AddForce(dir * value);
 
     public void AddForce(in Vector2 force)
     {
