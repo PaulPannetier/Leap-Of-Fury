@@ -27,10 +27,10 @@ namespace CustomAI
         public Node(List<Node> children)
         {
             foreach (Node child in children)
-                _Attach(child);
+                Attach(child);
         }
 
-        private void _Attach(Node node)
+        private void Attach(Node node)
         {
             node.parent = this;
             children.Add(node);
@@ -49,25 +49,35 @@ namespace CustomAI
             if (dataContext.TryGetValue(key, out val))
                 return val;
 
-            Node node = _parent;
-            if (node != null)
-                val = node.GetData(key);
+            Node node = parent;
+            while (node != null)
+            {
+                if (node.dataContext.TryGetValue(key, out val))
+                    return val;
+                node = node.parent;
+            }
             return val;
         }
 
         public bool ClearData(string key)
         {
-            bool cleared = false;
-            if (_data.ContainsKey(key))
+            if (dataContext.ContainsKey(key))
             {
-                _data.Remove(key);
+                dataContext.Remove(key);
                 return true;
             }
 
-            Node node = _parent;
-            if (node != null)
-                cleared = node.ClearData(key);
-            return cleared;
+            Node node = parent;
+            while (node != null)
+            {
+                if (node.dataContext.ContainsKey(key))
+                {
+                    dataContext.Remove(key);
+                    return true;
+                }
+                node = node.parent;
+            }
+            return false;
         }
     }
 }

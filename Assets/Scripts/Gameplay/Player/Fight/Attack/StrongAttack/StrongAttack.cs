@@ -5,9 +5,9 @@ public class StrongAttack : Attack
 {
     protected SliderAttackHandler sliderAttackHandler;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
         sliderAttackHandler = GetComponentInChildren<SliderAttackHandler>();
         if(cooldown.duration <= 0f)
         {

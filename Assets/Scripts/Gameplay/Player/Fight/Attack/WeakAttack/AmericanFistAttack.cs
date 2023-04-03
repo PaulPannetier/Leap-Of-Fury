@@ -14,6 +14,8 @@ public class AmericanFistAttack : WeakAttack
     private int indexDash = 0;
     private Vector2 lastDir, initSpeed;
     private float lastTimeDash = -10;
+    private LayerMask groundMask, enemiesMask;
+    private bool alreadyCreateExplosionWinthThisDash;
 
     [SerializeField] private bool isAClone;
     [SerializeField] private float dashSpeed = 10f, dashDuration = 0.4f, minTimeBetweenDash = 0.2f, maxTimeBetweenDash = 0.7f, dashBufferTime = 0.1f;
@@ -25,8 +27,6 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private Vector2 colliderOffset;
     [SerializeField] private Vector2 colliderSize;
     [SerializeField] private float groundDetectionRadius = 0.1f;
-    [SerializeField] private LayerMask enemiesMask;
-    [SerializeField] private LayerMask groundMask;
 
     [HideInInspector] public bool activateCloneDash;//true one frame when the original char dash
     private GameObject _original;
@@ -51,12 +51,17 @@ public class AmericanFistAttack : WeakAttack
         playerInput = GetComponent<CustomPlayerInput>();
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
+        cloneAttack = GetComponent<CloneAttack>();
     }
 
     protected override void Start()
     {
-        if (!isAClone)
-            base.Start();
+        if (isAClone)
+            return;
+
+        base.Start();
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
+        enemiesMask = LayerMask.GetMask("Char");
     }
 
     #region Update
@@ -111,9 +116,10 @@ public class AmericanFistAttack : WeakAttack
                 isDashing = true;
                 lastTimeDash = Time.time;
                 onLaunchAttack = false;
+                alreadyCreateExplosionWinthThisDash = false;
                 indexDash = 0;
                 initSpeed = rb.velocity;
-                movement.Freeze();
+                movement.enableBehaviour = false;
             }
 
             if (isDashing)
@@ -123,7 +129,7 @@ public class AmericanFistAttack : WeakAttack
                     isDashing = false;
                     lastTimeDash = Time.time;
                     indexDash++;
-                    movement.UnFreeze();
+                    movement.enableBehaviour = movement.enableInput = true;
                     rb.velocity = initSpeed;
 
                     if (indexDash >= nbDash)
@@ -143,8 +149,9 @@ public class AmericanFistAttack : WeakAttack
                     }
                 }
 
-                if(CollideWithGround(out Vector2 collisionPoint))
+                if(!alreadyCreateExplosionWinthThisDash && CollideWithGround(out Vector2 collisionPoint))
                 {
+                    alreadyCreateExplosionWinthThisDash = true;
                     CreateExplosion(collisionPoint);
                 }
             }
@@ -156,9 +163,10 @@ public class AmericanFistAttack : WeakAttack
                     isDashing = true;
                     wantDash = false;
                     lastDir = movement.GetCurrentDirection(true);
+                    alreadyCreateExplosionWinthThisDash = false;
                     lastTimeDash = Time.time;
                     initSpeed = rb.velocity;
-                    movement.Freeze();
+                    movement.enableBehaviour = false;
                 }
                 else if (Time.time - lastTimeDash <= dashBufferTime)
                 {
@@ -173,6 +181,7 @@ public class AmericanFistAttack : WeakAttack
             {
                 indexDash = 0;
                 isAttackEnable = false;
+                movement.enableBehaviour = movement.enableInput = true;
             }
         }
     }
@@ -192,7 +201,7 @@ public class AmericanFistAttack : WeakAttack
         base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
 
         cooldown.Reset();
-        StartCoroutine(ApplyAttackCorout(movement.GetCurrentDirection(), callbackEnableOtherAttack, callbackEnableThisAttack));
+        StartCoroutine(ApplyAttackCorout(movement.GetCurrentDirection(true), callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
     }
 
@@ -203,6 +212,7 @@ public class AmericanFistAttack : WeakAttack
         initSpeed = rb.velocity;
         movement.Freeze();
         yield return Useful.GetWaitForSeconds(castDuration);
+        movement.UnFreeze();
         lastDir = dir;
         isAttackEnable = onLaunchAttack = true;
     }

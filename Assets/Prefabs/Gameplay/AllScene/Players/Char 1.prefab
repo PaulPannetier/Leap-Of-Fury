@@ -625,12 +625,6 @@ MonoBehaviour:
   colliderOffset: {x: 0, y: -0.21}
   colliderSize: {x: 0.5, y: 1.14}
   groundDetectionRadius: 0.25
-  enemiesMask:
-    serializedVersion: 2
-    m_Bits: 256
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 16392
   activateCloneDash: 0
 --- !u!114 &4661732284580921915
 MonoBehaviour:
@@ -647,7 +641,7 @@ MonoBehaviour:
   attackForce: 0
   castDuration: 0
   cooldown:
-    duration: 0
+    duration: 5
   clonePrefabs: {fileID: 1266130988093312155, guid: f24f5fb0fc04f7c438b6ee7620e65224, type: 3}
   latenessTime: 3
   duration: 5

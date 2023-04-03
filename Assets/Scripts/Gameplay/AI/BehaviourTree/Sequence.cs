@@ -4,8 +4,15 @@ namespace CustomAI
 {
     public class Sequence : Node
     {
-        public Sequence() : base() { }
-        public Sequence(List<Node> children) : base(children) { }
+        public Sequence() : base()
+        {
+        
+        }
+
+        public Sequence(List<Node> children) : base(children)
+        {
+        
+        }
 
         public override NodeState Evaluate()
         {

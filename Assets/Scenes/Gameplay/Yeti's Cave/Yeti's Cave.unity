@@ -323,10 +323,6 @@ PrefabInstance:
       propertyPath: levelNameUI
       value: 
       objectReference: {fileID: 778908268}
-    - target: {fileID: 661857354, guid: c7ed76cf6bc2dda49a903aff0b1678e3, type: 3}
-      propertyPath: startLevelAnim
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3950918267813311090, guid: c7ed76cf6bc2dda49a903aff0b1678e3, type: 3}
       propertyPath: m_Name
       value: LevelManager
@@ -379,10 +375,6 @@ PrefabInstance:
       propertyPath: scoreCanvas
       value: 
       objectReference: {fileID: 1393366166460120883}
-    - target: {fileID: 9071503404528683171, guid: c7ed76cf6bc2dda49a903aff0b1678e3, type: 3}
-      propertyPath: enableBehaviour
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7ed76cf6bc2dda49a903aff0b1678e3, type: 3}
 --- !u!4 &827678388 stripped
@@ -2260,19 +2252,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4030477618232264716, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4030477618232264716, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4030477618911354237, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4030477618911354237, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5402244823245679803, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: controllerType
@@ -2336,7 +2328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}

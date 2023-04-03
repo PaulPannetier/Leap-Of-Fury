@@ -61,6 +61,7 @@ public class CloneAttack : StrongAttack
 
     protected override void Update()
     {
+        base.Update();
         if(!disableRegisteringData)
             AddData();
         ApplyCloneModif();

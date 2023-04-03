@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelType: 0
+  durationToWaitAtBegining: 2
   nbKillsToWin: 7
   waitingTimeAfterLastKill: 2
   scoreMenuDuration: 3.5
@@ -69,3 +70,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24956b4a47b852c4bb8e9be43984a5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelNameUI: {fileID: 0}
