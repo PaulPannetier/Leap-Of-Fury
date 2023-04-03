@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
 public abstract class Attack : MonoBehaviour
 {
+    protected List<uint> charAlreadyTouch;
+
     protected EventController eventController;
     protected PlayerCommon playerCommon;
 
@@ -15,6 +18,7 @@ public abstract class Attack : MonoBehaviour
     {
         eventController = GetComponent<EventController>();
         playerCommon = GetComponent<PlayerCommon>();
+        charAlreadyTouch = new List<uint>();
     }
 
     protected virtual void Start()
@@ -45,6 +49,7 @@ public abstract class Attack : MonoBehaviour
 
     public virtual void OnTouchEnemy(GameObject enemy)
     {
+        charAlreadyTouch.Add(enemy.GetComponent<PlayerCommon>().id);
         eventController.OnTouchAttack(this, enemy);
         enemy.GetComponent<ToricObject>().original.GetComponent<EventController>().OnBeenTouchAttack(this);
     }

@@ -79,18 +79,28 @@ public class BouncingBall : MonoBehaviour
         {
             if(col.CompareTag("Char"))
             {
-                GameObject player = col.GetComponent<ToricObject>().original;
-                if (player.GetComponent<PlayerCommon>().id != playerCommon.id)
-                {
-                    toricObj.original.GetComponent<BouncingBall>().bouncingBallAttack.OnTouchEnemy(player);
-                    Destroy();
-                }
+                OnTouchChar(col.GetComponent<ToricObject>().original);
             }
         }
 
         if (!toricObj.isAClone)
         {
             transform.position += (Vector3)(speed * Time.deltaTime);
+        }
+    }
+
+    private void OnTouchChar(GameObject player)
+    {
+        if(toricObj.isAClone)
+        {
+            toricObj.original.GetComponent<BouncingBall>().OnTouchChar(player);
+            return;
+        }
+
+        if (player.GetComponent<PlayerCommon>().id != playerCommon.id)
+        {
+            toricObj.original.GetComponent<BouncingBall>().bouncingBallAttack.OnTouchEnemy(player);
+            Destroy();
         }
     }
 

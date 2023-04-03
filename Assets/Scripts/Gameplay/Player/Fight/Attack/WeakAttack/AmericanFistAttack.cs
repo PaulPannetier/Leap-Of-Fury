@@ -21,6 +21,7 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private float dashSpeed = 10f, dashDuration = 0.4f, minTimeBetweenDash = 0.2f, maxTimeBetweenDash = 0.7f, dashBufferTime = 0.1f;
     [SerializeField] private AnimationCurve dashSpeedCurve;
     [SerializeField] private int nbDash = 3;
+    [SerializeField] private float explosionForce = 1.1f;
     [SerializeField] private Explosion explosionPrefabs;
 
     [Header("Collission")]
@@ -318,6 +319,7 @@ public class AmericanFistAttack : WeakAttack
         Explosion explosion = Instantiate(explosionPrefabs, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
         explosion.callbackOnTouch += OnExplosionTouchEnemy;
         explosion.Lauch();
+        ExplosionManager.instance.CreateExplosion(transform.position, explosionForce);
     }
 
     private void OnExplosionTouchEnemy(Collider2D collider)
