@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 165;
         Random.SetRandomSeed();
-
     }
 
     private void SetPixelQuality()

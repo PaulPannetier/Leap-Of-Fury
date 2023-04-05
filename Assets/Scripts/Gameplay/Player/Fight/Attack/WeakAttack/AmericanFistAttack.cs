@@ -9,6 +9,7 @@ public class AmericanFistAttack : WeakAttack
     private CustomPlayerInput playerInput;
     private Rigidbody2D rb;
     private CloneAttack cloneAttack;//null if isAClone == true
+    [HideInInspector] public CloneAttack originalCloneAttack;
     private AmericanFistAttack originalAmericanFistAttack;
     private bool isAttackEnable = false, onLaunchAttack = false, isDashing = false, wantDash = false;
     private int indexDash = 0;
@@ -30,7 +31,11 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private float groundDetectionRadius = 0.1f;
 
     [HideInInspector] public bool activateCloneDash;//true one frame when the original char dash
+    [HideInInspector] public bool activateWallExplosion;//true one frame when the original char dash
+    [HideInInspector] public Vector2 cloneExplosionPosition;
+
     private GameObject _original;
+
     [HideInInspector] public GameObject original
     {
         get => _original;
@@ -53,6 +58,7 @@ public class AmericanFistAttack : WeakAttack
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
         cloneAttack = GetComponent<CloneAttack>();
+        originalCloneAttack = cloneAttack;
     }
 
     protected override void Start()
@@ -102,6 +108,11 @@ public class AmericanFistAttack : WeakAttack
             {
                 StartCoroutine(ApplyAttackCloneCorout());
                 activateCloneDash = false;
+            }
+            if(activateWallExplosion)
+            {
+                activateWallExplosion = false;
+                CreateExplosion(cloneExplosionPosition, originalCloneAttack.isCloneAttackEnable);
             }
         }
     }
@@ -153,6 +164,8 @@ public class AmericanFistAttack : WeakAttack
                 if(!alreadyCreateExplosionWinthThisDash && CollideWithGround(out Vector2 collisionPoint))
                 {
                     alreadyCreateExplosionWinthThisDash = true;
+                    cloneAttack.originalCreateExplosionThisFrame = true;
+                    cloneAttack.originalExplosionPosition = collisionPoint;
                     CreateExplosion(collisionPoint);
                 }
             }
@@ -314,12 +327,19 @@ public class AmericanFistAttack : WeakAttack
         return false;
     }
 
-    private void CreateExplosion(in Vector2 collisionPoint)
+    private void CreateExplosion(in Vector2 collisionPoint, bool disableExplosionEffet = false)
     {
         Explosion explosion = Instantiate(explosionPrefabs, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
-        explosion.callbackOnTouch += OnExplosionTouchEnemy;
-        explosion.Lauch();
-        ExplosionManager.instance.CreateExplosion(transform.position, explosionForce);
+        if(disableExplosionEffet)
+        {
+            explosion.enableBehaviour = false;
+        }
+        else
+        {
+            explosion.callbackOnTouch += OnExplosionTouchEnemy;
+            explosion.Lauch();
+        }
+        ExplosionManager.instance.CreateExplosion(collisionPoint, explosionForce);
     }
 
     private void OnExplosionTouchEnemy(Collider2D collider)

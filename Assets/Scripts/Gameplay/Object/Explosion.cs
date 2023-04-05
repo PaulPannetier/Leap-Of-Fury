@@ -6,6 +6,7 @@ public class Explosion : MonoBehaviour
     private float lastTimeLauch = -10;
     private ToricObject toricObject;
 
+    public bool enableBehaviour = true;
     public ExplosionData explosionData;
     public Action<Collider2D> callbackOnTouch;
 
@@ -34,7 +35,7 @@ public class Explosion : MonoBehaviour
 
     private void Update()
     {
-        if(Time.time - lastTimeLauch <= explosionData.duration)
+        if(enableBehaviour && Time.time - lastTimeLauch <= explosionData.duration)
         {
             Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + explosionData.offset, explosionData.radius, explosionData.layerMask);
             foreach (Collider2D col in cols)

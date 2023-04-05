@@ -2021,6 +2021,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
+    - target: {fileID: 5034790997836796944, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
+      propertyPath: orthographic size
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 5034790997836796947, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -2083,6 +2087,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3239725999803737633, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3239725999803737634, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2382,6 +2390,10 @@ PrefabInstance:
     - target: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970924279353906142, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: pixelQuality
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906143, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_Name

@@ -15,6 +15,11 @@ public class WeakAttack : Attack
         }
     }
 
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
+
     protected override void Update()
     {
         base.Update();

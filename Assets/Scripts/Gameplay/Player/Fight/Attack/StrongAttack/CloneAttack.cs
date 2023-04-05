@@ -13,8 +13,7 @@ public class CloneAttack : StrongAttack
     private SpriteRenderer cloneRenderer;
     private AmericanFistAttack cloneWeakAttack;
     private bool isCloneRendererEnable = false;
-    private bool madeAnAttackThisFrame = false;
-    private bool isCloneAttackEnable = false;
+    [HideInInspector] public bool isCloneAttackEnable = false;
     private List<CloneData> dataCache = new List<CloneData>();
     private bool disableRegisteringData = false;
 
@@ -23,6 +22,8 @@ public class CloneAttack : StrongAttack
     [SerializeField] private float duration = 5f;
 
     [HideInInspector] public bool originalDashThisFrame;
+    [HideInInspector] public bool originalCreateExplosionThisFrame;
+    [HideInInspector] public Vector2 originalExplosionPosition;
 
     public new float attackForce => cloneWeakAttack.attackForce;
 
@@ -43,6 +44,7 @@ public class CloneAttack : StrongAttack
         cloneRenderer = clone.GetComponent<SpriteRenderer>();
         cloneWeakAttack = clone.GetComponent<AmericanFistAttack>();
         cloneWeakAttack.original = gameObject;
+        cloneWeakAttack.originalCloneAttack = this;
         cloneRenderer.enabled = false;
 
         eventController.callBackEnterTimePortal += OnEnterTimePortal;
@@ -72,11 +74,23 @@ public class CloneAttack : StrongAttack
     private void AddData()
     {
         float rot = transform.rotation.eulerAngles.z * Mathf.Rad2Deg;
-        object[] attackData = madeAnAttackThisFrame || originalDashThisFrame ? new object[] { movement.GetCurrentDirection() } : null;
-        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, madeAnAttackThisFrame, originalDashThisFrame,
-            movement.side == -1);
+        object[] attackData = null;
+        bool attack = false, dash = false;
+
+        if (originalDashThisFrame)
+        {
+            attackData = new object[] { movement.GetCurrentDirection() };
+            dash = true;
+        }
+        else if(originalCreateExplosionThisFrame)
+        {
+            attackData = new object[] { originalExplosionPosition };
+            attack = true;
+        }
+
+        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.side == -1);
         lstCloneDatas.Add(data);
-        madeAnAttackThisFrame = originalDashThisFrame = false;
+        originalDashThisFrame = originalCreateExplosionThisFrame = false;
 
         actionLastFrame = new Action(() => { });
     }
@@ -103,9 +117,14 @@ public class CloneAttack : StrongAttack
         {
             if(Time.time - lstCloneDatas[index].time >= latenessTime)
             {
-                if(lstCloneDatas[index].madeAnAttack || lstCloneDatas[index].madeADashThisFrame)
+                if(lstCloneDatas[index].madeADashThisFrame)
                 {
                     cloneWeakAttack.activateCloneDash = true;
+                }
+                else if (lstCloneDatas[index].makeAnExplosionThisFrame)
+                {
+                    cloneWeakAttack.activateWallExplosion = true;
+                    cloneWeakAttack.cloneExplosionPosition = (Vector2)lstCloneDatas[index].attackData[0];
                 }
                 index++;
             }
@@ -161,14 +180,6 @@ public class CloneAttack : StrongAttack
         };
     }
 
-    protected override void OnLauchAttack(Attack attack)
-    {
-        if(attack is WeakAttack)
-        {
-            madeAnAttackThisFrame = true;
-        }
-    }
-
     #endregion
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -202,19 +213,18 @@ public class CloneAttack : StrongAttack
         public Action action;
         public float time;
         public object[] attackData;
-        public bool madeAnAttack;
         public bool madeADashThisFrame;
+        public bool makeAnExplosionThisFrame;
         public bool flipRenderer;
 
-        public CloneData(in Vector2 position, in float rotationZ, in Action action, in float time,
-            object[] attackData, in bool makeAnAttack, in bool madeADash, in bool flipRenderer)
+        public CloneData(in Vector2 position, float rotationZ, Action action,  float time, object[] attackData, bool makeAnAttack, bool madeADash, bool createExplosion, bool flipRenderer)
         {
             this.position = position;
             this.rotationZ = rotationZ;
             this.action = action;
             this.time = time;
             this.attackData = attackData;
-            this.madeAnAttack = makeAnAttack;
+            this.makeAnExplosionThisFrame = createExplosion;
             this.madeADashThisFrame = madeADash;
             this.flipRenderer = flipRenderer;
         }
