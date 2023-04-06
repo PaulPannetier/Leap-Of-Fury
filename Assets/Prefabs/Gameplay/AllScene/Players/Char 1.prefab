@@ -572,6 +572,7 @@ MonoBehaviour:
   castDuration: 0.2
   cooldown:
     duration: 4
+  originalCloneAttack: {fileID: 0}
   isAClone: 0
   dashSpeed: 20
   dashDuration: 0.25
@@ -621,11 +622,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   nbDash: 3
+  explosionForce: 1.1
   explosionPrefabs: {fileID: 8565674110299712414, guid: 860caee9a72fd1344a67a5ee19dba4b6, type: 3}
   colliderOffset: {x: 0, y: -0.21}
   colliderSize: {x: 0.5, y: 1.14}
   groundDetectionRadius: 0.25
   activateCloneDash: 0
+  activateWallExplosion: 0
+  cloneExplosionPosition: {x: 0, y: 0}
 --- !u!114 &4661732284580921915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -642,10 +646,14 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 5
+  isCloneAttackEnable: 0
   clonePrefabs: {fileID: 1266130988093312155, guid: f24f5fb0fc04f7c438b6ee7620e65224, type: 3}
   latenessTime: 3
   duration: 5
+  cloneTransparency: 0.4
   originalDashThisFrame: 0
+  originalCreateExplosionThisFrame: 0
+  originalExplosionPosition: {x: 0, y: 0}
 --- !u!114 &6907840903728363808
 MonoBehaviour:
   m_ObjectHideFlags: 0

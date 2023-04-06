@@ -4,6 +4,7 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     private float lastTimeLauch = -10;
+    private SpriteRenderer spriteRenderer;
     private ToricObject toricObject;
 
     public bool enableBehaviour = true;
@@ -14,6 +15,7 @@ public class Explosion : MonoBehaviour
     {
         callbackOnTouch = (Collider2D arg) => { };
         toricObject = GetComponent<ToricObject>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void Lauch(ExplosionData explosionData)
@@ -22,7 +24,7 @@ public class Explosion : MonoBehaviour
         Invoke(nameof(StartExplode), explosionData.delay);
     }
 
-    public void Lauch()
+    public void Launch()
     {
         Invoke(nameof(StartExplode), explosionData.delay);
     }
@@ -47,6 +49,11 @@ public class Explosion : MonoBehaviour
         {
             Destroy();
         }
+    }
+
+    public void SetColor(in Color color)
+    {
+        spriteRenderer.color = color;
     }
 
     private void OnCollide(Collider2D collider)

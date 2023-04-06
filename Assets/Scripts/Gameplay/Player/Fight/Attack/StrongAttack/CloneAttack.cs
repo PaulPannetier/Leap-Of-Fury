@@ -20,6 +20,7 @@ public class CloneAttack : StrongAttack
     public GameObject clonePrefabs;
     [SerializeField] private float latenessTime = 3f;
     [SerializeField] private float duration = 5f;
+    [Range(0f, 1f)] public float cloneTransparency = 0.4f;
 
     [HideInInspector] public bool originalDashThisFrame;
     [HideInInspector] public bool originalCreateExplosionThisFrame;
@@ -103,7 +104,7 @@ public class CloneAttack : StrongAttack
         CloneData data = lstCloneDatas[0];
         clone.transform.SetPositionAndRotation(data.position, Quaternion.Euler(0f, 0f, data.rotationZ));
         cloneRenderer.flipX = data.flipRenderer;
-        cloneRenderer.color = isCloneAttackEnable ? playerCommon.color : playerCommon.color * 0.4f;
+        cloneRenderer.color = isCloneAttackEnable ? playerCommon.color : playerCommon.color * cloneTransparency;
         data.action.Invoke();
     }
 

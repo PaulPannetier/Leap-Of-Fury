@@ -109,11 +109,12 @@ public class AmericanFistAttack : WeakAttack
                 StartCoroutine(ApplyAttackCloneCorout());
                 activateCloneDash = false;
             }
-            if(activateWallExplosion)
-            {
-                activateWallExplosion = false;
-                CreateExplosion(cloneExplosionPosition, originalCloneAttack.isCloneAttackEnable);
-            }
+        }
+        if (activateWallExplosion)
+        {
+            activateWallExplosion = false;
+            print("Explode");
+            CreateExplosion(cloneExplosionPosition, originalCloneAttack.isCloneAttackEnable);
         }
     }
 
@@ -333,12 +334,13 @@ public class AmericanFistAttack : WeakAttack
         if(disableExplosionEffet)
         {
             explosion.enableBehaviour = false;
+            explosion.SetColor(originalCloneAttack.GetComponentInChildren<SpriteRenderer>().color * originalCloneAttack.cloneTransparency);
         }
         else
         {
             explosion.callbackOnTouch += OnExplosionTouchEnemy;
-            explosion.Lauch();
         }
+        explosion.Launch();
         ExplosionManager.instance.CreateExplosion(collisionPoint, explosionForce);
     }
 
