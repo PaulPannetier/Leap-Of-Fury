@@ -719,9 +719,9 @@ public static class Useful
             int w = Mathf.Min(A.width, B.width);
             int h = Mathf.Min(A.height, B.height);
             if (A.width < B.width || A.height < B.height)
-                A.Resize(w, h);
+                A.Reinitialize(w, h);
             if (B.width < A.width || B.height < A.height)
-                B.Resize(w, h);
+                B.Reinitialize(w, h);
         }
         Texture2D texture = new Texture2D(A.width, A.height);
         for (int x = 0; x < A.width; x++)

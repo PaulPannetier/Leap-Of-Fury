@@ -381,6 +381,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -435,6 +436,18 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -2957,6 +2970,126 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      explosion circulaire tilesheet_0: -1700944671204792766
+      explosion circulaire tilesheet_1: 2326695475299008752
+      explosion circulaire tilesheet_10: 6940901427839001867
+      explosion circulaire tilesheet_100: 5028655286343790755
+      explosion circulaire tilesheet_101: 2957563015929248608
+      explosion circulaire tilesheet_102: -773927708953945881
+      explosion circulaire tilesheet_103: -2442228912112714707
+      explosion circulaire tilesheet_104: -8917928848117407838
+      explosion circulaire tilesheet_105: 3631467529614994002
+      explosion circulaire tilesheet_106: 1097445776058950699
+      explosion circulaire tilesheet_107: 7761241554161265947
+      explosion circulaire tilesheet_108: 8917294567041097388
+      explosion circulaire tilesheet_109: -2543217809203804370
+      explosion circulaire tilesheet_11: 2523597189226652157
+      explosion circulaire tilesheet_110: 4129212693127823219
+      explosion circulaire tilesheet_111: 1052986591077489211
+      explosion circulaire tilesheet_112: -7754440581184223396
+      explosion circulaire tilesheet_113: -7033545467640923548
+      explosion circulaire tilesheet_114: -2394341460564229898
+      explosion circulaire tilesheet_115: 9001674993378026564
+      explosion circulaire tilesheet_116: 3803862829752405336
+      explosion circulaire tilesheet_117: 8308860469118568169
+      explosion circulaire tilesheet_118: -4976702882928304817
+      explosion circulaire tilesheet_12: -6088928905515668604
+      explosion circulaire tilesheet_13: -2024199085107150678
+      explosion circulaire tilesheet_14: -3520044971108236854
+      explosion circulaire tilesheet_15: 4326246514108392170
+      explosion circulaire tilesheet_16: 6217592443904256433
+      explosion circulaire tilesheet_17: -6025023839431857258
+      explosion circulaire tilesheet_18: -1305812791288909525
+      explosion circulaire tilesheet_19: 5479033172458265995
+      explosion circulaire tilesheet_2: 8941248469730017950
+      explosion circulaire tilesheet_20: 8236194917590249113
+      explosion circulaire tilesheet_21: 616322498650796074
+      explosion circulaire tilesheet_22: -2919035563947842096
+      explosion circulaire tilesheet_23: 716858070041074188
+      explosion circulaire tilesheet_24: 764705230457068448
+      explosion circulaire tilesheet_25: -4047301261711333977
+      explosion circulaire tilesheet_26: -8474668096770650687
+      explosion circulaire tilesheet_27: 5628186982854813960
+      explosion circulaire tilesheet_28: -5803812948748832646
+      explosion circulaire tilesheet_29: 3938726479870739079
+      explosion circulaire tilesheet_3: -5411849701610758697
+      explosion circulaire tilesheet_30: 2956223662418842336
+      explosion circulaire tilesheet_31: -2017773256750538645
+      explosion circulaire tilesheet_32: -1484935365118386109
+      explosion circulaire tilesheet_33: 3728319387392352256
+      explosion circulaire tilesheet_34: 3004011029126033409
+      explosion circulaire tilesheet_35: 4279355891569639630
+      explosion circulaire tilesheet_36: -2250541372930009745
+      explosion circulaire tilesheet_37: -7770881297216616380
+      explosion circulaire tilesheet_38: -8421853046739866196
+      explosion circulaire tilesheet_39: 6605661748271748864
+      explosion circulaire tilesheet_4: -1277886457678570829
+      explosion circulaire tilesheet_40: -1299486220814996862
+      explosion circulaire tilesheet_41: -1307728063562735801
+      explosion circulaire tilesheet_42: -3718058144609215722
+      explosion circulaire tilesheet_43: 5730300875528937254
+      explosion circulaire tilesheet_44: 4430323536075644945
+      explosion circulaire tilesheet_45: 4315570738078645319
+      explosion circulaire tilesheet_46: 1476655374840568586
+      explosion circulaire tilesheet_47: -8717328159661464514
+      explosion circulaire tilesheet_48: -3847156529448638468
+      explosion circulaire tilesheet_49: 6844852679901055159
+      explosion circulaire tilesheet_5: -7013343596515520537
+      explosion circulaire tilesheet_50: -8793340052876120860
+      explosion circulaire tilesheet_51: 8020416980318359683
+      explosion circulaire tilesheet_52: 9006292621281513273
+      explosion circulaire tilesheet_53: -2301870300789812089
+      explosion circulaire tilesheet_54: 2868479480271757279
+      explosion circulaire tilesheet_55: -4550307613771953582
+      explosion circulaire tilesheet_56: 3923896234933630713
+      explosion circulaire tilesheet_57: -4965903181143794384
+      explosion circulaire tilesheet_58: -3661879235096971652
+      explosion circulaire tilesheet_59: 1464013930424818430
+      explosion circulaire tilesheet_6: 6811343802521791884
+      explosion circulaire tilesheet_60: 8180724915184668819
+      explosion circulaire tilesheet_61: 5055901220164480064
+      explosion circulaire tilesheet_62: 6656401314612800847
+      explosion circulaire tilesheet_63: 1778554856875552958
+      explosion circulaire tilesheet_64: 7874985676854657811
+      explosion circulaire tilesheet_65: 4804208317011375705
+      explosion circulaire tilesheet_66: -7745906914536999197
+      explosion circulaire tilesheet_67: 4651114539136379006
+      explosion circulaire tilesheet_68: -7436837132647342936
+      explosion circulaire tilesheet_69: 3654391588226650787
+      explosion circulaire tilesheet_7: -4354909851393182676
+      explosion circulaire tilesheet_70: 3716727519934165785
+      explosion circulaire tilesheet_71: 3598602311030234654
+      explosion circulaire tilesheet_72: 4482393346369278113
+      explosion circulaire tilesheet_73: 2207146678469543875
+      explosion circulaire tilesheet_74: -1341405445338456154
+      explosion circulaire tilesheet_75: -5453492135688399882
+      explosion circulaire tilesheet_76: 6476626296400069984
+      explosion circulaire tilesheet_77: 4869749957778437258
+      explosion circulaire tilesheet_78: 3022780901266691963
+      explosion circulaire tilesheet_79: -1076093160776807409
+      explosion circulaire tilesheet_8: 6553232791758412254
+      explosion circulaire tilesheet_80: 6234993120069009474
+      explosion circulaire tilesheet_81: 6526222242596854887
+      explosion circulaire tilesheet_82: 8350253342842164645
+      explosion circulaire tilesheet_83: 4188925736815630406
+      explosion circulaire tilesheet_84: -8958048979851736885
+      explosion circulaire tilesheet_85: -8898179796567442006
+      explosion circulaire tilesheet_86: 7567963441676771191
+      explosion circulaire tilesheet_87: 8085559425846194173
+      explosion circulaire tilesheet_88: 8059526234475290565
+      explosion circulaire tilesheet_89: -7859820833591505435
+      explosion circulaire tilesheet_9: 1849024312280647386
+      explosion circulaire tilesheet_90: -1626747681627467946
+      explosion circulaire tilesheet_91: -1618361644343214588
+      explosion circulaire tilesheet_92: 5468954186265583408
+      explosion circulaire tilesheet_93: -1474474999815607463
+      explosion circulaire tilesheet_94: -8702460430544480733
+      explosion circulaire tilesheet_95: 1813574165808353756
+      explosion circulaire tilesheet_96: -4443534255324709243
+      explosion circulaire tilesheet_97: 4202793314634637375
+      explosion circulaire tilesheet_98: 9016772677832320146
+      explosion circulaire tilesheet_99: -271905075674337272
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

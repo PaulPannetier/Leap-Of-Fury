@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 public class Lampe : MonoBehaviour
 {
@@ -27,7 +27,7 @@ public class Lampe : MonoBehaviour
         }
     }
 
-    private Light2D lamp;
+    private UnityEngine.Rendering.Universal.Light2D lamp;
     private float noiseIndexIntensity;
     private float noiseIndexWind;
     private Rigidbody2D rb;
@@ -36,7 +36,7 @@ public class Lampe : MonoBehaviour
 
     private void Awake()
     {
-        lamp = GetComponentInChildren<Light2D>();
+        lamp = GetComponentInChildren<UnityEngine.Rendering.Universal.Light2D>();
         Transform child = transform.GetChild(0);
         lastChild = child.GetChild(child.childCount - 1);
         rb = lastChild.GetComponent<Rigidbody2D>();
