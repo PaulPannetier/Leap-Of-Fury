@@ -6,6 +6,7 @@ public class Explosion : MonoBehaviour
     private float lastTimeLauch = -10;
     private SpriteRenderer spriteRenderer;
     private ToricObject toricObject;
+    private bool isExploding = false;
 
     public bool enableBehaviour = true;
     public ExplosionData explosionData;
@@ -32,6 +33,7 @@ public class Explosion : MonoBehaviour
     private void StartExplode()
     {
         lastTimeLauch = Time.time;
+        isExploding = true;
         ExplosionManager.instance.CreateExplosion((Vector2)transform.position + explosionData.offset, explosionData.force);
     }
 
@@ -45,7 +47,8 @@ public class Explosion : MonoBehaviour
                 OnCollide(col);
             }
         }
-        else if(lastTimeLauch > 0f)
+
+        if(isExploding && Time.time - lastTimeLauch > explosionData.duration)
         {
             Destroy();
         }

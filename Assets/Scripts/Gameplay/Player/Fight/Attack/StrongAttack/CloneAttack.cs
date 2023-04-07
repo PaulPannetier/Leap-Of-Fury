@@ -110,7 +110,7 @@ public class CloneAttack : StrongAttack
 
     private void HandleCloneAttack()
     {
-        if (!isCloneAttackEnable || lstCloneDatas.Count <= 0 || Time.time - lstCloneDatas[0].time < latenessTime)
+        if (lstCloneDatas.Count <= 0 || Time.time - lstCloneDatas[0].time < latenessTime)
             return;
         dataCache.Clear();
         int index = 0;

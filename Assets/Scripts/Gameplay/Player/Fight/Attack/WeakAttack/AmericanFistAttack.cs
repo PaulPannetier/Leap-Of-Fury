@@ -89,11 +89,14 @@ public class AmericanFistAttack : WeakAttack
     {
         if (isDashing)
         {
-            if (CollideWithEnemy(out GameObject[] enemies))
+            if(originalCloneAttack.isCloneAttackEnable)
             {
-                foreach (GameObject enemy in enemies)
+                if (CollideWithEnemy(out GameObject[] enemies))
                 {
-                    OnTouchEnemy(enemy);
+                    foreach (GameObject enemy in enemies)
+                    {
+                        OnTouchEnemy(enemy);
+                    }
                 }
             }
 
@@ -113,8 +116,7 @@ public class AmericanFistAttack : WeakAttack
         if (activateWallExplosion)
         {
             activateWallExplosion = false;
-            print("Explode");
-            CreateExplosion(cloneExplosionPosition, originalCloneAttack.isCloneAttackEnable);
+            CreateExplosion(cloneExplosionPosition, !originalCloneAttack.isCloneAttackEnable);
         }
     }
 
