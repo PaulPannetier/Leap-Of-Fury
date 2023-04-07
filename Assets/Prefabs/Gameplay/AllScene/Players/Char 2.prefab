@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 817145397585897665}
   m_RootOrder: 0
@@ -42,6 +43,7 @@ LineRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -162,6 +164,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 5.466851, y: -5.089329, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2179939242171102681}
   m_Father: {fileID: 5602198179201593308}
@@ -208,6 +211,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.41, y: -6.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 817145397585897665}
   - {fileID: 5403356938167378008}
@@ -246,6 +250,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -731,8 +736,8 @@ MonoBehaviour:
   cooldown:
     duration: 2
   shootDistanceFromChar: 0.35
-  initSpeed: 11
-  maxSpeed: 18
+  initSpeed: 18
+  maxSpeed: 25
   speedVariation: 0.2
   maxBallDuration: 7
   nbBounce: 3
@@ -760,12 +765,6 @@ MonoBehaviour:
   drawGizmos: 1
   explosionRadius: 1.5
   minDistanceFromGround: 1.2
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 256
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 16392
   speedFall: 50
   maxFallDuration: 1.5
   upForceWhenCancelFalling: 10

@@ -7,12 +7,12 @@ public class FallAttack : WeakAttack
     private Rigidbody2D rb;
     private BoxCollider2D hitbox;
     private Movement movement;
+    private LayerMask playerMask;
+    private LayerMask groundMask;
 
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private float minDistanceFromGround = 0.2f;
-    [SerializeField] private LayerMask playerMask;
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private float speedFall = 3f;
     [SerializeField] private float maxFallDuration = 3f;
     [SerializeField] private float upForceWhenCancelFalling = 10f;
@@ -27,6 +27,13 @@ public class FallAttack : WeakAttack
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
         hitbox = GetComponent<BoxCollider2D>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        playerMask = LayerMask.GetMask("Char");
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)

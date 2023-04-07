@@ -90,13 +90,19 @@ public class Droite
     /// <param name="D"></param>
     /// <param name="h"></param>
     /// <returns>Le symétrique du point M par rapport à la droite D</returns>
-    public static Vector2 Symetric(in Vector2 M, in Droite D)
+    public static Vector2 Symetric(in Vector2 M, Droite D)
     {
+        //custom version
         if (Mathf.Abs(D.A.x - D.B.x) < CustomCollider2D.accuracy)
         {
             return new Vector2(M.x >= (D.A.x - D.B.x) * 0.5f ? M.x - 2f * Distance(D.A, D.B, M) : M.x + 2f * Distance(D.A, D.B, M), M.y);
         }
         return  2f * OrthogonalProjection(M, D) - M;
+    }
+
+    public static Vector2 Reflection(in Vector2 normal, in Vector2 interPointInDroite, in Vector2 initDir)
+    {
+        return initDir - 2f * Vector2.Dot(initDir, normal) * normal;
     }
 
     /// <summary>

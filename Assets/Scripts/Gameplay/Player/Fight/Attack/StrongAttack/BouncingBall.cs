@@ -69,8 +69,14 @@ public class BouncingBall : MonoBehaviour
                 transform.position += (Vector3)(speed * (-Time.deltaTime * 1.3f));
 
                 float v = speed.magnitude;
+                /*
+                //custom version
                 Vector2 M = Droite.Symetric(raycast.point - speed, new Droite(raycast.point, raycast.point + raycast.normal));
                 speed = (M - raycast.point).normalized * v;
+                */
+
+                //sebastian lague version
+                speed = Droite.Reflection(raycast.normal, raycast.point, speed / v) * v;
             }
         }
 
