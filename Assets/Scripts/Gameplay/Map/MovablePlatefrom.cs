@@ -4,257 +4,163 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class MovablePlatefrom : MonoBehaviour
 {
-    private enum PlateformeSide
+    private enum HitboxSide
     {
-        None = 0, Up = 1, Down = 2, Left = 3, Right = 4
+        up = 0, down = 1, left = 2, right = 3, none = 4
     }
 
-    private static Vector2[] convertSideToDir = new Vector2[5]
+    private static Vector2Int nbCaseGrid = new Vector2Int(32, 18);
+    private static Vector2 caseSize => PhysicsToric.cameraSize / nbCaseGrid;
+    private static Vector2[] convertHitboxSideToDir = new Vector2[5]
     {
-        Vector2.zero, Vector2.up, Vector2.down, Vector2.left, Vector2.right 
+        new Vector2(0f, 1f),
+        new Vector2(0f, -1f),
+        new Vector2(-1f, 0f),
+        new Vector2(1f, 0f),
+        new Vector2(0f, 0f)
     };
 
     private BoxCollider2D hitbox;
-    private Rigidbody2D rb;
-    private List<Movement> charInFrontLastFrame;
-    private Movement charWhoActivate = null;
-    private bool isMoving = false;
+    private new Transform transform;
+    private bool isMoving, isAccelerating;
+    private LayerMask charMask;
+    private float lastTimeBeginMove = -10f;
     private Vector2 moveDir;
 
     public bool enableBehaviour = true;
+    [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
+    [SerializeField] private float dashCharDetectionDistance;
+    [SerializeField] private float accelerationDuration = 1f;
+    [SerializeField, Tooltip("In %age od maxSpeed")] private AnimationCurve accelerationCurve;
+    [SerializeField] private float maxSpeed;
 
-    [SerializeField] private bool enableLeft = true, enableRight = true, enableUp = true, enableDown = true;
-    [SerializeField] private float speed;
-    [SerializeField, Tooltip("lerp de la vitesse en  %age vMax / sec")] private float speedLerp = 0.6f;
-    [SerializeField] private float detectionCharColliderScale = 1.1f;
-    [SerializeField, Range(0f, 1)] private float detectionGroundColliderScale = 0.9f;
-    [SerializeField] private float minSpeedToTriggerMovement = 1f;
-    [SerializeField] private float rayDistOffset = 0.1f;
-    [SerializeField] private uint rayCount = 4;
-    [SerializeField] private LayerMask charMask, groundMask, groundAndCharMask;
+    [SerializeField] private bool gizmosDrawGrid = true;
 
     private void Awake()
     {
         hitbox = GetComponent<BoxCollider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        transform = base.transform;
     }
 
     private void Start()
     {
-        charInFrontLastFrame = new List<Movement>();
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
+        charMask = LayerMask.GetMask("Char");
     }
-
-    #region Update
 
     private void Update()
     {
-        if(!isMoving)
+        if (!enableBehaviour)
+            return;
+
+        if(isMoving)
         {
-            List<Movement> charInFront = new List<Movement>();
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitbox.offset, hitbox.size * detectionCharColliderScale, 0f, charMask);
-            foreach (Collider2D col in cols)
+            if(isAccelerating)
             {
-                if (col.CompareTag("Char"))
+                Vector2 speed = moveDir * accelerationCurve.Evaluate(Mathf.Clamp01(Time.time - lastTimeBeginMove / accelerationDuration));
+                transform.position += (Vector3)(speed * Time.deltaTime);
+                if (Time.time - lastTimeBeginMove > accelerationDuration)
                 {
-                    charInFront.Add(col.GetComponent<ToricObject>().original.GetComponent<Movement>());
+                    isAccelerating = false;
                 }
             }
-
-            foreach (Movement charMov in charInFront)
+            else
             {
-                if (charMov.isDashing)
-                {
-                    Rigidbody2D charRb = charMov.GetComponent<Rigidbody2D>();
-                    BoxCollider2D charHitbox = charMov.GetComponent<BoxCollider2D>();
-                    Vector2 charCenter = (Vector2)charHitbox.transform.position + charHitbox.offset;
-                    Vector2 closestPoint = hitbox.ClosestPoint(charCenter);
-
-                    if ((closestPoint - charCenter).Dot(charRb.velocity) > 0f)
-                    {
-                        //on calcule quelle face de la plateforme est touché
-                        if(CanMovePlateform(charCenter, charHitbox.size, charRb.velocity, out PlateformeSide ps))
-                        {
-                            if((ps == PlateformeSide.Up && enableUp) || (ps == PlateformeSide.Down && enableDown)
-                                || (ps == PlateformeSide.Right && enableRight) || (ps == PlateformeSide.Left && enableLeft))
-                            {
-                                moveDir = convertSideToDir[(int)ps];
-                                isMoving = true;
-                                charWhoActivate = charMov;
-                                break;
-                            }
-                        }
-                    }  
-                }
-            }
-            charInFrontLastFrame.Clear();
-            charInFrontLastFrame = charInFront;
-
-            bool CanMovePlateform(in Vector2 center, in Vector2 size, in Vector2 speed, out PlateformeSide plateformeSide)
-            {
-                void IsPointInCoor(in Vector2 point, out bool xCoord, out bool yCoord)
-                {
-                    xCoord = point.x >= transform.position.x - hitbox.size.x * 0.5f * detectionCharColliderScale &&
-                        point.x <= transform.position.x + hitbox.size.x * 0.5f * detectionCharColliderScale;
-                    yCoord = point.y >= transform.position.y - hitbox.size.y * 0.5f * detectionCharColliderScale &&
-                        point.y <= transform.position.y + hitbox.size.y * 0.5f * detectionCharColliderScale;
-                }
-
-                Vector2 topLeft = new Vector2(center.x - size.x * 0.5f, center.y + size.y * 0.5f);
-                Vector2 topRight = new Vector2(center.x + size.x * 0.5f, center.y + size.y * 0.5f);
-                Vector2 bottomLeft = new Vector2(center.x - size.x * 0.5f, center.y - size.y * 0.5f);
-                Vector2 bottomRight = new Vector2(center.x + size.x * 0.5f, center.y - size.y * 0.5f);
-                bool isInXCoord, isInYCoord;
-                if (speed.x >= 0f)
-                {
-                    if (speed.y >= 0f)
-                    {
-                        //gauche ou bas
-                        IsPointInCoor(topRight, out isInXCoord, out isInYCoord);
-                        if (isInXCoord && isInYCoord)
-                        {
-                            plateformeSide = speed.x >= speed.y ? PlateformeSide.Left : PlateformeSide.Down;
-                            return Mathf.Max(speed.x, speed.y) >= minSpeedToTriggerMovement;
-                        }
-                        if (isInXCoord || isInYCoord)
-                        {
-                            plateformeSide = isInXCoord ? PlateformeSide.Down : PlateformeSide.Left;
-                            return isInXCoord ? speed.y >= minSpeedToTriggerMovement : speed.x >= minSpeedToTriggerMovement;
-                        }
-                        plateformeSide = PlateformeSide.None;
-                        return false;
-                    }
-                    else
-                    {
-                        IsPointInCoor(bottomRight, out isInXCoord, out isInYCoord);
-                        if (isInXCoord && isInYCoord)
-                        {
-                            plateformeSide = speed.x >= -speed.y ? PlateformeSide.Left : PlateformeSide.Up;
-                            return Mathf.Max(speed.x, -speed.y) >= minSpeedToTriggerMovement;
-                        }
-                        if (isInXCoord || isInYCoord)
-                        {
-                            plateformeSide = isInXCoord ? PlateformeSide.Up : PlateformeSide.Left;
-                            return isInXCoord ? -speed.y >= minSpeedToTriggerMovement : speed.x >= minSpeedToTriggerMovement;
-                        }
-                        plateformeSide = PlateformeSide.None;
-                        return false;
-                    }
-                }
-                else
-                {
-                    if (speed.y >= 0f)
-                    {
-                        IsPointInCoor(topLeft, out isInXCoord, out isInYCoord);
-                        if (isInXCoord && isInYCoord)
-                        {
-                            plateformeSide = -speed.x >= speed.y ? PlateformeSide.Right : PlateformeSide.Down;
-                            return Mathf.Max(-speed.x, speed.y) >= minSpeedToTriggerMovement;
-                        }
-                        if (isInXCoord || isInYCoord)
-                        {
-                            plateformeSide = isInXCoord ? PlateformeSide.Down : PlateformeSide.Right;
-                            return isInXCoord ? speed.y >= minSpeedToTriggerMovement : -speed.x >= minSpeedToTriggerMovement;
-                        }
-                        plateformeSide = PlateformeSide.None;
-                        return false;
-                    }
-                    else
-                    {
-                        IsPointInCoor(bottomLeft, out isInXCoord, out isInYCoord);
-                        if (isInXCoord && isInYCoord)
-                        {
-                            plateformeSide = -speed.x >= -speed.y ? PlateformeSide.Right : PlateformeSide.Up;
-                            return Mathf.Max(-speed.x, -speed.y) >= minSpeedToTriggerMovement;
-                        }
-                        if (isInXCoord || isInYCoord)
-                        {
-                            plateformeSide = isInXCoord ? PlateformeSide.Up : PlateformeSide.Left;
-                            return isInXCoord ? -speed.y >= minSpeedToTriggerMovement : -speed.x >= minSpeedToTriggerMovement;
-                        }
-                        plateformeSide = PlateformeSide.None;
-                        return false;
-                    }
-                }
+                //todo : 
             }
         }
         else
         {
-            rb.velocity = Vector2.MoveTowards(rb.velocity, moveDir * speed, speedLerp * speed * Time.deltaTime);
-
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitbox.offset, hitbox.size * detectionGroundColliderScale, 0f, groundMask);
-            foreach (Collider2D col in cols)
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size + 2f * dashCharDetectionDistance * Vector2.one, 0f, charMask);
+            foreach (Collider2D col  in cols)
             {
-                MovablePlatefrom mp = col.GetComponent<MovablePlatefrom>();
-                if(mp == null || mp != this)
+                if(col.CompareTag("Char"))
                 {
-                    isMoving = false;
-                    charWhoActivate = null;
-                    float toAddToPosX = Mathf.Abs(rb.velocity.x) > 1e-5f ? (hitbox.size.x * (1f - detectionGroundColliderScale)) * -0.5f * rb.velocity.x.Sign() : 0f;
-                    float toAddToPosY = Mathf.Abs(rb.velocity.y) > 1e-5f ? (hitbox.size.y * (1f - detectionGroundColliderScale)) * -0.5f * rb.velocity.y.Sign() : 0f;
-                    rb.MovePosition((Vector2)transform.position + new Vector2(toAddToPosX, toAddToPosY));
-                    rb.velocity = Vector2.zero;
-                    return;
-                }
-            }
-
-            //Detection char ecrasé
-            List<Collider2D> charInFrontOf = new List<Collider2D>();
-            Vector2 step = Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(0f, hitbox.size.y / (rayCount - 1)) : new Vector2(hitbox.size.x / (rayCount - 1), 0f);
-            Vector2 beg = (Vector2)transform.position + hitbox.offset +
-                (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? new Vector2(hitbox.size.x * 0.5f * moveDir.x.Sign(), hitbox.size.y * -0.5f) :
-                 new Vector2(hitbox.size.x * -0.5f, hitbox.size.y * 0.5f * moveDir.y.Sign()));
-            
-            List<uint> lstCharAlreadyKill = new List<uint>();
-            for (int i = 0; i < rayCount; i++)
-            {
-                Vector2 point = beg + i * step + moveDir * rayDistOffset;
-                RaycastHit2D raycast = PhysicsToric.Raycast(point, moveDir, Mathf.Max(PhysicsToric.cameraSize.x, PhysicsToric.cameraSize.y), groundAndCharMask);
-
-                if(raycast.collider != null && raycast.collider.CompareTag("Char"))
-                {
-                    uint id = raycast.collider.GetComponent<PlayerCommon>().id;
-                    if (lstCharAlreadyKill.Contains(id))
-                        continue;
-                    float dst = 0.5f * detectionCharColliderScale * (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y) ? hitbox.size.x : hitbox.size.y);
-                    if (raycast.point.SqrDistance(point) <= dst * dst)
+                    GameObject player = col.GetComponent<ToricObject>().original;
+                    FightController fc = player.GetComponent<FightController>();
+                    if (fc.isDashing)
                     {
-                        BoxCollider2D charHitbox = raycast.collider.GetComponent<BoxCollider2D>();
-                        Vector2 p1, p2, p3;
-                        if(Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
+                        HitboxSide side = GetHitboxSide(player.transform.position, player.GetComponent<BoxCollider2D>().size);
+                        if(side != HitboxSide.none)
                         {
-                            Vector2 center = (Vector2)charHitbox.transform.position + charHitbox.offset;
-                            p1 = center + new Vector2(charHitbox.size.x * 0.5f * moveDir.x.Sign(), charHitbox.size.y * 0.5f);
-                            p2 = center + new Vector2(charHitbox.size.x * 0.5f * moveDir.x.Sign(), 0f);
-                            p3 = center + new Vector2(charHitbox.size.x * 0.5f * moveDir.x.Sign(), charHitbox.size.y * -0.5f);
-                        }
-                        else
-                        {
-                            Vector2 center = (Vector2)charHitbox.transform.position + charHitbox.offset;
-                            p1 = center + new Vector2(charHitbox.size.x * -0.5f, charHitbox.size.y * 0.5f * moveDir.y.Sign());
-                            p2 = center + new Vector2(0f, charHitbox.size.y * 0.5f * moveDir.y.Sign());
-                            p3 = center + new Vector2(charHitbox.size.x * 0.5f, charHitbox.size.y * 0.5f * moveDir.y.Sign());
-                        }
-
-                        if(PhysicsToric.OverlapPoint(p1, groundMask) != null || PhysicsToric.OverlapPoint(p2, groundMask) != null || PhysicsToric.OverlapPoint(p3, groundMask) != null)
-                        {
-                            //collision!
-                            lstCharAlreadyKill.Add(id);
-                            if (charHitbox.GetComponent<PlayerCommon>().id == charWhoActivate.GetComponent<PlayerCommon>().id)
-                            {
-                                charWhoActivate.GetComponent<EventController>().OnBeenKillByEnvironnement(gameObject);
-                            }
-                            else
-                            {
-                                charHitbox.GetComponent<EventController>().OnBeenKillInstant(charWhoActivate.gameObject);
-                                charWhoActivate.GetComponent<EventController>().OnKill(charHitbox.gameObject);
-                            }
+                            isMoving = isAccelerating = true;
+                            moveDir = convertHitboxSideToDir[(int)side];
+                            lastTimeBeginMove = Time.time;
                         }
                     }
                 }
             }
         }
+    }
+
+    #region GetHitboxSide
+
+    private HitboxSide GetHitboxSide(in Vector2 pos, in Vector2 size)
+    {
+        Vector2 hitSize = hitbox.size;
+
+        bool upOrDown = pos.x >= transform.position.x - 0.5f * hitSize.x && pos.x <= transform.position.x + 0.5f * hitSize.x;
+        bool rightOrLeft = pos.y >= transform.position.y - 0.5f * hitSize.y && pos.y <= transform.position.y + 0.5f * hitSize.y;
+
+        if(upOrDown || rightOrLeft)
+        {
+            if(upOrDown && rightOrLeft)
+            {
+                //pos is inside the hitbox
+                float distEdgeX = hitSize.x - Mathf.Abs(pos.x - transform.position.x);
+                float distEdgeY = hitSize.y - Mathf.Abs(pos.y - transform.position.y);
+
+                if(distEdgeX <= distEdgeY)
+                {
+                    return pos.y >= transform.position.y ? HitboxSide.right : HitboxSide.left;
+                }
+                return pos.x >= transform.position.x ? HitboxSide.up : HitboxSide.down;
+            }
+
+            if (upOrDown)
+            {
+                return pos.x >= transform.position.x ? HitboxSide.up : HitboxSide.down;
+            }
+            return pos.y >= transform.position.y ? HitboxSide.right : HitboxSide.left;
+        }
+
+        //!ez case : We get the corners of the hitbox, calculate the closest point width the platefrom hitbox and get the side where this points is
+        Vector2[] corners = new Vector2[4]
+        {
+            new Vector2(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f),
+            new Vector2(pos.x + size.x * 0.5f, pos.y - size.y * 0.5f),
+            new Vector2(pos.x - size.x * 0.5f, pos.y + size.y * 0.5f),
+            new Vector2(pos.x + size.x * 0.5f, pos.y + size.y * 0.5f)
+        };
+
+        Vector2 closestPoint = hitbox.ClosestPoint(corners[0]);
+        float closestPointSqrDist = corners[0].SqrDistance(closestPoint);
+        int closestPointIndex = 0;
+
+        for (int i = 1; i < 4; i++)
+        {
+            Vector2 tmp = hitbox.ClosestPoint(corners[i]);
+            float sqrDist = corners[i].SqrDistance(tmp);
+            if(sqrDist < closestPointSqrDist)
+            {
+                closestPointSqrDist = sqrDist;
+                closestPoint = tmp;
+                closestPointIndex = i;
+            }
+        }
+
+        if (closestPoint.x >= transform.position.x - 0.5f * hitSize.x && closestPoint.x <= transform.position.x + 0.5f * hitSize.x)
+        {
+            return closestPoint.x >= transform.position.x ? HitboxSide.up : HitboxSide.down;
+        }
+        if (closestPoint.y >= transform.position.y - 0.5f * hitSize.y && closestPoint.y <= transform.position.y + 0.5f * hitSize.y)
+        {
+            return closestPoint.y >= transform.position.y ? HitboxSide.right : HitboxSide.left;
+        }
+
+        Debug.LogWarning("Debug pls");
+        return HitboxSide.none;
     }
 
     #endregion
@@ -279,18 +185,35 @@ public class MovablePlatefrom : MonoBehaviour
 
     private void OnValidate()
     {
-        detectionCharColliderScale = Mathf.Max(1f, detectionCharColliderScale);
-        rayCount = (uint)Mathf.Max(2f, rayCount);
-        speed = Mathf.Max(0f, speed);
+        if (hitbox == null)
+            hitbox = GetComponent<BoxCollider2D>();
+        transform = base.transform;
+
+        Vector2 caseSize = MovablePlatefrom.caseSize;
+        hitbox.size = caseSize * hitboxSize;
+        accelerationDuration = Mathf.Max(0f, accelerationDuration);
+        maxSpeed = Mathf.Max(0f, maxSpeed);
     }
 
     private void OnDrawGizmosSelected()
     {
-        if(hitbox == null)
-            hitbox = GetComponent<BoxCollider2D>();
+        if(gizmosDrawGrid)
+        {
+            Vector2 caseSize = MovablePlatefrom.caseSize;
+            Vector2 offset = -0.5f * PhysicsToric.cameraSize + 0.5f * caseSize;
+            Gizmos.color = Color.red;
+            for (int y = 0; y < nbCaseGrid.y; y++)
+            {
+                for (int x = 0; x < nbCaseGrid.x; x++)
+                {
+                    Hitbox.GizmosDraw(offset + new Vector2(caseSize.x * x, caseSize.y * y), caseSize);
+                }
+            }
+        }
+
+        //chardetection
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(transform.position, hitbox.size * detectionCharColliderScale);
-        Gizmos.DrawWireCube(transform.position, hitbox.size * detectionGroundColliderScale);
+        Hitbox.GizmosDraw(transform.position, hitbox.size + 2f * dashCharDetectionDistance * Vector2.one);
     }
 
     #endregion

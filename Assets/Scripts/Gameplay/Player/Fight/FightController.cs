@@ -20,14 +20,13 @@ public class FightController : MonoBehaviour
     private int invicibilityCounter, canLaunchWeakAttackCounter, canLaunchStrongAttackCounter;
 
     private List<uint> charAlreadyTouchByDash = new List<uint>();
-    private bool isDashing;
     private int dashCollisionCounter = 0;
     private bool isDashCollisionEnable => dashCollisionCounter <= 0;
 
     [Header("Fight")]
     [SerializeField] private float dashBumpSpeed = 10f;
     [SerializeField] private float dashInvicibilityOffset = 0.1f;
-    [SerializeField] private float invicibilityDurationWhenDashing = 0.2f;
+    [SerializeField, Tooltip("Time during you are invicible and you attack with your dash attack")] private float invicibilityDurationWhenDashing = 0.2f;
     [SerializeField] private Vector2 dashHitboxOffset;
     [SerializeField] private Vector2 dashHitboxSize;
     private int charMask;
@@ -37,6 +36,8 @@ public class FightController : MonoBehaviour
     public bool enableAttackStrong = true;
     public bool enableInvisibilityWhenDashing = true;
     [Tooltip("Temps ou l'on considère l'appuye sur un touche alors que le perso est occupé/ne peut pas lancé l'attaque")][SerializeField] private float castCoyoteTime = 0.2f;
+
+    [HideInInspector] public bool isDashing { get; private set; }
 
     #region Awake and Start
 
