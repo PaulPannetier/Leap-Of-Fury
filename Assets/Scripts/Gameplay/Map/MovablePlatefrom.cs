@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
@@ -22,14 +22,15 @@ public class MovablePlatefrom : MonoBehaviour
 
     private BoxCollider2D hitbox;
     private new Transform transform;
-    private bool isMoving, isAccelerating;
-    private LayerMask charMask;
+    private bool isMoving, isAccelerating, isReachingTargetPosition;
+    private LayerMask charMask, groundMask;
     private float lastTimeBeginMove = -10f;
-    private Vector2 moveDir;
+    private Vector2 moveDir, reachTargetPos;
 
     public bool enableBehaviour = true;
     [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
-    [SerializeField] private float dashCharDetectionDistance;
+    [SerializeField] private float charDashdetectionDistance;
+    [SerializeField] private float detectionPadding = 0.1f;
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age od maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
@@ -47,6 +48,7 @@ public class MovablePlatefrom : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
         charMask = LayerMask.GetMask("Char");
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
     private void Update()
@@ -54,11 +56,12 @@ public class MovablePlatefrom : MonoBehaviour
         if (!enableBehaviour)
             return;
 
+        Vector2 caseSize = MovablePlatefrom.caseSize;
         if(isMoving)
         {
             if(isAccelerating)
             {
-                Vector2 speed = moveDir * accelerationCurve.Evaluate(Mathf.Clamp01(Time.time - lastTimeBeginMove / accelerationDuration));
+                Vector2 speed = maxSpeed * accelerationCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeBeginMove) / accelerationDuration)) * moveDir;
                 transform.position += (Vector3)(speed * Time.deltaTime);
                 if (Time.time - lastTimeBeginMove > accelerationDuration)
                 {
@@ -67,12 +70,50 @@ public class MovablePlatefrom : MonoBehaviour
             }
             else
             {
-                //todo : 
+                transform.position += (Vector3)(maxSpeed * Time.deltaTime * moveDir);
+            }
+
+            //detecting ground
+            if(!isReachingTargetPosition)
+            {
+                if (moveDir.sqrMagnitude > 1e-6f)
+                {
+                    (Vector2 overlapPos, Vector2 overlapSize) = GetRecInFront(transform.position, moveDir);
+                    Collider2D groundCol = PhysicsToric.OverlapBox(overlapPos, overlapSize, 0f, groundMask);
+                    if (groundCol != null)
+                    {
+                        reachTargetPos = Vector2.zero;
+                        if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
+                        {
+                            Vector2 tmp = GetCasePos(GetCase(new Vector2(overlapPos.x - overlapSize.x * 0.5f * moveDir.x.Sign(), overlapPos.y)));
+                            reachTargetPos = new Vector2(tmp.x - (0.5f * hitboxSize.x * caseSize.x) * moveDir.x.Sign() + 0.5f * caseSize.x * moveDir.x.Sign(), overlapPos.y);
+                        }
+                        else
+                        {
+                            Vector2 tmp = GetCasePos(GetCase(transform.position));
+                            reachTargetPos = new Vector2(overlapPos.x, tmp.y - (0.5f * hitboxSize.y * caseSize.y) * moveDir.y.Sign() + 0.5f * caseSize.y * moveDir.y.Sign());
+                        }
+                        isReachingTargetPosition = true;
+                    }
+                }
+                else
+                {
+                    isReachingTargetPosition = isMoving = isAccelerating = false;
+                }
+            }
+            else
+            {
+                transform.position = Vector2.MoveTowards(transform.position, reachTargetPos, maxSpeed * Time.deltaTime);
+                if(reachTargetPos.SqrDistance(transform.position) <= 4f * maxSpeed * maxSpeed * Time.deltaTime * Time.deltaTime)
+                {
+                    isReachingTargetPosition = isMoving = isAccelerating = false;
+                    transform.position = reachTargetPos;
+                }
             }
         }
         else
         {
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size + 2f * dashCharDetectionDistance * Vector2.one, 0f, charMask);
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size + 2f * charDashdetectionDistance * Vector2.one, 0f, charMask);
             foreach (Collider2D col  in cols)
             {
                 if(col.CompareTag("Char"))
@@ -81,7 +122,8 @@ public class MovablePlatefrom : MonoBehaviour
                     FightController fc = player.GetComponent<FightController>();
                     if (fc.isDashing)
                     {
-                        HitboxSide side = GetHitboxSide(player.transform.position, player.GetComponent<BoxCollider2D>().size);
+                        BoxCollider2D charHitbox = player.GetComponent<BoxCollider2D>();
+                        HitboxSide side = GetHitboxSide((Vector2)player.transform.position + charHitbox.offset, charHitbox.size);
                         if(side != HitboxSide.none)
                         {
                             isMoving = isAccelerating = true;
@@ -94,9 +136,59 @@ public class MovablePlatefrom : MonoBehaviour
         }
     }
 
+    #region Grid function
+
+    private Vector2Int GetCase(in Vector2 pos)
+    {
+        Vector2 caseSize = MovablePlatefrom.caseSize;
+        return new Vector2Int(Useful.ClampModulo(0, nbCaseGrid.x, (int)((pos.x + 0.5f * PhysicsToric.cameraSize.x) / caseSize.x)), (int)((pos.y + 0.5f * PhysicsToric.cameraSize.y) / caseSize.y));
+    }
+
+    private Vector2 GetCasePos(in Vector2Int casePos)
+    {
+        Vector2 caseSize = MovablePlatefrom.caseSize;
+        return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * caseSize.x - 0.5f * PhysicsToric.cameraSize.x, (casePos.y + 0.5f) * caseSize.y - 0.5f * PhysicsToric.cameraSize.y));
+    }
+
+    private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir) //ok
+    {
+        Vector2 overlapPos = Vector2.zero, overlapSize = Vector2.zero;
+        if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
+        {
+            if (hitboxSize.y.IsEven())//pair
+            {
+                Vector2 caseUpPos = GetCasePos(GetCase(new Vector2(pos.x, pos.y + 0.5f * caseSize.y)));
+                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * caseSize.x) * dir.x.Sign(), caseUpPos.y - 0.5f * caseSize.y);
+            }
+            else
+            {
+                Vector2 casePos = GetCasePos(GetCase(pos));
+                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * caseSize.x) * dir.x.Sign(), casePos.y);
+            }
+            overlapSize = new Vector2(caseSize.x - 2f * detectionPadding, Mathf.Max(0f, hitboxSize.y * caseSize.y - 2f * detectionPadding));
+        }
+        else
+        {
+            if (hitboxSize.x.IsEven())//pair
+            {
+                Vector2 caseRightPos = GetCasePos(GetCase(new Vector2(pos.x + 0.5f * caseSize.x, pos.y)));
+                overlapPos = new Vector2(Mathf.Max(0f, caseRightPos.x - 0.5f * caseSize.x), pos.x + (0.5f * (hitboxSize.y + 1) * caseSize.y) * dir.y.Sign());
+            }
+            else
+            {
+                Vector2 casePos = GetCasePos(GetCase(pos));
+                overlapPos = new Vector2(casePos.x, pos.y + (0.5f * (hitboxSize.y + 1) * caseSize.y) * dir.y.Sign());
+            }
+            overlapSize = new Vector2(Mathf.Max(0f, hitboxSize.x * caseSize.x - 2f * detectionPadding), Mathf.Max(0f, caseSize.y - 2f * detectionPadding));
+        }
+        return (overlapPos, overlapSize);
+    }
+
+    #endregion
+
     #region GetHitboxSide
 
-    private HitboxSide GetHitboxSide(in Vector2 pos, in Vector2 size)
+    private HitboxSide GetHitboxSide(in Vector2 pos, in Vector2 size, bool debug = false)
     {
         Vector2 hitSize = hitbox.size;
 
@@ -120,18 +212,18 @@ public class MovablePlatefrom : MonoBehaviour
 
             if (upOrDown)
             {
-                return pos.x >= transform.position.x ? HitboxSide.up : HitboxSide.down;
+                return pos.y >= transform.position.y ? HitboxSide.up : HitboxSide.down;
             }
-            return pos.y >= transform.position.y ? HitboxSide.right : HitboxSide.left;
+            return pos.x >= transform.position.x ? HitboxSide.right : HitboxSide.left;
         }
 
         //!ez case : We get the corners of the hitbox, calculate the closest point width the platefrom hitbox and get the side where this points is
         Vector2[] corners = new Vector2[4]
         {
-            new Vector2(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f),
-            new Vector2(pos.x + size.x * 0.5f, pos.y - size.y * 0.5f),
-            new Vector2(pos.x - size.x * 0.5f, pos.y + size.y * 0.5f),
-            new Vector2(pos.x + size.x * 0.5f, pos.y + size.y * 0.5f)
+            new Vector2(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f),//left, bot
+            new Vector2(pos.x + size.x * 0.5f, pos.y - size.y * 0.5f),//right, bot
+            new Vector2(pos.x - size.x * 0.5f, pos.y + size.y * 0.5f),//left, up
+            new Vector2(pos.x + size.x * 0.5f, pos.y + size.y * 0.5f)//right, up
         };
 
         Vector2 closestPoint = hitbox.ClosestPoint(corners[0]);
@@ -150,13 +242,47 @@ public class MovablePlatefrom : MonoBehaviour
             }
         }
 
+        if(debug)
+        {
+            Vector2[] vertices = new Vector2[4]
+            {
+                new Vector2(hitbox.transform.position.x - hitbox.size.x * 0.5f, hitbox.transform.position.y - hitbox.size.y * 0.5f),//left, bot
+                new Vector2(hitbox.transform.position.x + hitbox.size.x * 0.5f, hitbox.transform.position.y - hitbox.size.y * 0.5f),//right, bot
+                new Vector2(hitbox.transform.position.x - hitbox.size.x * 0.5f, hitbox.transform.position.y + hitbox.size.y * 0.5f),//left, up
+                new Vector2(hitbox.transform.position.x + hitbox.size.x * 0.5f, hitbox.transform.position.y + hitbox.size.y * 0.5f)//right, up
+            };
+
+            Gizmos.color = Color.blue;
+            foreach(Vector2 v in vertices)
+            {
+                Circle.GizmosDraw(v, 0.2f);
+            }
+
+            Gizmos.color = Color.black;
+            foreach (Vector2 v in corners)
+            {
+                Circle.GizmosDraw(v, 0.2f);
+            }
+
+            Gizmos.color = Color.red;
+            Circle.GizmosDraw(closestPoint, 0.3f);
+        }
+
+        foreach (Vector2 corner in corners)
+        {
+            if(corner.SqrDistance(closestPoint) < 1e-6f)
+            {
+                print("corner bug");
+            }
+        }
+
         if (closestPoint.x >= transform.position.x - 0.5f * hitSize.x && closestPoint.x <= transform.position.x + 0.5f * hitSize.x)
         {
-            return closestPoint.x >= transform.position.x ? HitboxSide.up : HitboxSide.down;
+            return closestPoint.y >= transform.position.y ? HitboxSide.up : HitboxSide.down;
         }
         if (closestPoint.y >= transform.position.y - 0.5f * hitSize.y && closestPoint.y <= transform.position.y + 0.5f * hitSize.y)
         {
-            return closestPoint.y >= transform.position.y ? HitboxSide.right : HitboxSide.left;
+            return closestPoint.x >= transform.position.x ? HitboxSide.right : HitboxSide.left;
         }
 
         Debug.LogWarning("Debug pls");
@@ -190,9 +316,11 @@ public class MovablePlatefrom : MonoBehaviour
         transform = base.transform;
 
         Vector2 caseSize = MovablePlatefrom.caseSize;
+        hitboxSize = new Vector2Int(Useful.Max(0, hitboxSize.x), Useful.Max(0, hitboxSize.y));
         hitbox.size = caseSize * hitboxSize;
         accelerationDuration = Mathf.Max(0f, accelerationDuration);
         maxSpeed = Mathf.Max(0f, maxSpeed);
+        detectionPadding = Mathf.Max(0f, detectionPadding);
     }
 
     private void OnDrawGizmosSelected()
@@ -211,10 +339,28 @@ public class MovablePlatefrom : MonoBehaviour
             }
         }
 
-        //chardetection
+        //hitbox
         Gizmos.color = Color.green;
-        Hitbox.GizmosDraw(transform.position, hitbox.size + 2f * dashCharDetectionDistance * Vector2.one);
+        Hitbox.GizmosDraw(transform.position, hitbox.size * caseSize);
+
+        //chardetection
+        Hitbox.GizmosDraw(transform.position, hitbox.size * caseSize + 2f * charDashdetectionDistance * Vector2.one);
+
+        //test GetRecInFront
+        (Vector2 pos, Vector2 size) = GetRecInFront(transform.position, Vector2.right);
+        Gizmos.color = Color.blue;
+        Hitbox.GizmosDraw(pos, size);
     }
+
+    /*
+    private void OnDrawGizmos()
+    {
+        //test GetHitboxSide
+        GameObject char1 = GameObject.FindGameObjectsWithTag("Char").Where((GameObject go) => go.GetComponent<PlayerCommon>().id == 0).First();
+        HitboxSide hitboxSide = GetHitboxSide((Vector2)char1.transform.position + char1.GetComponent<BoxCollider2D>().offset, char1.GetComponent<BoxCollider2D>().size, true);
+        print(hitboxSide);
+    }
+    */
 
     #endregion
 }

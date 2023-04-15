@@ -823,7 +823,7 @@ public static class Useful
     }
 
     /// <returns> a like a = value % (end -  start) + start, a€[start, end[ /returns>
-    public static float ClampModulo(in float start, in float end, in float value)
+    public static float ClampModulo(float start, float end, float value)
     {
         if (end < start)
             return ClampModulo(end, start, value);
@@ -836,6 +836,28 @@ public static class Useful
         {
             float modulo = end - start;
             float result = ((value - start) % modulo) + start;
+            if (result >= end)
+                return result - modulo;
+            if (result < start)
+                return result + modulo;
+            return result;
+        }
+    }
+
+    /// <returns> a like a = value % (end -  start) + start, a€[start, end[ /returns>
+    public static int ClampModulo(int start, int end, int value)
+    {
+        if (end < start)
+            return ClampModulo(end, start, value);
+        if (end == start)
+            return start;
+
+        if (value < end && value >= start)
+            return value;
+        else
+        {
+            int modulo = end - start;
+            int result = ((value - start) % modulo) + start;
             if (result >= end)
                 return result - modulo;
             if (result < start)
@@ -864,6 +886,29 @@ public static class Useful
     {
         float npow = n * Mathf.Pow(10f, nbDecimals);
         return npow - (int)npow >= 0.5f ? (((int)(npow + 1)) / Mathf.Pow(10f, nbDecimals)) : (((int)npow) / Mathf.Pow(10f, nbDecimals));
+    }
+
+    public static int Max(int a, int b) => a >= b  ? a : b;
+    public static int Max(int a, int b, int c) => Max(c, Max(a, b));
+    public static int Max(params int[] args)
+    {
+        int max = args[0];
+        for (int i = 1; i < args.Length; i++)
+        {
+            max = Max(max, args[i]);
+        }
+        return max;
+    }
+    public static int Min(int a, int b) => a <= b ? a : b;
+    public static int Min(int a, int b, int c) => Min(c, Min(a, b));
+    public static int Min(params int[] args)
+    {
+        int min = args[0];
+        for (int i = 1; i < args.Length; i++)
+        {
+            min = Min(min, args[i]);
+        }
+        return min;
     }
 
     /// <summary>

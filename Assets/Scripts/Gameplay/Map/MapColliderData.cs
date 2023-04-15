@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class MapColliderData : MonoBehaviour
 {
-    public GroundType groundType;
-
     public enum GroundType
     {
         normal,
@@ -11,4 +9,8 @@ public class MapColliderData : MonoBehaviour
         trampoline,
         convoyerBelt
     }
+
+    public GroundType groundType;
+    public bool disableAntiKnockHead = false;
+
 }

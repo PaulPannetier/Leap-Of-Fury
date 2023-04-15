@@ -39,7 +39,7 @@ public class Movement : MonoBehaviour
     [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
 
     [Header("Collision")]
-    [SerializeField] private LayerMask groundLayer;
+    private LayerMask groundLayer;
     public float groundCollisionRadius = 0.28f;
     public float sideCollisionRadius = 0.28f;
     public Vector2 groundOffset, sideOffset = new Vector2(0.15f, 0f);
@@ -143,7 +143,6 @@ public class Movement : MonoBehaviour
     [Header("Bump")]
     [SerializeField] private float bumpDecreasementLerp = 7f;
     [SerializeField] private float maxBumpDuration = 0.5f;
-    [SerializeField] private AnimationCurve extraBumpFrictionCauseBySpeed;
     [SerializeField] private float groundBumpFrictionCoefficient = 1.2f;
     [SerializeField, Tooltip("Le control au sol lorsque le char est bump")] private float groundControlWhereBump = 0.25f;
     [SerializeField, Tooltip("Le %age de vitesse de marche on l'on n'est plus bump au sol")] private float minGroundSpeedWhereBump = 1.5f;
@@ -278,6 +277,7 @@ public class Movement : MonoBehaviour
         oldGroundCollider = null;
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
+        groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
     #endregion
@@ -1225,7 +1225,11 @@ public class Movement : MonoBehaviour
                 Collider2D nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
                 if (detectCol != null && nonDetectCol == null)
                 {
-                    Teleport((Vector2)transform.position + Vector2.right * detectSize.x);
+                    MapColliderData colliderData = detectCol.GetComponent<MapColliderData>();
+                    if(colliderData == null || !colliderData.disableAntiKnockHead)
+                    {
+                        Teleport((Vector2)transform.position + Vector2.right * detectSize.x);
+                    }
                 }
 
                 detectOffset = new Vector2(0.5f * (hitbox.bounds.size.x - detectSize.x), detectSize.y * 0.1f);//right
@@ -1234,7 +1238,11 @@ public class Movement : MonoBehaviour
                 nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
                 if (detectCol != null && nonDetectCol == null)
                 {
-                    Teleport((Vector2)transform.position + Vector2.left * detectSize.x);
+                    MapColliderData colliderData = detectCol.GetComponent<MapColliderData>();
+                    if (colliderData == null || !colliderData.disableAntiKnockHead)
+                    {
+                        Teleport((Vector2)transform.position + Vector2.left * detectSize.x);
+                    }
                 }
             }
 
@@ -1306,8 +1314,7 @@ public class Movement : MonoBehaviour
         if (!isBumping || !enableBehaviour)
             return;
 
-        float decreasementCoeff = extraBumpFrictionCauseBySpeed.Evaluate(rb.velocity.magnitude);
-
+        float decreasementCoeff = 1f;
         if(isGrounded)
         {
             decreasementCoeff *= groundBumpFrictionCoefficient;
@@ -1489,6 +1496,7 @@ public class Movement : MonoBehaviour
         jumpInitForce = Mathf.Max(0f, jumpInitForce);
         slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
         knockHeadOffset = new Vector2(Mathf.Max(0f, knockHeadOffset.x), Mathf.Max(0f, knockHeadOffset.y));
+        groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
     #endregion
