@@ -90,7 +90,7 @@ public class MovablePlatefrom : MonoBehaviour
                         }
                         else
                         {
-                            Vector2 tmp = GetCasePos(GetCase(transform.position));
+                            Vector2 tmp = GetCasePos(GetCase(new Vector2(overlapPos.x, overlapPos.y - overlapSize.y * 0.5f * moveDir.y.Sign())));
                             reachTargetPos = new Vector2(overlapPos.x, tmp.y - (0.5f * hitboxSize.y * caseSize.y) * moveDir.y.Sign() + 0.5f * caseSize.y * moveDir.y.Sign());
                         }
                         isReachingTargetPosition = true;
@@ -150,7 +150,7 @@ public class MovablePlatefrom : MonoBehaviour
         return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * caseSize.x - 0.5f * PhysicsToric.cameraSize.x, (casePos.y + 0.5f) * caseSize.y - 0.5f * PhysicsToric.cameraSize.y));
     }
 
-    private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir) //ok
+    private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir)//ok
     {
         Vector2 overlapPos = Vector2.zero, overlapSize = Vector2.zero;
         if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
@@ -172,7 +172,7 @@ public class MovablePlatefrom : MonoBehaviour
             if (hitboxSize.x.IsEven())//pair
             {
                 Vector2 caseRightPos = GetCasePos(GetCase(new Vector2(pos.x + 0.5f * caseSize.x, pos.y)));
-                overlapPos = new Vector2(Mathf.Max(0f, caseRightPos.x - 0.5f * caseSize.x), pos.x + (0.5f * (hitboxSize.y + 1) * caseSize.y) * dir.y.Sign());
+                overlapPos = new Vector2(Mathf.Max(0f, caseRightPos.x - 0.5f * caseSize.x), pos.y + (0.5f * (hitboxSize.y + 1) * caseSize.y) * dir.y.Sign());
             }
             else
             {
@@ -350,6 +350,12 @@ public class MovablePlatefrom : MonoBehaviour
         (Vector2 pos, Vector2 size) = GetRecInFront(transform.position, Vector2.right);
         Gizmos.color = Color.blue;
         Hitbox.GizmosDraw(pos, size);
+        (pos, size) = GetRecInFront(transform.position, Vector2.left);
+        Hitbox.GizmosDraw(pos, size);
+        (pos, size) = GetRecInFront(transform.position, Vector2.up);
+        Hitbox.GizmosDraw(pos, size);
+        (pos, size) = GetRecInFront(transform.position, Vector2.down);
+        Hitbox.GizmosDraw(pos, size);
     }
 
     /*
@@ -361,6 +367,5 @@ public class MovablePlatefrom : MonoBehaviour
         print(hitboxSide);
     }
     */
-
     #endregion
 }
