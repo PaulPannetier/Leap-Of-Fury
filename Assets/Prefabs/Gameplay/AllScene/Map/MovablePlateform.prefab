@@ -122,6 +122,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 0
   disableAntiKnockHead: 1
+  frictionCoefficient: 1
+  rb: {fileID: 0}
 --- !u!114 &4909847896574820866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,8 +138,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableBehaviour: 1
   hitboxSize: {x: 3, y: 2}
-  charDashdetectionDistance: 0.2
-  detectionPadding: 0.15
+  charDetectionDistance: 0.15
+  groundDetectionPadding: 0.1
+  groundAndCharCrushRange: 0.15
   accelerationDuration: 1
   accelerationCurve:
     serializedVersion: 2
@@ -173,7 +176,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxSpeed: 10
-  gizmosDrawGrid: 1
+  shakeSetting:
+    duration: 0.6
+    strengh: {x: 0.05, y: 0.05, z: 0}
+    vibrato: 10
+    randomness: 90
+    snapping: 0
+    fadeOut: 1
+  gizmosDrawGrid: 0
 --- !u!1 &4909847898038514376
 GameObject:
   m_ObjectHideFlags: 0

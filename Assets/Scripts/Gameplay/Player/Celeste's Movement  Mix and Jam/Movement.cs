@@ -599,11 +599,7 @@ public class Movement : MonoBehaviour
 
         HandleBump();
 
-        //pour éviter les mess ! dans la console
-        if(groundTouch)
-            groundTouch = false;
-        else
-            groundTouch = false;
+        groundTouch = false;
     }
 
     #endregion

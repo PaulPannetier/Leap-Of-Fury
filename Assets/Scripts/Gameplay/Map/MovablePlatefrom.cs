@@ -29,17 +29,21 @@ public class MovablePlatefrom : MonoBehaviour
     private bool oldEnableBehaviour;
     private float accelDeltaTime;
     private Rigidbody2D rb;
+    private GameObject lastCharActivatePlateform;
 
     public bool enableBehaviour = true;
     [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
     [SerializeField] private float charDetectionDistance;
     [SerializeField] private float groundDetectionPadding = 0.1f;
+    [SerializeField] private float groundAndCharCrushRange = 0.15f;
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age od maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
     [SerializeField] private ShakeSetting shakeSetting;
 
     [SerializeField] private bool gizmosDrawGrid = true;
+
+    #region Awake and Start
 
     private void Awake()
     {
@@ -55,6 +59,10 @@ public class MovablePlatefrom : MonoBehaviour
         charMask = LayerMask.GetMask("Char");
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
+
+    #endregion
+
+    #region Update
 
     private void Update()
     {
@@ -97,11 +105,12 @@ public class MovablePlatefrom : MonoBehaviour
             }
 
             //detecting ground
-            if(!isReachingTargetPosition)
+            Vector2 overlapPos = Vector2.zero, overlapSize = Vector2.zero;
+            if (!isReachingTargetPosition)
             {
                 if (moveDir.sqrMagnitude > 1e-6f)
                 {
-                    (Vector2 overlapPos, Vector2 overlapSize) = GetRecInFront(transform.position, moveDir, groundDetectionPadding);
+                    (overlapPos, overlapSize) = GetRecInFront(transform.position, moveDir, groundDetectionPadding);
                     Collider2D groundCol = PhysicsToric.OverlapBox(overlapPos, overlapSize, 0f, groundMask);
                     if (groundCol != null)
                     {
@@ -122,6 +131,7 @@ public class MovablePlatefrom : MonoBehaviour
                 else
                 {
                     isReachingTargetPosition = isMoving = isAccelerating = false;
+                    return;
                 }
             }
             else
@@ -134,6 +144,45 @@ public class MovablePlatefrom : MonoBehaviour
                     transform.position = reachTargetPos;
                     rb.velocity = Vector2.zero;
                     rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                }
+            }
+
+            //crush char
+            overlapPos = overlapSize = Vector2.zero;
+            if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
+            {
+                overlapPos = new Vector2(transform.position.x + 0.5f * moveDir.x.Sign() * (hitboxSize.x * caseSize.x + groundAndCharCrushRange), transform.position.y);
+                overlapSize = new Vector2(groundAndCharCrushRange, hitboxSize.y * caseSize.y);
+            }
+            else
+            {
+                overlapPos = new Vector2(transform.position.x, transform.position.y + 0.5f * moveDir.y.Sign() * (hitboxSize.y * caseSize.y + groundAndCharCrushRange));
+                overlapSize = new Vector2(hitboxSize.x * caseSize.x, groundAndCharCrushRange);
+            }
+
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll(overlapPos, overlapSize, 0f, charMask);
+            foreach (Collider2D col in cols)
+            {
+                if(col.CompareTag("Char"))
+                {
+                    GameObject player = col.GetComponent<ToricObject>().original;
+                    BoxCollider2D playerCollider = player.GetComponent<BoxCollider2D>();
+                    if(Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
+                    {
+                        overlapPos = new Vector2(player.transform.position.x + moveDir.x.Sign() * playerCollider.offset.x + moveDir.x.Sign() * 0.5f * (playerCollider.size.x + groundAndCharCrushRange), player.transform.position.y + playerCollider.offset.y);
+                        overlapSize = new Vector2(groundAndCharCrushRange, playerCollider.size.y);
+                    }
+                    else
+                    {
+                        overlapPos = new Vector2(player.transform.position.x + playerCollider.offset.x, player.transform.position.y + moveDir.y.Sign() * playerCollider.offset.y + moveDir.y.Sign() * 0.5f * (playerCollider.size.y + groundAndCharCrushRange));
+                        overlapSize = new Vector2(playerCollider.size.x, groundAndCharCrushRange);
+                    }
+                    Collider2D groundCol = PhysicsToric.OverlapBox(overlapPos, overlapSize, 0f, groundMask);
+                    if(groundCol != null)
+                    {
+                        //collision
+                        CrushChar(player, lastCharActivatePlateform);
+                    }
                 }
             }
         }
@@ -171,11 +220,20 @@ public class MovablePlatefrom : MonoBehaviour
                             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                             moveDir = convertHitboxSideToDir[(int)side];
                             lastTimeBeginShake = Time.time;
+                            lastCharActivatePlateform = player;
                         }
                     }
                 }
             }
         }
+    }
+
+    #endregion
+
+    private void CrushChar(GameObject player, GameObject killer)
+    {
+        player.GetComponent<EventController>().OnBeenKillInstant(killer);
+        killer.GetComponent<EventController>().OnKill(player);
     }
 
     #region Grid function
