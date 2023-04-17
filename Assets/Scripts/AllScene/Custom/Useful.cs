@@ -11,13 +11,64 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Threading;
+using DG.Tweening;
 
 #endregion
 
 public delegate string SerialyseFunction<T>(T obj);
 public delegate T DeserialyseFunction<T>(string s);
 
-//Unity
+#region Unity special struct
+
+[Serializable]
+public struct ShakeSetting
+{
+    public float duration;
+    public Vector3 strengh;
+    public int vibrato;
+    public float randomness;
+    public bool snapping;
+    public bool fadeOut;
+
+    public ShakeSetting(float duration, Vector3 strengh, int vibrato, float randomness, bool snapping, bool fadeOut)
+    {
+        this.duration = duration;
+        this.strengh = strengh;
+        this.vibrato = vibrato;
+        this.randomness = randomness;
+        this.snapping = snapping;
+        this.fadeOut = fadeOut;
+    }
+    public ShakeSetting(float duration = 1f, float strengh = 1f, int vibrato = 10, float randomness = 90f, bool snapping = false, bool fadeOut = true)
+    {
+        this.duration = duration;
+        this.strengh = Vector3.one * strengh;
+        this.vibrato = vibrato;
+        this.randomness = randomness;
+        this.snapping = snapping;
+        this.fadeOut = fadeOut;
+    }
+
+    public void DefaultValue()
+    {
+        duration = 1f;
+        strengh = Vector3.one;
+        vibrato = 10;
+        randomness = 90f;
+        snapping = false;
+        fadeOut = true;
+    }
+
+    public void ClampValue()
+    {
+        duration = Mathf.Max(0f, duration);
+        strengh = new Vector3(Mathf.Max(0f, strengh.x), Mathf.Max(0f, strengh.y), Mathf.Max(0f, strengh.z));
+        vibrato = vibrato >= 0 ? vibrato : 0;
+        randomness = Mathf.Max(0f, randomness);
+    }
+}
+
+#endregion
 
 #region Save
 

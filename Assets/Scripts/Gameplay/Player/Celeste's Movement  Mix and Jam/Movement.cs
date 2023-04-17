@@ -37,6 +37,7 @@ public class Movement : MonoBehaviour
     [Tooltip("La vitesse d'interpolation de marche")] [SerializeField] private float speedLerp = 50f;
     [Tooltip("La propor de vitesse initiale de marche")] [SerializeField] [Range(0f, 1f)] private float initSpeed = 0.2f;
     [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
+    private Vector2 localVelocityOnGrippingGround;
 
     [Header("Collision")]
     private LayerMask groundLayer;
@@ -162,6 +163,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private ParticleSystem jumpParticle;
     [SerializeField] private ParticleSystem wallJumpParticle;
     [SerializeField] private ParticleSystem slideParticle;
+    [SerializeField] private ShakeSetting cameraShakeSetting = new ShakeSetting(0.15f, 0.2f, 14, 90, false, true);
 
     public bool isGrounded { get; private set; } //le joueur touche le sol
     public bool onWall { get; private set; } //le joueur touche un mur a droite ou a gauche
@@ -642,24 +644,41 @@ public class Movement : MonoBehaviour
 
         void HandleNormalWalk()
         {
+            if(groundTouch)
+            {
+                localVelocityOnGrippingGround = rb.velocity;
+            }
+
             //Clamp, on est dans le mauvais sens
-            if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+            if ((playerInput.x >= 0f && localVelocityOnGrippingGround.x <= 0f) || (playerInput.x <= 0f && localVelocityOnGrippingGround.x >= 0f))
             {
                 if (playerInput.rawX != 0)
-                    rb.velocity = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), rb.velocity.y);
+                    localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), rb.velocity.y);
                 else
-                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                {
+                    localVelocityOnGrippingGround = new Vector2(0f, rb.velocity.y);
+                }
             }
 
             if (Mathf.Abs(rb.velocity.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0)
-                rb.velocity = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), rb.velocity.y);
+                localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), localVelocityOnGrippingGround.y);
             else
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed, speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                localVelocityOnGrippingGround = new Vector2(Mathf.MoveTowards(localVelocityOnGrippingGround.x, playerInput.x * walkSpeed, speedLerp * Time.fixedDeltaTime), localVelocityOnGrippingGround.y);
 
             //Clamp is to steep slope
             float xMin = isToSteepSlopeLeft ? 0f : float.MinValue;
             float xMax = isToSteepSlopeRight ? 0f : float.MaxValue;
-            rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, xMin, xMax), rb.velocity.y);
+            localVelocityOnGrippingGround = new Vector2(Mathf.Clamp(localVelocityOnGrippingGround.x, xMin, xMax), localVelocityOnGrippingGround.y);
+
+            //friction du to ground
+            if (groundColliderData != null && groundColliderData.isGripping)
+            {
+                rb.velocity = localVelocityOnGrippingGround + groundColliderData.frictionCoefficient * groundColliderData.rb.velocity;
+            }
+            else
+            {
+                rb.velocity = localVelocityOnGrippingGround;
+            }
         }
 
         #endregion
@@ -1255,7 +1274,8 @@ public class Movement : MonoBehaviour
     private void Dash(in Vector2 dir)
     {
         mainCam.transform.DOComplete();
-        mainCam.transform.DOShakePosition(0.15f, 0.2f, 14, 90, false, true);
+        mainCam.transform.DOShakePosition(cameraShakeSetting.duration, cameraShakeSetting.strengh, cameraShakeSetting.vibrato, cameraShakeSetting.randomness,
+            cameraShakeSetting.snapping, cameraShakeSetting.fadeOut);
         //FindObjectOfType<RippleEffect>().Emit(mainCam.WorldToViewportPoint(transform.position));
         //anim.SetTrigger("dash");
         //FindObjectOfType<GhostTrail>().ShowGhost();

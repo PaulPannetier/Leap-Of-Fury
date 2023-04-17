@@ -767,6 +767,10 @@ PrefabInstance:
       propertyPath: hitboxSize.y
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820867, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: frictionCoefficient
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.x
       value: 3
@@ -781,7 +785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.y
@@ -797,15 +801,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1029,6 +1033,14 @@ PrefabInstance:
     - target: {fileID: 537159171673598515, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 537159171919158616, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: m_BodyType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 772764503253485556, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: m_BodyType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1416239570213145692, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
       propertyPath: m_Mesh

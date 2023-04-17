@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Linq;
 using UnityEngine;
 
@@ -22,10 +23,13 @@ public class MovablePlatefrom : MonoBehaviour
 
     private BoxCollider2D hitbox;
     private new Transform transform;
-    private bool isMoving, isAccelerating, isReachingTargetPosition;
+    private bool isMoving, isAccelerating, isReachingTargetPosition, isShaking, oldIsShaking;
     private LayerMask charMask, groundMask;
-    private float lastTimeBeginMove = -10f;
+    private float lastTimeBeginMove = -10f, lastTimeBeginShake = -10f;
     private Vector2 moveDir, reachTargetPos;
+    private bool oldEnableBehaviour;
+    private float accelDeltaTime;
+    private Rigidbody2D rb;
 
     public bool enableBehaviour = true;
     [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
@@ -34,6 +38,7 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age od maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
+    [SerializeField] private ShakeSetting shakeSetting;
 
     [SerializeField] private bool gizmosDrawGrid = true;
 
@@ -41,6 +46,7 @@ public class MovablePlatefrom : MonoBehaviour
     {
         hitbox = GetComponent<BoxCollider2D>();
         transform = base.transform;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
@@ -54,15 +60,32 @@ public class MovablePlatefrom : MonoBehaviour
     private void Update()
     {
         if (!enableBehaviour)
+        {
+            if(oldEnableBehaviour)
+            {
+                if (isAccelerating)
+                {
+                    accelDeltaTime = Time.time - lastTimeBeginMove;
+                }
+                oldEnableBehaviour = enableBehaviour;
+            }
+            if(isAccelerating)
+            {
+                lastTimeBeginMove = Time.time - accelDeltaTime;
+            }
             return;
+        }
+        oldEnableBehaviour = enableBehaviour;
 
         Vector2 caseSize = MovablePlatefrom.caseSize;
         if(isMoving)
         {
-            if(isAccelerating)
+            oldIsShaking = false;
+            if (isAccelerating)
             {
                 Vector2 speed = maxSpeed * accelerationCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeBeginMove) / accelerationDuration)) * moveDir;
-                transform.position += (Vector3)(speed * Time.deltaTime);
+                //transform.position += (Vector3)(speed * Time.deltaTime);
+                rb.velocity = speed;
                 if (Time.time - lastTimeBeginMove > accelerationDuration)
                 {
                     isAccelerating = false;
@@ -70,7 +93,8 @@ public class MovablePlatefrom : MonoBehaviour
             }
             else
             {
-                transform.position += (Vector3)(maxSpeed * Time.deltaTime * moveDir);
+                //transform.position += (Vector3)(maxSpeed * Time.deltaTime * moveDir);
+                rb.velocity = maxSpeed * moveDir;
             }
 
             //detecting ground
@@ -103,12 +127,30 @@ public class MovablePlatefrom : MonoBehaviour
             }
             else
             {
-                transform.position = Vector2.MoveTowards(transform.position, reachTargetPos, maxSpeed * Time.deltaTime);
+                rb.velocity = maxSpeed * (reachTargetPos - (Vector2)transform.position).normalized;
+                //transform.position = Vector2.MoveTowards(transform.position, reachTargetPos, maxSpeed * Time.deltaTime);
                 if(reachTargetPos.SqrDistance(transform.position) <= 4f * maxSpeed * maxSpeed * Time.deltaTime * Time.deltaTime)
                 {
                     isReachingTargetPosition = isMoving = isAccelerating = false;
                     transform.position = reachTargetPos;
+                    rb.velocity = Vector2.zero;
+                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
                 }
+            }
+        }
+        else if(isShaking)
+        {
+            if(!oldIsShaking)
+            {
+                transform.DOComplete();
+                transform.DOShakePosition(shakeSetting.duration, shakeSetting.strengh, shakeSetting.vibrato, shakeSetting.randomness, shakeSetting.snapping, shakeSetting.fadeOut);
+                oldIsShaking = true;
+            }
+
+            if(Time.time - lastTimeBeginShake > shakeSetting.duration)
+            {
+                isShaking = false;
+                isAccelerating = isMoving = true;
             }
         }
         else
@@ -126,9 +168,10 @@ public class MovablePlatefrom : MonoBehaviour
                         HitboxSide side = GetHitboxSide((Vector2)player.transform.position + charHitbox.offset, charHitbox.size);
                         if(side != HitboxSide.none)
                         {
-                            isMoving = isAccelerating = true;
+                            isShaking = true;
+                            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                             moveDir = convertHitboxSideToDir[(int)side];
-                            lastTimeBeginMove = Time.time;
+                            lastTimeBeginShake = Time.time;
                         }
                     }
                 }
@@ -321,6 +364,7 @@ public class MovablePlatefrom : MonoBehaviour
         accelerationDuration = Mathf.Max(0f, accelerationDuration);
         maxSpeed = Mathf.Max(0f, maxSpeed);
         detectionPadding = Mathf.Max(0f, detectionPadding);
+        shakeSetting.ClampValue();
     }
 
     private void OnDrawGizmosSelected()
@@ -368,4 +412,5 @@ public class MovablePlatefrom : MonoBehaviour
     }
     */
     #endregion
+
 }
