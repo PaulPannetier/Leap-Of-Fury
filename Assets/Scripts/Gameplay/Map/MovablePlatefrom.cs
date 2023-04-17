@@ -1,5 +1,4 @@
 using DG.Tweening;
-using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
