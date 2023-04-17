@@ -32,8 +32,8 @@ public class MovablePlatefrom : MonoBehaviour
 
     public bool enableBehaviour = true;
     [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
-    [SerializeField] private float charDashdetectionDistance;
-    [SerializeField] private float detectionPadding = 0.1f;
+    [SerializeField] private float charDetectionDistance;
+    [SerializeField] private float groundDetectionPadding = 0.1f;
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age od maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
@@ -101,7 +101,7 @@ public class MovablePlatefrom : MonoBehaviour
             {
                 if (moveDir.sqrMagnitude > 1e-6f)
                 {
-                    (Vector2 overlapPos, Vector2 overlapSize) = GetRecInFront(transform.position, moveDir);
+                    (Vector2 overlapPos, Vector2 overlapSize) = GetRecInFront(transform.position, moveDir, groundDetectionPadding);
                     Collider2D groundCol = PhysicsToric.OverlapBox(overlapPos, overlapSize, 0f, groundMask);
                     if (groundCol != null)
                     {
@@ -154,7 +154,7 @@ public class MovablePlatefrom : MonoBehaviour
         }
         else
         {
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size + 2f * charDashdetectionDistance * Vector2.one, 0f, charMask);
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size + 2f * charDetectionDistance * Vector2.one, 0f, charMask);
             foreach (Collider2D col  in cols)
             {
                 if(col.CompareTag("Char"))
@@ -192,7 +192,7 @@ public class MovablePlatefrom : MonoBehaviour
         return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * caseSize.x - 0.5f * PhysicsToric.cameraSize.x, (casePos.y + 0.5f) * caseSize.y - 0.5f * PhysicsToric.cameraSize.y));
     }
 
-    private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir)//ok
+    private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir, float padding)//ok
     {
         Vector2 overlapPos = Vector2.zero, overlapSize = Vector2.zero;
         if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
@@ -207,7 +207,7 @@ public class MovablePlatefrom : MonoBehaviour
                 Vector2 casePos = GetCasePos(GetCase(pos));
                 overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * caseSize.x) * dir.x.Sign(), casePos.y);
             }
-            overlapSize = new Vector2(caseSize.x - 2f * detectionPadding, Mathf.Max(0f, hitboxSize.y * caseSize.y - 2f * detectionPadding));
+            overlapSize = new Vector2(caseSize.x - 2f * padding, Mathf.Max(0f, hitboxSize.y * caseSize.y - 2f * padding));
         }
         else
         {
@@ -221,7 +221,7 @@ public class MovablePlatefrom : MonoBehaviour
                 Vector2 casePos = GetCasePos(GetCase(pos));
                 overlapPos = new Vector2(casePos.x, pos.y + (0.5f * (hitboxSize.y + 1) * caseSize.y) * dir.y.Sign());
             }
-            overlapSize = new Vector2(Mathf.Max(0f, hitboxSize.x * caseSize.x - 2f * detectionPadding), Mathf.Max(0f, caseSize.y - 2f * detectionPadding));
+            overlapSize = new Vector2(Mathf.Max(0f, hitboxSize.x * caseSize.x - 2f * padding), Mathf.Max(0f, caseSize.y - 2f * padding));
         }
         return (overlapPos, overlapSize);
     }
@@ -362,7 +362,7 @@ public class MovablePlatefrom : MonoBehaviour
         hitbox.size = caseSize * hitboxSize;
         accelerationDuration = Mathf.Max(0f, accelerationDuration);
         maxSpeed = Mathf.Max(0f, maxSpeed);
-        detectionPadding = Mathf.Max(0f, detectionPadding);
+        groundDetectionPadding = Mathf.Max(0f, groundDetectionPadding);
         shakeSetting.ClampValue();
     }
 
@@ -387,17 +387,17 @@ public class MovablePlatefrom : MonoBehaviour
         Hitbox.GizmosDraw(transform.position, hitbox.size * caseSize);
 
         //chardetection
-        Hitbox.GizmosDraw(transform.position, hitbox.size * caseSize + 2f * charDashdetectionDistance * Vector2.one);
+        Hitbox.GizmosDraw(transform.position, hitbox.size * caseSize + 2f * charDetectionDistance * Vector2.one);
 
         //test GetRecInFront
-        (Vector2 pos, Vector2 size) = GetRecInFront(transform.position, Vector2.right);
+        (Vector2 pos, Vector2 size) = GetRecInFront(transform.position, Vector2.right, groundDetectionPadding);
         Gizmos.color = Color.blue;
         Hitbox.GizmosDraw(pos, size);
-        (pos, size) = GetRecInFront(transform.position, Vector2.left);
+        (pos, size) = GetRecInFront(transform.position, Vector2.left, groundDetectionPadding);
         Hitbox.GizmosDraw(pos, size);
-        (pos, size) = GetRecInFront(transform.position, Vector2.up);
+        (pos, size) = GetRecInFront(transform.position, Vector2.up, groundDetectionPadding);
         Hitbox.GizmosDraw(pos, size);
-        (pos, size) = GetRecInFront(transform.position, Vector2.down);
+        (pos, size) = GetRecInFront(transform.position, Vector2.down, groundDetectionPadding);
         Hitbox.GizmosDraw(pos, size);
     }
 
