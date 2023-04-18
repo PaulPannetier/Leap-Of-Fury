@@ -2159,19 +2159,19 @@ public static class Useful
     #region Integrate
 
     /// <summary>
-    /// Rerturn the integral between a and b of f(x)dx
+    /// Return the integral between a and b of f(x)dx
     /// </summary>
     /// <param name="function">La function à intégré</param>
     /// <param name="a">le début de l'intégrale</param>
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static float Integratef(Func<float, float> f, in float a, in float b, in float samplePerUnit = 5f)
+    public static float Integrate(Func<float, float> f, float a, float b, float samplePerUnit = 5f)
     {
         if (Mathf.Abs(a - b) < Mathf.Epsilon || samplePerUnit <= 0f)
             return 0f;
         if (a > b)
-            return -Integratef(f, b, a, samplePerUnit);
+            return -Integrate(f, b, a, samplePerUnit);
 
         float I = 0f;
 
@@ -2199,19 +2199,19 @@ public static class Useful
     }
 
     /// <summary>
-    /// Rerturn the integral between a and b of f(x)dx
+    /// Return the integral between a and b of f(x)dx
     /// </summary>
     /// <param name="function">La function à intégré</param>
     /// <param name="a">le début de l'intégrale</param>
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static double Integrated(Func<double, double> f, in double a, in double b, in float samplePerUnit = 5f)
+    public static double Integrate(Func<double, double> f, in double a, in double b, in float samplePerUnit = 5f)
     {
         if (Math.Abs(a - b) < 1e-45d || samplePerUnit <= 0f)
             return 0d;
         if (a > b)
-            return -Integrated(f, b, a, samplePerUnit);
+            return -Integrate(f, b, a, samplePerUnit);
 
         double I = 0d;
 
@@ -2239,19 +2239,19 @@ public static class Useful
     }
 
     /// <summary>
-    /// Rerturn the integral between a and b of f(x)dx
+    /// Return the integral between a and b of f(x)dx
     /// </summary>
     /// <param name="function">La function à intégré</param>
     /// <param name="a">le début de l'intégrale</param>
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static decimal Integratem(Func<decimal, decimal> f, in decimal a, in decimal b, in float samplePerUnit = 5f)
+    public static decimal Integrate(Func<decimal, decimal> f, in decimal a, in decimal b, in float samplePerUnit = 5f)
     {
         if (Abs(a - b) < 1e-45m || samplePerUnit <= 0f)
             return 0m;
         if (a > b)
-            return -Integratem(f, b, a, samplePerUnit);
+            return -Integrate(f, b, a, samplePerUnit);
 
         decimal I = 0m;
 
