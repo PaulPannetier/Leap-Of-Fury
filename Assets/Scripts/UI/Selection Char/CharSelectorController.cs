@@ -15,11 +15,9 @@ public class CharSelectorController : MonoBehaviour
     private bool nextSceneIsLoading = false;
 
     [SerializeField] private GameObject[] charHelperCanvasPrefabs;
-    [SerializeField] private KeyCode helpButtonKeyboard;
-    [SerializeField] private KeyCode helpButtonGamepad1;
-    [SerializeField] private KeyCode helpButtonGamepad2;
-    [SerializeField] private KeyCode helpButtonGamepad3;
-    [SerializeField] private KeyCode helpButtonGamepad4;
+
+    [SerializeField] private CustomInput.GeneralInput helpButton;
+    [SerializeField] private CustomInput.GeneralInput escapeButton;
 
     private void Awake()
     {
@@ -115,7 +113,8 @@ public class CharSelectorController : MonoBehaviour
             if (isHelpCanvasOpen[i])
                 continue;
 
-            if (IsPressingEscape(controllerIndexs[i]))
+            escapeButton.controllerType = controllerIndexs[i];
+            if (escapeButton.IsPressedDown())
             {
                 TransitionManager.instance.LoadSceneAsync("Screen Title", null);
             }
@@ -126,7 +125,8 @@ public class CharSelectorController : MonoBehaviour
             if (isHelpCanvasOpen[i])
                 continue;
 
-            if (IsPressingHelpButton(controllerIndexs[i]))
+            helpButton.controllerType = controllerIndexs[i];
+            if (helpButton.IsPressedDown())
             {
                 OpenHelpCanvas(i);
             }
@@ -310,54 +310,6 @@ public class CharSelectorController : MonoBehaviour
         }
         index = 0;
         return false;
-    }
-
-    private bool IsPressingHelpButton(ControllerType controllerType)
-    {
-        switch (controllerType)
-        {
-            case ControllerType.Keyboard:
-                return CustomInput.GetKeyDown(helpButtonKeyboard);
-            case ControllerType.Gamepad1:
-                return CustomInput.GetKeyDown(helpButtonGamepad1);
-            case ControllerType.Gamepad2:
-                return CustomInput.GetKeyDown(helpButtonGamepad2);
-            case ControllerType.Gamepad3:
-                return CustomInput.GetKeyDown(helpButtonGamepad3);
-            case ControllerType.Gamepad4:
-                return CustomInput.GetKeyDown(helpButtonGamepad4);
-            case ControllerType.GamepadAll:
-                return CustomInput.GetKeyDown(helpButtonGamepad1) || CustomInput.GetKeyDown(helpButtonGamepad2) || 
-                    CustomInput.GetKeyDown(helpButtonGamepad3) || CustomInput.GetKeyDown(helpButtonGamepad4);
-            case ControllerType.All:
-                return CustomInput.GetKeyDown(helpButtonKeyboard) || CustomInput.GetKeyDown(helpButtonGamepad1) || CustomInput.GetKeyDown(helpButtonGamepad2) ||
-                        CustomInput.GetKeyDown(helpButtonGamepad3) || CustomInput.GetKeyDown(helpButtonGamepad4);
-            default:
-                return false;
-        }
-    }
-
-    private bool IsPressingEscape(ControllerType controllerType)
-    {
-        switch (controllerType)
-        {
-            case ControllerType.Keyboard:
-                return CustomInput.GetKeyDown(KeyCode.Escape);
-            case ControllerType.Gamepad1:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button1);
-            case ControllerType.Gamepad2:
-                return CustomInput.GetKeyDown(KeyCode.Joystick2Button1);
-            case ControllerType.Gamepad3:
-                return CustomInput.GetKeyDown(KeyCode.Joystick3Button1);
-            case ControllerType.Gamepad4:
-                return CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
-            case ControllerType.GamepadAll:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button1) || CustomInput.GetKeyDown(KeyCode.Joystick2Button1) || CustomInput.GetKeyDown(KeyCode.Joystick3Button1) || CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
-            case ControllerType.All:
-                return CustomInput.GetKeyDown(KeyCode.Escape) || CustomInput.GetKeyDown(KeyCode.Joystick1Button1) || CustomInput.GetKeyDown(KeyCode.Joystick2Button1) || CustomInput.GetKeyDown(KeyCode.Joystick3Button1) || CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
-            default:
-                return false;
-        }
     }
 
     private bool NewControllerIsPressingAKey(out ControllerType controllerType, out int key)
