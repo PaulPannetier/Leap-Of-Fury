@@ -13,11 +13,7 @@ public class MovablePlatefrom : MonoBehaviour
     private static Vector2 caseSize => PhysicsToric.cameraSize / nbCaseGrid;
     private static Vector2[] convertHitboxSideToDir = new Vector2[5]
     {
-        new Vector2(0f, 1f),
-        new Vector2(0f, -1f),
-        new Vector2(-1f, 0f),
-        new Vector2(1f, 0f),
-        new Vector2(0f, 0f)
+        Vector2.up, Vector2.down, Vector2.left, Vector2.right, Vector2.zero
     };
 
     private BoxCollider2D hitbox;
@@ -30,6 +26,7 @@ public class MovablePlatefrom : MonoBehaviour
     private float accelDeltaTime;
     private Rigidbody2D rb;
     private GameObject lastCharActivatePlateform;
+    private Vector2[] convertHitboxSizeToBumbDir;
 
     public bool enableBehaviour = true;
     [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
@@ -39,6 +36,8 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age od maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float returnBumpSpeedOnChar = 5f;
+    [SerializeField, Range(0f, 360f)] private float returnBumpSpeedAngleOnChar = 45f;
     [SerializeField] private ShakeSetting shakeSetting;
 
     [SerializeField] private bool gizmosDrawGrid = true;
@@ -50,6 +49,14 @@ public class MovablePlatefrom : MonoBehaviour
         hitbox = GetComponent<BoxCollider2D>();
         transform = base.transform;
         rb = GetComponent<Rigidbody2D>();
+        convertHitboxSizeToBumbDir = new Vector2[5]
+        {
+            Vector2.up,
+            Vector2.down,
+            Useful.Vector2FromAngle(returnBumpSpeedAngleOnChar * Mathf.Deg2Rad),
+            Useful.Vector2FromAngle((180f - returnBumpSpeedAngleOnChar) * Mathf.Deg2Rad),
+            Vector2.zero
+        };
     }
 
     private void Start()
@@ -91,7 +98,6 @@ public class MovablePlatefrom : MonoBehaviour
             if (isAccelerating)
             {
                 Vector2 speed = maxSpeed * accelerationCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeBeginMove) / accelerationDuration)) * moveDir;
-                //transform.position += (Vector3)(speed * Time.deltaTime);
                 rb.velocity = speed;
                 if (Time.time - lastTimeBeginMove > accelerationDuration)
                 {
@@ -100,7 +106,6 @@ public class MovablePlatefrom : MonoBehaviour
             }
             else
             {
-                //transform.position += (Vector3)(maxSpeed * Time.deltaTime * moveDir);
                 rb.velocity = maxSpeed * moveDir;
             }
 
@@ -219,6 +224,8 @@ public class MovablePlatefrom : MonoBehaviour
                             isShaking = true;
                             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
                             moveDir = convertHitboxSideToDir[(int)side];
+                            Vector2 charBumpDir = convertHitboxSizeToBumbDir[(int)side];
+                            player.GetComponent<Movement>().ApplyBump(charBumpDir * returnBumpSpeedOnChar);
                             lastTimeBeginShake = Time.time;
                             lastCharActivatePlateform = player;
                         }
@@ -422,6 +429,7 @@ public class MovablePlatefrom : MonoBehaviour
         maxSpeed = Mathf.Max(0f, maxSpeed);
         groundDetectionPadding = Mathf.Max(0f, groundDetectionPadding);
         shakeSetting.ClampValue();
+        returnBumpSpeedOnChar = Mathf.Max(0f, returnBumpSpeedOnChar);
     }
 
     private void OnDrawGizmosSelected()
