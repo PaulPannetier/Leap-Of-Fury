@@ -2001,6 +2001,10 @@ public static class CustomInput
         return key >= 0 ? ((KeyCode)key).ToString() : negativeKeyToString[((-(key + 1)) % 14) + 1];
     }
 
+    public static Vector2 mousePosition => Input.mousePosition;
+    public static Vector2 mouseScrollDelta => Input.mouseScrollDelta;
+    public static bool isAMouseConnected => Input.mousePresent;
+
     /// <summary>
     /// Convert an action into the string who define the control of the action, according to the controller.
     /// </summary>
@@ -2445,9 +2449,9 @@ public static class CustomInput
             }
         }
 
-        public bool IsPressedDown() => isKeySomething((KeyCode key) => CustomInput.GetKeyDown(key));
-        public bool IsPressedUp() => isKeySomething((KeyCode key) => CustomInput.GetKeyUp(key));
-        public bool IsPressed() => isKeySomething((KeyCode key) => CustomInput.GetKey(key));
+        public bool IsPressedDown() => isKeySomething((KeyCode key) => GetKeyDown(key));
+        public bool IsPressedUp() => isKeySomething((KeyCode key) => GetKeyUp(key));
+        public bool IsPressed() => isKeySomething((KeyCode key) => GetKey(key));
     }
 
     #endregion

@@ -142,14 +142,14 @@ public class Movement : MonoBehaviour
     private bool isToSteepSlopeRight, isToSteepSlopeLeft;
 
     [Header("Bump")]
-    [SerializeField] private float bumpDecreasementLerp = 7f;
+    [SerializeField] private float maxBumpSpeed = 20f;
+    [SerializeField] private float minBumpGroundSpeed = 7f;
+    [SerializeField] private float minBumpAirSpeed = 7f;
     [SerializeField] private float maxBumpDuration = 0.5f;
-    [SerializeField] private float groundBumpFrictionCoefficient = 1.2f;
-    [SerializeField, Tooltip("Le control au sol lorsque le char est bump")] private float groundControlWhereBump = 0.25f;
-    [SerializeField, Tooltip("Le %age de vitesse de marche on l'on n'est plus bump au sol")] private float minGroundSpeedWhereBump = 1.5f;
-    [SerializeField] private float airBumpFrictionCoefficient = 0.9f;
-    [SerializeField, Tooltip("Le control en l'air lorsque le char est bump en %age de quand il n'est pas bump")] private Vector2 airControlWhereBump = new Vector2(0.5f, 0.5f);
-    [SerializeField, Tooltip("La vitesse on l'on n'est plus bump en l'air")] private float minAirSpeedWhereBump = 10f;
+    [SerializeField] private float bumpAirDecreasementSpeedLerp = 7f;
+    [SerializeField] private float extraLerpMultiplierWhenTouchingGround = 2f;
+    [SerializeField, Tooltip("Ground speed lerp multiplier for ground speed lerp vhere bumps")] private float bumpGroundControl = 0.2f;
+    [SerializeField, Tooltip("Air speed lerp multiplier for air speed lerp vhere bumps")] private Vector2 bumpAirControl = new Vector2(0.2f, 0.8f);
     private float lastTimeBump = -10f;
 
     [Header("Map Object")]
@@ -517,7 +517,7 @@ public class Movement : MonoBehaviour
             }
 
             float velocity = rb.velocity.magnitude;
-            if((!isGrounded && velocity <= minAirSpeedWhereBump) || (isGrounded && velocity <= minGroundSpeedWhereBump))
+            if((!isGrounded && velocity <= minBumpAirSpeed) || (isGrounded && velocity <= minBumpGroundSpeed))
             {
                 isBumping = false;
             }
@@ -934,12 +934,12 @@ public class Movement : MonoBehaviour
     {
         if (doJump)
         {
-            if (isGrounded && canMove)
+            if (isGrounded && canMove && !isBumping)
             {
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && canMove)
+            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && canMove && !isBumping)
             {
                 Jump(Vector2.up);
                 doJump = false;
@@ -1270,8 +1270,7 @@ public class Movement : MonoBehaviour
     private void Dash(in Vector2 dir)
     {
         mainCam.transform.DOComplete();
-        mainCam.transform.DOShakePosition(cameraShakeSetting.duration, cameraShakeSetting.strengh, cameraShakeSetting.vibrato, cameraShakeSetting.randomness,
-            cameraShakeSetting.snapping, cameraShakeSetting.fadeOut);
+        mainCam.Shake(cameraShakeSetting);
         //FindObjectOfType<RippleEffect>().Emit(mainCam.WorldToViewportPoint(transform.position));
         //anim.SetTrigger("dash");
         //FindObjectOfType<GhostTrail>().ShowGhost();
@@ -1330,27 +1329,40 @@ public class Movement : MonoBehaviour
         if (!isBumping || !enableBehaviour)
             return;
 
-        float decreasementCoeff = 1f;
+        float decreasementLerp = bumpAirDecreasementSpeedLerp;
         if(isGrounded)
         {
-            decreasementCoeff *= groundBumpFrictionCoefficient;
+            decreasementLerp *= extraLerpMultiplierWhenTouchingGround;
             if(enableInput && playerInput.rawX != 0)
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed, groundControlWhereBump * speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+            {
+                if(rb.velocity.x.Sign() != playerInput.rawX)
+                {
+                    float target = walkSpeed * playerInput.x;
+                    rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, target, speedLerp * bumpGroundControl * Time.fixedDeltaTime), rb.velocity.y);
+                }
+            }
         }
         else // be in air
         {
+            //x speed
+            if(enableInput && playerInput.rawX != 0)
+            {
+                if(rb.velocity.x.Sign() != playerInput.rawX)
+                {
+                    float targetSpeed = playerInput.x * airHorizontalSpeed;
+                    rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, airSpeedLerp * bumpAirControl.x * Time.fixedDeltaTime), rb.velocity.y);
+                }
+            }
+
             //Apply fall
-            if(rb.velocity.y > 0f)
+            if (rb.velocity.y > 0f)
             {
                 float coeff;
                 if (playerInput.rawY == -1 && enableInput)
-                    coeff = Mathf.Max(airControlWhereBump.y * fallGravityMultiplierWhenDownPressed * airGravityMultiplier, airGravityMultiplier);
+                    coeff = Mathf.Max(bumpAirControl.y * fallGravityMultiplierWhenDownPressed * airGravityMultiplier, airGravityMultiplier);
                 else
                     coeff = airGravityMultiplier;
                 rb.velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.fixedDeltaTime);
-
-                float targetSpeed = enableInput ? playerInput.x * airHorizontalSpeed : 0f;
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, airSpeedLerp * airControlWhereBump.x * Time.fixedDeltaTime), rb.velocity.y);
             }
             else
             {
@@ -1367,12 +1379,10 @@ public class Movement : MonoBehaviour
                     rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.fixedDeltaTime));
                 }
             }
-
-            decreasementCoeff *= airBumpFrictionCoefficient;
         }
 
         //Friction
-        rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, bumpDecreasementLerp * decreasementCoeff * Time.fixedDeltaTime), rb.velocity.y);
+        rb.velocity = Vector2.MoveTowards(rb.velocity, Vector2.zero, decreasementLerp * Time.fixedDeltaTime);
     }
 
     #endregion
@@ -1513,6 +1523,10 @@ public class Movement : MonoBehaviour
         slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
         knockHeadOffset = new Vector2(Mathf.Max(0f, knockHeadOffset.x), Mathf.Max(0f, knockHeadOffset.y));
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
+        maxBumpSpeed = Mathf.Max(0f, maxBumpSpeed);
+        maxBumpDuration = Mathf.Max(0f, maxBumpDuration);
+        bumpAirControl = new Vector2(Mathf.Max(0f, bumpAirControl.x), Mathf.Max(0f, bumpAirControl.y));
+        bumpGroundControl = Mathf.Max(0f, bumpGroundControl);
     }
 
     #endregion

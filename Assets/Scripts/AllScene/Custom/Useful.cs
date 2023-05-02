@@ -920,7 +920,7 @@ public static class Useful
     /// <summary>
     /// Renvoie si pour aller de l'angle 1 vers l'angle 2 le plus rapidement il faut tourner à droite ou à gauche, ang€[0, 2pi[
     /// </summary>
-    public static void DirectionAngle(in float ang1, in float ang2, out bool right)
+    public static void DirectionAngle(float ang1, float ang2, out bool right)
     {
         float diff = Mathf.Abs(ang1 - ang2);
         float angMin = Mathf.Min(diff, 2f * Mathf.PI - diff);
@@ -929,15 +929,18 @@ public static class Useful
     /// <summary>
     /// Renvoie la valeur arrondi de n
     /// </summary>
-    public static int Round(in this float n) => (n - Mathf.Floor(n)) >= 0.5f ? (int)n + 1 : (int)n;
+    public static int Round(this float n) => (n - Mathf.Floor(n)) >= 0.5f ? (int)n + 1 : (int)n;
     /// <summary>
     /// Renvoie la valeur arrondi de n au nombre de décimales en param, ex : Round(51.6854, 2) => 51.69
     /// </summary>
-    public static float Round(in this float n, in int nbDecimals)
+    public static float Round(this float n, int nbDecimals)
     {
         float npow = n * Mathf.Pow(10f, nbDecimals);
         return npow - (int)npow >= 0.5f ? (((int)(npow + 1)) / Mathf.Pow(10f, nbDecimals)) : (((int)npow) / Mathf.Pow(10f, nbDecimals));
     }
+
+    public static int Floor(this float n) => Mathf.FloorToInt(n);
+    public static int Ceil(this float n) => Mathf.CeilToInt(n);
 
     public static int Max(int a, int b) => a >= b  ? a : b;
     public static int Max(int a, int b, int c) => Max(c, Max(a, b));
@@ -1369,7 +1372,7 @@ public static class Useful
         return newMot;
     }
 
-    public static int ConvertStringToInt(string number)
+    public static int ToInt(this string number)
     {
         int nb = 0;
         number = Troncate(number);
@@ -1392,7 +1395,7 @@ public static class Useful
         return nb;
     }
 
-    public static float ConvertStringToFloat(string number)
+    public static float ToFloat(this string number)
     {
         float result = 0f;
         string partieEntiere = number;
@@ -1411,7 +1414,7 @@ public static class Useful
             }
         }
         //part entière
-        result = ConvertStringToInt(partieEntiere);
+        result = ToInt(partieEntiere);
         //part decimal
         for (int i = 0; i < partieDecimal.Length; i++)
         {
@@ -2436,7 +2439,7 @@ public static class Useful
 
     #endregion
 
-    #region Extension
+    #region Unity
 
     [Obsolete]
     public static T Clone<T>(this T obj)
@@ -2515,6 +2518,17 @@ public static class Useful
         }
         length = 0f;
         return false;
+    }
+
+    public static void Shake(this Camera cam, in ShakeSetting cameraShakeSetting)
+    {
+        Shake(cam.transform, cameraShakeSetting);
+    }
+
+    public static void Shake(this Transform t, in ShakeSetting shakeSetting)
+    {
+        t.DOShakePosition(shakeSetting.duration, shakeSetting.strengh, shakeSetting.vibrato, shakeSetting.randomness,
+            shakeSetting.snapping, shakeSetting.fadeOut);
     }
 
     #endregion
