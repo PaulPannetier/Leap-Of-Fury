@@ -18,6 +18,7 @@ public class AmericanFistAttack : WeakAttack
     private LayerMask groundMask, enemiesMask;
     private bool alreadyCreateExplosionWinthThisDash;
 
+    [SerializeField] private bool drawGizmos = true;
     [SerializeField] private bool isAClone;
     [SerializeField] private float dashSpeed = 10f, dashDuration = 0.4f, minTimeBetweenDash = 0.2f, maxTimeBetweenDash = 0.7f, dashBufferTime = 0.1f;
     [SerializeField] private AnimationCurve dashSpeedCurve;
@@ -364,6 +365,8 @@ public class AmericanFistAttack : WeakAttack
 
     private void OnDrawGizmosSelected()
     {
+        if (!drawGizmos)
+            return;
         Gizmos.color = Color.green;
         Hitbox.GizmosDraw((Vector2)transform.position + colliderOffset, colliderSize);
 

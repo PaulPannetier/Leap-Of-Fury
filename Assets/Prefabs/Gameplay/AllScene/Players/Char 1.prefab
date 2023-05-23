@@ -154,13 +154,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
+  drawGizmos: 0
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
   timeUntilCommandIsInvalid: 0.1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 16392
   groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
   groundOffset: {x: 0, y: -0.65}
@@ -199,7 +197,7 @@ MonoBehaviour:
   wallJumpSpeed: {x: 5, y: 20}
   wallJumpGravityMultiplier: 1.2
   wallJumpMaxDuration: 0.15
-  wallJumpAlongSpeed: 11
+  wallJumpAlongSpeed: 9
   wallJumpAlongCurveSpeed:
     serializedVersion: 2
     m_Curve:
@@ -222,17 +220,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.13888833
     - serializedVersion: 3
-      time: 0.7574409
-      value: 0.99528617
-      inSlope: -0.04288145
-      outSlope: -0.04288145
+      time: 0.6244606
+      value: 0.9890453
+      inSlope: -0.15125622
+      outSlope: -0.15125622
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.2810475
+      outWeight: 0.39205983
     - serializedVersion: 3
-      time: 0.994812
-      value: 0.7931671
+      time: 0.99990845
+      value: 0.5964966
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -242,7 +240,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpAlongWallDuration: 0.1
+  jumpAlongWallDuration: 0.2
   wallJumpAlongCooldown: 0.1
   grabSpeed: 4
   grabInitSpeed: 0.25
@@ -337,44 +335,27 @@ MonoBehaviour:
   slopeRaycastLength: 0.2
   isSlopingRight: 0
   isSlopingLeft: 0
-  bumpDecreasementLerp: 7
+  maxBumpSpeed: 20
+  minBumpGroundSpeed: 7
+  minBumpAirSpeed: 7
   maxBumpDuration: 0.5
-  extraBumpFrictionCauseBySpeed:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  groundBumpFrictionCoefficient: 1.2
-  groundControlWhereBump: 0.25
-  minGroundSpeedWhereBump: 1.5
-  airBumpFrictionCoefficient: 0.9
-  airControlWhereBump: {x: 0.5, y: 0.5}
-  minAirSpeedWhereBump: 10
+  bumpAirDecreasementSpeedLerp: 7
+  extraLerpMultiplierWhenTouchingGround: 2
+  bumpGroundControl: 0.2
+  bumpAirControl: {x: 0.2, y: 0.8}
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
   inertiaSpeedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
   slideParticle: {fileID: 0}
+  cameraShakeSetting:
+    duration: 0.15
+    strengh: {x: 0.2, y: 0.2, z: 0.2}
+    vibrato: 14
+    randomness: 90
+    snapping: 0
+    fadeOut: 1
   side: -1
 --- !u!61 &3997859093726797468
 BoxCollider2D:
@@ -400,7 +381,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1.14}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &2773945953036524592
 MonoBehaviour:
@@ -567,6 +548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canLauchWeakAttack: 1
   canLaunchStrongAttack: 1
+  drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityOffset: 0.1
   invicibilityDurationWhenDashing: 0.2
@@ -593,6 +575,7 @@ MonoBehaviour:
   cooldown:
     duration: 4
   originalCloneAttack: {fileID: 0}
+  drawGizmos: 0
   isAClone: 0
   dashSpeed: 20
   dashDuration: 0.25

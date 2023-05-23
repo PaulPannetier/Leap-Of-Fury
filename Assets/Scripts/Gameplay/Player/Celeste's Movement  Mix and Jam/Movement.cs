@@ -31,6 +31,7 @@ public class Movement : MonoBehaviour
                 _enableBehaviour = true;
         }
     }
+    [SerializeField] private bool drawGizmos = true;
 
     [Header("Walk")]
     [Tooltip("La vitesse de marche")] [SerializeField] private float walkSpeed = 10f;
@@ -944,7 +945,7 @@ public class Movement : MonoBehaviour
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if ((grabStayAtApex || reachGrabApex || wallGrab) && !isGrounded && canMove)
+            else if ((grabStayAtApex || reachGrabApex || wallGrab || isSliding) && !isGrounded && canMove)
             {
                 WallJump();
                 doJump = false;
@@ -1482,6 +1483,9 @@ public class Movement : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if(!drawGizmos)
+            return;
+
         Gizmos.color = Color.red;
 
         Gizmos.DrawWireSphere((Vector2)transform.position + groundOffset, groundCollisionRadius);
