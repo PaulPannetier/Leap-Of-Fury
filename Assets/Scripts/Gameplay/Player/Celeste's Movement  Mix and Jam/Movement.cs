@@ -945,7 +945,7 @@ public class Movement : MonoBehaviour
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if ((grabStayAtApex || reachGrabApex || wallGrab || isSliding) && !isGrounded && canMove)
+            else if ((grabStayAtApex || reachGrabApex || wallGrab || onWall || isSliding) && !isGrounded && canMove)
             {
                 WallJump();
                 doJump = false;
@@ -1097,13 +1097,14 @@ public class Movement : MonoBehaviour
                 return;
             }
         }
+
         WallJump(right);
     }
 
     private void WallJump(bool right)
     {
         //first case : jump along the wall
-        if((right && playerInput.rawX >= 0) || (!right && playerInput.rawX <= 0) && wallGrab && playerInput.rawY >= 0)
+        if((right && playerInput.rawX >= 0) || (!right && playerInput.rawX <= 0) && wallGrab)
         {
             if(Time.time - lastTimeBeginWallJumpAlongWall > wallJumpAlongCooldown)
             {
@@ -1112,7 +1113,7 @@ public class Movement : MonoBehaviour
                 lastTimeBeginWallJumpAlongWall = Time.time;
             }
         }
-        else //2nd case : jump on the oposite of the wall
+        else if((right && playerInput.rawX == -1) || (!right && playerInput.rawX == 1)) //2nd case : jump on the oposite of the wall
         {
             float angle = (right ? 1f : -1f) * wallJumpAngle * Mathf.Deg2Rad + Mathf.PI * 0.5f;
             Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
@@ -1122,6 +1123,10 @@ public class Movement : MonoBehaviour
             lastTimeBeginWallJump = Time.time;
 
             side *= -1;
+        }
+        else
+        {
+            return;
         }
 
         StopCoroutine(DisableMovement(0f));

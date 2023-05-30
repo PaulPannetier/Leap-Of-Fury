@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class ColliderDrawer : MonoBehaviour
 {
     private bool isDrawing;
@@ -10,8 +11,9 @@ public class ColliderDrawer : MonoBehaviour
 
     public bool enableBehaviour = true;
     public bool AddCreatedBoxCollider2D;
+    public bool RemoveAllHitbox;
     [SerializeField] private GameObject goToAddBoxCollider2D;
-    [SerializeField] private Vector2 caseSize, gridSize;
+    [SerializeField] private Vector2 caseSize = Vector2.one, gridSize = new Vector2(32f, 18f);
     [SerializeField] private Vector2 gridCenter = Vector2.zero;
     [SerializeField] private KeyCode inputToStartDrawing = KeyCode.A;
     [SerializeField] private KeyCode inputToUndo = KeyCode.Z;
@@ -26,8 +28,15 @@ public class ColliderDrawer : MonoBehaviour
         }
     }
 
+    [ExecuteAlways]
     private void Update()
     {
+        if (RemoveAllHitbox)
+        {
+            RemoveBoxColliders();
+            RemoveAllHitbox = false;
+        }
+
         if (!enableBehaviour)
             return;
 
@@ -65,6 +74,12 @@ public class ColliderDrawer : MonoBehaviour
         {
             SaveCollider();
         }
+
+        if (RemoveAllHitbox)
+        {
+            RemoveBoxColliders();
+            RemoveAllHitbox = false;
+        }
     }
     
     private void SaveCollider()
@@ -78,6 +93,7 @@ public class ColliderDrawer : MonoBehaviour
         ColliderDrawingData data = new ColliderDrawingData(centers, sizes);
         Save.WriteJSONData(data, @"/Save/tmp/ColliderDrawer" + SettingsManager.saveFileExtension);
         recToAdd.Clear();
+        isDrawing = false;
     }
 
     private ColliderDrawingData LoadCollider()
@@ -112,6 +128,15 @@ public class ColliderDrawer : MonoBehaviour
     private Vector2 GetMousePos() => Useful.mainCamera.ScreenToWorldPoint(CustomInput.mousePosition);
 
     #region Gizmos/OnValidate
+
+    private void RemoveBoxColliders()
+    {
+        BoxCollider2D[] hitboxs = goToAddBoxCollider2D.GetComponents<BoxCollider2D>();
+        foreach (BoxCollider2D hitbox in hitboxs)
+        {
+            DestroyImmediate(hitbox);
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {

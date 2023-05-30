@@ -21,12 +21,6 @@ public class CircularBumpZone : BumpsZone
         return PhysicsToric.OverlapCircleAll(transform.position, circleCollider.radius * collisionDetectionScale, charMask);
     }
 
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        circleCollider = GetComponent<CircleCollider2D>();
-        transform.GetChild(0).localScale = circleCollider.radius * 2f * Vector3.one;
-    }
 
     protected override void OnDrawGizmosSelected()
     {
