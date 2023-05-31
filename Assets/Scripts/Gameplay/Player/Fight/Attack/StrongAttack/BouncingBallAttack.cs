@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 
 public class BouncingBallAttack : StrongAttack
@@ -8,6 +9,7 @@ public class BouncingBallAttack : StrongAttack
     private float speed;
     private int nbBalls;
 
+    [SerializeField] private bool drawGizmos;
     [SerializeField] private float shootDistanceFromChar = 0.4f;
     [SerializeField] private float initSpeed = 7f;
     [SerializeField] private float maxSpeed = 10f;
@@ -86,6 +88,9 @@ public class BouncingBallAttack : StrongAttack
 
     private void OnDrawGizmosSelected()
     {
+        if (!drawGizmos)
+            return;
+
         Gizmos.color = Color.green;
         Circle.GizmosDraw(transform.position, 2f, -shootAngle * Mathf.Deg2Rad, shootAngle * Mathf.Deg2Rad);
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(shootAngle * Mathf.Deg2Rad, 2f));

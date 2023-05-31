@@ -325,13 +325,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
+  drawGizmos: 0
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
   timeUntilCommandIsInvalid: 0.1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 16392
   groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
   groundOffset: {x: 0, y: -0.65}
@@ -508,26 +506,27 @@ MonoBehaviour:
   slopeRaycastLength: 0.2
   isSlopingRight: 0
   isSlopingLeft: 0
-  bumpDecreasementLerp: 7
+  maxBumpSpeed: 20
+  minBumpGroundSpeed: 7
+  minBumpAirSpeed: 7
   maxBumpDuration: 0.5
-  extraBumpFrictionCauseBySpeed:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  groundBumpFrictionCoefficient: 1.2
-  groundControlWhereBump: 0.25
-  minGroundSpeedWhereBump: 1.5
-  airBumpFrictionCoefficient: 0.9
-  airControlWhereBump: {x: 0.5, y: 0.5}
-  minAirSpeedWhereBump: 10
+  bumpAirDecreasementSpeedLerp: 7
+  extraLerpMultiplierWhenTouchingGround: 2
+  bumpGroundControl: 0.2
+  bumpAirControl: {x: 0.2, y: 0.8}
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
   inertiaSpeedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
   slideParticle: {fileID: 0}
+  cameraShakeSetting:
+    duration: 0.15
+    strengh: {x: 0.2, y: 0.2, z: 0.2}
+    vibrato: 14
+    randomness: 90
+    snapping: 0
+    fadeOut: 1
   side: -1
 --- !u!61 &2743520201175605748
 BoxCollider2D:
@@ -553,7 +552,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1.14}
+  m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &3969579585314972504
 MonoBehaviour:
@@ -661,7 +660,7 @@ MonoBehaviour:
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
   shieldPressedUp: 0
-  controllerType: 0
+  controllerType: 1
   useMovementLerpForKeyboard: 1
   movementLerpForKeyboard: 35
   inputsKeyCode: 
@@ -681,7 +680,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charIndex: 2
-  playerIndex: 1
+  playerIndex: 2
   color: {r: 1, g: 0.042311423, b: 0.011612245, a: 1}
   id: 1
 --- !u!114 &8612698283953875211
@@ -710,6 +709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canLauchWeakAttack: 1
   canLaunchStrongAttack: 1
+  drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityOffset: 0.1
   invicibilityDurationWhenDashing: 0.2
@@ -735,6 +735,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 2
+  drawGizmos: 0
   shootDistanceFromChar: 0.35
   initSpeed: 18
   maxSpeed: 25
@@ -762,7 +763,7 @@ MonoBehaviour:
   castDuration: 0.8
   cooldown:
     duration: 3
-  drawGizmos: 1
+  drawGizmos: 0
   explosionRadius: 1.5
   minDistanceFromGround: 1.2
   speedFall: 50
@@ -789,6 +790,7 @@ MonoBehaviour:
   cooldown:
     duration: 0
   enableBehaviour: 1
+  drawGizmos: 0
   spawnDuration: 15
   spawnWait: 5
   fiolePrefabs: {fileID: 3908213530835512177, guid: 6cd1e1bb3f3ed814db6b8a5e21693f0c, type: 3}

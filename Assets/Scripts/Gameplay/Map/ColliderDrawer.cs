@@ -12,6 +12,7 @@ public class ColliderDrawer : MonoBehaviour
     public bool enableBehaviour = true;
     public bool AddCreatedBoxCollider2D;
     public bool RemoveAllHitbox;
+    public bool drawGrid = true;
     [SerializeField] private GameObject goToAddBoxCollider2D;
     [SerializeField] private Vector2 caseSize = Vector2.one, gridSize = new Vector2(32f, 18f);
     [SerializeField] private Vector2 gridCenter = Vector2.zero;
@@ -140,13 +141,16 @@ public class ColliderDrawer : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.white;
-        Vector2 offset = gridCenter + gridSize * caseSize * -0.5f + caseSize * 0.5f;
-        for (int y = 0; y < gridSize.y; y++)
+        if(drawGrid)
         {
-            for (int x = 0; x < gridSize.x; x++)
+            Gizmos.color = Color.white;
+            Vector2 offset = gridCenter + gridSize * caseSize * -0.5f + caseSize * 0.5f;
+            for (int y = 0; y < gridSize.y; y++)
             {
-                Hitbox.GizmosDraw(new Vector2(x * caseSize.x, y * caseSize.y) + offset, caseSize);
+                for (int x = 0; x < gridSize.x; x++)
+                {
+                    Hitbox.GizmosDraw(new Vector2(x * caseSize.x, y * caseSize.y) + offset, caseSize);
+                }
             }
         }
 

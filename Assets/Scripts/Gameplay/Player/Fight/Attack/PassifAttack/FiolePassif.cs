@@ -23,6 +23,7 @@ public class FiolePassif : PassifAttack
     }
     private List<Fiole> fioles;
 
+    [SerializeField] private bool drawGizmos = true;
     [SerializeField] private float spawnDuration = 15f, spawnWait = 10f;
     [SerializeField] private GameObject fiolePrefabs;
     [SerializeField] private Vector2[] spawnPoints;
@@ -85,6 +86,9 @@ public class FiolePassif : PassifAttack
 
     private void OnDrawGizmosSelected()
     {
+        if(!drawGizmos)
+            return;
+
         Gizmos.color = Color.red;
         foreach (Vector2 pos in spawnPoints)
         {
