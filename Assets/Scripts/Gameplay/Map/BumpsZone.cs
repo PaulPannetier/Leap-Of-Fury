@@ -34,7 +34,7 @@ public abstract class BumpsZone : MonoBehaviour
                     charAlreadyTouch.Add(id);
                     Vector2 dir = GetColliderNormal(col);
                     player.GetComponent<Movement>().ApplyBump(dir * bumpSpeed);
-                    Invoke(nameof(ClearCharAlreadyTouch), 1f);
+                    Invoke(nameof(ClearCharAlreadyTouch), GetBumpTimeOffet());
                 }
             }
         }
@@ -47,6 +47,8 @@ public abstract class BumpsZone : MonoBehaviour
             }
         }
     }
+
+    protected abstract float GetBumpTimeOffet();
 
     private void ClearCharAlreadyTouch()
     {

@@ -202,6 +202,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Char 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: bumpDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: minBumpSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: bumpSpeedLerp
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: maxBumpDuration
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: minBumpDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: bumpFrictionLerp
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: bumpGravityScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: maxFallBumpSpeed
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
 --- !u!4 &123510587 stripped
@@ -1477,7 +1509,7 @@ GameObject:
   - component: {fileID: 7731413259161571364}
   - component: {fileID: 7731413259161571361}
   - component: {fileID: 3675151853304634823}
-  m_Layer: 3
+  m_Layer: 12
   m_Name: CircularBumpZone
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -14599,7 +14631,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7731413259024539052}
   - component: {fileID: 7731413259024539053}
-  m_Layer: 3
+  m_Layer: 12
   m_Name: GFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}

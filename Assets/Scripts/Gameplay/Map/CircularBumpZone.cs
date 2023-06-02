@@ -21,6 +21,7 @@ public class CircularBumpZone : BumpsZone
         return PhysicsToric.OverlapCircleAll(transform.position, circleCollider.radius * collisionDetectionScale, charMask);
     }
 
+    protected override float GetBumpTimeOffet() => (circleCollider.radius * collisionDetectionScale - circleCollider.radius) / bumpSpeed;
 
     protected override void OnDrawGizmosSelected()
     {

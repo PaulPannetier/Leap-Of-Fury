@@ -143,9 +143,12 @@ public class Movement : MonoBehaviour
     private bool isToSteepSlopeRight, isToSteepSlopeLeft;
 
     [Header("Bump")]
-    [SerializeField] private float bumpDuration;
-    [SerializeField] private AnimationCurve bumpSpeedCurve;
+    [SerializeField] private float minBumpSpeedX = 1f;
+    [SerializeField] private float maxFallBumpSpeed = 30f;
+    [SerializeField] private float bumpFrictionLerp = 2f;
     [SerializeField] private float bumpGravityScale = 1f;
+    [SerializeField] private float maxBumpDuration = 1.5f;
+    [SerializeField] private float minBumpDuration = 0.3f;
     private float lastTimeBump = -10f;
 
    [Header("Map Object")]
@@ -190,7 +193,7 @@ public class Movement : MonoBehaviour
     public bool doubleJump { get; private set; }//vaut true la frame ou l'action est faite;
     public bool wallJumpAlongWall { get; private set; }//vaut true la frame ou l'action est faite;
     public bool dash { get; private set; }//vaut true la frame ou l'action est faite;
-    private bool oldWallJump, oldJump, oldSecondJump, oldWallJumpAlongWall, oldDash;//use tu set var on top just for only one frame
+    private bool oldWallJump, oldJump, oldSecondJump, oldWallJumpAlongWall, oldDash;//use to set var on top just for only one frame
 
     private bool doJump, doDash;
 
@@ -252,9 +255,9 @@ public class Movement : MonoBehaviour
     public void ApplyBump(in Vector2 bumpForce)
     {
         rb.velocity = bumpForce;
-        lastTimeBump = Time.time;
         isBumping = true;
         isDashing = false;
+        lastTimeBump = Time.time;
     }
 
     #endregion
@@ -508,14 +511,29 @@ public class Movement : MonoBehaviour
         //VI Bumps
         if(isBumping)
         {
-            if (Time.time - lastTimeBump >= bumpDuration)
+            if(Time.time - lastTimeBump > maxBumpDuration)
             {
-                isBumping = false;
+                DisableBump();
             }
 
-            if(onWall)
-            { 
-                onWall = false;
+            if (onWall)
+            {
+                DisableBump();
+            }
+
+            if(isGrounded)
+            {
+                DisableBump();
+            }
+
+            if(Time.time - lastTimeBump > minBumpDuration && Mathf.Abs(rb.velocity.x) < minBumpSpeedX)
+            {
+                DisableBump();
+            }
+
+            void DisableBump()
+            {
+                isBumping = false;
                 lastTimeBump = -10f;
             }
         }
@@ -807,6 +825,9 @@ public class Movement : MonoBehaviour
 
     private void HandleGrab()
     {
+        if (isBumping)
+            return;
+
         if (reachGrabApex)
         {
             if(!wallGrab || !enableInput || !canMove)
@@ -924,6 +945,9 @@ public class Movement : MonoBehaviour
 
     private void HandleJump()
     {
+        if (isBumping)
+            return;
+
         if (doJump)
         {
             if (isGrounded && canMove && !isBumping)
@@ -1174,7 +1198,6 @@ public class Movement : MonoBehaviour
 
             //Movement horizontal
             //Clamp, on est dans le mauvais sens
-
             if(isQuittingConvoyerBelt)
             {
                 float speed = inertiaSpeedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
@@ -1329,15 +1352,17 @@ public class Movement : MonoBehaviour
         if (!isBumping || !enableBehaviour)
             return;
 
-        float speed = bumpSpeedCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeBump) / bumpDuration));
-        if(isGrounded)
+        //friction
+        rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, 0f, bumpFrictionLerp * Time.fixedDeltaTime), rb.velocity.y);
+
+        //gravity
+        if (rb.velocity.y < -maxFallBumpSpeed)//slow
         {
-            rb.velocity = new Vector2(speed * rb.velocity.x.Sign(), 0f);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, -maxFallBumpSpeed, fallDecelerationSpeedLerp * Time.fixedDeltaTime));
         }
-        else // be in air
+        else
         {
-            Vector2 tmpSpeed = rb.velocity + bumpGravityScale * Time.fixedDeltaTime * Physics2D.gravity;
-            rb.velocity = tmpSpeed.normalized * speed;
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, -fallSpeed.y, -Physics2D.gravity.y * bumpGravityScale * Time.fixedDeltaTime));
         }
     }
 
@@ -1481,6 +1506,7 @@ public class Movement : MonoBehaviour
         jumpInitForce = Mathf.Max(0f, jumpInitForce);
         slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
         knockHeadOffset = new Vector2(Mathf.Max(0f, knockHeadOffset.x), Mathf.Max(0f, knockHeadOffset.y));
+        bumpFrictionLerp = Mathf.Max(0f, bumpFrictionLerp);
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 

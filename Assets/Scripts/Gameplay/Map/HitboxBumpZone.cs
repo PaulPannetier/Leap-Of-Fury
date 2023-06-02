@@ -49,4 +49,6 @@ public class HitboxBumpZone : BumpsZone
         Gizmos.color = Color.green;
         Hitbox.GizmosDraw((Vector2)transform.position + hitbox.offset, hitbox.size * collisionDetectionScale);
     }
+
+    protected override float GetBumpTimeOffet() => (0.5f * Mathf.Max(hitbox.size.x, hitbox.size.y)) / bumpSpeed;
 }
