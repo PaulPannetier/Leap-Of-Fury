@@ -585,7 +585,7 @@ public class Movement : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        
+
         //DebugText.instance.text += rb.velocity + ", " + rb.velocity.magnitude.Round(1) + " m/s\n";
     }
 
@@ -945,9 +945,6 @@ public class Movement : MonoBehaviour
 
     private void HandleJump()
     {
-        if (isBumping)
-            return;
-
         if (doJump)
         {
             if (isGrounded && canMove && !isBumping)
@@ -955,17 +952,17 @@ public class Movement : MonoBehaviour
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && canMove && !isBumping)
+            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && !isBumping && canMove)
             {
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if ((grabStayAtApex || reachGrabApex || wallGrab || onWall || isSliding) && !isGrounded && canMove)
+            else if ((grabStayAtApex || reachGrabApex || wallGrab || onWall || isSliding) && !isGrounded && !isBumping && canMove)
             {
                 WallJump();
                 doJump = false;
             }
-            else if (!isGrounded && !(grabStayAtApex || reachGrabApex || wallGrab) && isPressingJumpButtonDownForFixedUpdate && !hasDoubleJump && enableDoubleJump)
+            else if (!isGrounded && !(grabStayAtApex || reachGrabApex || wallGrab) && isPressingJumpButtonDownForFixedUpdate && !hasDoubleJump && enableDoubleJump && !isBumping && canMove)
             {
                 HandleDoubleJump();
                 doJump = false;
@@ -1506,7 +1503,11 @@ public class Movement : MonoBehaviour
         jumpInitForce = Mathf.Max(0f, jumpInitForce);
         slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
         knockHeadOffset = new Vector2(Mathf.Max(0f, knockHeadOffset.x), Mathf.Max(0f, knockHeadOffset.y));
+        minBumpSpeedX = Mathf.Max(0f, minBumpSpeedX);
         bumpFrictionLerp = Mathf.Max(0f, bumpFrictionLerp);
+        bumpGravityScale = Mathf.Max(0f, bumpGravityScale);
+        maxBumpDuration = Mathf.Max(minBumpDuration, maxBumpDuration);
+        minBumpDuration = Mathf.Min(minBumpDuration, maxBumpDuration);
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
