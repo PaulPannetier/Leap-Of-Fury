@@ -146,10 +146,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5402244823245679803, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
-      propertyPath: controllerType
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5602198179201593308, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -194,16 +190,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5696250467530998310, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
-      propertyPath: playerIndex
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_Name
       value: Char 2
       objectReference: {fileID: 0}
     - target: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: enableCameraShaking
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -352,6 +348,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6001260818544699278, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7111324779284635613, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
+      propertyPath: enableCameraShaking
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8090791378756873177, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
@@ -612,35 +612,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3690062573388861518, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3690062573388861518, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3690062574070826303, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3690062574070826303, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3997859093726797468, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: m_Size.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3997859093726797468, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: m_Size.y
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3997859093726797468, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3997859093726797468, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: m_Offset.x
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6689762117243769012, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_RootOrder
@@ -686,25 +670,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7791410703419052070, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: drawGizmos
+    - target: {fileID: 7867381648852789479, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
+      propertyPath: enableCameraShaking
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867381648852789479, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: drawGizmos
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867381648852789479, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: wallJumpAlongCurveSpeed.m_Curve.Array.data[3].time
-      value: 1.0072937
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867381648852789479, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: wallJumpAlongCurveSpeed.m_Curve.Array.data[3].value
-      value: 0.6621399
       objectReference: {fileID: 0}
     - target: {fileID: 9211636111085214947, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_Name
       value: Char 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9211636111085214947, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
@@ -814,6 +790,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6001260818544699278, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7111324779284635613, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+      propertyPath: enableCameraShaking
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8090791378756873177, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}

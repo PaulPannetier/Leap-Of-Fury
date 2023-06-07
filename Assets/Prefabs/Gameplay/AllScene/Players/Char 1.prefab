@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 922723625538123844}
   - component: {fileID: 66234244654983004}
   - component: {fileID: 6584224770937579589}
-  - component: {fileID: 7867381648852789479}
   - component: {fileID: 3997859093726797468}
+  - component: {fileID: 7867381648852789479}
   - component: {fileID: 2773945953036524592}
   - component: {fileID: 3962006582592122389}
   - component: {fileID: 4330454076875467065}
@@ -141,6 +141,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!61 &3997859093726797468
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9211636111085214947}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.282}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.125, y: 1.71875}
+    newSize: {x: 2, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &7867381648852789479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,13 +200,9 @@ MonoBehaviour:
   enableDoubleJump: 1
   doubleJumpSpeed: 11
   jumpCoyoteTime: 0.1
-  knockHeadSize: {x: 0, y: 0}
-  knockHeadOffset: {x: 0, y: 0}
-  hitbowWithoutKnockHeadSize: {x: 0, y: 0}
-  hitboxWithoutKnockHeadOffset: {x: 0, y: 0}
   airGravityMultiplier: 3
   airHorizontalSpeed: 4.5
-  airInitHorizontaSpeed: 0.25
+  airInitHorizontalSpeed: 0.4
   airSpeedLerp: 20
   fallGravityMultiplier: 1.5
   fallInitHorizontalSpeed: 0.35
@@ -197,7 +219,7 @@ MonoBehaviour:
   wallJumpSpeed: {x: 5, y: 20}
   wallJumpGravityMultiplier: 1.2
   wallJumpMaxDuration: 0.15
-  wallJumpAlongSpeed: 9
+  wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
     serializedVersion: 2
     m_Curve:
@@ -220,17 +242,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.13888833
     - serializedVersion: 3
-      time: 0.6244606
-      value: 0.9890453
-      inSlope: -0.15125622
-      outSlope: -0.15125622
+      time: 0.6736536
+      value: 0.9031886
+      inSlope: -0.7620684
+      outSlope: -0.7620684
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.39205983
+      outWeight: 0.2202092
     - serializedVersion: 3
-      time: 0.99990845
-      value: 0.5964966
+      time: 1.0004578
+      value: -0.00036621094
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -240,8 +262,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  jumpAlongWallDuration: 0.2
-  wallJumpAlongCooldown: 0.1
+  jumpAlongWallDuration: 0.15
+  wallJumpAlongCooldown: 0.15
   grabSpeed: 4
   grabInitSpeed: 0.25
   grabSpeedMultiplierWhenPreciseGrab: 0.5
@@ -335,20 +357,19 @@ MonoBehaviour:
   slopeRaycastLength: 0.2
   isSlopingRight: 0
   isSlopingLeft: 0
-  maxBumpSpeed: 20
-  minBumpGroundSpeed: 7
-  minBumpAirSpeed: 7
-  maxBumpDuration: 0.5
-  bumpAirDecreasementSpeedLerp: 7
-  extraLerpMultiplierWhenTouchingGround: 2
-  bumpGroundControl: 0.2
-  bumpAirControl: {x: 0.2, y: 0.8}
+  minBumpSpeedX: 1
+  maxFallBumpSpeed: 20
+  bumpFrictionLerp: 40
+  bumpGravityScale: 2
+  maxBumpDuration: 1.5
+  minBumpDuration: 0.2
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
   inertiaSpeedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
   slideParticle: {fileID: 0}
+  enableCameraShaking: 0
   cameraShakeSetting:
     duration: 0.15
     strengh: {x: 0.2, y: 0.2, z: 0.2}
@@ -357,32 +378,6 @@ MonoBehaviour:
     snapping: 0
     fadeOut: 1
   side: -1
---- !u!61 &3997859093726797468
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9211636111085214947}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.21}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.125, y: 1.71875}
-    newSize: {x: 2, y: 2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
-  m_EdgeRadius: 0
 --- !u!114 &2773945953036524592
 MonoBehaviour:
   m_ObjectHideFlags: 0

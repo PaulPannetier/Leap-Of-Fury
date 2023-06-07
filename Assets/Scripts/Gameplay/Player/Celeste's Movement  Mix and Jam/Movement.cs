@@ -33,19 +33,21 @@ public class Movement : MonoBehaviour
     }
     [SerializeField] private bool drawGizmos = true;
 
+    [Header("General")]
+    [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
+
+    [Header("Collision")]
+    public float groundCollisionRadius = 0.28f;
+    public float sideCollisionRadius = 0.28f;
+    public Vector2 groundOffset, sideOffset = new Vector2(0.15f, 0f);
+    [Tooltip("La longueur de détection de la plateforme lors d'une monté en grab")][SerializeField] private float grabRayLength = 1f;
+    private LayerMask groundLayer;
+
     [Header("Walk")]
     [Tooltip("La vitesse de marche")] [SerializeField] private float walkSpeed = 10f;
     [Tooltip("La vitesse d'interpolation de marche")] [SerializeField] private float speedLerp = 50f;
     [Tooltip("La propor de vitesse initiale de marche")] [SerializeField] [Range(0f, 1f)] private float initSpeed = 0.2f;
-    [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
     private Vector2 localVelocityOnGrippingGround;
-
-    [Header("Collision")]
-    private LayerMask groundLayer;
-    public float groundCollisionRadius = 0.28f;
-    public float sideCollisionRadius = 0.28f;
-    public Vector2 groundOffset, sideOffset = new Vector2(0.15f, 0f);
-    [Tooltip("La longueur de détection de la plateforme lors d'une monté en grab")] [SerializeField] private float grabRayLength = 1f;
 
     [Header("Jumping")]
     [Tooltip("La hauteur min du saut.")] [SerializeField] private float jumpInitForce = 20f;
@@ -58,17 +60,13 @@ public class Movement : MonoBehaviour
     [SerializeField] private bool enableDoubleJump = true;
     [Tooltip("The speed of the second jump(magnitude of his velocity vector)"), SerializeField] private float doubleJumpSpeed = 6f;
     [Tooltip("Le temps apres avoir quité la plateforme ou le saut est possible")] [SerializeField] private float jumpCoyoteTime = 0.1f;
-    [Tooltip("La taille de la boite de collision détectant un saut sur le bord d'un mur"), SerializeField] private Vector2 knockHeadSize;
-    [Tooltip("L'offset de la boite de collision détectant un saut sur le bord d'un mur"), SerializeField] private Vector2 knockHeadOffset;
-    [Tooltip("La taille de la boite de collision du joueur sans celle détectant un saut blocker par le bord d'un mur"), SerializeField] private Vector2 hitbowWithoutKnockHeadSize;
-    [Tooltip("L'offset de la boite de collision du joueur sans celle détectant un saut blocker par le bord d'un mur"), SerializeField] private Vector2 hitboxWithoutKnockHeadOffset;
     private float lastTimeLeavePlateform = -10f, lastTimeJumpCommand = -10f, lastTimeBeginJump = -10f;
     private bool isPressingJumpButtonDownForFixedUpdate;
 
     [Header("Air")]//en chute mais en phase montante
     [Tooltip("L'accélération continue dû au saut.")] [SerializeField] private float airGravityMultiplier = 1f;
     [Tooltip("La vitesse horizontale maximal en l'air (VMAX en l'air).")] [SerializeField] private float airHorizontalSpeed = 4f;
-    [Tooltip("La vitesse init horizontale en l'air (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float airInitHorizontaSpeed = 0.4f;
+    [Tooltip("La vitesse init horizontale en l'air (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float airInitHorizontalSpeed = 0.4f;
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale en l'air")] [SerializeField] private float airSpeedLerp = 20f;
 
     [Header("Fall")]
@@ -417,6 +415,11 @@ public class Movement : MonoBehaviour
 
         // III-Fall and Jump
 
+        //release walljumpingAlongWall in case of cancelled jump
+        if(isJumpingAlongWall && isWallJumping)
+        {
+            isJumpingAlongWall = false;
+        }
         //Trigger falling
         if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isSliding && !isDashing && !isGrounded && !isBumping)
         {
@@ -1001,13 +1004,21 @@ public class Movement : MonoBehaviour
 
         if(isJumpingAlongWall)
         {
-            float per100 = (Time.time - lastTimeBeginWallJumpAlongWall) / jumpAlongWallDuration;
-            rb.velocity = new Vector2(0f, wallJumpAlongSpeed * wallJumpAlongCurveSpeed.Evaluate(per100));
+            //detect changing direction
+            if((playerInput.rawX == -1 && onRightWall) || (playerInput.rawX == 1 && onLeftWall))
+            {
+                WallJumpOppositeSide(onRightWall);
+            }
+            else // continue jumping along wall
+            {
+                float per100 = (Time.time - lastTimeBeginWallJumpAlongWall) / jumpAlongWallDuration;
+                rb.velocity = new Vector2(0f, wallJumpAlongSpeed * wallJumpAlongCurveSpeed.Evaluate(per100));
+            }
         }
 
         isPressingJumpButtonDownForFixedUpdate = false;
 
-        void HandleJumpGravity(in float GravityMultiplier, in float force, in Vector2 speed)
+        void HandleJumpGravity(float GravityMultiplier, float force, in Vector2 speed)
         {
             rb.velocity += Vector2.up * (Physics2D.gravity.y * GravityMultiplier * Time.fixedDeltaTime);
 
@@ -1120,21 +1131,12 @@ public class Movement : MonoBehaviour
         {
             if(Time.time - lastTimeBeginWallJumpAlongWall > wallJumpAlongCooldown)
             {
-                rb.velocity = Vector2.up * (wallJumpAlongSpeed * wallJumpAlongCurveSpeed.Evaluate(0f));
-                isJumpingAlongWall = wallJumpAlongWall = true;
-                lastTimeBeginWallJumpAlongWall = Time.time;
+                WallJumpAlongWall(right);
             }
         }
         else if((right && playerInput.rawX == -1) || (!right && playerInput.rawX == 1)) //2nd case : jump on the oposite of the wall
         {
-            float angle = (right ? 1f : -1f) * wallJumpAngle * Mathf.Deg2Rad + Mathf.PI * 0.5f;
-            Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-            rb.velocity = new Vector2(rb.velocity.x, 0f);
-            rb.velocity += dir * wallJumpInitForce;
-            isWallJumping = wallJump = true;
-            lastTimeBeginWallJump = Time.time;
-
-            side *= -1;
+            WallJumpOppositeSide(right);
         }
         else
         {
@@ -1143,6 +1145,25 @@ public class Movement : MonoBehaviour
 
         StopCoroutine(DisableMovement(0f));
         StartCoroutine(DisableMovement(0.1f));
+    }
+
+    private void WallJumpAlongWall(bool right)
+    {
+        rb.velocity = Vector2.up * (wallJumpAlongSpeed * wallJumpAlongCurveSpeed.Evaluate(0f));
+        isJumpingAlongWall = wallJumpAlongWall = true;
+        lastTimeBeginWallJumpAlongWall = Time.time;
+    }
+
+    private void WallJumpOppositeSide(bool right)
+    {
+        float angle = (right ? 1f : -1f) * wallJumpAngle * Mathf.Deg2Rad + Mathf.PI * 0.5f;
+        Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        rb.velocity += dir * wallJumpInitForce;
+        isWallJumping = wallJump = true;
+        lastTimeBeginWallJump = Time.time;
+
+        side *= -1;
     }
 
     #endregion
@@ -1166,10 +1187,10 @@ public class Movement : MonoBehaviour
             //Movement horizontal
             //Clamp, on est dans le mauvais sens
             if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
-                rb.velocity = new Vector2(airInitHorizontaSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
-            if (enableInput && Mathf.Abs(rb.velocity.x) < airInitHorizontaSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+                rb.velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
+            if (enableInput && Mathf.Abs(rb.velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
             {
-                rb.velocity = new Vector2(airInitHorizontaSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
+                rb.velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
             }
             else
             {
@@ -1475,11 +1496,6 @@ public class Movement : MonoBehaviour
         //Slope
         Gizmos.DrawLine((Vector2)transform.position + slopeRaycastOffset, (Vector2)transform.position + slopeRaycastOffset + Vector2.down * slopeRaycastLength);
         Gizmos.DrawLine((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), (Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y) + Vector2.down * slopeRaycastLength);
-
-        //KnockHead
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube((Vector2)transform.position + knockHeadOffset, knockHeadSize);
-        Gizmos.DrawCube((Vector2)transform.position + new Vector2(-knockHeadOffset.x, knockHeadOffset.y), knockHeadSize);
     }
 
     private void OnValidate()
@@ -1502,7 +1518,6 @@ public class Movement : MonoBehaviour
         airSpeedLerp = Mathf.Max(0f, airSpeedLerp);
         jumpInitForce = Mathf.Max(0f, jumpInitForce);
         slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
-        knockHeadOffset = new Vector2(Mathf.Max(0f, knockHeadOffset.x), Mathf.Max(0f, knockHeadOffset.y));
         minBumpSpeedX = Mathf.Max(0f, minBumpSpeedX);
         bumpFrictionLerp = Mathf.Max(0f, bumpFrictionLerp);
         bumpGravityScale = Mathf.Max(0f, bumpGravityScale);
