@@ -301,15 +301,13 @@ public class FightController : MonoBehaviour
     private void OnBeginStrongAttack()
     {
         isLaunchingStrongAttack = true;
-        canLaunchStrongAttackCounter--;
-        canLaunchStrongAttack = canLaunchStrongAttackCounter >= 0;
+        DisableStrongAttack();
     }
 
     private void OnBeginWeakAttack()
     {
         isLaunchingWeakAttack = true;
-        canLaunchWeakAttackCounter--;
-        canLauchWeakAttack = canLaunchWeakAttackCounter >= 0;
+        DisableWeakAttack();
     }
 
     private void OnEndStrongAttack()
@@ -320,8 +318,7 @@ public class FightController : MonoBehaviour
             return;
         }
         isLaunchingStrongAttack = false;
-        canLaunchStrongAttackCounter++;
-        canLaunchStrongAttack = canLaunchStrongAttackCounter >= 0;
+        EnableStrongAttack();
     }
 
     private void OnEndWeakAttack()
@@ -332,8 +329,7 @@ public class FightController : MonoBehaviour
             return;
         }
         isLaunchingWeakAttack = false;
-        canLaunchWeakAttackCounter++;
-        canLauchWeakAttack = canLaunchWeakAttackCounter >= 0;
+        EnableWeakAttack();
     }
 
     #endregion

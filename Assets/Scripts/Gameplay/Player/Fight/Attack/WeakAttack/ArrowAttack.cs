@@ -12,6 +12,7 @@ public class ArrowAttack : WeakAttack
     [SerializeField] private GameObject arrowPrefab;
 
     [SerializeField] private float arrowLaunchDistance = 0.2f;
+    public float delayBetweenLauchAndRecoverArrow = 0.7f;
     [SerializeField] private float arrowInitSpeed = 4f;
     [SerializeField] private int initArrow = 1;
     [SerializeField, Tooltip("L'angle entre les arrow lors de la réactivation"), Range(0f, 180f)] private float arrowActivationAngle = 15f;
@@ -67,6 +68,9 @@ public class ArrowAttack : WeakAttack
             StartCoroutine(WaitEndAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
             return true;
         }
+
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
         return false;
     }
 
@@ -80,6 +84,12 @@ public class ArrowAttack : WeakAttack
     public void RecoverArrow()
     {
         nbArrow++;
+    }
+
+    public void RecoverArrowInAir()
+    {
+        OnArrowLand();
+        RecoverArrow();
     }
 
     public void OnArrowLand()

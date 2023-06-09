@@ -14,6 +14,7 @@ public class Arrow : MonoBehaviour
     private bool isDestroy = false;
     private bool isMainArrow;
     private bool isGuiding = false;
+    private float timeWhenLaunch = -10f;
 
     public bool enableBehaviour = true;
 
@@ -107,6 +108,7 @@ public class Arrow : MonoBehaviour
         playerCommon = physicAttack.GetComponent<PlayerCommon>();
         capsuleCollider.enabled = false;
         this.isMainArrow = isMainArrow;
+        timeWhenLaunch = Time.time;
     }
 
     public void OnRelaunch()
@@ -142,11 +144,11 @@ public class Arrow : MonoBehaviour
         }
     }
 
-    private void PickUp()
+    private void PickUp(bool inAir = false)
     {
         if(toricObject.isAClone)
         {
-            toricObject.original.GetComponent<Arrow>().PickUp();
+            toricObject.original.GetComponent<Arrow>().PickUp(inAir);
             return;
         }
 
@@ -155,7 +157,12 @@ public class Arrow : MonoBehaviour
             //Debug.LogWarning("PTDR unity est destroy ca pue");
             return;
         }
-        arrowAttack.RecoverArrow();
+
+        if(inAir)
+            arrowAttack.RecoverArrowInAir();
+        else
+            arrowAttack.RecoverArrow();
+
         isDestroy = true;
         toricObject.RemoveClones();
         Destroy(gameObject);
@@ -237,6 +244,11 @@ public class Arrow : MonoBehaviour
                 {
                     HitPlayer(player);
                     return;
+                }
+                else if(Time.time - timeWhenLaunch >= arrowAttack.delayBetweenLauchAndRecoverArrow)
+                {
+                    PickUp(true);
+                    //print("PickUp in air");
                 }
             }
             else if (collision.CompareTag("Floor"))
