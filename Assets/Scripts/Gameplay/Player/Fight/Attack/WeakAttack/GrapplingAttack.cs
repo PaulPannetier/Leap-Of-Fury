@@ -24,12 +24,13 @@ public class GrapplingAttack : WeakAttack
     private Action callbackEnableThisAttack;
     private bool isWaiting; //true => on viens de ce tp, on attend 2 frame avant de reprendre les updates
     private bool endAttack;
+    private LayerMask groundMask;
 
+    public bool drawGizmos = true;
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
     [SerializeField] private float maxRopeLength;
     [SerializeField] private float maxDurationAttach = 5f;
     [SerializeField] private float grapClimbUpSpeed = 2f, grapClimbDownSpeed = 4f;
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private Bomb bombPrefabs;
     [SerializeField] private float timeBetweenBombSpawn = 0.4f;
 
@@ -58,6 +59,7 @@ public class GrapplingAttack : WeakAttack
     {
         base.Start();
         GetComponent<ToricObject>().onTeleportCallback += OnTeleportByToricObjectScript;
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -276,6 +278,14 @@ public class GrapplingAttack : WeakAttack
     private bool CalculateAttachPoint()
     {
         grapDir = movement.GetCurrentDirection(true);
+        float grapAngle = Useful.AngleHori(Vector2.zero, grapDir);
+
+        if(grapAngle < 45f * Mathf.Deg2Rad || grapAngle > 135f * Mathf.Deg2Rad)
+        {
+            return false;
+        }
+
+        grapDir = Useful.Vector2FromAngle(grapAngle);
         RaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask, out lineRendererPoints);
         if(raycast.collider == null)
         {
@@ -306,6 +316,8 @@ public class GrapplingAttack : WeakAttack
         Debug.Break();
     }
 
+    #region Gizmos / OnValidate
+
     private void OnValidate()
     {
         grapClimbUpSpeed = Mathf.Max(0f, grapClimbUpSpeed);
@@ -316,12 +328,18 @@ public class GrapplingAttack : WeakAttack
         GetComponent<SpringJoint2D>().enabled = false;
         grapElasticity = Mathf.Max(0f, grapElasticity);
         maxRopeLength = Mathf.Max(grapRange, maxRopeLength);
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
     private void OnDrawGizmosSelected()
     {
+        if(!drawGizmos)
+            return;
+
         Gizmos.color = Color.green;
         Circle.GizmosDraw(transform.position, grapRange);
         Circle.GizmosDraw((Vector2)transform.position + grapRange * Vector2.up, circleCastRadius);
     }
+
+    #endregion
 }

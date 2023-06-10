@@ -795,8 +795,8 @@ public static class Useful
     public static bool IsCollinear(this Vector2 a, in Vector2 v) => Mathf.Abs((v.x / a.x) - (v.y / a.y)) < 1e-3f;
     public static Vector3 Cross(in this Vector2 v1, in Vector2 v) => new Vector3(0f, 0f, v1.x * v.y - v1.y * v.x);
     public static float Dot(in this Vector2 v1, in Vector2 v) => v1.x * v.x + v1.y * v.y;
-    public static Vector2 Vector2FromAngle(in float angle) => new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-    public static Vector2 Vector2FromAngle(in float angle, in float length) => new Vector2(length * Mathf.Cos(angle), length * Mathf.Sin(angle));
+    public static Vector2 Vector2FromAngle(float angle) => new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+    public static Vector2 Vector2FromAngle(float angle, float length) => new Vector2(length * Mathf.Cos(angle), length * Mathf.Sin(angle));
 
 
     public static Vector3 ToVector3(in this Vector2 v) => new Vector3(v.x, v.y);
