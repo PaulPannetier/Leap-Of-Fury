@@ -29,6 +29,7 @@ public class GrapplingAttack : WeakAttack
     public bool drawGizmos = true;
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
     [SerializeField] private float maxRopeLength;
+    [SerializeField] private float minRopeLength;
     [SerializeField] private float maxDurationAttach = 5f;
     [SerializeField] private float grapClimbUpSpeed = 2f, grapClimbDownSpeed = 4f;
     [SerializeField] private Bomb bombPrefabs;
@@ -130,7 +131,7 @@ public class GrapplingAttack : WeakAttack
         }
 
         rb.AddForce(rb.velocity * (-linearDrag * Time.fixedDeltaTime), ForceMode2D.Force);
-        rb.AddForce(Physics2D.gravity * (gravityScaleWhenSwinging * Time.deltaTime), ForceMode2D.Force);
+        rb.AddForce(Physics2D.gravity * (gravityScaleWhenSwinging * Time.fixedDeltaTime), ForceMode2D.Force);
     }
 
     protected override void Update()
@@ -158,7 +159,7 @@ public class GrapplingAttack : WeakAttack
 
             if (playerInput.upPressed)
             {
-                grapLength = Mathf.Max(grapLength - grapClimbDownSpeed * Time.deltaTime, 0f);
+                grapLength = Mathf.Max(grapLength - grapClimbDownSpeed * Time.deltaTime, minRopeLength);
                 springJoint.distance = grapLength;
             }
 
@@ -328,6 +329,7 @@ public class GrapplingAttack : WeakAttack
         GetComponent<SpringJoint2D>().enabled = false;
         grapElasticity = Mathf.Max(0f, grapElasticity);
         maxRopeLength = Mathf.Max(grapRange, maxRopeLength);
+        minRopeLength = Mathf.Max(minRopeLength, 0f);
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 

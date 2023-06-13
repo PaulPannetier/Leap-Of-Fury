@@ -19,6 +19,7 @@ TagManager:
   - StrongAttackSlider
   - Canvas
   - CharsParent
+  - Map
   layers:
   - Default
   - TransparentFX

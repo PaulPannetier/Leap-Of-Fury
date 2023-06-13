@@ -28,7 +28,7 @@ public class ScoreMenu : MonoBehaviour
 
     private IEnumerator UpdateVisual(float duration)
     {
-         CreateVisual();
+        CreateVisual();
         panelBG.enabled = true;
 
         int maxSkull = 0;

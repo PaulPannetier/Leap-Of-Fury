@@ -21,10 +21,6 @@ public class LogManager : MonoBehaviour
             return;
         }
         instance = this;
-    }
-
-    private void Start()
-    {
         messages = new logMessages();
     }
 

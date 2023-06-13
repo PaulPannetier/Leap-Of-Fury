@@ -449,15 +449,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   drawGizmos: 0
-  walkSpeed: 8.5
-  speedLerp: 30
-  initSpeed: 0.285
   timeUntilCommandIsInvalid: 0.1
   groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
   groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
   grabRayLength: 0.5
+  walkSpeed: 8.5
+  speedLerp: 30
+  initSpeed: 0.285
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -810,7 +810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canLauchWeakAttack: 1
   canLaunchStrongAttack: 1
-  drawGizmos: 1
+  drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityOffset: 0.1
   invicibilityDurationWhenDashing: 0.2
@@ -836,15 +836,14 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 1
+  drawGizmos: 1
   grapRange: 7.5
   circleCastRadius: 0.5
-  maxRopeLength: 13
+  maxRopeLength: 10
+  minRopeLength: 1
   maxDurationAttach: 5
   grapClimbUpSpeed: 4.5
   grapClimbDownSpeed: 6.5
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 16392
   bombPrefabs: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
   timeBetweenBombSpawn: 0.15
   attackPointPrefaps: {fileID: 5643303674285272075, guid: 2d509ff36d2c02045ba03cad79be9c54, type: 3}

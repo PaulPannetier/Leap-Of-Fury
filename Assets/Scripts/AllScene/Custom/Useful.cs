@@ -205,7 +205,6 @@ public static class Save
 
     public static void WriteStringMultiThread(string data, string fileName, Action<bool> callback, bool append = true)
     {
-        //Thread thread = new Thread(new ThreadStart(func));
         Thread thread = new Thread(func);
         thread.Priority = System.Threading.ThreadPriority.BelowNormal;
         WriteMultiTreadData threadData = new WriteMultiTreadData(Application.dataPath + fileName, callback);
@@ -1334,17 +1333,46 @@ public static class Useful
             list[j] = tmp;
         }
     }
+
+    public static void Shuffle<T>(this T[] list)
+    {
+        for (int i = list.Length; i >= 0; i--)
+        {
+            int j = Random.Rand(0, i);
+            T tmp = list[i];
+            list[i] = list[j];
+            list[j] = tmp;
+        }
+    }
+
     /// <summary>
     /// Shuffle a little bit the list, reproduce approximately the real life
     /// </summary>
     /// <param name="percentage">The percentage to shuffle between 0 and 1</param>
-    public static void ShufflePartialy<T>(this List<T> list, in float percentage)
+    public static void ShufflePartialy<T>(this List<T> list, float percentage)
     {
-        int nbPermut = (int)(list.Count * percentage);
+        int nbPermut = Max((int)(list.Count * percentage), 1);
         for (int i = 0; i < nbPermut; i++)
         {
             int randIndex1 = Random.RandExclude(0, list.Count);
             int randIndex2 = Random.RandExclude(0, list.Count);
+            T temp = list[randIndex1];
+            list[randIndex1] = list[randIndex2];
+            list[randIndex2] = temp;
+        }
+    }
+
+    /// <summary>
+    /// Shuffle a little bit the list, reproduce approximately the real life
+    /// </summary>
+    /// <param name="percentage">The percentage to shuffle between 0 and 1</param>
+    public static void ShufflePartialy<T>(this T[] list, float percentage)
+    {
+        int nbPermut = Max((int)(list.Length * percentage), 1);
+        for (int i = 0; i < nbPermut; i++)
+        {
+            int randIndex1 = Random.RandExclude(0, list.Length);
+            int randIndex2 = Random.RandExclude(0, list.Length);
             T temp = list[randIndex1];
             list[randIndex1] = list[randIndex2];
             list[randIndex2] = temp;
@@ -2384,6 +2412,17 @@ public static class Useful
         Invoke(obj, methodName, param);
     }
 
+    public static void InvokeWaitAFrame(this MonoBehaviour script, string methodName)
+    {
+        script.StartCoroutine(InvokeWaitAFrameCorout(script, methodName));
+    }
+
+    private static IEnumerator InvokeWaitAFrameCorout(MonoBehaviour script, string methodName)
+    {
+        yield return null;
+        script.Invoke(methodName, 0f);
+    }
+
     #region Invoke<T>
 
     public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[1] { arg1 });
@@ -2530,6 +2569,7 @@ public static class Useful
         t.DOShakePosition(shakeSetting.duration, shakeSetting.strengh, shakeSetting.vibrato, shakeSetting.randomness,
             shakeSetting.snapping, shakeSetting.fadeOut);
     }
+
 
     #endregion
 }
