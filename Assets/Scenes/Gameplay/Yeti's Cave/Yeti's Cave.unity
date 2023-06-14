@@ -236,7 +236,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_Name
-      value: Map
+      value: MapTest
       objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_IsActive
@@ -1240,7 +1240,7 @@ PrefabInstance:
       objectReference: {fileID: 778908268}
     - target: {fileID: 5999535417688878524, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: enableBehaviour
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: m_Name

@@ -986,6 +986,50 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: addSpawnConfig
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: loadSpawnConfig
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[0].x
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[0].y
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[1].x
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[1].y
+      value: -2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[2].x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[2].y
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[3].x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: -6763219888292426903, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+      propertyPath: spawnConfig.Array.data[3].y
+      value: -2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 537159171673598514, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
       propertyPath: m_Name
       value: Map

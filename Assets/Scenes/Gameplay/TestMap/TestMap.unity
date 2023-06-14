@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24956b4a47b852c4bb8e9be43984a5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableBehaviour: 0
   levelNameUI: {fileID: 0}
 --- !u!4 &393367881 stripped
 Transform:
@@ -1489,8 +1490,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3950918268067802318}
-  - component: {fileID: 9071503404785243664}
   - component: {fileID: 371620601}
+  - component: {fileID: 3950918268067802319}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -1513,6 +1514,29 @@ Transform:
   m_Father: {fileID: 1229850466}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3950918268067802319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3950918268067802305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad53f35177e3d864bb17bac9de1c1448, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelType: 0
+  levelName: Yeti's Cave
+  durationToWaitAtBegining: 3
+  nbKillsToWin: 7
+  waitingTimeAfterLastKill: 2
+  scoreMenuDuration: 5
+  scoreCanvas: {fileID: 0}
+  suffleMapWhenLevelStart: 1
+  playFirstMapAtLevelStart: 0
+  mapsPrefabs: []
+  enableBehaviour: 1
 --- !u!1001 &4741892905558927781
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15128,32 +15152,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
---- !u!114 &9071503404785243664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3950918268067802305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f4fffce717e1224b8f745a3779c997d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelType: 0
-  durationToWaitAtBegining: 2
-  nbKillsToWin: 7
-  waitingTimeAfterLastKill: 2
-  scoreMenuDuration: 3.5
-  scoreCanvas: {fileID: 1393366166043496057}
-  enableBehaviour: 0
-  spawnConfig: []
-  saveSpawnConfig: 0
-  clearSpawnConfig: 0
-  YetisCaveVar: 0
-  MayasTempleVar: 0
-  playerLightPrefabs: {fileID: 0}
-  MaxwellHouseVar: 0
 --- !u!70 &9188528099203882239
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

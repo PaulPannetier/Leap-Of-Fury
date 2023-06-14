@@ -176,7 +176,6 @@ public static class Save
     /// <returns> true if the function complete successfully, false overwise</returns>
     public static void ReadJSONDataMultiThread<T>(string fileName, Action<bool, T> callback)
     {
-        //Thread thread = new Thread(new ThreadStart(func));
         Thread thread = new Thread(func);
         thread.Priority = System.Threading.ThreadPriority.BelowNormal;
         WriteMultiTreadData<T> data = new WriteMultiTreadData<T>(Application.dataPath + fileName, callback);
@@ -1325,7 +1324,7 @@ public static class Useful
 
     public static void Shuffle<T>(this List<T> list)
     {
-        for (int i = list.Count; i >= 0; i--)
+        for (int i = list.Count - 1; i >= 0; i--)
         {
             int j = Random.Rand(0, i);
             T tmp = list[i];
@@ -1336,7 +1335,7 @@ public static class Useful
 
     public static void Shuffle<T>(this T[] list)
     {
-        for (int i = list.Length; i >= 0; i--)
+        for (int i = list.Length - 1; i >= 0; i--)
         {
             int j = Random.Rand(0, i);
             T tmp = list[i];

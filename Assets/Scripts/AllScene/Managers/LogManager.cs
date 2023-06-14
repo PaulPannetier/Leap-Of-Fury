@@ -7,8 +7,11 @@ using System;
 public class LogManager : MonoBehaviour
 {
     private const string logPath = "/Save/Log.txt";
-
-    public static LogManager instance { get; private set; }
+    public static LogManager instance
+    {
+        get;
+        private set;
+    }
 
     private logMessages messages;
     private bool isWritingLogs = false;

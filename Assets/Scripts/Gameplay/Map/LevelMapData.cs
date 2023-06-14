@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using UnityEngine;
 using static SpawnConfigsData;
+using System.Linq;
 
 public class LevelMapData : MonoBehaviour
 {
@@ -10,24 +11,25 @@ public class LevelMapData : MonoBehaviour
 
     [Header("Save spawn Point")]
     [SerializeField] private bool addSpawnConfig;
+    [SerializeField] private bool loadSpawnConfig;
     [SerializeField] private bool clearSpawnConfig;
-    [SerializeField] private string spawnConfigsPath;
+    [SerializeField] private string relatifSpawnConfigsPath;
     [SerializeField] private Vector2[] spawnConfig;
 
     public SpawnConfigsData LoadSpawnPoint()
     {
-        if (Save.ReadJSONData<SpawnConfigsData>(spawnConfigsPath, out spawnConfigs))
+        if (Save.ReadJSONData<SpawnConfigsData>(relatifSpawnConfigsPath + SettingsManager.saveFileExtension, out spawnConfigs))
         {
             return spawnConfigs;
         }
-        LogManager.instance.WriteLog("Can't open SpawnConfigsData's object at the path : " + spawnConfigsPath, spawnConfigsPath);
+        Debug.LogWarning("Can't open SpawnConfigsData's object at the path : " + relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
         spawnConfigs = null;
         return null;
     }
 
     public List<SpawnConfigPoints> LoadSpawnPoint(int nbChar)
     {
-        if (Save.ReadJSONData<SpawnConfigsData>(spawnConfigsPath, out spawnConfigs))
+        if (Save.ReadJSONData<SpawnConfigsData>(relatifSpawnConfigsPath + SettingsManager.saveFileExtension, out spawnConfigs))
         {
             switch (nbChar)
             {
@@ -41,10 +43,17 @@ public class LevelMapData : MonoBehaviour
                     return null;
             }
         }
-        LogManager.instance.WriteLog("Can't open SpawnConfigsData's object at the path : " + spawnConfigsPath, spawnConfigsPath);
+        Debug.LogWarning("Can't open SpawnConfigsData's object at the path : " + relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
         spawnConfigs = null;
         return null;
     }
+
+    private static Dictionary<int, float> convertNbCharToRadius = new Dictionary<int, float>
+    {
+        { 2, 0.2f },
+        { 3, 0.3f },
+        { 4, 0.4f }
+    };
 
     private void OnDrawGizmosSelected()
     {
@@ -71,23 +80,20 @@ public class LevelMapData : MonoBehaviour
                     Gizmos.color = colors[colorIndex];
                     foreach (Vector2 point in points)
                     {
-                        Circle.GizmosDraw(point, 0.35f);
+                        Circle.GizmosDraw(point, convertNbCharToRadius[points.points.Length]);
                     }
                     colorIndex = (colorIndex + 1) % colors.Length;
                 }
             }
-
         }
     }
 
     private void OnValidate()
     {
-        LoadSpawnPoint();
-
-        if (addSpawnConfig && spawnConfig != null && spawnConfig.Length > 1 && spawnConfig.Length <= 4)
+        if (addSpawnConfig && spawnConfig != null && spawnConfig.Length >= 2 && spawnConfig.Length <= 4)
         {
             //Save info
-            if (!Save.ReadJSONData<SpawnConfigsData>(spawnConfigsPath, out spawnConfigs))
+            if (!Save.ReadJSONData<SpawnConfigsData>(relatifSpawnConfigsPath + SettingsManager.saveFileExtension, out spawnConfigs))
             {
                 spawnConfigs = new SpawnConfigsData();
             }
@@ -107,15 +113,23 @@ public class LevelMapData : MonoBehaviour
                     break;
             }
 
-            Save.WriteJSONData(spawnConfigs, spawnConfigsPath);
+            Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+            spawnConfig = new Vector2[0];
         }
         addSpawnConfig = false;
         if(clearSpawnConfig)
         {
             spawnConfigs = new SpawnConfigsData();
-            Save.WriteJSONData(spawnConfigs, spawnConfigsPath);
+            Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+            spawnConfig = new Vector2[0];
         }
         clearSpawnConfig = false;
+
+        if(loadSpawnConfig)
+        {
+            LoadSpawnPoint();
+        }
+        loadSpawnConfig = false;
     }
 }
 
