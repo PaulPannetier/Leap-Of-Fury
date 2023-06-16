@@ -12,6 +12,7 @@ using System.Text;
 using System.Reflection;
 using System.Threading;
 using DG.Tweening;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -111,6 +112,31 @@ public static class Save
     }
 
     /// <summary>
+    /// Write in the customer machine a file with the object inside asynchronously
+    /// </summary>
+    /// <param name="objToWrite">The object to save</param>
+    /// <param name="filename">the save path, begining to the game's folder</param>
+    /// <param name="callback">The callback when the function end</param>
+    /// <returns> true if the save complete successfully, false overwise</returns>
+    public static async Task<bool> WriteJSONDataAsync(object objToWrite, string fileName, Action<bool> callback)
+    {
+        try
+        {
+            string s = ConvertObjectToJSONString(objToWrite);
+            if (s == "{}")
+                return false;
+            await File.WriteAllTextAsync(Application.dataPath + fileName, s);
+            callback.Invoke(true);
+        }
+        catch
+        {
+            callback.Invoke(false);
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
     /// Write in the customer machine a file with the object inside in an other thread, when finish invoke the callback function with a param : true if the write succeed, false otherwise
     /// </summary>
     /// <param name="objToWrite">The object to save</param>
@@ -118,7 +144,6 @@ public static class Save
     /// <returns> true if the save complete successfully, false overwise</returns>
     public static void WriteJSONDataMultiThread(object objToWrite, string fileName, Action<bool> callback)
     {
-        //Thread thread = new Thread(new ThreadStart(func));
         Thread thread = new Thread(func);
         thread.Priority = System.Threading.ThreadPriority.BelowNormal;
         WriteMultiTreadData data = new WriteMultiTreadData(Application.dataPath + fileName, callback);
@@ -174,6 +199,30 @@ public static class Save
     /// <param name="fileName">The path of the file, begining to the game's folder</param>
     /// <param name="objRead"></param>
     /// <returns> true if the function complete successfully, false overwise</returns>
+    public static async Task<bool> ReadJSONDataAsync<T>(string fileName, Action<bool, T> callback)
+    {
+        try
+        {
+            string jsonString = await File.ReadAllTextAsync(Application.dataPath + fileName);
+            if (jsonString == "{}")
+            {
+                callback.Invoke(false, default(T));
+                return false;
+            }
+            callback.Invoke(true, ConvertJSONStringToObject<T>(jsonString));
+            return true;
+        }
+        catch (Exception)
+        {
+            callback.Invoke(false, default(T));
+            return false;
+        }
+    }
+
+    /// <typeparam name="T">The object to read's type</typeparam>
+    /// <param name="fileName">The path of the file, begining to the game's folder</param>
+    /// <param name="objRead"></param>
+    /// <returns> true if the function complete successfully, false overwise</returns>
     public static void ReadJSONDataMultiThread<T>(string fileName, Action<bool, T> callback)
     {
         Thread thread = new Thread(func);
@@ -200,6 +249,11 @@ public static class Save
                 data.callbackRead(false, default(T));
             }
         }
+    }
+
+    public static async Task WriteStringAsync(string data, string fileName, Action<bool> callback, bool append = true)
+    {
+        await File.WriteAllTextAsync(Application.dataPath + fileName, data);
     }
 
     public static void WriteStringMultiThread(string data, string fileName, Action<bool> callback, bool append = true)

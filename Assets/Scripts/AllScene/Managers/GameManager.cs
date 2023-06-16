@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Application.targetFrameRate = 165;
+        SettingsManager.instance.LoadSettings();
         Random.SetRandomSeed();
     }
 

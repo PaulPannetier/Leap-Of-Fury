@@ -30,16 +30,19 @@ public class SelectableUIGroup : MonoBehaviour
     private SelectableUI selectedUI = null;
     private ControllerType controllerType;
 
+    [SerializeField] private bool enableBehaviour = true;
     [SerializeField] private ControllerSelector controllerSelector = ControllerSelector.last;
     [SerializeField] private SelectableUI defaultUISelected;
 
-    private void Start()
+    private void Awake()
     {
         selectedUI = null;
     }
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
         //on attend la première interaction
         if(selectedUI == null)
         {
