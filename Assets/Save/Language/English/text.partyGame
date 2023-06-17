@@ -1,0 +1,21 @@
+{
+    "language": "English",
+    "data": [
+        {
+            "textID": "applyOptionButton",
+            "content": "Apply"
+        },
+        {
+            "textID": "defaultOptionButton",
+            "content": "Default"
+        },
+		{
+            "textID": "windowedMode",
+            "content": "Windowed"
+        },
+		{
+            "textID": "fullscreenMode",
+            "content": "Fullscreen"
+        }
+    ]
+}

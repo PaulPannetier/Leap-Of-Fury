@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        SettingsManager.instance.LoadSettings();
         Random.SetRandomSeed();
     }
 

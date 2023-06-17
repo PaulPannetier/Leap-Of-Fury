@@ -80,7 +80,7 @@ public static class Save
     /// </summary>
     /// <param name="obj">The object to serialize</param>
     /// <returns> A string represent the object in parameter</returns>
-    public static string ConvertObjectToJSONString(object obj) => JsonUtility.ToJson(obj);
+    public static string ConvertObjectToJSONString(object obj, bool withIndentation = false) => JsonUtility.ToJson(obj, withIndentation);
     /// <summary>
     /// Convert any string reprensent a Serializable object to the object.
     /// </summary>
@@ -95,11 +95,11 @@ public static class Save
     /// <param name="objToWrite">The object to save</param>
     /// <param name="filename">the save path, begining to the game's folder</param>
     /// <returns> true if the save complete successfully, false overwise</returns>
-    public static bool WriteJSONData(object objToWrite, string fileName)
+    public static bool WriteJSONData(object objToWrite, string fileName, bool withIndentation = false)
     {
         try
         {
-            string s = ConvertObjectToJSONString(objToWrite);
+            string s = ConvertObjectToJSONString(objToWrite, withIndentation);
             if (s == "{}")
                 return false;
             File.WriteAllText(Application.dataPath + fileName, s);
@@ -118,11 +118,11 @@ public static class Save
     /// <param name="filename">the save path, begining to the game's folder</param>
     /// <param name="callback">The callback when the function end</param>
     /// <returns> true if the save complete successfully, false overwise</returns>
-    public static async Task<bool> WriteJSONDataAsync(object objToWrite, string fileName, Action<bool> callback)
+    public static async Task<bool> WriteJSONDataAsync(object objToWrite, string fileName, Action<bool> callback, bool withIndentation = false)
     {
         try
         {
-            string s = ConvertObjectToJSONString(objToWrite);
+            string s = ConvertObjectToJSONString(objToWrite, withIndentation);
             if (s == "{}")
                 return false;
             await File.WriteAllTextAsync(Application.dataPath + fileName, s);
@@ -142,7 +142,7 @@ public static class Save
     /// <param name="objToWrite">The object to save</param>
     /// <param name="filename">the save path, begining to the game's folder</param>
     /// <returns> true if the save complete successfully, false overwise</returns>
-    public static void WriteJSONDataMultiThread(object objToWrite, string fileName, Action<bool> callback)
+    public static void WriteJSONDataMultiThread(object objToWrite, string fileName, Action<bool> callback, bool withIndentation = false)
     {
         Thread thread = new Thread(func);
         thread.Priority = System.Threading.ThreadPriority.BelowNormal;
@@ -154,7 +154,7 @@ public static class Save
             WriteMultiTreadData data = (WriteMultiTreadData)rawData;
             try
             {
-                string s = ConvertObjectToJSONString(objToWrite);
+                string s = ConvertObjectToJSONString(objToWrite, withIndentation);
                 if (s == "{}")
                 {
                     data.callbackWrite(false);
