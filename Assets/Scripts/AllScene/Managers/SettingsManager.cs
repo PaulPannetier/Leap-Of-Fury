@@ -21,7 +21,7 @@ public class SettingsManager : MonoBehaviour
         }
         instance = this;
 
-        defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), 60, "english", FullScreenMode.FullScreenWindow);
+        defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), 60, "English", FullScreenMode.FullScreenWindow);
         LoadSettings();
     }
 

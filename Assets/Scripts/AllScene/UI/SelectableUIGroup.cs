@@ -30,7 +30,7 @@ public class SelectableUIGroup : MonoBehaviour
     private SelectableUI selectedUI = null;
     private ControllerType controllerType;
 
-    [SerializeField] private bool enableBehaviour = true;
+    public bool enableBehaviour = true;
     [SerializeField] private ControllerSelector controllerSelector = ControllerSelector.last;
     [SerializeField] private SelectableUI defaultUISelected;
 

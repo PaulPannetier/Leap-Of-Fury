@@ -16,20 +16,25 @@ public class SettingMenu : MonoBehaviour
         { FullScreenMode.Windowed, 1 }
     };
 
-    private static int[] possibleFramerate = new int[]
-    {
-        30, 60, 75, 90, 120, 144, 165, 240
-    };
-
     private Vector2Int[] availableResolutions;
     private int[] availableFramerate;
+    private bool isEnable;
 
     [SerializeField] private TMP_Dropdown windowModeDropdown;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Dropdown framerateDropdown;
     [SerializeField] private TMP_Dropdown languageDropdown;
+    [SerializeField] private TMP_Text applyButtonText;
+    [SerializeField] private TMP_Text defaultButtonText;
+    [SerializeField] private CustomInput.GeneralInput echapInput;
+    [SerializeField] private GameObject mainMenu;
 
-    private void Start()
+    private void Awake()
+    {
+        isEnable = false;
+    }
+
+    private void Refresh()
     {
         SettingsManager.ConfigurationData currentConfig = SettingsManager.instance.currentConfig;
 
@@ -88,6 +93,9 @@ public class SettingMenu : MonoBehaviour
         }
         languageDropdown.options = languageOptions;
 
+        //buttons
+        applyButtonText.text = LanguageManager.instance.GetText("applyOptionButton");
+        defaultButtonText.text = LanguageManager.instance.GetText("defaultOptionButton");
     }
 
     public void OnApplyButtonDown()
@@ -100,6 +108,8 @@ public class SettingMenu : MonoBehaviour
         SettingsManager.ConfigurationData configurationData = new SettingsManager.ConfigurationData(resolution, targetedFPS, language, windowMode);
 
         SettingsManager.instance.SetCurrentConfig(configurationData);
+
+        Refresh();
     }
 
     public void OnDefaultButtonDown()
@@ -132,6 +142,37 @@ public class SettingMenu : MonoBehaviour
                 languageDropdown.value = i;
                 break;
             }
+        }
+
+        Refresh();
+    }
+
+    public void OnEnableOptionMenu()
+    {
+        Refresh();
+
+        foreach (Transform t in transform)
+        {
+            t.gameObject.SetActive(true);
+        }
+        mainMenu.SetActive(false);
+        isEnable = true;
+    }
+
+    private void Update()
+    {
+        if (!isEnable)
+            return;
+
+        if(echapInput.IsPressedDown())
+        {
+            foreach (Transform t in transform)
+            {
+                t.gameObject.SetActive(false);
+            }
+            isEnable= false;
+            mainMenu.SetActive(true);
+            mainMenu.GetComponentInChildren<SelectableUIGroup>().enableBehaviour = true;
         }
     }
 }
