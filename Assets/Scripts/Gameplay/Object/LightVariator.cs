@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 [RequireComponent(typeof(UnityEngine.Rendering.Universal.Light2D))]
