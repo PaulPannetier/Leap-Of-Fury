@@ -17,7 +17,7 @@ public class SettingMenu : MonoBehaviour
     };
 
     private Vector2Int[] availableResolutions;
-    private int[] availableFramerate;
+    private RefreshRate[] availableFramerate;
     private bool isEnable;
 
     [SerializeField] private TMP_Dropdown windowModeDropdown;
@@ -80,7 +80,7 @@ public class SettingMenu : MonoBehaviour
         Sprite framerateSprite = framerateDropdown.options[0].image;
         for (int i = 0; i < availableFramerate.Length; i++)
         {
-            framerateOptions.Add(new TMP_Dropdown.OptionData(availableFramerate[i].ToString() + " Hz", framerateSprite));
+            framerateOptions.Add(new TMP_Dropdown.OptionData(availableFramerate[i].value.Round().ToString() + " Hz", framerateSprite));
         }
         framerateDropdown.options = framerateOptions;
 
@@ -101,7 +101,7 @@ public class SettingMenu : MonoBehaviour
     public void OnApplyButtonDown()
     {
         Vector2Int resolution = availableResolutions[resolutionDropdown.value];
-        int targetedFPS = availableFramerate[framerateDropdown.value];
+        RefreshRate targetedFPS = availableFramerate[framerateDropdown.value];
         string language = LanguageManager.instance.availableLanguage[languageDropdown.value];
         FullScreenMode windowMode = convertIntToFullScreenMode[windowModeDropdown.value];
 
@@ -128,7 +128,7 @@ public class SettingMenu : MonoBehaviour
 
         for (int i = 0; i < availableFramerate.Length; i++)
         {
-            if (availableFramerate[i] == defaultConfig.targetedFPS)
+            if (availableFramerate[i].value.Round() == defaultConfig.targetedFPS.value.Round())
             {
                 framerateDropdown.value = i;
                 break;

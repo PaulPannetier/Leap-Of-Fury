@@ -21,7 +21,7 @@ public class SettingsManager : MonoBehaviour
         }
         instance = this;
 
-        defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), 60, "English", FullScreenMode.FullScreenWindow);
+        defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, "English", FullScreenMode.FullScreenWindow);
         LoadSettings();
     }
 
@@ -53,7 +53,7 @@ public class SettingsManager : MonoBehaviour
 
     private void ApplyConfiguration()
     {
-        Application.targetFrameRate = currentConfig.targetedFPS;
+        Application.targetFrameRate = ((float)currentConfig.targetedFPS.value).Round();
         Screen.SetResolution(currentConfig.resolusion.x, currentConfig.resolusion.y, currentConfig.windowMode, currentConfig.targetedFPS);
         LanguageManager.instance.currentlanguage = currentConfig.language;
     }
@@ -84,29 +84,34 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
-    public int[] GetAvailableRefreshRate()
+    public RefreshRate[] GetAvailableRefreshRate()
     {
         Resolution[] resolutions = Screen.resolutions;
-        List <int> res = new List<int>();
+        List <RefreshRate> res = new List<RefreshRate>();
 
         foreach (Resolution resolution in resolutions)
         {
-            res.Add(resolution.refreshRate);
+            res.Add(resolution.refreshRateRatio);
         }
         res = res.Distinct().ToList();
-        res.Sort();
+        res.Sort(RefreshRateComparison);
         return res.ToArray();
+
+        int RefreshRateComparison(RefreshRate r1, RefreshRate r2)
+        {
+            return (int)((float)(r2.value - r1.value)).Sign();
+        }
     }
 
     [Serializable]
     public struct ConfigurationData
     {
         public Vector2Int resolusion;
-        public int targetedFPS;
+        public RefreshRate targetedFPS;
         public string language;
         public FullScreenMode windowMode;
 
-        public ConfigurationData(in Vector2Int resolusion, int targetedFPS, string language, FullScreenMode windowMode)
+        public ConfigurationData(in Vector2Int resolusion, RefreshRate targetedFPS, string language, FullScreenMode windowMode)
         {
             this.resolusion = resolusion;
             this.targetedFPS = targetedFPS;
