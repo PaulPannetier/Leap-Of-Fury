@@ -794,6 +794,15 @@ public class Array2D<T>
 
 #endregion
 
+#region ICloneable<T>
+
+public interface ICloneable<T>
+{
+    public T Clone();
+}
+
+#endregion
+
 #region Useful
 
 public static class Useful

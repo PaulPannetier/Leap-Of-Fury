@@ -16,6 +16,10 @@
 		{
             "textID": "fullscreenMode",
             "content": "Plein écran"
+        },
+				{
+            "textID": "controlTextSettingMenu",
+            "content": "Contrôles"
         }
     ]
 }

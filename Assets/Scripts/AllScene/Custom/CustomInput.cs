@@ -130,6 +130,7 @@ public static class CustomInput
 {
     #region Keys config
 
+    //différents players controls
     private static InputData defaultKBKeys = new InputData();
     private static InputData defaultGB1Keys = new InputData();
     private static InputData defaultGB2Keys = new InputData();
@@ -140,6 +141,11 @@ public static class CustomInput
     private static InputData player3Keys = new InputData();
     private static InputData player4Keys = new InputData();
     private static InputData player5Keys = new InputData();
+
+    //keyboard/gamepad controls
+    private static InputData kbKeys = new InputData();
+    private static InputData defaultBGKeys = new InputData();
+    private static InputData gbKeys = new InputData();
 
     #endregion
 
@@ -603,7 +609,12 @@ public static class CustomInput
 
     #region SetVibration
 
-    public static void SetVivration(in float rightIntensity = 1f, in float leftIntensity = 1f, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    public static void SetVibration(float intensity, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    {
+        SetVibration(intensity, intensity, gamepadIndex);
+    }
+
+    public static void SetVibration(float rightIntensity = 1f, float leftIntensity = 1f, ControllerType gamepadIndex = ControllerType.GamepadAll)
     {
         //Handheld.Vibrate();//version unity eco plus
 
@@ -2456,4 +2467,3 @@ public static class CustomInput
 
     #endregion
 }
-
