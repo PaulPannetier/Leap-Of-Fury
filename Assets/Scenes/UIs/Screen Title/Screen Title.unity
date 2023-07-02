@@ -632,7 +632,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controlText: {fileID: 235530324}
   inputTypeDropdown: {fileID: 1151119795}
-  dashControl: {fileID: 2198777}
+  dashControl: {fileID: 2198779}
   jumpControl: {fileID: 555779707}
   attack1Control: {fileID: 1805302094}
   attack2Control: {fileID: 1330487571}
@@ -672,7 +672,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -532, y: -116}
+  m_AnchoredPosition: {x: -532, y: 0}
   m_SizeDelta: {x: 757.5518, y: 80.7607}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &235530324
@@ -3945,6 +3945,10 @@ PrefabInstance:
     - target: {fileID: 3977043525648929251, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -263.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4984984927746594095, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6990843139186214926, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_AnchorMax.y

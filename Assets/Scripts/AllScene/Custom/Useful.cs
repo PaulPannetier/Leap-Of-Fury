@@ -1600,6 +1600,16 @@ public static class Useful
         Debug.Log(sb.ToString());
     }
 
+    public static List<T> DeepClone<T>(this List<T> lst) where T : ICloneable<T>
+    {
+        List<T> res = new List<T>();
+        foreach (T item in lst)
+        {
+            res.Add(item.Clone());
+        }
+        return res;
+    }
+
     #endregion
 
     #region ConvertStingToArray
@@ -2544,6 +2554,17 @@ public static class Useful
     #endregion
 
     #region Unity
+
+    public static Dictionary<TKey, TValue> Clone<TKey, TValue>(this Dictionary<TKey, TValue> dict) => new Dictionary<TKey, TValue>(dict);
+    public static Dictionary<TKey, TValue> DeepClone<TKey, TValue>(this Dictionary<TKey, TValue> dict) where TValue : ICloneable<TValue>
+    {
+        Dictionary<TKey, TValue> res = new Dictionary<TKey, TValue>();
+        foreach(KeyValuePair<TKey, TValue> kvp in dict)
+        {
+            res.Add(kvp.Key, kvp.Value.Clone());
+        }
+        return res;
+    }
 
     [Obsolete]
     public static T Clone<T>(this T obj)

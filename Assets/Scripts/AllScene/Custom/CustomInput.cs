@@ -45,9 +45,8 @@ public enum MouseWheelDirection
     none
 }
 
-public enum NegativeKeyCode
+public enum InputKey
 {
-    None = 0,
     GP1RT = -1,
     GP1LT = -2,
     GP1DPadUp = -3,
@@ -122,6 +121,335 @@ public enum NegativeKeyCode
     GPAllTBSLDown = -68,
     GPAllTBSLRight = -69,
     GPAllTBSLLeft = -70,
+
+    None = 0,
+    Backspace = 8,
+    Tab = 9,
+    Clear = 12,
+    Return = 13,
+    Pause = 19,
+    Escape = 27,
+    Space = 32,
+    Exclaim = 33,
+    DoubleQuote = 34,
+    Hash = 35,
+    Dollar = 36,
+    Percent = 37,
+    Ampersand = 38,
+    Quote = 39,
+    LeftParen = 40,
+    RightParen = 41,
+    Asterisk = 42,
+    Plus = 43,
+    Comma = 44,
+    Minus = 45,
+    Period = 46,
+    Slash = 47,
+    Alpha0 = 48,
+    Alpha1 = 49,
+    Alpha2 = 50,
+    Alpha3 = 51,
+    Alpha4 = 52,
+    Alpha5 = 53,
+    Alpha6 = 54,
+    Alpha7 = 55,
+    Alpha8 = 56,
+    Alpha9 = 57,
+    Colon = 58,
+    Semicolon = 59,
+    Less = 60,
+    Equals = 61,
+    Greater = 62,
+    Question = 63,
+    At = 64,
+    LeftBracket = 91,
+    Backslash = 92,
+    RightBracket = 93,
+    Caret = 94,
+    Underscore = 95,
+    BackQuote = 96,
+    A = 97,
+    B = 98,
+    C = 99,
+    D = 100,
+    E = 101,
+    F = 102,
+    G = 103,
+    H = 104,
+    I = 105,
+    J = 106,
+    K = 107,
+    L = 108,
+    M = 109,
+    N = 110,
+    O = 111,
+    P = 112,
+    Q = 113,
+    R = 114,
+    S = 115,
+    T = 116,
+    U = 117,
+    V = 118,
+    W = 119,
+    X = 120,
+    Y = 121,
+    Z = 122,
+    LeftCurlyBracket = 123,
+    Pipe = 124,
+    RightCurlyBracket = 125,
+    Tilde = 126,
+    Delete = 127,
+    Keypad0 = 256,
+    Keypad1 = 257,
+    Keypad2 = 258,
+    Keypad3 = 259,
+    Keypad4 = 260,
+    Keypad5 = 261,
+    Keypad6 = 262,
+    Keypad7 = 263,
+    Keypad8 = 264,
+    Keypad9 = 265,
+    KeypadPeriod = 266,
+    KeypadDivide = 267,
+    KeypadMultiply = 268,
+    KeypadMinus = 269,
+    KeypadPlus = 270,
+    KeypadEnter = 271,
+    KeypadEquals = 272,
+    UpArrow = 273,
+    DownArrow = 274,
+    RightArrow = 275,
+    LeftArrow = 276,
+    Insert = 277,
+    Home = 278,
+    End = 279,
+    PageUp = 280,
+    PageDown = 281,
+    F1 = 282,
+    F2 = 283,
+    F3 = 284,
+    F4 = 285,
+    F5 = 286,
+    F6 = 287,
+    F7 = 288,
+    F8 = 289,
+    F9 = 290,
+    F10 = 291,
+    F11 = 292,
+    F12 = 293,
+    F13 = 294,
+    F14 = 295,
+    F15 = 296,
+    Numlock = 300,
+    CapsLock = 301,
+    ScrollLock = 302,
+    RightShift = 303,
+    LeftShift = 304,
+    RightControl = 305,
+    LeftControl = 306,
+    RightAlt = 307,
+    LeftAlt = 308,
+    LeftMeta = 310,
+    LeftCommand = 310,
+    LeftApple = 310,
+    LeftWindows = 311,
+    RightMeta = 309,
+    RightCommand = 309,
+    RightApple = 309,
+    RightWindows = 312,
+    AltGr = 313,
+    Help = 315,
+    Print = 316,
+    SysReq = 317,
+    Break = 318,
+    Menu = 319,
+    Mouse0 = 323,
+    Mouse1 = 324,
+    Mouse2 = 325,
+    Mouse3 = 326,
+    Mouse4 = 327,
+    Mouse5 = 328,
+    Mouse6 = 329,
+    GPButton0 = 330,
+    GPButton1 = 331,
+    GPButton2 = 332,
+    GPButton3 = 333,
+    GPButton4 = 334,
+    GPButton5 = 335,
+    GPButton6 = 336,
+    GPButton7 = 337,
+    GPButton8 = 338,
+    GPButton9 = 339,
+    GPButton10 = 340,
+    GPButton11 = 341,
+    GPButton12 = 342,
+    GPButton13 = 343,
+    GPButton14 = 344,
+    GPButton15 = 345,
+    GPButton16 = 346,
+    GPButton17 = 347,
+    GPButton18 = 348,
+    GPButton19 = 349,
+    GP1Button0 = 350,
+    GP1Button1 = 351,
+    GP1Button2 = 352,
+    GP1Button3 = 353,
+    GP1Button4 = 354,
+    GP1Button5 = 355,
+    GP1Button6 = 356,
+    GP1Button7 = 357,
+    GP1Button8 = 358,
+    GP1Button9 = 359,
+    GP1Button10 = 360,
+    GP1Button11 = 361,
+    GP1Button12 = 362,
+    GP1Button13 = 363,
+    GP1Button14 = 364,
+    GP1Button15 = 365,
+    GP1Button16 = 366,
+    GP1Button17 = 367,
+    GP1Button18 = 368,
+    GP1Button19 = 369,
+    GP2Button0 = 370,
+    GP2Button1 = 371,
+    GP2Button2 = 372,
+    GP2Button3 = 373,
+    GP2Button4 = 374,
+    GP2Button5 = 375,
+    GP2Button6 = 376,
+    GP2Button7 = 377,
+    GP2Button8 = 378,
+    GP2Button9 = 379,
+    GP2Button10 = 380,
+    GP2Button11 = 381,
+    GP2Button12 = 382,
+    GP2Button13 = 383,
+    GP2Button14 = 384,
+    GP2Button15 = 385,
+    GP2Button16 = 386,
+    GP2Button17 = 387,
+    GP2Button18 = 388,
+    GP2Button19 = 389,
+    GP3Button0 = 390,
+    GP3Button1 = 391,
+    GP3Button2 = 392,
+    GP3Button3 = 393,
+    GP3Button4 = 394,
+    GP3Button5 = 395,
+    GP3Button6 = 396,
+    GP3Button7 = 397,
+    GP3Button8 = 398,
+    GP3Button9 = 399,
+    GP3Button10 = 400,
+    GP3Button11 = 401,
+    GP3Button12 = 402,
+    GP3Button13 = 403,
+    GP3Button14 = 404,
+    GP3Button15 = 405,
+    GP3Button16 = 406,
+    GP3Button17 = 407,
+    GP3Button18 = 408,
+    GP3Button19 = 409,
+    GP4Button0 = 410,
+    GP4Button1 = 411,
+    GP4Button2 = 412,
+    GP4Button3 = 413,
+    GP4Button4 = 414,
+    GP4Button5 = 415,
+    GP4Button6 = 416,
+    GP4Button7 = 417,
+    GP4Button8 = 418,
+    GP4Button9 = 419,
+    GP4Button10 = 420,
+    GP4Button11 = 421,
+    GP4Button12 = 422,
+    GP4Button13 = 423,
+    GP4Button14 = 424,
+    GP4Button15 = 425,
+    GP4Button16 = 426,
+    GP4Button17 = 427,
+    GP4Button18 = 428,
+    GP4Button19 = 429,
+    GP5Button0 = 430,
+    GP5Button1 = 431,
+    GP5Button2 = 432,
+    GP5Button3 = 433,
+    GP5Button4 = 434,
+    GP5Button5 = 435,
+    GP5Button6 = 436,
+    GP5Button7 = 437,
+    GP5Button8 = 438,
+    GP5Button9 = 439,
+    GP5Button10 = 440,
+    GP5Button11 = 441,
+    GP5Button12 = 442,
+    GP5Button13 = 443,
+    GP5Button14 = 444,
+    GP5Button15 = 445,
+    GP5Button16 = 446,
+    GP5Button17 = 447,
+    GP5Button18 = 448,
+    GP5Button19 = 449,
+    GP6Button0 = 450,
+    GP6Button1 = 451,
+    GP6Button2 = 452,
+    GP6Button3 = 453,
+    GP6Button4 = 454,
+    GP6Button5 = 455,
+    GP6Button6 = 456,
+    GP6Button7 = 457,
+    GP6Button8 = 458,
+    GP6Button9 = 459,
+    GP6Button10 = 460,
+    GP6Button11 = 461,
+    GP6Button12 = 462,
+    GP6Button13 = 463,
+    GP6Button14 = 464,
+    GP6Button15 = 465,
+    GP6Button16 = 466,
+    GP6Button17 = 467,
+    GP6Button18 = 468,
+    GP6Button19 = 469,
+    GP7Button0 = 470,
+    GP7Button1 = 471,
+    GP7Button2 = 472,
+    GP7Button3 = 473,
+    GP7Button4 = 474,
+    GP7Button5 = 475,
+    GP7Button6 = 476,
+    GP7Button7 = 477,
+    GP7Button8 = 478,
+    GP7Button9 = 479,
+    GP7Button10 = 480,
+    GP7Button11 = 481,
+    GP7Button12 = 482,
+    GP7Button13 = 483,
+    GP7Button14 = 484,
+    GP7Button15 = 485,
+    GP7Button16 = 486,
+    GP7Button17 = 487,
+    GP7Button18 = 488,
+    GP7Button19 = 489,
+    GP8Button0 = 490,
+    GP8Button1 = 491,
+    GP8Button2 = 492,
+    GP8Button3 = 493,
+    GP8Button4 = 494,
+    GP8Button5 = 495,
+    GP8Button6 = 496,
+    GP8Button7 = 497,
+    GP8Button8 = 498,
+    GP8Button9 = 499,
+    GP8Button10 = 500,
+    GP8Button11 = 501,
+    GP8Button12 = 502,
+    GP8Button13 = 503,
+    GP8Button14 = 504,
+    GP8Button15 = 505,
+    GP8Button16 = 506,
+    GP8Button17 = 507,
+    GP8Button18 = 508,
+    GP8Button19 = 509
 }
 
 #endregion
@@ -144,8 +472,8 @@ public static class CustomInput
 
     //keyboard/gamepad controls
     private static InputData kbKeys = new InputData();
-    private static InputData defaultBGKeys = new InputData();
-    private static InputData gbKeys = new InputData();
+    private static InputData defaultGPKeys = new InputData();
+    private static InputData gpKeys = new InputData();
 
     #endregion
 
@@ -550,10 +878,11 @@ public static class CustomInput
     #region Class InputData
 
     [Serializable]
-    private class InputData
+    private class InputData : ICloneable<InputData>
     {
         public List<string> actions = new List<string>();
         public List<int> keys = new List<int>();
+        [NonSerialized] public Dictionary<string, int> controlsDic = new Dictionary<string, int>();
 
         public InputData() { }
 
@@ -561,48 +890,75 @@ public static class CustomInput
         {
             this.actions = actions;
             this.keys = keys;
+            Build();
         }
 
-        public void AddAction(string action, in int key)
+        public void Build()
         {
-            if (actions.Contains(action))
+            if (actions.Count != keys.Count)
+                return;
+
+            controlsDic = new Dictionary<string, int>();
+            for (int i = 0; i < actions.Count; i++)
+            {
+                controlsDic.Add(actions[i], keys[i]);
+            }
+            actions.Clear();
+            keys.Clear();
+        }
+
+        public void PrepareSerialization()
+        {
+            actions = new List<string>();
+            keys = new List<int>();
+
+            foreach (KeyValuePair<string, int> item in controlsDic)
+            {
+                actions.Add(item.Key);
+                keys.Add(item.Value);
+            }
+        }
+
+        public void AddAction(string action, int key)
+        {
+            if (controlsDic.ContainsKey(action))
                 ReplaceAction(action, key);
             else
             {
-                actions.Add(action);
-                keys.Add(key);
+                controlsDic.Add(action, key);
             }
         }
 
         public bool RemoveAction(string action)
         {
-            if(actions.Contains(action))
+            if(controlsDic.ContainsKey(action))
             {
-                keys.RemoveAt(actions.FindIndex((string s) => s == action));
-                actions.Remove(action);
+                controlsDic.Remove(action);
                 return true;
             }
             return false;
         }
 
-        public bool ReplaceAction(string action, in int key)
+        public bool ReplaceAction(string action, int key)
         {
             if (actions.Contains(action))
             {
-                keys[actions.FindIndex((string s) => s == action)] = key;
+                controlsDic[action] = key;
                 return true;
             }
             return false;
         }
 
-        public bool Contain(string action) => actions.Contains(action);
+        public bool Contain(string action) => controlsDic.ContainsKey(action);
 
         public int GetKey(string action)
         {
-            return keys[actions.FindIndex((string s) => s == action)];
+            if(controlsDic.TryGetValue(action, out int key))
+                return key;
+            return 0;
         }
 
-        public InputData Clone() => new InputData(actions.Clone(), keys.Clone()); 
+        public InputData Clone() => new InputData(actions, keys); 
     }
 
     #endregion
@@ -623,6 +979,7 @@ public static class CustomInput
             Debug.LogWarning("Cannot vibrate the keyboard!");
             return;
         }
+
         if(gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
         {
             if(newGP1State.IsConnected)
@@ -707,7 +1064,7 @@ public static class CustomInput
 
     #endregion
 
-    public static Vector2 GetGamepadStickPosition(in ControllerType gamepadIndex, in GamepadStick gamepadStick)
+    public static Vector2 GetGamepadStickPosition(ControllerType gamepadIndex, GamepadStick GamepadStick)
     {
         switch (gamepadIndex)
         {
@@ -715,33 +1072,33 @@ public static class CustomInput
                 Debug.LogWarning("Can't return the stick position of a keyboard!");
                 return Vector2.zero;
             case ControllerType.Gamepad1:
-                return gamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
+                return GamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
             case ControllerType.Gamepad2:
-                return gamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
+                return GamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
             case ControllerType.Gamepad3:
-                return gamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
+                return GamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
             case ControllerType.Gamepad4:
-                return gamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
+                return GamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
             case ControllerType.GamepadAll:
                 if (newGP1State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
                 if (newGP2State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
                 if (newGP3State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
                 if (newGP4State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
                 Debug.LogWarning("No GamePad is connected");
                 return Vector2.zero;
             case ControllerType.All:
                 if (newGP1State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
                 if (newGP2State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
                 if (newGP3State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
                 if (newGP4State.IsConnected)
-                    return gamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
+                    return GamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
                 Debug.LogWarning("No GamePad is connected");
                 return Vector2.zero;
             default:
@@ -749,15 +1106,15 @@ public static class CustomInput
         }
     }
 
-    #region GetGamepadSTickUp/Down/Right/Left
+    #region GetGamepadStickUp/Down/Right/Left
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="controllerType"></param>
-    /// <param name="gamepadStick"></param>
+    /// <param name="GamepadStick"></param>
     /// <returns>true the frame when the gamepad stick reach the top (y value became 1f)</returns>
-    public static bool GetGamepadStickUp(in ControllerType controllerType, in GamepadStick gamepadStick)
+    public static bool GetGamepadStickUp(ControllerType controllerType, GamepadStick GamepadStick)
     {
         switch (controllerType)
         {
@@ -765,44 +1122,44 @@ public static class CustomInput
                 Debug.LogWarning("A keyboard does'nt have stick!");
                 return false;
             case ControllerType.Gamepad1:
-                return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad2:
-                return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.y < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y >= GP2LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad3:
-                return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.y < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y >= GP3LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad4:
-                return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
                 if(GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
                 if(GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.y < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y >= GP2LeftThumbStickDeadZone.y;
                 if(GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.y < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y >= GP3LeftThumbStickDeadZone.y;
                 if(GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
                 if (GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.y < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y >= GP2LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.y < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y >= GP3LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
@@ -815,9 +1172,9 @@ public static class CustomInput
     /// 
     /// </summary>
     /// <param name="controllerType"></param>
-    /// <param name="gamepadStick"></param>
+    /// <param name="GamepadStick"></param>
     /// <returns>true the frame when the gamepad stick reach the bottom (y value became -1f)</returns>
-    public static bool GetGamepadStickDown(in ControllerType controllerType, in GamepadStick gamepadStick)
+    public static bool GetGamepadStickDown(ControllerType controllerType, GamepadStick GamepadStick)
     {
         switch (controllerType)
         {
@@ -825,44 +1182,44 @@ public static class CustomInput
                 Debug.LogWarning("A keyboard does'nt have stick!");
                 return false;
             case ControllerType.Gamepad1:
-                return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y <= -GP1LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad2:
-                return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.y > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y <= -GP2LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad3:
-                return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.y > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y <= -GP3LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad4:
-                return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
                     oldGP4LeftStickPosition.y > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.y <= -GP4LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
                 if (GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.y > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y <= -GP1LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.y > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y <= -GP2LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.y > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y <= -GP3LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.y > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.y <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
                 if (GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.y > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y <= -GP1LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.y > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y <= -GP2LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.y > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y <= -GP3LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.y > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.y <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
@@ -875,9 +1232,9 @@ public static class CustomInput
     /// 
     /// </summary>
     /// <param name="controllerType"></param>
-    /// <param name="gamepadStick"></param>
+    /// <param name="GamepadStick"></param>
     /// <returns>true the frame when the gamepad stick reach the right (x value became 1f)</returns>
-    public static bool GetGamepadStickRight(in ControllerType controllerType, in GamepadStick gamepadStick)
+    public static bool GetGamepadStickRight(ControllerType controllerType, GamepadStick GamepadStick)
     {
         switch (controllerType)
         {
@@ -885,44 +1242,44 @@ public static class CustomInput
                 Debug.LogWarning("A keyboard does'nt have stick!");
                 return false;
             case ControllerType.Gamepad1:
-                return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.x < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x >= GP1LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad2:
-                return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.x < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x >= GP2LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad3:
-                return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.x < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x >= GP3LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad4:
-                return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
                     oldGP4LeftStickPosition.x < GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x >= GP4LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
                 if (GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x >= GP1LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x >= GP2LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x >= GP3LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x < GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x >= GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
                 if (GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x >= GP1LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x >= GP2LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x >= GP3LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x < GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x >= GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
@@ -935,9 +1292,9 @@ public static class CustomInput
     /// 
     /// </summary>
     /// <param name="controllerType"></param>
-    /// <param name="gamepadStick"></param>
+    /// <param name="GamepadStick"></param>
     /// <returns>true the frame when the gamepad stick reach the right (x value became 1f)</returns>
-    public static bool GetGamepadStickLeft(in ControllerType controllerType, in GamepadStick gamepadStick)
+    public static bool GetGamepadStickLeft(ControllerType controllerType, GamepadStick GamepadStick)
     {
         switch (controllerType)
         {
@@ -945,44 +1302,44 @@ public static class CustomInput
                 Debug.LogWarning("A keyboard does'nt have stick!");
                 return false;
             case ControllerType.Gamepad1:
-                return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.x > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x <= -GP1LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad2:
-                return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.x > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x <= -GP2LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad3:
-                return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.x > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x <= -GP3LeftThumbStickDeadZone.y;
             case ControllerType.Gamepad4:
-                return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
+                return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
                     oldGP4LeftStickPosition.x > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x <= -GP4LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
                 if (GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x <= -GP1LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x <= -GP2LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x <= -GP3LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
                 if (GamePadIsConnected(ControllerType.Gamepad1))
-                    return gamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x <= -GP1LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad2))
-                    return gamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x <= -GP2LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad3))
-                    return gamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x <= -GP3LeftThumbStickDeadZone.y;
                 if (GamePadIsConnected(ControllerType.Gamepad4))
-                    return gamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
+                    return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
@@ -993,7 +1350,7 @@ public static class CustomInput
 
     #endregion
 
-    public static float GetGamepadTrigger(in ControllerType controllerType, in GamepadTrigger gamepadTrigger)
+    public static float GetGamepadTrigger(ControllerType controllerType, GamepadTrigger gamepadTrigger)
     {
         switch (controllerType)
         {
@@ -1018,7 +1375,7 @@ public static class CustomInput
     }
 
     /// <returns>true if the gamepad define by the gamepadIndex is connected, false otherwise </returns>
-    public static bool GamePadIsConnected(in ControllerType gamepadIndex)
+    public static bool GamePadIsConnected(ControllerType gamepadIndex)
     {
         switch (gamepadIndex)
         {
@@ -1184,60 +1541,60 @@ public static class CustomInput
 
     #region GetKeyDown / GetKeyUp / GetKey
 
-    private static bool GetNegativeKeyCodeDown(in NegativeKeyCode key)
+    private static bool GetNegativeKeyDown(int key)
     {
-        return GetNegativeKeyCodeDownDelegate[(-(int)key)].Invoke();
+        return GetNegativeKeyCodeDownDelegate[-key].Invoke();
     }
 
-    private static bool GetNegativeKeyCodeUp(in NegativeKeyCode key)
+    private static bool GetNegativeKeyUp(int key)
     {
-        return GetNegativeKeyCodeUpDelegate[(-(int)key)].Invoke();
+        return GetNegativeKeyCodeUpDelegate[-key].Invoke();
     }
 
-    private static bool GetNegativeKeyCodePressed(in NegativeKeyCode key)
+    private static bool GetNegativeKeyPressed(int key)
     {
-        return GetNegativeKeyCodePressedDelegate[(-(int)key)].Invoke();
+        return GetNegativeKeyCodePressedDelegate[-key].Invoke();
     }
 
     /// <returns> true during the frame when the key assigned with the action is pressed</returns>
-    public static bool GetKeyDown(string action, in PlayerIndex player = PlayerIndex.All)
+    public static bool GetKeyDown(string action, PlayerIndex player = PlayerIndex.All)
     {
         int key;
         switch (player)
         {
             case PlayerIndex.One:
                 key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Two:
                 key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Three:
                 key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Four:
                 key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Five:
                 key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.All:
                 int key1 = player1Keys.GetKey(action);
                 int key2 = player2Keys.GetKey(action);
                 int key3 = player3Keys.GetKey(action);
                 int key4 = player4Keys.GetKey(action);
                 int key5 = player5Keys.GetKey(action);
-                return key1 >= 0 ? Input.GetKeyDown((KeyCode)key1) : GetNegativeKeyCodeDown((NegativeKeyCode)key1) ||
-                    key2 >= 0 ? Input.GetKeyDown((KeyCode)key2) : GetNegativeKeyCodeDown((NegativeKeyCode)key2) ||
-                    key3 >= 0 ? Input.GetKeyDown((KeyCode)key3) : GetNegativeKeyCodeDown((NegativeKeyCode)key3) ||
-                    key4 >= 0 ? Input.GetKeyDown((KeyCode)key4) : GetNegativeKeyCodeDown((NegativeKeyCode)key4) ||
-                    key5 >= 0 ? Input.GetKeyDown((KeyCode)key5) : GetNegativeKeyCodeDown((NegativeKeyCode)key5); 
+                return key1 >= 0 ? Input.GetKeyDown((KeyCode)key1) : GetNegativeKeyDown(key1) ||
+                    key2 >= 0 ? Input.GetKeyDown((KeyCode)key2) : GetNegativeKeyDown(key2) ||
+                    key3 >= 0 ? Input.GetKeyDown((KeyCode)key3) : GetNegativeKeyDown(key3) ||
+                    key4 >= 0 ? Input.GetKeyDown((KeyCode)key4) : GetNegativeKeyDown(key4) ||
+                    key5 >= 0 ? Input.GetKeyDown((KeyCode)key5) : GetNegativeKeyDown(key5); 
             default:
                 return false;
         }
     }
 
     /// <returns> true during the frame when the key assigned with the action is pressed</returns>
-    public static bool GetKeyDown(string action, in PlayerIndex player, out PlayerIndex playerWhoPressesDown)
+    public static bool GetKeyDown(string action, PlayerIndex player, out PlayerIndex playerWhoPressesDown)
     {
         playerWhoPressesDown = player;
         int key;
@@ -1245,46 +1602,46 @@ public static class CustomInput
         {
             case PlayerIndex.One:
                 key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Two:
                 key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Three:
                 key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Four:
                 key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.Five:
                 key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
             case PlayerIndex.All:
                 key = player1Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
                 {
                     playerWhoPressesDown = PlayerIndex.One;
                     return true;
                 }
                 key = player2Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
                 {
                     playerWhoPressesDown = PlayerIndex.Two;
                     return true;
                 }
                 key = player3Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
                 {
                     playerWhoPressesDown = PlayerIndex.Three;
                     return true;
                 }
                 key = player4Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
                 {
                     playerWhoPressesDown = PlayerIndex.Four;
                     return true;
                 }
                 key = player5Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
                 {
                     playerWhoPressesDown = PlayerIndex.Five;
                     return true;
@@ -1295,45 +1652,54 @@ public static class CustomInput
         }
     }
 
+    public static bool GetKeyDown(string action, ControllerType controllerType)
+    {
+        if(controllerType == ControllerType.Keyboard)
+            return GetKeyDown(kbKeys.GetKey(action));
+        if (controllerType == ControllerType.All)
+            return GetKeyDown(kbKeys.GetKey(action)) || GetKeyDown(gpKeys.GetKey(action));
+        return GetKeyDown(gpKeys.GetKey(action));
+    }
+
     /// <returns> true during the frame when the key assigned with the action is unpressed</returns>
-    public static bool GetKeyUp(string action, in PlayerIndex player = PlayerIndex.All)
+    public static bool GetKeyUp(string action, PlayerIndex player = PlayerIndex.All)
     {
         int key;
         switch (player)
         {
             case PlayerIndex.One:
                 key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Two:
                 key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Three:
                 key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Four:
                 key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Five:
                 key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.All:
                 int key1 = player1Keys.GetKey(action);
                 int key2 = player2Keys.GetKey(action);
                 int key3 = player3Keys.GetKey(action);
                 int key4 = player4Keys.GetKey(action);
                 int key5 = player5Keys.GetKey(action);
-                return key1 >= 0 ? Input.GetKeyUp((KeyCode)key1) : GetNegativeKeyCodeUp((NegativeKeyCode)key1) ||
-                    key2 >= 0 ? Input.GetKeyUp((KeyCode)key2) : GetNegativeKeyCodeUp((NegativeKeyCode)key2) ||
-                    key3 >= 0 ? Input.GetKeyUp((KeyCode)key3) : GetNegativeKeyCodeUp((NegativeKeyCode)key3) ||
-                    key4 >= 0 ? Input.GetKeyUp((KeyCode)key4) : GetNegativeKeyCodeUp((NegativeKeyCode)key4) ||
-                    key5 >= 0 ? Input.GetKeyUp((KeyCode)key5) : GetNegativeKeyCodeUp((NegativeKeyCode)key5);
+                return key1 >= 0 ? Input.GetKeyUp((KeyCode)key1) : GetNegativeKeyUp(key1) ||
+                    key2 >= 0 ? Input.GetKeyUp((KeyCode)key2) : GetNegativeKeyUp(key2) ||
+                    key3 >= 0 ? Input.GetKeyUp((KeyCode)key3) : GetNegativeKeyUp(key3) ||
+                    key4 >= 0 ? Input.GetKeyUp((KeyCode)key4) : GetNegativeKeyUp(key4) ||
+                    key5 >= 0 ? Input.GetKeyUp((KeyCode)key5) : GetNegativeKeyUp(key5);
             default:
                 return false;
         }
     }
 
     /// <returns> true during the frame when the key assigned with the action is pressed up</returns>
-    public static bool GetKeyUp(string action, in PlayerIndex player, out PlayerIndex playerWhoPressesUp)
+    public static bool GetKeyUp(string action, PlayerIndex player, out PlayerIndex playerWhoPressesUp)
     {
         playerWhoPressesUp = player;
         int key;
@@ -1341,46 +1707,46 @@ public static class CustomInput
         {
             case PlayerIndex.One:
                 key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Two:
                 key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Three:
                 key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Four:
                 key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.Five:
                 key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
             case PlayerIndex.All:
                 key = player1Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
                 {
                     playerWhoPressesUp = PlayerIndex.One;
                     return true;
                 }
                 key = player2Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
                 {
                     playerWhoPressesUp = PlayerIndex.Two;
                     return true;
                 }
                 key = player3Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
                 {
                     playerWhoPressesUp = PlayerIndex.Three;
                     return true;
                 }
                 key = player4Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
                 {
                     playerWhoPressesUp = PlayerIndex.Four;
                     return true;
                 }
                 key = player5Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
                 {
                     playerWhoPressesUp = PlayerIndex.Five;
                     return true;
@@ -1391,45 +1757,54 @@ public static class CustomInput
         }
     }
 
+    public static bool GetKeyUp(string action, ControllerType controllerType)
+    {
+        if (controllerType == ControllerType.Keyboard)
+            return GetKeyUp(kbKeys.GetKey(action));
+        if (controllerType == ControllerType.All)
+            return GetKeyUp(kbKeys.GetKey(action)) || GetKeyUp(gpKeys.GetKey(action));
+        return GetKeyUp(gpKeys.GetKey(action));
+    }
+
     /// <returns> true when the key assigned with the action is pressed</returns>
-    public static bool GetKey(string action, in PlayerIndex player = PlayerIndex.All)
+    public static bool GetKey(string action, PlayerIndex player = PlayerIndex.All)
     {
         int key;
         switch (player)
         {
             case PlayerIndex.One:
                 key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Two:
                 key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Three:
                 key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Four:
                 key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Five:
                 key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.All:
                 int key1 = player1Keys.GetKey(action);
                 int key2 = player2Keys.GetKey(action);
                 int key3 = player3Keys.GetKey(action);
                 int key4 = player4Keys.GetKey(action);
                 int key5 = player5Keys.GetKey(action);
-                return key1 >= 0 ? Input.GetKey((KeyCode)key1) : GetNegativeKeyCodePressed((NegativeKeyCode)key1) ||
-                    key2 >= 0 ? Input.GetKey((KeyCode)key2) : GetNegativeKeyCodePressed((NegativeKeyCode)key2) ||
-                    key3 >= 0 ? Input.GetKey((KeyCode)key3) : GetNegativeKeyCodePressed((NegativeKeyCode)key3) ||
-                    key4 >= 0 ? Input.GetKey((KeyCode)key4) : GetNegativeKeyCodePressed((NegativeKeyCode)key4) ||
-                    key5 >= 0 ? Input.GetKey((KeyCode)key5) : GetNegativeKeyCodePressed((NegativeKeyCode)key5);
+                return key1 >= 0 ? Input.GetKey((KeyCode)key1) : GetNegativeKeyPressed(key1) ||
+                    key2 >= 0 ? Input.GetKey((KeyCode)key2) : GetNegativeKeyPressed(key2) ||
+                    key3 >= 0 ? Input.GetKey((KeyCode)key3) : GetNegativeKeyPressed(key3) ||
+                    key4 >= 0 ? Input.GetKey((KeyCode)key4) : GetNegativeKeyPressed(key4) ||
+                    key5 >= 0 ? Input.GetKey((KeyCode)key5) : GetNegativeKeyPressed(key5);
             default:
                 return false;
         }
     }
 
     /// <returns> true during while the key assigned with the action is pressed</returns>
-    public static bool GetKey(string action, in PlayerIndex player, out PlayerIndex playerWhoPressed)
+    public static bool GetKey(string action, PlayerIndex player, out PlayerIndex playerWhoPressed)
     {
         playerWhoPressed = player;
         int key;
@@ -1437,46 +1812,46 @@ public static class CustomInput
         {
             case PlayerIndex.One:
                 key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Two:
                 key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Three:
                 key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Four:
                 key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.Five:
                 key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
             case PlayerIndex.All:
                 key = player1Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
                 {
                     playerWhoPressed = PlayerIndex.One;
                     return true;
                 }
                 key = player2Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
                 {
                     playerWhoPressed = PlayerIndex.Two;
                     return true;
                 }
                 key = player3Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
                 {
                     playerWhoPressed = PlayerIndex.Three;
                     return true;
                 }
                 key = player4Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
                 {
                     playerWhoPressed = PlayerIndex.Four;
                     return true;
                 }
                 key = player5Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key))
+                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
                 {
                     playerWhoPressed = PlayerIndex.Five;
                     return true;
@@ -1487,8 +1862,17 @@ public static class CustomInput
         }
     }
 
+    public static bool GetKey(string action, ControllerType controllerType)
+    {
+        if (controllerType == ControllerType.Keyboard)
+            return GetKey(kbKeys.GetKey(action));
+        if (controllerType == ControllerType.All)
+            return GetKey(kbKeys.GetKey(action)) || GetKey(gpKeys.GetKey(action));
+        return GetKey(gpKeys.GetKey(action));
+    }
+
     /// <returns> true during the frame when a key assigned with one of the actions is pressed</returns>
-    public static bool GetKeyDown(List<string> actions, in PlayerIndex player = PlayerIndex.All)
+    public static bool GetKeyDown(string[] actions, PlayerIndex player = PlayerIndex.All)
     {
         foreach (string action in actions)
         {
@@ -1500,8 +1884,18 @@ public static class CustomInput
         return false;
     }
 
+    public static bool GetKeyDown(string[] actions, ControllerType controllerType)
+    {
+        foreach (string action in actions)
+        {
+            if (GetKeyDown(action, controllerType))
+                return true;
+        }
+        return false;
+    }
+
     /// <returns> true during the frame when a key assigned with one of the actions is unpressed</returns>
-    public static bool GetKeyUp(List<string> actions, in PlayerIndex player = PlayerIndex.All)
+    public static bool GetKeyUp(string[] actions, PlayerIndex player = PlayerIndex.All)
     {
         foreach (string action in actions)
         {
@@ -1513,8 +1907,18 @@ public static class CustomInput
         return false;
     }
 
+    public static bool GetKeyUp(string[] actions, ControllerType controllerType)
+    {
+        foreach (string action in actions)
+        {
+            if (GetKeyUp(action, controllerType))
+                return true;
+        }
+        return false;
+    }
+
     /// <returns> true when a key assigned with one of the actions is pressed</returns>
-    public static bool GetKey(List<string> actions, in PlayerIndex player = PlayerIndex.All)
+    public static bool GetKey(string[] actions, PlayerIndex player = PlayerIndex.All)
     {
         foreach (string action in actions)
         {
@@ -1526,24 +1930,34 @@ public static class CustomInput
         return false;
     }
 
+    public static bool GetKey(string[] actions, ControllerType controllerType)
+    {
+        foreach (string action in actions)
+        {
+            if (GetKey(action, controllerType))
+                return true;
+        }
+        return false;
+    }
+
     /// <returns> true during the frame when the key is pressed</returns>
-    public static bool GetKeyDown(in KeyCode key) => Input.GetKeyDown(key);
+    public static bool GetKeyDown(KeyCode key) => Input.GetKeyDown(key);
     /// <returns> true during the frame when key is unpressed</returns>
-    public static bool GetKeyUp(in KeyCode key) => Input.GetKeyDown(key);
+    public static bool GetKeyUp(KeyCode key) => Input.GetKeyDown(key);
     /// <returns> true when the key is pressed</returns>
-    public static bool GetKey(in KeyCode key) => Input.GetKey(key);
+    public static bool GetKey(KeyCode key) => Input.GetKey(key);
     /// <returns> true during the frame when the key is pressed</returns>
-    public static bool GetKeyDown(in NegativeKeyCode key) => GetNegativeKeyCodeDown(key);
+    public static bool GetKeyDown(InputKey key) => GetKeyDown((int)key);
     /// <returns> true during the frame when key is unpressed</returns>
-    public static bool GetKeyUp(in NegativeKeyCode key) => GetNegativeKeyCodeUp(key);
+    public static bool GetKeyUp(InputKey key) => GetKeyUp((int)key);
     /// <returns> true when the key is pressed</returns>
-    public static bool GetKey(in NegativeKeyCode key) => GetNegativeKeyCodePressed(key);
+    public static bool GetKey(InputKey key) => GetKey((int)key);
     /// <returns> true during the frame when the key is pressed</returns>
-    public static bool GetKeyDown(in int key) => key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyCodeDown((NegativeKeyCode)key);
+    public static bool GetKeyDown(int key) => key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
     /// <returns> true during the frame when key is unpressed</returns>
-    public static bool GetKeyUp(in int key) => key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyCodeUp((NegativeKeyCode)key);
+    public static bool GetKeyUp(int key) => key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
     /// <returns> true when the key is pressed</returns>
-    public static bool GetKey(in int key) => key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyCodePressed((NegativeKeyCode)key);
+    public static bool GetKey(int key) => key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
 
     #endregion
 
@@ -1554,7 +1968,7 @@ public static class CustomInput
     /// </summary>
     /// <param name="action"> The action</param>
     /// <param name="keyboardKey"> The keyboard key link with the action</param>
-    public static void AddInputAction(string action, in KeyCode key, in PlayerIndex player = PlayerIndex.All)
+    public static void AddInputAction(string action, InputKey key, PlayerIndex player = PlayerIndex.All)
     {
         switch (player)
         {
@@ -1585,22 +1999,97 @@ public static class CustomInput
         }
     }
 
-    public static void AddInputAction(List<string> actions, List<KeyCode> keys, in PlayerIndex player = PlayerIndex.All)
+    public static void AddInputAction(string action, KeyCode key, PlayerIndex player = PlayerIndex.All)
     {
-        if (actions.Count != keys.Count)
+        AddInputAction(action, (InputKey)key, player);
+    }
+
+    private static InputKey ConvertToGeneralGamepadKey(InputKey key)
+    {
+        int key2 = (int)key;
+        if(key2 < 0 && key2 >= -56)
+        {
+            do
+            {
+                key2 -= 14;
+            } while (key2 >= -56);
+            return (InputKey)key2;
+        }
+        if(key2 >= 350)
+        {
+            do
+            {
+                key2 -= 20;
+            } while (key2 >= 350);
+            return (InputKey)key2;
+        }
+        return key;
+    }
+
+    private static bool IsGamepadKey(InputKey key)
+    {
+        int key2 = (int)key;
+        return key2 <= 0 || key2 >= 330;
+    }
+
+    private static bool IsKeyboardKey(InputKey key) => !IsGamepadKey(key) || key == InputKey.None;
+
+    public static void AddInputAction(string action, InputKey key, ControllerType controllerType)
+    {
+        if(controllerType == ControllerType.Keyboard)
+        {
+            if(IsKeyboardKey(key))
+                kbKeys.AddAction(action, (int)key);
+            return;
+        }
+        if(controllerType != ControllerType.All)
+        {
+            if(IsGamepadKey(key))
+                gpKeys.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
+            return;
+        }
+        if (IsKeyboardKey(key))
+            kbKeys.AddAction(action, (int)key);
+        if (IsGamepadKey(key))
+            gpKeys.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
+    }
+
+    public static void AddInputAction(string[] actions, InputKey[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        if (actions.Length != keys.Length)
             return;
 
-        for (int i = 0; i < actions.Count; i++)
+        for (int i = 0; i < actions.Length; i++)
         {
             AddInputAction(actions[i], keys[i], player);
         }
     }
 
+    public static void AddInputAction(string[] actions, KeyCode[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        InputKey[] keys2 = new InputKey[keys.Length];
+        for (int i = 0; i < keys2.Length; i++)
+        {
+            keys2[i] = (InputKey)keys[i];
+        }
+        AddInputAction(actions, keys2, player);
+    }
+
+    public static void AddInputAction(string[] actions, InputKey[] keys, ControllerType controllerType)
+    {
+        if (actions.Length != keys.Length)
+            return;
+
+        for (int i = 0; i < actions.Length; i++)
+        {
+            AddInputAction(actions[i], keys[i], controllerType);
+        }
+    }
 
     /// <summary>
     /// Change the keyboard key assigned to the action in param
     /// </summary>
-    public static bool ReplaceAction(string action, in KeyCode newKey, in PlayerIndex player = PlayerIndex.All)
+    public static bool ReplaceAction(string action, InputKey newKey, PlayerIndex player = PlayerIndex.All)
     {
         switch (player)
         {
@@ -1626,12 +2115,38 @@ public static class CustomInput
         }
     }
 
+    public static bool ReplaceAction(string action, KeyCode newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
+
+    public static bool ReplaceAction(string action, InputKey newKey, ControllerType controllerType)
+    {
+        if (controllerType == ControllerType.Keyboard)
+        {
+            if (IsKeyboardKey(newKey))
+                return kbKeys.ReplaceAction(action, (int)newKey);
+            return false;
+        }
+        if (controllerType != ControllerType.All)
+        {
+            if (IsGamepadKey(newKey))
+                return gpKeys.ReplaceAction(action, (int)ConvertToGeneralGamepadKey(newKey));
+            return false;
+        }
+        bool b = false;
+        if (IsKeyboardKey(newKey))
+            b = kbKeys.ReplaceAction(action, (int)newKey);
+        if (IsGamepadKey(newKey))
+            b = gpKeys.ReplaceAction(action, (int)ConvertToGeneralGamepadKey(newKey)) || b;
+        return b;
+    }
+
+    public static bool ReplaceAction(string action, KeyCode newKey, ControllerType controllerType) => ReplaceAction(action, (InputKey)newKey, controllerType);
+
     /// <summary>
     /// Remove the action from the CustomInput system
     /// </summary>
     /// <param name="action"> The action to remove.</param>
     /// <param name="controllerType">The controller where the action will be removed.</param>
-    public static bool RemoveAction(string action, in PlayerIndex player = PlayerIndex.All)
+    public static bool RemoveAction(string action, PlayerIndex player = PlayerIndex.All)
     {
         switch (player)
         {
@@ -1657,6 +2172,16 @@ public static class CustomInput
         }
     }
 
+    public static bool RemoveAction(string action, ControllerType controllerType)
+    {
+        if (controllerType == ControllerType.Keyboard)
+            return kbKeys.RemoveAction(action);
+        if (controllerType != ControllerType.All)
+            return gpKeys.RemoveAction(action);
+        bool b = kbKeys.RemoveAction(action);
+        return gpKeys.RemoveAction(action) || b;
+    }
+
     public static void ClearAll()
     {
         ClearCurrentConfiguration();
@@ -1670,6 +2195,8 @@ public static class CustomInput
         player3Keys = new InputData();
         player4Keys = new InputData();
         player5Keys = new InputData();
+        kbKeys = new InputData();
+        gpKeys = new InputData();
     }
 
     public static void ClearDefaultConfiguration()
@@ -1679,9 +2206,10 @@ public static class CustomInput
         defaultGB2Keys = new InputData();
         defaultGB3Keys = new InputData();
         defaultGB4Keys = new InputData();
+        defaultGPKeys = new InputData();
     }
 
-    public static void ClearPlayerConfiguration(in PlayerIndex playerIndex, in bool defaultTo = false)
+    public static void ClearPlayerConfiguration(PlayerIndex playerIndex, bool defaultTo = false)
     {
         switch (playerIndex)
         {
@@ -1721,12 +2249,37 @@ public static class CustomInput
         }
     }
 
+    public static void ClearControllerConfiguration(ControllerType controllerType, bool defaultTo = false)
+    {
+        if (controllerType == ControllerType.Keyboard)
+        {
+            kbKeys = new InputData();
+            if (defaultTo)
+                defaultKBKeys = new InputData();
+            return;
+        }
+        if (controllerType != ControllerType.All)
+        {
+            gpKeys = new InputData();
+            if (defaultTo)
+                defaultGPKeys = new InputData();
+            return;
+        }
+        kbKeys = new InputData();
+        gpKeys = new InputData();
+        if (defaultTo)
+        {
+            defaultKBKeys = new InputData();
+            defaultGPKeys = new InputData();
+        }
+    }
+
     /// <summary>
-    /// Set the default Control at the current configuration
+    /// Set the default Control as the current configuration of a player
     /// </summary>
     /// <param name="controllerType"></param>
     /// <param name="gamepadIndex"></param>
-    public static void SetDefaultControler(in PlayerIndex player, in ControllerType controller)
+    public static void SetDefaultControl(PlayerIndex player, ControllerType controller)
     {
         InputData inputData = null;
         switch (player)
@@ -1775,19 +2328,26 @@ public static class CustomInput
         }
     }
 
-
-    /// <summary>
-    /// Set the default Control at the current configuration
-    /// </summary>
-    /// <param name="controllerType"></param>
-    /// <param name="gamepadIndex"></param>
-    public static void SetDefaultControler()
+    public static void SetDefaultControl()
     {
-        defaultKBKeys = player1Keys.Clone();
-        defaultGB1Keys = player2Keys.Clone();
-        defaultGB2Keys = player3Keys.Clone();
-        defaultGB3Keys = player4Keys.Clone();
-        defaultGB4Keys = player5Keys.Clone();
+        defaultKBKeys = kbKeys.Clone();
+        defaultGPKeys = gpKeys.Clone();
+    }
+
+    public static void SetDefaultControl(ControllerType controller)
+    {
+        if(controller == ControllerType.Keyboard)
+        {
+            defaultKBKeys = kbKeys.Clone();
+            return;
+        }
+        if (controller != ControllerType.All)
+        {
+            defaultGPKeys = gpKeys.Clone();
+            return;
+        }
+        defaultKBKeys = kbKeys.Clone();
+        defaultGPKeys = gpKeys.Clone();
     }
 
     /// <summary>
@@ -1795,7 +2355,7 @@ public static class CustomInput
     /// </summary>
     /// <param name="player"></param>
     /// <param name="controller"></param>
-    public static void LoadDefaultController(in PlayerIndex player, in ControllerType controller)
+    public static void LoadDefaultController(PlayerIndex player, ControllerType controller)
     {
         InputData inputData = null;
         switch (controller)
@@ -1814,6 +2374,9 @@ public static class CustomInput
                 break;
             case ControllerType.Gamepad4:
                 inputData = defaultGB4Keys;
+                break;
+            case ControllerType.GamepadAll:
+                inputData = defaultGPKeys;
                 break;
             default:
                 Debug.LogWarning("Cannot set the configuration as multiple sources");
@@ -1858,24 +2421,35 @@ public static class CustomInput
     private struct CustomInputConfigData
     {
         public InputData defaultKBKeys;
-        public InputData defaultGB1Keys;
-        public InputData defaultGB2Keys;
-        public InputData defaultGB3Keys;
-        public InputData defaultGB4Keys;
+        public InputData defaultGPKeys;
+        public InputData defaultG1Keys;
+        public InputData defaultGP2Keys;
+        public InputData defaultGP3Keys;
+        public InputData defaultGP4Keys;
         public InputData player1Keys;
         public InputData player2Keys;
         public InputData player3Keys;
         public InputData player4Keys;
         public InputData player5Keys;
+        public InputData kbKeys;
+        public InputData gpKeys;
 
-        public CustomInputConfigData(InputData defaultKBKeys, InputData defaultGB1Keys, InputData defaultGB2Keys, InputData defaultGB3Keys, 
-            InputData defaultGB4Keys, InputData player1Keys, InputData player2Keys, InputData player3Keys, InputData player4Keys, InputData player5Keys)
+        public CustomInputConfigData(InputData defaultKBKeys, InputData defaultGPKeys, InputData defaultGP1Keys, InputData defaultGP2Keys, InputData defaultGP3Keys,
+            InputData defaultGP4Keys, InputData player1Keys, InputData player2Keys, InputData player3Keys, InputData player4Keys, InputData player5Keys, InputData kbKeys, InputData gpKeys)
         {
-            this.defaultKBKeys = defaultKBKeys; this.defaultGB1Keys = defaultGB1Keys;
-            this.defaultGB2Keys = defaultGB2Keys; this.defaultGB3Keys = defaultGB3Keys;
-            this.defaultGB4Keys = defaultGB4Keys; this.player1Keys = player1Keys;
-            this.player2Keys = player2Keys; this.player3Keys = player3Keys;
-            this.player4Keys = player4Keys; this.player5Keys = player5Keys;
+            this.defaultKBKeys = defaultKBKeys;
+            this.defaultGPKeys = defaultGPKeys;
+            this.defaultG1Keys = defaultGP1Keys;
+            this.defaultGP2Keys = defaultGP2Keys;
+            this.defaultGP3Keys = defaultGP3Keys;
+            this.defaultGP4Keys = defaultGP4Keys;
+            this.player1Keys = player1Keys;
+            this.player2Keys = player2Keys;
+            this.player3Keys = player3Keys;
+            this.player4Keys = player4Keys;
+            this.player5Keys = player5Keys;
+            this.kbKeys = kbKeys;
+            this.gpKeys = gpKeys;
         }
     }
 
@@ -1885,8 +2459,12 @@ public static class CustomInput
     /// </summary>
     public static bool SaveConfiguration(string fileName)
     {
-        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys.Clone(), defaultGB1Keys.Clone(), defaultGB2Keys.Clone(), defaultGB3Keys.Clone(), defaultGB4Keys.Clone(),
-            player1Keys.Clone(), player2Keys.Clone(), player3Keys.Clone(), player4Keys.Clone(), player5Keys.Clone());
+        defaultKBKeys.PrepareSerialization(); defaultGPKeys.PrepareSerialization(); defaultGB1Keys.PrepareSerialization();defaultGB2Keys.PrepareSerialization();
+        defaultGB3Keys.PrepareSerialization();defaultGB4Keys.PrepareSerialization();player1Keys.PrepareSerialization();player2Keys.PrepareSerialization();
+        player3Keys.PrepareSerialization();player4Keys.PrepareSerialization();player5Keys.PrepareSerialization();kbKeys.PrepareSerialization();gpKeys.PrepareSerialization();
+
+        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys, defaultGPKeys, defaultGB1Keys, defaultGB2Keys, defaultGB3Keys, defaultGB4Keys,
+            player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys);
         return Save.WriteJSONData(CustomInputConfig, fileName);
     }
 
@@ -1899,8 +2477,10 @@ public static class CustomInput
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
             return false;
-        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys, defaultGB1Keys, defaultGB2Keys, defaultGB3Keys, defaultGB4Keys,
-            i.player1Keys, i.player2Keys, i.player3Keys, i.player4Keys, i.player5Keys);
+        defaultKBKeys.PrepareSerialization(); defaultGPKeys.PrepareSerialization(); defaultGB1Keys.PrepareSerialization(); defaultGB2Keys.PrepareSerialization();
+        defaultGB3Keys.PrepareSerialization(); defaultGB4Keys.PrepareSerialization();
+        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys, defaultGPKeys, defaultGB1Keys, defaultGB2Keys, defaultGB3Keys, defaultGB4Keys,
+            i.player1Keys, i.player2Keys, i.player3Keys, i.player4Keys, i.player5Keys, i.kbKeys, i.gpKeys);
         return Save.WriteJSONData(CustomInputConfig, fileName);
     }
 
@@ -1913,8 +2493,10 @@ public static class CustomInput
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
             return false;
-        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(i.defaultKBKeys, i.defaultGB1Keys, i.defaultGB2Keys, i.defaultGB3Keys, i.defaultGB4Keys,
-            player1Keys, player2Keys, player3Keys, player4Keys, player5Keys);
+        player1Keys.PrepareSerialization(); player2Keys.PrepareSerialization();
+        player3Keys.PrepareSerialization(); player4Keys.PrepareSerialization(); player5Keys.PrepareSerialization(); kbKeys.PrepareSerialization(); gpKeys.PrepareSerialization();
+        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(i.defaultKBKeys, i.defaultGPKeys, i.defaultG1Keys, i.defaultGP2Keys, i.defaultGP3Keys, i.defaultGP4Keys,
+            player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys);
         return Save.WriteJSONData(CustomInputConfig, fileName);
     }
 
@@ -1925,16 +2507,22 @@ public static class CustomInput
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
             return false;
-        defaultKBKeys = i.defaultKBKeys.Clone();
-        defaultGB1Keys = i.defaultGB1Keys.Clone();
-        defaultGB2Keys = i.defaultGB2Keys.Clone();
-        defaultGB3Keys = i.defaultGB3Keys.Clone();
-        defaultGB4Keys = i.defaultGB4Keys.Clone();
-        player1Keys = i.player1Keys.Clone();
-        player2Keys = i.player2Keys.Clone();
-        player3Keys = i.player3Keys.Clone();
-        player4Keys = i.player4Keys.Clone();
-        player5Keys = i.player5Keys.Clone();
+        defaultKBKeys = i.defaultKBKeys;
+        defaultGPKeys = i.defaultGPKeys;
+        defaultGB1Keys = i.defaultG1Keys;
+        defaultGB2Keys = i.defaultGP2Keys;
+        defaultGB3Keys = i.defaultGP3Keys;
+        defaultGB4Keys = i.defaultGP4Keys;
+        player1Keys = i.player1Keys;
+        player2Keys = i.player2Keys;
+        player3Keys = i.player3Keys;
+        player4Keys = i.player4Keys;
+        player5Keys = i.player5Keys;
+        kbKeys = i.kbKeys;
+        gpKeys = i.gpKeys;
+
+        defaultKBKeys.Build(); defaultGPKeys.Build(); defaultGB1Keys.Build(); defaultGB2Keys.Build();
+        defaultGB3Keys.Build();defaultGB4Keys.Build();player1Keys.Build();player2Keys.Build();player3Keys.Build();player4Keys.Build();player5Keys.Build();kbKeys.Build();gpKeys.Build();
         return true;
     }
 
@@ -1945,11 +2533,14 @@ public static class CustomInput
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
             return false;
-        defaultKBKeys = i.defaultKBKeys.Clone();
-        defaultGB1Keys = i.defaultGB1Keys.Clone();
-        defaultGB2Keys = i.defaultGB2Keys.Clone();
-        defaultGB3Keys = i.defaultGB3Keys.Clone();
-        defaultGB4Keys = i.defaultGB4Keys.Clone();
+        defaultKBKeys = i.defaultKBKeys;
+        defaultGB1Keys = i.defaultG1Keys;
+        defaultGB2Keys = i.defaultGP2Keys;
+        defaultGB3Keys = i.defaultGP3Keys;
+        defaultGB4Keys = i.defaultGP4Keys;
+        defaultGPKeys = i.defaultGPKeys;
+        defaultKBKeys.Build(); defaultGPKeys.Build(); defaultGB1Keys.Build();
+        defaultGB2Keys.Build(); defaultGB3Keys.Build(); defaultGB4Keys.Build();
         return true;
     }
     /// <summary>
@@ -1959,11 +2550,15 @@ public static class CustomInput
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
             return false;
-        player1Keys = i.player1Keys.Clone();
-        player2Keys = i.player2Keys.Clone();
-        player3Keys = i.player3Keys.Clone();
-        player4Keys = i.player4Keys.Clone();
-        player5Keys = i.player5Keys.Clone();
+        player1Keys = i.player1Keys;
+        player2Keys = i.player2Keys;
+        player3Keys = i.player3Keys;
+        player4Keys = i.player4Keys;
+        player5Keys = i.player5Keys;
+        gpKeys = i.gpKeys;
+        kbKeys = i.kbKeys;
+
+        player1Keys.Build(); player2Keys.Build(); player3Keys.Build(); player4Keys.Build(); player5Keys.Build(); kbKeys.Build(); gpKeys.Build();
         return true;
     }
 
@@ -2009,7 +2604,7 @@ public static class CustomInput
     /// <param name="key"> the key to convert to a string</param>
     public static string KeyToString(int key)
     {
-        return key >= 0 ? ((KeyCode)key).ToString() : negativeKeyToString[((-(key + 1)) % 14) + 1];
+        return key >= 0 ? ((InputKey)key).ToString() : negativeKeyToString[((-(key + 1)) % 14) + 1];
     }
 
     public static Vector2 mousePosition => Input.mousePosition;
@@ -2041,10 +2636,30 @@ public static class CustomInput
         }
     }
 
+    public static string KeyToString(string action, ControllerType controllerType)
+    {
+        if (controllerType == ControllerType.Keyboard)
+            return KeyToString(kbKeys.GetKey(action));
+        if(gpKeys.Contain(action))
+            return KeyToString(gpKeys.GetKey(action));
+        return KeyToString(kbKeys.GetKey(action));
+    }
+
+    public static bool Listen(ControllerType controller, out int key)
+    {
+        if(Listen(controller, out InputKey tmp))
+        {
+            key = (int)tmp;
+            return true;
+        }
+        key = 0;
+        return false;
+    }
+
     /// <param name="key"> the key pressed, castable to an Keys, MouseButton or Buttons according to the controler type</param>
     /// <param name="gamepadIndex"></param>
     /// <returns> true if a key of the controler is pressed this frame, false otherwise </returns>
-    public static bool Listen(ControllerType controller, out int key)
+    public static bool Listen(ControllerType controller, out InputKey key)
     {
         int beg = 0, end = 0;
         switch (controller)
@@ -2055,7 +2670,7 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        key = keyCodeInt[i];
+                        key = (InputKey)keyCodeInt[i];
                         return true;
                     }
                 }
@@ -2068,15 +2683,15 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        key = keyCodeInt[i];
+                        key = (InputKey)keyCodeInt[i];
                         return true;
                     }
                 }
                 for (int i = -14; i <= -1; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        key = i;
+                        key = (InputKey)i;
                         return true;
                     }
                 }
@@ -2090,15 +2705,15 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        key = keyCodeInt[i];
+                        key = (InputKey)keyCodeInt[i];
                         return true;
                     }
                 }
                 for (int i = -28; i <= -15; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        key = i;
+                        key = (InputKey)i;
                         return true;
                     }
                 }
@@ -2111,15 +2726,15 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        key = keyCodeInt[i];
+                        key = (InputKey)keyCodeInt[i];
                         return true;
                     }
                 }
                 for (int i = -42; i <= -29; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        key = i;
+                        key = (InputKey)i;
                         return true;
                     }
                 }
@@ -2132,15 +2747,15 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        key = keyCodeInt[i];
+                        key = (InputKey)keyCodeInt[i];
                         return true;
                     }
                 }
                 for (int i = -56; i <= -43; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        key = i;
+                        key = (InputKey)i;
                         return true;
                     }
                 }
@@ -2154,15 +2769,15 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        key = keyCodeInt[i];
+                        key = (InputKey)keyCodeInt[i];
                         return true;
                     }
                 }
                 for (int i = -70; i <= 0; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        key = i;
+                        key = (InputKey)i;
                         return true;
                     }
                 }
@@ -2173,15 +2788,15 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        key = keyCodeInt[i];
+                        key = (InputKey)keyCodeInt[i];
                         return true;
                     }
                 }
                 for (int i = -70; i <= 0; i++)
                 {
-                    if(GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if(GetNegativeKeyDown(i))
                     {
-                        key = i;
+                        key = (InputKey)i;
                         return true;
                     }
                 }
@@ -2193,9 +2808,9 @@ public static class CustomInput
         }
     }
 
-    public static bool ListenAll(ControllerType controller, out int[] resultKeys)
+    public static bool ListenAll(ControllerType controller, out InputKey[] resultKeys)
     {
-        List<int> res = new List<int>();
+        List<InputKey> res = new List<InputKey>();
         int beg = 0, end = 0;
         switch (controller)
         {
@@ -2205,7 +2820,7 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        res.Add(keyCodeInt[i]);
+                        res.Add((InputKey)keyCodeInt[i]);
                     }
                 }
                 break;
@@ -2216,14 +2831,14 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        res.Add(keyCodeInt[i]);
+                        res.Add((InputKey)keyCodeInt[i]);
                     }
                 }
                 for (int i = -14; i <= -1; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        res.Add(i);
+                        res.Add((InputKey)i);
                     }
                 }
                 break;
@@ -2234,14 +2849,14 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        res.Add(keyCodeInt[i]);
+                        res.Add((InputKey)keyCodeInt[i]);
                     }
                 }
                 for (int i = -28; i <= -15; i++)
                     {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        res.Add(i);
+                        res.Add((InputKey)i);
                     }
                 }
                 break;
@@ -2252,14 +2867,14 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        res.Add(keyCodeInt[i]);
+                        res.Add((InputKey)keyCodeInt[i]);
                     }
                 }
                 for (int i = -42; i <= -29; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        res.Add(i);
+                        res.Add((InputKey)i);
                     }
                 }
                 break;
@@ -2270,14 +2885,14 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        res.Add(keyCodeInt[i]);
+                        res.Add((InputKey)keyCodeInt[i]);
                     }
                 }
                 for (int i = -56; i <= -43; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        res.Add(i);
+                        res.Add((InputKey)i);
                     }
                 }
                 break;
@@ -2288,14 +2903,14 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        res.Add(keyCodeInt[i]);
+                        res.Add((InputKey)keyCodeInt[i]);
                     }
                 }
                 for (int i = -70; i <= 0; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        res.Add(i);
+                        res.Add((InputKey)i);
                     }
                 }
                 break;
@@ -2304,14 +2919,14 @@ public static class CustomInput
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
                     {
-                        res.Add(keyCodeInt[i]);
+                        res.Add((InputKey)keyCodeInt[i]);
                     }
                 }
                 for (int i = -70; i <= 0; i++)
                 {
-                    if (GetNegativeKeyCodeDown((NegativeKeyCode)i))
+                    if (GetNegativeKeyDown(i))
                     {
-                        res.Add(i);
+                        res.Add((InputKey)i);
                     }
                 }
                 break;
@@ -2412,10 +3027,10 @@ public static class CustomInput
     [Serializable]
     public struct GeneralInput
     {
-        public KeyCode[] keysKeyboard, keyGamepad1, keyGamepad2, keyGamepad3, keyGamepad4;
+        public InputKey[] keysKeyboard, keyGamepad1, keyGamepad2, keyGamepad3, keyGamepad4;
         public ControllerType controllerType;
 
-        public GeneralInput(KeyCode[] keysKeyboard, KeyCode[] keyGamepad1, KeyCode[] keyGamepad2, KeyCode[] keyGamepad3, KeyCode[] keyGamepad4, ControllerType controllerType)
+        public GeneralInput(InputKey[] keysKeyboard, InputKey[] keyGamepad1, InputKey[] keyGamepad2, InputKey[] keyGamepad3, InputKey[] keyGamepad4, ControllerType controllerType)
         {
             this.keysKeyboard = keysKeyboard;
             this.keyGamepad1 = keyGamepad1;
@@ -2425,7 +3040,7 @@ public static class CustomInput
             this.controllerType = controllerType;
         }
 
-        private bool isKeySomething(Func<KeyCode, bool> func)
+        private bool isKeySomething(Func<InputKey, bool> func)
         {
             switch (controllerType)
             {
@@ -2449,9 +3064,9 @@ public static class CustomInput
                     return false;
             }
 
-            bool GetKeySomething(Func<KeyCode, bool> func, KeyCode[] keyCodes)
+            bool GetKeySomething(Func<InputKey, bool> func, InputKey[] keyCodes)
             {
-                foreach (KeyCode key in keyCodes)
+                foreach (InputKey key in keyCodes)
                 {
                     if (func(key))
                         return true;
@@ -2460,9 +3075,9 @@ public static class CustomInput
             }
         }
 
-        public bool IsPressedDown() => isKeySomething((KeyCode key) => GetKeyDown(key));
-        public bool IsPressedUp() => isKeySomething((KeyCode key) => GetKeyUp(key));
-        public bool IsPressed() => isKeySomething((KeyCode key) => GetKey(key));
+        public bool IsPressedDown() => isKeySomething((InputKey key) => GetKeyDown(key));
+        public bool IsPressedUp() => isKeySomething((InputKey key) => GetKeyUp(key));
+        public bool IsPressed() => isKeySomething((InputKey key) => GetKey(key));
     }
 
     #endregion
