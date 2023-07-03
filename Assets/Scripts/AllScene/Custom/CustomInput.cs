@@ -38,6 +38,13 @@ public enum ControllerType
     All = 6
 }
 
+public enum BaseController
+{
+    Keyboard,
+    Gamepad,
+    KeyboardAndGamepad
+}
+
 public enum MouseWheelDirection
 {
     Up,
@@ -459,11 +466,6 @@ public static class CustomInput
     #region Keys config
 
     //différents players controls
-    private static InputData defaultKBKeys = new InputData();
-    private static InputData defaultGB1Keys = new InputData();
-    private static InputData defaultGB2Keys = new InputData();
-    private static InputData defaultGB3Keys = new InputData();
-    private static InputData defaultGB4Keys = new InputData();
     private static InputData player1Keys = new InputData();
     private static InputData player2Keys = new InputData();
     private static InputData player3Keys = new InputData();
@@ -471,13 +473,14 @@ public static class CustomInput
     private static InputData player5Keys = new InputData();
 
     //keyboard/gamepad controls
-    private static InputData kbKeys = new InputData();
+    private static InputData defaultKBKeys = new InputData();
     private static InputData defaultGPKeys = new InputData();
+    private static InputData kbKeys = new InputData();
     private static InputData gpKeys = new InputData();
 
     #endregion
 
-    #region require
+    #region Require
 
     private static GamePadState newGP1State, oldGP1State;
     private static GamePadState newGP2State, oldGP2State;
@@ -924,9 +927,7 @@ public static class CustomInput
             if (controlsDic.ContainsKey(action))
                 ReplaceAction(action, key);
             else
-            {
                 controlsDic.Add(action, key);
-            }
         }
 
         public bool RemoveAction(string action)
@@ -1019,47 +1020,35 @@ public static class CustomInput
 
     private static void SetNewGamepadStickPositions()
     {
-        //ThumbStick : si vraiPos.x/y€[-deadZone.x/y, deadZone.x/y] => pos.x/y = 0, vraiPos.x/y€[-1, 1-deadZone.x/y] U [1 - deadZone.x/y, 1] => pos.x/y = (vraiPos.x/y).Sign() * 1, sinon pos.x/y = vraiPos.x/y
-        float x = Mathf.Abs(newGP1State.ThumbSticks.Right.X) <= GP1RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP1State.ThumbSticks.Right.X) >= (1f - GP1RightThumbStickDeadZone.x) ? newGP1State.ThumbSticks.Right.X.Sign() : newGP1State.ThumbSticks.Right.X);
-        float y = Mathf.Abs(newGP1State.ThumbSticks.Right.Y) <= GP1RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP1State.ThumbSticks.Right.Y) >= (1f - GP1RightThumbStickDeadZone.y) ? newGP1State.ThumbSticks.Right.Y.Sign() : newGP1State.ThumbSticks.Right.Y);
-        newGP1RightStickPosition = new Vector2(x, y);
-        x = Mathf.Abs(newGP1State.ThumbSticks.Left.X) <= GP1LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP1State.ThumbSticks.Left.X) >= (1f - GP1LeftThumbStickDeadZone.x) ? newGP1State.ThumbSticks.Left.X.Sign() : newGP1State.ThumbSticks.Left.X);
-        y = Mathf.Abs(newGP1State.ThumbSticks.Left.Y) <= GP1LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP1State.ThumbSticks.Left.Y) >= (1f - GP1LeftThumbStickDeadZone.y) ? newGP1State.ThumbSticks.Left.Y.Sign() : newGP1State.ThumbSticks.Left.Y);
-        newGP1LeftStickPosition = new Vector2(x, y);
-        x = newGP1State.Triggers.Left <= GP1TriggersDeadZone.x ? 0f : (newGP1State.Triggers.Left >= 1f - GP1TriggersDeadZone.x ? 1f : newGP1State.Triggers.Left);
-        y = newGP1State.Triggers.Right <= GP1TriggersDeadZone.y ? 0f : (newGP1State.Triggers.Right >= 1f - GP1TriggersDeadZone.y ? 1f : newGP1State.Triggers.Right);
-        newGP1Triggers = new Vector2(x, y);
+        //ThumbStick : si vraiPos.x/y€[-deadZone.x/y, deadZone.x/y] => pos.x/y = 0, vraiPos.x/y€[-1, -1 + deadZone.x/y] U [1 - deadZone.x/y, 1] => pos.x/y = (vraiPos.x/y).Sign() * 1, sinon pos.x/y = vraiPos.x/y
+        void CalculateGamepadStickAndTrigger(ref Vector2 rStickPos, ref Vector2 lStickPos, ref Vector2 triggerPos, in Vector2 lDeadZone, in Vector2 rDeadZone, in Vector2 triggerDeadZone, in GamePadState newState)
+        {
+            float Regression(float min, float max, float value)
+            {
+                if (Mathf.Abs(value) <= min)
+                    return 0f;
+                if (Mathf.Abs(value) >= max)
+                    return 1f;
+                if (min < value && value < max)
+                    return (value - min) / (max - min);
+                return (value + min) / (max - min);
+            }
 
+            float x = Mathf.Abs(newState.ThumbSticks.Right.X) <= rDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Right.X) >= (1f - rDeadZone.x) ? newState.ThumbSticks.Right.X.Sign() : newState.ThumbSticks.Right.X);
+            float y = Mathf.Abs(newState.ThumbSticks.Right.Y) <= rDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Right.Y) >= (1f - rDeadZone.y) ? newState.ThumbSticks.Right.Y.Sign() : newState.ThumbSticks.Right.Y);
+            rStickPos = new Vector2(Regression(rDeadZone.x, 1f - rDeadZone.x, x), Regression(rDeadZone.y, 1f - rDeadZone.y, y));
+            x = Mathf.Abs(newState.ThumbSticks.Left.X) <= lDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Left.X) >= (1f - lDeadZone.x) ? newState.ThumbSticks.Left.X.Sign() : newState.ThumbSticks.Left.X);
+            y = Mathf.Abs(newState.ThumbSticks.Left.Y) <= lDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Left.Y) >= (1f - lDeadZone.y) ? newState.ThumbSticks.Left.Y.Sign() : newState.ThumbSticks.Left.Y);
+            lStickPos = new Vector2(Regression(lDeadZone.x, 1f - lDeadZone.x, x), Regression(lDeadZone.y, 1f - lDeadZone.y, y));
+            x = newState.Triggers.Left <= triggerDeadZone.x ? 0f : (newState.Triggers.Left >= 1f - triggerDeadZone.x ? 1f : newState.Triggers.Left);
+            y = newState.Triggers.Right <= triggerDeadZone.y ? 0f : (newState.Triggers.Right >= 1f - triggerDeadZone.y ? 1f : newState.Triggers.Right);
+            triggerPos = new Vector2(Regression(triggerDeadZone.x, 1f - triggerDeadZone.x, x), Regression(triggerDeadZone.y, 1f - triggerDeadZone.y, y));
+        }
 
-        x = Mathf.Abs(newGP2State.ThumbSticks.Right.X) <= GP2RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP2State.ThumbSticks.Right.X) >= (1f - GP2RightThumbStickDeadZone.x) ? newGP2State.ThumbSticks.Right.X.Sign() : newGP2State.ThumbSticks.Right.X);
-        y = Mathf.Abs(newGP2State.ThumbSticks.Right.Y) <= GP2RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP2State.ThumbSticks.Right.Y) >= (1f - GP2RightThumbStickDeadZone.y) ? newGP2State.ThumbSticks.Right.Y.Sign() : newGP2State.ThumbSticks.Right.Y);
-        newGP2RightStickPosition = new Vector2(x, y);
-        x = Mathf.Abs(newGP2State.ThumbSticks.Left.X) <= GP2LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP2State.ThumbSticks.Left.X) >= (1f - GP2LeftThumbStickDeadZone.x) ? newGP2State.ThumbSticks.Left.X.Sign() : newGP2State.ThumbSticks.Left.X);
-        y = Mathf.Abs(newGP2State.ThumbSticks.Left.Y) <= GP2LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP2State.ThumbSticks.Left.Y) >= (1f - GP2LeftThumbStickDeadZone.y) ? newGP2State.ThumbSticks.Left.Y.Sign() : newGP2State.ThumbSticks.Left.Y);
-        newGP2LeftStickPosition = new Vector2(x, y);
-        x = newGP2State.Triggers.Left <= GP2TriggersDeadZone.x ? 0f : (newGP2State.Triggers.Left >= 1f - GP2TriggersDeadZone.x ? 1f : newGP2State.Triggers.Left);
-        y = newGP2State.Triggers.Right <= GP2TriggersDeadZone.y ? 0f : (newGP2State.Triggers.Right >= 1f - GP2TriggersDeadZone.y ? 1f : newGP2State.Triggers.Right);
-        newGP2Triggers = new Vector2(x, y);
-
-        x = Mathf.Abs(newGP3State.ThumbSticks.Right.X) <= GP3RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP3State.ThumbSticks.Right.X) >= (1f - GP3RightThumbStickDeadZone.x) ? newGP3State.ThumbSticks.Right.X.Sign() : newGP3State.ThumbSticks.Right.X);
-        y = Mathf.Abs(newGP3State.ThumbSticks.Right.Y) <= GP3RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP3State.ThumbSticks.Right.Y) >= (1f - GP3RightThumbStickDeadZone.y) ? newGP3State.ThumbSticks.Right.Y.Sign() : newGP3State.ThumbSticks.Right.Y);
-        newGP3RightStickPosition = new Vector2(x, y);
-        x = Mathf.Abs(newGP3State.ThumbSticks.Left.X) <= GP3LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP3State.ThumbSticks.Left.X) >= (1f - GP3LeftThumbStickDeadZone.x) ? newGP3State.ThumbSticks.Left.X.Sign() : newGP3State.ThumbSticks.Left.X);
-        y = Mathf.Abs(newGP3State.ThumbSticks.Left.Y) <= GP3LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP3State.ThumbSticks.Left.Y) >= (1f - GP3LeftThumbStickDeadZone.y) ? newGP3State.ThumbSticks.Left.Y.Sign() : newGP3State.ThumbSticks.Left.Y);
-        newGP3LeftStickPosition = new Vector2(x, y);
-        x = newGP3State.Triggers.Left <= GP3TriggersDeadZone.x ? 0f : (newGP3State.Triggers.Left >= 1f - GP3TriggersDeadZone.x ? 1f : newGP3State.Triggers.Left);
-        y = newGP3State.Triggers.Right <= GP3TriggersDeadZone.y ? 0f : (newGP3State.Triggers.Right >= 1f - GP3TriggersDeadZone.y ? 1f : newGP3State.Triggers.Right);
-        newGP3Triggers = new Vector2(x, y);
-
-        x = Mathf.Abs(newGP4State.ThumbSticks.Right.X) <= GP4RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP4State.ThumbSticks.Right.X) >= (1f - GP4RightThumbStickDeadZone.x) ? newGP4State.ThumbSticks.Right.X.Sign() : newGP4State.ThumbSticks.Right.X);
-        y = Mathf.Abs(newGP4State.ThumbSticks.Right.Y) <= GP4RightThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP4State.ThumbSticks.Right.Y) >= (1f - GP4RightThumbStickDeadZone.y) ? newGP4State.ThumbSticks.Right.Y.Sign() : newGP4State.ThumbSticks.Right.Y);
-        newGP4RightStickPosition = new Vector2(x, y);
-        x = Mathf.Abs(newGP4State.ThumbSticks.Left.X) <= GP4LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP4State.ThumbSticks.Left.X) >= (1f - GP4LeftThumbStickDeadZone.x) ? newGP4State.ThumbSticks.Left.X.Sign() : newGP4State.ThumbSticks.Left.X);
-        y = Mathf.Abs(newGP4State.ThumbSticks.Left.Y) <= GP4LeftThumbStickDeadZone.x ? 0f : (Mathf.Abs(newGP4State.ThumbSticks.Left.Y) >= (1f - GP4LeftThumbStickDeadZone.y) ? newGP4State.ThumbSticks.Left.Y.Sign() : newGP4State.ThumbSticks.Left.Y);
-        newGP4LeftStickPosition = new Vector2(x, y);
-        x = newGP4State.Triggers.Left <= GP4TriggersDeadZone.x ? 0f : (newGP4State.Triggers.Left >= 1f - GP4TriggersDeadZone.x ? 1f : newGP4State.Triggers.Left);
-        y = newGP4State.Triggers.Right <= GP4TriggersDeadZone.y ? 0f : (newGP4State.Triggers.Right >= 1f - GP4TriggersDeadZone.y ? 1f : newGP4State.Triggers.Right);
-        newGP4Triggers = new Vector2(x, y);
+        CalculateGamepadStickAndTrigger(ref newGP1RightStickPosition, ref newGP1LeftStickPosition, ref newGP1Triggers, GP1LeftThumbStickDeadZone, GP1RightThumbStickDeadZone, GP1TriggersDeadZone, newGP1State);
+        CalculateGamepadStickAndTrigger(ref newGP2RightStickPosition, ref newGP2LeftStickPosition, ref newGP2Triggers, GP2LeftThumbStickDeadZone, GP2RightThumbStickDeadZone, GP2TriggersDeadZone, newGP2State);
+        CalculateGamepadStickAndTrigger(ref newGP3RightStickPosition, ref newGP3LeftStickPosition, ref newGP3Triggers, GP3LeftThumbStickDeadZone, GP3RightThumbStickDeadZone, GP3TriggersDeadZone, newGP3State);
+        CalculateGamepadStickAndTrigger(ref newGP4RightStickPosition, ref newGP4LeftStickPosition, ref newGP4Triggers, GP4LeftThumbStickDeadZone, GP4RightThumbStickDeadZone, GP4TriggersDeadZone, newGP4State);
     }
 
     #endregion
@@ -1652,13 +1641,13 @@ public static class CustomInput
         }
     }
 
-    public static bool GetKeyDown(string action, ControllerType controllerType)
+    public static bool GetKeyDown(string action, BaseController controller)
     {
-        if(controllerType == ControllerType.Keyboard)
+        if(controller == BaseController.Keyboard)
             return GetKeyDown(kbKeys.GetKey(action));
-        if (controllerType == ControllerType.All)
-            return GetKeyDown(kbKeys.GetKey(action)) || GetKeyDown(gpKeys.GetKey(action));
-        return GetKeyDown(gpKeys.GetKey(action));
+        if (controller == BaseController.Gamepad)
+            return GetKeyDown(gpKeys.GetKey(action));
+        return GetKeyDown(kbKeys.GetKey(action)) || GetKeyDown(gpKeys.GetKey(action));
     }
 
     /// <returns> true during the frame when the key assigned with the action is unpressed</returns>
@@ -1757,13 +1746,13 @@ public static class CustomInput
         }
     }
 
-    public static bool GetKeyUp(string action, ControllerType controllerType)
+    public static bool GetKeyUp(string action, BaseController controller)
     {
-        if (controllerType == ControllerType.Keyboard)
+        if (controller == BaseController.Keyboard)
             return GetKeyUp(kbKeys.GetKey(action));
-        if (controllerType == ControllerType.All)
-            return GetKeyUp(kbKeys.GetKey(action)) || GetKeyUp(gpKeys.GetKey(action));
-        return GetKeyUp(gpKeys.GetKey(action));
+        if (controller == BaseController.Gamepad)
+            return GetKeyUp(gpKeys.GetKey(action));
+        return GetKeyUp(kbKeys.GetKey(action)) || GetKeyUp(gpKeys.GetKey(action));
     }
 
     /// <returns> true when the key assigned with the action is pressed</returns>
@@ -1862,13 +1851,13 @@ public static class CustomInput
         }
     }
 
-    public static bool GetKey(string action, ControllerType controllerType)
+    public static bool GetKey(string action, BaseController controller)
     {
-        if (controllerType == ControllerType.Keyboard)
+        if (controller == BaseController.Keyboard)
             return GetKey(kbKeys.GetKey(action));
-        if (controllerType == ControllerType.All)
-            return GetKey(kbKeys.GetKey(action)) || GetKey(gpKeys.GetKey(action));
-        return GetKey(gpKeys.GetKey(action));
+        if (controller == BaseController.Gamepad)
+            return GetKey(gpKeys.GetKey(action));
+        return GetKey(kbKeys.GetKey(action)) || GetKey(gpKeys.GetKey(action));
     }
 
     /// <returns> true during the frame when a key assigned with one of the actions is pressed</returns>
@@ -1884,11 +1873,11 @@ public static class CustomInput
         return false;
     }
 
-    public static bool GetKeyDown(string[] actions, ControllerType controllerType)
+    public static bool GetKeyDown(string[] actions, BaseController controller)
     {
         foreach (string action in actions)
         {
-            if (GetKeyDown(action, controllerType))
+            if (GetKeyDown(action, controller))
                 return true;
         }
         return false;
@@ -1907,11 +1896,11 @@ public static class CustomInput
         return false;
     }
 
-    public static bool GetKeyUp(string[] actions, ControllerType controllerType)
+    public static bool GetKeyUp(string[] actions, BaseController controller)
     {
         foreach (string action in actions)
         {
-            if (GetKeyUp(action, controllerType))
+            if (GetKeyUp(action, controller))
                 return true;
         }
         return false;
@@ -1930,11 +1919,11 @@ public static class CustomInput
         return false;
     }
 
-    public static bool GetKey(string[] actions, ControllerType controllerType)
+    public static bool GetKey(string[] actions, BaseController controller)
     {
         foreach (string action in actions)
         {
-            if (GetKey(action, controllerType))
+            if (GetKey(action, controller))
                 return true;
         }
         return false;
@@ -2009,19 +1998,11 @@ public static class CustomInput
         int key2 = (int)key;
         if(key2 < 0 && key2 >= -56)
         {
-            do
-            {
-                key2 -= 14;
-            } while (key2 >= -56);
-            return (InputKey)key2;
+            return (InputKey)(key2 - ((key2 / 14) * 14));
         }
         if(key2 >= 350)
         {
-            do
-            {
-                key2 -= 20;
-            } while (key2 >= 350);
-            return (InputKey)key2;
+            return (InputKey)(key2 - (((key2 - 350) / 20) * 20));
         }
         return key;
     }
@@ -2034,27 +2015,30 @@ public static class CustomInput
 
     private static bool IsKeyboardKey(InputKey key) => !IsGamepadKey(key) || key == InputKey.None;
 
-    public static void AddInputAction(string action, InputKey key, ControllerType controllerType)
+    public static void AddInputAction(string action, InputKey key, BaseController controller, bool defaultConfig = false)
     {
-        if(controllerType == ControllerType.Keyboard)
+        InputData kb = defaultConfig ? defaultKBKeys : kbKeys;
+        InputData gp = defaultConfig ? defaultGPKeys : gpKeys;
+
+        if(controller == BaseController.Keyboard)
         {
             if(IsKeyboardKey(key))
-                kbKeys.AddAction(action, (int)key);
+                kb.AddAction(action, (int)key);
             return;
         }
-        if(controllerType != ControllerType.All)
+        if(controller == BaseController.Gamepad)
         {
             if(IsGamepadKey(key))
-                gpKeys.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
+                gp.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
             return;
         }
         if (IsKeyboardKey(key))
-            kbKeys.AddAction(action, (int)key);
+            kb.AddAction(action, (int)key);
         if (IsGamepadKey(key))
-            gpKeys.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
+            gp.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
     }
 
-    public static void AddInputAction(string[] actions, InputKey[] keys, PlayerIndex player = PlayerIndex.All)
+    public static void AddInputActions(string[] actions, InputKey[] keys, PlayerIndex player = PlayerIndex.All)
     {
         if (actions.Length != keys.Length)
             return;
@@ -2065,24 +2049,25 @@ public static class CustomInput
         }
     }
 
-    public static void AddInputAction(string[] actions, KeyCode[] keys, PlayerIndex player = PlayerIndex.All)
+    public static void AddInputActions(string[] actions, KeyCode[] keys, PlayerIndex player = PlayerIndex.All)
     {
-        InputKey[] keys2 = new InputKey[keys.Length];
-        for (int i = 0; i < keys2.Length; i++)
+        if (actions.Length != keys.Length)
+            return;
+
+        for (int i = 0; i < keys.Length; i++)
         {
-            keys2[i] = (InputKey)keys[i];
+            AddInputAction(actions[i], (InputKey)keys[i], player);
         }
-        AddInputAction(actions, keys2, player);
     }
 
-    public static void AddInputAction(string[] actions, InputKey[] keys, ControllerType controllerType)
+    public static void AddInputActions(string[] actions, InputKey[] keys, BaseController controller, bool defaultConfig = false)
     {
         if (actions.Length != keys.Length)
             return;
 
         for (int i = 0; i < actions.Length; i++)
         {
-            AddInputAction(actions[i], keys[i], controllerType);
+            AddInputAction(actions[i], keys[i], controller, defaultConfig);
         }
     }
 
@@ -2109,7 +2094,7 @@ public static class CustomInput
                 bool b3 = player3Keys.ReplaceAction(action, (int)newKey);
                 bool b4 = player4Keys.ReplaceAction(action, (int)newKey);
                 bool b5 = player5Keys.ReplaceAction(action, (int)newKey);
-                return b1 || b2 || b3 || b4 || b5;
+                return b1 && b2 && b3 && b4 && b5;
             default:
                 return false;
         }
@@ -2117,29 +2102,32 @@ public static class CustomInput
 
     public static bool ReplaceAction(string action, KeyCode newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
 
-    public static bool ReplaceAction(string action, InputKey newKey, ControllerType controllerType)
+    public static bool ReplaceAction(string action, InputKey newKey, BaseController controller, bool defaultConfig = false)
     {
-        if (controllerType == ControllerType.Keyboard)
+        InputData kb = defaultConfig ? defaultKBKeys : kbKeys;
+        InputData gp = defaultConfig ? defaultGPKeys : gpKeys;
+
+        if (controller == BaseController.Keyboard)
         {
             if (IsKeyboardKey(newKey))
-                return kbKeys.ReplaceAction(action, (int)newKey);
+                return kb.ReplaceAction(action, (int)newKey);
             return false;
         }
-        if (controllerType != ControllerType.All)
+        if (controller == BaseController.Gamepad)
         {
             if (IsGamepadKey(newKey))
-                return gpKeys.ReplaceAction(action, (int)ConvertToGeneralGamepadKey(newKey));
+                return gp.ReplaceAction(action, (int)ConvertToGeneralGamepadKey(newKey));
             return false;
         }
         bool b = false;
         if (IsKeyboardKey(newKey))
-            b = kbKeys.ReplaceAction(action, (int)newKey);
+            b = kb.ReplaceAction(action, (int)newKey);
         if (IsGamepadKey(newKey))
-            b = gpKeys.ReplaceAction(action, (int)ConvertToGeneralGamepadKey(newKey)) || b;
+            b = gp.ReplaceAction(action, (int)ConvertToGeneralGamepadKey(newKey)) && b;
         return b;
     }
 
-    public static bool ReplaceAction(string action, KeyCode newKey, ControllerType controllerType) => ReplaceAction(action, (InputKey)newKey, controllerType);
+    public static bool ReplaceAction(string action, KeyCode newKey, BaseController controller) => ReplaceAction(action, (InputKey)newKey, controller);
 
     /// <summary>
     /// Remove the action from the CustomInput system
@@ -2166,20 +2154,23 @@ public static class CustomInput
                 bool b3 = player3Keys.RemoveAction(action);
                 bool b4 = player4Keys.RemoveAction(action);
                 bool b5 = player5Keys.RemoveAction(action);
-                return b1 || b2 || b3 || b4 || b5;
+                return b1 && b2 && b3 && b4 && b5;
             default:
                 return false;
         }
     }
 
-    public static bool RemoveAction(string action, ControllerType controllerType)
+    public static bool RemoveAction(string action, BaseController controller, bool defaultConfig = false)
     {
-        if (controllerType == ControllerType.Keyboard)
-            return kbKeys.RemoveAction(action);
-        if (controllerType != ControllerType.All)
-            return gpKeys.RemoveAction(action);
-        bool b = kbKeys.RemoveAction(action);
-        return gpKeys.RemoveAction(action) || b;
+        InputData kb = defaultConfig ? defaultKBKeys : kbKeys;
+        InputData gp = defaultConfig ? defaultGPKeys : gpKeys;
+
+        if (controller == BaseController.Keyboard)
+            return kb.RemoveAction(action);
+        if (controller == BaseController.Gamepad)
+            return gp.RemoveAction(action);
+        bool b = kb.RemoveAction(action);
+        return gp.RemoveAction(action) && b;
     }
 
     public static void ClearAll()
@@ -2202,47 +2193,34 @@ public static class CustomInput
     public static void ClearDefaultConfiguration()
     {
         defaultKBKeys = new InputData();
-        defaultGB1Keys = new InputData();
-        defaultGB2Keys = new InputData();
-        defaultGB3Keys = new InputData();
-        defaultGB4Keys = new InputData();
         defaultGPKeys = new InputData();
     }
 
-    public static void ClearPlayerConfiguration(PlayerIndex playerIndex, bool defaultTo = false)
+    public static void ClearPlayerConfiguration(PlayerIndex playerIndex)
     {
         switch (playerIndex)
         {
             case PlayerIndex.One:
                 player1Keys = new InputData();
-                if(defaultTo)
-                    defaultKBKeys = new InputData();
                 break;
             case PlayerIndex.Two:
                 player2Keys = new InputData();
-                if (defaultTo)
-                    defaultGB1Keys = new InputData();
                 break;
             case PlayerIndex.Three:
                 player3Keys = new InputData();
-                if (defaultTo)
-                    defaultGB2Keys = new InputData();
                 break;
             case PlayerIndex.Four:
                 player4Keys = new InputData();
-                if (defaultTo)
-                    defaultGB3Keys = new InputData();
                 break;
             case PlayerIndex.Five:
                 player5Keys = new InputData();
-                if (defaultTo)
-                    defaultGB4Keys = new InputData();
                 break;
             case PlayerIndex.All:
-                if (defaultTo)
-                    ClearAll();
-                else
-                    ClearCurrentConfiguration();
+                player1Keys = new InputData();
+                player2Keys = new InputData();
+                player3Keys = new InputData();
+                player4Keys = new InputData();
+                player5Keys = new InputData();
                 break;
             default:
                 break;
@@ -3005,19 +2983,6 @@ public static class CustomInput
         newGP3State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Three);
         newGP4State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Four);
         SetNewGamepadStickPositions();
-    }
-
-    #endregion
-
-    #region Exeption
-
-    [Serializable]
-    private class InvalidCustomInputActionExeption : Exception
-    {
-        public InvalidCustomInputActionExeption(string dico, string action) : base("The action : '" + action + "' is not added to the " + dico +  " controler.")
-        {
-
-        }
     }
 
     #endregion
