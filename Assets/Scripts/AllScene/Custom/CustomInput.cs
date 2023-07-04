@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using XInputDotNetPure;
 using UnityEngine;
+using System.Collections;
 
 #region Enums
 
@@ -50,6 +51,460 @@ public enum MouseWheelDirection
     Up,
     Down,
     none
+}
+
+public enum GeneralGamepadKey
+{
+    GPAllRT = -57,
+    GPAllLT = -58,
+    GPAllDPadUp = -59,
+    GPAllDPadRight = -60,
+    GPAllDPadDown = -61,
+    GPAllDPadLeft = -62,
+    GPAllTBSRUp = -63,
+    GPAllTBSRDown = -64,
+    GPAllTBSRRight = -65,
+    GPAllTBSRLeft = -66,
+    GPAllTBSLUp = -67,
+    GPAllTBSLDown = -68,
+    GPAllTBSLRight = -69,
+    GPAllTBSLLeft = -70,
+
+    None = 0,
+
+    GPButton0 = 330,
+    GPButton1 = 331,
+    GPButton2 = 332,
+    GPButton3 = 333,
+    GPButton4 = 334,
+    GPButton5 = 335,
+    GPButton6 = 336,
+    GPButton7 = 337,
+    GPButton8 = 338,
+    GPButton9 = 339,
+    GPButton10 = 340,
+    GPButton11 = 341,
+    GPButton12 = 342,
+    GPButton13 = 343,
+    GPButton14 = 344,
+    GPButton15 = 345,
+    GPButton16 = 346,
+    GPButton17 = 347,
+    GPButton18 = 348,
+    GPButton19 = 349,
+}
+
+public enum GamepadKey
+{
+    GP1RT = -1,
+    GP1LT = -2,
+    GP1DPadUp = -3,
+    GP1DPadRight = -4,
+    GP1DPadDown = -5,
+    GP1DPadLeft = -6,
+    GP1TBSRUp = -7,
+    GP1TBSRDown = -8,
+    GP1TBSRRight = -9,
+    GP1TBSRLeft = -10,
+    GP1TBSLUp = -11,
+    GP1TBSLDown = -12,
+    GP1TBSLRight = -13,
+    GP1TBSLLeft = -14,
+
+    GP2RT = -15,
+    GP2LT = -16,
+    GP2DPadUp = -17,
+    GP2DPadRight = -18,
+    GP2DPadDown = -19,
+    GP2DPadLeft = -20,
+    GP2TBSRUp = -21,
+    GP2TBSRDown = -22,
+    GP2TBSRRight = -23,
+    GP2TBSRLeft = -24,
+    GP2TBSLUp = -25,
+    GP2TBSLDown = -26,
+    GP2TBSLRight = -27,
+    GP2TBSLLeft = -28,
+
+    GP3RT = -29,
+    GP3LT = -30,
+    GP3DPadUp = -31,
+    GP3DPadRight = -32,
+    GP3DPadDown = -33,
+    GP3DPadLeft = -34,
+    GP3TBSRUp = -35,
+    GP3TBSRDown = -36,
+    GP3TBSRRight = -37,
+    GP3TBSRLeft = -38,
+    GP3TBSLUp = -39,
+    GP3TBSLDown = -40,
+    GP3TBSLRight = -41,
+    GP3TBSLLeft = -42,
+
+    GP4RT = -43,
+    GP4LT = -44,
+    GP4DPadUp = -45,
+    GP4DPadRight = -46,
+    GP4DPadDown = -47,
+    GP4DPadLeft = -48,
+    GP4TBSRUp = -49,
+    GP4TBSRDown = -50,
+    GP4TBSRRight = -51,
+    GP4TBSRLeft = -52,
+    GP4TBSLUp = -53,
+    GP4TBSLDown = -54,
+    GP4TBSLRight = -55,
+    GP4TBSLLeft = -56,
+
+    GPAllRT = -57,
+    GPAllLT = -58,
+    GPAllDPadUp = -59,
+    GPAllDPadRight = -60,
+    GPAllDPadDown = -61,
+    GPAllDPadLeft = -62,
+    GPAllTBSRUp = -63,
+    GPAllTBSRDown = -64,
+    GPAllTBSRRight = -65,
+    GPAllTBSRLeft = -66,
+    GPAllTBSLUp = -67,
+    GPAllTBSLDown = -68,
+    GPAllTBSLRight = -69,
+    GPAllTBSLLeft = -70,
+
+    None = 0,
+
+    GPButton0 = 330,
+    GPButton1 = 331,
+    GPButton2 = 332,
+    GPButton3 = 333,
+    GPButton4 = 334,
+    GPButton5 = 335,
+    GPButton6 = 336,
+    GPButton7 = 337,
+    GPButton8 = 338,
+    GPButton9 = 339,
+    GPButton10 = 340,
+    GPButton11 = 341,
+    GPButton12 = 342,
+    GPButton13 = 343,
+    GPButton14 = 344,
+    GPButton15 = 345,
+    GPButton16 = 346,
+    GPButton17 = 347,
+    GPButton18 = 348,
+    GPButton19 = 349,
+    GP1Button0 = 350,
+    GP1Button1 = 351,
+    GP1Button2 = 352,
+    GP1Button3 = 353,
+    GP1Button4 = 354,
+    GP1Button5 = 355,
+    GP1Button6 = 356,
+    GP1Button7 = 357,
+    GP1Button8 = 358,
+    GP1Button9 = 359,
+    GP1Button10 = 360,
+    GP1Button11 = 361,
+    GP1Button12 = 362,
+    GP1Button13 = 363,
+    GP1Button14 = 364,
+    GP1Button15 = 365,
+    GP1Button16 = 366,
+    GP1Button17 = 367,
+    GP1Button18 = 368,
+    GP1Button19 = 369,
+    GP2Button0 = 370,
+    GP2Button1 = 371,
+    GP2Button2 = 372,
+    GP2Button3 = 373,
+    GP2Button4 = 374,
+    GP2Button5 = 375,
+    GP2Button6 = 376,
+    GP2Button7 = 377,
+    GP2Button8 = 378,
+    GP2Button9 = 379,
+    GP2Button10 = 380,
+    GP2Button11 = 381,
+    GP2Button12 = 382,
+    GP2Button13 = 383,
+    GP2Button14 = 384,
+    GP2Button15 = 385,
+    GP2Button16 = 386,
+    GP2Button17 = 387,
+    GP2Button18 = 388,
+    GP2Button19 = 389,
+    GP3Button0 = 390,
+    GP3Button1 = 391,
+    GP3Button2 = 392,
+    GP3Button3 = 393,
+    GP3Button4 = 394,
+    GP3Button5 = 395,
+    GP3Button6 = 396,
+    GP3Button7 = 397,
+    GP3Button8 = 398,
+    GP3Button9 = 399,
+    GP3Button10 = 400,
+    GP3Button11 = 401,
+    GP3Button12 = 402,
+    GP3Button13 = 403,
+    GP3Button14 = 404,
+    GP3Button15 = 405,
+    GP3Button16 = 406,
+    GP3Button17 = 407,
+    GP3Button18 = 408,
+    GP3Button19 = 409,
+    GP4Button0 = 410,
+    GP4Button1 = 411,
+    GP4Button2 = 412,
+    GP4Button3 = 413,
+    GP4Button4 = 414,
+    GP4Button5 = 415,
+    GP4Button6 = 416,
+    GP4Button7 = 417,
+    GP4Button8 = 418,
+    GP4Button9 = 419,
+    GP4Button10 = 420,
+    GP4Button11 = 421,
+    GP4Button12 = 422,
+    GP4Button13 = 423,
+    GP4Button14 = 424,
+    GP4Button15 = 425,
+    GP4Button16 = 426,
+    GP4Button17 = 427,
+    GP4Button18 = 428,
+    GP4Button19 = 429,
+    GP5Button0 = 430,
+    GP5Button1 = 431,
+    GP5Button2 = 432,
+    GP5Button3 = 433,
+    GP5Button4 = 434,
+    GP5Button5 = 435,
+    GP5Button6 = 436,
+    GP5Button7 = 437,
+    GP5Button8 = 438,
+    GP5Button9 = 439,
+    GP5Button10 = 440,
+    GP5Button11 = 441,
+    GP5Button12 = 442,
+    GP5Button13 = 443,
+    GP5Button14 = 444,
+    GP5Button15 = 445,
+    GP5Button16 = 446,
+    GP5Button17 = 447,
+    GP5Button18 = 448,
+    GP5Button19 = 449,
+    GP6Button0 = 450,
+    GP6Button1 = 451,
+    GP6Button2 = 452,
+    GP6Button3 = 453,
+    GP6Button4 = 454,
+    GP6Button5 = 455,
+    GP6Button6 = 456,
+    GP6Button7 = 457,
+    GP6Button8 = 458,
+    GP6Button9 = 459,
+    GP6Button10 = 460,
+    GP6Button11 = 461,
+    GP6Button12 = 462,
+    GP6Button13 = 463,
+    GP6Button14 = 464,
+    GP6Button15 = 465,
+    GP6Button16 = 466,
+    GP6Button17 = 467,
+    GP6Button18 = 468,
+    GP6Button19 = 469,
+    GP7Button0 = 470,
+    GP7Button1 = 471,
+    GP7Button2 = 472,
+    GP7Button3 = 473,
+    GP7Button4 = 474,
+    GP7Button5 = 475,
+    GP7Button6 = 476,
+    GP7Button7 = 477,
+    GP7Button8 = 478,
+    GP7Button9 = 479,
+    GP7Button10 = 480,
+    GP7Button11 = 481,
+    GP7Button12 = 482,
+    GP7Button13 = 483,
+    GP7Button14 = 484,
+    GP7Button15 = 485,
+    GP7Button16 = 486,
+    GP7Button17 = 487,
+    GP7Button18 = 488,
+    GP7Button19 = 489,
+    GP8Button0 = 490,
+    GP8Button1 = 491,
+    GP8Button2 = 492,
+    GP8Button3 = 493,
+    GP8Button4 = 494,
+    GP8Button5 = 495,
+    GP8Button6 = 496,
+    GP8Button7 = 497,
+    GP8Button8 = 498,
+    GP8Button9 = 499,
+    GP8Button10 = 500,
+    GP8Button11 = 501,
+    GP8Button12 = 502,
+    GP8Button13 = 503,
+    GP8Button14 = 504,
+    GP8Button15 = 505,
+    GP8Button16 = 506,
+    GP8Button17 = 507,
+    GP8Button18 = 508,
+    GP8Button19 = 509
+}
+
+public enum KeyboardKey
+{
+    None = 0,
+    Backspace = 8,
+    Tab = 9,
+    Clear = 12,
+    Return = 13,
+    Pause = 19,
+    Escape = 27,
+    Space = 32,
+    Exclaim = 33,
+    DoubleQuote = 34,
+    Hash = 35,
+    Dollar = 36,
+    Percent = 37,
+    Ampersand = 38,
+    Quote = 39,
+    LeftParen = 40,
+    RightParen = 41,
+    Asterisk = 42,
+    Plus = 43,
+    Comma = 44,
+    Minus = 45,
+    Period = 46,
+    Slash = 47,
+    Alpha0 = 48,
+    Alpha1 = 49,
+    Alpha2 = 50,
+    Alpha3 = 51,
+    Alpha4 = 52,
+    Alpha5 = 53,
+    Alpha6 = 54,
+    Alpha7 = 55,
+    Alpha8 = 56,
+    Alpha9 = 57,
+    Colon = 58,
+    Semicolon = 59,
+    Less = 60,
+    Equals = 61,
+    Greater = 62,
+    Question = 63,
+    At = 64,
+    LeftBracket = 91,
+    Backslash = 92,
+    RightBracket = 93,
+    Caret = 94,
+    Underscore = 95,
+    BackQuote = 96,
+    A = 97,
+    B = 98,
+    C = 99,
+    D = 100,
+    E = 101,
+    F = 102,
+    G = 103,
+    H = 104,
+    I = 105,
+    J = 106,
+    K = 107,
+    L = 108,
+    M = 109,
+    N = 110,
+    O = 111,
+    P = 112,
+    Q = 113,
+    R = 114,
+    S = 115,
+    T = 116,
+    U = 117,
+    V = 118,
+    W = 119,
+    X = 120,
+    Y = 121,
+    Z = 122,
+    LeftCurlyBracket = 123,
+    Pipe = 124,
+    RightCurlyBracket = 125,
+    Tilde = 126,
+    Delete = 127,
+    Keypad0 = 256,
+    Keypad1 = 257,
+    Keypad2 = 258,
+    Keypad3 = 259,
+    Keypad4 = 260,
+    Keypad5 = 261,
+    Keypad6 = 262,
+    Keypad7 = 263,
+    Keypad8 = 264,
+    Keypad9 = 265,
+    KeypadPeriod = 266,
+    KeypadDivide = 267,
+    KeypadMultiply = 268,
+    KeypadMinus = 269,
+    KeypadPlus = 270,
+    KeypadEnter = 271,
+    KeypadEquals = 272,
+    UpArrow = 273,
+    DownArrow = 274,
+    RightArrow = 275,
+    LeftArrow = 276,
+    Insert = 277,
+    Home = 278,
+    End = 279,
+    PageUp = 280,
+    PageDown = 281,
+    F1 = 282,
+    F2 = 283,
+    F3 = 284,
+    F4 = 285,
+    F5 = 286,
+    F6 = 287,
+    F7 = 288,
+    F8 = 289,
+    F9 = 290,
+    F10 = 291,
+    F11 = 292,
+    F12 = 293,
+    F13 = 294,
+    F14 = 295,
+    F15 = 296,
+    Numlock = 300,
+    CapsLock = 301,
+    ScrollLock = 302,
+    RightShift = 303,
+    LeftShift = 304,
+    RightControl = 305,
+    LeftControl = 306,
+    RightAlt = 307,
+    LeftAlt = 308,
+    LeftMeta = 310,
+    LeftCommand = 310,
+    LeftApple = 310,
+    LeftWindows = 311,
+    RightMeta = 309,
+    RightCommand = 309,
+    RightApple = 309,
+    RightWindows = 312,
+    AltGr = 313,
+    Help = 315,
+    Print = 316,
+    SysReq = 317,
+    Break = 318,
+    Menu = 319,
+    Mouse0 = 323,
+    Mouse1 = 324,
+    Mouse2 = 325,
+    Mouse3 = 326,
+    Mouse4 = 327,
+    Mouse5 = 328,
+    Mouse6 = 329,
 }
 
 public enum InputKey
@@ -500,9 +955,14 @@ public static class CustomInput
     public static Vector2 GP3RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP3LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP3TriggersDeadZone = new Vector2(0.1f, 0.1f);
     public static Vector2 GP4RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP4LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP4TriggersDeadZone = new Vector2(0.1f, 0.1f);
 
-    private static string[] letters = new string[36] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+    private static Vector2 defaultGP1RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP1LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP1TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static Vector2 defaultGP2RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP2LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP2TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static Vector2 defaultGP3RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP3LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP3TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static Vector2 defaultGP4RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP4LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP4TriggersDeadZone = new Vector2(0.1f, 0.1f);
 
-    private static int[] keyCodeInt = { 0,8,9,12,13,19,27,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,108,110,111,112,113,114,115,116,
+    private static readonly string[] letters = new string[36] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+    private static readonly int[] keyCodeInt = { 0,8,9,12,13,19,27,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,108,110,111,112,113,114,115,116,
         117,118,119,120,121,122,123,124,125,126,127,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,300,301,302,303,304,305,306,307,308,
         309,310,311,312,313,314,315,316,317,318,319,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,
         373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,
@@ -881,7 +1341,7 @@ public static class CustomInput
     #region Class InputData
 
     [Serializable]
-    private class InputData : ICloneable<InputData>
+    private class InputData : ICloneable<InputData>, IEnumerable<KeyValuePair<string, int>>
     {
         public List<string> actions = new List<string>();
         public List<int> keys = new List<int>();
@@ -896,7 +1356,16 @@ public static class CustomInput
             Build();
         }
 
-        public void Build()
+        public InputData(Dictionary<string, int> controls)
+        {
+            controlsDic = new Dictionary<string, int>();
+            foreach (KeyValuePair<string, int> item in controls)
+            {
+                controlsDic.Add(item.Key, item.Value);
+            }
+        }
+
+        private void Build()
         {
             if (actions.Count != keys.Count)
                 return;
@@ -906,8 +1375,19 @@ public static class CustomInput
             {
                 controlsDic.Add(actions[i], keys[i]);
             }
+            ClearList();
+        }
+
+        public void ClearList()
+        {
             actions.Clear();
             keys.Clear();
+        }
+
+        public void Clear()
+        {
+            ClearList();
+            controlsDic.Clear();
         }
 
         public void PrepareSerialization()
@@ -959,7 +1439,74 @@ public static class CustomInput
             return 0;
         }
 
-        public InputData Clone() => new InputData(actions, keys); 
+        public InputData Clone() => new InputData(controlsDic);
+
+        public IEnumerator<KeyValuePair<string, int>> GetEnumerator()
+        {
+            return controlsDic.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return controlsDic.GetEnumerator();
+        }
+
+        private GeneralGamepadKey ConvertGamepadKeyToGeneralKey(GamepadKey key)
+        {
+            int k = (int)key;
+            if ((0 <= k && k <= 349) || (-70 <= k && k <= -57))
+                return (GeneralGamepadKey)k;
+            if (k < 0)
+                return (GeneralGamepadKey)(k + ((k + 57) / 14) * 14);
+            return (GeneralGamepadKey)(k - ((k - 349) / 20) * 20);
+        }
+
+        private GamepadKey ConvertGeneralKeyToGamepadKey(GamepadKey key, ControllerType gamepadIndex)
+        {
+            int k = (int)key;
+            if (-56 <= k && k <= 0)
+                return (GamepadKey)k;
+
+        }
+
+        public InputData ToGamepadInputData()
+        {
+            InputData res = new InputData();
+            for (int i = 0; i < actions.Count; i++)
+            {
+                if (IsGamepadKey((InputKey)keys[i]))
+                {
+                    res.AddAction(actions[i], (int)ConvertGamepadKeyToGeneralKey((GamepadKey)keys[i]));
+                }
+            }
+            return res;
+        }
+
+        public InputData ToGamepadInputData(ControllerType gamepadIndex)
+        {
+            InputData res = new InputData();
+            for (int i = 0; i < actions.Count; i++)
+            {
+                if (IsGamepadKey((InputKey)keys[i]))
+                {
+                    res.AddAction(actions[i], Convert(keys[i]));
+                }
+            }
+            return res;
+        }
+
+        public InputData ToKeyboardInputData()
+        {
+            InputData res = new InputData();
+            for (int i = 0; i < actions.Count; i++)
+            {
+                if (IsKeyboardKey((InputKey)keys[i]))
+                {
+                    res.AddAction(actions[i], keys[i]);
+                }
+            }
+            return res;
+        }
     }
 
     #endregion
@@ -973,7 +1520,7 @@ public static class CustomInput
 
     public static void SetVibration(float rightIntensity = 1f, float leftIntensity = 1f, ControllerType gamepadIndex = ControllerType.GamepadAll)
     {
-        //Handheld.Vibrate();//version unity eco plus
+        //Handheld.Vibrate();//unity build-in poor version
 
         if(gamepadIndex == ControllerType.Keyboard)
         {
@@ -1526,6 +2073,18 @@ public static class CustomInput
         return false;
     }
 
+    public static void ResetGamepadDeadzone()
+    {
+        GP1RightThumbStickDeadZone = defaultGP1RightThumbStickDeadZone;
+        GP1LeftThumbStickDeadZone = defaultGP1LeftThumbStickDeadZone;
+        GP2RightThumbStickDeadZone = defaultGP2RightThumbStickDeadZone;
+        GP2LeftThumbStickDeadZone = defaultGP2LeftThumbStickDeadZone;
+        GP3RightThumbStickDeadZone = defaultGP3RightThumbStickDeadZone;
+        GP3LeftThumbStickDeadZone = defaultGP3LeftThumbStickDeadZone;
+        GP4RightThumbStickDeadZone = defaultGP4RightThumbStickDeadZone;
+        GP4LeftThumbStickDeadZone = defaultGP4LeftThumbStickDeadZone;
+    }
+
     #endregion
 
     #region GetKeyDown / GetKeyUp / GetKey
@@ -1942,6 +2501,18 @@ public static class CustomInput
     /// <returns> true when the key is pressed</returns>
     public static bool GetKey(InputKey key) => GetKey((int)key);
     /// <returns> true during the frame when the key is pressed</returns>
+    public static bool GetKeyDown(KeyboardKey key) => GetKeyDown((int)key);
+    /// <returns> true during the frame when key is unpressed</returns>
+    public static bool GetKeyUp(KeyboardKey key) => GetKeyUp((int)key);
+    /// <returns> true when the key is pressed</returns>
+    public static bool GetKey(KeyboardKey key) => GetKey((int)key);
+    /// <returns> true during the frame when the key is pressed</returns>
+    public static bool GetKeyDown(GamepadKey key) => GetKeyDown((int)key);
+    /// <returns> true during the frame when key is unpressed</returns>
+    public static bool GetKeyUp(GamepadKey key) => GetKeyUp((int)key);
+    /// <returns> true when the key is pressed</returns>
+    public static bool GetKey(GamepadKey key) => GetKey((int)key);
+    /// <returns> true during the frame when the key is pressed</returns>
     public static bool GetKeyDown(int key) => key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
     /// <returns> true during the frame when key is unpressed</returns>
     public static bool GetKeyUp(int key) => key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
@@ -1951,6 +2522,18 @@ public static class CustomInput
     #endregion
 
     #region Management controller
+
+    #region Add/Replace/Remove action
+
+    public static void AddInputAction(string action, KeyboardKey key)
+    {
+        kbKeys.AddAction(action, (int)key);
+    }
+
+    public static void AddInputAction(string action, GamepadKey key)
+    {
+        gpKeys.AddAction(action, (int)key);
+    }
 
     /// <summary>
     /// Add an action to the CustomInput system. Multiply action can have the same key.
@@ -1993,17 +2576,23 @@ public static class CustomInput
         AddInputAction(action, (InputKey)key, player);
     }
 
+    public static void AddInputAction(string action, KeyboardKey key, PlayerIndex player = PlayerIndex.All)
+    {
+        AddInputAction(action, (InputKey)key, player);
+    }
+
+    public static void AddInputAction(string action, GamepadKey key, PlayerIndex player = PlayerIndex.All)
+    {
+        AddInputAction(action, (InputKey)key, player);
+    }
+
     private static InputKey ConvertToGeneralGamepadKey(InputKey key)
     {
         int key2 = (int)key;
         if(key2 < 0 && key2 >= -56)
-        {
             return (InputKey)(key2 - ((key2 / 14) * 14));
-        }
         if(key2 >= 350)
-        {
             return (InputKey)(key2 - (((key2 - 350) / 20) * 20));
-        }
         return key;
     }
 
@@ -2024,18 +2613,30 @@ public static class CustomInput
         {
             if(IsKeyboardKey(key))
                 kb.AddAction(action, (int)key);
+            Debug.LogWarning("Can't add " + KeyToString(key) + " with isn't a Keyboard key to the keyboard input system.");
             return;
         }
         if(controller == BaseController.Gamepad)
         {
             if(IsGamepadKey(key))
                 gp.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
+            Debug.LogWarning("Can't add " + KeyToString(key) + " with isn't a gamepad key to the keyboard input system.");
             return;
         }
         if (IsKeyboardKey(key))
             kb.AddAction(action, (int)key);
         if (IsGamepadKey(key))
             gp.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
+    }
+
+    public static void AddInputAction(string action, KeyboardKey key, BaseController controller, bool defaultConfig = false)
+    {
+        AddInputAction(action, (InputKey)key, controller, defaultConfig);
+    }
+
+    public static void AddInputAction(string action, GamepadKey key, BaseController controller, bool defaultConfig = false)
+    {
+        AddInputAction(action, (InputKey)key, controller, defaultConfig);
     }
 
     public static void AddInputActions(string[] actions, InputKey[] keys, PlayerIndex player = PlayerIndex.All)
@@ -2060,6 +2661,28 @@ public static class CustomInput
         }
     }
 
+    public static void AddInputActions(string[] actions, KeyboardKey[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        if (actions.Length != keys.Length)
+            return;
+
+        for (int i = 0; i < keys.Length; i++)
+        {
+            AddInputAction(actions[i], (InputKey)keys[i], player);
+        }
+    }
+
+    public static void AddInputActions(string[] actions, GamepadKey[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        if (actions.Length != keys.Length)
+            return;
+
+        for (int i = 0; i < keys.Length; i++)
+        {
+            AddInputAction(actions[i], (InputKey)keys[i], player);
+        }
+    }
+
     public static void AddInputActions(string[] actions, InputKey[] keys, BaseController controller, bool defaultConfig = false)
     {
         if (actions.Length != keys.Length)
@@ -2068,6 +2691,28 @@ public static class CustomInput
         for (int i = 0; i < actions.Length; i++)
         {
             AddInputAction(actions[i], keys[i], controller, defaultConfig);
+        }
+    }
+
+    public static void AddInputActions(string[] actions, KeyboardKey[] keys, BaseController controller, bool defaultConfig = false)
+    {
+        if (actions.Length != keys.Length)
+            return;
+
+        for (int i = 0; i < actions.Length; i++)
+        {
+            AddInputAction(actions[i], (InputKey)keys[i], controller, defaultConfig);
+        }
+    }
+
+    public static void AddInputActions(string[] actions, GamepadKey[] keys, BaseController controller, bool defaultConfig = false)
+    {
+        if (actions.Length != keys.Length)
+            return;
+
+        for (int i = 0; i < actions.Length; i++)
+        {
+            AddInputAction(actions[i], (InputKey)keys[i], controller, defaultConfig);
         }
     }
 
@@ -2101,6 +2746,8 @@ public static class CustomInput
     }
 
     public static bool ReplaceAction(string action, KeyCode newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
+    public static bool ReplaceAction(string action, KeyboardKey newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
+    public static bool ReplaceAction(string action, GamepadKey newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
 
     public static bool ReplaceAction(string action, InputKey newKey, BaseController controller, bool defaultConfig = false)
     {
@@ -2128,6 +2775,8 @@ public static class CustomInput
     }
 
     public static bool ReplaceAction(string action, KeyCode newKey, BaseController controller) => ReplaceAction(action, (InputKey)newKey, controller);
+    public static bool ReplaceAction(string action, KeyboardKey newKey, BaseController controller) => ReplaceAction(action, (InputKey)newKey, controller);
+    public static bool ReplaceAction(string action, GamepadKey newKey, BaseController controller) => ReplaceAction(action, (InputKey)newKey, controller);
 
     /// <summary>
     /// Remove the action from the CustomInput system
@@ -2173,13 +2822,15 @@ public static class CustomInput
         return gp.RemoveAction(action) && b;
     }
 
-    public static void ClearAll()
+    #endregion
+
+    public static void ClearAllInputs()
     {
-        ClearCurrentConfiguration();
-        ClearDefaultConfiguration();
+        ClearCurrentInputConfiguration();
+        ClearDefaultInputConfiguration();
     }
 
-    public static void ClearCurrentConfiguration()
+    public static void ClearCurrentInputConfiguration()
     {
         player1Keys = new InputData();
         player2Keys = new InputData();
@@ -2190,7 +2841,7 @@ public static class CustomInput
         gpKeys = new InputData();
     }
 
-    public static void ClearDefaultConfiguration()
+    public static void ClearDefaultInputConfiguration()
     {
         defaultKBKeys = new InputData();
         defaultGPKeys = new InputData();
@@ -2227,16 +2878,16 @@ public static class CustomInput
         }
     }
 
-    public static void ClearControllerConfiguration(ControllerType controllerType, bool defaultTo = false)
+    public static void ClearCurrentControllerConfiguration(BaseController controller, bool defaultTo = false)
     {
-        if (controllerType == ControllerType.Keyboard)
+        if (controller == BaseController.Keyboard)
         {
             kbKeys = new InputData();
             if (defaultTo)
                 defaultKBKeys = new InputData();
             return;
         }
-        if (controllerType != ControllerType.All)
+        if (controller == BaseController.Gamepad)
         {
             gpKeys = new InputData();
             if (defaultTo)
@@ -2257,75 +2908,66 @@ public static class CustomInput
     /// </summary>
     /// <param name="controllerType"></param>
     /// <param name="gamepadIndex"></param>
-    public static void SetDefaultControl(PlayerIndex player, ControllerType controller)
+    public static void SetDefaultController(BaseController controller)
     {
-        InputData inputData = null;
+        if(controller == BaseController.Keyboard)
+        {
+            defaultKBKeys = kbKeys.ToKeyboardInputData();
+            return;
+        }
+        if(controller == BaseController.Gamepad)
+        {
+            defaultGPKeys = gpKeys.ToGamepadInputData();
+            return;
+        }
+        SetDefaultController();
+    }
+
+    public static void SetDefaultController()
+    {
+        defaultKBKeys = kbKeys.ToKeyboardInputData();
+        defaultGPKeys = gpKeys.ToGamepadInputData();
+    }
+
+    public static void SetDefaultController(BaseController controller, PlayerIndex player)
+    {
+        InputData inputs = null;
         switch (player)
         {
             case PlayerIndex.One:
-                inputData = player1Keys;
+                inputs = player1Keys;
                 break;
             case PlayerIndex.Two:
-                inputData = player2Keys;
+                inputs = player2Keys;
                 break;
             case PlayerIndex.Three:
-                inputData = player3Keys;
+                inputs = player3Keys;
                 break;
             case PlayerIndex.Four:
-                inputData = player4Keys;
+                inputs = player4Keys;
                 break;
             case PlayerIndex.Five:
-                inputData = player5Keys;
+                inputs = player5Keys;
+                break;
+            case PlayerIndex.All:
+                Debug.LogWarning("Can't set default control from multiple sources");
                 break;
             default:
-                Debug.LogWarning("Cannot set a default controller for multiple player inputs");
-                return;
+                break;
         }
 
-        inputData = inputData.Clone();
-        switch (controller)
+        if(controller == BaseController.Keyboard)
         {
-            case ControllerType.Keyboard:
-                defaultKBKeys = inputData;
-                break;
-            case ControllerType.Gamepad1:
-                defaultGB1Keys = inputData;
-                break;
-            case ControllerType.Gamepad2:
-                defaultGB2Keys = inputData;
-                break;
-            case ControllerType.Gamepad3:
-                defaultGB3Keys = inputData;
-                break;
-            case ControllerType.Gamepad4:
-                defaultGB4Keys = inputData;
-                break;
-            default:
-                Debug.LogWarning("Cannot set the default controller of multiple sources");
-                return;
-        }
-    }
-
-    public static void SetDefaultControl()
-    {
-        defaultKBKeys = kbKeys.Clone();
-        defaultGPKeys = gpKeys.Clone();
-    }
-
-    public static void SetDefaultControl(ControllerType controller)
-    {
-        if(controller == ControllerType.Keyboard)
-        {
-            defaultKBKeys = kbKeys.Clone();
+            defaultKBKeys = inputs.ToKeyboardInputData();
             return;
         }
-        if (controller != ControllerType.All)
+        if (controller == BaseController.Keyboard)
         {
-            defaultGPKeys = gpKeys.Clone();
+            defaultGPKeys = inputs.ToGamepadInputData();
             return;
         }
-        defaultKBKeys = kbKeys.Clone();
-        defaultGPKeys = gpKeys.Clone();
+        defaultKBKeys = inputs.ToKeyboardInputData();
+        defaultGPKeys = inputs.ToGamepadInputData();
     }
 
     /// <summary>
@@ -2333,58 +2975,91 @@ public static class CustomInput
     /// </summary>
     /// <param name="player"></param>
     /// <param name="controller"></param>
-    public static void LoadDefaultController(PlayerIndex player, ControllerType controller)
+    public static void LoadDefaultController(PlayerIndex player, BaseController controller)
     {
-        InputData inputData = null;
+        InputData inputs = null;
         switch (controller)
         {
-            case ControllerType.Keyboard:
-                inputData = defaultKBKeys;
+            case BaseController.Keyboard:
+                inputs = defaultKBKeys;
                 break;
-            case ControllerType.Gamepad1:
-                inputData = defaultGB1Keys;
+            case BaseController.Gamepad:
+                inputs = defaultGPKeys;
                 break;
-            case ControllerType.Gamepad2:
-                inputData = defaultGB2Keys;
-                break;
-            case ControllerType.Gamepad3:
-                inputData = defaultGB3Keys;
-                break;
-            case ControllerType.Gamepad4:
-                inputData = defaultGB4Keys;
-                break;
-            case ControllerType.GamepadAll:
-                inputData = defaultGPKeys;
-                break;
+            case BaseController.KeyboardAndGamepad:
+                Debug.LogWarning("Can't load multiple inputs system for one player!");
+                return;
             default:
-                Debug.LogWarning("Cannot set the configuration as multiple sources");
                 return;
         }
 
-        inputData = inputData.Clone();
         switch (player)
         {
             case PlayerIndex.One:
-                player1Keys = inputData;
+                player1Keys = inputs.Clone();
                 break;
             case PlayerIndex.Two:
-                player2Keys = inputData;
+                player2Keys = inputs.Clone();
                 break;
             case PlayerIndex.Three:
-                player3Keys = inputData;
+                player3Keys = inputs.Clone();
                 break;
             case PlayerIndex.Four:
-                player4Keys = inputData;
+                player4Keys = inputs.Clone();
                 break;
             case PlayerIndex.Five:
-                player5Keys = inputData;
+                player5Keys = inputs.Clone();
                 break;
             case PlayerIndex.All:
-                player1Keys = inputData;
-                player2Keys = inputData.Clone();
-                player3Keys = inputData.Clone();
-                player4Keys = inputData.Clone();
-                player5Keys = inputData.Clone();
+                player1Keys = inputs.Clone();
+                player2Keys = inputs.Clone();
+                player3Keys = inputs.Clone();
+                player4Keys = inputs.Clone();
+                player5Keys = inputs.Clone();
+                break;
+            default:
+                return;
+        }
+    }
+
+    public static void LoadDefaultControllerForGamepad(PlayerIndex player, ControllerType gamepadIndex)
+    {
+        if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
+        {
+            Debug.Log("Can't set the " + player.ToString() + " controllers for Gamepad with multiple defaults controllers!");
+            return;
+        }
+        if (gamepadIndex == ControllerType.Keyboard)
+        {
+            Debug.Log("Can't set the " + player.ToString() + " controller for Gamepad with the keyboard default controller!");
+            return;
+        }
+
+        InputData inputs = gpKeys.ToGamepadInputData(gamepadIndex);
+
+        switch (player)
+        {
+            case PlayerIndex.One:
+                player1Keys = inputs.Clone();
+                break;
+            case PlayerIndex.Two:
+                player2Keys = inputs.Clone();
+                break;
+            case PlayerIndex.Three:
+                player3Keys = inputs.Clone();
+                break;
+            case PlayerIndex.Four:
+                player4Keys = inputs.Clone();
+                break;
+            case PlayerIndex.Five:
+                player5Keys = inputs.Clone();
+                break;
+            case PlayerIndex.All:
+                player1Keys = inputs.Clone();
+                player2Keys = inputs.Clone().Clone();
+                player3Keys = inputs.Clone().Clone();
+                player4Keys = inputs.Clone().Clone();
+                player5Keys = inputs.Clone().Clone();
                 break;
             default:
                 return;
@@ -2580,9 +3255,9 @@ public static class CustomInput
     /// Convert a key into a string.
     /// </summary>
     /// <param name="key"> the key to convert to a string</param>
-    public static string KeyToString(int key)
+    public static string KeyToString(InputKey key)
     {
-        return key >= 0 ? ((InputKey)key).ToString() : negativeKeyToString[((-(key + 1)) % 14) + 1];
+        return key >= 0 ? key.ToString() : negativeKeyToString[((-((int)key + 1)) % 14) + 1];
     }
 
     public static Vector2 mousePosition => Input.mousePosition;
