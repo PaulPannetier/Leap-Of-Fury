@@ -55,20 +55,20 @@ public enum MouseWheelDirection
 
 public enum GeneralGamepadKey
 {
-    GPAllRT = -57,
-    GPAllLT = -58,
-    GPAllDPadUp = -59,
-    GPAllDPadRight = -60,
-    GPAllDPadDown = -61,
-    GPAllDPadLeft = -62,
-    GPAllTBSRUp = -63,
-    GPAllTBSRDown = -64,
-    GPAllTBSRRight = -65,
-    GPAllTBSRLeft = -66,
-    GPAllTBSLUp = -67,
-    GPAllTBSLDown = -68,
-    GPAllTBSLRight = -69,
-    GPAllTBSLLeft = -70,
+    GPRT = -57,
+    GPLT = -58,
+    GPDPadUp = -59,
+    GPDPadRight = -60,
+    GPDPadDown = -61,
+    GPDPadLeft = -62,
+    GPTBSRUp = -63,
+    GPTBSRDown = -64,
+    GPTBSRRight = -65,
+    GPTBSRLeft = -66,
+    GPTBSLUp = -67,
+    GPTBSLDown = -68,
+    GPTBSLRight = -69,
+    GPTBSLLeft = -70,
 
     None = 0,
 
@@ -156,20 +156,20 @@ public enum GamepadKey
     GP4TBSLRight = -55,
     GP4TBSLLeft = -56,
 
-    GPAllRT = -57,
-    GPAllLT = -58,
-    GPAllDPadUp = -59,
-    GPAllDPadRight = -60,
-    GPAllDPadDown = -61,
-    GPAllDPadLeft = -62,
-    GPAllTBSRUp = -63,
-    GPAllTBSRDown = -64,
-    GPAllTBSRRight = -65,
-    GPAllTBSRLeft = -66,
-    GPAllTBSLUp = -67,
-    GPAllTBSLDown = -68,
-    GPAllTBSLRight = -69,
-    GPAllTBSLLeft = -70,
+    GPRT = -57,
+    GPLT = -58,
+    GPDPadUp = -59,
+    GPDPadRight = -60,
+    GPDPadDown = -61,
+    GPDPadLeft = -62,
+    GPTBSRUp = -63,
+    GPTBSRDown = -64,
+    GPTBSRRight = -65,
+    GPTBSRLeft = -66,
+    GPTBSLUp = -67,
+    GPTBSLDown = -68,
+    GPTBSLRight = -69,
+    GPTBSLLeft = -70,
 
     None = 0,
 
@@ -569,20 +569,20 @@ public enum InputKey
     GP4TBSLRight = -55,
     GP4TBSLLeft = -56,
 
-    GPAllRT = -57,
-    GPAllLT = -58,
-    GPAllDPadUp = -59,
-    GPAllDPadRight = -60,
-    GPAllDPadDown = -61,
-    GPAllDPadLeft = -62,
-    GPAllTBSRUp = -63,
-    GPAllTBSRDown = -64,
-    GPAllTBSRRight = -65,
-    GPAllTBSRLeft = -66,
-    GPAllTBSLUp = -67,
-    GPAllTBSLDown = -68,
-    GPAllTBSLRight = -69,
-    GPAllTBSLLeft = -70,
+    GPRT = -57,
+    GPLT = -58,
+    GPDPadUp = -59,
+    GPDPadRight = -60,
+    GPDPadDown = -61,
+    GPDPadLeft = -62,
+    GPTBSRUp = -63,
+    GPTBSRDown = -64,
+    GPTBSRRight = -65,
+    GPTBSRLeft = -66,
+    GPTBSLUp = -67,
+    GPTBSLDown = -68,
+    GPTBSLRight = -69,
+    GPTBSLLeft = -70,
 
     None = 0,
     Backspace = 8,
@@ -1365,7 +1365,7 @@ public static class CustomInput
             }
         }
 
-        private void Build()
+        public void Build()
         {
             if (actions.Count != keys.Count)
                 return;
@@ -1388,18 +1388,6 @@ public static class CustomInput
         {
             ClearList();
             controlsDic.Clear();
-        }
-
-        public void PrepareSerialization()
-        {
-            actions = new List<string>();
-            keys = new List<int>();
-
-            foreach (KeyValuePair<string, int> item in controlsDic)
-            {
-                actions.Add(item.Key);
-                keys.Add(item.Value);
-            }
         }
 
         public void AddAction(string action, int key)
@@ -1461,15 +1449,26 @@ public static class CustomInput
             return (GeneralGamepadKey)(k - ((k - 349) / 20) * 20);
         }
 
-        private GamepadKey ConvertGeneralKeyToGamepadKey(GamepadKey key, ControllerType gamepadIndex)
+        private static Dictionary<ControllerType, int> CalculateOffsetNegKey = new Dictionary<ControllerType, int>
         {
-            int k = (int)key;
-            if (-56 <= k && k <= 0)
-                return (GamepadKey)k;
+            { ControllerType.Gamepad1, 56 }, { ControllerType.Gamepad2, 42 }, { ControllerType.Gamepad3, 28 }, { ControllerType.Gamepad4, 14 }
+        };
+        private static Dictionary<ControllerType, int> CalculateOffsetPosKey = new Dictionary<ControllerType, int>
+        {
+            { ControllerType.Gamepad1, 20 }, { ControllerType.Gamepad2, 40 }, { ControllerType.Gamepad3, 60 }, { ControllerType.Gamepad4, 80 }
+        };
 
+        private int ConvertGeneralKeyToGamepadKey(int key, ControllerType gamepadIndex)
+        {
+            if ((-56 <= key && key <= 0) || key >= 350)
+                return key;
+
+            if (key < 0)
+                return key + CalculateOffsetNegKey[gamepadIndex];
+            return key + CalculateOffsetPosKey[gamepadIndex];
         }
 
-        public InputData ToGamepadInputData()
+        public InputData ToGeneralGamepadInputData()
         {
             InputData res = new InputData();
             for (int i = 0; i < actions.Count; i++)
@@ -1489,7 +1488,7 @@ public static class CustomInput
             {
                 if (IsGamepadKey((InputKey)keys[i]))
                 {
-                    res.AddAction(actions[i], Convert(keys[i]));
+                    res.AddAction(actions[i], ConvertGeneralKeyToGamepadKey(keys[i], gamepadIndex));
                 }
             }
             return res;
@@ -2917,7 +2916,7 @@ public static class CustomInput
         }
         if(controller == BaseController.Gamepad)
         {
-            defaultGPKeys = gpKeys.ToGamepadInputData();
+            defaultGPKeys = gpKeys.ToGeneralGamepadInputData();
             return;
         }
         SetDefaultController();
@@ -2926,7 +2925,7 @@ public static class CustomInput
     public static void SetDefaultController()
     {
         defaultKBKeys = kbKeys.ToKeyboardInputData();
-        defaultGPKeys = gpKeys.ToGamepadInputData();
+        defaultGPKeys = gpKeys.ToGeneralGamepadInputData();
     }
 
     public static void SetDefaultController(BaseController controller, PlayerIndex player)
@@ -2963,11 +2962,11 @@ public static class CustomInput
         }
         if (controller == BaseController.Keyboard)
         {
-            defaultGPKeys = inputs.ToGamepadInputData();
+            defaultGPKeys = inputs.ToGeneralGamepadInputData();
             return;
         }
         defaultKBKeys = inputs.ToKeyboardInputData();
-        defaultGPKeys = inputs.ToGamepadInputData();
+        defaultGPKeys = inputs.ToGeneralGamepadInputData();
     }
 
     /// <summary>
@@ -3056,14 +3055,46 @@ public static class CustomInput
                 break;
             case PlayerIndex.All:
                 player1Keys = inputs.Clone();
-                player2Keys = inputs.Clone().Clone();
-                player3Keys = inputs.Clone().Clone();
-                player4Keys = inputs.Clone().Clone();
-                player5Keys = inputs.Clone().Clone();
+                player2Keys = inputs.Clone();
+                player3Keys = inputs.Clone();
+                player4Keys = inputs.Clone();
+                player5Keys = inputs.Clone();
                 break;
             default:
                 return;
         }
+    }
+
+    public static void SwitchController(PlayerIndex player1, PlayerIndex player2)
+    {
+        InputData GetInputData(PlayerIndex player)
+        {
+            switch (player)
+            {
+                case PlayerIndex.One:
+                    return player1Keys;
+                case PlayerIndex.Two:
+                    return player2Keys;
+                case PlayerIndex.Three:
+                    return player3Keys;
+                case PlayerIndex.Four:
+                    return player4Keys;
+                case PlayerIndex.Five:
+                    return player5Keys;
+                default:
+                    Debug.LogWarning("Cannot switch the controller of multiple player controller!");
+                    return null;
+            }
+        }
+
+        InputData p1Data = GetInputData(player1);
+        InputData p2Data = GetInputData(player2);
+        if (p1Data == null || p2Data == null)
+            return;
+
+        InputData tmp = p1Data;
+        p1Data = p2Data;
+        p2Data = tmp;
     }
 
     #endregion
@@ -3075,10 +3106,6 @@ public static class CustomInput
     {
         public InputData defaultKBKeys;
         public InputData defaultGPKeys;
-        public InputData defaultG1Keys;
-        public InputData defaultGP2Keys;
-        public InputData defaultGP3Keys;
-        public InputData defaultGP4Keys;
         public InputData player1Keys;
         public InputData player2Keys;
         public InputData player3Keys;
@@ -3087,15 +3114,18 @@ public static class CustomInput
         public InputData kbKeys;
         public InputData gpKeys;
 
-        public CustomInputConfigData(InputData defaultKBKeys, InputData defaultGPKeys, InputData defaultGP1Keys, InputData defaultGP2Keys, InputData defaultGP3Keys,
-            InputData defaultGP4Keys, InputData player1Keys, InputData player2Keys, InputData player3Keys, InputData player4Keys, InputData player5Keys, InputData kbKeys, InputData gpKeys)
+        public Vector2 GP1RightThumbStickDeadZone, GP1LeftThumbStickDeadZone, GP1TriggersDeadZone;
+        public Vector2 GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone;
+        public Vector2 GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone;
+        public Vector2 GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone;
+
+        public CustomInputConfigData(InputData defaultKBKeys, InputData defaultGPKeys, InputData player1Keys, InputData player2Keys, InputData player3Keys, InputData player4Keys,
+            InputData player5Keys, InputData kbKeys, InputData gpKeys, Vector2 gP1RightThumbStickDeadZone, Vector2 gP1LeftThumbStickDeadZone, Vector2 gP1TriggersDeadZone,
+            Vector2 gP2RightThumbStickDeadZone, Vector2 gP2LeftThumbStickDeadZone, Vector2 gP2TriggersDeadZone, Vector2 gP3RightThumbStickDeadZone, Vector2 gP3LeftThumbStickDeadZone,
+            Vector2 gP3TriggersDeadZone, Vector2 gP4RightThumbStickDeadZone, Vector2 gP4LeftThumbStickDeadZone, Vector2 gP4TriggersDeadZone)
         {
             this.defaultKBKeys = defaultKBKeys;
             this.defaultGPKeys = defaultGPKeys;
-            this.defaultG1Keys = defaultGP1Keys;
-            this.defaultGP2Keys = defaultGP2Keys;
-            this.defaultGP3Keys = defaultGP3Keys;
-            this.defaultGP4Keys = defaultGP4Keys;
             this.player1Keys = player1Keys;
             this.player2Keys = player2Keys;
             this.player3Keys = player3Keys;
@@ -3103,6 +3133,18 @@ public static class CustomInput
             this.player5Keys = player5Keys;
             this.kbKeys = kbKeys;
             this.gpKeys = gpKeys;
+            GP1RightThumbStickDeadZone = gP1RightThumbStickDeadZone;
+            GP1LeftThumbStickDeadZone = gP1LeftThumbStickDeadZone;
+            GP1TriggersDeadZone = gP1TriggersDeadZone;
+            GP2RightThumbStickDeadZone = gP2RightThumbStickDeadZone;
+            GP2LeftThumbStickDeadZone = gP2LeftThumbStickDeadZone;
+            GP2TriggersDeadZone = gP2TriggersDeadZone;
+            GP3RightThumbStickDeadZone = gP3RightThumbStickDeadZone;
+            GP3LeftThumbStickDeadZone = gP3LeftThumbStickDeadZone;
+            GP3TriggersDeadZone = gP3TriggersDeadZone;
+            GP4RightThumbStickDeadZone = gP4RightThumbStickDeadZone;
+            GP4LeftThumbStickDeadZone = gP4LeftThumbStickDeadZone;
+            GP4TriggersDeadZone = gP4TriggersDeadZone;
         }
     }
 
@@ -3112,13 +3154,10 @@ public static class CustomInput
     /// </summary>
     public static bool SaveConfiguration(string fileName)
     {
-        defaultKBKeys.PrepareSerialization(); defaultGPKeys.PrepareSerialization(); defaultGB1Keys.PrepareSerialization();defaultGB2Keys.PrepareSerialization();
-        defaultGB3Keys.PrepareSerialization();defaultGB4Keys.PrepareSerialization();player1Keys.PrepareSerialization();player2Keys.PrepareSerialization();
-        player3Keys.PrepareSerialization();player4Keys.PrepareSerialization();player5Keys.PrepareSerialization();kbKeys.PrepareSerialization();gpKeys.PrepareSerialization();
-
-        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys, defaultGPKeys, defaultGB1Keys, defaultGB2Keys, defaultGB3Keys, defaultGB4Keys,
-            player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys);
-        return Save.WriteJSONData(CustomInputConfig, fileName);
+        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys, defaultGPKeys, player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
+            GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone, 
+            GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+        return Save.WriteJSONData(CustomInputConfig, fileName, true);
     }
 
     /// <summary>
@@ -3129,12 +3168,16 @@ public static class CustomInput
     public static bool SaveDefaultConfiguration(string fileName)
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
-            return false;
-        defaultKBKeys.PrepareSerialization(); defaultGPKeys.PrepareSerialization(); defaultGB1Keys.PrepareSerialization(); defaultGB2Keys.PrepareSerialization();
-        defaultGB3Keys.PrepareSerialization(); defaultGB4Keys.PrepareSerialization();
-        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys, defaultGPKeys, defaultGB1Keys, defaultGB2Keys, defaultGB3Keys, defaultGB4Keys,
-            i.player1Keys, i.player2Keys, i.player3Keys, i.player4Keys, i.player5Keys, i.kbKeys, i.gpKeys);
-        return Save.WriteJSONData(CustomInputConfig, fileName);
+        {
+            CustomInputConfigData CustomInputConfig = new CustomInputConfigData(defaultKBKeys, defaultGPKeys, new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), GP1RightThumbStickDeadZone,
+                GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
+                GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+            return Save.WriteJSONData(CustomInputConfig, fileName);
+        }
+        CustomInputConfigData CustomInputConfig2 = new CustomInputConfigData(defaultKBKeys, defaultGPKeys, i.player1Keys, i.player2Keys, i.player3Keys, i.player4Keys, i.player5Keys, i.kbKeys, i.gpKeys, i.GP1RightThumbStickDeadZone,
+            i.GP1LeftThumbStickDeadZone, i.GP1TriggersDeadZone, i.GP2RightThumbStickDeadZone, i.GP2LeftThumbStickDeadZone, i.GP2TriggersDeadZone, i.GP3RightThumbStickDeadZone, i.GP3LeftThumbStickDeadZone, i.GP3TriggersDeadZone,
+            i.GP4RightThumbStickDeadZone, i.GP4LeftThumbStickDeadZone, i.GP4TriggersDeadZone);
+        return Save.WriteJSONData(CustomInputConfig2, fileName, true);
     }
 
     /// <summary>
@@ -3145,12 +3188,16 @@ public static class CustomInput
     public static bool SaveCurrentConfiguration(string fileName)
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
-            return false;
-        player1Keys.PrepareSerialization(); player2Keys.PrepareSerialization();
-        player3Keys.PrepareSerialization(); player4Keys.PrepareSerialization(); player5Keys.PrepareSerialization(); kbKeys.PrepareSerialization(); gpKeys.PrepareSerialization();
-        CustomInputConfigData CustomInputConfig = new CustomInputConfigData(i.defaultKBKeys, i.defaultGPKeys, i.defaultG1Keys, i.defaultGP2Keys, i.defaultGP3Keys, i.defaultGP4Keys,
-            player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys);
-        return Save.WriteJSONData(CustomInputConfig, fileName);
+        {
+            CustomInputConfigData CustomInputConfig = new CustomInputConfigData(new InputData(), new InputData(), player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
+                GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
+                GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+            return Save.WriteJSONData(CustomInputConfig, fileName, true);
+        }
+        CustomInputConfigData CustomInputConfig2 = new CustomInputConfigData(i.defaultKBKeys, i.defaultGPKeys, player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
+            GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
+            GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+        return Save.WriteJSONData(CustomInputConfig2, fileName, true);
     }
 
     /// <summary>
@@ -3162,10 +3209,39 @@ public static class CustomInput
             return false;
         defaultKBKeys = i.defaultKBKeys;
         defaultGPKeys = i.defaultGPKeys;
-        defaultGB1Keys = i.defaultG1Keys;
-        defaultGB2Keys = i.defaultGP2Keys;
-        defaultGB3Keys = i.defaultGP3Keys;
-        defaultGB4Keys = i.defaultGP4Keys;
+        player1Keys = i.player1Keys;
+        player2Keys = i.player2Keys;
+        player3Keys = i.player3Keys;
+        player4Keys = i.player4Keys;
+        player5Keys = i.player5Keys;
+        kbKeys = i.kbKeys;
+        gpKeys = i.gpKeys;
+        GP1RightThumbStickDeadZone = i.GP1RightThumbStickDeadZone;
+        GP1LeftThumbStickDeadZone = i.GP1LeftThumbStickDeadZone;
+        GP1TriggersDeadZone = i.GP1TriggersDeadZone;
+        GP2RightThumbStickDeadZone = i. GP2RightThumbStickDeadZone;
+        GP2LeftThumbStickDeadZone = i.GP2LeftThumbStickDeadZone;
+        GP2TriggersDeadZone = i.GP2TriggersDeadZone;
+        GP3RightThumbStickDeadZone = i.GP3RightThumbStickDeadZone;
+        GP3LeftThumbStickDeadZone = i.GP3LeftThumbStickDeadZone;
+        GP3TriggersDeadZone = i.GP3TriggersDeadZone;
+        GP4RightThumbStickDeadZone = i.GP4RightThumbStickDeadZone;
+        GP4LeftThumbStickDeadZone = i.GP4LeftThumbStickDeadZone;
+        GP4TriggersDeadZone = i.GP4TriggersDeadZone;
+
+        defaultKBKeys.Build(); defaultGPKeys.Build();player1Keys.Build();player2Keys.Build();player3Keys.Build();player4Keys.Build();player5Keys.Build();kbKeys.Build();gpKeys.Build();
+        return true;
+    }
+
+    /// <summary>
+    /// Load from the file Save in the game repertory all the configuration of the CustomInput system.
+    /// </summary>
+    public static bool LoadControllerConfiguration(string fileName)
+    {
+        if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
+            return false;
+        defaultKBKeys = i.defaultKBKeys;
+        defaultGPKeys = i.defaultGPKeys;
         player1Keys = i.player1Keys;
         player2Keys = i.player2Keys;
         player3Keys = i.player3Keys;
@@ -3174,32 +3250,27 @@ public static class CustomInput
         kbKeys = i.kbKeys;
         gpKeys = i.gpKeys;
 
-        defaultKBKeys.Build(); defaultGPKeys.Build(); defaultGB1Keys.Build(); defaultGB2Keys.Build();
-        defaultGB3Keys.Build();defaultGB4Keys.Build();player1Keys.Build();player2Keys.Build();player3Keys.Build();player4Keys.Build();player5Keys.Build();kbKeys.Build();gpKeys.Build();
+        defaultKBKeys.Build(); defaultGPKeys.Build(); player1Keys.Build(); player2Keys.Build(); player3Keys.Build(); player4Keys.Build(); player5Keys.Build(); kbKeys.Build(); gpKeys.Build();
         return true;
     }
 
     /// <summary>
     /// Load from the file Save in the game repertory the default configuration of the CustomInput system.
     /// </summary>
-    public static bool LoadDefaultConfiguration(string fileName)
+    public static bool LoadDefaultControllerConfiguration(string fileName)
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
             return false;
         defaultKBKeys = i.defaultKBKeys;
-        defaultGB1Keys = i.defaultG1Keys;
-        defaultGB2Keys = i.defaultGP2Keys;
-        defaultGB3Keys = i.defaultGP3Keys;
-        defaultGB4Keys = i.defaultGP4Keys;
         defaultGPKeys = i.defaultGPKeys;
-        defaultKBKeys.Build(); defaultGPKeys.Build(); defaultGB1Keys.Build();
-        defaultGB2Keys.Build(); defaultGB3Keys.Build(); defaultGB4Keys.Build();
+        defaultKBKeys.Build(); defaultGPKeys.Build();
         return true;
     }
+
     /// <summary>
     /// Load from the file Save in the game repertory the current configuration of the CustomInput system.
     /// </summary>
-    public static bool LoadCurrentConfiguration(string fileName)
+    public static bool LoadNonDefaultControllerConfiguration(string fileName)
     {
         if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
             return false;
@@ -3208,10 +3279,31 @@ public static class CustomInput
         player3Keys = i.player3Keys;
         player4Keys = i.player4Keys;
         player5Keys = i.player5Keys;
-        gpKeys = i.gpKeys;
         kbKeys = i.kbKeys;
-
+        gpKeys = i.gpKeys;
         player1Keys.Build(); player2Keys.Build(); player3Keys.Build(); player4Keys.Build(); player5Keys.Build(); kbKeys.Build(); gpKeys.Build();
+        return true;
+    }
+
+    /// <summary>
+    /// Load from the file Save in the game repertory the current configuration of the CustomInput system.
+    /// </summary>
+    public static bool LoadDeadZonesConfiguration(string fileName)
+    {
+        if (!Save.ReadJSONData<CustomInputConfigData>(fileName, out CustomInputConfigData i))
+            return false;
+        GP1RightThumbStickDeadZone = i.GP1RightThumbStickDeadZone;
+        GP1LeftThumbStickDeadZone = i.GP1LeftThumbStickDeadZone;
+        GP1TriggersDeadZone = i.GP1TriggersDeadZone;
+        GP2RightThumbStickDeadZone = i.GP2RightThumbStickDeadZone;
+        GP2LeftThumbStickDeadZone = i.GP2LeftThumbStickDeadZone;
+        GP2TriggersDeadZone = i.GP2TriggersDeadZone;
+        GP3RightThumbStickDeadZone = i.GP3RightThumbStickDeadZone;
+        GP3LeftThumbStickDeadZone = i.GP3LeftThumbStickDeadZone;
+        GP3TriggersDeadZone = i.GP3TriggersDeadZone;
+        GP4RightThumbStickDeadZone = i.GP4RightThumbStickDeadZone;
+        GP4LeftThumbStickDeadZone = i.GP4LeftThumbStickDeadZone;
+        GP4TriggersDeadZone = i.GP4TriggersDeadZone;
         return true;
     }
 
@@ -3232,33 +3324,11 @@ public static class CustomInput
         return false;
     }
 
-    private static string[] negativeKeyToString = new string[15]
-    {
-        "None",
-        "RT",
-        "LT",
-        "DpadUp",
-        "DpadRight",
-        "DpadDown",
-        "DpadLeft",
-        "TBSRUp",
-        "TBSRDown",
-        "TBSRRight",
-        "TBSRLeft",
-        "TBSLUp",
-        "TBSLDown",
-        "TBSLRight",
-        "TBSLLeft"
-    };
-
     /// <summary>
     /// Convert a key into a string.
     /// </summary>
     /// <param name="key"> the key to convert to a string</param>
-    public static string KeyToString(InputKey key)
-    {
-        return key >= 0 ? key.ToString() : negativeKeyToString[((-((int)key + 1)) % 14) + 1];
-    }
+    public static string KeyToString(InputKey key) => key.ToString();
 
     public static Vector2 mousePosition => Input.mousePosition;
     public static Vector2 mouseScrollDelta => Input.mouseScrollDelta;
@@ -3272,19 +3342,17 @@ public static class CustomInput
         switch (player)
         {
             case PlayerIndex.One:
-                return KeyToString(player1Keys.GetKey(action));
+                return KeyToString((InputKey)player1Keys.GetKey(action));
             case PlayerIndex.Two:
-                return KeyToString(player2Keys.GetKey(action));
+                return KeyToString((InputKey)player2Keys.GetKey(action));
             case PlayerIndex.Three:
-                return KeyToString(player3Keys.GetKey(action));
+                return KeyToString((InputKey)player3Keys.GetKey(action));
             case PlayerIndex.Four:
-                return KeyToString(player4Keys.GetKey(action));
+                return KeyToString((InputKey)player4Keys.GetKey(action));
             case PlayerIndex.Five:
-                return KeyToString(player5Keys.GetKey(action));
-            case PlayerIndex.All:
-                Debug.LogWarning("Cannot convert to string multiples Keys");
-                return "";
+                return KeyToString((InputKey)player5Keys.GetKey(action));
             default:
+                Debug.LogWarning("Cannot convert to string multiples Keys");
                 return "";
         }
     }
@@ -3292,21 +3360,11 @@ public static class CustomInput
     public static string KeyToString(string action, ControllerType controllerType)
     {
         if (controllerType == ControllerType.Keyboard)
-            return KeyToString(kbKeys.GetKey(action));
+            return KeyToString((InputKey)kbKeys.GetKey(action));
         if(gpKeys.Contain(action))
-            return KeyToString(gpKeys.GetKey(action));
-        return KeyToString(kbKeys.GetKey(action));
-    }
-
-    public static bool Listen(ControllerType controller, out int key)
-    {
-        if(Listen(controller, out InputKey tmp))
-        {
-            key = (int)tmp;
-            return true;
-        }
-        key = 0;
-        return false;
+            return KeyToString((InputKey)gpKeys.GetKey(action));
+        Debug.LogWarning("Cannot convert to string multiples Keys");
+        return "";
     }
 
     /// <param name="key"> the key pressed, castable to an Keys, MouseButton or Buttons according to the controler type</param>
