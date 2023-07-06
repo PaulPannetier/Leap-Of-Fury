@@ -6,6 +6,27 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private bool enableListenKeyCode = false;
 
+    [Header("Input Saver")]
+    [SerializeField] private InputKey[] inputsKeyForKeyboard;
+    [SerializeField] private string[] inputsKey;
+    [SerializeField] private bool saveInput = false;
+
+    private void OnValidate()
+    {
+        if (saveInput && inputsKeyCode.Length == inputsKey.Length)
+        {
+            CustomInput.LoadConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+            CustomInput.ClearPlayerConfiguration(playerIndexToSave, true);
+            for (int i = 0; i < inputsKey.Length; i++)
+            {
+                CustomInput.AddInputAction(inputsKey[i], inputsKeyCode[i], playerIndexToSave);
+            }
+            CustomInput.SetDefaultControler();
+            CustomInput.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+        }
+        saveInput = false;
+    }
+
     private void Awake()
     {
         if(instance != null)
@@ -30,7 +51,7 @@ public class InputManager : MonoBehaviour
 
     private void ListenAndShowInput()
     {
-        if(CustomInput.Listen(ControllerType.All, out int key))
+        if(CustomInput.Listen(ControllerType.All, out InputKey key))
         {
             Debug.Log("Input listen : " + CustomInput.KeyToString(key));
         }

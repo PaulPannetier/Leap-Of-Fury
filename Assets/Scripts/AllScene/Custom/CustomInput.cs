@@ -1599,6 +1599,11 @@ public static class CustomInput
 
     #endregion
 
+    public static bool IsAGamepadController(ControllerType controllerType)
+    {
+        return controllerType == ControllerType.Gamepad1 || controllerType == ControllerType.Gamepad2 || controllerType == ControllerType.Gamepad3 || controllerType == ControllerType.Gamepad4;
+    }
+
     public static Vector2 GetGamepadStickPosition(ControllerType gamepadIndex, GamepadStick GamepadStick)
     {
         switch (gamepadIndex)
@@ -2974,7 +2979,7 @@ public static class CustomInput
     /// </summary>
     /// <param name="player"></param>
     /// <param name="controller"></param>
-    public static void LoadDefaultController(PlayerIndex player, BaseController controller)
+    public static void SetController(PlayerIndex player, BaseController controller)
     {
         InputData inputs = null;
         switch (controller)
@@ -3021,7 +3026,7 @@ public static class CustomInput
         }
     }
 
-    public static void LoadDefaultControllerForGamepad(PlayerIndex player, ControllerType gamepadIndex)
+    public static void SetControllerForGamepad(PlayerIndex player, ControllerType gamepadIndex)
     {
         if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
         {

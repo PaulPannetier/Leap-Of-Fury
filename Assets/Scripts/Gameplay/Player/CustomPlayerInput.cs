@@ -16,12 +16,6 @@ public class CustomPlayerInput : MonoBehaviour
     [SerializeField] private bool useMovementLerpForKeyboard = true;
     [SerializeField] private float movementLerpForKeyboard = 10f;
 
-    [Header("Input Saver")]
-    [SerializeField] private KeyCode[] inputsKeyCode;
-    [SerializeField] private string[] inputsKey;
-    [SerializeField] private bool saveInput = false;
-    [SerializeField] private PlayerIndex playerIndexToSave = PlayerIndex.All;
-
     private void Awake()
     {
         playerCommon = GetComponent<PlayerCommon>();
@@ -30,17 +24,6 @@ public class CustomPlayerInput : MonoBehaviour
     private void Start()
     {
         x = y = 0f;
-        if(saveInput && inputsKeyCode.Length == inputsKey.Length)
-        {
-            CustomInput.LoadConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
-            CustomInput.ClearPlayerConfiguration(playerIndexToSave, true);
-            for (int i = 0; i < inputsKey.Length; i++)
-            {
-                CustomInput.AddInputAction(inputsKey[i], inputsKeyCode[i], playerIndexToSave);
-            }
-            CustomInput.SetDefaultControler();
-            CustomInput.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
-        }
     }
 
     private void Update()

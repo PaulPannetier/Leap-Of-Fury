@@ -20,9 +20,4 @@ public class ControlItem : MonoBehaviour
     {
         keyText.text = key;    
     }
-
-    private void Update()
-    {
-        
-    }
 }

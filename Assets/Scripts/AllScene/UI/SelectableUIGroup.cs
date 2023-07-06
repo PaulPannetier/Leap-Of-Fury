@@ -53,7 +53,7 @@ public class SelectableUIGroup : MonoBehaviour
             }
             else
             {
-                if(ControllerIsPressingAKey(out ControllerType controllerType, out int key))
+                if(ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                 {
                     selectedUI = defaultUISelected;
                     this.controllerType = controllerType;
@@ -64,7 +64,7 @@ public class SelectableUIGroup : MonoBehaviour
         {
             if (controllerSelector == ControllerSelector.last)
             {
-                if (ControllerIsPressingAKey(out ControllerType controllerType, out int key))
+                if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                     this.controllerType = controllerType;
             }
             if (selectedUI.upSelectableUI != null && IsPressingUpOrDown(controllerType, out bool up))
@@ -82,9 +82,9 @@ public class SelectableUIGroup : MonoBehaviour
         }
     }
 
-    private bool ControllerIsPressingAKey(out ControllerType controllerType, out int key)
+    private bool ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key)
     {
-        bool TestControllerType(in ControllerType controllerType, out int key)
+        bool TestControllerType(in ControllerType controllerType, out InputKey key)
         {
             if ((controllerType == ControllerType.Keyboard || CustomInput.GamePadIsConnected(controllerType)))
             {
@@ -149,9 +149,9 @@ public class SelectableUIGroup : MonoBehaviour
         }
     }
 
-    private bool IsPressingUpOrDown(in ControllerType controllerType, out bool up)
+    private bool IsPressingUpOrDown(ControllerType controllerType, out bool up)
     {
-        bool TestControllerType(in NegativeKeyCode up, in NegativeKeyCode down, in ControllerType controllerType, out bool b)
+        bool TestControllerType(InputKey up, InputKey down, in ControllerType controllerType, out bool b)
         {
             if (CustomInput.GetKeyDown(up) || CustomInput.GetGamepadStickUp(controllerType, GamepadStick.right) || CustomInput.GetGamepadStickUp(controllerType, GamepadStick.left))
             {
@@ -170,12 +170,12 @@ public class SelectableUIGroup : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                if (CustomInput.GetKeyDown(KeyCode.W) || CustomInput.GetKeyDown(KeyCode.UpArrow))
+                if (CustomInput.GetKeyDown(InputKey.W) || CustomInput.GetKeyDown(InputKey.UpArrow))
                 {
                     up = true;
                     return true;
                 }
-                if (CustomInput.GetKeyDown(KeyCode.S) || CustomInput.GetKeyDown(KeyCode.DownArrow))
+                if (CustomInput.GetKeyDown(InputKey.S) || CustomInput.GetKeyDown(InputKey.DownArrow))
                 {
                     up = false;
                     return true;
@@ -183,13 +183,13 @@ public class SelectableUIGroup : MonoBehaviour
                 up = false;
                 return false;
             case ControllerType.Gamepad1:
-                return TestControllerType(NegativeKeyCode.GP1DPadUp, NegativeKeyCode.GP1DPadDown, ControllerType.Gamepad1, out up);
+                return TestControllerType(InputKey.GP1DPadUp, InputKey.GP1DPadDown, ControllerType.Gamepad1, out up);
             case ControllerType.Gamepad2:
-                return TestControllerType(NegativeKeyCode.GP2DPadUp, NegativeKeyCode.GP2DPadDown, ControllerType.Gamepad2, out up);
+                return TestControllerType(InputKey.GP2DPadUp, InputKey.GP2DPadDown, ControllerType.Gamepad2, out up);
             case ControllerType.Gamepad3:
-                return TestControllerType(NegativeKeyCode.GP3DPadUp, NegativeKeyCode.GP3DPadDown, ControllerType.Gamepad3, out up);
+                return TestControllerType(InputKey.GP3DPadUp, InputKey.GP3DPadDown, ControllerType.Gamepad3, out up);
             case ControllerType.Gamepad4:
-                return TestControllerType(NegativeKeyCode.GP4DPadUp, NegativeKeyCode.GP4DPadDown, ControllerType.Gamepad4, out up);
+                return TestControllerType(InputKey.GP4DPadUp, InputKey.GP4DPadDown, ControllerType.Gamepad4, out up);
             case ControllerType.GamepadAll:
                 Debug.Log("Debug plz");
                 up = false;
