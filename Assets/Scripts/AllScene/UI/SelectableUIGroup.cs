@@ -86,9 +86,9 @@ public class SelectableUIGroup : MonoBehaviour
     {
         bool TestControllerType(in ControllerType controllerType, out InputKey key)
         {
-            if ((controllerType == ControllerType.Keyboard || CustomInput.GamePadIsConnected(controllerType)))
+            if ((controllerType == ControllerType.Keyboard || InputManager.GamePadIsConnected(controllerType)))
             {
-                if (CustomInput.Listen(controllerType, out key))
+                if (InputManager.Listen(controllerType, out key))
                     return true;
             }
             key = (int)KeyCode.None;
@@ -130,20 +130,20 @@ public class SelectableUIGroup : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                return CustomInput.GetKeyDown(KeyCode.Space) || CustomInput.GetKeyDown(KeyCode.Return);
+                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.Return);
             case ControllerType.Gamepad1:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button0);
             case ControllerType.Gamepad2:
-                return CustomInput.GetKeyDown(KeyCode.Joystick2Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick2Button0);
             case ControllerType.Gamepad3:
-                return CustomInput.GetKeyDown(KeyCode.Joystick3Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick3Button0);
             case ControllerType.Gamepad4:
-                return CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             case ControllerType.GamepadAll:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button0) || CustomInput.GetKeyDown(KeyCode.Joystick2Button0) || CustomInput.GetKeyDown(KeyCode.Joystick3Button0) || CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) || InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             case ControllerType.All:
-                return CustomInput.GetKeyDown(KeyCode.Space) || CustomInput.GetKeyDown(KeyCode.KeypadEnter) || CustomInput.GetKeyDown(KeyCode.Joystick1Button0) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick2Button0) || CustomInput.GetKeyDown(KeyCode.Joystick3Button0) || CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Joystick1Button0) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick2Button0) || InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             default:
                 return false;
         }
@@ -153,12 +153,12 @@ public class SelectableUIGroup : MonoBehaviour
     {
         bool TestControllerType(InputKey up, InputKey down, in ControllerType controllerType, out bool b)
         {
-            if (CustomInput.GetKeyDown(up) || CustomInput.GetGamepadStickUp(controllerType, GamepadStick.right) || CustomInput.GetGamepadStickUp(controllerType, GamepadStick.left))
+            if (InputManager.GetKeyDown(up) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.right) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.left))
             {
                 b = true;
                 return true;
             }
-            if (CustomInput.GetKeyDown(down) || CustomInput.GetGamepadStickDown(controllerType, GamepadStick.right) || CustomInput.GetGamepadStickDown(controllerType, GamepadStick.left))
+            if (InputManager.GetKeyDown(down) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.right) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.left))
             {
                 b = false;
                 return true;
@@ -170,12 +170,12 @@ public class SelectableUIGroup : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                if (CustomInput.GetKeyDown(InputKey.W) || CustomInput.GetKeyDown(InputKey.UpArrow))
+                if (InputManager.GetKeyDown(InputKey.W) || InputManager.GetKeyDown(InputKey.UpArrow))
                 {
                     up = true;
                     return true;
                 }
-                if (CustomInput.GetKeyDown(InputKey.S) || CustomInput.GetKeyDown(InputKey.DownArrow))
+                if (InputManager.GetKeyDown(InputKey.S) || InputManager.GetKeyDown(InputKey.DownArrow))
                 {
                     up = false;
                     return true;

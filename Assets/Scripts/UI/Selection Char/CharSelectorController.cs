@@ -16,8 +16,8 @@ public class CharSelectorController : MonoBehaviour
 
     [SerializeField] private GameObject[] charHelperCanvasPrefabs;
 
-    [SerializeField] private CustomInput.GeneralInput helpButton;
-    [SerializeField] private CustomInput.GeneralInput escapeButton;
+    [SerializeField] private InputManager.GeneralInput helpButton;
+    [SerializeField] private InputManager.GeneralInput escapeButton;
 
     private void Awake()
     {
@@ -69,7 +69,7 @@ public class CharSelectorController : MonoBehaviour
             }
         }
 
-        if (CustomInput.GetGamepadUnPluggedAll(out ControllerType[] controllerTypes))
+        if (InputManager.GetGamepadUnPluggedAll(out ControllerType[] controllerTypes))
         {
             for (int i = 0; i < controllerTypes.Length; i++)
             {
@@ -83,7 +83,7 @@ public class CharSelectorController : MonoBehaviour
         //si il reste un char a init
         if (!isTurningSelectorInit[turningSelectors.Length - 1])
         {
-            if (NewControllerIsPressingAKey(out ControllerType controllerType, out int key))
+            if (NewControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
             {
                 isTurningSelectorInit[indexToInit] = true;
                 controllerIndexs[indexToInit] = controllerType;
@@ -192,22 +192,22 @@ public class CharSelectorController : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                return CustomInput.GetKeyDown(KeyCode.Space) || CustomInput.GetKeyDown(KeyCode.KeypadEnter) || CustomInput.GetKeyDown(KeyCode.Return);
+                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Return);
             case ControllerType.Gamepad1:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button0);
             case ControllerType.Gamepad2:
-                return CustomInput.GetKeyDown(KeyCode.Joystick2Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick2Button0);
             case ControllerType.Gamepad3:
-                return CustomInput.GetKeyDown(KeyCode.Joystick3Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick3Button0);
             case ControllerType.Gamepad4:
-                return CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             case ControllerType.GamepadAll:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button0) || CustomInput.GetKeyDown(KeyCode.Joystick2Button0) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick3Button0) || CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             case ControllerType.All:
-                return CustomInput.GetKeyDown(KeyCode.Space) || CustomInput.GetKeyDown(KeyCode.KeypadEnter) || CustomInput.GetKeyDown(KeyCode.Return) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick1Button0) || CustomInput.GetKeyDown(KeyCode.Joystick2Button0) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick3Button0) || CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Return) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             default:
                 return false;
         }
@@ -218,22 +218,22 @@ public class CharSelectorController : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                return CustomInput.GetKeyDown(KeyCode.Escape) || CustomInput.GetKeyDown(KeyCode.Backspace);
+                return InputManager.GetKeyDown(KeyCode.Escape) || InputManager.GetKeyDown(KeyCode.Backspace);
             case ControllerType.Gamepad1:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button1);
             case ControllerType.Gamepad2:
-                return CustomInput.GetKeyDown(KeyCode.Joystick2Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick2Button1);
             case ControllerType.Gamepad3:
-                return CustomInput.GetKeyDown(KeyCode.Joystick3Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick3Button1);
             case ControllerType.Gamepad4:
-                return CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick4Button1);
             case ControllerType.GamepadAll:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button1) || CustomInput.GetKeyDown(KeyCode.Joystick2Button1) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick3Button1) || CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button1) || InputManager.GetKeyDown(KeyCode.Joystick2Button1) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick3Button1) || InputManager.GetKeyDown(KeyCode.Joystick4Button1);
             case ControllerType.All:
-                return CustomInput.GetKeyDown(KeyCode.Escape) || CustomInput.GetKeyDown(KeyCode.Backspace) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick1Button1) || CustomInput.GetKeyDown(KeyCode.Joystick2Button1) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick3Button1) || CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
+                return InputManager.GetKeyDown(KeyCode.Escape) || InputManager.GetKeyDown(KeyCode.Backspace) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick1Button1) || InputManager.GetKeyDown(KeyCode.Joystick2Button1) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick3Button1) || InputManager.GetKeyDown(KeyCode.Joystick4Button1);
             default:
                 return false;
         }
@@ -241,14 +241,14 @@ public class CharSelectorController : MonoBehaviour
 
     private bool IsPressingUpOrDown(in ControllerType controllerType, out bool up)
     {
-        bool TestControllerType(in NegativeKeyCode up, in NegativeKeyCode down, in ControllerType controllerType, out bool b)
+        bool TestControllerType(in InputKey up, in InputKey down, in ControllerType controllerType, out bool b)
         {
-            if (CustomInput.GetKeyDown(up) || CustomInput.GetGamepadStickUp(controllerType, GamepadStick.right) || CustomInput.GetGamepadStickUp(controllerType, GamepadStick.left))
+            if (InputManager.GetKeyDown(up) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.right) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.left))
             {
                 b = true;
                 return true;
             }
-            if (CustomInput.GetKeyDown(down) || CustomInput.GetGamepadStickDown(controllerType, GamepadStick.right) || CustomInput.GetGamepadStickDown(controllerType, GamepadStick.left))
+            if (InputManager.GetKeyDown(down) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.right) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.left))
             {
                 b = false;
                 return true;
@@ -260,12 +260,12 @@ public class CharSelectorController : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                if (CustomInput.GetKeyDown(KeyCode.W) || CustomInput.GetKeyDown(KeyCode.UpArrow))
+                if (InputManager.GetKeyDown(KeyCode.W) || InputManager.GetKeyDown(KeyCode.UpArrow))
                 {
                     up = true;
                     return true;
                 }
-                if (CustomInput.GetKeyDown(KeyCode.S) || CustomInput.GetKeyDown(KeyCode.DownArrow))
+                if (InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow))
                 {
                     up = false;
                     return true;
@@ -273,13 +273,13 @@ public class CharSelectorController : MonoBehaviour
                 up = false;
                 return false;
             case ControllerType.Gamepad1:
-                return TestControllerType(NegativeKeyCode.GP1DPadUp, NegativeKeyCode.GP1DPadDown, ControllerType.Gamepad1, out up);
+                return TestControllerType(InputKey.GP1DPadUp, InputKey.GP1DPadDown, ControllerType.Gamepad1, out up);
             case ControllerType.Gamepad2:
-                return TestControllerType(NegativeKeyCode.GP2DPadUp, NegativeKeyCode.GP2DPadDown, ControllerType.Gamepad2, out up);
+                return TestControllerType(InputKey.GP2DPadUp, InputKey.GP2DPadDown, ControllerType.Gamepad2, out up);
             case ControllerType.Gamepad3:
-                return TestControllerType(NegativeKeyCode.GP3DPadUp, NegativeKeyCode.GP3DPadDown, ControllerType.Gamepad3, out up);
+                return TestControllerType(InputKey.GP3DPadUp, InputKey.GP3DPadDown, ControllerType.Gamepad3, out up);
             case ControllerType.Gamepad4:
-                return TestControllerType(NegativeKeyCode.GP4DPadUp, NegativeKeyCode.GP4DPadDown, ControllerType.Gamepad4, out up);
+                return TestControllerType(InputKey.GP4DPadUp, InputKey.GP4DPadDown, ControllerType.Gamepad4, out up);
             case ControllerType.GamepadAll:
                 Debug.Log("Debug plz");
                 up = false;
@@ -312,14 +312,14 @@ public class CharSelectorController : MonoBehaviour
         return false;
     }
 
-    private bool NewControllerIsPressingAKey(out ControllerType controllerType, out int key)
+    private bool NewControllerIsPressingAKey(out ControllerType controllerType, out InputKey key)
     {
-        bool TestControllerType(in ControllerType controllerType, out int key)
+        bool TestControllerType(in ControllerType controllerType, out InputKey key)
         {
             if (!ControllerIsAlreadyInit(controllerType, out int i) && 
-                (controllerType == ControllerType.Keyboard || CustomInput.GamePadIsConnected(controllerType)))
+                (controllerType == ControllerType.Keyboard || InputManager.GamePadIsConnected(controllerType)))
             {
-                if (CustomInput.Listen(controllerType, out key))
+                if (InputManager.Listen(controllerType, out key))
                     return true;
             }
             key = (int)KeyCode.None;

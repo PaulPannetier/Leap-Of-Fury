@@ -31,21 +31,21 @@ public class CustomPlayerInput : MonoBehaviour
         //Axis
         if(controllerType == ControllerType.Keyboard)
         {
-            rightPressed = CustomInput.GetKey("MoveRight", playerCommon.playerIndex);
-            rightPressedDown = CustomInput.GetKeyDown("MoveRight", playerCommon.playerIndex);
-            rightPressedUp = CustomInput.GetKeyUp("MoveRight", playerCommon.playerIndex);
+            rightPressed = InputManager.GetKey("MoveRight", playerCommon.playerIndex);
+            rightPressedDown = InputManager.GetKeyDown("MoveRight", playerCommon.playerIndex);
+            rightPressedUp = InputManager.GetKeyUp("MoveRight", playerCommon.playerIndex);
             newX = rightPressed ? 1f : 0f;
-            leftPressed = CustomInput.GetKey("MoveLeft", playerCommon.playerIndex);
-            leftPressedDown = CustomInput.GetKeyDown("MoveLeft", playerCommon.playerIndex);
-            leftPressedUp = CustomInput.GetKeyUp("MoveLeft", playerCommon.playerIndex);
+            leftPressed = InputManager.GetKey("MoveLeft", playerCommon.playerIndex);
+            leftPressedDown = InputManager.GetKeyDown("MoveLeft", playerCommon.playerIndex);
+            leftPressedUp = InputManager.GetKeyUp("MoveLeft", playerCommon.playerIndex);
             newX = leftPressed ? (newX > 0.01f ? 0f : -1f) : newX;
-            upPressed = CustomInput.GetKey("MoveUp", playerCommon.playerIndex);
-            upPressedDown = CustomInput.GetKeyDown("MoveUp", playerCommon.playerIndex);
-            upPressedUp = CustomInput.GetKeyUp("MoveUp", playerCommon.playerIndex);
+            upPressed = InputManager.GetKey("MoveUp", playerCommon.playerIndex);
+            upPressedDown = InputManager.GetKeyDown("MoveUp", playerCommon.playerIndex);
+            upPressedUp = InputManager.GetKeyUp("MoveUp", playerCommon.playerIndex);
             newY = upPressed ? 1f : 0f;
-            downPressed = CustomInput.GetKey("MoveDown", playerCommon.playerIndex);
-            downPressedDown = CustomInput.GetKeyDown("MoveDown", playerCommon.playerIndex);
-            downPressedUp = CustomInput.GetKeyUp("MoveDown", playerCommon.playerIndex);
+            downPressed = InputManager.GetKey("MoveDown", playerCommon.playerIndex);
+            downPressedDown = InputManager.GetKeyDown("MoveDown", playerCommon.playerIndex);
+            downPressedUp = InputManager.GetKeyUp("MoveDown", playerCommon.playerIndex);
             newY = downPressed ? (newY > 0.01f ? 0f : -1f) : newY;
             if(useMovementLerpForKeyboard)
             {
@@ -62,7 +62,7 @@ public class CustomPlayerInput : MonoBehaviour
         if(controllerType == ControllerType.GamepadAll || controllerType == ControllerType.Gamepad1 || controllerType == ControllerType.Gamepad2 ||
             controllerType == ControllerType.Gamepad3 || controllerType == ControllerType.Gamepad4)
         {
-            Vector2 stickPos = CustomInput.GetGamepadStickPosition(controllerType, GamepadStick.left);
+            Vector2 stickPos = InputManager.GetGamepadStickPosition(controllerType, GamepadStick.left);
             if (stickPos.sqrMagnitude > 1f)
                 stickPos = stickPos.normalized;
 
@@ -94,21 +94,21 @@ public class CustomPlayerInput : MonoBehaviour
 
         if(controllerType == ControllerType.All)
         {
-            rightPressed = CustomInput.GetKey("MoveRight", playerCommon.playerIndex);
-            rightPressedDown = CustomInput.GetKeyDown("MoveRight", playerCommon.playerIndex);
-            rightPressedUp = CustomInput.GetKeyUp("MoveRight", playerCommon.playerIndex);
+            rightPressed = InputManager.GetKey("MoveRight", playerCommon.playerIndex);
+            rightPressedDown = InputManager.GetKeyDown("MoveRight", playerCommon.playerIndex);
+            rightPressedUp = InputManager.GetKeyUp("MoveRight", playerCommon.playerIndex);
             newX = rightPressed ? 1f : 0f;
-            leftPressed = CustomInput.GetKey("MoveLeft", playerCommon.playerIndex);
-            leftPressedDown = CustomInput.GetKeyDown("MoveLeft", playerCommon.playerIndex);
-            leftPressedUp = CustomInput.GetKeyUp("MoveLeft", playerCommon.playerIndex);
+            leftPressed = InputManager.GetKey("MoveLeft", playerCommon.playerIndex);
+            leftPressedDown = InputManager.GetKeyDown("MoveLeft", playerCommon.playerIndex);
+            leftPressedUp = InputManager.GetKeyUp("MoveLeft", playerCommon.playerIndex);
             newX = leftPressed ? (newX > 0.01f ? 0f : -1f) : newX;
-            upPressed = CustomInput.GetKey("MoveUp", playerCommon.playerIndex);
-            upPressedDown = CustomInput.GetKeyDown("MoveUp", playerCommon.playerIndex);
-            upPressedUp = CustomInput.GetKeyUp("MoveUp", playerCommon.playerIndex);
+            upPressed = InputManager.GetKey("MoveUp", playerCommon.playerIndex);
+            upPressedDown = InputManager.GetKeyDown("MoveUp", playerCommon.playerIndex);
+            upPressedUp = InputManager.GetKeyUp("MoveUp", playerCommon.playerIndex);
             newY = upPressed ? 1f : 0f;
-            downPressed = CustomInput.GetKey("MoveDown", playerCommon.playerIndex);
-            downPressedDown = CustomInput.GetKeyDown("MoveDown", playerCommon.playerIndex);
-            downPressedUp = CustomInput.GetKeyUp("MoveDown", playerCommon.playerIndex);
+            downPressed = InputManager.GetKey("MoveDown", playerCommon.playerIndex);
+            downPressedDown = InputManager.GetKeyDown("MoveDown", playerCommon.playerIndex);
+            downPressedUp = InputManager.GetKeyUp("MoveDown", playerCommon.playerIndex);
             newY = downPressed ? (newY > 0.01f ? 0f : -1f) : newY;
             if (useMovementLerpForKeyboard)
             {
@@ -121,7 +121,7 @@ public class CustomPlayerInput : MonoBehaviour
                 y = newY;
             }
 
-            Vector2 stickPos = CustomInput.GetGamepadStickPosition(controllerType, GamepadStick.left);
+            Vector2 stickPos = InputManager.GetGamepadStickPosition(controllerType, GamepadStick.left);
             if (stickPos.sqrMagnitude > 1f)
                 stickPos = stickPos.normalized;
             if (Mathf.Abs(newX) <= 0.01f || Mathf.Abs(newY) <= 0.01f)
@@ -152,28 +152,28 @@ public class CustomPlayerInput : MonoBehaviour
         rawY = (y > 0.01f) ? 1 : (y < -0.01f ? -1 : 0);
 
         //Pressed
-        dashPressed = CustomInput.GetKey("Dash", playerCommon.playerIndex);
-        grabPressed = CustomInput.GetKey("Grab", playerCommon.playerIndex);
-        jumpPressed = CustomInput.GetKey("Jump", playerCommon.playerIndex);
-        attackWeakPressed = CustomInput.GetKey("AttackWeak", playerCommon.playerIndex);
-        attackStrongPressed = CustomInput.GetKey("AttackStrong", playerCommon.playerIndex);
-        shieldPressed = CustomInput.GetKey("Shield", playerCommon.playerIndex);
+        dashPressed = InputManager.GetKey("Dash", playerCommon.playerIndex);
+        grabPressed = InputManager.GetKey("Grab", playerCommon.playerIndex);
+        jumpPressed = InputManager.GetKey("Jump", playerCommon.playerIndex);
+        attackWeakPressed = InputManager.GetKey("AttackWeak", playerCommon.playerIndex);
+        attackStrongPressed = InputManager.GetKey("AttackStrong", playerCommon.playerIndex);
+        shieldPressed = InputManager.GetKey("Shield", playerCommon.playerIndex);
 
         //Down
-        dashPressedDown = CustomInput.GetKeyDown("Dash", playerCommon.playerIndex);
-        grabPressedDown = CustomInput.GetKeyDown("Grab", playerCommon.playerIndex);
-        jumpPressedDown = CustomInput.GetKeyDown("Jump", playerCommon.playerIndex);
-        attackWeakPressedDown = CustomInput.GetKeyDown("AttackWeak", playerCommon.playerIndex);
-        attackStrongPressedDown = CustomInput.GetKeyDown("AttackStrong", playerCommon.playerIndex);
-        shieldPressedDown = CustomInput.GetKeyDown("Shield", playerCommon.playerIndex);
+        dashPressedDown = InputManager.GetKeyDown("Dash", playerCommon.playerIndex);
+        grabPressedDown = InputManager.GetKeyDown("Grab", playerCommon.playerIndex);
+        jumpPressedDown = InputManager.GetKeyDown("Jump", playerCommon.playerIndex);
+        attackWeakPressedDown = InputManager.GetKeyDown("AttackWeak", playerCommon.playerIndex);
+        attackStrongPressedDown = InputManager.GetKeyDown("AttackStrong", playerCommon.playerIndex);
+        shieldPressedDown = InputManager.GetKeyDown("Shield", playerCommon.playerIndex);
 
         //Up
-        dashPressedUp = CustomInput.GetKeyUp("Dash", playerCommon.playerIndex);
-        grabPressedUp = CustomInput.GetKeyUp("Grab", playerCommon.playerIndex);
-        jumpPressedUp = CustomInput.GetKeyUp("Jump", playerCommon.playerIndex);
-        attackWeakPressedUp = CustomInput.GetKeyUp("AttackWeak", playerCommon.playerIndex);
-        attackStrongPressedUp = CustomInput.GetKeyUp("AttackStrong", playerCommon.playerIndex);
-        shieldPressedUp = CustomInput.GetKeyUp("Shield", playerCommon.playerIndex);
+        dashPressedUp = InputManager.GetKeyUp("Dash", playerCommon.playerIndex);
+        grabPressedUp = InputManager.GetKeyUp("Grab", playerCommon.playerIndex);
+        jumpPressedUp = InputManager.GetKeyUp("Jump", playerCommon.playerIndex);
+        attackWeakPressedUp = InputManager.GetKeyUp("AttackWeak", playerCommon.playerIndex);
+        attackStrongPressedUp = InputManager.GetKeyUp("AttackStrong", playerCommon.playerIndex);
+        shieldPressedUp = InputManager.GetKeyUp("Shield", playerCommon.playerIndex);
     }
 
     public CustomPlayerInput Clone()

@@ -28,7 +28,7 @@ public class PauseManager : MonoBehaviour
 
     private void Update()
     {
-        if(CustomInput.GetKeyDown(KeyCode.P))
+        if(InputManager.GetKeyDown(KeyCode.P))
         {
             if(isPauseEnable)
             {

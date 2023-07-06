@@ -15,8 +15,8 @@ public class CharHelpCanvas : MonoBehaviour
     private AttackVideoData selectedData => helpData[selectedHelpIndex];
 
     [SerializeField] private Vector2 turningSelectorOffset;
-    [SerializeField] private CustomInput.GeneralInput closeHelpCanvasInput;
-    [SerializeField] private CustomInput.GeneralInput nextHelpInput, previousHelpInput;
+    [SerializeField] private InputManager.GeneralInput closeHelpCanvasInput;
+    [SerializeField] private InputManager.GeneralInput nextHelpInput, previousHelpInput;
 
     [Header("Content")]
     [SerializeField] private AttackVideoData[] helpData;

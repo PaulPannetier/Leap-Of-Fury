@@ -162,13 +162,13 @@ public abstract class LevelManager : MonoBehaviour
             idCount++;
             tmpGO.GetComponent<CustomPlayerInput>().controllerType = playerData.controllerType;
 
-            if(CustomInput.IsAGamepadController(playerData.controllerType))
+            if(InputManager.IsAGamepadController(playerData.controllerType))
             {
-                CustomInput.SetControllerForGamepad(playerData.playerIndex, playerData.controllerType);
+                InputManager.SetControllerForGamepad(playerData.playerIndex, playerData.controllerType);
             }
             else
             {
-                CustomInput.SetController(playerData.playerIndex, BaseController.Keyboard);
+                InputManager.SetController(playerData.playerIndex, BaseController.Keyboard);
             }
 
             if (OnStart)

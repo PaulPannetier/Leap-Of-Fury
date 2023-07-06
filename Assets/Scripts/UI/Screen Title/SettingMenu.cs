@@ -26,7 +26,7 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] private TMP_Dropdown languageDropdown;
     [SerializeField] private TMP_Text applyButtonText;
     [SerializeField] private TMP_Text defaultButtonText;
-    [SerializeField] private CustomInput.GeneralInput echapInput;
+    [SerializeField] private InputManager.GeneralInput echapInput;
     [SerializeField] private GameObject mainMenu;
 
     private void Awake()

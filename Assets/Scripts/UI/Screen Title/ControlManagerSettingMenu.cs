@@ -36,6 +36,6 @@ public class ControlManagerSettingMenu : MonoBehaviour
     private void SetKeyText()
     {
         ControllerType curCon = currentControllerType;
-        //dashControl.SetKeyText(CustomInput.KeyToString("Dash", ))
+        //dashControl.SetKeyText(InputManager.KeyToString("Dash", ))
     }
 }

@@ -308,7 +308,7 @@ public class CurveGenerator : MonoBehaviour
         print("dqsd");
         if(isAcontrolPointSelectedLasFrame)
         {
-            if (CustomInput.GetKey(KeyCode.Mouse0))
+            if (InputManager.GetKey(KeyCode.Mouse0))
             {
                 Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
                 controlPoints[indexSelectedPoint] = mousePos;
@@ -320,7 +320,7 @@ public class CurveGenerator : MonoBehaviour
         }
         else
         {
-            if(CustomInput.GetKey(KeyCode.Mouse0))
+            if(InputManager.GetKey(KeyCode.Mouse0))
             {
                 for (int i = 0; i < controlPoints.Length; i++)
                 {

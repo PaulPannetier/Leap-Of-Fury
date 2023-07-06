@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class MapSelectorController : MonoBehaviour
@@ -46,20 +45,20 @@ public class MapSelectorController : MonoBehaviour
 
             if(controllerSelector == ControllerSelector.last)
             {
-                if (AnyKeyPressed(out ControllerType controllerType, out int key))
+                if (AnyKeyPressed(out ControllerType controllerType, out InputKey key))
                     controllerIndex = controllerType;
             }
         }
         else
         {
-            if (AnyKeyPressed(out ControllerType controllerType, out int key))
+            if (AnyKeyPressed(out ControllerType controllerType, out InputKey key))
             {
                 isMapSelectorInit = true;
                 controllerIndex = controllerType;
             }
         }
 
-        if (CustomInput.GetGamepadUnPluggedAll(out ControllerType[] controllerTypes))
+        if (InputManager.GetGamepadUnPluggedAll(out ControllerType[] controllerTypes))
         {
             for (int i = 0; i < controllerTypes.Length; i++)
             {
@@ -90,19 +89,19 @@ public class MapSelectorController : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                return CustomInput.GetKeyDown(KeyCode.Escape);
+                return InputManager.GetKeyDown(KeyCode.Escape);
             case ControllerType.Gamepad1:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button1);
             case ControllerType.Gamepad2:
-                return CustomInput.GetKeyDown(KeyCode.Joystick2Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick2Button1);
             case ControllerType.Gamepad3:
-                return CustomInput.GetKeyDown(KeyCode.Joystick3Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick3Button1);
             case ControllerType.Gamepad4:
-                return CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick4Button1);
             case ControllerType.GamepadAll:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button1) || CustomInput.GetKeyDown(KeyCode.Joystick2Button1) || CustomInput.GetKeyDown(KeyCode.Joystick3Button1) || CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button1) || InputManager.GetKeyDown(KeyCode.Joystick2Button1) || InputManager.GetKeyDown(KeyCode.Joystick3Button1) || InputManager.GetKeyDown(KeyCode.Joystick4Button1);
             case ControllerType.All:
-                return CustomInput.GetKeyDown(KeyCode.Escape) || CustomInput.GetKeyDown(KeyCode.Joystick1Button1) || CustomInput.GetKeyDown(KeyCode.Joystick2Button1) || CustomInput.GetKeyDown(KeyCode.Joystick3Button1) || CustomInput.GetKeyDown(KeyCode.Joystick4Button1);
+                return InputManager.GetKeyDown(KeyCode.Escape) || InputManager.GetKeyDown(KeyCode.Joystick1Button1) || InputManager.GetKeyDown(KeyCode.Joystick2Button1) || InputManager.GetKeyDown(KeyCode.Joystick3Button1) || InputManager.GetKeyDown(KeyCode.Joystick4Button1);
             default:
                 return false;
         }
@@ -115,37 +114,37 @@ public class MapSelectorController : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                return CustomInput.GetKeyDown(KeyCode.Space) || CustomInput.GetKeyDown(KeyCode.KeypadEnter) || CustomInput.GetKeyDown(KeyCode.Return);
+                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Return);
             case ControllerType.Gamepad1:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button0);
             case ControllerType.Gamepad2:
-                return CustomInput.GetKeyDown(KeyCode.Joystick2Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick2Button0);
             case ControllerType.Gamepad3:
-                return CustomInput.GetKeyDown(KeyCode.Joystick3Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick3Button0);
             case ControllerType.Gamepad4:
-                return CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             case ControllerType.GamepadAll:
-                return CustomInput.GetKeyDown(KeyCode.Joystick1Button0) || CustomInput.GetKeyDown(KeyCode.Joystick2Button0) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick3Button0) || CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             case ControllerType.All:
-                return CustomInput.GetKeyDown(KeyCode.Space) || CustomInput.GetKeyDown(KeyCode.KeypadEnter) || CustomInput.GetKeyDown(KeyCode.Return) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick1Button0) || CustomInput.GetKeyDown(KeyCode.Joystick2Button0) ||
-                    CustomInput.GetKeyDown(KeyCode.Joystick3Button0) || CustomInput.GetKeyDown(KeyCode.Joystick4Button0);
+                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Return) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) ||
+                    InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
             default:
                 return false;
         }
     }
 
-    private bool IsPressingRightOrLeft(in ControllerType controllerType, out bool right)
+    private bool IsPressingRightOrLeft(ControllerType controllerType, out bool right)
     {
-        bool TestControllerType(in NegativeKeyCode right, in NegativeKeyCode left, in ControllerType controllerType, out bool b)
+        bool TestControllerType(InputKey right, InputKey left, ControllerType controllerType, out bool b)
         {
-            if (CustomInput.GetKeyDown(right) || CustomInput.GetGamepadStickRight(controllerType, GamepadStick.right) || CustomInput.GetGamepadStickRight(controllerType, GamepadStick.left))
+            if (InputManager.GetKeyDown(right) || InputManager.GetGamepadStickRight(controllerType, GamepadStick.right) || InputManager.GetGamepadStickRight(controllerType, GamepadStick.left))
             {
                 b = true;
                 return true;
             }
-            if (CustomInput.GetKeyDown(left) || CustomInput.GetGamepadStickLeft(controllerType, GamepadStick.right) || CustomInput.GetGamepadStickLeft(controllerType, GamepadStick.left))
+            if (InputManager.GetKeyDown(left) || InputManager.GetGamepadStickLeft(controllerType, GamepadStick.right) || InputManager.GetGamepadStickLeft(controllerType, GamepadStick.left))
             {
                 b = false;
                 return true;
@@ -157,12 +156,12 @@ public class MapSelectorController : MonoBehaviour
         switch (controllerType)
         {
             case ControllerType.Keyboard:
-                if (CustomInput.GetKeyDown(KeyCode.D) || CustomInput.GetKeyDown(KeyCode.RightArrow))
+                if (InputManager.GetKeyDown(KeyCode.D) || InputManager.GetKeyDown(KeyCode.RightArrow))
                 {
                     right = true;
                     return true;
                 }
-                if (CustomInput.GetKeyDown(KeyCode.Q) || CustomInput.GetKeyDown(KeyCode.LeftArrow))
+                if (InputManager.GetKeyDown(KeyCode.Q) || InputManager.GetKeyDown(KeyCode.LeftArrow))
                 {
                     right = false;
                     return true;
@@ -170,13 +169,13 @@ public class MapSelectorController : MonoBehaviour
                 right = false;
                 return false;
             case ControllerType.Gamepad1:
-                return TestControllerType(NegativeKeyCode.GP1DPadRight, NegativeKeyCode.GP1DPadLeft, ControllerType.Gamepad1, out right);
+                return TestControllerType(InputKey.GP1DPadRight, InputKey.GP1DPadLeft, ControllerType.Gamepad1, out right);
             case ControllerType.Gamepad2:
-                return TestControllerType(NegativeKeyCode.GP2DPadRight, NegativeKeyCode.GP2DPadLeft, ControllerType.Gamepad2, out right);
+                return TestControllerType(InputKey.GP2DPadRight, InputKey.GP2DPadLeft, ControllerType.Gamepad2, out right);
             case ControllerType.Gamepad3:
-                return TestControllerType(NegativeKeyCode.GP3DPadRight, NegativeKeyCode.GP3DPadLeft, ControllerType.Gamepad3, out right);
+                return TestControllerType(InputKey.GP3DPadRight, InputKey.GP3DPadLeft, ControllerType.Gamepad3, out right);
             case ControllerType.Gamepad4:
-                return TestControllerType(NegativeKeyCode.GP4DPadRight, NegativeKeyCode.GP4DPadLeft, ControllerType.Gamepad4, out right);
+                return TestControllerType(InputKey.GP4DPadRight, InputKey.GP4DPadLeft, ControllerType.Gamepad4, out right);
             case ControllerType.GamepadAll:
                 Debug.Log("Debug plz");
                 right = false;
@@ -195,13 +194,13 @@ public class MapSelectorController : MonoBehaviour
 
     #region ControllerAlreadyInit / NewCOntrollerPress a key
 
-    private bool AnyKeyPressed(out ControllerType controllerType, out int key)
+    private bool AnyKeyPressed(out ControllerType controllerType, out InputKey key)
     {
-        bool TestControllerType(in ControllerType controllerType, out int key)
+        bool TestControllerType(ControllerType controllerType, out InputKey key)
         {
-            if (controllerType == ControllerType.Keyboard || CustomInput.GamePadIsConnected(controllerType))
+            if (controllerType == ControllerType.Keyboard || InputManager.GamePadIsConnected(controllerType))
             {
-                if (CustomInput.Listen(controllerType, out key))
+                if (InputManager.Listen(controllerType, out key))
                     return true;
             }
             key = (int)KeyCode.None;

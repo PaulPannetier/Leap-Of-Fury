@@ -47,7 +47,7 @@ public class ColliderDrawer : MonoBehaviour
         if(isDrawing)
         {
             point1 = GetMousePos();
-            if(CustomInput.GetKeyUp(inputToStartDrawing))
+            if(InputManager.GetKeyUp(inputToStartDrawing))
             {
                 AddRectangle();
                 isDrawing = false;
@@ -56,14 +56,14 @@ public class ColliderDrawer : MonoBehaviour
         }
         else
         {
-            if(CustomInput.GetKeyDown(inputToStartDrawing))
+            if(InputManager.GetKeyDown(inputToStartDrawing))
             {
                 isDrawing = true;
                 point0 = GetMousePos();
             }
         }
 
-        if (CustomInput.GetKeyDown(inputToUndo))
+        if (InputManager.GetKeyDown(inputToUndo))
         {
             if(recToAdd.Count > 0)
             {
@@ -71,7 +71,7 @@ public class ColliderDrawer : MonoBehaviour
             }
         }
 
-        if (CustomInput.GetKeyDown(inputToSaveCollider))
+        if (InputManager.GetKeyDown(inputToSaveCollider))
         {
             SaveCollider();
         }
@@ -126,7 +126,7 @@ public class ColliderDrawer : MonoBehaviour
         recToAdd.Add(currentHitbox);
     }
 
-    private Vector2 GetMousePos() => Useful.mainCamera.ScreenToWorldPoint(CustomInput.mousePosition);
+    private Vector2 GetMousePos() => Useful.mainCamera.ScreenToWorldPoint(InputManager.mousePosition);
 
     #region Gizmos/OnValidate
 
