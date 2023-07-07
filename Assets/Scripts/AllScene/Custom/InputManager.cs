@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using XInputDotNetPure;
 using UnityEngine;
 using System.Collections;
+using System.Threading.Tasks;
+using UnityEngine.LowLevel;
 
 #region Enums
 
@@ -1378,6 +1380,18 @@ public static class InputManager
             ClearList();
         }
 
+        public void UnBuild()
+        {
+            actions = new List<string>();
+            keys = new List<int>();
+
+            foreach(KeyValuePair<string, int> item in controlsDic)
+            {
+                actions.Add(item.Key);
+                keys.Add(item.Value);
+            }
+        }
+
         public void ClearList()
         {
             actions.Clear();
@@ -1506,6 +1520,25 @@ public static class InputManager
             }
             return res;
         }
+    }
+
+    #endregion
+
+    #region Start
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Start()
+    {
+        PlayerLoopSystem systemRoot = new PlayerLoopSystem();
+        systemRoot.subSystemList = new PlayerLoopSystem[]
+        {
+            new PlayerLoopSystem()
+            {
+                updateDelegate = PreUpdate,
+                type = typeof(InputManager)
+            }
+        };
+        PlayerLoop.SetPlayerLoop(systemRoot);
     }
 
     #endregion
@@ -2617,14 +2650,16 @@ public static class InputManager
         {
             if(IsKeyboardKey(key))
                 kb.AddAction(action, (int)key);
-            Debug.LogWarning("Can't add " + KeyToString(key) + " with isn't a Keyboard key to a keyboard controller.");
+            else
+                Debug.LogWarning("Can't add " + KeyToString(key) + " to a keyboard controller because it's not a keyboard key!");
             return;
         }
         if(controller == BaseController.Gamepad)
         {
             if(IsGamepadKey(key))
                 gp.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
-            Debug.LogWarning("Can't add " + KeyToString(key) + " with isn't a gamepad key to a gamepad controller.");
+            else
+                Debug.LogWarning("Can't add " + KeyToString(key) + " to a gamepad controller because it's not a gamepad key!");
             return;
         }
         if (IsKeyboardKey(key))
@@ -3219,10 +3254,16 @@ public static class InputManager
     /// </summary>
     public static bool SaveConfiguration(string fileName)
     {
+        defaultKBKeys.UnBuild(); defaultGPKeys.UnBuild();kbKeys.UnBuild();gpKeys.UnBuild();
+        player1Keys.UnBuild();player2Keys.UnBuild();player3Keys.UnBuild();player4Keys.UnBuild();player5Keys.UnBuild();
+
         InputManagerConfigData InputManagerConfig = new InputManagerConfigData(defaultKBKeys, defaultGPKeys, player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
             GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone, 
             GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
-        return Save.WriteJSONData(InputManagerConfig, fileName, true);
+        bool res = Save.WriteJSONData(InputManagerConfig, fileName, true);
+        defaultKBKeys.ClearList(); defaultGPKeys.ClearList(); kbKeys.ClearList(); gpKeys.ClearList();
+        player1Keys.ClearList(); player2Keys.ClearList(); player3Keys.ClearList(); player4Keys.ClearList(); player5Keys.ClearList();
+        return res;
     }
 
     /// <summary>
@@ -3232,17 +3273,23 @@ public static class InputManager
     /// </summary>
     public static bool SaveDefaultConfiguration(string fileName)
     {
+        defaultKBKeys.UnBuild(); defaultGPKeys.UnBuild();
+        bool res;
         if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData i))
         {
             InputManagerConfigData InputManagerConfig = new InputManagerConfigData(defaultKBKeys, defaultGPKeys, new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), GP1RightThumbStickDeadZone,
                 GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
                 GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
-            return Save.WriteJSONData(InputManagerConfig, fileName);
+            res = Save.WriteJSONData(InputManagerConfig, fileName, true);
+            defaultKBKeys.ClearList(); defaultGPKeys.ClearList();
+            return res;
         }
         InputManagerConfigData InputManagerConfig2 = new InputManagerConfigData(defaultKBKeys, defaultGPKeys, i.player1Keys, i.player2Keys, i.player3Keys, i.player4Keys, i.player5Keys, i.kbKeys, i.gpKeys, i.GP1RightThumbStickDeadZone,
             i.GP1LeftThumbStickDeadZone, i.GP1TriggersDeadZone, i.GP2RightThumbStickDeadZone, i.GP2LeftThumbStickDeadZone, i.GP2TriggersDeadZone, i.GP3RightThumbStickDeadZone, i.GP3LeftThumbStickDeadZone, i.GP3TriggersDeadZone,
             i.GP4RightThumbStickDeadZone, i.GP4LeftThumbStickDeadZone, i.GP4TriggersDeadZone);
-        return Save.WriteJSONData(InputManagerConfig2, fileName, true);
+        res = Save.WriteJSONData(InputManagerConfig2, fileName, true);
+        defaultKBKeys.ClearList(); defaultGPKeys.ClearList();
+        return res;
     }
 
     /// <summary>
@@ -3252,17 +3299,27 @@ public static class InputManager
     /// </summary>
     public static bool SaveCurrentConfiguration(string fileName)
     {
+        kbKeys.UnBuild(); gpKeys.UnBuild();
+        player1Keys.UnBuild(); player2Keys.UnBuild(); player3Keys.UnBuild(); player4Keys.UnBuild(); player5Keys.UnBuild();
+        bool res;
         if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData i))
         {
             InputManagerConfigData InputManagerConfig = new InputManagerConfigData(new InputData(), new InputData(), player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
                 GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
                 GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
-            return Save.WriteJSONData(InputManagerConfig, fileName, true);
+            res = Save.WriteJSONData(InputManagerConfig, fileName, true);
+
+            kbKeys.ClearList(); gpKeys.ClearList();
+            player1Keys.ClearList(); player2Keys.ClearList(); player3Keys.ClearList(); player4Keys.ClearList(); player5Keys.ClearList();
+            return res;
         }
         InputManagerConfigData InputManagerConfig2 = new InputManagerConfigData(i.defaultKBKeys, i.defaultGPKeys, player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
             GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
             GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
-        return Save.WriteJSONData(InputManagerConfig2, fileName, true);
+        res = Save.WriteJSONData(InputManagerConfig2, fileName, true);
+        kbKeys.ClearList(); gpKeys.ClearList();
+        player1Keys.ClearList(); player2Keys.ClearList(); player3Keys.ClearList(); player4Keys.ClearList(); player5Keys.ClearList();
+        return res;
     }
 
     /// <summary>
@@ -3370,6 +3427,207 @@ public static class InputManager
         GP4LeftThumbStickDeadZone = i.GP4LeftThumbStickDeadZone;
         GP4TriggersDeadZone = i.GP4TriggersDeadZone;
         return true;
+    }
+
+    #endregion
+
+    #region Save controller ASync
+
+    public static async Task<bool> SaveConfigurationAsync(string fileName, Action<bool> callback)
+    {
+        defaultKBKeys.UnBuild(); defaultGPKeys.UnBuild(); kbKeys.UnBuild(); gpKeys.UnBuild();
+        player1Keys.UnBuild(); player2Keys.UnBuild(); player3Keys.UnBuild(); player4Keys.UnBuild(); player5Keys.UnBuild();
+
+        InputManagerConfigData InputManagerConfig = new InputManagerConfigData(defaultKBKeys, defaultGPKeys, player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
+            GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
+            GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+        bool res = await Save.WriteJSONDataAsync(InputManagerConfig, fileName, callback, true);
+        defaultKBKeys.ClearList(); defaultGPKeys.ClearList(); kbKeys.ClearList(); gpKeys.ClearList();
+        player1Keys.ClearList(); player2Keys.ClearList(); player3Keys.ClearList(); player4Keys.ClearList(); player5Keys.ClearList();
+        return res;
+    }
+
+    /// <summary>
+    /// Save all the default InputManager configuration (default actions and controllers keys link to the action) for all players in the file fikename in the game repertory,
+    /// but don't save the current InputManager configuration.
+    /// Can be load using the methode InputManager.LoadDefaultConfiguration(string fileName).
+    /// </summary>
+    public static async Task<bool> SaveDefaultConfiguration(string fileName, Action<bool> callback)
+    {
+        defaultKBKeys.UnBuild(); defaultGPKeys.UnBuild();
+        bool res;
+        if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData i))
+        {
+            InputManagerConfigData InputManagerConfig = new InputManagerConfigData(defaultKBKeys, defaultGPKeys, new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), new InputData(), GP1RightThumbStickDeadZone,
+                GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
+                GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+            res = await Save.WriteJSONDataAsync(InputManagerConfig, fileName, callback, true);
+            defaultKBKeys.ClearList(); defaultGPKeys.ClearList();
+            return res;
+        }
+        InputManagerConfigData InputManagerConfig2 = new InputManagerConfigData(defaultKBKeys, defaultGPKeys, i.player1Keys, i.player2Keys, i.player3Keys, i.player4Keys, i.player5Keys, i.kbKeys, i.gpKeys, i.GP1RightThumbStickDeadZone,
+            i.GP1LeftThumbStickDeadZone, i.GP1TriggersDeadZone, i.GP2RightThumbStickDeadZone, i.GP2LeftThumbStickDeadZone, i.GP2TriggersDeadZone, i.GP3RightThumbStickDeadZone, i.GP3LeftThumbStickDeadZone, i.GP3TriggersDeadZone,
+            i.GP4RightThumbStickDeadZone, i.GP4LeftThumbStickDeadZone, i.GP4TriggersDeadZone);
+        res = await Save.WriteJSONDataAsync(InputManagerConfig2, fileName, callback, true);
+        defaultKBKeys.ClearList(); defaultGPKeys.ClearList();
+        return res;
+    }
+
+    /// <summary>
+    /// Save all the current InputManager configuration (current actions and controllers keys link to the action) for all players in the file fikename in the game repertory,
+    /// but don't save the default InputManager configuration.
+    /// Can be load using the methode InputManager.LoadCurrentConfiguration(string fileName).
+    /// </summary>
+    public static async Task<bool> SaveCurrentConfigurationAsync(string fileName, Action<bool> callback)
+    {
+        kbKeys.UnBuild(); gpKeys.UnBuild();
+        player1Keys.UnBuild(); player2Keys.UnBuild(); player3Keys.UnBuild(); player4Keys.UnBuild(); player5Keys.UnBuild();
+        bool res;
+        if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData i))
+        {
+            InputManagerConfigData InputManagerConfig = new InputManagerConfigData(new InputData(), new InputData(), player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
+                GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
+                GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+            res = await Save.WriteJSONDataAsync(InputManagerConfig, fileName, callback, true);
+
+            kbKeys.ClearList(); gpKeys.ClearList();
+            player1Keys.ClearList(); player2Keys.ClearList(); player3Keys.ClearList(); player4Keys.ClearList(); player5Keys.ClearList();
+            return res;
+        }
+        InputManagerConfigData InputManagerConfig2 = new InputManagerConfigData(i.defaultKBKeys, i.defaultGPKeys, player1Keys, player2Keys, player3Keys, player4Keys, player5Keys, kbKeys, gpKeys, GP1RightThumbStickDeadZone,
+            GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
+            GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
+        res = await Save.WriteJSONDataAsync(InputManagerConfig2, fileName, callback, true);
+        kbKeys.ClearList(); gpKeys.ClearList();
+        player1Keys.ClearList(); player2Keys.ClearList(); player3Keys.ClearList(); player4Keys.ClearList(); player5Keys.ClearList();
+        return res;
+    }
+
+    /// <summary>
+    /// Load from the file Save in the game repertory all the configuration of the InputManager system.
+    /// </summary>
+    public static async Task<bool> LoadConfigurationAsync(string fileName, Action<bool> callback)
+    {
+        void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData i)
+        {
+            defaultKBKeys = i.defaultKBKeys;
+            defaultGPKeys = i.defaultGPKeys;
+            player1Keys = i.player1Keys;
+            player2Keys = i.player2Keys;
+            player3Keys = i.player3Keys;
+            player4Keys = i.player4Keys;
+            player5Keys = i.player5Keys;
+            kbKeys = i.kbKeys;
+            gpKeys = i.gpKeys;
+            GP1RightThumbStickDeadZone = i.GP1RightThumbStickDeadZone;
+            GP1LeftThumbStickDeadZone = i.GP1LeftThumbStickDeadZone;
+            GP1TriggersDeadZone = i.GP1TriggersDeadZone;
+            GP2RightThumbStickDeadZone = i.GP2RightThumbStickDeadZone;
+            GP2LeftThumbStickDeadZone = i.GP2LeftThumbStickDeadZone;
+            GP2TriggersDeadZone = i.GP2TriggersDeadZone;
+            GP3RightThumbStickDeadZone = i.GP3RightThumbStickDeadZone;
+            GP3LeftThumbStickDeadZone = i.GP3LeftThumbStickDeadZone;
+            GP3TriggersDeadZone = i.GP3TriggersDeadZone;
+            GP4RightThumbStickDeadZone = i.GP4RightThumbStickDeadZone;
+            GP4LeftThumbStickDeadZone = i.GP4LeftThumbStickDeadZone;
+            GP4TriggersDeadZone = i.GP4TriggersDeadZone;
+
+            defaultKBKeys.Build(); defaultGPKeys.Build(); player1Keys.Build(); player2Keys.Build(); player3Keys.Build(); player4Keys.Build(); player5Keys.Build(); kbKeys.Build(); gpKeys.Build();
+        }
+
+        bool res = await Save.ReadJSONDataAsync<InputManagerConfigData>(fileName, CallbackReadInputManagerConfigData);
+        callback.Invoke(res);
+        return res;
+    }
+
+    /// <summary>
+    /// Load from the file Save in the game repertory all the configuration of the InputManager system.
+    /// </summary>
+    public static async Task<bool> LoadControllerConfigurationAsync(string fileName, Action<bool> callback)
+    {
+        void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData i)
+        {
+            defaultKBKeys = i.defaultKBKeys;
+            defaultGPKeys = i.defaultGPKeys;
+            player1Keys = i.player1Keys;
+            player2Keys = i.player2Keys;
+            player3Keys = i.player3Keys;
+            player4Keys = i.player4Keys;
+            player5Keys = i.player5Keys;
+            kbKeys = i.kbKeys;
+            gpKeys = i.gpKeys;
+
+            defaultKBKeys.Build(); defaultGPKeys.Build(); player1Keys.Build(); player2Keys.Build(); player3Keys.Build(); player4Keys.Build(); player5Keys.Build(); kbKeys.Build(); gpKeys.Build();
+        }
+
+        bool res = await Save.ReadJSONDataAsync<InputManagerConfigData>(fileName, CallbackReadInputManagerConfigData);
+        callback.Invoke(res);
+        return res;
+    }
+
+    /// <summary>
+    /// Load from the file Save in the game repertory the default configuration of the InputManager system.
+    /// </summary>
+    public static async Task<bool> LoadDefaultControllerConfigurationAsync(string fileName, Action<bool> callback)
+    {
+        void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData i)
+        {
+            defaultKBKeys = i.defaultKBKeys;
+            defaultGPKeys = i.defaultGPKeys;
+            defaultKBKeys.Build(); defaultGPKeys.Build();
+        }
+
+        bool res = await Save.ReadJSONDataAsync<InputManagerConfigData>(fileName, CallbackReadInputManagerConfigData);
+        callback.Invoke(res);
+        return res;
+    }
+
+    /// <summary>
+    /// Load from the file Save in the game repertory the current configuration of the InputManager system.
+    /// </summary>
+    public static async Task<bool> LoadNonDefaultControllerConfigurationAsync(string fileName, Action<bool> callBack)
+    {
+        void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData i)
+        {
+            player1Keys = i.player1Keys;
+            player2Keys = i.player2Keys;
+            player3Keys = i.player3Keys;
+            player4Keys = i.player4Keys;
+            player5Keys = i.player5Keys;
+            kbKeys = i.kbKeys;
+            gpKeys = i.gpKeys;
+            player1Keys.Build(); player2Keys.Build(); player3Keys.Build(); player4Keys.Build(); player5Keys.Build(); kbKeys.Build(); gpKeys.Build();
+        }
+
+        bool res = await Save.ReadJSONDataAsync<InputManagerConfigData>(fileName, CallbackReadInputManagerConfigData);
+        callBack.Invoke(res);
+        return res;
+    }
+
+    /// <summary>
+    /// Load from the file Save in the game repertory the current configuration of the InputManager system.
+    /// </summary>
+    public static async Task<bool> LoadDeadZonesConfigurationAsync(string fileName, Action<bool> callback)
+    {
+        void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData i)
+        {
+            GP1RightThumbStickDeadZone = i.GP1RightThumbStickDeadZone;
+            GP1LeftThumbStickDeadZone = i.GP1LeftThumbStickDeadZone;
+            GP1TriggersDeadZone = i.GP1TriggersDeadZone;
+            GP2RightThumbStickDeadZone = i.GP2RightThumbStickDeadZone;
+            GP2LeftThumbStickDeadZone = i.GP2LeftThumbStickDeadZone;
+            GP2TriggersDeadZone = i.GP2TriggersDeadZone;
+            GP3RightThumbStickDeadZone = i.GP3RightThumbStickDeadZone;
+            GP3LeftThumbStickDeadZone = i.GP3LeftThumbStickDeadZone;
+            GP3TriggersDeadZone = i.GP3TriggersDeadZone;
+            GP4RightThumbStickDeadZone = i.GP4RightThumbStickDeadZone;
+            GP4LeftThumbStickDeadZone = i.GP4LeftThumbStickDeadZone;
+            GP4TriggersDeadZone = i.GP4TriggersDeadZone;
+        }
+
+        bool res = await Save.ReadJSONDataAsync<InputManagerConfigData>(fileName, CallbackReadInputManagerConfigData);
+        callback.Invoke(res);
+        return res;
     }
 
     #endregion

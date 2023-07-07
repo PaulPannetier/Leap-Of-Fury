@@ -16,7 +16,6 @@ public class InputEditor : MonoBehaviour
 
     #endif
 
-
     private void OnValidate()
     {
         #if UNITY_EDITOR
@@ -34,6 +33,7 @@ public class InputEditor : MonoBehaviour
                 InputManager.AddInputActions(inputsActions, inputsKeyForGamepad, BaseController.Gamepad, true);
             }
             InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+            saveInput = false;
         }
 
         #endif

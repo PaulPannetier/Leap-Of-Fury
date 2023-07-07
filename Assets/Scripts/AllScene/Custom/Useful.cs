@@ -124,7 +124,10 @@ public static class Save
         {
             string s = ConvertObjectToJSONString(objToWrite, withIndentation);
             if (s == "{}")
+            {
+                callback.Invoke(false);
                 return false;
+            }
             await File.WriteAllTextAsync(Application.dataPath + fileName, s);
             callback.Invoke(true);
         }

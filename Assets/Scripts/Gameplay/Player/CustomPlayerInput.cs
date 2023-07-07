@@ -157,7 +157,6 @@ public class CustomPlayerInput : MonoBehaviour
         jumpPressed = InputManager.GetKey("Jump", playerCommon.playerIndex);
         attackWeakPressed = InputManager.GetKey("AttackWeak", playerCommon.playerIndex);
         attackStrongPressed = InputManager.GetKey("AttackStrong", playerCommon.playerIndex);
-        shieldPressed = InputManager.GetKey("Shield", playerCommon.playerIndex);
 
         //Down
         dashPressedDown = InputManager.GetKeyDown("Dash", playerCommon.playerIndex);
@@ -165,7 +164,6 @@ public class CustomPlayerInput : MonoBehaviour
         jumpPressedDown = InputManager.GetKeyDown("Jump", playerCommon.playerIndex);
         attackWeakPressedDown = InputManager.GetKeyDown("AttackWeak", playerCommon.playerIndex);
         attackStrongPressedDown = InputManager.GetKeyDown("AttackStrong", playerCommon.playerIndex);
-        shieldPressedDown = InputManager.GetKeyDown("Shield", playerCommon.playerIndex);
 
         //Up
         dashPressedUp = InputManager.GetKeyUp("Dash", playerCommon.playerIndex);
@@ -173,7 +171,6 @@ public class CustomPlayerInput : MonoBehaviour
         jumpPressedUp = InputManager.GetKeyUp("Jump", playerCommon.playerIndex);
         attackWeakPressedUp = InputManager.GetKeyUp("AttackWeak", playerCommon.playerIndex);
         attackStrongPressedUp = InputManager.GetKeyUp("AttackStrong", playerCommon.playerIndex);
-        shieldPressedUp = InputManager.GetKeyUp("Shield", playerCommon.playerIndex);
     }
 
     public CustomPlayerInput Clone()
