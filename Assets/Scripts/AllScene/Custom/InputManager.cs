@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine.LowLevel;
+using System.Text;
 
 #region Enums
 
@@ -1343,25 +1344,25 @@ public static class InputManager
     #region Class InputData
 
     [Serializable]
-    private class InputData : ICloneable<InputData>, IEnumerable<KeyValuePair<string, int>>
+    private class InputData : ICloneable<InputData>, IEnumerable<KeyValuePair<string, InputData.ListInt>>
     {
         public List<string> actions = new List<string>();
-        public List<int> keys = new List<int>();
-        [NonSerialized] public Dictionary<string, int> controlsDic = new Dictionary<string, int>();
+        public List<ListInt> keys = new List<ListInt>();
+        [NonSerialized] public Dictionary<string, ListInt> controlsDic = new Dictionary<string, ListInt>();
 
         public InputData() { }
 
-        public InputData(List<string> actions, List<int> keys)
+        public InputData(List<string> actions, List<ListInt> keys)
         {
             this.actions = actions;
             this.keys = keys;
             Build();
         }
 
-        public InputData(Dictionary<string, int> controls)
+        public InputData(Dictionary<string, ListInt> controls)
         {
-            controlsDic = new Dictionary<string, int>();
-            foreach (KeyValuePair<string, int> item in controls)
+            controlsDic = new Dictionary<string, ListInt>();
+            foreach (KeyValuePair<string, ListInt> item in controls)
             {
                 controlsDic.Add(item.Key, item.Value);
             }
@@ -1372,7 +1373,7 @@ public static class InputManager
             if (actions.Count != keys.Count)
                 return;
 
-            controlsDic = new Dictionary<string, int>();
+            controlsDic = new Dictionary<string, ListInt>();
             for (int i = 0; i < actions.Count; i++)
             {
                 controlsDic.Add(actions[i], keys[i]);
@@ -1383,9 +1384,9 @@ public static class InputManager
         public void UnBuild()
         {
             actions = new List<string>();
-            keys = new List<int>();
+            keys = new List<ListInt>();
 
-            foreach(KeyValuePair<string, int> item in controlsDic)
+            foreach(KeyValuePair<string, ListInt> item in controlsDic)
             {
                 actions.Add(item.Key);
                 keys.Add(item.Value);
@@ -1407,9 +1408,9 @@ public static class InputManager
         public void AddAction(string action, int key)
         {
             if (controlsDic.ContainsKey(action))
-                ReplaceAction(action, key);
+                controlsDic[action].keys.Add(key);
             else
-                controlsDic.Add(action, key);
+                controlsDic.Add(action, new ListInt(key));
         }
 
         public bool RemoveAction(string action)
@@ -1426,7 +1427,7 @@ public static class InputManager
         {
             if (actions.Contains(action))
             {
-                controlsDic[action] = key;
+                controlsDic[action] = new ListInt(key);
                 return true;
             }
             return false;
@@ -1434,16 +1435,16 @@ public static class InputManager
 
         public bool Contain(string action) => controlsDic.ContainsKey(action);
 
-        public int GetKey(string action)
+        public ListInt GetKeys(string action)
         {
-            if(controlsDic.TryGetValue(action, out int key))
+            if(controlsDic.TryGetValue(action, out ListInt key))
                 return key;
-            return 0;
+            return new ListInt();
         }
 
         public InputData Clone() => new InputData(controlsDic);
 
-        public IEnumerator<KeyValuePair<string, int>> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, ListInt>> GetEnumerator()
         {
             return controlsDic.GetEnumerator();
         }
@@ -1487,10 +1488,14 @@ public static class InputManager
             InputData res = new InputData();
             for (int i = 0; i < actions.Count; i++)
             {
-                if (IsGamepadKey((InputKey)keys[i]))
+                foreach (int key in controlsDic[actions[i]].keys)
                 {
-                    res.AddAction(actions[i], (int)ConvertGamepadKeyToGeneralKey((GamepadKey)keys[i]));
+                    if (IsGamepadKey((InputKey)key))
+                    {
+                        res.AddAction(actions[i], (int)ConvertGamepadKeyToGeneralKey((GamepadKey)key));
+                    }
                 }
+
             }
             return res;
         }
@@ -1500,9 +1505,12 @@ public static class InputManager
             InputData res = new InputData();
             for (int i = 0; i < actions.Count; i++)
             {
-                if (IsGamepadKey((InputKey)keys[i]))
+                foreach (int key in controlsDic[actions[i]].keys)
                 {
-                    res.AddAction(actions[i], ConvertGeneralKeyToGamepadKey(keys[i], gamepadIndex));
+                    if (IsGamepadKey((InputKey)key))
+                    {
+                        res.AddAction(actions[i], (int)ConvertGeneralKeyToGamepadKey(key, gamepadIndex));
+                    }
                 }
             }
             return res;
@@ -1513,12 +1521,39 @@ public static class InputManager
             InputData res = new InputData();
             for (int i = 0; i < actions.Count; i++)
             {
-                if (IsKeyboardKey((InputKey)keys[i]))
+                foreach (int key in controlsDic[actions[i]].keys)
                 {
-                    res.AddAction(actions[i], keys[i]);
+                    if (IsKeyboardKey((InputKey)key))
+                    {
+                        res.AddAction(actions[i], key);
+                    }
                 }
             }
             return res;
+        }
+
+        [Serializable]
+        public class ListInt : ICloneable<ListInt>, IEnumerable<int>
+        {
+            public List<int> keys = new List<int>();
+
+            public ListInt() { }
+
+            public ListInt(List<int> keys)
+            {
+                this.keys = keys;
+            }
+
+            public ListInt(int key)
+            {
+                keys = new List<int> { key };
+            }
+
+            public ListInt Clone() => new ListInt(keys.Clone());
+
+            public IEnumerator<int> GetEnumerator() => keys.GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator() => keys.GetEnumerator();
         }
     }
 
@@ -1529,16 +1564,16 @@ public static class InputManager
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Start()
     {
-        PlayerLoopSystem systemRoot = new PlayerLoopSystem();
-        systemRoot.subSystemList = new PlayerLoopSystem[]
-        {
-            new PlayerLoopSystem()
-            {
-                updateDelegate = PreUpdate,
-                type = typeof(InputManager)
-            }
-        };
-        PlayerLoop.SetPlayerLoop(systemRoot);
+        //PlayerLoopSystem systemRoot = new PlayerLoopSystem();
+        //systemRoot.subSystemList = new PlayerLoopSystem[]
+        //{
+        //    new PlayerLoopSystem()
+        //    {
+        //        updateDelegate = PreUpdate,
+        //        type = typeof(InputManager)
+        //    }
+        //};
+        //PlayerLoop.SetPlayerLoop(systemRoot);
     }
 
     #endregion
@@ -2144,35 +2179,24 @@ public static class InputManager
     /// <returns> true during the frame when the key assigned with the action is pressed</returns>
     public static bool GetKeyDown(string action, PlayerIndex player = PlayerIndex.All)
     {
-        int key;
         switch (player)
         {
             case PlayerIndex.One:
-                key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player1Keys.GetKeys(action));
             case PlayerIndex.Two:
-                key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player2Keys.GetKeys(action));
             case PlayerIndex.Three:
-                key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player3Keys.GetKeys(action));
             case PlayerIndex.Four:
-                key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player4Keys.GetKeys(action));
             case PlayerIndex.Five:
-                key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player5Keys.GetKeys(action));
             case PlayerIndex.All:
-                int key1 = player1Keys.GetKey(action);
-                int key2 = player2Keys.GetKey(action);
-                int key3 = player3Keys.GetKey(action);
-                int key4 = player4Keys.GetKey(action);
-                int key5 = player5Keys.GetKey(action);
-                return key1 >= 0 ? Input.GetKeyDown((KeyCode)key1) : GetNegativeKeyDown(key1) ||
-                    key2 >= 0 ? Input.GetKeyDown((KeyCode)key2) : GetNegativeKeyDown(key2) ||
-                    key3 >= 0 ? Input.GetKeyDown((KeyCode)key3) : GetNegativeKeyDown(key3) ||
-                    key4 >= 0 ? Input.GetKeyDown((KeyCode)key4) : GetNegativeKeyDown(key4) ||
-                    key5 >= 0 ? Input.GetKeyDown((KeyCode)key5) : GetNegativeKeyDown(key5); 
+                return GetKeysDown(player1Keys.GetKeys(action)) ||
+                    GetKeysDown(player2Keys.GetKeys(action)) ||
+                    GetKeysDown(player3Keys.GetKeys(action)) ||
+                    GetKeysDown(player4Keys.GetKeys(action)) ||
+                    GetKeysDown(player5Keys.GetKeys(action));
             default:
                 return false;
         }
@@ -2182,51 +2206,40 @@ public static class InputManager
     public static bool GetKeyDown(string action, PlayerIndex player, out PlayerIndex playerWhoPressesDown)
     {
         playerWhoPressesDown = player;
-        int key;
         switch (player)
         {
             case PlayerIndex.One:
-                key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player1Keys.GetKeys(action));
             case PlayerIndex.Two:
-                key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player2Keys.GetKeys(action));
             case PlayerIndex.Three:
-                key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player3Keys.GetKeys(action));
             case PlayerIndex.Four:
-                key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player4Keys.GetKeys(action));
             case PlayerIndex.Five:
-                key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
+                return GetKeysDown(player5Keys.GetKeys(action));
             case PlayerIndex.All:
-                key = player1Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
+                if(GetKeysDown(player1Keys.GetKeys(action)))
                 {
                     playerWhoPressesDown = PlayerIndex.One;
                     return true;
                 }
-                key = player2Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
+                if(GetKeysDown(player2Keys.GetKeys(action)))
                 {
                     playerWhoPressesDown = PlayerIndex.Two;
                     return true;
                 }
-                key = player3Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
+                if(GetKeysDown(player3Keys.GetKeys(action)))
                 {
                     playerWhoPressesDown = PlayerIndex.Three;
                     return true;
                 }
-                key = player4Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
+                if(GetKeysDown(player4Keys.GetKeys(action)))
                 {
                     playerWhoPressesDown = PlayerIndex.Four;
                     return true;
                 }
-                key = player5Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key))
+                if(GetKeysDown(player5Keys.GetKeys(action)))
                 {
                     playerWhoPressesDown = PlayerIndex.Five;
                     return true;
@@ -2240,44 +2253,33 @@ public static class InputManager
     public static bool GetKeyDown(string action, BaseController controller)
     {
         if(controller == BaseController.Keyboard)
-            return GetKeyDown(kbKeys.GetKey(action));
+            return GetKeysDown(kbKeys.GetKeys(action));
         if (controller == BaseController.Gamepad)
-            return GetKeyDown(gpKeys.GetKey(action));
-        return GetKeyDown(kbKeys.GetKey(action)) || GetKeyDown(gpKeys.GetKey(action));
+            return GetKeysDown(gpKeys.GetKeys(action));
+        return GetKeysDown(kbKeys.GetKeys(action)) || GetKeysDown(gpKeys.GetKeys(action));
     }
 
     /// <returns> true during the frame when the key assigned with the action is unpressed</returns>
     public static bool GetKeyUp(string action, PlayerIndex player = PlayerIndex.All)
     {
-        int key;
         switch (player)
         {
             case PlayerIndex.One:
-                key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player1Keys.GetKeys(action));
             case PlayerIndex.Two:
-                key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player2Keys.GetKeys(action));
             case PlayerIndex.Three:
-                key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player3Keys.GetKeys(action));
             case PlayerIndex.Four:
-                key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player4Keys.GetKeys(action));
             case PlayerIndex.Five:
-                key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player5Keys.GetKeys(action));
             case PlayerIndex.All:
-                int key1 = player1Keys.GetKey(action);
-                int key2 = player2Keys.GetKey(action);
-                int key3 = player3Keys.GetKey(action);
-                int key4 = player4Keys.GetKey(action);
-                int key5 = player5Keys.GetKey(action);
-                return key1 >= 0 ? Input.GetKeyUp((KeyCode)key1) : GetNegativeKeyUp(key1) ||
-                    key2 >= 0 ? Input.GetKeyUp((KeyCode)key2) : GetNegativeKeyUp(key2) ||
-                    key3 >= 0 ? Input.GetKeyUp((KeyCode)key3) : GetNegativeKeyUp(key3) ||
-                    key4 >= 0 ? Input.GetKeyUp((KeyCode)key4) : GetNegativeKeyUp(key4) ||
-                    key5 >= 0 ? Input.GetKeyUp((KeyCode)key5) : GetNegativeKeyUp(key5);
+                return GetKeysUp(player1Keys.GetKeys(action)) ||
+                    GetKeysUp(player2Keys.GetKeys(action)) ||
+                    GetKeysUp(player3Keys.GetKeys(action)) ||
+                    GetKeysUp(player4Keys.GetKeys(action)) ||
+                    GetKeysUp(player5Keys.GetKeys(action));
             default:
                 return false;
         }
@@ -2287,51 +2289,40 @@ public static class InputManager
     public static bool GetKeyUp(string action, PlayerIndex player, out PlayerIndex playerWhoPressesUp)
     {
         playerWhoPressesUp = player;
-        int key;
         switch (player)
         {
             case PlayerIndex.One:
-                key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player1Keys.GetKeys(action));
             case PlayerIndex.Two:
-                key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player2Keys.GetKeys(action));
             case PlayerIndex.Three:
-                key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player3Keys.GetKeys(action));
             case PlayerIndex.Four:
-                key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player4Keys.GetKeys(action));
             case PlayerIndex.Five:
-                key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
+                return GetKeysUp(player5Keys.GetKeys(action));
             case PlayerIndex.All:
-                key = player1Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
+                if (GetKeysUp(player1Keys.GetKeys(action)))
                 {
                     playerWhoPressesUp = PlayerIndex.One;
                     return true;
                 }
-                key = player2Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
+                if (GetKeysUp(player2Keys.GetKeys(action)))
                 {
                     playerWhoPressesUp = PlayerIndex.Two;
                     return true;
                 }
-                key = player3Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
+                if (GetKeysUp(player3Keys.GetKeys(action)))
                 {
                     playerWhoPressesUp = PlayerIndex.Three;
                     return true;
                 }
-                key = player4Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
+                if (GetKeysUp(player4Keys.GetKeys(action)))
                 {
                     playerWhoPressesUp = PlayerIndex.Four;
                     return true;
                 }
-                key = player5Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key))
+                if (GetKeysUp(player5Keys.GetKeys(action)))
                 {
                     playerWhoPressesUp = PlayerIndex.Five;
                     return true;
@@ -2345,44 +2336,33 @@ public static class InputManager
     public static bool GetKeyUp(string action, BaseController controller)
     {
         if (controller == BaseController.Keyboard)
-            return GetKeyUp(kbKeys.GetKey(action));
+            return GetKeysUp(kbKeys.GetKeys(action));
         if (controller == BaseController.Gamepad)
-            return GetKeyUp(gpKeys.GetKey(action));
-        return GetKeyUp(kbKeys.GetKey(action)) || GetKeyUp(gpKeys.GetKey(action));
+            return GetKeysUp(gpKeys.GetKeys(action));
+        return GetKeysUp(kbKeys.GetKeys(action)) || GetKeysUp(gpKeys.GetKeys(action));
     }
 
     /// <returns> true when the key assigned with the action is pressed</returns>
     public static bool GetKey(string action, PlayerIndex player = PlayerIndex.All)
     {
-        int key;
         switch (player)
         {
             case PlayerIndex.One:
-                key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player1Keys.GetKeys(action));
             case PlayerIndex.Two:
-                key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player2Keys.GetKeys(action));
             case PlayerIndex.Three:
-                key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player3Keys.GetKeys(action));
             case PlayerIndex.Four:
-                key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player4Keys.GetKeys(action));
             case PlayerIndex.Five:
-                key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player5Keys.GetKeys(action));
             case PlayerIndex.All:
-                int key1 = player1Keys.GetKey(action);
-                int key2 = player2Keys.GetKey(action);
-                int key3 = player3Keys.GetKey(action);
-                int key4 = player4Keys.GetKey(action);
-                int key5 = player5Keys.GetKey(action);
-                return key1 >= 0 ? Input.GetKey((KeyCode)key1) : GetNegativeKeyPressed(key1) ||
-                    key2 >= 0 ? Input.GetKey((KeyCode)key2) : GetNegativeKeyPressed(key2) ||
-                    key3 >= 0 ? Input.GetKey((KeyCode)key3) : GetNegativeKeyPressed(key3) ||
-                    key4 >= 0 ? Input.GetKey((KeyCode)key4) : GetNegativeKeyPressed(key4) ||
-                    key5 >= 0 ? Input.GetKey((KeyCode)key5) : GetNegativeKeyPressed(key5);
+                return GetKeys(player1Keys.GetKeys(action)) ||
+                    GetKeys(player2Keys.GetKeys(action)) ||
+                    GetKeys(player3Keys.GetKeys(action)) ||
+                    GetKeys(player4Keys.GetKeys(action)) ||
+                    GetKeys(player5Keys.GetKeys(action));
             default:
                 return false;
         }
@@ -2392,51 +2372,40 @@ public static class InputManager
     public static bool GetKey(string action, PlayerIndex player, out PlayerIndex playerWhoPressed)
     {
         playerWhoPressed = player;
-        int key;
         switch (player)
         {
             case PlayerIndex.One:
-                key = player1Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player1Keys.GetKeys(action));
             case PlayerIndex.Two:
-                key = player2Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player2Keys.GetKeys(action));
             case PlayerIndex.Three:
-                key = player3Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player3Keys.GetKeys(action));
             case PlayerIndex.Four:
-                key = player4Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player4Keys.GetKeys(action));
             case PlayerIndex.Five:
-                key = player5Keys.GetKey(action);
-                return key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+                return GetKeys(player5Keys.GetKeys(action));
             case PlayerIndex.All:
-                key = player1Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
+                if (GetKeys(player1Keys.GetKeys(action)))
                 {
                     playerWhoPressed = PlayerIndex.One;
                     return true;
                 }
-                key = player2Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
+                if (GetKeys(player2Keys.GetKeys(action)))
                 {
                     playerWhoPressed = PlayerIndex.Two;
                     return true;
                 }
-                key = player3Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
+                if (GetKeys(player3Keys.GetKeys(action)))
                 {
                     playerWhoPressed = PlayerIndex.Three;
                     return true;
                 }
-                key = player4Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
+                if (GetKeys(player4Keys.GetKeys(action)))
                 {
                     playerWhoPressed = PlayerIndex.Four;
                     return true;
                 }
-                key = player5Keys.GetKey(action);
-                if (key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key))
+                if (GetKeys(player5Keys.GetKeys(action)))
                 {
                     playerWhoPressed = PlayerIndex.Five;
                     return true;
@@ -2450,10 +2419,10 @@ public static class InputManager
     public static bool GetKey(string action, BaseController controller)
     {
         if (controller == BaseController.Keyboard)
-            return GetKey(kbKeys.GetKey(action));
+            return GetKeys(kbKeys.GetKeys(action));
         if (controller == BaseController.Gamepad)
-            return GetKey(gpKeys.GetKey(action));
-        return GetKey(kbKeys.GetKey(action)) || GetKey(gpKeys.GetKey(action));
+            return GetKeys(gpKeys.GetKeys(action));
+        return GetKeys(kbKeys.GetKeys(action)) || GetKeys(gpKeys.GetKeys(action));
     }
 
     /// <returns> true during the frame when a key assigned with one of the actions is pressed</returns>
@@ -2555,6 +2524,36 @@ public static class InputManager
     public static bool GetKeyUp(int key) => key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
     /// <returns> true when the key is pressed</returns>
     public static bool GetKey(int key) => key >= 0 ? Input.GetKey((KeyCode)key) : GetNegativeKeyPressed(key);
+
+    private static bool GetKeysDown(InputData.ListInt keys)
+    {
+        foreach (int key in keys.keys)
+        {
+            if (GetKeyDown(key))
+                return true;
+        }
+        return false;
+    }
+
+    private static bool GetKeysUp(InputData.ListInt keys)
+    {
+        foreach (int key in keys.keys)
+        {
+            if (GetKeyUp(key))
+                return true;
+        }
+        return false;
+    }
+
+    private static bool GetKeys(InputData.ListInt keys)
+    {
+        foreach (int key in keys.keys)
+        {
+            if (GetKey(key))
+                return true;
+        }
+        return false;
+    }
 
     #endregion
 
@@ -3657,37 +3656,55 @@ public static class InputManager
     public static Vector2 mouseScrollDelta => Input.mouseScrollDelta;
     public static bool isAMouseConnected => Input.mousePresent;
 
+    private static string KeysToString(InputData.ListInt keys)
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (int key in keys)
+        {
+            sb.Append(KeyToString((InputKey)key) + ",");
+        }
+        sb.Remove(sb.Length - 1, 1);
+        return sb.ToString();
+    }
+
     /// <summary>
     /// Convert an action into the string who define the control of the action, according to the controller.
     /// </summary>
     public static string KeyToString(string action, PlayerIndex player)
     {
+        InputData.ListInt keys;
         switch (player)
         {
             case PlayerIndex.One:
-                return KeyToString((InputKey)player1Keys.GetKey(action));
+                keys = player1Keys.GetKeys(action);
+                break;
             case PlayerIndex.Two:
-                return KeyToString((InputKey)player2Keys.GetKey(action));
+                keys = player2Keys.GetKeys(action);
+                break;
             case PlayerIndex.Three:
-                return KeyToString((InputKey)player3Keys.GetKey(action));
+                keys = player3Keys.GetKeys(action);
+                break;
             case PlayerIndex.Four:
-                return KeyToString((InputKey)player4Keys.GetKey(action));
+                keys = player4Keys.GetKeys(action);
+                break;
             case PlayerIndex.Five:
-                return KeyToString((InputKey)player5Keys.GetKey(action));
+                keys = player5Keys.GetKeys(action);
+                break;
             default:
                 Debug.LogWarning("Cannot convert to string multiples Keys");
                 return "";
         }
+        return KeysToString(keys);
     }
 
     public static string KeyToString(string action, ControllerType controllerType)
     {
         if (controllerType == ControllerType.Keyboard)
-            return KeyToString((InputKey)kbKeys.GetKey(action));
-        if(gpKeys.Contain(action))
-            return KeyToString((InputKey)gpKeys.GetKey(action));
+            return(KeysToString(kbKeys.GetKeys(action)));
+        if(controllerType == ControllerType.Gamepad1)
+            return KeysToString(gpKeys.GetKeys(action));
         Debug.LogWarning("Cannot convert to string multiples Keys");
-        return "";
+        return string.Empty;
     }
 
     /// <param name="key"> the key pressed, castable to an Keys, MouseButton or Buttons according to the controler type</param>

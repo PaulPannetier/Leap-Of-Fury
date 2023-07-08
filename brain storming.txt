@@ -116,3 +116,7 @@ Méca : réunnit toute les méca de toutes les autres cartes
 DA : jsp
 Name : Chaos
 
+TODO :
+Review PauseManager
+
+
