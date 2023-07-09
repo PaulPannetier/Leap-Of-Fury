@@ -1,11 +1,29 @@
-﻿using System;
+﻿/*
+ * Copyright (c) 2023 Léonard Pannetier <leonard.pannetier@laposte.net>
+ * 
+ * This asset was create to handle Input system on Unity.
+ * It's base on the XInputDotNetPure wrapper made by speps, see detail on their repo https://github.com/speps/XInputDotNet/releases
+ * The license of the XInputDotNetPure is the same of this Package, and is include in the subfolder XInputDotNetPure.
+ * 
+ * This asset can be use in any commercial projet, no obligatiob of credit, but is it appreciated.
+ * See the license file for more details.
+ * 
+*/
+
+
+#region Using
+
+using System;
 using System.Collections.Generic;
 using XInputDotNetPure;
-using UnityEngine;
 using System.Collections;
 using System.Threading.Tasks;
-using UnityEngine.LowLevel;
 using System.Text;
+using UnityEngine;
+using UnityEngine.LowLevel;
+using UnityEngine.PlayerLoop;
+
+#endregion
 
 #region Enums
 
@@ -919,6 +937,8 @@ public enum InputKey
 
 #endregion
 
+#region InputManager
+
 public static class InputManager
 {
     #region Keys config
@@ -945,7 +965,7 @@ public static class InputManager
     private static GamePadState newGP3State, oldGP3State;
     private static GamePadState newGP4State, oldGP4State;
 
-    private static Vector2 oldGP1Triggers, oldGP2Triggers, oldGP3Triggers, oldGP4Triggers, newGP1Triggers, newGP2Triggers, newGP3Triggers, newGP4Triggers;
+    private static Vector2 newGP1Triggers, newGP2Triggers, newGP3Triggers, newGP4Triggers;
     private static Vector2 oldGP1RightStickPosition, oldGP2RightStickPosition, oldGP3RightStickPosition, oldGP4RightStickPosition;
     private static Vector2 oldGP1LeftStickPosition, oldGP2LeftStickPosition, oldGP3LeftStickPosition, oldGP4LeftStickPosition;
     private static Vector2 newGP1RightStickPosition, newGP2RightStickPosition, newGP3RightStickPosition, newGP4RightStickPosition;
@@ -953,10 +973,25 @@ public static class InputManager
 
     //Trigger gauche/droite : si vraiXGauche/vraiXDroit <= deadZone.x/y => xGauche/xDroit = 0, si vraiXGauche/vraiXDroit >= 1 - deadZone.x/y => xGauche/xDroit = 1, sinon xGauche/xDroit = vraiXGauche/vraiXDroit
     //ThumbStick : si vraiPos.x/y€[-deadZone.x/y, deadZone.x/y] => pos.x/y = 0, vraiPos.x/y€[-1, 1-deadZone.x/y] U [1 - deadZone.x/y, 1] => pos.x/y = (vraiPos.x/y).Sign() * 1, sinon pos.x/y = vraiPos.x/y
-    public static Vector2 GP1RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP1LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP1TriggersDeadZone = new Vector2(0.1f, 0.1f);
-    public static Vector2 GP2RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP2LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP2TriggersDeadZone = new Vector2(0.1f, 0.1f);
-    public static Vector2 GP3RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP3LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP3TriggersDeadZone = new Vector2(0.1f, 0.1f);
-    public static Vector2 GP4RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP4LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), GP4TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static Vector2 _GP1RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP1LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP1TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static Vector2 _GP2RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP2LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP2TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static Vector2 _GP3RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP3LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP3TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static Vector2 _GP4RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP4LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), _GP4TriggersDeadZone = new Vector2(0.1f, 0.1f);
+    private static float _analogicButtonDownValue = 0.25f;
+
+    public static Vector2 GP1RightThumbStickDeadZone { get => _GP1RightThumbStickDeadZone; set { _GP1RightThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Clamp(value.x, 0f, 0.45f)); } }
+    public static Vector2 GP1LeftThumbStickDeadZone { get => _GP1LeftThumbStickDeadZone; set { _GP1LeftThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Clamp(value.x, 0f, 0.45f)); } }
+    public static Vector2 GP1TriggersDeadZone { get => _GP1TriggersDeadZone; set { _GP1TriggersDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP2RightThumbStickDeadZone { get => _GP2RightThumbStickDeadZone; set { _GP2RightThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP2LeftThumbStickDeadZone { get => _GP2LeftThumbStickDeadZone; set { _GP2LeftThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP2TriggersDeadZone { get => _GP2TriggersDeadZone; set { _GP2TriggersDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP3RightThumbStickDeadZone { get => _GP3RightThumbStickDeadZone; set { _GP3RightThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP3LeftThumbStickDeadZone { get => _GP3LeftThumbStickDeadZone; set { _GP3LeftThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP3TriggersDeadZone { get => _GP3TriggersDeadZone; set { _GP3TriggersDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP4RightThumbStickDeadZone { get => _GP4RightThumbStickDeadZone; set { _GP4RightThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP4LeftThumbStickDeadZone { get => _GP4LeftThumbStickDeadZone; set { _GP4LeftThumbStickDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static Vector2 GP4TriggersDeadZone { get => _GP4TriggersDeadZone; set { _GP4TriggersDeadZone = new Vector2(Mathf.Clamp(value.x, 0f, 0.45f), Mathf.Min(value.y, 0.5f)); } }
+    public static float analogicButtonDownValue { get => _analogicButtonDownValue; set { _analogicButtonDownValue = Mathf.Clamp(value, 0.05f, 0.45f); } }
 
     private static Vector2 defaultGP1RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP1LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP1TriggersDeadZone = new Vector2(0.1f, 0.1f);
     private static Vector2 defaultGP2RightThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP2LeftThumbStickDeadZone = new Vector2(0.1f, 0.1f), defaultGP2TriggersDeadZone = new Vector2(0.1f, 0.1f);
@@ -972,79 +1007,81 @@ public static class InputManager
         434,435,436,437,438,439,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,
         495,496,497,498,499,500,501,502,503,504,505,506,507,508,509 };
 
+    private static List<VibrationSetting> vibrationSettings = new List<VibrationSetting>();
+
     #region GetInputKey Down/Up/Pressed delegate
 
     private static readonly Func<bool>[] GetInputKeyDownDelegate = new Func<bool>[71]
     {
         () => { return false; },
-        () => { return oldGP1State.Triggers.Right <= GP1TriggersDeadZone.y && newGP1State.Triggers.Right > GP1TriggersDeadZone.y; },
-        () => { return oldGP1State.Triggers.Left <= GP1TriggersDeadZone.x && newGP1State.Triggers.Left > GP1TriggersDeadZone.x; },
+        () => { return oldGP1State.Triggers.Right <= _analogicButtonDownValue && newGP1State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return oldGP1State.Triggers.Left <= _analogicButtonDownValue && newGP1State.Triggers.Left > _analogicButtonDownValue; },
         () => { return oldGP1State.DPad.Up == ButtonState.Released && newGP1State.DPad.Up == ButtonState.Pressed; },
         () => { return oldGP1State.DPad.Right == ButtonState.Released && newGP1State.DPad.Right == ButtonState.Pressed; },
         () => { return oldGP1State.DPad.Down == ButtonState.Released && newGP1State.DPad.Down == ButtonState.Pressed; },
         () => { return oldGP1State.DPad.Left == ButtonState.Released && newGP1State.DPad.Left == ButtonState.Pressed; },
-        () => { return oldGP1State.ThumbSticks.Right.Y <= GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y > GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Right.Y >= -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y < -GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Right.X <= GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X > GP1RightThumbStickDeadZone.x; },
-        () => { return oldGP1State.ThumbSticks.Right.X >= -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X < -GP1RightThumbStickDeadZone.x; },
-        () => { return oldGP1State.ThumbSticks.Left.Y <= GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y > GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Left.Y >= -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y < -GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Left.X <= GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X > GP1RightThumbStickDeadZone.x; },
-        () => { return oldGP1State.ThumbSticks.Left.X >= -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X < -GP1RightThumbStickDeadZone.x; },
+        () => { return oldGP1State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Right.Y >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP1State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP1State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return oldGP2State.Triggers.Right <= GP2TriggersDeadZone.y && newGP2State.Triggers.Right > GP2TriggersDeadZone.y; },
-        () => { return oldGP2State.Triggers.Left <= GP2TriggersDeadZone.x && newGP2State.Triggers.Left > GP2TriggersDeadZone.x; },
+        () => { return oldGP2State.Triggers.Right <= _analogicButtonDownValue && newGP2State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return oldGP2State.Triggers.Left <= _analogicButtonDownValue && newGP2State.Triggers.Left > _analogicButtonDownValue; },
         () => { return oldGP2State.DPad.Up == ButtonState.Released && newGP2State.DPad.Up == ButtonState.Pressed; },
         () => { return oldGP2State.DPad.Right == ButtonState.Released && newGP2State.DPad.Right == ButtonState.Pressed; },
         () => { return oldGP2State.DPad.Down == ButtonState.Released && newGP2State.DPad.Down == ButtonState.Pressed; },
         () => { return oldGP2State.DPad.Left == ButtonState.Released && newGP2State.DPad.Left == ButtonState.Pressed; },
-        () => { return oldGP2State.ThumbSticks.Right.Y <= GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y > GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Right.Y >= -GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y < -GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Right.X <= GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X > GP2RightThumbStickDeadZone.x; },
-        () => { return oldGP2State.ThumbSticks.Right.X >= -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X < -GP2RightThumbStickDeadZone.x; },
-        () => { return oldGP2State.ThumbSticks.Left.Y <= GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y > GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Left.Y >= -GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y < -GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Left.X <= GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X > GP2RightThumbStickDeadZone.x; },
-        () => { return oldGP2State.ThumbSticks.Left.X >= -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X < -GP2RightThumbStickDeadZone.x; },
+        () => { return oldGP2State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Right.Y >= -_analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP2State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP2State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP2State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return oldGP3State.Triggers.Right <= GP3TriggersDeadZone.y && newGP3State.Triggers.Right > GP3TriggersDeadZone.y; },
-        () => { return oldGP3State.Triggers.Left <= GP3TriggersDeadZone.x && newGP3State.Triggers.Left > GP3TriggersDeadZone.x; },
+        () => { return oldGP3State.Triggers.Right <= _analogicButtonDownValue && newGP3State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return oldGP3State.Triggers.Left <= _analogicButtonDownValue && newGP3State.Triggers.Left > _analogicButtonDownValue; },
         () => { return oldGP3State.DPad.Up == ButtonState.Released && newGP3State.DPad.Up == ButtonState.Pressed; },
         () => { return oldGP3State.DPad.Right == ButtonState.Released && newGP3State.DPad.Right == ButtonState.Pressed; },
         () => { return oldGP3State.DPad.Down == ButtonState.Released && newGP3State.DPad.Down == ButtonState.Pressed; },
         () => { return oldGP3State.DPad.Left == ButtonState.Released && newGP3State.DPad.Left == ButtonState.Pressed; },
-        () => { return oldGP3State.ThumbSticks.Right.Y <= GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y > GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Right.Y >= -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y < -GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Right.X <= GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X > GP3RightThumbStickDeadZone.x; },
-        () => { return oldGP3State.ThumbSticks.Right.X >= -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X < -GP3RightThumbStickDeadZone.x; },
-        () => { return oldGP3State.ThumbSticks.Left.Y <= GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y > GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Left.Y >= -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y < -GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Left.X <= GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X > GP3RightThumbStickDeadZone.x; },
-        () => { return oldGP3State.ThumbSticks.Left.X >= -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X < -GP3RightThumbStickDeadZone.x; },
+        () => { return oldGP3State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Right.Y >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP3State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP3State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return oldGP4State.Triggers.Right <= GP4TriggersDeadZone.y && newGP4State.Triggers.Right > GP4TriggersDeadZone.y; },
-        () => { return oldGP4State.Triggers.Left <= GP4TriggersDeadZone.x && newGP4State.Triggers.Left > GP4TriggersDeadZone.x; },
+        () => { return oldGP4State.Triggers.Right <= _analogicButtonDownValue && newGP4State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return oldGP4State.Triggers.Left <= _analogicButtonDownValue && newGP4State.Triggers.Left > _analogicButtonDownValue; },
         () => { return oldGP4State.DPad.Up == ButtonState.Released && newGP4State.DPad.Up == ButtonState.Pressed; },
         () => { return oldGP4State.DPad.Right == ButtonState.Released && newGP4State.DPad.Right == ButtonState.Pressed; },
         () => { return oldGP4State.DPad.Down == ButtonState.Released && newGP4State.DPad.Down == ButtonState.Pressed; },
         () => { return oldGP4State.DPad.Left == ButtonState.Released && newGP4State.DPad.Left == ButtonState.Pressed; },
-        () => { return oldGP4State.ThumbSticks.Right.Y <= GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y > GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Right.Y >= -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y < -GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Right.X <= GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X > GP4RightThumbStickDeadZone.x; },
-        () => { return oldGP4State.ThumbSticks.Right.X >= -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X < -GP4RightThumbStickDeadZone.x; },
-        () => { return oldGP4State.ThumbSticks.Left.Y <= GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y > GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Left.Y >= -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y < -GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Left.X <= GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X > GP4RightThumbStickDeadZone.x; },
-        () => { return oldGP4State.ThumbSticks.Left.X >= -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X < -GP4RightThumbStickDeadZone.x; },
+        () => { return oldGP4State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Right.Y >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP4State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP4State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return (oldGP1State.Triggers.Right <= GP1TriggersDeadZone.y && newGP1State.Triggers.Right > GP1TriggersDeadZone.y)
-            || (oldGP2State.Triggers.Right <= GP2TriggersDeadZone.y && newGP2State.Triggers.Right > GP2TriggersDeadZone.y)
-            || (oldGP3State.Triggers.Right <= GP3TriggersDeadZone.y && newGP3State.Triggers.Right > GP3TriggersDeadZone.y)
-            || (oldGP4State.Triggers.Right <= GP4TriggersDeadZone.y && newGP4State.Triggers.Right > GP4TriggersDeadZone.y); },
-        () => { return (oldGP1State.Triggers.Left <= GP1TriggersDeadZone.x && newGP1State.Triggers.Left > GP1TriggersDeadZone.x)
-            || (oldGP2State.Triggers.Left <= GP2TriggersDeadZone.x && newGP2State.Triggers.Left > GP2TriggersDeadZone.x)
-            || (oldGP3State.Triggers.Left <= GP3TriggersDeadZone.x && newGP3State.Triggers.Left > GP2TriggersDeadZone.x)
-            || (oldGP4State.Triggers.Left <= GP4TriggersDeadZone.x && newGP4State.Triggers.Left > GP4TriggersDeadZone.x); },
+        () => { return (oldGP1State.Triggers.Right <= _analogicButtonDownValue && newGP1State.Triggers.Right > _analogicButtonDownValue)
+            || (oldGP2State.Triggers.Right <= _analogicButtonDownValue && newGP2State.Triggers.Right > _analogicButtonDownValue)
+            || (oldGP3State.Triggers.Right <= _analogicButtonDownValue && newGP3State.Triggers.Right > _analogicButtonDownValue)
+            || (oldGP4State.Triggers.Right <= _analogicButtonDownValue && newGP4State.Triggers.Right > _analogicButtonDownValue); },
+        () => { return (oldGP1State.Triggers.Left <= _analogicButtonDownValue && newGP1State.Triggers.Left > _analogicButtonDownValue)
+            || (oldGP2State.Triggers.Left <= _analogicButtonDownValue && newGP2State.Triggers.Left > _analogicButtonDownValue)
+            || (oldGP3State.Triggers.Left <= _analogicButtonDownValue && newGP3State.Triggers.Left > _analogicButtonDownValue)
+            || (oldGP4State.Triggers.Left <= _analogicButtonDownValue && newGP4State.Triggers.Left > _analogicButtonDownValue); },
         () => { return (oldGP1State.DPad.Up == ButtonState.Released && newGP1State.DPad.Up == ButtonState.Pressed)
             || (oldGP2State.DPad.Up == ButtonState.Released && newGP2State.DPad.Up == ButtonState.Pressed)
             || (oldGP3State.DPad.Up == ButtonState.Released && newGP3State.DPad.Up == ButtonState.Pressed)
@@ -1061,111 +1098,111 @@ public static class InputManager
             || (oldGP2State.DPad.Left == ButtonState.Released && newGP2State.DPad.Left == ButtonState.Pressed)
             || (oldGP3State.DPad.Left == ButtonState.Released && newGP3State.DPad.Left == ButtonState.Pressed)
             || (oldGP4State.DPad.Left == ButtonState.Released && newGP4State.DPad.Left == ButtonState.Pressed); },
-        () => { return (oldGP1State.ThumbSticks.Right.Y <= GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y > GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Right.Y <= GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y > GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Right.Y <= GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y > GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Right.Y <= GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y > GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Right.Y >= -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y < -GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Right.Y >= GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y < GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Right.Y >= -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y < -GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Right.Y >= -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y < -GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Right.X <= GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X > GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Right.X <= GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X > GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Right.X <= GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X > GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Right.X <= GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X > GP4RightThumbStickDeadZone.x); },
-        () => { return (oldGP1State.ThumbSticks.Right.X >= -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X < -GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Right.X >= -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X < -GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Right.X >= -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X < -GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Right.X >= -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X < -GP4RightThumbStickDeadZone.x); },
-        () => { return (oldGP1State.ThumbSticks.Left.Y <= GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y > GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Left.Y <= GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y > GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Left.Y <= GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y > GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Left.Y <= GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y > GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Left.Y >= -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y < -GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Left.Y >= -GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y < -GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Left.Y >= -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y < -GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Left.Y >= -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y < -GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Left.X <= GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X > GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Left.X <= GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X > GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Left.X <= GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X > GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Left.X <= GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X > GP4RightThumbStickDeadZone.x); },
-        () => { return (oldGP1State.ThumbSticks.Left.X >= -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X < -GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Left.X >= -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X < -GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Left.X >= -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X < -GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Left.X >= -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X < -GP4RightThumbStickDeadZone.x); }
+        () => { return (oldGP1State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y > _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y > _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y > _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.Y <= _analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y > _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Right.Y >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y < -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.Y >= _analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y < _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.Y >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y < -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.Y >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y < -_analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP1State.ThumbSticks.Right.X > _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP2State.ThumbSticks.Right.X > _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP3State.ThumbSticks.Right.X > _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.X <= _analogicButtonDownValue && newGP4State.ThumbSticks.Right.X > _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.X < -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP2State.ThumbSticks.Right.X < -_analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.X < -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.X >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.X < -_analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y > _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y > _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y > _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.Y <= _analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y > _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y < -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y < -_analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y < -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.Y >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y < -_analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP1State.ThumbSticks.Left.X > _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP2State.ThumbSticks.Left.X > _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP3State.ThumbSticks.Left.X > _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.X <= _analogicButtonDownValue && newGP4State.ThumbSticks.Left.X > _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.X < -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.X < -_analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.X < -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.X >= -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.X < -_analogicButtonDownValue); }
     };
 
     private static readonly Func<bool>[] GetInputKeyUpDelegate = new Func<bool>[71]
     {
         () => { return false; },
-        () => { return oldGP1State.Triggers.Right > GP1TriggersDeadZone.y && newGP1State.Triggers.Right <= GP1TriggersDeadZone.y; },
-        () => { return oldGP1State.Triggers.Left > GP1TriggersDeadZone.x && newGP1State.Triggers.Left <= GP1TriggersDeadZone.x; },
+        () => { return oldGP1State.Triggers.Right > _analogicButtonDownValue && newGP1State.Triggers.Right <= _analogicButtonDownValue; },
+        () => { return oldGP1State.Triggers.Left > _analogicButtonDownValue && newGP1State.Triggers.Left <= _analogicButtonDownValue; },
         () => { return oldGP1State.DPad.Up == ButtonState.Pressed && newGP1State.DPad.Up == ButtonState.Released; },
         () => { return oldGP1State.DPad.Right == ButtonState.Pressed && newGP1State.DPad.Right == ButtonState.Released; },
         () => { return oldGP1State.DPad.Down == ButtonState.Pressed && newGP1State.DPad.Down == ButtonState.Released; },
         () => { return oldGP1State.DPad.Left == ButtonState.Pressed && newGP1State.DPad.Left == ButtonState.Released; },
-        () => { return oldGP1State.ThumbSticks.Right.Y > GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y <= GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Right.Y < -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y >= -GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Right.X > GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X <= GP1RightThumbStickDeadZone.x; },
-        () => { return oldGP1State.ThumbSticks.Right.X < -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X >= -GP1RightThumbStickDeadZone.x; },
-        () => { return oldGP1State.ThumbSticks.Left.Y > GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y < GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Left.Y < -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y > -GP1RightThumbStickDeadZone.y; },
-        () => { return oldGP1State.ThumbSticks.Left.X > GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X < GP1RightThumbStickDeadZone.x; },
-        () => { return oldGP1State.ThumbSticks.Left.X < -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X > -GP1RightThumbStickDeadZone.x; },
+        () => { return oldGP1State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y <= _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Right.Y < -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y >= -_analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP1State.ThumbSticks.Right.X <= _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.X >= -_analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y < _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y > -_analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP1State.ThumbSticks.Left.X < _analogicButtonDownValue; },
+        () => { return oldGP1State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.X > -_analogicButtonDownValue; },
 
-        () => { return oldGP2State.Triggers.Right > GP2TriggersDeadZone.y && newGP2State.Triggers.Right <= GP2TriggersDeadZone.y; },
-        () => { return oldGP2State.Triggers.Left > GP2TriggersDeadZone.x && newGP2State.Triggers.Left <= GP2TriggersDeadZone.x; },
+        () => { return oldGP2State.Triggers.Right > _analogicButtonDownValue && newGP2State.Triggers.Right <= _analogicButtonDownValue; },
+        () => { return oldGP2State.Triggers.Left > _analogicButtonDownValue && newGP2State.Triggers.Left <= _analogicButtonDownValue; },
         () => { return oldGP2State.DPad.Up == ButtonState.Pressed && newGP2State.DPad.Up == ButtonState.Released; },
         () => { return oldGP2State.DPad.Right == ButtonState.Pressed && newGP2State.DPad.Right == ButtonState.Released; },
         () => { return oldGP2State.DPad.Down == ButtonState.Pressed && newGP2State.DPad.Down == ButtonState.Released; },
         () => { return oldGP2State.DPad.Left == ButtonState.Pressed && newGP2State.DPad.Left == ButtonState.Released; },
-        () => { return oldGP2State.ThumbSticks.Right.Y > GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y <= GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Right.Y < -GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y >= -GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Right.X > GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X <= GP2RightThumbStickDeadZone.x; },
-        () => { return oldGP2State.ThumbSticks.Right.X < -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X >= -GP2RightThumbStickDeadZone.x; },
-        () => { return oldGP2State.ThumbSticks.Left.Y > GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y <= GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Left.Y < -GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y >= -GP2RightThumbStickDeadZone.y; },
-        () => { return oldGP2State.ThumbSticks.Left.X > GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X <= GP2RightThumbStickDeadZone.x; },
-        () => { return oldGP2State.ThumbSticks.Left.X < -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X >= -GP2RightThumbStickDeadZone.x; },
+        () => { return oldGP2State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y <= _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Right.Y < -_analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y >= -_analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP2State.ThumbSticks.Right.X <= _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP2State.ThumbSticks.Right.X >= -_analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y <= _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y >= -_analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP2State.ThumbSticks.Left.X <= _analogicButtonDownValue; },
+        () => { return oldGP2State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.X >= -_analogicButtonDownValue; },
 
-        () => { return oldGP3State.Triggers.Right >  GP3TriggersDeadZone.y && newGP3State.Triggers.Right <= GP3TriggersDeadZone.y; },
-        () => { return oldGP3State.Triggers.Left > GP3TriggersDeadZone.x && newGP3State.Triggers.Left <= GP3TriggersDeadZone.x; },
+        () => { return oldGP3State.Triggers.Right > _analogicButtonDownValue && newGP3State.Triggers.Right <= _analogicButtonDownValue; },
+        () => { return oldGP3State.Triggers.Left > _analogicButtonDownValue && newGP3State.Triggers.Left <= _analogicButtonDownValue; },
         () => { return oldGP3State.DPad.Up == ButtonState.Pressed && newGP3State.DPad.Up == ButtonState.Released; },
         () => { return oldGP3State.DPad.Right == ButtonState.Pressed && newGP3State.DPad.Right == ButtonState.Released; },
         () => { return oldGP3State.DPad.Down == ButtonState.Pressed && newGP3State.DPad.Down == ButtonState.Released; },
         () => { return oldGP3State.DPad.Left == ButtonState.Pressed && newGP3State.DPad.Left == ButtonState.Released; },
-        () => { return oldGP3State.ThumbSticks.Right.Y > GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y < GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Right.Y < -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y > -GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Right.X > GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X < GP3RightThumbStickDeadZone.x; },
-        () => { return oldGP3State.ThumbSticks.Right.X < -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X > -GP3RightThumbStickDeadZone.x; },
-        () => { return oldGP3State.ThumbSticks.Left.Y > GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y < GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Left.Y < -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y > -GP3RightThumbStickDeadZone.y; },
-        () => { return oldGP3State.ThumbSticks.Left.X > GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X < GP3RightThumbStickDeadZone.x; },
-        () => { return oldGP3State.ThumbSticks.Left.X < -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X > -GP3RightThumbStickDeadZone.x; },
+        () => { return oldGP3State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y < _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Right.Y < -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y > -_analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP3State.ThumbSticks.Right.X < _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.X > -_analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y < _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y > -_analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP3State.ThumbSticks.Left.X < _analogicButtonDownValue; },
+        () => { return oldGP3State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.X > -_analogicButtonDownValue; },
 
-        () => { return oldGP4State.Triggers.Right > GP4TriggersDeadZone.y && newGP4State.Triggers.Right <= GP4TriggersDeadZone.y; },
-        () => { return oldGP4State.Triggers.Left > GP4TriggersDeadZone.x && newGP4State.Triggers.Left <= GP4TriggersDeadZone.x; },
+        () => { return oldGP4State.Triggers.Right > _analogicButtonDownValue && newGP4State.Triggers.Right <= _analogicButtonDownValue; },
+        () => { return oldGP4State.Triggers.Left > _analogicButtonDownValue && newGP4State.Triggers.Left <= _analogicButtonDownValue; },
         () => { return oldGP4State.DPad.Up == ButtonState.Pressed && newGP4State.DPad.Up == ButtonState.Released; },
         () => { return oldGP4State.DPad.Right == ButtonState.Pressed && newGP4State.DPad.Right == ButtonState.Released; },
         () => { return oldGP4State.DPad.Down == ButtonState.Pressed && newGP4State.DPad.Down == ButtonState.Released; },
         () => { return oldGP4State.DPad.Left == ButtonState.Pressed && newGP4State.DPad.Left == ButtonState.Released; },
-        () => { return oldGP4State.ThumbSticks.Right.Y > GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y < GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Right.Y < -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y > -GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Right.X > GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X < GP4RightThumbStickDeadZone.x; },
-        () => { return oldGP4State.ThumbSticks.Right.X < -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X > -GP4RightThumbStickDeadZone.x; },
-        () => { return oldGP4State.ThumbSticks.Left.Y > GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y < GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Left.Y < -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y > -GP4RightThumbStickDeadZone.y; },
-        () => { return oldGP4State.ThumbSticks.Left.X > GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X < GP4RightThumbStickDeadZone.x; },
-        () => { return oldGP4State.ThumbSticks.Left.X < -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X > -GP4RightThumbStickDeadZone.x; },
+        () => { return oldGP4State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y < _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Right.Y < -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y > -_analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP4State.ThumbSticks.Right.X < _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.X > -_analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y < _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y > -_analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP4State.ThumbSticks.Left.X < _analogicButtonDownValue; },
+        () => { return oldGP4State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.X > -_analogicButtonDownValue; },
 
-        () => { return (oldGP1State.Triggers.Right > GP1TriggersDeadZone.y && newGP1State.Triggers.Right <= GP1TriggersDeadZone.y)
-            || (oldGP2State.Triggers.Right > GP2TriggersDeadZone.y && newGP2State.Triggers.Right <= GP2TriggersDeadZone.y)
-            || (oldGP3State.Triggers.Right > GP3TriggersDeadZone.y && newGP3State.Triggers.Right <= GP3TriggersDeadZone.y)
-            || (oldGP4State.Triggers.Right > GP4TriggersDeadZone.y && newGP4State.Triggers.Right <= GP4TriggersDeadZone.y); },
-        () => { return (oldGP1State.Triggers.Left > GP1TriggersDeadZone.x && newGP1State.Triggers.Left <= GP1TriggersDeadZone.x)
-            || (oldGP2State.Triggers.Left > GP2TriggersDeadZone.x && newGP2State.Triggers.Left <= GP2TriggersDeadZone.x)
-            || (oldGP3State.Triggers.Left > GP3TriggersDeadZone.x && newGP3State.Triggers.Left <= GP3TriggersDeadZone.x)
-            || (oldGP4State.Triggers.Left > GP4TriggersDeadZone.x && newGP4State.Triggers.Left <= GP4TriggersDeadZone.x); },
+        () => { return (oldGP1State.Triggers.Right > _analogicButtonDownValue && newGP1State.Triggers.Right <= _analogicButtonDownValue)
+            || (oldGP2State.Triggers.Right > _analogicButtonDownValue && newGP2State.Triggers.Right <= _analogicButtonDownValue)
+            || (oldGP3State.Triggers.Right > _analogicButtonDownValue && newGP3State.Triggers.Right <= _analogicButtonDownValue)
+            || (oldGP4State.Triggers.Right > _analogicButtonDownValue && newGP4State.Triggers.Right <= _analogicButtonDownValue); },
+        () => { return (oldGP1State.Triggers.Left > _analogicButtonDownValue && newGP1State.Triggers.Left <= _analogicButtonDownValue)
+            || (oldGP2State.Triggers.Left > _analogicButtonDownValue && newGP2State.Triggers.Left <= _analogicButtonDownValue)
+            || (oldGP3State.Triggers.Left > _analogicButtonDownValue && newGP3State.Triggers.Left <= _analogicButtonDownValue)
+            || (oldGP4State.Triggers.Left > _analogicButtonDownValue && newGP4State.Triggers.Left <= _analogicButtonDownValue); },
         () => { return (oldGP1State.DPad.Up == ButtonState.Pressed && newGP1State.DPad.Up == ButtonState.Released)
             || (oldGP2State.DPad.Up == ButtonState.Pressed && newGP2State.DPad.Up == ButtonState.Released)
             || (oldGP3State.DPad.Up == ButtonState.Pressed && newGP3State.DPad.Up == ButtonState.Released)
@@ -1182,111 +1219,111 @@ public static class InputManager
             || (oldGP2State.DPad.Left == ButtonState.Pressed && newGP2State.DPad.Left == ButtonState.Released)
             || (oldGP3State.DPad.Left == ButtonState.Pressed && newGP3State.DPad.Left == ButtonState.Released)
             || (oldGP4State.DPad.Left == ButtonState.Pressed && newGP4State.DPad.Left == ButtonState.Released); },
-        () => { return (oldGP1State.ThumbSticks.Right.Y > GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y <= GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Right.Y > GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y <= GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Right.Y > GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y <= GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Right.Y > GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y <= GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Right.Y < -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Right.Y >= -GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Right.Y < GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Right.Y >= GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Right.Y < -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Right.Y >= -GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Right.Y < -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Right.Y >= -GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Right.X > GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X <= GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Right.X > GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X <= GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Right.X > GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X <= GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Right.X > GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X <= GP4RightThumbStickDeadZone.x); },
-        () => { return (oldGP1State.ThumbSticks.Right.X < -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Right.X >= -GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Right.X < -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Right.X >= -GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Right.X < -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Right.X >= -GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Right.X < -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Right.X >= -GP4RightThumbStickDeadZone.x); },
-        () => { return (oldGP1State.ThumbSticks.Left.Y > GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y <= GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Left.Y > GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y <= GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Left.Y > GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y <= GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Left.Y > GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y <= GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Left.Y < -GP1RightThumbStickDeadZone.y && newGP1State.ThumbSticks.Left.Y >= -GP1RightThumbStickDeadZone.y)
-            || (oldGP2State.ThumbSticks.Left.Y < -GP2RightThumbStickDeadZone.y && newGP2State.ThumbSticks.Left.Y >= -GP2RightThumbStickDeadZone.y)
-            || (oldGP3State.ThumbSticks.Left.Y < -GP3RightThumbStickDeadZone.y && newGP3State.ThumbSticks.Left.Y >= -GP3RightThumbStickDeadZone.y)
-            || (oldGP4State.ThumbSticks.Left.Y < -GP4RightThumbStickDeadZone.y && newGP4State.ThumbSticks.Left.Y >= -GP4RightThumbStickDeadZone.y); },
-        () => { return (oldGP1State.ThumbSticks.Left.X > GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X <= GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Left.X > GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X <= GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Left.X > GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X <= GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Left.X > GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X <= GP4RightThumbStickDeadZone.x); },
-        () => { return (oldGP1State.ThumbSticks.Left.X < -GP1RightThumbStickDeadZone.x && newGP1State.ThumbSticks.Left.X >= -GP1RightThumbStickDeadZone.x)
-            || (oldGP2State.ThumbSticks.Left.X < -GP2RightThumbStickDeadZone.x && newGP2State.ThumbSticks.Left.X >= -GP2RightThumbStickDeadZone.x)
-            || (oldGP3State.ThumbSticks.Left.X < -GP3RightThumbStickDeadZone.x && newGP3State.ThumbSticks.Left.X >= -GP3RightThumbStickDeadZone.x)
-            || (oldGP4State.ThumbSticks.Left.X < -GP4RightThumbStickDeadZone.x && newGP4State.ThumbSticks.Left.X >= -GP4RightThumbStickDeadZone.x); }
+        () => { return (oldGP1State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y <= _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y <= _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y <= _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.Y > _analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y <= _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Right.Y < -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.Y >= -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.Y < _analogicButtonDownValue && newGP2State.ThumbSticks.Right.Y >= _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.Y < -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.Y >= -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.Y < -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.Y >= -_analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP1State.ThumbSticks.Right.X <= _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP2State.ThumbSticks.Right.X <= _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP3State.ThumbSticks.Right.X <= _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.X > _analogicButtonDownValue && newGP4State.ThumbSticks.Right.X <= _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP1State.ThumbSticks.Right.X >= -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP2State.ThumbSticks.Right.X >= -_analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP3State.ThumbSticks.Right.X >= -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Right.X < -_analogicButtonDownValue && newGP4State.ThumbSticks.Right.X >= -_analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y <= _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y <= _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y <= _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.Y > _analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y <= _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.Y >= -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.Y >= -_analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.Y >= -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.Y < -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.Y >= -_analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP1State.ThumbSticks.Left.X <= _analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP2State.ThumbSticks.Left.X <= _analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP3State.ThumbSticks.Left.X <= _analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.X > _analogicButtonDownValue && newGP4State.ThumbSticks.Left.X <= _analogicButtonDownValue); },
+        () => { return (oldGP1State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP1State.ThumbSticks.Left.X >= -_analogicButtonDownValue)
+            || (oldGP2State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP2State.ThumbSticks.Left.X >= -_analogicButtonDownValue)
+            || (oldGP3State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP3State.ThumbSticks.Left.X >= -_analogicButtonDownValue)
+            || (oldGP4State.ThumbSticks.Left.X < -_analogicButtonDownValue && newGP4State.ThumbSticks.Left.X >= -_analogicButtonDownValue); }
     };
 
     private static readonly Func<bool>[] GetInputKeyPressedDelegate = new Func<bool>[71]
     {
         () => { return false; },
-        () => { return newGP1State.Triggers.Right > GP1TriggersDeadZone.y; },
-        () => { return newGP1State.Triggers.Left > GP1TriggersDeadZone.x; },
+        () => { return newGP1State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return newGP1State.Triggers.Left > _analogicButtonDownValue; },
         () => { return newGP1State.DPad.Up == ButtonState.Pressed; },
         () => { return newGP1State.DPad.Right == ButtonState.Pressed; },
         () => { return newGP1State.DPad.Down == ButtonState.Pressed; },
         () => { return newGP1State.DPad.Left == ButtonState.Pressed; },
-        () => { return newGP1State.ThumbSticks.Right.Y > GP1LeftThumbStickDeadZone.y; },
-        () => { return newGP1State.ThumbSticks.Right.Y < -GP1LeftThumbStickDeadZone.y; },
-        () => { return newGP1State.ThumbSticks.Right.X > GP1LeftThumbStickDeadZone.x; },
-        () => { return newGP1State.ThumbSticks.Right.X < -GP1LeftThumbStickDeadZone.x; },
-        () => { return newGP1State.ThumbSticks.Left.Y > GP1LeftThumbStickDeadZone.y; },
-        () => { return newGP1State.ThumbSticks.Left.Y < -GP1LeftThumbStickDeadZone.y; },
-        () => { return newGP1State.ThumbSticks.Left.X > GP1LeftThumbStickDeadZone.x; },
-        () => { return newGP1State.ThumbSticks.Left.X < -GP1LeftThumbStickDeadZone.x; },
+        () => { return newGP1State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return newGP1State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return newGP1State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return newGP1State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return newGP1State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return newGP1State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return newGP1State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return newGP1State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return newGP2State.Triggers.Right > GP2TriggersDeadZone.y; },
-        () => { return newGP2State.Triggers.Left > GP2TriggersDeadZone.x; },
+        () => { return newGP2State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return newGP2State.Triggers.Left > _analogicButtonDownValue; },
         () => { return newGP2State.DPad.Up == ButtonState.Pressed; },
         () => { return newGP2State.DPad.Right == ButtonState.Pressed; },
         () => { return newGP2State.DPad.Down == ButtonState.Pressed; },
         () => { return newGP2State.DPad.Left == ButtonState.Pressed; },
-        () => { return newGP2State.ThumbSticks.Right.Y > GP2LeftThumbStickDeadZone.y; },
-        () => { return newGP2State.ThumbSticks.Right.Y < -GP2LeftThumbStickDeadZone.y; },
-        () => { return newGP2State.ThumbSticks.Right.X > GP2LeftThumbStickDeadZone.x; },
-        () => { return newGP2State.ThumbSticks.Right.X < -GP2LeftThumbStickDeadZone.x; },
-        () => { return newGP2State.ThumbSticks.Left.Y > GP2LeftThumbStickDeadZone.y; },
-        () => { return newGP2State.ThumbSticks.Left.Y < -GP2LeftThumbStickDeadZone.y; },
-        () => { return newGP2State.ThumbSticks.Left.X > GP2LeftThumbStickDeadZone.x; },
-        () => { return newGP2State.ThumbSticks.Left.X < -GP2LeftThumbStickDeadZone.x; },
+        () => { return newGP2State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return newGP2State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return newGP2State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return newGP2State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return newGP2State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return newGP2State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return newGP2State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return newGP2State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return newGP3State.Triggers.Right > GP3TriggersDeadZone.y; },
-        () => { return newGP3State.Triggers.Left > GP3TriggersDeadZone.x; },
+        () => { return newGP3State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return newGP3State.Triggers.Left > _analogicButtonDownValue; },
         () => { return newGP3State.DPad.Up == ButtonState.Pressed; },
         () => { return newGP3State.DPad.Right == ButtonState.Pressed; },
         () => { return newGP3State.DPad.Down == ButtonState.Pressed; },
         () => { return newGP3State.DPad.Left == ButtonState.Pressed; },
-        () => { return newGP3State.ThumbSticks.Right.Y > GP3LeftThumbStickDeadZone.y; },
-        () => { return newGP3State.ThumbSticks.Right.Y < -GP3LeftThumbStickDeadZone.y; },
-        () => { return newGP3State.ThumbSticks.Right.X > GP3LeftThumbStickDeadZone.x; },
-        () => { return newGP3State.ThumbSticks.Right.X < -GP3LeftThumbStickDeadZone.x; },
-        () => { return newGP3State.ThumbSticks.Left.Y > GP3LeftThumbStickDeadZone.y; },
-        () => { return newGP3State.ThumbSticks.Left.Y < -GP3LeftThumbStickDeadZone.y; },
-        () => { return newGP3State.ThumbSticks.Left.X > GP3LeftThumbStickDeadZone.x; },
-        () => { return newGP3State.ThumbSticks.Left.X < -GP3LeftThumbStickDeadZone.x; },
+        () => { return newGP3State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return newGP3State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return newGP3State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return newGP3State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return newGP3State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return newGP3State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return newGP3State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return newGP3State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return newGP4State.Triggers.Right > GP4TriggersDeadZone.y; },
-        () => { return newGP4State.Triggers.Left > GP4TriggersDeadZone.x; },
+        () => { return newGP4State.Triggers.Right > _analogicButtonDownValue; },
+        () => { return newGP4State.Triggers.Left > _analogicButtonDownValue; },
         () => { return newGP4State.DPad.Up == ButtonState.Pressed; },
         () => { return newGP4State.DPad.Right == ButtonState.Pressed; },
         () => { return newGP4State.DPad.Down == ButtonState.Pressed; },
         () => { return newGP4State.DPad.Left == ButtonState.Pressed; },
-        () => { return newGP4State.ThumbSticks.Right.Y > GP4LeftThumbStickDeadZone.y; },
-        () => { return newGP4State.ThumbSticks.Right.Y < -GP4LeftThumbStickDeadZone.y; },
-        () => { return newGP4State.ThumbSticks.Right.X > GP4LeftThumbStickDeadZone.x; },
-        () => { return newGP4State.ThumbSticks.Right.X < -GP4LeftThumbStickDeadZone.x; },
-        () => { return newGP4State.ThumbSticks.Left.Y > GP4LeftThumbStickDeadZone.y; },
-        () => { return newGP4State.ThumbSticks.Left.Y < -GP4LeftThumbStickDeadZone.y; },
-        () => { return newGP4State.ThumbSticks.Left.X > GP4LeftThumbStickDeadZone.x; },
-        () => { return newGP4State.ThumbSticks.Left.X < -GP4LeftThumbStickDeadZone.x; },
+        () => { return newGP4State.ThumbSticks.Right.Y > _analogicButtonDownValue; },
+        () => { return newGP4State.ThumbSticks.Right.Y < -_analogicButtonDownValue; },
+        () => { return newGP4State.ThumbSticks.Right.X > _analogicButtonDownValue; },
+        () => { return newGP4State.ThumbSticks.Right.X < -_analogicButtonDownValue; },
+        () => { return newGP4State.ThumbSticks.Left.Y > _analogicButtonDownValue; },
+        () => { return newGP4State.ThumbSticks.Left.Y < -_analogicButtonDownValue; },
+        () => { return newGP4State.ThumbSticks.Left.X > _analogicButtonDownValue; },
+        () => { return newGP4State.ThumbSticks.Left.X < -_analogicButtonDownValue; },
 
-        () => { return (newGP1State.Triggers.Right > GP1TriggersDeadZone.y)
-            || (newGP2State.Triggers.Right > GP2TriggersDeadZone.y)
-            || (newGP3State.Triggers.Right > GP3TriggersDeadZone.y)
-            || (newGP4State.Triggers.Right > GP4TriggersDeadZone.y); },
-        () => { return (newGP1State.Triggers.Left > GP1TriggersDeadZone.x)
-            || (newGP2State.Triggers.Left > GP2TriggersDeadZone.x)
-            || (newGP3State.Triggers.Left > GP3TriggersDeadZone.x)
-            || (newGP4State.Triggers.Left > GP4TriggersDeadZone.x); },
+        () => { return (newGP1State.Triggers.Right > _analogicButtonDownValue)
+            || (newGP2State.Triggers.Right > _analogicButtonDownValue)
+            || (newGP3State.Triggers.Right > _analogicButtonDownValue)
+            || (newGP4State.Triggers.Right > _analogicButtonDownValue); },
+        () => { return (newGP1State.Triggers.Left > _analogicButtonDownValue)
+            || (newGP2State.Triggers.Left > _analogicButtonDownValue)
+            || (newGP3State.Triggers.Left > _analogicButtonDownValue)
+            || (newGP4State.Triggers.Left > _analogicButtonDownValue); },
         () => { return (newGP1State.DPad.Up == ButtonState.Pressed)
             || (newGP2State.DPad.Up == ButtonState.Pressed)
             || (newGP3State.DPad.Up == ButtonState.Pressed)
@@ -1303,38 +1340,38 @@ public static class InputManager
             || (newGP2State.DPad.Left == ButtonState.Pressed)
             || (newGP3State.DPad.Left == ButtonState.Pressed)
             || (newGP4State.DPad.Left == ButtonState.Pressed); },
-        () => { return (newGP1State.ThumbSticks.Right.Y > GP1RightThumbStickDeadZone.y)
-            || (newGP2State.ThumbSticks.Right.Y > GP2RightThumbStickDeadZone.y)
-            || (newGP3State.ThumbSticks.Right.Y > GP3RightThumbStickDeadZone.y)
-            || (newGP4State.ThumbSticks.Right.Y > GP4RightThumbStickDeadZone.y); },
-        () => { return (newGP1State.ThumbSticks.Right.Y < -GP1RightThumbStickDeadZone.y)
-            || (newGP2State.ThumbSticks.Right.Y < GP2RightThumbStickDeadZone.y)
-            || (newGP3State.ThumbSticks.Right.Y < -GP3RightThumbStickDeadZone.y)
-            || (newGP4State.ThumbSticks.Right.Y < -GP4RightThumbStickDeadZone.y); },
-        () => { return (newGP1State.ThumbSticks.Right.X > GP1RightThumbStickDeadZone.x)
-            || (newGP2State.ThumbSticks.Right.X > GP2RightThumbStickDeadZone.x)
-            || (newGP3State.ThumbSticks.Right.X > GP3RightThumbStickDeadZone.x)
-            || (newGP4State.ThumbSticks.Right.X > GP4RightThumbStickDeadZone.x); },
-        () => { return (newGP1State.ThumbSticks.Right.X < -GP1RightThumbStickDeadZone.x)
-            || (newGP2State.ThumbSticks.Right.X < -GP2RightThumbStickDeadZone.x)
-            || (newGP3State.ThumbSticks.Right.X < -GP3RightThumbStickDeadZone.x)
-            || (newGP4State.ThumbSticks.Right.X < -GP4RightThumbStickDeadZone.x); },
-        () => { return (newGP1State.ThumbSticks.Left.Y > GP1RightThumbStickDeadZone.y)
-            || (newGP2State.ThumbSticks.Left.Y > GP2RightThumbStickDeadZone.y)
-            || (newGP3State.ThumbSticks.Left.Y > GP3RightThumbStickDeadZone.y)
-            || (newGP4State.ThumbSticks.Left.Y > GP4RightThumbStickDeadZone.y); },
-        () => { return (newGP1State.ThumbSticks.Left.Y < -GP1RightThumbStickDeadZone.y)
-            || (newGP2State.ThumbSticks.Left.Y < -GP2RightThumbStickDeadZone.y)
-            || (newGP3State.ThumbSticks.Left.Y < -GP3RightThumbStickDeadZone.y)
-            || (newGP4State.ThumbSticks.Left.Y < -GP4RightThumbStickDeadZone.y); },
-        () => { return (newGP1State.ThumbSticks.Left.X > GP1RightThumbStickDeadZone.x)
-            || (newGP2State.ThumbSticks.Left.X > GP2RightThumbStickDeadZone.x)
-            || (newGP3State.ThumbSticks.Left.X > GP3RightThumbStickDeadZone.x)
-            || (newGP4State.ThumbSticks.Left.X > GP4RightThumbStickDeadZone.x); },
-        () => { return (newGP1State.ThumbSticks.Left.X < -GP1RightThumbStickDeadZone.x)
-            || (newGP2State.ThumbSticks.Left.X < -GP2RightThumbStickDeadZone.x)
-            || (newGP3State.ThumbSticks.Left.X < -GP3RightThumbStickDeadZone.x)
-            || (newGP4State.ThumbSticks.Left.X < -GP4RightThumbStickDeadZone.x); }
+        () => { return (newGP1State.ThumbSticks.Right.Y > _analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Right.Y > _analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Right.Y > _analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Right.Y > _analogicButtonDownValue); },
+        () => { return (newGP1State.ThumbSticks.Right.Y < -_analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Right.Y < _analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Right.Y < -_analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Right.Y < -_analogicButtonDownValue); },
+        () => { return (newGP1State.ThumbSticks.Right.X > _analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Right.X > _analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Right.X > _analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Right.X > _analogicButtonDownValue); },
+        () => { return (newGP1State.ThumbSticks.Right.X < -_analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Right.X < -_analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Right.X < -_analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Right.X < -_analogicButtonDownValue); },
+        () => { return (newGP1State.ThumbSticks.Left.Y > _analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Left.Y > _analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Left.Y > _analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Left.Y > _analogicButtonDownValue); },
+        () => { return (newGP1State.ThumbSticks.Left.Y < -_analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Left.Y < -_analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Left.Y < -_analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Left.Y < -_analogicButtonDownValue); },
+        () => { return (newGP1State.ThumbSticks.Left.X > _analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Left.X > _analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Left.X > _analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Left.X > _analogicButtonDownValue); },
+        () => { return (newGP1State.ThumbSticks.Left.X < -_analogicButtonDownValue)
+            || (newGP2State.ThumbSticks.Left.X < -_analogicButtonDownValue)
+            || (newGP3State.ThumbSticks.Left.X < -_analogicButtonDownValue)
+            || (newGP4State.ThumbSticks.Left.X < -_analogicButtonDownValue); }
     };
 
     #endregion
@@ -1509,7 +1546,7 @@ public static class InputManager
                 {
                     if (IsGamepadKey((InputKey)key))
                     {
-                        res.AddAction(actions[i], (int)ConvertGeneralKeyToGamepadKey(key, gamepadIndex));
+                        res.AddAction(actions[i], ConvertGeneralKeyToGamepadKey(key, gamepadIndex));
                     }
                 }
             }
@@ -1521,7 +1558,7 @@ public static class InputManager
             InputData res = new InputData();
             for (int i = 0; i < actions.Count; i++)
             {
-                foreach (int key in controlsDic[actions[i]].keys)
+                foreach (int key in controlsDic[actions[i]])
                 {
                     if (IsKeyboardKey((InputKey)key))
                     {
@@ -1564,21 +1601,62 @@ public static class InputManager
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Start()
     {
-        //PlayerLoopSystem systemRoot = new PlayerLoopSystem();
-        //systemRoot.subSystemList = new PlayerLoopSystem[]
-        //{
-        //    new PlayerLoopSystem()
-        //    {
-        //        updateDelegate = PreUpdate,
-        //        type = typeof(InputManager)
-        //    }
-        //};
-        //PlayerLoop.SetPlayerLoop(systemRoot);
+        PlayerLoopSystem defaultSystems = PlayerLoop.GetDefaultPlayerLoop();
+        PlayerLoopSystem preUpdateystem = FindSubSystem<PreUpdate.AIUpdate>(defaultSystems);
+        PlayerLoopSystem systemRoot = new PlayerLoopSystem();
+        systemRoot.subSystemList = new PlayerLoopSystem[]
+        {
+            defaultSystems,
+            preUpdateystem,
+            new PlayerLoopSystem()
+            {
+                updateDelegate = TmpPreUpdate,
+                type = typeof(InputManager)
+            },
+        };
+        PlayerLoop.SetPlayerLoop(systemRoot);
+    }
+
+    private static PlayerLoopSystem FindSubSystem<T>(PlayerLoopSystem def)
+    {
+        if (def.type == typeof(T))
+        {
+            return def;
+        }
+        if (def.subSystemList != null)
+        {
+            foreach (PlayerLoopSystem s in def.subSystemList)
+            {
+                PlayerLoopSystem system = FindSubSystem<T>(s);
+                if (system.type == typeof(T))
+                {
+                    return system;
+                }
+            }
+        }
+        return default(PlayerLoopSystem);
     }
 
     #endregion
 
     #region SetVibration
+
+    private static void PrivateSetVibration(float rightIntensity, float leftIntensity, ControllerType gamepadIndex)
+    {
+        if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
+        {
+            if (newGP1State.IsConnected)
+                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.One, rightIntensity, leftIntensity);
+            if (newGP2State.IsConnected)
+                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.Two, rightIntensity, leftIntensity);
+            if (newGP3State.IsConnected)
+                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.Three, rightIntensity, leftIntensity);
+            if (newGP4State.IsConnected)
+                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.Four, rightIntensity, leftIntensity);
+            return;
+        }
+        GamePad.SetVibration((XInputDotNetPure.PlayerIndex)((int)gamepadIndex - 1), rightIntensity, leftIntensity);
+    }
 
     public static void SetVibration(float intensity, ControllerType gamepadIndex = ControllerType.GamepadAll)
     {
@@ -1594,20 +1672,47 @@ public static class InputManager
             Debug.LogWarning("Cannot vibrate the keyboard!");
             return;
         }
+        PrivateSetVibration(rightIntensity, leftIntensity, gamepadIndex);
+    }
 
-        if(gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
+    public static void SetVibration(float rightIntensity, float leftIntensity, float duration, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    {
+        if(gamepadIndex == ControllerType.Keyboard)
         {
-            if(newGP1State.IsConnected)
-                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.One, rightIntensity, leftIntensity);
-            if (newGP2State.IsConnected)
-                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.Two, rightIntensity, leftIntensity);
-            if (newGP3State.IsConnected)
-                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.Three, rightIntensity, leftIntensity);
-            if (newGP4State.IsConnected)
-                GamePad.SetVibration(XInputDotNetPure.PlayerIndex.Four, rightIntensity, leftIntensity);
+            Debug.LogWarning("Cannot vibrate the keyboard!");
             return;
         }
-        GamePad.SetVibration((XInputDotNetPure.PlayerIndex)((int)gamepadIndex - 1), rightIntensity, leftIntensity);
+
+        vibrationSettings.Add(new VibrationSetting(gamepadIndex, duration, rightIntensity, leftIntensity));
+    }
+
+    public static void SetVibration(float rightIntensity, float leftIntensity, float duration, float delay, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    {
+        if (gamepadIndex == ControllerType.Keyboard)
+        {
+            Debug.LogWarning("Cannot vibrate the keyboard!");
+            return;
+        }
+
+        VibrationSetting setting = new VibrationSetting(gamepadIndex, duration, rightIntensity, leftIntensity);
+        setting.timer = -delay;
+        vibrationSettings.Add(setting);
+    }
+
+    public static void StopVibration(ControllerType gamepadIndex = ControllerType.GamepadAll)
+    {
+        if (gamepadIndex == ControllerType.Keyboard)
+        {
+            Debug.LogWarning("Cannot vibrate the keyboard!");
+            return;
+        }
+        PrivateSetVibration(0f, 0f, gamepadIndex);
+    }
+
+    public static void CancelVibration()
+    {
+        StopVibration();
+        vibrationSettings.Clear();
     }
 
     #endregion
@@ -1616,12 +1721,8 @@ public static class InputManager
 
     #region SetStickPosition
 
-    private static void SetOldGamepadSticksPositions()
+    private static void SetOldGamepadSticksAndTriggersPositions()
     {
-        oldGP1Triggers = newGP1Triggers;
-        oldGP2Triggers = newGP2Triggers;
-        oldGP3Triggers = newGP3Triggers;
-        oldGP4Triggers = newGP4Triggers;
         oldGP1RightStickPosition = newGP1RightStickPosition;
         oldGP1LeftStickPosition = newGP1LeftStickPosition;
         oldGP2RightStickPosition = newGP2RightStickPosition;
@@ -1632,7 +1733,7 @@ public static class InputManager
         oldGP4LeftStickPosition = newGP4LeftStickPosition;
     }
 
-    private static void SetNewGamepadStickPositions()
+    private static void SetNewGamepadSticksAndTriggersPositions()
     {
         //ThumbStick : si vraiPos.x/y€[-deadZone.x/y, deadZone.x/y] => pos.x/y = 0, vraiPos.x/y€[-1, -1 + deadZone.x/y] U [1 - deadZone.x/y, 1] => pos.x/y = (vraiPos.x/y).Sign() * 1, sinon pos.x/y = vraiPos.x/y
         void CalculateGamepadStickAndTrigger(ref Vector2 rStickPos, ref Vector2 lStickPos, ref Vector2 triggerPos, in Vector2 lDeadZone, in Vector2 rDeadZone, in Vector2 triggerDeadZone, in GamePadState newState)
@@ -1642,7 +1743,7 @@ public static class InputManager
                 if (Mathf.Abs(value) <= min)
                     return 0f;
                 if (Mathf.Abs(value) >= max)
-                    return 1f;
+                    return value.Sign();
                 if (min < value && value < max)
                     return (value - min) / (max - min);
                 return (value + min) / (max - min);
@@ -1651,9 +1752,15 @@ public static class InputManager
             float x = Mathf.Abs(newState.ThumbSticks.Right.X) <= rDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Right.X) >= (1f - rDeadZone.x) ? newState.ThumbSticks.Right.X.Sign() : newState.ThumbSticks.Right.X);
             float y = Mathf.Abs(newState.ThumbSticks.Right.Y) <= rDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Right.Y) >= (1f - rDeadZone.y) ? newState.ThumbSticks.Right.Y.Sign() : newState.ThumbSticks.Right.Y);
             rStickPos = new Vector2(Regression(rDeadZone.x, 1f - rDeadZone.x, x), Regression(rDeadZone.y, 1f - rDeadZone.y, y));
+            if(rStickPos.sqrMagnitude > 1f)
+                rStickPos = new Vector2(newState.ThumbSticks.Right.X, newState.ThumbSticks.Right.Y).normalized;
+
             x = Mathf.Abs(newState.ThumbSticks.Left.X) <= lDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Left.X) >= (1f - lDeadZone.x) ? newState.ThumbSticks.Left.X.Sign() : newState.ThumbSticks.Left.X);
             y = Mathf.Abs(newState.ThumbSticks.Left.Y) <= lDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Left.Y) >= (1f - lDeadZone.y) ? newState.ThumbSticks.Left.Y.Sign() : newState.ThumbSticks.Left.Y);
             lStickPos = new Vector2(Regression(lDeadZone.x, 1f - lDeadZone.x, x), Regression(lDeadZone.y, 1f - lDeadZone.y, y));
+            if (lStickPos.sqrMagnitude > 1f)
+                lStickPos = new Vector2(newState.ThumbSticks.Left.X, newState.ThumbSticks.Left.Y).normalized;
+
             x = newState.Triggers.Left <= triggerDeadZone.x ? 0f : (newState.Triggers.Left >= 1f - triggerDeadZone.x ? 1f : newState.Triggers.Left);
             y = newState.Triggers.Right <= triggerDeadZone.y ? 0f : (newState.Triggers.Right >= 1f - triggerDeadZone.y ? 1f : newState.Triggers.Right);
             triggerPos = new Vector2(Regression(triggerDeadZone.x, 1f - triggerDeadZone.x, x), Regression(triggerDeadZone.y, 1f - triggerDeadZone.y, y));
@@ -1680,13 +1787,25 @@ public static class InputManager
                 Debug.LogWarning("Can't return the stick position of a keyboard!");
                 return Vector2.zero;
             case ControllerType.Gamepad1:
-                return GamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
+                if(IsGamePadConnected(gamepadIndex))
+                    return GamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
+                Debug.LogWarning("Gamepad1 is not connected!");
+                return Vector2.zero;
             case ControllerType.Gamepad2:
-                return GamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
+                if (IsGamePadConnected(gamepadIndex))
+                    return GamepadStick == GamepadStick.right ? newGP2RightStickPosition : newGP2LeftStickPosition;
+                Debug.LogWarning("Gamepad2 is not connected!");
+                return Vector2.zero;
             case ControllerType.Gamepad3:
-                return GamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
+                if (IsGamePadConnected(gamepadIndex))
+                    return GamepadStick == GamepadStick.right ? newGP3RightStickPosition : newGP3LeftStickPosition;
+                Debug.LogWarning("Gamepad3 is not connected!");
+                return Vector2.zero;
             case ControllerType.Gamepad4:
-                return GamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
+                if (IsGamePadConnected(gamepadIndex))
+                    return GamepadStick == GamepadStick.right ? newGP4RightStickPosition : newGP4LeftStickPosition;
+                Debug.LogWarning("Gamepad4 is not connected!");
+                return Vector2.zero;
             case ControllerType.GamepadAll:
                 if (newGP1State.IsConnected)
                     return GamepadStick == GamepadStick.right ? newGP1RightStickPosition : newGP1LeftStickPosition;
@@ -1742,31 +1861,31 @@ public static class InputManager
                 return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
-                if(GamePadIsConnected(ControllerType.Gamepad1))
+                if(IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
-                if(GamePadIsConnected(ControllerType.Gamepad2))
+                if(IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.y < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y >= GP2LeftThumbStickDeadZone.y;
-                if(GamePadIsConnected(ControllerType.Gamepad3))
+                if(IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.y < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y >= GP3LeftThumbStickDeadZone.y;
-                if(GamePadIsConnected(ControllerType.Gamepad4))
+                if(IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
-                if (GamePadIsConnected(ControllerType.Gamepad1))
+                if (IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad2))
+                if (IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y >= GP2RightThumbStickDeadZone.y :
                     oldGP2LeftStickPosition.y < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y >= GP2LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad3))
+                if (IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y >= GP3RightThumbStickDeadZone.y :
                     oldGP3LeftStickPosition.y < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y >= GP3LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad4))
+                if (IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y < GP4RightThumbStickDeadZone.y && newGP1RightStickPosition.y >= GP1RightThumbStickDeadZone.y :
                     oldGP1LeftStickPosition.y < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y >= GP1LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
@@ -1802,31 +1921,31 @@ public static class InputManager
                 return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
                     oldGP4LeftStickPosition.y > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.y <= -GP4LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
-                if (GamePadIsConnected(ControllerType.Gamepad1))
+                if (IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.y > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y <= -GP1LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad2))
+                if (IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.y > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y <= -GP2LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad3))
+                if (IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.y > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y <= -GP3LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad4))
+                if (IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.y > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.y <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
-                if (GamePadIsConnected(ControllerType.Gamepad1))
+                if (IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.y > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.y <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.y > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.y <= -GP1LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad2))
+                if (IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.y > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.y <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.y > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.y <= -GP2LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad3))
+                if (IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.y > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.y <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.y > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.y <= -GP3LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad4))
+                if (IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.y > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.y <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.y > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.y <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
@@ -1862,31 +1981,31 @@ public static class InputManager
                 return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
                     oldGP4LeftStickPosition.x < GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x >= GP4LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
-                if (GamePadIsConnected(ControllerType.Gamepad1))
+                if (IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x >= GP1LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad2))
+                if (IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x >= GP2LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad3))
+                if (IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x >= GP3LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad4))
+                if (IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x < GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x >= GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
-                if (GamePadIsConnected(ControllerType.Gamepad1))
+                if (IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x < GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x >= GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x < GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x >= GP1LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad2))
+                if (IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x < GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x >= GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x < GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x >= GP2LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad3))
+                if (IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x < GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x >= GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x < GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x >= GP3LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad4))
+                if (IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x < GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x >= GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x < GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x >= GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
@@ -1922,31 +2041,31 @@ public static class InputManager
                 return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
                     oldGP4LeftStickPosition.x > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x <= -GP4LeftThumbStickDeadZone.y;
             case ControllerType.GamepadAll:
-                if (GamePadIsConnected(ControllerType.Gamepad1))
+                if (IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x <= -GP1LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad2))
+                if (IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x <= -GP2LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad3))
+                if (IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x <= -GP3LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad4))
+                if (IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
                 return false;
             case ControllerType.All:
-                if (GamePadIsConnected(ControllerType.Gamepad1))
+                if (IsGamePadConnected(ControllerType.Gamepad1))
                     return GamepadStick == GamepadStick.right ? oldGP1RightStickPosition.x > -GP1RightThumbStickDeadZone.y && newGP1RightStickPosition.x <= -GP1RightThumbStickDeadZone.y :
                         oldGP1LeftStickPosition.x > -GP1LeftThumbStickDeadZone.y && newGP1LeftStickPosition.x <= -GP1LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad2))
+                if (IsGamePadConnected(ControllerType.Gamepad2))
                     return GamepadStick == GamepadStick.right ? oldGP2RightStickPosition.x > -GP2RightThumbStickDeadZone.y && newGP2RightStickPosition.x <= -GP2RightThumbStickDeadZone.y :
                         oldGP2LeftStickPosition.x > -GP2LeftThumbStickDeadZone.y && newGP2LeftStickPosition.x <= -GP2LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad3))
+                if (IsGamePadConnected(ControllerType.Gamepad3))
                     return GamepadStick == GamepadStick.right ? oldGP3RightStickPosition.x > -GP3RightThumbStickDeadZone.y && newGP3RightStickPosition.x <= -GP3RightThumbStickDeadZone.y :
                         oldGP3LeftStickPosition.x > -GP3LeftThumbStickDeadZone.y && newGP3LeftStickPosition.x <= -GP3LeftThumbStickDeadZone.y;
-                if (GamePadIsConnected(ControllerType.Gamepad4))
+                if (IsGamePadConnected(ControllerType.Gamepad4))
                     return GamepadStick == GamepadStick.right ? oldGP4RightStickPosition.x > -GP4RightThumbStickDeadZone.y && newGP4RightStickPosition.x <= -GP4RightThumbStickDeadZone.y :
                         oldGP4LeftStickPosition.x > -GP4LeftThumbStickDeadZone.y && newGP4LeftStickPosition.x <= -GP4LeftThumbStickDeadZone.y;
                 Debug.LogWarning("No Gamepad is connected!");
@@ -1983,7 +2102,7 @@ public static class InputManager
     }
 
     /// <returns>true if the gamepad define by the gamepadIndex is connected, false otherwise </returns>
-    public static bool GamePadIsConnected(ControllerType gamepadIndex)
+    public static bool IsGamePadConnected(ControllerType gamepadIndex)
     {
         switch (gamepadIndex)
         {
@@ -2519,6 +2638,12 @@ public static class InputManager
     /// <returns> true when the key is pressed</returns>
     public static bool GetKey(GamepadKey key) => GetKey((int)key);
     /// <returns> true during the frame when the key is pressed</returns>
+    public static bool GetKeyDown(GeneralGamepadKey key) => GetKeyDown((int)key);
+    /// <returns> true during the frame when key is unpressed</returns>
+    public static bool GetKeyUp(GeneralGamepadKey key) => GetKeyUp((int)key);
+    /// <returns> true when the key is pressed</returns>
+    public static bool GetKey(GeneralGamepadKey key) => GetKey((int)key);
+    /// <returns> true during the frame when the key is pressed</returns>
     public static bool GetKeyDown(int key) => key >= 0 ? Input.GetKeyDown((KeyCode)key) : GetNegativeKeyDown(key);
     /// <returns> true during the frame when key is unpressed</returns>
     public static bool GetKeyUp(int key) => key >= 0 ? Input.GetKeyUp((KeyCode)key) : GetNegativeKeyUp(key);
@@ -2566,9 +2691,38 @@ public static class InputManager
         kbKeys.AddAction(action, (int)key);
     }
 
+    public static void AddInputsAction(string action, KeyboardKey[] keys)
+    {
+        foreach (KeyboardKey key in keys)
+        {
+            AddInputAction(action, key);
+        }
+    }
+
     public static void AddInputAction(string action, GamepadKey key)
     {
         gpKeys.AddAction(action, (int)key);
+    }
+
+    public static void AddInputsAction(string action, GamepadKey[] keys)
+    {
+        foreach (GamepadKey key in keys)
+        {
+            AddInputAction(action, key);
+        }
+    }
+
+    public static void AddInputAction(string action, GeneralGamepadKey key)
+    {
+        gpKeys.AddAction(action, (int)key);
+    }
+
+    public static void AddInputsAction(string action, GeneralGamepadKey[] keys)
+    {
+        foreach (GamepadKey key in keys)
+        {
+            AddInputAction(action, key);
+        }
     }
 
     /// <summary>
@@ -2607,9 +2761,25 @@ public static class InputManager
         }
     }
 
+    public static void AddInputsAction(string action, InputKey[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, player);
+        }
+    }
+
     public static void AddInputAction(string action, KeyCode key, PlayerIndex player = PlayerIndex.All)
     {
         AddInputAction(action, (InputKey)key, player);
+    }
+
+    public static void AddInputsAction(string action, KeyCode[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, player);
+        }
     }
 
     public static void AddInputAction(string action, KeyboardKey key, PlayerIndex player = PlayerIndex.All)
@@ -2617,9 +2787,25 @@ public static class InputManager
         AddInputAction(action, (InputKey)key, player);
     }
 
+    public static void AddInputsAction(string action, KeyboardKey[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, player);
+        }
+    }
+
     public static void AddInputAction(string action, GamepadKey key, PlayerIndex player = PlayerIndex.All)
     {
         AddInputAction(action, (InputKey)key, player);
+    }
+
+    public static void AddInputsAction(string action, GamepadKey[] keys, PlayerIndex player = PlayerIndex.All)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, player);
+        }
     }
 
     private static InputKey ConvertToGeneralGamepadKey(InputKey key)
@@ -2632,13 +2818,19 @@ public static class InputManager
         return key;
     }
 
-    private static bool IsGamepadKey(InputKey key)
+    public static bool IsGamepadKey(InputKey key)
     {
         int key2 = (int)key;
         return key2 <= 0 || key2 >= 330;
     }
 
-    private static bool IsKeyboardKey(InputKey key) => !IsGamepadKey(key) || key == InputKey.None;
+    public static bool IsKeyboardKey(InputKey key) => !IsGamepadKey(key) || key == InputKey.None;
+
+    public static bool IsGeneralGamepadKey(InputKey key)
+    {
+        int k = (int)key;
+        return k <= -57 || (k >= 0 && k <= 349);
+    }
 
     public static void AddInputAction(string action, InputKey key, BaseController controller, bool defaultConfig = false)
     {
@@ -2667,9 +2859,25 @@ public static class InputManager
             gp.AddAction(action, (int)ConvertToGeneralGamepadKey(key));
     }
 
+    public static void AddInputsAction(string action, InputKey[] keys, BaseController controller, bool defaultConfig = false)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, controller, defaultConfig);
+        }
+    }
+
     public static void AddInputAction(string action, KeyboardKey key, BaseController controller, bool defaultConfig = false)
     {
         AddInputAction(action, (InputKey)key, controller, defaultConfig);
+    }
+
+    public static void AddInputsAction(string action, KeyboardKey[] keys, BaseController controller, bool defaultConfig = false)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, controller, defaultConfig);
+        }
     }
 
     public static void AddInputAction(string action, GamepadKey key, BaseController controller, bool defaultConfig = false)
@@ -2677,10 +2885,34 @@ public static class InputManager
         AddInputAction(action, (InputKey)key, controller, defaultConfig);
     }
 
+    public static void AddInputsAction(string action, GamepadKey[] keys, BaseController controller, bool defaultConfig = false)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, controller, defaultConfig);
+        }
+    }
+
+    public static void AddInputAction(string action, GeneralGamepadKey key, BaseController controller, bool defaultConfig = false)
+    {
+        AddInputAction(action, (InputKey)key, controller, defaultConfig);
+    }
+
+    public static void AddInputsAction(string action, GeneralGamepadKey[] keys, BaseController controller, bool defaultConfig = false)
+    {
+        foreach (InputKey key in keys)
+        {
+            AddInputAction(action, key, controller, defaultConfig);
+        }
+    }
+
     public static void AddInputActions(string[] actions, InputKey[] keys, PlayerIndex player = PlayerIndex.All)
     {
         if (actions.Length != keys.Length)
+        {
+            Debug.LogWarning("actions and keys haven't the same length! actions.Length : " + actions.Length + " keys.Lenght : " + keys.Length);
             return;
+        }
 
         for (int i = 0; i < actions.Length; i++)
         {
@@ -2691,7 +2923,10 @@ public static class InputManager
     public static void AddInputActions(string[] actions, KeyCode[] keys, PlayerIndex player = PlayerIndex.All)
     {
         if (actions.Length != keys.Length)
+        {
+            Debug.LogWarning("actions and keys haven't the same length! actions.Length : " + actions.Length + " keys.Lenght : " + keys.Length);
             return;
+        }
 
         for (int i = 0; i < keys.Length; i++)
         {
@@ -2702,7 +2937,10 @@ public static class InputManager
     public static void AddInputActions(string[] actions, KeyboardKey[] keys, PlayerIndex player = PlayerIndex.All)
     {
         if (actions.Length != keys.Length)
+        {
+            Debug.LogWarning("actions and keys haven't the same length! actions.Length : " + actions.Length + " keys.Lenght : " + keys.Length);
             return;
+        }
 
         for (int i = 0; i < keys.Length; i++)
         {
@@ -2713,7 +2951,10 @@ public static class InputManager
     public static void AddInputActions(string[] actions, GamepadKey[] keys, PlayerIndex player = PlayerIndex.All)
     {
         if (actions.Length != keys.Length)
+        {
+            Debug.LogWarning("actions and keys haven't the same length! actions.Length : " + actions.Length + " keys.Lenght : " + keys.Length);
             return;
+        }
 
         for (int i = 0; i < keys.Length; i++)
         {
@@ -2724,7 +2965,10 @@ public static class InputManager
     public static void AddInputActions(string[] actions, InputKey[] keys, BaseController controller, bool defaultConfig = false)
     {
         if (actions.Length != keys.Length)
+        {
+            Debug.LogWarning("actions and keys haven't the same length! actions.Length : " + actions.Length + " keys.Lenght : " + keys.Length);
             return;
+        }
 
         for (int i = 0; i < actions.Length; i++)
         {
@@ -2735,7 +2979,10 @@ public static class InputManager
     public static void AddInputActions(string[] actions, KeyboardKey[] keys, BaseController controller, bool defaultConfig = false)
     {
         if (actions.Length != keys.Length)
+        {
+            Debug.LogWarning("actions and keys haven't the same length! actions.Length : " + actions.Length + " keys.Lenght : " + keys.Length);
             return;
+        }
 
         for (int i = 0; i < actions.Length; i++)
         {
@@ -2746,7 +2993,10 @@ public static class InputManager
     public static void AddInputActions(string[] actions, GamepadKey[] keys, BaseController controller, bool defaultConfig = false)
     {
         if (actions.Length != keys.Length)
+        {
+            Debug.LogWarning("actions and keys haven't the same length! actions.Length : " + actions.Length + " keys.Lenght : " + keys.Length);
             return;
+        }
 
         for (int i = 0; i < actions.Length; i++)
         {
@@ -2783,9 +3033,72 @@ public static class InputManager
         }
     }
 
+    public static bool ReplaceAction(string action, InputKey[] newKeys, PlayerIndex player = PlayerIndex.All)
+    {
+        if(newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], player);
+        if(b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, newKeys[i], player);
+            }
+        }
+        return b;
+    }
+
     public static bool ReplaceAction(string action, KeyCode newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
+    public static bool ReplaceAction(string action, KeyCode[] newKeys, PlayerIndex player = PlayerIndex.All)
+    {
+        if (newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], player);
+        if (b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, newKeys[i], player);
+            }
+        }
+        return b;
+    }
+
     public static bool ReplaceAction(string action, KeyboardKey newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
+    public static bool ReplaceAction(string action, KeyboardKey[] newKeys, PlayerIndex player = PlayerIndex.All)
+    {
+        if (newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], player);
+        if (b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, newKeys[i], player);
+            }
+        }
+        return b;
+    }
+
     public static bool ReplaceAction(string action, GamepadKey newKey, PlayerIndex player = PlayerIndex.All) => ReplaceAction(action, (InputKey)newKey, player);
+    public static bool ReplaceAction(string action, GamepadKey[] newKeys, PlayerIndex player = PlayerIndex.All)
+    {
+        if (newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], player);
+        if (b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, newKeys[i], player);
+            }
+        }
+        return b;
+    }
 
     public static bool ReplaceAction(string action, InputKey newKey, BaseController controller, bool defaultConfig = false)
     {
@@ -2812,9 +3125,72 @@ public static class InputManager
         return b;
     }
 
+    public static bool ReplaceAction(string action, InputKey[] newKeys, BaseController controller, bool defaultConfig = false)
+    {
+        if (newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], controller, defaultConfig);
+        if (b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, newKeys[i], controller, defaultConfig);
+            }
+        }
+        return b;
+    }
+
     public static bool ReplaceAction(string action, KeyCode newKey, BaseController controller, bool defaultConfig = false) => ReplaceAction(action, (InputKey)newKey, controller, defaultConfig);
+    public static bool ReplaceAction(string action, KeyCode[] newKeys, BaseController controller, bool defaultConfig = false)
+    {
+        if (newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], controller, defaultConfig);
+        if (b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, (InputKey)newKeys[i], controller, defaultConfig);
+}
+        }
+        return b;
+    }
+
     public static bool ReplaceAction(string action, KeyboardKey newKey, BaseController controller, bool defaultConfig = false) => ReplaceAction(action, (InputKey)newKey, controller, defaultConfig);
+    public static bool ReplaceAction(string action, KeyboardKey[] newKeys, BaseController controller, bool defaultConfig = false)
+    {
+        if (newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], controller, defaultConfig);
+        if (b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, (InputKey)newKeys[i], controller, defaultConfig);
+            }
+        }
+        return b;
+    }
+
     public static bool ReplaceAction(string action, GamepadKey newKey, BaseController controller, bool defaultConfig = false) => ReplaceAction(action, (InputKey)newKey, controller, defaultConfig);
+    public static bool ReplaceAction(string action, GamepadKey[] newKeys, BaseController controller, bool defaultConfig = false)
+    {
+        if (newKeys.Length <= 0)
+            return false;
+
+        bool b = ReplaceAction(action, newKeys[0], controller, defaultConfig);
+        if (b)
+        {
+            for (int i = 1; i < newKeys.Length; i++)
+            {
+                AddInputAction(action, (InputKey)newKeys[i], controller, defaultConfig);
+            }
+        }
+        return b;
+    }
 
     /// <summary>
     /// Remove the action from the InputManager system
@@ -3692,7 +4068,7 @@ public static class InputManager
                 break;
             default:
                 Debug.LogWarning("Cannot convert to string multiples Keys");
-                return "";
+                return string.Empty;
         }
         return KeysToString(keys);
     }
@@ -4044,23 +4420,47 @@ public static class InputManager
 
     #region Update
 
-    public static void PreUpdate()
+    public static void TmpPreUpdate()
     {
         oldGP1State = newGP1State;
         oldGP2State = newGP2State;
         oldGP3State = newGP3State;
         oldGP4State = newGP4State;
-        SetOldGamepadSticksPositions();
+        SetOldGamepadSticksAndTriggersPositions();
         newGP1State = GamePad.GetState(XInputDotNetPure.PlayerIndex.One);
         newGP2State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Two);
         newGP3State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Three);
         newGP4State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Four);
-        SetNewGamepadStickPositions();
+        SetNewGamepadSticksAndTriggersPositions();
+
+        //vibration
+        List<VibrationSetting> stopSetting = new List<VibrationSetting>(); 
+        for (int i = vibrationSettings.Count - 1; i >= 0; i--)
+        {
+            VibrationSetting setting = vibrationSettings[i];
+            setting.timer += Time.deltaTime;
+            if(setting.timer > setting.duration)
+            {
+                stopSetting.Add(setting);
+                vibrationSettings.RemoveAt(i);
+                continue;
+            }
+
+            if(setting.timer > 0f)
+                PrivateSetVibration(setting.rightIntensity, setting.leftIntensity, setting.gamepadIndex);
+        }
+
+        foreach (VibrationSetting vib in stopSetting)
+        {
+            StopVibration(vib.gamepadIndex);
+        }
     }
 
     #endregion
 
     #region Custom Struct
+
+    #region GeneralInput
 
     [Serializable]
     public struct GeneralInput
@@ -4119,4 +4519,29 @@ public static class InputManager
     }
 
     #endregion
+
+    #region VibrationSetting
+
+    private class VibrationSetting : ICloneable<VibrationSetting>
+    {
+        public ControllerType gamepadIndex;
+        public float duration, rightIntensity, leftIntensity, timer;
+
+        public VibrationSetting(ControllerType gamepadIndex, float duration, float rightIntensity, float leftIntensity)
+        {
+            this.gamepadIndex = gamepadIndex;
+            this.duration = duration;
+            this.rightIntensity = rightIntensity;
+            this.leftIntensity = leftIntensity;
+            timer = 0f;
+        }
+
+        public VibrationSetting Clone() => new VibrationSetting(gamepadIndex, duration, rightIntensity, leftIntensity);
+    }
+
+    #endregion
+
+    #endregion
 }
+
+#endregion

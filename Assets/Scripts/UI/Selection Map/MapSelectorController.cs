@@ -198,7 +198,7 @@ public class MapSelectorController : MonoBehaviour
     {
         bool TestControllerType(ControllerType controllerType, out InputKey key)
         {
-            if (controllerType == ControllerType.Keyboard || InputManager.GamePadIsConnected(controllerType))
+            if (controllerType == ControllerType.Keyboard || InputManager.IsGamePadConnected(controllerType))
             {
                 if (InputManager.Listen(controllerType, out key))
                     return true;

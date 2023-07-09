@@ -317,7 +317,7 @@ public class CharSelectorController : MonoBehaviour
         bool TestControllerType(in ControllerType controllerType, out InputKey key)
         {
             if (!ControllerIsAlreadyInit(controllerType, out int i) && 
-                (controllerType == ControllerType.Keyboard || InputManager.GamePadIsConnected(controllerType)))
+                (controllerType == ControllerType.Keyboard || InputManager.IsGamePadConnected(controllerType)))
             {
                 if (InputManager.Listen(controllerType, out key))
                     return true;

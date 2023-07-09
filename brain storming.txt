@@ -118,5 +118,5 @@ Name : Chaos
 
 TODO :
 Review PauseManager
-
+Test all InputManager Function
 
