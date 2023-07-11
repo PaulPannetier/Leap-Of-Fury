@@ -28,11 +28,29 @@ public enum ControllerSelector
 public class SelectableUIGroup : MonoBehaviour
 {
     private SelectableUI selectedUI = null;
-    private ControllerType controllerType;
+    private ControllerType _controllerType;
+    private ControllerType controllerType
+    {
+        get => _controllerType;
+        set
+        {
+            _controllerType = value;
+            upItemInput.controllerType = value;
+            downItemInput.controllerType = value;
+            rightItemInput.controllerType = value;
+            leftItemInput.controllerType = value;
+            applyInput.controllerType = value;
+        }
+    }
 
     public bool enableBehaviour = true;
     [SerializeField] private ControllerSelector controllerSelector = ControllerSelector.last;
     [SerializeField] private SelectableUI defaultUISelected;
+    [SerializeField] private InputManager.GeneralInput upItemInput;
+    [SerializeField] private InputManager.GeneralInput downItemInput;
+    [SerializeField] private InputManager.GeneralInput rightItemInput;
+    [SerializeField] private InputManager.GeneralInput leftItemInput;
+    [SerializeField] private InputManager.GeneralInput applyInput;
 
     private void Awake()
     {
@@ -43,6 +61,7 @@ public class SelectableUIGroup : MonoBehaviour
     {
         if (!enableBehaviour)
             return;
+
         //on attend la première interaction
         if(selectedUI == null)
         {
@@ -50,6 +69,32 @@ public class SelectableUIGroup : MonoBehaviour
                  || controllerSelector == ControllerSelector.gamepad4 || controllerSelector == ControllerSelector.gamepadAll || controllerSelector == ControllerSelector.all)
             {
                 selectedUI = defaultUISelected;
+                switch (controllerSelector)
+                {
+                    case ControllerSelector.keyboard:
+                        controllerType = ControllerType.Keyboard;
+                        break;
+                    case ControllerSelector.gamepad1:
+                        controllerType = ControllerType.Gamepad1;
+                        break;
+                    case ControllerSelector.gamepad2:
+                        controllerType = ControllerType.Gamepad2;
+                        break;
+                    case ControllerSelector.gamepad3:
+                        controllerType = ControllerType.Gamepad3;
+                        break;
+                    case ControllerSelector.gamepad4:
+                        controllerType = ControllerType.Gamepad4;
+                        break;
+                    case ControllerSelector.gamepadAll:
+                        controllerType = ControllerType.GamepadAll;
+                        break;
+                    case ControllerSelector.all:
+                        controllerType = ControllerType.All;
+                        break;
+                    default:
+                        break;
+                }
             }
             else
             {
@@ -67,15 +112,37 @@ public class SelectableUIGroup : MonoBehaviour
                 if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                     this.controllerType = controllerType;
             }
-            if (selectedUI.upSelectableUI != null && IsPressingUpOrDown(controllerType, out bool up))
+
+            if(selectedUI.upSelectableUI != null && upItemInput.IsPressedDown())
             {
                 selectedUI.isSelected = false;
-                selectedUI = up ? selectedUI.upSelectableUI : selectedUI.downSelectableUI;
-                selectedUI.isSelected = true;
+                selectedUI.upSelectableUI.isSelected = true;
+                selectedUI = selectedUI.upSelectableUI;
+            }
+
+            if (selectedUI.downSelectableUI != null && downItemInput.IsPressedDown())
+            {
+                selectedUI.isSelected = false;
+                selectedUI.downSelectableUI.isSelected = true;
+                selectedUI = selectedUI.downSelectableUI;
+            }
+
+            if (selectedUI.rightSelectableUI != null && rightItemInput.IsPressedDown())
+            {
+                selectedUI.isSelected = false;
+                selectedUI.rightSelectableUI.isSelected = true;
+                selectedUI = selectedUI.rightSelectableUI;
+            }
+
+            if (selectedUI.leftSelectableUI != null && leftItemInput.IsPressedDown())
+            {
+                selectedUI.isSelected = false;
+                selectedUI.leftSelectableUI.isSelected = true;
+                selectedUI = selectedUI.leftSelectableUI;
             }
 
             //validate
-            if(IsPressedApply(controllerType))
+            if (applyInput.IsPressedDown())
             {
                 selectedUI.OnPressed();
             }
@@ -84,14 +151,14 @@ public class SelectableUIGroup : MonoBehaviour
 
     private bool ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key)
     {
-        bool TestControllerType(in ControllerType controllerType, out InputKey key)
+        bool TestControllerType(ControllerType controllerType, out InputKey key)
         {
             if ((controllerType == ControllerType.Keyboard || InputManager.IsGamePadConnected(controllerType)))
             {
                 if (InputManager.Listen(controllerType, out key))
                     return true;
             }
-            key = (int)KeyCode.None;
+            key = InputKey.None;
             return false;
         }
 
@@ -123,84 +190,5 @@ public class SelectableUIGroup : MonoBehaviour
         key = (int)KeyCode.None;
         controllerType = ControllerType.Keyboard;
         return false;
-    }
-
-    private bool IsPressedApply(in ControllerType controllerType)
-    {
-        switch (controllerType)
-        {
-            case ControllerType.Keyboard:
-                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.Return);
-            case ControllerType.Gamepad1:
-                return InputManager.GetKeyDown(KeyCode.Joystick1Button0);
-            case ControllerType.Gamepad2:
-                return InputManager.GetKeyDown(KeyCode.Joystick2Button0);
-            case ControllerType.Gamepad3:
-                return InputManager.GetKeyDown(KeyCode.Joystick3Button0);
-            case ControllerType.Gamepad4:
-                return InputManager.GetKeyDown(KeyCode.Joystick4Button0);
-            case ControllerType.GamepadAll:
-                return InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) || InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
-            case ControllerType.All:
-                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Joystick1Button0) ||
-                    InputManager.GetKeyDown(KeyCode.Joystick2Button0) || InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
-            default:
-                return false;
-        }
-    }
-
-    private bool IsPressingUpOrDown(ControllerType controllerType, out bool up)
-    {
-        bool TestControllerType(InputKey up, InputKey down, in ControllerType controllerType, out bool b)
-        {
-            if (InputManager.GetKeyDown(up) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.right) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.left))
-            {
-                b = true;
-                return true;
-            }
-            if (InputManager.GetKeyDown(down) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.right) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.left))
-            {
-                b = false;
-                return true;
-            }
-            b = false;
-            return false;
-        }
-
-        switch (controllerType)
-        {
-            case ControllerType.Keyboard:
-                if (InputManager.GetKeyDown(InputKey.W) || InputManager.GetKeyDown(InputKey.UpArrow))
-                {
-                    up = true;
-                    return true;
-                }
-                if (InputManager.GetKeyDown(InputKey.S) || InputManager.GetKeyDown(InputKey.DownArrow))
-                {
-                    up = false;
-                    return true;
-                }
-                up = false;
-                return false;
-            case ControllerType.Gamepad1:
-                return TestControllerType(InputKey.GP1DPadUp, InputKey.GP1DPadDown, ControllerType.Gamepad1, out up);
-            case ControllerType.Gamepad2:
-                return TestControllerType(InputKey.GP2DPadUp, InputKey.GP2DPadDown, ControllerType.Gamepad2, out up);
-            case ControllerType.Gamepad3:
-                return TestControllerType(InputKey.GP3DPadUp, InputKey.GP3DPadDown, ControllerType.Gamepad3, out up);
-            case ControllerType.Gamepad4:
-                return TestControllerType(InputKey.GP4DPadUp, InputKey.GP4DPadDown, ControllerType.Gamepad4, out up);
-            case ControllerType.GamepadAll:
-                Debug.Log("Debug plz");
-                up = false;
-                return false;
-            case ControllerType.All:
-                Debug.Log("Debug plz");
-                up = false;
-                return false;
-            default:
-                up = false;
-                return false;
-        }
     }
 }

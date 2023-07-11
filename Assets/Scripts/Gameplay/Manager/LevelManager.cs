@@ -164,11 +164,11 @@ public abstract class LevelManager : MonoBehaviour
 
             if(InputManager.IsAGamepadController(playerData.controllerType))
             {
-                InputManager.SetControllerForGamepad(playerData.playerIndex, playerData.controllerType);
+                InputManager.SetCurrentControllerForGamepad(playerData.playerIndex, playerData.controllerType);
             }
             else
             {
-                InputManager.SetController(playerData.playerIndex, BaseController.Keyboard);
+                InputManager.SetCurrentController(playerData.playerIndex, BaseController.Keyboard);
             }
 
             if (OnStart)

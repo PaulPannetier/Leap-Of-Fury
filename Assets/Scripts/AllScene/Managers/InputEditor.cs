@@ -47,12 +47,7 @@ public class InputEditor : MonoBehaviour
         if (enableListenKeyCode)
             ListenAndShowInput();
 
-        if(InputManager.GetKeyDown(GamepadKey.GP1Button0))
-        {
-            print("Bite");
-        }
-
-#endif
+        #endif
     }
 
 

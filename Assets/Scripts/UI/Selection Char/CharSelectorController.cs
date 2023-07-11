@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class CharSelectorController : MonoBehaviour
@@ -8,7 +6,7 @@ public class CharSelectorController : MonoBehaviour
     private GameObject[] helpCanvas;
     private ControllerType[] controllerIndexs;
     private bool[] isTurningSelectorInit;
-    private bool[] isTurningSlectorsFinishSelection;
+    private bool[] isTurningSelectorsFinishSelection;
     private bool[] isHelpCanvasOpen;
     private int indexToInit;
     private bool canLoadNextScene = false;
@@ -18,6 +16,9 @@ public class CharSelectorController : MonoBehaviour
 
     [SerializeField] private InputManager.GeneralInput helpButton;
     [SerializeField] private InputManager.GeneralInput escapeButton;
+    [SerializeField] private InputManager.GeneralInput nextItemInput;
+    [SerializeField] private InputManager.GeneralInput previousItemInput;
+    [SerializeField] private InputManager.GeneralInput applyItemInput;
 
     private void Awake()
     {
@@ -30,9 +31,9 @@ public class CharSelectorController : MonoBehaviour
 
     private void Start()
     {
-        isTurningSelectorInit = new bool[4] { false, false, false, false };
-        isTurningSlectorsFinishSelection = new bool[4] { false, false, false, false };
-        isHelpCanvasOpen = new bool[4] { false, false, false, false };
+        isTurningSelectorInit = new bool[4];
+        isTurningSelectorsFinishSelection = new bool[4];
+        isHelpCanvasOpen = new bool[4];
         helpCanvas = new GameObject[4];
         controllerIndexs = new ControllerType[4];
         indexToInit = 0;
@@ -45,27 +46,45 @@ public class CharSelectorController : MonoBehaviour
             if (!isTurningSelectorInit[i])
                 break;
 
-            if (isHelpCanvasOpen[i])
-                continue;
+            helpButton.controllerType = controllerIndexs[i];
 
-            if(IsPressingUpOrDown(controllerIndexs[i], out bool up))
+            if (isHelpCanvasOpen[i])
             {
-                if(up)
+                if (helpButton.IsPressedDown())
                 {
-                    turningSelectors[i].SelectedNextItem();
+                    OnCloseHelpCanvas(i);
                 }
-                else
+                continue;
+            }
+            else
+            {
+                if (helpButton.IsPressedDown())
                 {
-                    turningSelectors[i].SelectPreviousItem();
+                    OpenHelpCanvas(i);
                 }
             }
-            if(IsApplyingSelection(controllerIndexs[i]))
+
+            nextItemInput.controllerType = controllerIndexs[i];
+            previousItemInput.controllerType = controllerIndexs[i];
+            applyItemInput.controllerType = controllerIndexs[i];
+            escapeButton.controllerType = controllerIndexs[i];
+
+            if (nextItemInput.IsPressedDown())
             {
-                isTurningSlectorsFinishSelection[i] = true;
+                turningSelectors[i].SelectedNextItem();
             }
-            else if(IsUnApplyingSelection(controllerIndexs[i]))
+            else if (previousItemInput.IsPressedDown())
             {
-                isTurningSlectorsFinishSelection[i] = false;
+                turningSelectors[i].SelectPreviousItem();
+            }
+
+            if(applyItemInput.IsPressedDown())
+            {
+                isTurningSelectorsFinishSelection[i] = true;
+            }
+            else if(isTurningSelectorsFinishSelection[i] && escapeButton.IsPressedDown())
+            {
+                isTurningSelectorsFinishSelection[i] = false;
             }
         }
 
@@ -94,18 +113,18 @@ public class CharSelectorController : MonoBehaviour
         bool allIsSelected = true;
         for (int i = 0; i < turningSelectors.Length; i++)
         {
-            if(isTurningSelectorInit[i] && !isTurningSlectorsFinishSelection[i] && false)
+            if(isTurningSelectorInit[i] && !isTurningSelectorsFinishSelection[i])
             {
                 allIsSelected = false;
                 break;
             }
         }
 
-        canLoadNextScene = allIsSelected && isTurningSlectorsFinishSelection[0];
+        canLoadNextScene = allIsSelected;
         if(canLoadNextScene && !nextSceneIsLoading)
         {
             nextSceneIsLoading = true;
-            LoadSelectoinMapScene();
+            LoadSelectionMapScene();
         }
 
         for (int i = 0; i < indexToInit; i++)
@@ -113,22 +132,9 @@ public class CharSelectorController : MonoBehaviour
             if (isHelpCanvasOpen[i])
                 continue;
 
-            escapeButton.controllerType = controllerIndexs[i];
             if (escapeButton.IsPressedDown())
             {
                 TransitionManager.instance.LoadSceneAsync("Screen Title", null);
-            }
-        }
-
-        for (int i = 0; i < indexToInit; i++)
-        {
-            if (isHelpCanvasOpen[i])
-                continue;
-
-            helpButton.controllerType = controllerIndexs[i];
-            if (helpButton.IsPressedDown())
-            {
-                OpenHelpCanvas(i);
             }
         }
 
@@ -150,7 +156,7 @@ public class CharSelectorController : MonoBehaviour
         isHelpCanvasOpen[indexHelpCanvas] = false;
     }
 
-    private void LoadSelectoinMapScene()
+    private void LoadSelectionMapScene()
     {
         object[] data = new object[indexToInit];
         for (int i = 0; i < data.Length; i++)
@@ -169,7 +175,7 @@ public class CharSelectorController : MonoBehaviour
             return;
         if(index == 3)
         {
-            isTurningSelectorInit[index] = isTurningSlectorsFinishSelection[index] = false;
+            isTurningSelectorInit[index] = isTurningSelectorsFinishSelection[index] = false;
             controllerIndexs[indexToInit] = ControllerType.Keyboard;
             indexToInit--;
             return;
@@ -178,125 +184,14 @@ public class CharSelectorController : MonoBehaviour
         {
             isTurningSelectorInit[i] = isTurningSelectorInit[i + 1];
             controllerIndexs[i] = controllerIndexs[i + 1];
-            isTurningSlectorsFinishSelection[i] = isTurningSlectorsFinishSelection[i + 1];
+            isTurningSelectorsFinishSelection[i] = isTurningSelectorsFinishSelection[i + 1];
         }
-        isTurningSelectorInit[turningSelectors.Length - 1] = isTurningSlectorsFinishSelection[turningSelectors.Length - 1] = false;
+        isTurningSelectorInit[turningSelectors.Length - 1] = isTurningSelectorsFinishSelection[turningSelectors.Length - 1] = false;
         controllerIndexs[turningSelectors.Length - 1] = ControllerType.Keyboard;
         indexToInit = Mathf.Max(0, indexToInit - 1);
     }
 
-    #region IsApplyingSelection / IsUnapplyingSelection / PressingUpOrDown
-
-    private bool IsApplyingSelection(in ControllerType controllerType)
-    {
-        switch (controllerType)
-        {
-            case ControllerType.Keyboard:
-                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Return);
-            case ControllerType.Gamepad1:
-                return InputManager.GetKeyDown(KeyCode.Joystick1Button0);
-            case ControllerType.Gamepad2:
-                return InputManager.GetKeyDown(KeyCode.Joystick2Button0);
-            case ControllerType.Gamepad3:
-                return InputManager.GetKeyDown(KeyCode.Joystick3Button0);
-            case ControllerType.Gamepad4:
-                return InputManager.GetKeyDown(KeyCode.Joystick4Button0);
-            case ControllerType.GamepadAll:
-                return InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) ||
-                    InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
-            case ControllerType.All:
-                return InputManager.GetKeyDown(KeyCode.Space) || InputManager.GetKeyDown(KeyCode.KeypadEnter) || InputManager.GetKeyDown(KeyCode.Return) ||
-                    InputManager.GetKeyDown(KeyCode.Joystick1Button0) || InputManager.GetKeyDown(KeyCode.Joystick2Button0) ||
-                    InputManager.GetKeyDown(KeyCode.Joystick3Button0) || InputManager.GetKeyDown(KeyCode.Joystick4Button0);
-            default:
-                return false;
-        }
-    }
-
-    private bool IsUnApplyingSelection(in ControllerType controllerType)
-    {
-        switch (controllerType)
-        {
-            case ControllerType.Keyboard:
-                return InputManager.GetKeyDown(KeyCode.Escape) || InputManager.GetKeyDown(KeyCode.Backspace);
-            case ControllerType.Gamepad1:
-                return InputManager.GetKeyDown(KeyCode.Joystick1Button1);
-            case ControllerType.Gamepad2:
-                return InputManager.GetKeyDown(KeyCode.Joystick2Button1);
-            case ControllerType.Gamepad3:
-                return InputManager.GetKeyDown(KeyCode.Joystick3Button1);
-            case ControllerType.Gamepad4:
-                return InputManager.GetKeyDown(KeyCode.Joystick4Button1);
-            case ControllerType.GamepadAll:
-                return InputManager.GetKeyDown(KeyCode.Joystick1Button1) || InputManager.GetKeyDown(KeyCode.Joystick2Button1) ||
-                    InputManager.GetKeyDown(KeyCode.Joystick3Button1) || InputManager.GetKeyDown(KeyCode.Joystick4Button1);
-            case ControllerType.All:
-                return InputManager.GetKeyDown(KeyCode.Escape) || InputManager.GetKeyDown(KeyCode.Backspace) ||
-                    InputManager.GetKeyDown(KeyCode.Joystick1Button1) || InputManager.GetKeyDown(KeyCode.Joystick2Button1) ||
-                    InputManager.GetKeyDown(KeyCode.Joystick3Button1) || InputManager.GetKeyDown(KeyCode.Joystick4Button1);
-            default:
-                return false;
-        }
-    }
-
-    private bool IsPressingUpOrDown(in ControllerType controllerType, out bool up)
-    {
-        bool TestControllerType(in InputKey up, in InputKey down, in ControllerType controllerType, out bool b)
-        {
-            if (InputManager.GetKeyDown(up) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.right) || InputManager.GetGamepadStickUp(controllerType, GamepadStick.left))
-            {
-                b = true;
-                return true;
-            }
-            if (InputManager.GetKeyDown(down) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.right) || InputManager.GetGamepadStickDown(controllerType, GamepadStick.left))
-            {
-                b = false;
-                return true;
-            }
-            b = false;
-            return false;
-        }
-
-        switch (controllerType)
-        {
-            case ControllerType.Keyboard:
-                if (InputManager.GetKeyDown(KeyCode.W) || InputManager.GetKeyDown(KeyCode.UpArrow))
-                {
-                    up = true;
-                    return true;
-                }
-                if (InputManager.GetKeyDown(KeyCode.S) || InputManager.GetKeyDown(KeyCode.DownArrow))
-                {
-                    up = false;
-                    return true;
-                }
-                up = false;
-                return false;
-            case ControllerType.Gamepad1:
-                return TestControllerType(InputKey.GP1DPadUp, InputKey.GP1DPadDown, ControllerType.Gamepad1, out up);
-            case ControllerType.Gamepad2:
-                return TestControllerType(InputKey.GP2DPadUp, InputKey.GP2DPadDown, ControllerType.Gamepad2, out up);
-            case ControllerType.Gamepad3:
-                return TestControllerType(InputKey.GP3DPadUp, InputKey.GP3DPadDown, ControllerType.Gamepad3, out up);
-            case ControllerType.Gamepad4:
-                return TestControllerType(InputKey.GP4DPadUp, InputKey.GP4DPadDown, ControllerType.Gamepad4, out up);
-            case ControllerType.GamepadAll:
-                Debug.Log("Debug plz");
-                up = false;
-                return false;
-            case ControllerType.All:
-                Debug.Log("Debug plz");
-                up = false;
-                return false;
-            default:
-                up = false;
-                return false;
-        }
-    }
-
-    #endregion
-
-    #region ControllerAlreadyInit / NewCOntrollerPress a key
+    #region ControllerAlreadyInit / NewControllerIsPressingAKey
 
     private bool ControllerIsAlreadyInit(ControllerType controllerType, out int index)
     {
@@ -314,7 +209,7 @@ public class CharSelectorController : MonoBehaviour
 
     private bool NewControllerIsPressingAKey(out ControllerType controllerType, out InputKey key)
     {
-        bool TestControllerType(in ControllerType controllerType, out InputKey key)
+        bool TestControllerType(ControllerType controllerType, out InputKey key)
         {
             if (!ControllerIsAlreadyInit(controllerType, out int i) && 
                 (controllerType == ControllerType.Keyboard || InputManager.IsGamePadConnected(controllerType)))
@@ -351,11 +246,10 @@ public class CharSelectorController : MonoBehaviour
             controllerType = ControllerType.Gamepad4;
             return true;
         }
-        key = (int)KeyCode.None;
+        key = InputKey.None;
         controllerType = ControllerType.Keyboard;
         return false;
     }
 
     #endregion
-
 }
