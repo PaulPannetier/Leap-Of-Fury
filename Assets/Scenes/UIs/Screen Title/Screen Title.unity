@@ -3898,6 +3898,406 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad1.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad2.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad3.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad4.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keysKeyboard.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keysKeyboard.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad1.Array.data[0]
+      value: 346
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad1.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad2.Array.data[0]
+      value: 366
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad3.Array.data[0]
+      value: 386
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad4.Array.data[0]
+      value: 406
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keysKeyboard.Array.data[0]
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keysKeyboard.Array.data[1]
+      value: 271
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keysKeyboard.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.Array.data[0]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.Array.data[1]
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.Array.data[2]
+      value: -11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.Array.data[0]
+      value: -18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.Array.data[1]
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.Array.data[2]
+      value: -26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.Array.data[0]
+      value: -33
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.Array.data[1]
+      value: -37
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.Array.data[2]
+      value: -41
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.Array.data[0]
+      value: -48
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.Array.data[1]
+      value: -52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.Array.data[2]
+      value: -56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad1.keys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad2.keys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad3.keys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad4.keys.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keysKeyboard.Array.data[0]
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keysKeyboard.Array.data[1]
+      value: 273
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keysKeyboard.keys.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.Array.data[0]
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.Array.data[1]
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.Array.data[2]
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.Array.data[0]
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.Array.data[1]
+      value: -23
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.Array.data[2]
+      value: -27
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.Array.data[0]
+      value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.Array.data[1]
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.Array.data[2]
+      value: -42
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.Array.data[0]
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.Array.data[1]
+      value: -53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.Array.data[2]
+      value: -57
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keysKeyboard.Array.data[0]
+      value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keysKeyboard.Array.data[1]
+      value: 274
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keysKeyboard.keys.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad1.keys.Array.data[0]
+      value: 346
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad2.keys.Array.data[0]
+      value: 366
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad3.keys.Array.data[0]
+      value: 386
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keyGamepad4.keys.Array.data[0]
+      value: 406
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.keys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keysKeyboard.keys.Array.data[0]
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyInput.keysKeyboard.keys.Array.data[1]
+      value: 271
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keysKeyboard.keys.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.keys.Array.data[0]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.keys.Array.data[1]
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.keys.Array.data[2]
+      value: -11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad1.keys.Array.data[3]
+      value: 346
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.keys.Array.data[0]
+      value: -18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.keys.Array.data[1]
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad2.keys.Array.data[2]
+      value: -26
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.keys.Array.data[0]
+      value: -33
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.keys.Array.data[1]
+      value: -37
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad3.keys.Array.data[2]
+      value: -41
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.keys.Array.data[0]
+      value: -48
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.keys.Array.data[1]
+      value: -52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keyGamepad4.keys.Array.data[2]
+      value: -56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keysKeyboard.keys.Array.data[0]
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upItemInput.keysKeyboard.keys.Array.data[1]
+      value: 273
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.keys.Array.data[0]
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.keys.Array.data[1]
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad1.keys.Array.data[2]
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.keys.Array.data[0]
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.keys.Array.data[1]
+      value: -23
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad2.keys.Array.data[2]
+      value: -27
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.keys.Array.data[0]
+      value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.keys.Array.data[1]
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad3.keys.Array.data[2]
+      value: -42
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.keys.Array.data[0]
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.keys.Array.data[1]
+      value: -53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keyGamepad4.keys.Array.data[2]
+      value: -57
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keysKeyboard.keys.Array.data[0]
+      value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: downItemInput.keysKeyboard.keys.Array.data[1]
+      value: 274
+      objectReference: {fileID: 0}
     - target: {fileID: 2605413665032455930, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

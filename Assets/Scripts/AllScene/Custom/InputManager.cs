@@ -23,6 +23,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
+using System.Linq;
 
 #endregion
 
@@ -1672,9 +1673,6 @@ public static class InputManager
     {
         return controllerType == ControllerType.Gamepad1 || controllerType == ControllerType.Gamepad2 || controllerType == ControllerType.Gamepad3 || controllerType == ControllerType.Gamepad4;
     }
-
-    public static bool Test() => newGP1State.Buttons.RightStick == ButtonState.Pressed;
-    public static bool Test2() => newGP1State.Buttons.Guide == ButtonState.Pressed;
 
     public static Vector2 GetGamepadStickPosition(ControllerType gamepadIndex, GamepadStick GamepadStick)
     {
@@ -4241,10 +4239,14 @@ public static class InputManager
     [Serializable]
     public struct GeneralInput
     {
-        public InputKey[] keysKeyboard, keyGamepad1, keyGamepad2, keyGamepad3, keyGamepad4;
+        public InputKey keysKeyboard;
+        public InputKey keyGamepad1;
+        public InputKey keyGamepad2;
+        public InputKey keyGamepad3;
+        public InputKey keyGamepad4;
         public ControllerType controllerType;
 
-        public GeneralInput(InputKey[] keysKeyboard, InputKey[] keyGamepad1, InputKey[] keyGamepad2, InputKey[] keyGamepad3, InputKey[] keyGamepad4, ControllerType controllerType)
+        public GeneralInput(InputKey keysKeyboard, InputKey keyGamepad1, InputKey keyGamepad2, InputKey keyGamepad3, InputKey keyGamepad4, ControllerType controllerType)
         {
             this.keysKeyboard = keysKeyboard;
             this.keyGamepad1 = keyGamepad1;
@@ -4278,15 +4280,7 @@ public static class InputManager
                     return false;
             }
 
-            bool GetKeySomething(Func<InputKey, bool> func, InputKey[] keyCodes)
-            {
-                foreach (InputKey key in keyCodes)
-                {
-                    if (func(key))
-                        return true;
-                }
-                return false;
-            }
+            bool GetKeySomething(Func<InputKey, bool> func, InputKey key) => func(key);
         }
 
         public bool IsPressedDown() => isKeySomething((InputKey key) => GetKeyDown(key));

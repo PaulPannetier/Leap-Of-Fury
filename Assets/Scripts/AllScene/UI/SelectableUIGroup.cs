@@ -69,32 +69,7 @@ public class SelectableUIGroup : MonoBehaviour
                  || controllerSelector == ControllerSelector.gamepad4 || controllerSelector == ControllerSelector.gamepadAll || controllerSelector == ControllerSelector.all)
             {
                 selectedUI = defaultUISelected;
-                switch (controllerSelector)
-                {
-                    case ControllerSelector.keyboard:
-                        controllerType = ControllerType.Keyboard;
-                        break;
-                    case ControllerSelector.gamepad1:
-                        controllerType = ControllerType.Gamepad1;
-                        break;
-                    case ControllerSelector.gamepad2:
-                        controllerType = ControllerType.Gamepad2;
-                        break;
-                    case ControllerSelector.gamepad3:
-                        controllerType = ControllerType.Gamepad3;
-                        break;
-                    case ControllerSelector.gamepad4:
-                        controllerType = ControllerType.Gamepad4;
-                        break;
-                    case ControllerSelector.gamepadAll:
-                        controllerType = ControllerType.GamepadAll;
-                        break;
-                    case ControllerSelector.all:
-                        controllerType = ControllerType.All;
-                        break;
-                    default:
-                        break;
-                }
+                controllerType = (ControllerType)controllerSelector;
             }
             else
             {
@@ -107,44 +82,55 @@ public class SelectableUIGroup : MonoBehaviour
         }
         else
         {
+            bool changeControllerType = false;
             if (controllerSelector == ControllerSelector.last)
             {
                 if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
-                    this.controllerType = controllerType;
+                {
+                    if(this.controllerType != controllerType)
+                    {
+                        this.controllerType = controllerType;
+                        changeControllerType = true;
+                    }
+                }
             }
 
-            if(selectedUI.upSelectableUI != null && upItemInput.IsPressedDown())
+            if(!changeControllerType)
             {
-                selectedUI.isSelected = false;
-                selectedUI.upSelectableUI.isSelected = true;
-                selectedUI = selectedUI.upSelectableUI;
-            }
+                if (selectedUI.upSelectableUI != null && upItemInput.IsPressedDown())
+                {
+                    selectedUI.isSelected = false;
+                    selectedUI.upSelectableUI.isSelected = true;
+                    selectedUI = selectedUI.upSelectableUI;
+                }
 
-            if (selectedUI.downSelectableUI != null && downItemInput.IsPressedDown())
-            {
-                selectedUI.isSelected = false;
-                selectedUI.downSelectableUI.isSelected = true;
-                selectedUI = selectedUI.downSelectableUI;
-            }
+                if (selectedUI.downSelectableUI != null && downItemInput.IsPressedDown())
+                {
+                    selectedUI.isSelected = false;
+                    selectedUI.downSelectableUI.isSelected = true;
+                    selectedUI = selectedUI.downSelectableUI;
+                }
 
-            if (selectedUI.rightSelectableUI != null && rightItemInput.IsPressedDown())
-            {
-                selectedUI.isSelected = false;
-                selectedUI.rightSelectableUI.isSelected = true;
-                selectedUI = selectedUI.rightSelectableUI;
-            }
+                if (selectedUI.rightSelectableUI != null && rightItemInput.IsPressedDown())
+                {
+                    selectedUI.isSelected = false;
+                    selectedUI.rightSelectableUI.isSelected = true;
+                    selectedUI = selectedUI.rightSelectableUI;
+                }
 
-            if (selectedUI.leftSelectableUI != null && leftItemInput.IsPressedDown())
-            {
-                selectedUI.isSelected = false;
-                selectedUI.leftSelectableUI.isSelected = true;
-                selectedUI = selectedUI.leftSelectableUI;
-            }
+                if (selectedUI.leftSelectableUI != null && leftItemInput.IsPressedDown())
+                {
+                    selectedUI.isSelected = false;
+                    selectedUI.leftSelectableUI.isSelected = true;
+                    selectedUI = selectedUI.leftSelectableUI;
+                }
 
-            //validate
-            if (applyInput.IsPressedDown())
-            {
-                selectedUI.OnPressed();
+
+                //validate
+                if (applyInput.IsPressedDown())
+                {
+                    selectedUI.OnPressed();
+                }
             }
         }
     }
