@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public abstract class LevelManager : MonoBehaviour
@@ -135,7 +134,8 @@ public abstract class LevelManager : MonoBehaviour
 
         object[] playersData = TransitionManager.instance.GetOldSceneData("Selection Char");
         currentMapIndex = (currentMapIndex + 1) % mapsPrefabs.Length;
-        currentMap = mapsPrefabs[currentMapIndex];
+        Destroy(currentMap);
+        currentMap = Instantiate(mapsPrefabs[currentMapIndex]);
         List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(playersData.Length);
         List<Vector2> spawnPoints = spawnConfigsData.GetRandom().points.ToList();
 
@@ -304,6 +304,16 @@ public abstract class LevelManager : MonoBehaviour
         PauseManager.instance.DisablePause();
 
         TransitionManager.instance.LoadScene("Selection Map", null);
+    }
+
+    #endregion
+
+    #region OnDestroy
+
+    protected virtual void OnDestroy()
+    {
+        EventManager.instance.callbackOnPlayerDeath -= OnPlayerDie;
+        EventManager.instance.callbackOnPlayerDeathByEnvironnement -= OnPlayerDieByEnvironnement;
     }
 
     #endregion

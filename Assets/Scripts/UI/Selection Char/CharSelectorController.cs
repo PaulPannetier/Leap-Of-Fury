@@ -120,7 +120,7 @@ public class CharSelectorController : MonoBehaviour
             }
         }
 
-        canLoadNextScene = allIsSelected;
+        canLoadNextScene = allIsSelected && indexToInit >= 2;
         if(canLoadNextScene && !nextSceneIsLoading)
         {
             nextSceneIsLoading = true;
