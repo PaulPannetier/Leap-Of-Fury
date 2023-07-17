@@ -104,7 +104,7 @@ NavMeshSettings:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_BuildSettings:
-    serializedVersion: 2
+    serializedVersion: 3
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
@@ -117,7 +117,7 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualTileSize: 0
     tileSize: 256
-    accuratePlacement: 0
+    buildHeightMesh: 0
     maxJobWorkers: 0
     preserveTilesOutsideBounds: 0
     debug:
@@ -178,6 +178,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5034790997836796947, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
@@ -233,12 +234,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
 --- !u!1001 &1583538246
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
     - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
@@ -298,6 +303,9 @@ PrefabInstance:
       value: SceneMusicPlayer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
 --- !u!4 &1583538247 stripped
 Transform:
@@ -319,6 +327,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1212375675141333561, guid: 20c51873747073248a228b6566e5976a, type: 3}
@@ -370,12 +379,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20c51873747073248a228b6566e5976a, type: 3}
 --- !u!1001 &5034790997806034031
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
     - target: {fileID: 5034790997836796947, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
@@ -427,6 +440,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
 --- !u!4 &5034790997806034032 stripped
 Transform:
@@ -438,6 +454,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
     - target: {fileID: 6315158216322130732, guid: b94714bfe271c1c49b45fc8b57e1d4ef, type: 3}
@@ -489,6 +506,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b94714bfe271c1c49b45fc8b57e1d4ef, type: 3}
 --- !u!4 &6315158215925298637 stripped
 Transform:
@@ -500,8 +520,245 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad1.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad2.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad3.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad4.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad1.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad2.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad3.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad4.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keysKeyboard.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keysKeyboard.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad1.Array.data[0]
+      value: 351
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad2.Array.data[0]
+      value: 371
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad3.Array.data[0]
+      value: 391
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad4.Array.data[0]
+      value: 411
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad1.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad2.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad3.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad4.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad1.Array.data[0]
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad2.Array.data[0]
+      value: 370
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad3.Array.data[0]
+      value: 390
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad4.Array.data[0]
+      value: 410
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keysKeyboard.Array.data[0]
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keysKeyboard.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keysKeyboard.Array.data[0]
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keysKeyboard.Array.data[1]
+      value: 271
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad1.Array.data[0]
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad1.Array.data[1]
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad1.Array.data[2]
+      value: -11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad2.Array.data[0]
+      value: -18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad2.Array.data[1]
+      value: -22
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad2.Array.data[2]
+      value: -26
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad3.Array.data[0]
+      value: -33
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad3.Array.data[1]
+      value: -37
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad3.Array.data[2]
+      value: -41
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad4.Array.data[0]
+      value: -48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad4.Array.data[1]
+      value: -52
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad4.Array.data[2]
+      value: -56
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keysKeyboard.Array.data[0]
+      value: 273
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keysKeyboard.Array.data[1]
+      value: 119
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad1.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad2.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad3.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad4.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keysKeyboard.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad1.Array.data[0]
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad1.Array.data[1]
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad1.Array.data[2]
+      value: -12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad2.Array.data[0]
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad2.Array.data[1]
+      value: -23
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad2.Array.data[2]
+      value: -27
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad3.Array.data[0]
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad3.Array.data[1]
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad3.Array.data[2]
+      value: -42
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad4.Array.data[0]
+      value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad4.Array.data[1]
+      value: -53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad4.Array.data[2]
+      value: -57
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keysKeyboard.Array.data[0]
+      value: 274
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keysKeyboard.Array.data[1]
+      value: 115
+      objectReference: {fileID: 0}
     - target: {fileID: 6487731582003680442, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -743,12 +1000,16 @@ PrefabInstance:
       value: -1.1975708
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
 --- !u!1001 &8970924278945479409
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
     - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
@@ -816,4 +1077,7 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}

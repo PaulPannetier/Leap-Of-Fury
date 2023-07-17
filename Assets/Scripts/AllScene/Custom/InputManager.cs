@@ -4324,14 +4324,14 @@ public static class InputManager
     [Serializable]
     public struct GeneralInput
     {
-        public InputKey keysKeyboard;
-        public InputKey keyGamepad1;
-        public InputKey keyGamepad2;
-        public InputKey keyGamepad3;
-        public InputKey keyGamepad4;
+        public KeyboardKey[] keysKeyboard;
+        public GamepadKey[] keyGamepad1;
+        public GamepadKey[] keyGamepad2;
+        public GamepadKey[] keyGamepad3;
+        public GamepadKey[] keyGamepad4;
         public ControllerType controllerType;
 
-        public GeneralInput(InputKey keysKeyboard, InputKey keyGamepad1, InputKey keyGamepad2, InputKey keyGamepad3, InputKey keyGamepad4, ControllerType controllerType)
+        public GeneralInput(KeyboardKey[] keysKeyboard, GamepadKey[] keyGamepad1, GamepadKey[] keyGamepad2, GamepadKey[] keyGamepad3, GamepadKey[] keyGamepad4, ControllerType controllerType)
         {
             this.keysKeyboard = keysKeyboard;
             this.keyGamepad1 = keyGamepad1;
@@ -4341,31 +4341,59 @@ public static class InputManager
             this.controllerType = controllerType;
         }
 
+        private InputKey[] ConvertGamepadKeysToInputKeys(GamepadKey[] keys)
+        {
+            InputKey[] res = new InputKey[keys.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = (InputKey)keys[i];
+            }
+            return res;
+        }
+
+        private InputKey[] ConvertKeyboardKeysToInputKeys(KeyboardKey[] keys)
+        {
+            InputKey[] res = new InputKey[keys.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = (InputKey)keys[i];
+            }
+            return res;
+        }
+
         private bool isKeySomething(Func<InputKey, bool> func)
         {
             switch (controllerType)
             {
                 case ControllerType.Keyboard:
-                    return GetKeySomething(func, keysKeyboard);
+                    return GetKeySomething(func, ConvertKeyboardKeysToInputKeys(keysKeyboard));
                 case ControllerType.Gamepad1:
-                    return GetKeySomething(func, keyGamepad1);
+                    return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad1));
                 case ControllerType.Gamepad2:
-                    return GetKeySomething(func, keyGamepad2);
+                    return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad2));
                 case ControllerType.Gamepad3:
-                    return GetKeySomething(func, keyGamepad3);
+                    return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad3));
                 case ControllerType.Gamepad4:
-                    return GetKeySomething(func, keyGamepad4);
+                    return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad4));
                 case ControllerType.GamepadAll:
-                    return GetKeySomething(func, keyGamepad1) || GetKeySomething(func, keyGamepad2)
-                        || GetKeySomething(func, keyGamepad3) || GetKeySomething(func, keyGamepad4);
+                    return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad1)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad2))
+                        || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad3)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad4));
                 case ControllerType.All:
-                    return GetKeySomething(func, keysKeyboard) || GetKeySomething(func, keyGamepad1) || GetKeySomething(func, keyGamepad2)
-                        || GetKeySomething(func, keyGamepad3) || GetKeySomething(func, keyGamepad4);
+                    return GetKeySomething(func, ConvertKeyboardKeysToInputKeys(keysKeyboard)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad1)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad2))
+                        || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad3)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad4));
                 default:
                     return false;
             }
 
-            bool GetKeySomething(Func<InputKey, bool> func, InputKey key) => func(key);
+            bool GetKeySomething(Func<InputKey, bool> func, InputKey[] keys)
+            {
+                foreach (InputKey k in keys)
+                {
+                    if(func(k))
+                        return true;
+                }
+                return false;
+            }
         }
 
         public bool IsPressedDown() => isKeySomething((InputKey key) => GetKeyDown(key));
@@ -4377,7 +4405,7 @@ public static class InputManager
 
     #region VibrationSetting
 
-    private class VibrationSetting
+    private class VibrationSetting : ICloneable<VibrationSetting>
     {
         public ControllerType gamepadIndex;
         public float duration, rightIntensity, leftIntensity, timer;

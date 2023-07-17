@@ -35,7 +35,7 @@ public class SettingsManager : MonoBehaviour
         {
             currentConfig = defaultConfig.Clone();
             currentConfig = new ConfigurationData(currentConfig.resolusion, currentConfig.targetedFPS, currentConfig.language, currentConfig.windowMode, false);
-            Save.WriteJSONDataAsync(currentConfig, @"/Save/configuration" + saveFileExtension, (b) => { });
+            Save.WriteJSONDataAsync(currentConfig, @"/Save/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
         }
         else
         {
