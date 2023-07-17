@@ -105,9 +105,11 @@ public class SettingMenu : MonoBehaviour
         string language = LanguageManager.instance.availableLanguage[languageDropdown.value];
         FullScreenMode windowMode = convertIntToFullScreenMode[windowModeDropdown.value];
 
-        SettingsManager.ConfigurationData configurationData = new SettingsManager.ConfigurationData(resolution, targetedFPS, language, windowMode);
+        SettingsManager.ConfigurationData configurationData = new SettingsManager.ConfigurationData(resolution, targetedFPS, language, windowMode, false);
 
         SettingsManager.instance.SetCurrentConfig(configurationData);
+
+        ControlManagerSettingMenu.instance.OnApplyButtonDown();
 
         Refresh();
     }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class SettingsManager : MonoBehaviour
@@ -21,7 +20,12 @@ public class SettingsManager : MonoBehaviour
         }
         instance = this;
 
-        defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, "English", FullScreenMode.FullScreenWindow);
+        string defaultLanguage = "English";
+        if (Application.systemLanguage == SystemLanguage.French)
+        {
+            defaultLanguage = "Francais";
+        }
+        defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, defaultLanguage, FullScreenMode.FullScreenWindow, true);
         LoadSettings();
     }
 
@@ -30,6 +34,8 @@ public class SettingsManager : MonoBehaviour
         if(!Save.ReadJSONData(@"/Save/configuration" + saveFileExtension, out ConfigurationData tmp))
         {
             currentConfig = defaultConfig.Clone();
+            currentConfig = new ConfigurationData(currentConfig.resolusion, currentConfig.targetedFPS, currentConfig.language, currentConfig.windowMode, false);
+            Save.WriteJSONDataAsync(currentConfig, @"/Save/configuration" + saveFileExtension, (b) => { });
         }
         else
         {
@@ -104,24 +110,26 @@ public class SettingsManager : MonoBehaviour
     }
 
     [Serializable]
-    public struct ConfigurationData
+    public struct ConfigurationData : ICloneable<ConfigurationData>
     {
         public Vector2Int resolusion;
         public RefreshRate targetedFPS;
         public string language;
         public FullScreenMode windowMode;
+        public bool firstTimeLaunch;
 
-        public ConfigurationData(in Vector2Int resolusion, RefreshRate targetedFPS, string language, FullScreenMode windowMode)
+        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch)
         {
             this.resolusion = resolusion;
             this.targetedFPS = targetedFPS;
             this.language = language;
             this.windowMode = windowMode;
+            this.firstTimeLaunch = firstTimeLaunch;
         }
 
         public ConfigurationData Clone()
         {
-            return new ConfigurationData(resolusion, targetedFPS, language, windowMode);
+            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch);
         }
     }
 }

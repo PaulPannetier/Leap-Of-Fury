@@ -1353,7 +1353,7 @@ public static class InputManager
         {
             if(controlsDic.TryGetValue(action, out ListInt key))
                 return key;
-            return new ListInt();
+            return new ListInt(0);
         }
 
         public InputData Clone() => new InputData(controlsDic);
@@ -1380,7 +1380,6 @@ public static class InputManager
                         res.AddAction(actions[i], (int)ConvertGamepadKeyToGeneralKey((GamepadKey)key));
                     }
                 }
-
             }
             return res;
         }
@@ -1421,6 +1420,7 @@ public static class InputManager
         public class ListInt : IEnumerable<int>
         {
             public List<int> keys = new List<int>();
+            public int Count => keys.Count;
 
             public ListInt() { }
 
@@ -1925,6 +1925,55 @@ public static class InputManager
         GP3LeftThumbStickDeadZone = defaultGP3LeftThumbStickDeadZone;
         GP4RightThumbStickDeadZone = defaultGP4RightThumbStickDeadZone;
         GP4LeftThumbStickDeadZone = defaultGP4LeftThumbStickDeadZone;
+    }
+
+    #endregion
+
+    #region GetInputKey
+
+    private static InputKey[] ToArray(this InputData.ListInt keys)
+    {
+        InputKey[] res = new InputKey[keys.Count];
+        for (int i = 0; i < res.Length; i++)
+        {
+            res[i] = (InputKey)keys.keys[i];
+        }
+        return res;
+    }
+
+    public static InputKey[] GetInputKey(string action, PlayerIndex player)
+    {
+        switch (player)
+        {
+            case PlayerIndex.One:
+                return player1Keys.GetKeys(action).ToArray();
+            case PlayerIndex.Two:
+                return player2Keys.GetKeys(action).ToArray();
+            case PlayerIndex.Three:
+                return player3Keys.GetKeys(action).ToArray();
+            case PlayerIndex.Four:
+                return player4Keys.GetKeys(action).ToArray();
+            case PlayerIndex.Five:
+                return player5Keys.GetKeys(action).ToArray();
+            case PlayerIndex.All:
+                return player1Keys.GetKeys(action).ToArray().Merge(player2Keys.GetKeys(action).ToArray().Merge(player3Keys.GetKeys(action).ToArray().Merge(player4Keys.GetKeys(action).ToArray().Merge(player5Keys.GetKeys(action).ToArray()))));
+            default:
+                return new InputKey[0];
+        }
+    }
+
+    public static InputKey[] GetInputKey(string action, BaseController controller, bool defaultConfig = false)
+    {
+        if(controller == BaseController.Keyboard)
+        {
+            return defaultConfig ? defaultKBKeys.GetKeys(action).ToArray() : kbKeys.GetKeys(action).ToArray();
+        }
+        if (controller == BaseController.Gamepad)
+        {
+            return defaultConfig ? defaultGPKeys.GetKeys(action).ToArray() : gpKeys.GetKeys(action).ToArray();
+        }
+        return defaultConfig ? defaultKBKeys.GetKeys(action).ToArray().Merge(defaultGPKeys.GetKeys(action).ToArray()) :
+            kbKeys.GetKeys(action).ToArray().Merge(gpKeys.GetKeys(action).ToArray());
     }
 
     #endregion
@@ -3858,6 +3907,16 @@ public static class InputManager
         return string.Empty;
     }
 
+    public static string KeyToString(string action, BaseController controller)
+    {
+        if (controller == BaseController.Keyboard)
+            return (KeysToString(kbKeys.GetKeys(action)));
+        if (controller == BaseController.Gamepad)
+            return KeysToString(gpKeys.GetKeys(action));
+        Debug.LogWarning("Cannot convert to string multiples Keys");
+        return string.Empty;
+    }
+
     /// <param name="key"> the key pressed, castable to an Keys, MouseButton or Buttons according to the controler type</param>
     /// <param name="gamepadIndex"></param>
     /// <returns> true if a key of the controler is pressed this frame, false otherwise </returns>
@@ -4010,6 +4069,19 @@ public static class InputManager
         }
     }
 
+    public static bool Listen(BaseController controller, out InputKey key)
+    {
+        if(controller == BaseController.Gamepad)
+        {
+            return Listen(ControllerType.GamepadAll, out key);
+        }
+        if (controller == BaseController.Keyboard)
+        {
+            return Listen(ControllerType.Keyboard, out key);
+        }
+        return Listen(ControllerType.All, out key);
+    }
+
     public static bool ListenAll(ControllerType controller, out InputKey[] resultKeys)
     {
         List<InputKey> res = new List<InputKey>();
@@ -4142,6 +4214,19 @@ public static class InputManager
         }
         resultKeys = null;
         return false;
+    }
+
+    public static bool ListenAll(BaseController controller, out InputKey[] resultKeys)
+    {
+        if (controller == BaseController.Gamepad)
+        {
+            return ListenAll(ControllerType.GamepadAll, out resultKeys);
+        }
+        if (controller == BaseController.Keyboard)
+        {
+            return ListenAll(ControllerType.Keyboard, out resultKeys);
+        }
+        return ListenAll(ControllerType.All, out resultKeys);
     }
 
     /// <param name="letter"> the letter pressed this frame</param>

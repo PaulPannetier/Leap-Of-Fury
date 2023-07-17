@@ -1,0 +1,4 @@
+Copy save folder and paste it in the game build folder.
+
+In the Save directory :
+configuration.partygame and set : firstTimeLaunch to true.

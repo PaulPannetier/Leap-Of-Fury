@@ -5,7 +5,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public bool isAbuild = false;
     [SerializeField][Range(0, 10)] private int pixelQuality = 10;
     [SerializeField] private Vector2Int maxResolution = new Vector2Int(1920, 1080);
     [Tooltip("info")] public Vector2Int currentResolution = new Vector2Int(1920, 1080);
