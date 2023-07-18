@@ -1387,13 +1387,13 @@ public static class InputManager
         public InputData ToGamepadInputData(ControllerType gamepadIndex)
         {
             InputData res = new InputData();
-            for (int i = 0; i < actions.Count; i++)
+            foreach (KeyValuePair<string, ListInt> item in controlsDic)
             {
-                foreach (int key in controlsDic[actions[i]].keys)
+                foreach (int key in item.Value)
                 {
                     if (IsGamepadKey((InputKey)key))
                     {
-                        res.AddAction(actions[i], (int)ConvertGeneralKeyToGamepadKey((GamepadKey)key, gamepadIndex));
+                        res.AddAction(item.Key, (int)ConvertGeneralKeyToGamepadKey((GamepadKey)key, gamepadIndex));
                     }
                 }
             }
@@ -1403,13 +1403,13 @@ public static class InputManager
         public InputData ToKeyboardInputData()
         {
             InputData res = new InputData();
-            for (int i = 0; i < actions.Count; i++)
+            foreach (KeyValuePair<string, ListInt> item in controlsDic)
             {
-                foreach (int key in controlsDic[actions[i]])
+                foreach (int key in item.Value)
                 {
                     if (IsKeyboardKey((InputKey)key))
                     {
-                        res.AddAction(actions[i], key);
+                        res.AddAction(item.Key, key);
                     }
                 }
             }

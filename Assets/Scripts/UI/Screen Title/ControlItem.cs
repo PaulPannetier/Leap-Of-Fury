@@ -9,7 +9,7 @@ public class ControlItem : MonoBehaviour
     private bool isListening;
     private BaseController controller;
 
-    public InputKey _key;
+    private InputKey _key;
     public InputKey key
     {
         get => _key;
