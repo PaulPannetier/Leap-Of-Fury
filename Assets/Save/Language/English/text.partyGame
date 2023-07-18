@@ -20,7 +20,23 @@
 		{
             "textID": "controlTextSettingMenu",
             "content": "Controls"
+        },		
+		{
+            "textID": "moveUpTextSettingMenu",
+            "content": "Up"
         },
+		{
+            "textID": "moveDownTextSettingMenu",
+            "content": "Down"
+        },
+		{
+            "textID": "moveRightTextSettingMenu",
+            "content": "Right"
+        },
+		{
+            "textID": "moveLeftTextSettingMenu",
+            "content": "Left"
+        },		
 		{
             "textID": "dashTextSettingMenu",
             "content": "Dash"

@@ -32,6 +32,11 @@ public class InputEditor : MonoBehaviour
         InputManager.LoadConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
     }
 
+    public void SaveInputConfig()
+    {
+        InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+    }
+
     private void Update()
     {
         #if UNITY_EDITOR

@@ -147,6 +147,8 @@ public class SettingMenu : MonoBehaviour
         }
 
         Refresh();
+
+        ControlManagerSettingMenu.instance.OnDefaultButtonDown();
     }
 
     public void OnEnableOptionMenu()

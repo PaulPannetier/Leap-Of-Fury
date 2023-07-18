@@ -11,6 +11,10 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI controlText;
     [SerializeField] private TMP_Dropdown inputTypeDropdown;
+    [SerializeField] private ControlItem moveUp;
+    [SerializeField] private ControlItem moveDown;
+    [SerializeField] private ControlItem moveRight;
+    [SerializeField] private ControlItem moveLeft;
     [SerializeField] private ControlItem dashControl;
     [SerializeField] private ControlItem jumpControl;
     [SerializeField] private ControlItem attack1Control;
@@ -35,6 +39,10 @@ public class ControlManagerSettingMenu : MonoBehaviour
     private void Refresh()
     {
         controlText.text = LanguageManager.instance.GetText("controlTextSettingMenu");
+        moveUp.SetNameText(LanguageManager.instance.GetText("moveUpTextSettingMenu"));
+        moveDown.SetNameText(LanguageManager.instance.GetText("moveDownTextSettingMenu"));
+        moveRight.SetNameText(LanguageManager.instance.GetText("moveRightTextSettingMenu"));
+        moveLeft.SetNameText(LanguageManager.instance.GetText("moveLeftTextSettingMenu"));
         dashControl.SetNameText(LanguageManager.instance.GetText("dashTextSettingMenu"));
         jumpControl.SetNameText(LanguageManager.instance.GetText("jumpTextSettingMenu"));
         attack1Control.SetNameText(LanguageManager.instance.GetText("attack1TextSettingMenu"));
@@ -48,6 +56,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         };
         inputTypeDropdown.value = 0;
 
+        inputTypeDropdown.onValueChanged.RemoveAllListeners();
         inputTypeDropdown.onValueChanged.AddListener(OnInputTypeChanged);
 
         SetKeysKey();
@@ -55,6 +64,18 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     private void OnInputTypeChanged(int value)
     {
+        if(listeningInput != null)
+        {
+            listeningInput.StopListening();
+            listeningInput = null;
+        }
+
+        BaseController curCon = GetSelectedBaseController();
+        bool activeKB = curCon == BaseController.Keyboard;
+        moveUp.gameObject.SetActive(activeKB);
+        moveDown.gameObject.SetActive(activeKB);
+        moveRight.gameObject.SetActive(activeKB);
+        moveLeft.gameObject.SetActive(activeKB);
         SetKeysKey();
     }
 
@@ -66,6 +87,12 @@ public class ControlManagerSettingMenu : MonoBehaviour
         InputManager.ReplaceAction("AttackWeak", attack1Control.key, curCon);
         InputManager.ReplaceAction("AttackStrong", attack2Control.key, curCon);
         InputManager.ReplaceAction("Grab", grapControl.key, curCon);
+        InputEditor.instance.SaveInputConfig();
+    }
+
+    public void OnDefaultButtonDown()
+    {
+        Refresh();
     }
 
     public BaseController GetSelectedBaseController() => inputTypeDropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
@@ -73,6 +100,14 @@ public class ControlManagerSettingMenu : MonoBehaviour
     private void SetKeysKey()
     {
         BaseController curCon = GetSelectedBaseController();
+        if (curCon == BaseController.Keyboard)
+        {
+            moveUp.key = InputManager.GetInputKey("MoveUp", curCon)[0];
+            moveDown.key = InputManager.GetInputKey("MoveDown", curCon)[0];
+            moveRight.key = InputManager.GetInputKey("MoveRight", curCon)[0];
+            moveLeft.key = InputManager.GetInputKey("MoveLeft", curCon)[0];
+        }
+
         dashControl.key = InputManager.GetInputKey("Dash", curCon)[0];
         jumpControl.key = InputManager.GetInputKey("Jump", curCon)[0];
         attack1Control.key = InputManager.GetInputKey("AttackWeak", curCon)[0];

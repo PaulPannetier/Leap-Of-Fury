@@ -40,15 +40,39 @@ public class ControlItem : MonoBehaviour
             isListening = true;
             controller = ControlManagerSettingMenu.instance.GetSelectedBaseController();
         }
+        else
+        {
+            StopListening();
+        }
+    }
+
+    public void StopListening()
+    {
+        isListening = false;
     }
 
     private void Update()
     {
+        void SetKey(InputKey key)
+        {
+            this.key = key == InputKey.Escape ? InputKey.None : key;
+        }
+
         if(isListening)
         {
             if(InputManager.Listen(controller, out InputKey key))
             {
-                this.key = key;
+                if(ControlManagerSettingMenu.instance.GetSelectedBaseController() == BaseController.Gamepad)
+                {
+                    if(InputManager.IsGamepadKey(key))
+                        SetKey(key);
+                }
+                else
+                {
+                    if (InputManager.IsKeyboardKey(key))
+                        SetKey(key);
+                }
+                StopListening();
             }
         }
     }
