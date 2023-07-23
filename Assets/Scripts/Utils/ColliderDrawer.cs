@@ -4,6 +4,8 @@ using UnityEngine;
 [ExecuteAlways]
 public class ColliderDrawer : MonoBehaviour
 {
+    #if UNITY_EDITOR
+
     private bool isDrawing;
     private Vector2 point0, point1;
     private Hitbox currentHitbox;
@@ -20,6 +22,8 @@ public class ColliderDrawer : MonoBehaviour
     [SerializeField] private KeyCode inputToUndo = KeyCode.Z;
     [SerializeField] private KeyCode inputToSaveCollider = KeyCode.S;
 
+    #endif
+
     private void Awake()
     {
         if(!Application.isEditor)
@@ -28,6 +32,8 @@ public class ColliderDrawer : MonoBehaviour
             return;
         }
     }
+
+    #if UNITY_EDITOR
 
     [ExecuteAlways]
     private void Update()
@@ -49,6 +55,7 @@ public class ColliderDrawer : MonoBehaviour
             point1 = GetMousePos();
             if(InputManager.GetKeyUp(inputToStartDrawing))
             {
+                print("Stop drawing");
                 AddRectangle();
                 isDrawing = false;
             }
@@ -58,8 +65,11 @@ public class ColliderDrawer : MonoBehaviour
         {
             if(InputManager.GetKeyDown(inputToStartDrawing))
             {
+                print("Start drawing");
                 isDrawing = true;
                 point0 = GetMousePos();
+                point1 = point0;
+                currentHitbox = GetRecFromTwoPoints(point0, point1);
             }
         }
 
@@ -73,6 +83,7 @@ public class ColliderDrawer : MonoBehaviour
 
         if (InputManager.GetKeyDown(inputToSaveCollider))
         {
+            print("Collider's saved!");
             SaveCollider();
         }
 
@@ -201,4 +212,6 @@ public class ColliderDrawer : MonoBehaviour
             this.size = size;
         }
     }
+
+    #endif
 }

@@ -18,8 +18,8 @@ Duel local :
 
 
 Plusieurs perso jouable (objectif 4 pour l'instant)
-Plusieurs cartes (meme pour la campagne et le mode duel) (objectif 5 cartes min)
-ATTENTION : chaque carte et chaque perso doivent etre VRAIMENT different niveau gameplay et visuel.
+Plusieurs niveau (meme pour la campagne et le mode duel) (objectif 5 niveau min)
+ATTENTION : chaque niveau et chaque perso doivent etre VRAIMENT different niveau gameplay et visuel.
 
 Perso :
 - Une couleur par perso
@@ -34,7 +34,7 @@ Caracter Controller
 - un double jump //ok
 - un dash//ok
 - grimper sur les murs //ok
-- saut a partir des mur //~ok
+- saut a partir des mur //ok
 - controlle du personage en l'air //ok
 
 Compétences des perso : 
@@ -60,14 +60,15 @@ perso 4 : *
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
 
 
-Carte :
--Homéomorphe à un tore.
--Une a 2 mécaniques de gameplay propre à chaque carte:
+Niveau :
+- Composé de plusieurs cartes.
+- Homéomorphe à un tore.
+- Une a 2 mécaniques de gameplay propre.:
 
-Carte 0 :
+Niveau 0 :
 Méca : rien, un carte simple pour les débutants ou les fdp qui désactive les jokers sur smash
 DA : jsp
-Name : jsp
+Name : The Plain
 
 Carte 1 :
 Méca : Certain sol glisse, il y a des jumper.//ok
@@ -118,5 +119,3 @@ Name : Chaos
 
 TODO :
 Review PauseManager
-Test all InputManager Function
-
