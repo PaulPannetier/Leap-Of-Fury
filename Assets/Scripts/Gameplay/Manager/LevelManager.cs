@@ -11,7 +11,8 @@ public abstract class LevelManager : MonoBehaviour
         MayasTemple,
         IntoTheJungle,
         MaxwellHouse,
-        ClockMaker
+        ClockMaker,
+        ThePlain
     }
 
     #region Fields

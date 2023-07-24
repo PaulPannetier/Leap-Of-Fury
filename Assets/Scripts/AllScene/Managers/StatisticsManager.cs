@@ -49,14 +49,13 @@ public class StatisticsManager : MonoBehaviour
 
     private void Update()
     {
-        if(!isSaving && Time.time - lastTimeSave >= saveInterval)
+        if(autoSave && !isSaving && Time.time - lastTimeSave >= saveInterval)
         {
             SaveStats();
         }
         currentData.timeOpen += Time.deltaTime;
         if(isCurrentGameplayScene)
             currentData.timePlayed += Time.deltaTime;
-
     }
 
     private void SaveCallback(bool saveSucess)

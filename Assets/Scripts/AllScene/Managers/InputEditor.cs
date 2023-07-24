@@ -5,9 +5,9 @@ public class InputEditor : MonoBehaviour
 {
     public static InputEditor instance;
 
-    [SerializeField] private bool enableListenKeyCode = false;
-
     #if UNITY_EDITOR
+
+    [SerializeField] private bool enableListenKeyCode = false;
 
     [Header("Input Saver")]
     [SerializeField] private InputDataKB[] inputsKeyForKeyboard;
@@ -37,9 +37,10 @@ public class InputEditor : MonoBehaviour
         InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
     }
 
+    #if UNITY_EDITOR
+
     private void Update()
     {
-        #if UNITY_EDITOR
 
         void ListenAndShowInput()
         {
@@ -52,14 +53,10 @@ public class InputEditor : MonoBehaviour
         if (enableListenKeyCode)
             ListenAndShowInput();
 
-        #endif
     }
-
 
     private void OnValidate()
     {
-        #if UNITY_EDITOR
-
         if (saveInput)
         {
             InputManager.ClearAll();
@@ -82,10 +79,7 @@ public class InputEditor : MonoBehaviour
             saveInput = false;
         }
 
-        #endif
     }
-
-#if UNITY_EDITOR
 
     [Serializable]
     private struct InputDataKB
@@ -99,5 +93,5 @@ public class InputEditor : MonoBehaviour
         public GeneralGamepadKey[] keys;
     }
 
-#endif
+    #endif
 }

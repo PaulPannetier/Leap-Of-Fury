@@ -5944,7 +5944,7 @@ MonoBehaviour:
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
-  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map0SpawnPoints
+  relatifSpawnConfigsPath: /Save/Levels/ThePlain/Map0SpawnPoints
   spawnConfig: []
 --- !u!1 &6491744105914223952
 GameObject:

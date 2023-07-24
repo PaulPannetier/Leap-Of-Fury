@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7320278589001595787}
   - component: {fileID: 5999535417688878524}
-  - component: {fileID: 4924756123916080502}
+  - component: {fileID: 2319807452830412428}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7320278589001595780}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5999535417688878524
 MonoBehaviour:
@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24956b4a47b852c4bb8e9be43984a5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableBehaviour: 1
   levelNameUI: {fileID: 0}
---- !u!114 &4924756123916080502
+--- !u!114 &2319807452830412428
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,6 +56,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7320278589001595780}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad53f35177e3d864bb17bac9de1c1448, type: 3}
+  m_Script: {fileID: 11500000, guid: a5fa944240924734698917aae2579ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelType: 5
+  levelName: The Plain
+  durationToWaitAtBegining: 2
+  nbKillsToWin: 5
+  waitingTimeAfterLastKill: 2
+  scoreMenuDuration: 3
+  scoreCanvas: {fileID: 0}
+  suffleMapWhenLevelStart: 1
+  playFirstMapAtLevelStart: 1
+  mapsPrefabs:
+  - {fileID: 6462490999691983995, guid: 28ef629c5f6483444be80e242b5fd977, type: 3}
+  - {fileID: 704354889442834312, guid: 18169cbf44d6e3143a6d96b3a12c5ede, type: 3}
+  enableBehaviour: 1
