@@ -303,6 +303,7 @@ public abstract class LevelManager : MonoBehaviour
 
         PauseManager.instance.DisablePause();
 
+        EventManager.instance.OnLevelEnd(levelName);
         TransitionManager.instance.LoadScene("Selection Map", null);
     }
 

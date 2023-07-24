@@ -9,6 +9,7 @@ public class EventManager : MonoBehaviour
     public Action<GameObject, GameObject> callbackOnPlayerDeathByEnvironnement;
     public Action callbackPreUpdate;
     public Action<string> callbackOnLevelStart;
+    public Action<string> callbackOnLevelEnd;
     public Action<string> callbackOnLevelRestart;
 
     private void Awake()
@@ -24,6 +25,7 @@ public class EventManager : MonoBehaviour
         callbackOnPlayerDeathByEnvironnement = new Action<GameObject, GameObject>((GameObject p1, GameObject p2) => { });
         callbackPreUpdate = new Action(() => { });
         callbackOnLevelStart = new Action<string>((string arg1) => { });
+        callbackOnLevelEnd = new Action<string>((string arg1) => { });
         callbackOnLevelRestart = new Action<string>((string arg1) => { });
     }
 
@@ -50,5 +52,10 @@ public class EventManager : MonoBehaviour
     public void OnLevelRestart(string levelName)
     {
         callbackOnLevelRestart.Invoke(levelName);
+    }
+
+    public void OnLevelEnd(string levelName)
+    {
+        callbackOnLevelEnd.Invoke(levelName);
     }
 }

@@ -824,6 +824,61 @@ public static class Useful
     /// <returns></returns>
     public static Color ColorLighter(in Color c, float coeff) => new Color(((1f - c.r) * coeff) + c.r, ((1f - c.g) * coeff) + c.g, ((1f - c.b) * coeff) + c.b, c.a);
 
+    public static Color ColorRgbFromTemperature(float temperature)
+    {
+        // Temperature must fit between 1000 and 40000 degrees.
+        temperature = Mathf.Clamp(temperature, 1000, 40000);
+
+        // All calculations require temperature / 100, so only do the conversion once.
+        temperature *= 0.01f;
+
+        // Compute each color in turn.
+        int red, green, blue;
+
+        // First: red.
+        if (temperature <= 66)
+        {
+            red = 255;
+        }
+        else
+        {
+            // Note: the R-squared value for this approximation is 0.988.
+            red = (int)(329.698727446 * (Math.Pow(temperature - 60, -0.1332047592)));
+            red = Mathf.Clamp(red, 0, 255);
+        }
+
+        // Second: green.
+        if (temperature <= 66)
+        {
+            // Note: the R-squared value for this approximation is 0.996.
+            green = (int)(99.4708025861 * Math.Log(temperature) - 161.1195681661);
+        }
+        else
+        {
+            // Note: the R-squared value for this approximation is 0.987.
+            green = (int)(288.1221695283 * (Math.Pow(temperature - 60, -0.0755148492)));
+        }
+
+        green = Mathf.Clamp(green, 0, 255);
+
+        // Third: blue.
+        if (temperature >= 66)
+        {
+            blue = 255;
+        }
+        else if (temperature <= 19)
+        {
+            blue = 0;
+        }
+        else
+        {
+            // Note: the R-squared value for this approximation is 0.998.
+            blue = (int)(138.5177312231 * Math.Log(temperature - 10) - 305.0447927307);
+            blue = Mathf.Clamp(blue, 0, 255);
+        }
+        return new Color(red * 0.00392156862f, green * 0.00392156862f, blue * 0.00392156862f);//0.00392156862f = 1f/255f
+    }
+
     public static Texture2D Lerp(Texture2D A, Texture2D B, float t)
     {
         if (A.width != B.width || A.height != B.height)

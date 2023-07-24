@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 8496452321927903596}
   - component: {fileID: 7240525843777044602}
   - component: {fileID: 6842532504228175351}
+  - component: {fileID: 3639208383533933286}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -172,9 +173,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableListenKeyCode: 0
-  inputsKeyForKeyboard: []
-  inputsKeyForGamepad: []
-  inputsActions: []
+  inputsKeyForKeyboard:
+  - keys: 13010000
+  - keys: 14010000
+  - keys: 11010000
+  - keys: 12010000
+  - keys: 63000000
+  - keys: 76000000
+  - keys: 20000000
+  - keys: 64000000
+  - keys: 66000000
+  inputsKeyForGamepad:
+  - keys: bbffffffc4ffffff
+  - keys: baffffffc2ffffff
+  - keys: bdffffffc5ffffff
+  - keys: bcffffffc3ffffff
+  - keys: c7ffffff
+  - keys: 4f010000
+  - keys: 4a010000
+  - keys: 4c010000
+  - keys: 4d010000
+  inputsActions:
+  - MoveRight
+  - MoveLeft
+  - MoveUp
+  - MoveDown
+  - Dash
+  - Grab
+  - Jump
+  - AttackWeak
+  - AttackStrong
   saveInput: 0
 --- !u!114 &3112457484048425201
 MonoBehaviour:
@@ -270,6 +298,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ab17bf7ebdf3454599d3d22e929acfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3639208383533933286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8970924279353906143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aac81ae44c94b774d8441dd5c894afa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &2954842451875027163
