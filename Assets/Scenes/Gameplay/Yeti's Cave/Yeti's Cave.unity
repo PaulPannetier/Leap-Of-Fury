@@ -235,6 +235,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapTest
       objectReference: {fileID: 0}
+    - target: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065177, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -861,11 +865,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
---- !u!1 &1393366166460120883 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 687157579, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+--- !u!114 &1393366166460120884 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6267373011046614890, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
   m_PrefabInstance: {fileID: 1393366166460120882}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 089837d590454ee4f9a13e9f78072885, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3774851218201444838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1223,45 +1233,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
-    - target: {fileID: 4924756123916080502, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: levelName
-      value: Yeti's Cave
-      objectReference: {fileID: 0}
-    - target: {fileID: 4924756123916080502, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: scoreCanvas
+    - target: {fileID: 2319807452830412428, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: scoreMenu
       value: 
-      objectReference: {fileID: 1393366166460120883}
-    - target: {fileID: 4924756123916080502, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: enableBehaviour
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4924756123916080502, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: mapsPrefabs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4924756123916080502, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: playFirstMapAtLevelStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4924756123916080502, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: mapsPrefabs.Array.data[0]
-      value: 
-      objectReference: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      objectReference: {fileID: 1393366166460120884}
     - target: {fileID: 5999535417688878524, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: levelNameUI
       value: 
       objectReference: {fileID: 778908268}
-    - target: {fileID: 5999535417688878524, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: enableBehaviour
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: m_Name
       value: LevelManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7320278589001595787, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595787, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: m_LocalPosition.x

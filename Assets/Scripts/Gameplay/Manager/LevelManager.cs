@@ -32,16 +32,19 @@ public abstract class LevelManager : MonoBehaviour
     [SerializeField] protected float durationToWaitAtBegining = 3f;
     [SerializeField] protected int nbKillsToWin = 7;
     [SerializeField] protected float waitingTimeAfterLastKill = 2f;
-    [SerializeField] protected float scoreMenuDuration = 5f;
-    [SerializeField] protected GameObject scoreCanvas;
+    [SerializeField] protected ScoreMenu scoreMenu;
 
     [Header("Maps")]
     [SerializeField] private bool suffleMapWhenLevelStart = true;
     [SerializeField] private bool playFirstMapAtLevelStart;
     [SerializeField] protected GameObject[] mapsPrefabs;
 
+    #if UNITY_EDITOR
+
     [Header("Level initialiser")]
     [SerializeField] private bool enableBehaviour = true;
+
+    #endif
 
     #endregion
 
@@ -64,11 +67,15 @@ public abstract class LevelManager : MonoBehaviour
 
     protected virtual void StartLevel()
     {
+        #if UNITY_EDITOR
+
         if (!enableBehaviour)
         {
             EventManager.instance.OnLevelStart(levelName);
             return;
         }
+
+        #endif
 
         //Get Map and Spawn config
         GameObject map = GameObject.FindGameObjectWithTag("Map");
@@ -127,8 +134,12 @@ public abstract class LevelManager : MonoBehaviour
 
     protected virtual void RestartLevel()
     {
+        #if UNITY_EDITOR
+
         if (!enableBehaviour)
             return;
+
+        #endif
 
         CloneParent.cloneParent.DestroyChildren();
         charParent.DestroyChildren();
@@ -216,7 +227,7 @@ public abstract class LevelManager : MonoBehaviour
 
     #region OnPlayerDie
 
-    private void OnPlayerDie(GameObject player, GameObject killer)
+    protected void OnPlayerDie(GameObject player, GameObject killer)
     {
         currentNbPlayerAlive--;
         PlayerIndex killerIndex = killer.GetComponent<PlayerCommon>().playerIndex;
@@ -231,11 +242,11 @@ public abstract class LevelManager : MonoBehaviour
 
         if(currentNbPlayerAlive <= 1)
         {
-            StartCoroutine(LaunchEndMatchMenu());
+            OnEndLevelTurn();
         }
     }
 
-    private void OnPlayerDieByEnvironnement(GameObject player, GameObject env)
+    protected void OnPlayerDieByEnvironnement(GameObject player, GameObject env)
     {
         currentNbPlayerAlive--;
 
@@ -251,7 +262,7 @@ public abstract class LevelManager : MonoBehaviour
 
         if (currentNbPlayerAlive <= 1)
         {
-            StartCoroutine(LaunchEndMatchMenu());
+            OnEndLevelTurn();
         }
     }
 
@@ -259,39 +270,48 @@ public abstract class LevelManager : MonoBehaviour
 
     #region Menu
 
-    private IEnumerator LaunchEndMatchMenu()
+    protected void OnEndLevelTurn()
     {
-        yield return Useful.GetWaitForSeconds(waitingTimeAfterLastKill);
-        //TODO : lancer music fin de menu
-        int indexPlayerWin = -1;
-        for (int i = 0; i < playersScore.Length; i++)
-        {
-            if(playersScore[i].nbKills >= nbKillsToWin)
-            {
-                indexPlayerWin = i;
-                break;
-            }
-        }
-
-        if(indexPlayerWin >= 0)
-            StartCoroutine(LaunchEndGameMenu(indexPlayerWin));
-        else
-            StartCoroutine(LaunchScoreGameMenu());
+        StartCoroutine(OnEndLevelTurnCorout());
     }
 
-    private IEnumerator LaunchScoreGameMenu()
+    protected IEnumerator OnEndLevelTurnCorout()
+    {
+        yield return Useful.GetWaitForSeconds(waitingTimeAfterLastKill);
+        List<int> indexesPlayerWin = new List<int>();
+
+        for (int i = 0; i < playersScore.Length; i++)
+        {
+            if (playersScore[i].nbKills >= nbKillsToWin)
+                indexesPlayerWin.Add(i);
+        }
+
+        if(indexesPlayerWin.Count == 1)
+        {
+            StartCoroutine(LaunchEndGameMenu(indexesPlayerWin[0]));
+        }
+        else if(indexesPlayerWin.Count > 1)
+        {
+            foreach (int indexWin in indexesPlayerWin)
+            {
+                playersScore[indexWin].nbKills--;
+            }
+            StartCoroutine(LaunchScoreMenu());
+        }
+        else
+        {
+            StartCoroutine(LaunchScoreMenu());
+        }
+    }
+
+    private IEnumerator LaunchScoreMenu()
     {
         PauseManager.instance.EnablePause();
 
-        scoreCanvas.GetComponent<ScoreMenu>().SetPlayersKills(playersScore, scoreMenuDuration * 0.5f);
+        scoreMenu.DisplayScoreMenu(playersScore);
 
-        float time = Time.realtimeSinceStartup;
-        while (Time.realtimeSinceStartup - time < scoreMenuDuration)
-        {
-            yield return null;
-        }
+        yield return Useful.GetWaitForSeconds(scoreMenu.scoreMenuDuration);
 
-        scoreCanvas.GetComponent<ScoreMenu>().DisableVisual();
         PauseManager.instance.DisablePause();
         RestartLevel();
     }
@@ -319,21 +339,21 @@ public abstract class LevelManager : MonoBehaviour
     }
 
     #endregion
-}
 
-#region PlayerScore
+    #region PlayerScore
 
-public struct PlayerScore
-{
-    public static int nbKillsToWin = 7;
-    public int nbKills;
-    public PlayerIndex playerIndex;
-
-    public PlayerScore(PlayerIndex playerIndex, int nbKills = 0)
+    public struct PlayerScore
     {
-        this.playerIndex = playerIndex;
-        this.nbKills = nbKills;
-    }
-}
+        public static int nbKillsToWin = 7;
+        public int nbKills;
+        public PlayerIndex playerIndex;
 
-#endregion
+        public PlayerScore(PlayerIndex playerIndex, int nbKills = 0)
+        {
+            this.playerIndex = playerIndex;
+            this.nbKills = nbKills;
+        }
+    }
+
+    #endregion
+}

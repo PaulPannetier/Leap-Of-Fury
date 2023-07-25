@@ -64,11 +64,9 @@ MonoBehaviour:
   durationToWaitAtBegining: 2
   nbKillsToWin: 5
   waitingTimeAfterLastKill: 2
-  scoreMenuDuration: 3
-  scoreCanvas: {fileID: 0}
+  scoreMenu: {fileID: 0}
   suffleMapWhenLevelStart: 1
   playFirstMapAtLevelStart: 1
   mapsPrefabs:
-  - {fileID: 6462490999691983995, guid: 28ef629c5f6483444be80e242b5fd977, type: 3}
-  - {fileID: 704354889442834312, guid: 18169cbf44d6e3143a6d96b3a12c5ede, type: 3}
+  - {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
   enableBehaviour: 1
