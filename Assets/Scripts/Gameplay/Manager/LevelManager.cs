@@ -296,22 +296,22 @@ public abstract class LevelManager : MonoBehaviour
             {
                 playersScore[indexWin].nbKills--;
             }
-            StartCoroutine(LaunchScoreMenu());
+            LaunchScoreMenu();
         }
         else
         {
-            StartCoroutine(LaunchScoreMenu());
+            LaunchScoreMenu();
         }
     }
 
-    private IEnumerator LaunchScoreMenu()
+    private void LaunchScoreMenu()
     {
         PauseManager.instance.EnablePause();
+        scoreMenu.DisplayScoreMenu(playersScore, OnEndDisplayScoreMenu);
+    }
 
-        scoreMenu.DisplayScoreMenu(playersScore);
-
-        yield return Useful.GetWaitForSeconds(scoreMenu.scoreMenuDuration);
-
+    private void OnEndDisplayScoreMenu()
+    {
         PauseManager.instance.DisablePause();
         RestartLevel();
     }

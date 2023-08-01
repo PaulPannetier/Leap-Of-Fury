@@ -1233,7 +1233,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
-    - target: {fileID: 2319807452830412428, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: scoreMenu
       value: 
       objectReference: {fileID: 1393366166460120884}

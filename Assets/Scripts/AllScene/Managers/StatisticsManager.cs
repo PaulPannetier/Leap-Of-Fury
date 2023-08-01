@@ -90,7 +90,7 @@ public class StatisticsManager : MonoBehaviour
     private struct StatisticsData
     {
         public float timePlayed, timeOpen;
-        public int nbKills, levelComplete;//le nombre de marche terminé
+        public int nbKills, levelComplete;//le nombre de manche terminé
 
         public StatisticsData(float timePlayed, float timeOpen, int nbKills, int levelComplete)
         {

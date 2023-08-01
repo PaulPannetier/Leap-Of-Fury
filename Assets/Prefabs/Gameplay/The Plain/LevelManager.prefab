@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7320278589001595780
+--- !u!1 &6537150797850709026
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7320278589001595787}
-  - component: {fileID: 5999535417688878524}
-  - component: {fileID: 743840374822618050}
+  - component: {fileID: 472346708484847585}
+  - component: {fileID: 8676859684077006534}
+  - component: {fileID: 2120661509617684752}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -18,13 +18,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7320278589001595787
+--- !u!4 &472346708484847585
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7320278589001595780}
+  m_GameObject: {fileID: 6537150797850709026}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,13 +33,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5999535417688878524
+--- !u!114 &8676859684077006534
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7320278589001595780}
+  m_GameObject: {fileID: 6537150797850709026}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24956b4a47b852c4bb8e9be43984a5c7, type: 3}
@@ -47,22 +47,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableBehaviour: 1
   levelNameUI: {fileID: 0}
---- !u!114 &743840374822618050
+--- !u!114 &2120661509617684752
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7320278589001595780}
+  m_GameObject: {fileID: 6537150797850709026}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad53f35177e3d864bb17bac9de1c1448, type: 3}
+  m_Script: {fileID: 11500000, guid: a5fa944240924734698917aae2579ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelType: 0
-  levelName: Yeti's Cave
-  durationToWaitAtBegining: 3
-  nbKillsToWin: 7
+  levelType: 5
+  levelName: The Plain
+  durationToWaitAtBegining: 2
+  nbKillsToWin: 5
   waitingTimeAfterLastKill: 2
   scoreMenu: {fileID: 0}
   suffleMapWhenLevelStart: 1

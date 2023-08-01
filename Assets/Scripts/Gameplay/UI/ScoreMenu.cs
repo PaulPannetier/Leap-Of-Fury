@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
+using System;
 
 public class ScoreMenu : MonoBehaviour
 {
@@ -8,33 +9,36 @@ public class ScoreMenu : MonoBehaviour
     private GameObject[,] skulls;
     private GameObject[] scoreDisplayerLines;
     private Image panelBG;
+    private Action callbackEnd;
 
+    [Header("Info")]
     [SerializeField] private GameObject skullPrefabs;
     [SerializeField] private GameObject scoreDisplayerLinePrefabs;
     [SerializeField] private Transform scoreDisplayerLinesParents;
+
+    [Header("Settings")]
+    [SerializeField] private Color skullInactivatedColor;
     [SerializeField] private Color skullActivatedColor;
-    [SerializeField, Range(0.01f, 0.5f)] private float fadeTimeOffsetPercent = 0.15f;
-
-    [field:SerializeField] public float scoreMenuDuration { get; private set; } = 5f;
-
+    [SerializeField] private float durationBeforeFade = 2f, durationAfterFade = 2f;
+    [SerializeField] private float fadeGapDuration = 0.3f, fadingDuration = 0.5f;
+    
     private void Awake()
     {
         panelBG = GetComponent<Image>();
         panelBG.enabled = false;
     }
 
-    public void DisplayScoreMenu(LevelManager.PlayerScore[] playersScore)
+    public void DisplayScoreMenu(LevelManager.PlayerScore[] playersScore, Action callbackEnd)
     {
+        this.callbackEnd = callbackEnd;
         this.playersScore = playersScore;
         panelBG.enabled = true;
         InstanciateVisual();
-        StartCoroutine(FadeSkull(scoreMenuDuration));
-        StartCoroutine(DisableScoreMenu(scoreMenuDuration));
+        StartCoroutine(FadeSkull());
     }
 
-    private IEnumerator DisableScoreMenu(float duration)
+    private void DisableScoreMenu()
     {
-        yield return Useful.GetWaitForSeconds(duration);
         if (skulls != null)
         {
             for (int i = 0; i < skulls.GetLength(0); i++)
@@ -55,45 +59,46 @@ public class ScoreMenu : MonoBehaviour
         skulls = null;
         scoreDisplayerLines = null;
         panelBG.enabled = false;
+        callbackEnd.Invoke();
     }
 
-    private IEnumerator FadeSkull(float duration)
+    private IEnumerator FadeSkull()
     {
-        yield return Useful.GetWaitForSeconds(fadeTimeOffsetPercent * duration);
+        yield return Useful.GetWaitForSeconds(durationBeforeFade);
 
         int maxSkull = 0;
         for (int i = 0; i < playersScore.Length; i++)
         {
             maxSkull = Mathf.Max(maxSkull, playersScore[i].nbKills);
         }
-        float stepTime = (duration * (1f - (2f * fadeTimeOffsetPercent)))  / maxSkull;
-        int skullIndex = 0;
 
+        int skullIndex = 0;
         while(skullIndex < maxSkull)
         {
             for (int i = 0; i < skulls.GetLength(0); i++)
             {
                 if(playersScore[i].nbKills > skullIndex)
                 {
-                    StartCoroutine(ActivateSkull(i, skullIndex, stepTime * 0.8f));
+                    StartCoroutine(ActivateSkull(i, skullIndex, fadingDuration));
                 }
             }
             skullIndex++;
-            yield return Useful.GetWaitForSeconds(stepTime);
+            yield return Useful.GetWaitForSeconds(fadeGapDuration);
         }
+
+        yield return Useful.GetWaitForSeconds(durationAfterFade);
+
+        DisableScoreMenu();
     }
 
-    private IEnumerator ActivateSkull(int i, int j, float t)
+    private IEnumerator ActivateSkull(int i, int j, float duration)
     {
         Image img = skulls[i, j].GetComponent<Image>();
-        Animator anim = skulls[i, j].GetComponent<Animator>();
-        anim.CrossFade("Active", 0f);
 
         float time = Time.time;
-
-        while (Time.time - time < t)
+        while (Time.time - time < duration)
         {
-            img.color = Color.Lerp(Color.white, skullActivatedColor, (Time.realtimeSinceStartup - time) / t);
+            img.color = Color.Lerp(Color.white, skullActivatedColor, (Time.time - time) / duration);
             yield return null;
         }
     }
@@ -111,4 +116,20 @@ public class ScoreMenu : MonoBehaviour
             }
         }
     }
+
+    #region OnValidate
+
+    #if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        fadeGapDuration = Mathf.Max(fadeGapDuration, 0f);
+        fadingDuration = Mathf.Max(fadingDuration, 0f);
+        durationBeforeFade = Mathf.Max(durationBeforeFade, 0f);
+        durationAfterFade = Mathf.Max(durationAfterFade, 0f);
+    }
+
+    #endif
+
+    #endregion
 }
