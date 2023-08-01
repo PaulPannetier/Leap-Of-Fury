@@ -23,7 +23,11 @@ public class FightController : MonoBehaviour
     private int dashCollisionCounter = 0;
     private bool isDashCollisionEnable => dashCollisionCounter <= 0;
 
+    #if UNITY_EDITOR
+
     [SerializeField] private bool drawGizmos = true;
+
+    #endif
 
     [Header("Fight")]
     [SerializeField] private float dashBumpSpeed = 10f;
@@ -417,6 +421,8 @@ public class FightController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    #if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         if (!drawGizmos)
@@ -425,4 +431,6 @@ public class FightController : MonoBehaviour
         Gizmos.color = Color.green;
         Hitbox.GizmosDraw((Vector2)transform.position + dashHitboxOffset, dashHitboxSize);
     }
+
+    #endif
 }

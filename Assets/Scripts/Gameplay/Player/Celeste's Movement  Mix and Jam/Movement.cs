@@ -31,7 +31,12 @@ public class Movement : MonoBehaviour
                 _enableBehaviour = true;
         }
     }
+
+    #if UNITY_EDITOR
+
     [SerializeField] private bool drawGizmos = true;
+
+    #endif
 
     [Header("General")]
     [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
@@ -1479,6 +1484,8 @@ public class Movement : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
+    #if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         if(!drawGizmos)
@@ -1526,5 +1533,7 @@ public class Movement : MonoBehaviour
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
-    #endregion
+    #endif
+
+#endregion
 }

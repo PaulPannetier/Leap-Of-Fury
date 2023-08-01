@@ -41,7 +41,6 @@ public class InputEditor : MonoBehaviour
 
     private void Update()
     {
-
         void ListenAndShowInput()
         {
             if (InputManager.Listen(ControllerType.All, out InputKey key))
@@ -52,8 +51,9 @@ public class InputEditor : MonoBehaviour
 
         if (enableListenKeyCode)
             ListenAndShowInput();
-
     }
+
+    #if UNITY_EDITOR
 
     private void OnValidate()
     {
@@ -78,8 +78,9 @@ public class InputEditor : MonoBehaviour
             InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
             saveInput = false;
         }
-
     }
+
+    #endif
 
     [Serializable]
     private struct InputDataKB

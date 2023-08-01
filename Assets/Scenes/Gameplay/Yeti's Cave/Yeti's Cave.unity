@@ -148,10 +148,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5602198179201593308, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602198179201593308, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.27
       objectReference: {fileID: 0}
@@ -191,16 +187,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5696250467530998310, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
+      propertyPath: prefabs
+      value: 
+      objectReference: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
     - target: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_Name
       value: Char 2
       objectReference: {fileID: 0}
     - target: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
       propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8955200401280636815, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
-      propertyPath: enableCameraShaking
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -237,7 +233,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065177, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -307,10 +303,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1653521282}
     m_Modifications:
-    - target: {fileID: 6001260818544699278, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
+    - target: {fileID: 5907287823364622964, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
+      propertyPath: prefabs
+      value: 
+      objectReference: {fileID: 8090791378756873177, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
     - target: {fileID: 6001260818544699278, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.35
@@ -349,10 +345,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6001260818544699278, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7111324779284635613, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
-      propertyPath: enableCameraShaking
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8090791378756873177, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
@@ -566,10 +558,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6689762117243769012, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689762117243769012, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.99
       objectReference: {fileID: 0}
@@ -609,10 +597,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7867381648852789479, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
-      propertyPath: enableCameraShaking
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 6801819870953356622, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
+      propertyPath: prefabs
+      value: 
+      objectReference: {fileID: 9211636111085214947, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
     - target: {fileID: 9211636111085214947, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
       propertyPath: m_Name
       value: Char 1
@@ -691,10 +679,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1653521282}
     m_Modifications:
-    - target: {fileID: 6001260818544699278, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
+    - target: {fileID: 5907287823364622964, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
+      propertyPath: prefabs
+      value: 
+      objectReference: {fileID: 8090791378756873177, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
     - target: {fileID: 6001260818544699278, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.88
@@ -733,10 +721,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6001260818544699278, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7111324779284635613, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
-      propertyPath: enableCameraShaking
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8090791378756873177, guid: 45a92ecf84ee6ee408d265b6f6d8a318, type: 3}
@@ -1237,10 +1221,18 @@ PrefabInstance:
       propertyPath: scoreMenu
       value: 
       objectReference: {fileID: 1393366166460120884}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: enableBehaviour
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5999535417688878524, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: levelNameUI
       value: 
       objectReference: {fileID: 778908268}
+    - target: {fileID: 5999535417688878524, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: enableBehaviour
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: m_Name
       value: LevelManager

@@ -15,4 +15,5 @@ public class PlayerCommon : MonoBehaviour
     public PlayerIndex playerIndex;//l'index pour les input
     [ColorUsage(true, true)] public Color color;
     public uint id;
+    public GameObject prefabs;
 }

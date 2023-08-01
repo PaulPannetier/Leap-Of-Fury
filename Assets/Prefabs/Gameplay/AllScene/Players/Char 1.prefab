@@ -38,6 +38,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9211636111085214947}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.696, y: -6.169, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -45,7 +46,6 @@ Transform:
   m_Children:
   - {fileID: 5631200306458717547}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &922723625538123844
 Animator:
@@ -137,6 +137,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -151,6 +157,25 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -181,15 +206,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   drawGizmos: 0
-  walkSpeed: 8.5
-  speedLerp: 30
-  initSpeed: 0.285
   timeUntilCommandIsInvalid: 0.1
   groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
   groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
   grabRayLength: 0.5
+  walkSpeed: 8.5
+  speedLerp: 30
+  initSpeed: 0.285
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -487,20 +512,6 @@ MonoBehaviour:
   controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 8
-  inputsKeyCode: 11010000130100001201000014010000630000002000000076000000640000006600000062000000
-  inputsKey:
-  - MoveUp
-  - MoveRight
-  - MoveDown
-  - MoveLeft
-  - Dash
-  - Jump
-  - Grab
-  - AttackWeak
-  - AttackStrong
-  - Shield
-  saveInput: 0
-  playerIndexToSave: 2
 --- !u!114 &6801819870953356622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,6 +528,7 @@ MonoBehaviour:
   playerIndex: 1
   color: {r: 0.34509805, g: 1, b: 0.10980393, a: 1}
   id: 0
+  prefabs: {fileID: 0}
 --- !u!114 &7417355783801099875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -543,7 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canLauchWeakAttack: 1
   canLaunchStrongAttack: 1
-  drawGizmos: 0
+  drawGizmos: 1
   dashBumpSpeed: 10
   dashInvicibilityOffset: 0.1
   invicibilityDurationWhenDashing: 0.2
@@ -689,6 +701,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 6689762117243769012}
     m_Modifications:
     - target: {fileID: 3134323727320045753, guid: 824a99712f6ea3a49b140cf6d4c4d60e, type: 3}
@@ -796,6 +809,9 @@ PrefabInstance:
       value: CharCanvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 824a99712f6ea3a49b140cf6d4c4d60e, type: 3}
 --- !u!224 &5631200306458717547 stripped
 RectTransform:
