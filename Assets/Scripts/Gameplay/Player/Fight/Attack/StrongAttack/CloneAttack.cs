@@ -15,7 +15,7 @@ public class CloneAttack : StrongAttack
     private bool isCloneRendererEnable = false;
     [HideInInspector] public bool isCloneAttackEnable = false;
     private List<CloneData> dataCache = new List<CloneData>();
-    private bool disableRegisteringData = false;
+    private bool disableRegisteringData, pauseCloneFollow;
 
     public GameObject clonePrefabs;
     [SerializeField] private float latenessTime = 3f;
@@ -50,16 +50,8 @@ public class CloneAttack : StrongAttack
 
         eventController.callBackEnterTimePortal += OnEnterTimePortal;
         eventController.callBackExitTimePortal += OnExitTimePortal;
-    }
-
-    protected void OnEnterTimePortal(TimePortal timePortal)
-    {
-        disableRegisteringData = true;
-    }
-
-    protected void OnExitTimePortal(TimePortal timePortal)
-    {
-        disableRegisteringData = false;
+        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
+        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
     }
 
     protected override void Update()
@@ -67,9 +59,22 @@ public class CloneAttack : StrongAttack
         base.Update();
         if(!disableRegisteringData)
             AddData();
-        ApplyCloneModif();
-        HandleCloneAttack();
-        RemoveCloneData();
+
+        if(pauseCloneFollow)
+        {
+            for (int i = 0; i < lstCloneDatas.Count; i++)
+            {
+                CloneData tmp = lstCloneDatas[i];
+                tmp.time += Time.deltaTime;
+                lstCloneDatas[i] = tmp;
+            }
+        }
+        else
+        {
+            ApplyCloneModif();
+            HandleCloneAttack();
+            RemoveCloneData();
+        }
     }
 
     private void AddData()
@@ -112,6 +117,7 @@ public class CloneAttack : StrongAttack
     {
         if (lstCloneDatas.Count <= 0 || Time.time - lstCloneDatas[0].time < latenessTime)
             return;
+
         dataCache.Clear();
         int index = 0;
         do
@@ -181,6 +187,26 @@ public class CloneAttack : StrongAttack
         };
     }
 
+    private void OnPauseEnable()
+    {
+        pauseCloneFollow = true;
+    }
+
+    private void OnPauseDisable()
+    {
+        pauseCloneFollow = false;
+    }
+
+    protected void OnEnterTimePortal(TimePortal timePortal)
+    {
+        disableRegisteringData = true;
+    }
+
+    protected void OnExitTimePortal(TimePortal timePortal)
+    {
+        disableRegisteringData = false;
+    }
+
     #endregion
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -207,6 +233,8 @@ public class CloneAttack : StrongAttack
         isCloneAttackEnable = false;
     }
 
+    #region CloneData struct
+
     private struct CloneData
     {
         public Vector2 position;
@@ -230,4 +258,6 @@ public class CloneAttack : StrongAttack
             this.flipRenderer = flipRenderer;
         }
     }
+
+    #endregion
 }

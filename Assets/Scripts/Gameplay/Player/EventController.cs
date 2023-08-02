@@ -10,13 +10,10 @@ public class EventController : MonoBehaviour
     public Action<Attack, GameObject> callBackTouchAttack;
     public Action<Attack> callBackBeenTouchAttack;
 
-    public Action<Attack, GameObject> callBackHitAttack;
-    public Action<Attack> callBackBeenHitAttack;
-
     public Action<Attack> callBackBlockAttack;
     public Action<Attack, GameObject> callBackBeenBlockAttack;
     public Action<GameObject> callBackKill;
-    public Action callBackDeath;
+    public Action callBackBeenKill;
     public Action<TimePortal> callBackEnterTimePortal;
     public Action<TimePortal> callBackExitTimePortal;
 
@@ -39,12 +36,10 @@ public class EventController : MonoBehaviour
         callBackLauchAttack = new Action<Attack>((Attack arg1) => { });
         callBackTouchAttack = new Action<Attack, GameObject>((Attack arg1, GameObject arg2) => { });
         callBackBeenTouchAttack = new Action<Attack>((Attack arg1) => { });
-        callBackHitAttack = new Action<Attack, GameObject>((Attack arg1, GameObject arg2) => { });
-        callBackBeenHitAttack = new Action<Attack>((Attack arg1) => { });
         callBackBlockAttack = new Action<Attack>((Attack arg1) => { });
         callBackBeenBlockAttack = new Action<Attack, GameObject>((Attack p, GameObject b) => { });
         callBackKill = new Action<GameObject>((GameObject player) => { });
-        callBackDeath = new Action(() => { });
+        callBackBeenKill = new Action(() => { });
         callBackEnterTimePortal = new Action<TimePortal>((TimePortal arg1) => { });
         callBackExitTimePortal = new Action<TimePortal>((TimePortal arg1) => { });
         callBackKillByDash = new Action<GameObject>((GameObject arg) => { });
@@ -87,22 +82,11 @@ public class EventController : MonoBehaviour
         callBackBeenTouchAttack.Invoke(attack);
     }
 
-    public void OnHitAttack(Attack attack, GameObject other)
-    {
-        callBackHitAttack.Invoke(attack, other);
-    }
-
-    public void OnBeenHitAttack(Attack attack)
-    {
-        callBackBeenHitAttack.Invoke(attack);
-    }
-
     public void OnBlockAttack(Attack attack)
     {
         callBackBlockAttack.Invoke(attack);
     }
 
-    //quand l'attaque en param à été bloquer
     public void OnBeenBlockAttack(Attack attack, GameObject blocker)
     {
         callBackBeenBlockAttack.Invoke(attack, blocker);
@@ -115,7 +99,7 @@ public class EventController : MonoBehaviour
 
     public void OnDeath()
     {
-        callBackDeath.Invoke();
+        callBackBeenKill.Invoke();
     }
 
     public void OnEnterTimePortal(TimePortal timePortal)
