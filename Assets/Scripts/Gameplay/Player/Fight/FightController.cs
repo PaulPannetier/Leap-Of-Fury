@@ -11,7 +11,6 @@ public class FightController : MonoBehaviour
     private CustomPlayerInput playerInput;
     private Movement movement;
 
-    private int nbKill = 0;
     private float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack;
     private bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
     private ToricObject toricObject;
@@ -19,10 +18,9 @@ public class FightController : MonoBehaviour
     private bool isInvicible => invicibilityCounter > 0;
     private int invicibilityCounter, canLaunchWeakAttackCounter, canLaunchStrongAttackCounter;
     private int charMask;
+    private int canKillDashingCounter;
 
     private List<uint> charAlreadyTouchByDash = new List<uint>();
-    private int dashCollisionCounter = 0;
-    private bool isDashCollisionEnable => dashCollisionCounter <= 0;
 
     #if UNITY_EDITOR
 
@@ -34,7 +32,9 @@ public class FightController : MonoBehaviour
     [SerializeField] private float dashBumpSpeed = 10f;
     [SerializeField] private float dashInvicibilityTimeOffset = 0.1f;
     [SerializeField, Tooltip("Time during you are invicible and you attack with your dash attack")] private float invicibilityDurationWhenDashing = 0.3f;
-    [SerializeField] private Vector2 dashHitboxOffset, dashHitboxSize;
+    [SerializeField, Tooltip("Time offset before enabling killing when dashing")] private float dashKillTimeOffset= 0.1f;
+    [SerializeField, Tooltip("Kill duration when dashing")] private float dashKillDuration = 0.5f;
+    public Vector2 dashHitboxOffset, dashHitboxSize;
 
     [Header("Inputs")]
     public bool enableAttackWeak = true;
@@ -42,7 +42,7 @@ public class FightController : MonoBehaviour
     public bool enableInvisibilityWhenDashing = true;
     [Tooltip("Temps ou l'on considère l'appuye sur un touche alors que le perso est occupé/ne peut pas lancé l'attaque")][SerializeField] private float castCoyoteTime = 0.2f;
 
-    [HideInInspector] public bool isDashing { get; private set; }
+    [HideInInspector] public bool canKillDashing => canKillDashingCounter > 0;
 
     #region Awake and Start
 
@@ -55,19 +55,17 @@ public class FightController : MonoBehaviour
         toricObject = GetComponent<ToricObject>();
         playerInput = GetComponent<CustomPlayerInput>();
         movement = GetComponent<Movement>();
-        nbKill = 0;
+        canKillDashingCounter = 0;
     }
 
     private void Start()
     {
         eventController.callBackBeenTouchAttack += OnBeenTouchAttack;
-        eventController.callBackKillByDash += OnKillPlayerByDash;
         eventController.callBackTouchByEnvironnement += OnBeenTouchByEnvironnement;
         eventController.callBackKillByEnvironnement += OnBeenKillByEnvironnement;
         eventController.callBackBeenKillInstant += OnBeenKillInstant;
         eventController.callBackBeenKillByDash += OnBeenKillByDash;
         charMask = LayerMask.GetMask("Char");
-        dashCollisionCounter = 0;
     }
 
     #endregion
@@ -167,7 +165,7 @@ public class FightController : MonoBehaviour
 
     private void HandleDash()
     {
-        if (!isDashing || !isDashCollisionEnable)
+        if (!canKillDashing)
             return;
 
         Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position, dashHitboxSize, 0f, charMask);
@@ -202,7 +200,7 @@ public class FightController : MonoBehaviour
                 {
                     KillByOtherWithDash(fc);
                 }
-                DisableDashCollision(0.2f);
+                DisableDashCollision(dashKillDuration);
             }
         }
     }
@@ -229,7 +227,7 @@ public class FightController : MonoBehaviour
                 //on applique le bump
                 ApplyBump(fc);
             }
-            DisableDashCollision(0.2f);
+            DisableDashCollision(dashKillDuration);
         }
         else
         {
@@ -244,28 +242,34 @@ public class FightController : MonoBehaviour
 
     private IEnumerator DisableDashCollisionCorout(float duration)
     {
-        dashCollisionCounter++;
+        canKillDashingCounter--;
         yield return Useful.GetWaitForSeconds(duration);
-        dashCollisionCounter--;
+        canKillDashingCounter++;
     }
 
     public void StartDashing()
     {
-        StopCoroutine(nameof(StartDashing));
         StartCoroutine(StartDashingCorout());
+        StartCoroutine(StartInvicibilityCorout());
     }
 
     private IEnumerator StartDashingCorout()
     {
-        yield return Useful.GetWaitForSeconds(dashInvicibilityTimeOffset);
-
-        EnableInvicibility();
-        isDashing = true;
-        yield return Useful.GetWaitForSeconds(invicibilityDurationWhenDashing);
-        isDashing = false;
+        yield return Useful.GetWaitForSeconds(dashKillTimeOffset);
+        canKillDashingCounter++;
+        yield return Useful.GetWaitForSeconds(dashKillDuration);
+        canKillDashingCounter--;
         charAlreadyTouchByDash.Clear();
+    }
+
+    private IEnumerator StartInvicibilityCorout()
+    {
+        yield return Useful.GetWaitForSeconds(dashInvicibilityTimeOffset);
+        EnableInvicibility();
+        yield return Useful.GetWaitForSeconds(invicibilityDurationWhenDashing);
         DisableInvicibility();
     }
+
 
     public void EnableInvicibility()
     {
@@ -355,7 +359,7 @@ public class FightController : MonoBehaviour
 
     #region Disable attacking
 
-    private void DisableLauchingAttack(in float duration)
+    private void DisableLauchingAttack(float duration)
     {
         StartCoroutine(Dl(duration));
     }
@@ -375,14 +379,6 @@ public class FightController : MonoBehaviour
     }
 
     #endregion
-
-
-    private void OnKillPlayerByDash(GameObject playerKilled) => OnKillPlayer();
-
-    private void OnKillPlayer()
-    {
-        nbKill++;
-    }
 
     private void OnBeenTouchAttack(Attack attack)
     {
@@ -426,7 +422,16 @@ public class FightController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    #if UNITY_EDITOR
+    private void OnDestroy()
+    {
+        eventController.callBackBeenTouchAttack -= OnBeenTouchAttack;
+        eventController.callBackTouchByEnvironnement -= OnBeenTouchByEnvironnement;
+        eventController.callBackKillByEnvironnement -= OnBeenKillByEnvironnement;
+        eventController.callBackBeenKillInstant -= OnBeenKillInstant;
+        eventController.callBackBeenKillByDash -= OnBeenKillByDash;
+    }
+
+#if UNITY_EDITOR
 
     private void OnDrawGizmosSelected()
     {
@@ -437,5 +442,14 @@ public class FightController : MonoBehaviour
         Hitbox.GizmosDraw((Vector2)transform.position + dashHitboxOffset, dashHitboxSize);
     }
 
-    #endif
+    private void OnValidate()
+    {
+        dashBumpSpeed = Mathf.Max(0f, dashBumpSpeed);
+        dashInvicibilityTimeOffset = Mathf.Max(0f, dashInvicibilityTimeOffset);
+        invicibilityDurationWhenDashing = Mathf.Max(0f, invicibilityDurationWhenDashing);
+        dashKillTimeOffset = Mathf.Max(0f, dashKillTimeOffset);
+        dashKillDuration = Mathf.Max(0f, dashKillDuration);
+    }
+
+#endif
 }

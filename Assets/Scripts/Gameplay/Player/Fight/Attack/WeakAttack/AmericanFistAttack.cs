@@ -18,7 +18,10 @@ public class AmericanFistAttack : WeakAttack
     private LayerMask groundMask, enemiesMask;
     private bool alreadyCreateExplosionWinthThisDash;
 
+#if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
+#endif
+
     [SerializeField] private bool isAClone;
     [SerializeField] private float dashSpeed = 10f, dashDuration = 0.4f, minTimeBetweenDash = 0.2f, maxTimeBetweenDash = 0.7f, dashBufferTime = 0.1f;
     [SerializeField] private AnimationCurve dashSpeedCurve;
@@ -363,6 +366,8 @@ public class AmericanFistAttack : WeakAttack
 
     #region OnValidate/Gizmos
 
+#if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         if (!drawGizmos)
@@ -406,5 +411,7 @@ public class AmericanFistAttack : WeakAttack
         }
     }
 
-    #endregion
+#endif
+
+#endregion
 }

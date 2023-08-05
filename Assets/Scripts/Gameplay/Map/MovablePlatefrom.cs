@@ -215,7 +215,7 @@ public class MovablePlatefrom : MonoBehaviour
                 {
                     GameObject player = col.GetComponent<ToricObject>().original;
                     FightController fc = player.GetComponent<FightController>();
-                    if (fc.isDashing)
+                    if (fc.canKillDashing)
                     {
                         BoxCollider2D charHitbox = player.GetComponent<BoxCollider2D>();
                         HitboxSide side = GetHitboxSide((Vector2)player.transform.position + charHitbox.offset, charHitbox.size);

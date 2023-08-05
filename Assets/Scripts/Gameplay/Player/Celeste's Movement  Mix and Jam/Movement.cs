@@ -104,6 +104,7 @@ public class Movement : MonoBehaviour
     [Header("Grab")]
     [Tooltip("La vitesse de monter.")] [SerializeField] private float grabSpeed = 6f;
     [Tooltip("La vitesse initial de monter (%age de la vitesse max)")] [SerializeField] [Range(0f, 1f)] private float grabInitSpeed = 0.25f;
+    [Tooltip("La valeur de l'input en y max ou l'on est en precise grab"), SerializeField, Range(0f, 1f)] private float maxPreciseGrabValue = 0.3f;
     [Tooltip("Réduit la vitesse de monter lorsque l'input est faible pour plus de précisions.")] [SerializeField] [Range(0f, 1f)] private float grabSpeedMultiplierWhenPreciseGrab = 6f;
     [Tooltip("La vitesse en sortie du wall grab.")] [SerializeField] private Vector2 grabApexSpeed = new Vector2(3f, 12f);
     [Tooltip("La deuxième vitesse en sortie du wall grab.")] [SerializeField] private Vector2 grabApexSpeed2 = new Vector2(4f, 0f);
@@ -911,14 +912,14 @@ public class Movement : MonoBehaviour
             if(playerInput.rawY == 1)
             {
                 //clamp, on va dans le mauvais sens
-                if (rb.velocity.y < grabInitSpeed * grabSpeed * 0.95f && playerInput.y > 0.01f)
+                if (rb.velocity.y < grabInitSpeed * grabSpeed * 0.98f)
                 {
-                    rb.velocity = new Vector2(0f, grabInitSpeed * grabSpeed * playerInput.y);
+                    rb.velocity = new Vector2(0f, grabInitSpeed * grabSpeed);
                 }
                 else
                 {
-                    float speedModifier = (playerInput.y > 0.5f ? 1f : grabSpeedMultiplierWhenPreciseGrab);
-                    rb.velocity = new Vector2(0f, Mathf.MoveTowards(rb.velocity.y, grabSpeed * playerInput.y * speedModifier, grabSpeedLerp * Time.fixedDeltaTime));
+                    float speedModifier = (playerInput.y > maxPreciseGrabValue ? 1f : grabSpeedMultiplierWhenPreciseGrab);
+                    rb.velocity = new Vector2(0f, Mathf.MoveTowards(rb.velocity.y, Mathf.Max(grabSpeed * playerInput.y * speedModifier, grabInitSpeed * grabSpeed), grabSpeedLerp * Time.fixedDeltaTime));
                 }
             }
             else
@@ -1530,6 +1531,7 @@ public class Movement : MonoBehaviour
         bumpGravityScale = Mathf.Max(0f, bumpGravityScale);
         maxBumpDuration = Mathf.Max(minBumpDuration, maxBumpDuration);
         minBumpDuration = Mathf.Min(minBumpDuration, maxBumpDuration);
+        maxPreciseGrabValue = Mathf.Max(maxPreciseGrabValue, 0f);
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 

@@ -12,10 +12,12 @@ public class CloneAttack : StrongAttack
     private Animator cloneAnimator;
     private SpriteRenderer cloneRenderer;
     private AmericanFistAttack cloneWeakAttack;
+    private FightController fightController;
     private bool isCloneRendererEnable = false;
     [HideInInspector] public bool isCloneAttackEnable = false;
-    private List<CloneData> dataCache = new List<CloneData>();
     private bool disableRegisteringData, pauseCloneFollow;
+    private LayerMask charMask;
+    private List<uint> charAlreadyToucheByDash;
 
     public GameObject clonePrefabs;
     [SerializeField] private float latenessTime = 3f;
@@ -32,6 +34,8 @@ public class CloneAttack : StrongAttack
     {
         base.Awake();
         movement = GetComponent<Movement>();
+        fightController = GetComponent<FightController>();
+        charAlreadyToucheByDash = new List<uint>();
     }
 
     protected override void Start()
@@ -47,6 +51,7 @@ public class CloneAttack : StrongAttack
         cloneWeakAttack.original = gameObject;
         cloneWeakAttack.originalCloneAttack = this;
         cloneRenderer.enabled = false;
+        charMask = LayerMask.GetMask("Char");
 
         eventController.callBackEnterTimePortal += OnEnterTimePortal;
         eventController.callBackExitTimePortal += OnExitTimePortal;
@@ -94,7 +99,7 @@ public class CloneAttack : StrongAttack
             attack = true;
         }
 
-        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.side == -1);
+        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.side == -1, fightController.canKillDashing);
         lstCloneDatas.Add(data);
         originalDashThisFrame = originalCreateExplosionThisFrame = false;
 
@@ -118,20 +123,43 @@ public class CloneAttack : StrongAttack
         if (lstCloneDatas.Count <= 0 || Time.time - lstCloneDatas[0].time < latenessTime)
             return;
 
-        dataCache.Clear();
         int index = 0;
         do
         {
             if(Time.time - lstCloneDatas[index].time >= latenessTime)
             {
-                if(lstCloneDatas[index].madeADashThisFrame)
+                CloneData cloneData = lstCloneDatas[index];
+                if(cloneData.madeADashThisFrame)
                 {
                     cloneWeakAttack.activateCloneDash = true;
                 }
-                else if (lstCloneDatas[index].makeAnExplosionThisFrame)
+                else if (cloneData.makeAnExplosionThisFrame)
                 {
                     cloneWeakAttack.activateWallExplosion = true;
                     cloneWeakAttack.cloneExplosionPosition = (Vector2)lstCloneDatas[index].attackData[0];
+                }
+
+                if(cloneData.isDashKillEnable)
+                {
+                    Vector2 center = (Vector2)clone.transform.position + fightController.dashHitboxOffset;
+                    Collider2D[] cols = PhysicsToric.OverlapBoxAll(center, fightController.dashHitboxSize, 0f, charMask);
+                    foreach (Collider2D col in cols)
+                    {
+                        if(col.CompareTag("Char"))
+                        {
+                            GameObject player = col.GetComponent<ToricObject>().original;
+                            PlayerCommon pc = player.GetComponent<PlayerCommon>();
+                            if (playerCommon.id != pc.id)
+                            {
+                                base.OnTouchEnemy(player);
+                                charAlreadyToucheByDash.Add(pc.id);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    charAlreadyToucheByDash.Clear();
                 }
                 index++;
             }
@@ -190,11 +218,13 @@ public class CloneAttack : StrongAttack
     private void OnPauseEnable()
     {
         pauseCloneFollow = true;
+        cloneAnimator.enabled = false;
     }
 
     private void OnPauseDisable()
     {
         pauseCloneFollow = false;
+        cloneAnimator.enabled = true;
     }
 
     protected void OnEnterTimePortal(TimePortal timePortal)
@@ -205,6 +235,15 @@ public class CloneAttack : StrongAttack
     protected void OnExitTimePortal(TimePortal timePortal)
     {
         disableRegisteringData = false;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        eventController.callBackEnterTimePortal -= OnEnterTimePortal;
+        eventController.callBackExitTimePortal -= OnExitTimePortal;
+        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
+        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
     }
 
     #endregion
@@ -244,9 +283,10 @@ public class CloneAttack : StrongAttack
         public object[] attackData;
         public bool madeADashThisFrame;
         public bool makeAnExplosionThisFrame;
+        public bool isDashKillEnable;
         public bool flipRenderer;
 
-        public CloneData(in Vector2 position, float rotationZ, Action action,  float time, object[] attackData, bool makeAnAttack, bool madeADash, bool createExplosion, bool flipRenderer)
+        public CloneData(in Vector2 position, float rotationZ, Action action,  float time, object[] attackData, bool makeAnAttack, bool madeADash, bool createExplosion, bool flipRenderer, bool isDashKillEnable)
         {
             this.position = position;
             this.rotationZ = rotationZ;
@@ -256,6 +296,7 @@ public class CloneAttack : StrongAttack
             this.makeAnExplosionThisFrame = createExplosion;
             this.madeADashThisFrame = madeADash;
             this.flipRenderer = flipRenderer;
+            this.isDashKillEnable = isDashKillEnable;
         }
     }
 

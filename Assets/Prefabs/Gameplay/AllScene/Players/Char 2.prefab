@@ -466,16 +466,17 @@ MonoBehaviour:
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
   grabSpeed: 4
-  grabInitSpeed: 0.25
-  grabSpeedMultiplierWhenPreciseGrab: 0.5
+  grabInitSpeed: 0.4
+  maxPreciseGrabValue: 0.3
+  grabSpeedMultiplierWhenPreciseGrab: 0.75
   grabApexSpeed: {x: 2, y: 4}
   grabApexSpeed2: {x: 8, y: 1}
   grabSpeedLerp: 25
   grabApexSpeedLerp: 600
   grabApexSpeedLerp2: 50
-  grabApexDuration: 0.061
-  grabApexDuration2: 0.081
-  grabInitSpeedOnApexStay: 0.228
+  grabApexDuration: 0.081
+  grabApexDuration2: 0.101
+  grabInitSpeedOnApexStay: 0.4
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 0.15
@@ -704,7 +705,7 @@ MonoBehaviour:
   playerIndex: 2
   color: {r: 1, g: 0.042311423, b: 0.011612245, a: 1}
   id: 1
-  prefabs: {fileID: 0}
+  prefabs: {fileID: 7980238354382693259}
 --- !u!114 &8612698283953875211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,14 +734,16 @@ MonoBehaviour:
   canLaunchStrongAttack: 1
   drawGizmos: 0
   dashBumpSpeed: 10
-  dashInvicibilityOffset: 0.1
+  dashInvicibilityTimeOffset: 0
   invicibilityDurationWhenDashing: 0.2
+  dashKillTimeOffset: 0.05
+  dashKillDuration: 0.4
   dashHitboxOffset: {x: 0, y: -0.21}
   dashHitboxSize: {x: 0.7, y: 1}
   enableAttackWeak: 1
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
-  castCoyoteTime: 0.2
+  castCoyoteTime: 0.15
 --- !u!114 &3329611578031353287
 MonoBehaviour:
   m_ObjectHideFlags: 0

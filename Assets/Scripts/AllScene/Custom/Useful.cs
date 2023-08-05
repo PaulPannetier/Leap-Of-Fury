@@ -1240,7 +1240,7 @@ public static class Useful
 
     public static bool Exist<T>(this T[,] tab, int l, int c) => l >= 0 && c >= 0 && l < tab.GetLength(0) && c < tab.GetLength(1);
 
-    public static T[] Merge<T>(this T[] arr, in T[] other)
+    public static T[] Merge<T>(this T[] arr, T[] other)
     {
         T[] res = new T[arr.Length + other.Length];
         for (int i = 0; i < arr.Length; i++)
@@ -1840,7 +1840,7 @@ public static class Useful
     }
 
     private static Dictionary<float, WaitForSeconds> waitForSecondsCache = new Dictionary<float, WaitForSeconds>();
-    public static WaitForSeconds GetWaitForSeconds(in float time)
+    public static WaitForSeconds GetWaitForSeconds(float time)
     {
         if (waitForSecondsCache.TryGetValue(time, out WaitForSeconds waitForSeconds))
         {
