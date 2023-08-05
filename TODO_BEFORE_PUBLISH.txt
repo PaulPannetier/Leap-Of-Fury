@@ -1,4 +1,9 @@
+Before BUILD : 
+Remove MapTest in all level
+
+AFTER BUILD :
 Copy save folder and paste it in the game build folder.
+remove all the .meta file in the save directory with the command : del /s *.meta  
 
 In the Save directory :
 configuration.partygame and set : firstTimeLaunch to true.
