@@ -282,9 +282,15 @@ public abstract class LevelManager : MonoBehaviour
         }
     }
 
-    #endif
+#endif
 
     #endregion
+
+    private void Update()
+    {
+        int a = 10;
+        a = a + 5;
+    }
 
     #region Block/Release Player
 

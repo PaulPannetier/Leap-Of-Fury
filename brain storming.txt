@@ -59,6 +59,9 @@ perso 4 : *
 	  attack forte : tir 3 projectiles en cone dans la dir inverse des input (8 dir possibles) et qui lui applique une forte de propulsion//ok**
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
 
+Idée attack en rab :
+-Un projectile qui reviens vers le joueur.
+
 
 Niveau :
 - Composé de plusieurs cartes.
