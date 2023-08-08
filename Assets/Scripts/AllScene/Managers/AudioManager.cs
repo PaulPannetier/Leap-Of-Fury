@@ -75,11 +75,10 @@ public class AudioManager : MonoBehaviour
             SetVolumeSmooth(newSoundName, newSoundVolume, duration);
             return;
         }
-        PlaySound(newSoundName, 0f);
-        StartCoroutine(CrossFadeCorout(currentSoundName, currentSounds[currentSoundName], newSoundName, currentSounds[newSoundName], newSoundVolume, duration));
+        StartCoroutine(CrossFadeCorout(currentSoundName, currentSounds[currentSoundName], newSoundName, newSoundVolume, duration));
     }
 
-    private IEnumerator CrossFadeCorout(string currentSoundName, AudioSource currentSource, string newSoundName, AudioSource newSource, float targetVolume, float duration)
+    private IEnumerator CrossFadeCorout(string currentSoundName, AudioSource currentSource, string newSoundName, float targetVolume, float duration)
     {
         float duration1 = duration * (currentSource.volume / (currentSource.volume + targetVolume));
         Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(currentSoundName, currentSource, 0f, duration1));
@@ -87,7 +86,8 @@ public class AudioManager : MonoBehaviour
         yield return Useful.GetWaitForSeconds(duration1);
         RmMusic(currentSoundName);
 
-        Coroutine changeVolCorout2 = StartCoroutine(SetVolumeSmoothCorout(newSoundName, newSource, targetVolume, duration - duration1));
+        PlaySound(newSoundName, 0f);
+        Coroutine changeVolCorout2 = StartCoroutine(SetVolumeSmoothCorout(newSoundName, currentSounds[newSoundName], targetVolume, duration - duration1));
         changeVolumeCorout.Add(newSoundName, changeVolCorout2);
     }
 
