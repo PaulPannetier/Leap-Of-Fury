@@ -200,13 +200,13 @@ public abstract class LevelManager : MonoBehaviour
         EventManager.instance.OnLevelStart(levelName);
     }
 
-    private void SpawnChar(List<Vector2> spawnPoints)
+    private void SpawnChar(List<Vector2> spawnPoints, bool randomiseSpawnPoint = true)
     {
         uint idCount = 0;
         for (int i = 0; i < charData.Length; i++)
         {
             //get random position
-            Vector2 spawnPoint = spawnPoints.GetRandom();
+            Vector2 spawnPoint = randomiseSpawnPoint ? spawnPoints.GetRandom() : spawnPoints[0];
             spawnPoints.Remove(spawnPoint);
 
             CharData playerData = charData[i];
@@ -247,15 +247,28 @@ public abstract class LevelManager : MonoBehaviour
         };
 
         int nbChar = 0;
+        List<CharData> lstCharData = new List<CharData>();
+        List<Vector2> spawnPoint = new List<Vector2>();
         for (int i = 0; i < charParent.childCount; i++)
         {
             Transform charI = charParent.GetChild(i);
             if(!charI.gameObject.activeSelf)
-            {
-                Destroy(charI.gameObject);
                 continue;
-            }
 
+            lstCharData.Add(new CharData(playerIndexes[nbChar], controllerTypes[nbChar], charI.GetComponent<PlayerCommon>().prefabs));
+            spawnPoint.Add(charI.transform.position);
+            nbChar++;
+        }
+
+        charParent.DestroyChildren();
+
+        charData = lstCharData.ToArray();
+        SpawnChar(spawnPoint, false);
+
+        /*
+        for (int i = 0; i < charParent.childCount; i++)
+        {
+            Transform charI = charParent.GetChild(i);
             PlayerCommon pc = charI.GetComponent<PlayerCommon>();
             pc.id = (uint)nbChar;
             pc.playerIndex = playerIndexes[nbChar];
@@ -280,17 +293,12 @@ public abstract class LevelManager : MonoBehaviour
         {
             charData[i] = new CharData(playerIndexes[i], controllerTypes[i], charParent.GetChild(i).GetComponent<PlayerCommon>().prefabs);
         }
+        */
     }
 
 #endif
 
     #endregion
-
-    private void Update()
-    {
-        int a = 10;
-        a = a + 5;
-    }
 
     #region Block/Release Player
 
@@ -453,7 +461,7 @@ public abstract class LevelManager : MonoBehaviour
         }
     }
 
-    protected struct CharData
+    protected struct CharData : ICloneable<CharData>
     {
         public PlayerIndex playerIndex;
         public ControllerType controllerType;
@@ -465,6 +473,8 @@ public abstract class LevelManager : MonoBehaviour
             this.controllerType = controllerType;
             this.charPrefabs = charPrefabs;
         }
+
+        public CharData Clone() => new CharData(playerIndex, controllerType, charPrefabs);
     }
 
     #endregion

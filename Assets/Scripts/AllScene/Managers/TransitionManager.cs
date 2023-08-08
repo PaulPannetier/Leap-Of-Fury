@@ -10,7 +10,9 @@ public class TransitionManager : MonoBehaviour
 {
     public static TransitionManager instance;
 
-    private Dictionary<string, object[]> oldScenesData;
+    //private Dictionary<string, object[]> oldScenesData;
+    private List<OldSceneData> oldScenesData;
+    private string oldSceneName;
 
     private void Awake()
     {
@@ -20,7 +22,8 @@ public class TransitionManager : MonoBehaviour
             return;
         }
         instance = this;
-        oldScenesData = new Dictionary<string, object[]>();
+        oldScenesData = new List<OldSceneData>();
+        oldSceneName = string.Empty;
         preloadSceneAsyncOperation = null;
         preloadSceneAsyncOperationHandleAddressables = new Dictionary<string, AsyncOperationHandle<SceneInstance>>();//addressable
     }
@@ -35,20 +38,29 @@ public class TransitionManager : MonoBehaviour
     }
     */
 
-    public object[] GetOldSceneData(string oldSceneName)
+    public OldSceneData GetOldSceneData() => GetOldSceneData(oldSceneName);
+
+    public OldSceneData GetOldSceneData(string SceneName)
     {
-        if (oldScenesData.TryGetValue(oldSceneName, out object[] res))
-            return res;
+        foreach(OldSceneData sceneData in oldScenesData)
+        {
+            if(sceneData.sceneName == SceneName)
+                return sceneData;
+        }
         return null;
     }
 
-    public void SetOldSceneData(object[] oldSceneData)
+    public void SetOldSceneData(OldSceneData oldSceneData)
     {
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        if (oldScenesData.ContainsKey(activeSceneName))
-            oldScenesData[activeSceneName] = oldSceneData;
-        else
-            oldScenesData.Add(activeSceneName, oldSceneData);
+        for (int i = 0; i < oldScenesData.Count; i++)
+        {
+            if (oldScenesData[i].sceneName == oldSceneData.sceneName)
+            {
+                oldScenesData[i] = oldSceneData;
+                return;
+            }
+        }
+        oldScenesData.Add(oldSceneData);
     }
 
     #region UnitySceneManagement
@@ -63,14 +75,9 @@ public class TransitionManager : MonoBehaviour
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
-    public void LoadScene(string sceneName, object[] oldSceneData)
+    public void LoadScene(string sceneName, OldSceneData oldSceneData)
     {
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        if (oldScenesData.ContainsKey(activeSceneName))
-            oldScenesData[activeSceneName] = oldSceneData;
-        else
-            oldScenesData.Add(activeSceneName, oldSceneData);
-
+        SetOldSceneData(oldSceneData);
         LoadScene(sceneName);
     }
 
@@ -81,14 +88,9 @@ public class TransitionManager : MonoBehaviour
         asyncOperation.completed += OnSceneLoad;
     }
 
-    public void LoadSceneAsync(string sceneName, object[] oldSceneData)
+    public void LoadSceneAsync(string sceneName, OldSceneData oldSceneData)
     {
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        if (oldScenesData.ContainsKey(activeSceneName))
-            oldScenesData[activeSceneName] = oldSceneData;
-        else
-            oldScenesData.Add(activeSceneName, oldSceneData);
-
+        SetOldSceneData(oldSceneData);
         LoadSceneAsync(sceneName);
     }
 
@@ -106,19 +108,14 @@ public class TransitionManager : MonoBehaviour
         preloadSceneAsyncOperation.completed += OnSceneLoad;
     }
 
-    public void PreloadScene(string sceneName, object[] oldSceneData)
+    public void PreloadScene(string sceneName, OldSceneData oldSceneData)
     {
         if (isPreloadingAScene)
         {
             Debug.LogWarning("The scene : " + scenePreload + " is already preloaded." + " Can't preload multiples scene with the unity SceneManagement class, use PreloadSceneAddressable instead");
             return;
         }
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        if (oldScenesData.ContainsKey(activeSceneName))
-            oldScenesData[activeSceneName] = oldSceneData;
-        else
-            oldScenesData.Add(activeSceneName, oldSceneData);
-
+        SetOldSceneData(oldSceneData);
         PreloadScene(sceneName);
     }
 
@@ -181,13 +178,9 @@ public class TransitionManager : MonoBehaviour
         loadSceneAsyncOperationHandle.Completed += OnSceneLoadAddressables;
     }
 
-    public void LoadSceneAsyncAddressables(string sceneName, object[] oldSceneData)
+    public void LoadSceneAsyncAddressables(string sceneName, OldSceneData oldSceneData)
     {
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        if (oldScenesData.ContainsKey(activeSceneName))
-            oldScenesData[activeSceneName] = oldSceneData;
-        else
-            oldScenesData.Add(activeSceneName, oldSceneData);
+        SetOldSceneData(oldSceneData);
 
         if (preloadSceneAsyncOperationHandleAddressables.TryGetValue(sceneName, out AsyncOperationHandle<SceneInstance> loadSceneAsyncOperationHandle))
         {
@@ -206,7 +199,7 @@ public class TransitionManager : MonoBehaviour
         return false;
     }
 
-    public void PreLoadSceneAddressables(string sceneName, object[] oldSceneData)
+    public void PreLoadSceneAddressables(string sceneName, OldSceneData oldSceneData)
     {
         if (preloadSceneAsyncOperationHandleAddressables.TryGetValue(sceneName, out AsyncOperationHandle<SceneInstance> loadSceneAsyncOperationHandle))
         {
@@ -214,17 +207,13 @@ public class TransitionManager : MonoBehaviour
             return;
         }
 
-        string activeSceneName = SceneManager.GetActiveScene().name;
-        if (oldScenesData.ContainsKey(activeSceneName))
-            oldScenesData[activeSceneName] = oldSceneData;
-        else
-            oldScenesData.Add(activeSceneName, oldSceneData);
+        SetOldSceneData(oldSceneData);
 
         loadSceneAsyncOperationHandle = Addressables.LoadSceneAsync(getSceneAddresseFromSceneName[sceneName], LoadSceneMode.Single, false, 100);
         preloadSceneAsyncOperationHandleAddressables.Add(sceneName, loadSceneAsyncOperationHandle);
     }
 
-    public void LoadPreloadedSceneAddressables(string preloadedSceneName, object[] oldSceneData)
+    public void LoadPreloadedSceneAddressables(string preloadedSceneName, OldSceneData oldSceneData)
     {
         if (preloadSceneAsyncOperationHandleAddressables.TryGetValue(preloadedSceneName, out AsyncOperationHandle<SceneInstance> asyncOperation))
         {
@@ -274,4 +263,14 @@ public class TransitionManager : MonoBehaviour
 
     #endregion
 
+}
+
+public abstract class OldSceneData
+{
+    public string sceneName;
+
+    public OldSceneData(string sceneName)
+    {
+        this.sceneName = sceneName;
+    }
 }
