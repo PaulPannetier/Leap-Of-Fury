@@ -1679,7 +1679,10 @@ public static class Useful
     /// <returns>The integral between a and b of f(x)dx</returns>
     public static float Integrate(Func<float, float> f, float a, float b, float samplePerUnit = 5f)
     {
-        if (Mathf.Abs(a - b) < Mathf.Epsilon || samplePerUnit <= 0f)
+        const float x2 = 0.5384693f, x3 = -0.5384693f, x4 = 0.9061798f, x5 = -0.9061798f;
+        const float w1 = 0.5688889f, w2 = 0.4786287f, w4 = 0.2369269f;
+
+        if (Mathf.Approximately(a, b) || samplePerUnit <= 0f)
             return 0f;
         if (a > b)
             return -Integrate(f, b, a, samplePerUnit);
@@ -1690,21 +1693,18 @@ public static class Useful
         float step = (b - a) / nbSub;
         float stepT05 = step * 0.5f;//cache
 
-        float a1, b1, I1, aPbO2;
+        float a1, b1, aPbO2;
         for (int i = 0; i < nbSub; i++)
         {
             a1 = a + i * step;
             b1 = a1 + step;
 
             aPbO2 = (a1 + b1) * 0.5f;//cache
-            I1 = 0f;
 
             //integrate from a1 to b1 of f
-            for (int j = 0; j < 5; j++)
-            {
-                I1 += wif[j] * f(stepT05 * xif[j] + aPbO2);
-            }
-            I += I1;
+            I += w1 * f(aPbO2) +
+                 w2 * (f(stepT05 * x2 + aPbO2) + f(stepT05 * x3 + aPbO2)) +
+                 w4 * (f(stepT05 * x4 + aPbO2) + f(stepT05 * x5 + aPbO2));
         }
         return stepT05 * I;
     }
@@ -1719,7 +1719,7 @@ public static class Useful
     /// <returns>The integral between a and b of f(x)dx</returns>
     public static double Integrate(Func<double, double> f, in double a, in double b, in float samplePerUnit = 5f)
     {
-        if (Math.Abs(a - b) < 1e-45d || samplePerUnit <= 0f)
+        if (Math.Abs(a - b) < 1e-10d || samplePerUnit <= 0f)
             return 0d;
         if (a > b)
             return -Integrate(f, b, a, samplePerUnit);
@@ -1759,7 +1759,7 @@ public static class Useful
     /// <returns>The integral between a and b of f(x)dx</returns>
     public static decimal Integrate(Func<decimal, decimal> f, in decimal a, in decimal b, in float samplePerUnit = 5f)
     {
-        if (Abs(a - b) < 1e-45m || samplePerUnit <= 0f)
+        if (Abs(a - b) < 1e-27m || samplePerUnit <= 0f)
             return 0m;
         if (a > b)
             return -Integrate(f, b, a, samplePerUnit);
@@ -1789,10 +1789,8 @@ public static class Useful
         return stepT05 * I;
     }
 
-    private static float[] xif = new float[5] { 0f, 0.5384693f, -0.5384693f, 0.9061798f, -0.9061798f };
     private static double[] xid = new double[5] { 0d, 0.538469310105683d, -0.538469310105683d, 0.906179845938664d, -0.906179845938664d };
     private static decimal[] xim = new decimal[5] { 0m, 0.5384693101056830910363144206m, -0.5384693101056830910363144206m, 0.9061798459386639927976268782m, -0.9061798459386639927976268782m };
-    private static float[] wif = new float[5] { 0.5688889f, 0.4786287f, 0.4786287f, 0.2369269f, 0.2369269f };
     private static double[] wid = new double[5] { 0.568888888888889d, 0.478628670499366d, 0.478628670499366d, 0.236926885056189d, 0.236926885056189d };
     private static decimal[] wim = new decimal[5] { 0.5688888888888888888888888889m, 0.4786286704993664680412915148m, 0.4786286704993664680412915148m, 0.2369268850561890875142640407m, 0.2369268850561890875142640407m };
 
@@ -1855,43 +1853,6 @@ public static class Useful
 
     #region Invoke
 
-    private static BindingFlags flag = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.IgnoreReturn |
-           BindingFlags.CreateInstance | BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Default | BindingFlags.ExactBinding | BindingFlags.FlattenHierarchy |
-           BindingFlags.IgnoreCase | BindingFlags.InvokeMethod | BindingFlags.OptionalParamBinding | BindingFlags.PutDispProperty | BindingFlags.PutRefDispProperty | BindingFlags.SetField |
-           BindingFlags.SetProperty | BindingFlags.SuppressChangeType;
-
-    /// <summary>
-    /// Lance la fonction methodName de l'instance obj avec les paramètres param, T est le type de retour de la methode methodName
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="obj"></param>
-    /// <param name="methodName"></param>
-    /// <param name="param"></param>
-    /// <returns></returns>
-    public static T InvokeParams<T>(object obj, string methodName, object[] param) => (T)obj.GetType().GetMethod(methodName, flag).Invoke(obj, param);
-
-    /// <summary>
-    /// Lance la fonction void methodName de l'instance obj avec les paramètres param
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="obj"></param>
-    /// <param name="methodName"></param>
-    /// <param name="param"></param>
-    /// <returns></returns>
-    public static void InvokeParams(object obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, param);
-
-    public static void Invoke(this MonoBehaviour obj, string methodName, object[] param) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, param);
-    public static void Invoke(this MonoBehaviour obj, string methodName, object[] param, float delay)
-    {
-        obj.StartCoroutine(InvokeCorout(obj, methodName, param, delay));
-    }
-
-    private static IEnumerator InvokeCorout(MonoBehaviour obj, string methodName, object[] param, float delay)
-    {
-        yield return GetWaitForSeconds(delay);
-        Invoke(obj, methodName, param);
-    }
-
     public static void InvokeWaitAFrame(this MonoBehaviour script, string methodName)
     {
         script.StartCoroutine(InvokeWaitAFrameCorout(script, methodName));
@@ -1903,55 +1864,50 @@ public static class Useful
         script.Invoke(methodName, 0f);
     }
 
+    public static void Invoke(this MonoBehaviour script, Action method, float delay)
+    {
+        script.StartCoroutine(InvokeCorout(method, delay));
+    }
+
+    private static IEnumerator InvokeCorout(Action method, float delay)
+    {
+        yield return GetWaitForSeconds(delay);
+        method.Invoke();
+    }
+
     #region Invoke<T>
 
-    public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[1] { arg1 });
-
-    public static void Invoke<T>(this MonoBehaviour obj, string methodName, T arg1, float delay)
+    public static void Invoke<T>(this MonoBehaviour script, Action<T> method, T param, float delay)
     {
-        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, delay));
+        script.StartCoroutine(InvokeCorout(method, param, delay));
     }
 
-    private static IEnumerator InvokeCorout<T>(MonoBehaviour obj, string methodName,T arg1, float delay)
+    private static IEnumerator InvokeCorout<T>(Action<T> method, T param, float delay)
     {
         yield return GetWaitForSeconds(delay);
-        Invoke(obj, methodName, arg1);
+        method.Invoke(param);
     }
 
-    public static void Invoke<T1, T2>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[2] { arg1, arg2 });
-    public static void Invoke<T1, T2>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, float delay)
+    public static void Invoke<T1, T2>(this MonoBehaviour script, Action<T1, T2> method, T1 param1, T2 param2, float delay)
     {
-        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, delay));
+        script.StartCoroutine(InvokeCorout(method, param1, param2, delay));
     }
 
-    private static IEnumerator InvokeCorout<T1, T2>(MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, float delay)
-    {
-        yield return GetWaitForSeconds(delay);
-        Invoke(obj, methodName, arg1, arg2);
-    }
-
-    public static void Invoke<T1, T2, T3>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[3] { arg1, arg2, arg3 });
-    public static void Invoke<T1, T2, T3>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, float delay)
-    {
-        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, arg3, delay));
-    }
-
-    private static IEnumerator InvokeCorout<T1, T2, T3>(MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, float delay)
+    private static IEnumerator InvokeCorout<T1, T2>(Action<T1, T2> method, T1 param1, T2 param2, float delay)
     {
         yield return GetWaitForSeconds(delay);
-        Invoke(obj, methodName, arg1, arg2, arg3);
+        method.Invoke(param1, param2);
     }
 
-    public static void Invoke<T1, T2, T3, T4>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4) => obj.GetType().GetMethod(methodName, flag).Invoke(obj, new object[4] { arg1, arg2, arg3, arg4 });
-    public static void Invoke<T1, T2, T3, T4>(this MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4, float delay)
+    public static void Invoke<T1, T2, T3>(this MonoBehaviour script, Action<T1, T2, T3> method, T1 param1, T2 param2, T3 param3, float delay)
     {
-        obj.StartCoroutine(InvokeCorout(obj, methodName, arg1, arg2, arg3, arg4, delay));
+        script.StartCoroutine(InvokeCorout(method, param1, param2, param3, delay));
     }
 
-    private static IEnumerator InvokeCorout<T1, T2, T3, T4>(MonoBehaviour obj, string methodName, T1 arg1, T2 arg2, T3 arg3, T4 arg4, float delay)
+    private static IEnumerator InvokeCorout<T1, T2, T3>(Action<T1, T2, T3> method, T1 param1, T2 param2, T3 param3, float delay)
     {
         yield return GetWaitForSeconds(delay);
-        Invoke(obj, methodName, arg1, arg2, arg3, arg4);
+        method.Invoke(param1, param2, param3);
     }
 
     #endregion

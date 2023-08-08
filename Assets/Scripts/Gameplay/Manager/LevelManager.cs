@@ -25,7 +25,7 @@ public abstract class LevelManager : MonoBehaviour
     private float lastTimeBeginLevel = -10f;
     private GameObject currentMap;
     private int currentMapIndex;
-    protected CharData[] charData;
+    protected SelectionCharOldSceneData.CharData[] charData;
 
     [Header("Level Management")]
     [SerializeField] protected LevelType levelType;
@@ -101,15 +101,9 @@ public abstract class LevelManager : MonoBehaviour
 
         void FillCharData()
         {
-            object[] oldSceneData = TransitionManager.instance.GetOldSceneData("Selection Char");
-            currentNbPlayerAlive = oldSceneData.Length;
-            charData = new CharData[currentNbPlayerAlive];
-
-            for (int i = 0; i < currentNbPlayerAlive; i++)
-            {
-                CharSelectorItemData tmp = (CharSelectorItemData)oldSceneData[i];
-                charData[i] = new CharData(tmp.playerIndex, tmp.controllerType, tmp.charPrefabs);
-            }
+            SelectionCharOldSceneData oldSceneData = TransitionManager.instance.GetOldSceneData("Selection Char") as SelectionCharOldSceneData;
+            currentNbPlayerAlive = oldSceneData.charData.Length;
+            charData = oldSceneData.charData;
         }
 
         void HandleMap()
@@ -209,7 +203,7 @@ public abstract class LevelManager : MonoBehaviour
             Vector2 spawnPoint = randomiseSpawnPoint ? spawnPoints.GetRandom() : spawnPoints[0];
             spawnPoints.Remove(spawnPoint);
 
-            CharData playerData = charData[i];
+            SelectionCharOldSceneData.CharData playerData = charData[i];
             GameObject tmpGO = Instantiate(playerData.charPrefabs, charParent);
             PlayerCommon tmpPC = tmpGO.GetComponent<PlayerCommon>();
             tmpPC.playerIndex = playerData.playerIndex;
@@ -230,7 +224,7 @@ public abstract class LevelManager : MonoBehaviour
         }
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
 
     private void DEBUG_SetCharControlInputsAndOldSceneData()
     {
@@ -247,7 +241,7 @@ public abstract class LevelManager : MonoBehaviour
         };
 
         int nbChar = 0;
-        List<CharData> lstCharData = new List<CharData>();
+        List<SelectionCharOldSceneData.CharData> lstCharData = new List<SelectionCharOldSceneData.CharData>();
         List<Vector2> spawnPoint = new List<Vector2>();
         for (int i = 0; i < charParent.childCount; i++)
         {
@@ -255,7 +249,7 @@ public abstract class LevelManager : MonoBehaviour
             if(!charI.gameObject.activeSelf)
                 continue;
 
-            lstCharData.Add(new CharData(playerIndexes[nbChar], controllerTypes[nbChar], charI.GetComponent<PlayerCommon>().prefabs));
+            lstCharData.Add(new SelectionCharOldSceneData.CharData(playerIndexes[nbChar], controllerTypes[nbChar], charI.GetComponent<PlayerCommon>().prefabs));
             spawnPoint.Add(charI.transform.position);
             nbChar++;
         }
@@ -264,36 +258,6 @@ public abstract class LevelManager : MonoBehaviour
 
         charData = lstCharData.ToArray();
         SpawnChar(spawnPoint, false);
-
-        /*
-        for (int i = 0; i < charParent.childCount; i++)
-        {
-            Transform charI = charParent.GetChild(i);
-            PlayerCommon pc = charI.GetComponent<PlayerCommon>();
-            pc.id = (uint)nbChar;
-            pc.playerIndex = playerIndexes[nbChar];
-
-            if (InputManager.IsAGamepadController(controllerTypes[nbChar]))
-            {
-                InputManager.SetCurrentControllerForGamepad(playerIndexes[nbChar], controllerTypes[nbChar]);
-            }
-            else
-            {
-                InputManager.SetCurrentController(playerIndexes[nbChar], BaseController.Keyboard);
-            }
-
-            nbChar++;
-        }
-
-        currentNbPlayerAlive = nbChar;
-        playersScore = new PlayerScore[nbChar];
-
-        charData = new CharData[nbChar];
-        for (int i = 0; i < charData.Length; i++)
-        {
-            charData[i] = new CharData(playerIndexes[i], controllerTypes[i], charParent.GetChild(i).GetComponent<PlayerCommon>().prefabs);
-        }
-        */
     }
 
 #endif
@@ -459,22 +423,6 @@ public abstract class LevelManager : MonoBehaviour
             this.playerIndex = playerIndex;
             this.nbKills = nbKills;
         }
-    }
-
-    protected struct CharData : ICloneable<CharData>
-    {
-        public PlayerIndex playerIndex;
-        public ControllerType controllerType;
-        public GameObject charPrefabs;
-
-        public CharData(PlayerIndex playerIndex, ControllerType controllerType, GameObject charPrefabs)
-        {
-            this.playerIndex = playerIndex;
-            this.controllerType = controllerType;
-            this.charPrefabs = charPrefabs;
-        }
-
-        public CharData Clone() => new CharData(playerIndex, controllerType, charPrefabs);
     }
 
     #endregion

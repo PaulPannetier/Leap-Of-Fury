@@ -10,8 +10,7 @@ public class TransitionManager : MonoBehaviour
 {
     public static TransitionManager instance;
 
-    //private Dictionary<string, object[]> oldScenesData;
-    private List<OldSceneData> oldScenesData;
+    private Dictionary<string, OldSceneData> oldScenesData;
     private string oldSceneName;
 
     private void Awake()
@@ -22,7 +21,7 @@ public class TransitionManager : MonoBehaviour
             return;
         }
         instance = this;
-        oldScenesData = new List<OldSceneData>();
+        oldScenesData = new Dictionary<string, OldSceneData>();
         oldSceneName = string.Empty;
         preloadSceneAsyncOperation = null;
         preloadSceneAsyncOperationHandleAddressables = new Dictionary<string, AsyncOperationHandle<SceneInstance>>();//addressable
@@ -40,27 +39,22 @@ public class TransitionManager : MonoBehaviour
 
     public OldSceneData GetOldSceneData() => GetOldSceneData(oldSceneName);
 
-    public OldSceneData GetOldSceneData(string SceneName)
+    public OldSceneData GetOldSceneData(string sceneName)
     {
-        foreach(OldSceneData sceneData in oldScenesData)
+        if(oldScenesData.TryGetValue(sceneName, out OldSceneData oldSceneData))
         {
-            if(sceneData.sceneName == SceneName)
-                return sceneData;
+            return oldSceneData;
         }
         return null;
     }
 
     public void SetOldSceneData(OldSceneData oldSceneData)
     {
-        for (int i = 0; i < oldScenesData.Count; i++)
+        if(this.oldScenesData.ContainsKey(oldSceneData.sceneName))
         {
-            if (oldScenesData[i].sceneName == oldSceneData.sceneName)
-            {
-                oldScenesData[i] = oldSceneData;
-                return;
-            }
+            this.oldScenesData[oldSceneData.sceneName] = oldSceneData;
         }
-        oldScenesData.Add(oldSceneData);
+        oldScenesData.Add(oldSceneData.sceneName, oldSceneData);
     }
 
     #region UnitySceneManagement

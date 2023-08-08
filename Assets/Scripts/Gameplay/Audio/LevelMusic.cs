@@ -10,7 +10,7 @@ public class LevelMusic : MonoBehaviour
     {
         if(enable && !AudioManager.instance.IsPlayingSound(musicName))
         {
-            AudioManager.instance.RemoveAllMusic();
+            AudioManager.instance.StopAllSound();
             AudioManager.instance.PlaySound(musicName, musicVolume);
         }
     }
