@@ -209,11 +209,23 @@ public class AudioManager : MonoBehaviour
             RmMusic(name);
             return;
         }
+
+        if(removeCorout.TryGetValue(name, out Coroutine c))
+        {
+            StopCoroutine(c);
+            removeCorout.Remove(name);
+        }
         removeCorout.Add(name, StartCoroutine(RemoveSoundCoroutine(name, delay)));
     }
 
     public void StopSmooth(string name, float duration)
     {
+        if(removeCorout.TryGetValue(name, out Coroutine c))
+        {
+            StopCoroutine(c);
+            removeCorout.Remove(name);
+        }
+
         if (currentSounds.TryGetValue(name, out AudioSource audioSource))
         {
             removeCorout.Add(name, StartCoroutine(StopSmoothCorout(audioSource, duration)));
