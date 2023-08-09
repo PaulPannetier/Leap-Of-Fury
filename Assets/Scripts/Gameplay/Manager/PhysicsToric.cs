@@ -6,29 +6,42 @@ public static class PhysicsToric
 {
     #region Camera and general things
 
-    public static Vector2 cameraSize = new Vector2(32f, 18f);
-    private static Hitbox[] cameraHitboxArounds = new Hitbox[4]
+    private static Vector2 mapSize;
+    private static Hitbox[] mapHitboxArounds;
+    private static Hitbox mapHitbox;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void Start()
     {
-        new Hitbox(new Vector2(0f, cameraSize.y), cameraSize),//haut
-        new Hitbox(new Vector2(0f, -cameraSize.y), cameraSize),//bas
-        new Hitbox(new Vector3(cameraSize.x, 0f), cameraSize),//droite
-        new Hitbox(new Vector2(-cameraSize.x, 0f), cameraSize) //gauche
-    };
-    public static Hitbox cameraHitbox => new Hitbox(Vector2.zero, cameraSize);
+        LevelMapData.onMapChange += OnMapChange;
+    }
+
+    private static void OnMapChange(LevelMapData mapData)
+    {
+        mapSize = mapData.mapSize;
+        mapHitboxArounds = new Hitbox[4]
+        {
+            new Hitbox(new Vector2(0f, mapSize.y), mapSize),//haut
+            new Hitbox(new Vector2(0f, -mapSize.y), mapSize),//bas
+            new Hitbox(new Vector3(mapSize.x, 0f), mapSize),//droite
+            new Hitbox(new Vector2(-mapSize.x, 0f), mapSize) //gauche
+        };
+        mapHitbox = new Hitbox(Vector2.zero, LevelMapData.currentMap.mapSize);
+    }
 
     /// <param name="point"></param>
     /// <returns>Le point visible au coor donnée en param dans l'espace torique</returns>
     public static Vector2 GetPointInsideBounds(in Vector2 point)
     {
-        return new Vector2(Useful.ClampModulo(-cameraSize.x * 0.5f, cameraSize.x * 0.5f, point.x),
-            Useful.ClampModulo(-cameraSize.y * 0.5f, cameraSize.y * 0.5f, point.y));
+        return new Vector2(Useful.ClampModulo(-mapSize.x * 0.5f, mapSize.x * 0.5f, point.x),
+            Useful.ClampModulo(-mapSize.y * 0.5f, mapSize.y * 0.5f, point.y));
     }
 
     public static Vector2 GetComplementaryPoint(Vector2 point)
     {
-        Vector2 step = new Vector2(point.x - cameraHitbox.center.x > 0f ? 0.01f : -0.01f, point.y - cameraHitbox.center.y > 0f ? 0.01f : -0.01f);
+        Vector2 step = new Vector2(point.x - mapHitbox.center.x > 0f ? 0.01f : -0.01f, point.y - mapHitbox.center.y > 0f ? 0.01f : -0.01f);
         int i = 0;
-        while (cameraHitbox.Contains(point))
+        while (mapHitbox.Contains(point))
         {
             point += step;
             i++;
@@ -43,9 +56,9 @@ public static class PhysicsToric
         p1 = GetPointInsideBounds(p1);
         p2 = GetPointInsideBounds(p2);
 
-        float toricX = p1.x + (p2.x - p1.x).Sign() * cameraSize.x;
+        float toricX = p1.x + (p2.x - p1.x).Sign() * mapSize.x;
         float x = Mathf.Abs(p1.x - p2.x) < Mathf.Abs(toricX - p2.x) ? p1.x : toricX;
-        float toricY = p1.y + (p2.y - p1.y).Sign() * cameraSize.y;
+        float toricY = p1.y + (p2.y - p1.y).Sign() * mapSize.y;
         float y = Mathf.Abs(p1.y - p2.y) < Mathf.Abs(toricY - p2.y) ? p1.y : toricY;
 
         return p2.Distance(new Vector2(x, y));
@@ -56,9 +69,9 @@ public static class PhysicsToric
         Vector2[] possibleDir = new Vector2[4]
         {
             b - a,
-            new Vector2((b.x >= 0f ? -cameraSize.x : cameraSize.x) - a.x, b.y - a.y),
-            new Vector2(b.x - a.x, (b.y >= 0f ? -cameraSize.y : cameraSize.y) - a.y),
-            new Vector2((b.x >= 0f ? -cameraSize.x : cameraSize.x) - a.x, (b.y >= 0f ? -cameraSize.y : cameraSize.y) - a.y)
+            new Vector2((b.x >= 0f ? -mapSize.x : mapSize.x) - a.x, b.y - a.y),
+            new Vector2(b.x - a.x, (b.y >= 0f ? -mapSize.y : mapSize.y) - a.y),
+            new Vector2((b.x >= 0f ? -mapSize.x : mapSize.x) - a.x, (b.y >= 0f ? -mapSize.y : mapSize.y) - a.y)
         };
 
         Vector2 minDir = possibleDir[0];
@@ -85,7 +98,7 @@ public static class PhysicsToric
 
         for (int i = 0; i < 4; i++)
         {
-            if (CustomCollider2D.CollideHitboxLine(cameraHitboxArounds[i], line, out toricInter))
+            if (CustomCollider2D.CollideHitboxLine(mapHitboxArounds[i], line, out toricInter))
             {
                 return true;
             }
@@ -112,7 +125,7 @@ public static class PhysicsToric
         bool[] collideWithCamHitbox = new bool[4];
         for(int i = 0; i < 4; i++)
         {
-            Hitbox h = cameraHitboxArounds[i];
+            Hitbox h = mapHitboxArounds[i];
             if(CustomCollider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
@@ -133,11 +146,11 @@ public static class PhysicsToric
         {
             if (collideWithCamHitbox[i])
             {
-                circle.MoveAt(circle.center - cameraHitboxArounds[i].center);
+                circle.MoveAt(circle.center - mapHitboxArounds[i].center);
                 res = Physics2D.OverlapCircle(center, radius, layerMask);
                 if (res != null)
                     return res;
-                circle.MoveAt(circle.center + cameraHitboxArounds[i].center);
+                circle.MoveAt(circle.center + mapHitboxArounds[i].center);
             }
         }
 
@@ -154,7 +167,7 @@ public static class PhysicsToric
         bool[] collideWithCamHitbox = new bool[4];
         for (int i = 0; i < 4; i++)
         {
-            Hitbox h = cameraHitboxArounds[i];
+            Hitbox h = mapHitboxArounds[i];
             if (CustomCollider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
@@ -173,11 +186,11 @@ public static class PhysicsToric
         {
             if (collideWithCamHitbox[i])
             {
-                circle.MoveAt(circle.center - cameraHitboxArounds[i].center);
+                circle.MoveAt(circle.center - mapHitboxArounds[i].center);
                 Collider2D[] res2 = Physics2D.OverlapCircleAll(center, radius, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
-                circle.MoveAt(circle.center + cameraHitboxArounds[i].center);
+                circle.MoveAt(circle.center + mapHitboxArounds[i].center);
             }
         }
 
@@ -193,7 +206,7 @@ public static class PhysicsToric
         bool containAll = true;
         foreach (Vector2 p in hitbox.rec.vertices)
         {
-            if(!cameraHitbox.Contains(p))
+            if(!mapHitbox.Contains(p))
             {
                 containAll = false;
                 break;
@@ -215,7 +228,7 @@ public static class PhysicsToric
         {
             for (int i = 0; i < 4; i++)
             {
-                if (!contains[i] && cameraHitboxArounds[i].Contains(p))
+                if (!contains[i] && mapHitboxArounds[i].Contains(p))
                     contains[i] = true;
             }
         }
@@ -224,11 +237,11 @@ public static class PhysicsToric
         {
             if (contains[i])
             {
-                hitbox.MoveAt(hitbox.center - cameraHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center - mapHitboxArounds[i].center);
                 res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
                 if (res != null)
                     return res;
-                hitbox.MoveAt(hitbox.center + cameraHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center + mapHitboxArounds[i].center);
             }
         }
         return res;
@@ -244,7 +257,7 @@ public static class PhysicsToric
         bool containAll = true;
         foreach (Vector2 p in hitbox.rec.vertices)
         {
-            if (!cameraHitbox.Contains(p))
+            if (!mapHitbox.Contains(p))
             {
                 containAll = false;
                 break;
@@ -263,7 +276,7 @@ public static class PhysicsToric
         {
             for (int i = 0; i < 4; i++)
             {
-                if (!contains[i] && cameraHitboxArounds[i].Contains(p))
+                if (!contains[i] && mapHitboxArounds[i].Contains(p))
                     contains[i] = true;
             }
         }
@@ -272,11 +285,11 @@ public static class PhysicsToric
         {
             if (contains[i])
             {
-                hitbox.MoveAt(hitbox.center - cameraHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center - mapHitboxArounds[i].center);
                 Collider2D[] res2 = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
-                hitbox.MoveAt(hitbox.center + cameraHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center + mapHitboxArounds[i].center);
             }
         }
         return res == null ? null : res.Distinct().ToArray();
@@ -385,7 +398,7 @@ public static class PhysicsToric
         if (raycast.collider == null)
         {
             Vector2 B = from + direction * distance;
-            if (cameraHitbox.Contains(B))
+            if (mapHitbox.Contains(B))
             {
                 reachDistance += distance;
                 return raycast;
@@ -393,12 +406,12 @@ public static class PhysicsToric
             else
             {
                 ray = new Line(from, B);
-                if (CustomCollider2D.CollideHitboxLine(cameraHitbox, ray, out Vector2 cp))
+                if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp))
                 {
                     float tmpDist = from.Distance(cp);
                     reachDistance += tmpDist;
-                    Vector2 step = new Vector2(cp.x - cameraHitbox.center.x > 0f ? 0.01f : -0.01f, cp.y - cameraHitbox.center.y > 0f ? 0.01f : -0.01f);
-                    while (cameraHitbox.Contains(cp))
+                    Vector2 step = new Vector2(cp.x - mapHitbox.center.x > 0f ? 0.01f : -0.01f, cp.y - mapHitbox.center.y > 0f ? 0.01f : -0.01f);
+                    while (mapHitbox.Contains(cp))
                     {
                         cp += step;
                     }
@@ -418,18 +431,18 @@ public static class PhysicsToric
             }
         }
         //raycast.collider != null
-        if (cameraHitbox.Contains(raycast.point))
+        if (mapHitbox.Contains(raycast.point))
         {
             reachDistance += raycast.distance;
             return raycast;
         }
         ray = new Line(from, from + direction * distance);
-        if (CustomCollider2D.CollideHitboxLine(cameraHitbox, ray, out Vector2 cp2))
+        if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp2))
         {
             float tmpDist = from.Distance(cp2);
             reachDistance += tmpDist;
-            Vector2 step = new Vector2(cp2.x - cameraHitbox.center.x > 0f ? 0.01f : -0.01f, cp2.y - cameraHitbox.center.y > 0f ? 0.01f : -0.01f);
-            while (cameraHitbox.Contains(cp2))
+            Vector2 step = new Vector2(cp2.x - mapHitbox.center.x > 0f ? 0.01f : -0.01f, cp2.y - mapHitbox.center.y > 0f ? 0.01f : -0.01f);
+            while (mapHitbox.Contains(cp2))
             {
                 cp2 += step;
             }
@@ -487,7 +500,7 @@ public static class PhysicsToric
 
         for (int i = 0; i < 4; i++)
         {
-            if (CustomCollider2D.CollideHitboxLine(cameraHitboxArounds[i], line, out Vector2 tmpInter))
+            if (CustomCollider2D.CollideHitboxLine(mapHitboxArounds[i], line, out Vector2 tmpInter))
             {
                 collide = true;
                 float sqrDist = from.SqrDistance(tmpInter);
@@ -594,21 +607,21 @@ public static class PhysicsToric
             return raycasts;
 
         Vector2 end = start + dir * distance;
-        if (cameraHitbox.Contains(end))
+        if (mapHitbox.Contains(end))
         {
             Circle c = new Circle(end, radius);
             bool calculateEdge = false;
-            if(CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)) ||
-                CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)))
+            if(CustomCollider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)) ||
+                CustomCollider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)))
             {
-                end += Vector2.right * (end.x >= 0f ? -cameraSize.x : cameraSize.x);
+                end += Vector2.right * (end.x >= 0f ? -mapSize.x : mapSize.x);
                 calculateEdge = true;
             }
 
-            if (CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * 0.5f, 0.5f * new Vector2(-cameraHitbox.size.x, cameraHitbox.size.y)) ||
-                CustomCollider2D.CollideCircleLine(c, cameraHitbox.size * (-0.5f), 0.5f * new Vector2(cameraHitbox.size.x, -cameraHitbox.size.y)))
+            if (CustomCollider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)) ||
+                CustomCollider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)))
             {
-                end += Vector2.up * (end.y >= 0f ? -cameraSize.y : cameraSize.y);
+                end += Vector2.up * (end.y >= 0f ? -mapSize.y : mapSize.y);
                 calculateEdge = true;
             }
             if (calculateEdge)
@@ -617,7 +630,7 @@ public static class PhysicsToric
         }
         else
         {
-            if (CustomCollider2D.CollideHitboxLine(cameraHitbox, start, end, out Vector2 col))
+            if (CustomCollider2D.CollideHitboxLine(mapHitbox, start, end, out Vector2 col))
             {
                 inters.Add(col);
                 float newDist = distance - start.Distance(col);
@@ -627,7 +640,7 @@ public static class PhysicsToric
             else
             {
                 Debug.LogWarning("must be collision");
-                LogManager.instance.WriteLog("must be collision between cameraHitbox and the line in PhysicToric.CircleCastRecur()", cameraHitbox, new Line(start, end));
+                LogManager.instance.WriteLog("must be collision between cameraHitbox and the line in PhysicToric.CircleCastRecur()", mapHitbox, new Line(start, end));
                 return raycasts;
             }
         }
@@ -636,7 +649,7 @@ public static class PhysicsToric
         {
             for (int i = raycasts.Count - 1; i >= 0; i--)
             {
-                if (raycasts[i].collider == null || !cameraHitbox.Contains(raycasts[i].point))
+                if (raycasts[i].collider == null || !mapHitbox.Contains(raycasts[i].point))
                 {
                     raycasts.RemoveAt(i);
                 }

@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using UnityEngine;
-using static SpawnConfigsData;
-using System.Linq;
 
 public class LevelMapData : MonoBehaviour
 {
+    public static LevelMapData currentMap;
+    public static Action<LevelMapData> onMapChange = default(Action<LevelMapData>);
+
     private SpawnConfigsData spawnConfigs;
 
     [Header("Save spawn Point")]
@@ -15,6 +16,30 @@ public class LevelMapData : MonoBehaviour
     [SerializeField] private bool clearSpawnConfig;
     [SerializeField] private string relatifSpawnConfigsPath;
     [SerializeField] private Vector2[] spawnConfig;
+
+    [field: SerializeField] public Vector2 mapSize { get; private set; } = new Vector2(32, 18);
+    [HideInInspector] public Vector2 cellSize { get; private set; }
+
+    private void Awake()
+    {
+        currentMap = this;
+    }
+
+    private void Start()
+    {
+        GameObject tilemapGo = null;
+        foreach (Transform child in transform)
+        {
+            if(child.CompareTag("Tilemap"))
+            {
+                tilemapGo = child.gameObject;
+                break;
+            }
+        }
+        Grid grid = tilemapGo.GetComponent<Grid>();
+        cellSize = grid.cellSize;
+        onMapChange.Invoke(this);
+    }
 
     public SpawnConfigsData LoadSpawnPoint()
     {
@@ -27,7 +52,7 @@ public class LevelMapData : MonoBehaviour
         return null;
     }
 
-    public List<SpawnConfigPoints> LoadSpawnPoint(int nbChar)
+    public List<SpawnConfigsData.SpawnConfigPoints> LoadSpawnPoint(int nbChar)
     {
         if (Save.ReadJSONData<SpawnConfigsData>(relatifSpawnConfigsPath + SettingsManager.saveFileExtension, out spawnConfigs))
         {
@@ -47,6 +72,10 @@ public class LevelMapData : MonoBehaviour
         spawnConfigs = null;
         return null;
     }
+
+    #region Gizmos/OnValidate
+
+#if UNITY_EDITOR
 
     private static Dictionary<int, float> convertNbCharToRadius = new Dictionary<int, float>
     {
@@ -90,6 +119,7 @@ public class LevelMapData : MonoBehaviour
 
     private void OnValidate()
     {
+        currentMap = this;
         if (addSpawnConfig && spawnConfig != null && spawnConfig.Length >= 2 && spawnConfig.Length <= 4)
         {
             //Save info
@@ -131,6 +161,10 @@ public class LevelMapData : MonoBehaviour
         }
         loadSpawnConfig = false;
     }
+
+#endif
+
+    #endregion
 }
 
 #region SpawnConfigsData

@@ -12,6 +12,6 @@ public class CloneParent : MonoBehaviour
             return;
         }
         cloneParent = transform;
-        DontDestroyOnLoad(gameObject);
+        this.AddToDontDestroyOnLoad();
     }
 }

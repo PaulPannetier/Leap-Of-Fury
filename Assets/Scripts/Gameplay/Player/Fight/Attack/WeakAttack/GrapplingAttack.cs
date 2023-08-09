@@ -220,9 +220,10 @@ public class GrapplingAttack : WeakAttack
                 end = i != nbLineRenderer - 1 ? lineRendererPoints[i] : PhysicsToric.GetPointInsideBounds(attachPoint);
                 lstlineRenderers[i].positionCount = 2;
                 lstlineRenderers[i].SetPositions(new Vector3[2] { beg, end });
+                Hitbox mapHitbox = new Hitbox(Vector2.zero, LevelMapData.currentMap.mapSize);
                 if(i != nbLineRenderer - 1)
                 {
-                    while (PhysicsToric.cameraHitbox.Contains(end))
+                    while (mapHitbox.Contains(end))
                     {
                         end += new Vector2(0.01f * (end.x >= 0f ? 1f : -1), 0.01f * (end.y >= 0f ? 1f : -1f));
                     }

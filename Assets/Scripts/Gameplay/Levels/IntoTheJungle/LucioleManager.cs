@@ -61,7 +61,7 @@ public class LucioleManager : MonoBehaviour
         go.transform.parent = CloneParent.cloneParent;
         for (int i = 0; i < count; i++)
         {
-            Vector2 pos = Random.PointInRectangle(Vector2.zero, PhysicsToric.cameraSize);
+            Vector2 pos = Random.PointInRectangle(Vector2.zero, LevelMapData.currentMap.mapSize);
             GameObject lucioleGO = Instantiate(luciolePrefab, pos, Quaternion.Euler(0f, 0f, Random.RandExclude(0f, 360f)), go.transform);
         }
     }

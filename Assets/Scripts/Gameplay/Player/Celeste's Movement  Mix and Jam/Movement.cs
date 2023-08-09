@@ -52,7 +52,9 @@ public class Movement : MonoBehaviour
     [Tooltip("La vitesse de marche")] [SerializeField] private float walkSpeed = 10f;
     [Tooltip("La vitesse d'interpolation de marche")] [SerializeField] private float speedLerp = 50f;
     [Tooltip("La propor de vitesse initiale de marche")] [SerializeField] [Range(0f, 1f)] private float initSpeed = 0.2f;
+    [Tooltip("La durée de conservation de la vitesse de marche apres avoir quitté une plateforme"), SerializeField] private float inertiaDurationWhenQuittingGround = 0.1f;
     private Vector2 localVelocityOnGrippingGround;
+    private float lastTimeQuitGround = -10f;
 
     [Header("Jumping")]
     [Tooltip("La hauteur min du saut.")] [SerializeField] private float jumpInitForce = 20f;
@@ -155,9 +157,9 @@ public class Movement : MonoBehaviour
     [SerializeField] private float minBumpDuration = 0.3f;
     private float lastTimeBump = -10f;
 
-   [Header("Map Object")]
+    [Header("Map Object")]
     [SerializeField] private float inertiaDurationWhenQuittingConvoyerBelt = 0.08f;
-    [SerializeField] private float inertiaSpeedWhenQuittingConvoyerBelt = 1f;
+    [SerializeField] private float speedWhenQuittingConvoyerBelt = 1f;
     private float lastTimeQuittingConvoyerBelt = -10f;
     private bool isQuittingConvoyerBelt, isQuittingConvoyerBeltRight, isQuittingConvoyerBeltLeft;
 
@@ -388,6 +390,7 @@ public class Movement : MonoBehaviour
         if (!isGrounded && oldOnGround)
         {
             groundColliderData = null;
+            lastTimeQuitGround = Time.time;
         }
         oldOnGround = isGrounded;
 
@@ -648,7 +651,7 @@ public class Movement : MonoBehaviour
                     HandleNormalWalk();
                     break;
                 case MapColliderData.GroundType.convoyerBelt:
-                    HandleConvoyerBelt();
+                    HandleConvoyerBeltWalk();
                     break;
                 default:
                     break;
@@ -780,7 +783,7 @@ public class Movement : MonoBehaviour
 
         #region HandleConvoyerBelt
 
-        void HandleConvoyerBelt()
+        void HandleConvoyerBeltWalk()
         {
             ConvoyerBelt convoyer = groundColliderData.GetComponent<ConvoyerBelt>();
             if(!convoyer.enableBehaviour)
@@ -1224,14 +1227,14 @@ public class Movement : MonoBehaviour
             //Clamp, on est dans le mauvais sens
             if(isQuittingConvoyerBelt)
             {
-                float speed = inertiaSpeedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
+                float speed = speedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
                 rb.velocity = new Vector2(speed, rb.velocity.y);
             }
-            else
+            else if(Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)//else just keep our velocity
             {
                 if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
-                if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+                if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x && playerInput.rawX != 0)
                 {
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
                 }
@@ -1532,6 +1535,7 @@ public class Movement : MonoBehaviour
         maxBumpDuration = Mathf.Max(minBumpDuration, maxBumpDuration);
         minBumpDuration = Mathf.Min(minBumpDuration, maxBumpDuration);
         maxPreciseGrabValue = Mathf.Max(maxPreciseGrabValue, 0f);
+        inertiaDurationWhenQuittingGround = Mathf.Max(inertiaDurationWhenQuittingGround, 0f);
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 

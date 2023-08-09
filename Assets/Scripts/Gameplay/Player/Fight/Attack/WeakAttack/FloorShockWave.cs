@@ -29,7 +29,7 @@ public class FloorShockWave : MonoBehaviour
 
     public void Launch(in Vector2 impactPoint, in bool right, in float maxSpeed, FallAttack fallAttack)
     {
-        RaycastHit2D raycast = Physics2D.Raycast(impactPoint, Vector2.down, PhysicsToric.cameraSize.y, groundMask);
+        RaycastHit2D raycast = Physics2D.Raycast(impactPoint, Vector2.down, LevelMapData.currentMap.mapSize.y, groundMask);
         if(raycast.collider == null)
         {
             print("Debug shock wave raycasting! plsss");

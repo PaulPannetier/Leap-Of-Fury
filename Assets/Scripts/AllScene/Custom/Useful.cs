@@ -2018,10 +2018,10 @@ public static class Useful
         return tex;
     }
 
-    public static void AddToDontDestroyOnLoad(this GameObject obj)
+    public static void AddToDontDestroyOnLoad(this MonoBehaviour obj)
     {
         obj.transform.parent = null;
-        UnityEngine.Object.DontDestroyOnLoad(obj);
+        UnityEngine.Object.DontDestroyOnLoad(obj.gameObject);
     }
 
     public static void RemoveFromDontDestroyOnLoad(this GameObject obj)

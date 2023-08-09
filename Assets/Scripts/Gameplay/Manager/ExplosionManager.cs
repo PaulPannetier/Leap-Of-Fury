@@ -5,42 +5,25 @@ public class ExplosionManager : MonoBehaviour
 {
     public static ExplosionManager instance { get; private set; }
 
-    private Rigidbody2D[] moveWidthExplosion;
-    private float maxDistance;
+    public static void AddMovingWithExplosionRidgidbody(Rigidbody2D rb)
+    {
+        instance.AddRidgidbody(rb);
+    }
+
+    private List<Rigidbody2D> moveWidthExplosion;
+    private float maxDistance => Mathf.Max(LevelMapData.currentMap.mapSize.x, LevelMapData.currentMap.mapSize.y) * 0.5f;
 
     [SerializeField] private AnimationCurve explosionForceCurvePerDistance;
 
     private void Awake()
     {
-        if(instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
         instance = this;
-
-        ResearchMoveWithExplosionGameobject();
+        moveWidthExplosion = new List<Rigidbody2D>();
     }
 
-    private void Start()
+    private void AddRidgidbody(Rigidbody2D rb)
     {
-        maxDistance = Mathf.Max(PhysicsToric.cameraSize.x, PhysicsToric.cameraSize.y) * 0.5f;
-    }
-
-    public void ResearchMoveWithExplosionGameobject()
-    {
-        List<Rigidbody2D> movers = new List<Rigidbody2D>();
-        MoveWhenMoverPassThrough[] tmp = FindObjectsOfType<MoveWhenMoverPassThrough>();
-        for (int i = 0; i < tmp.Length; i++)
-        {
-            if (tmp[i].moveOnExplosion)
-            {
-                Rigidbody2D rb = tmp[i].GetComponent<Rigidbody2D>();
-                if (rb != null)
-                    movers.Add(rb);
-            }
-        }
-        moveWidthExplosion = movers.ToArray();
+        moveWidthExplosion.Add(rb);
     }
 
     public void CreateExplosion(in Vector2 position, float force)

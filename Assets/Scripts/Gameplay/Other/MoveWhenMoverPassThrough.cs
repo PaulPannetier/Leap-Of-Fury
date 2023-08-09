@@ -21,6 +21,7 @@ public class MoveWhenMoverPassThrough : MonoBehaviour
     {
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
+        ExplosionManager.AddMovingWithExplosionRidgidbody(rb);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -76,10 +77,15 @@ public class MoveWhenMoverPassThrough : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         forceMultiplier = Mathf.Max(0f, forceMultiplier);
         maxForce.x = Mathf.Max(0f, maxForce.x);
         maxForce.y = Mathf.Max(0f, maxForce.y);
     }
+
+#endif
+
 }

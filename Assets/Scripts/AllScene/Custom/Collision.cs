@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using UnityEngine;
 
 #region 2D Collisions
@@ -2730,10 +2731,21 @@ public class Polygone : CustomCollider2D
 
     #region Contain
 
+    private static int count = 0;
+
     public override bool Contains(in Vector2 P)
     {
         if (vertices == null || vertices.Count < 3)
             return false;
+
+        Polygone.count++;
+
+        if(Polygone.count > 5)
+        {
+            Polygone.count = count + 1;
+            Polygone.count = count - 1;
+        }
+
 
         int i;
         Vector2 I = ExternalPoint();
@@ -2747,6 +2759,8 @@ public class Polygone : CustomCollider2D
                 return Contains(P);  // cas limite, on relance la fonction.
             nbintersections += iseg;
         }
+
+        Polygone.count = 0;
         return Useful.IsOdd(nbintersections);
 
         Vector2 ExternalPoint()

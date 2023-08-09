@@ -72,10 +72,10 @@ public class BounceShotAttack : StrongAttack
         while (data.nbBounce <= maxBounce)
         {
             raycast = Physics2D.Raycast(oldPoint, data.lastDirection, maxDistance - data.totalDist, groundMask);
-
+            Hitbox mapHitbox = new Hitbox(Vector2.zero, LevelMapData.currentMap.mapSize);
             if (raycast.collider != null)
             {
-                if (PhysicsToric.cameraHitbox.Contains(raycast.point))
+                if (mapHitbox.Contains(raycast.point))
                 {
                     data.totalDist += raycast.distance;
                     if (raycast.normal == Vector2.up || raycast.normal == Vector2.down)
@@ -100,11 +100,11 @@ public class BounceShotAttack : StrongAttack
                 else
                 {
                     Line ray = new Line(oldPoint, raycast.point);
-                    if (CustomCollider2D.CollideHitboxLine(PhysicsToric.cameraHitbox, ray, out Vector2 edgePoint))
+                    if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 edgePoint))
                     {
                         data.rayPoints.Add(edgePoint);
                         data.totalDist += oldPoint.Distance(edgePoint);
-                        while (PhysicsToric.cameraHitbox.Contains(edgePoint))
+                        while (mapHitbox.Contains(edgePoint))
                         {
                             float ox = edgePoint.x < 0f ? -detectionTolerance : detectionTolerance;
                             float oy = edgePoint.y < 0f ? -detectionTolerance : detectionTolerance;
@@ -124,7 +124,7 @@ public class BounceShotAttack : StrongAttack
             else
             {
                 Vector2 endPoint = oldPoint + data.lastDirection * (maxDistance - data.totalDist);
-                if (PhysicsToric.cameraHitbox.Contains(endPoint))
+                if (mapHitbox.Contains(endPoint))
                 {
                     data.rayPoints.Add(endPoint);
                     break;
@@ -132,11 +132,11 @@ public class BounceShotAttack : StrongAttack
                 else
                 {
                     Line ray = new Line(oldPoint, endPoint);
-                    if (CustomCollider2D.CollideHitboxLine(PhysicsToric.cameraHitbox, ray, out Vector2 edgePoint))
+                    if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 edgePoint))
                     {
                         data.rayPoints.Add(edgePoint);
                         data.totalDist += oldPoint.Distance(edgePoint);
-                        while (PhysicsToric.cameraHitbox.Contains(edgePoint))
+                        while (mapHitbox.Contains(edgePoint))
                         {
                             float ox = edgePoint.x < 0f ? -detectionTolerance : detectionTolerance;
                             float oy = edgePoint.y < 0f ? -detectionTolerance : detectionTolerance;

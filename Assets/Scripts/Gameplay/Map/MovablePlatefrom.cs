@@ -10,7 +10,7 @@ public class MovablePlatefrom : MonoBehaviour
     }
 
     private static Vector2Int nbCaseGrid = new Vector2Int(32, 18);
-    private static Vector2 caseSize => PhysicsToric.cameraSize / nbCaseGrid;
+    private static Vector2 caseSize => LevelMapData.currentMap.mapSize / nbCaseGrid;
     private static Vector2[] convertHitboxSideToDir = new Vector2[5]
     {
         Vector2.up, Vector2.down, Vector2.left, Vector2.right, Vector2.zero
@@ -248,13 +248,13 @@ public class MovablePlatefrom : MonoBehaviour
     private Vector2Int GetCase(in Vector2 pos)
     {
         Vector2 caseSize = MovablePlatefrom.caseSize;
-        return new Vector2Int(Useful.ClampModulo(0, nbCaseGrid.x, (int)((pos.x + 0.5f * PhysicsToric.cameraSize.x) / caseSize.x)), (int)((pos.y + 0.5f * PhysicsToric.cameraSize.y) / caseSize.y));
+        return new Vector2Int(Useful.ClampModulo(0, nbCaseGrid.x, (int)((pos.x + 0.5f * LevelMapData.currentMap.mapSize.x) / caseSize.x)), (int)((pos.y + 0.5f * LevelMapData.currentMap.mapSize.y) / caseSize.y));
     }
 
     private Vector2 GetCasePos(in Vector2Int casePos)
     {
         Vector2 caseSize = MovablePlatefrom.caseSize;
-        return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * caseSize.x - 0.5f * PhysicsToric.cameraSize.x, (casePos.y + 0.5f) * caseSize.y - 0.5f * PhysicsToric.cameraSize.y));
+        return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * caseSize.x - 0.5f * LevelMapData.currentMap.mapSize.x, (casePos.y + 0.5f) * caseSize.y - 0.5f * LevelMapData.currentMap.mapSize.y));
     }
 
     private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir, float padding)//ok
@@ -416,6 +416,8 @@ public class MovablePlatefrom : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         if (hitbox == null)
@@ -437,7 +439,7 @@ public class MovablePlatefrom : MonoBehaviour
         if(gizmosDrawGrid)
         {
             Vector2 caseSize = MovablePlatefrom.caseSize;
-            Vector2 offset = -0.5f * PhysicsToric.cameraSize + 0.5f * caseSize;
+            Vector2 offset = -0.5f * LevelMapData.currentMap.mapSize + 0.5f * caseSize;
             Gizmos.color = Color.red;
             for (int y = 0; y < nbCaseGrid.y; y++)
             {
@@ -476,6 +478,9 @@ public class MovablePlatefrom : MonoBehaviour
         print(hitboxSide);
     }
     */
+
+#endif
+
     #endregion
 
 }

@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class ToricObject : MonoBehaviour
 {
-    private static Bounds[] cameraBounds = new Bounds[4]
-    {
-            new Bounds(new Vector3(0f, PhysicsToric.cameraSize.y), PhysicsToric.cameraSize.ToVector3()),//haut
-            new Bounds(new Vector3(0f, -PhysicsToric.cameraSize.y), PhysicsToric.cameraSize.ToVector3()),//bas
-            new Bounds(new Vector3(PhysicsToric.cameraSize.x, 0f), PhysicsToric.cameraSize.ToVector3()),//droite
-            new Bounds(new Vector3(-PhysicsToric.cameraSize.x, 0f), PhysicsToric.cameraSize.ToVector3()) //gauche
-    };
+    private static Bounds[] mapBounds;
     private static Vector2[] camOffsets;
     private static int[] invertCamOffsetIndex = new int[4] { 1, 0, 3, 2 };
 
@@ -32,28 +26,38 @@ public class ToricObject : MonoBehaviour
     private void Awake()
     {
         onTeleportCallback = (Vector2 newPos, Vector2 oldPos) => { };
+        LevelMapData.onMapChange += OnMapChange;
     }
 
     private void Start()
     {
-        if(camOffsets == null)
-        {
-            camOffsets = new Vector2[4]
-            {
-                new Vector2(0f, -PhysicsToric.cameraSize.y),
-                new Vector2(0f, PhysicsToric.cameraSize.y),
-                new Vector2(-PhysicsToric.cameraSize.x, 0f),
-                new Vector2(PhysicsToric.cameraSize.x, 0f)
-            };
-        }
         if(lstClones == null)
             lstClones = new List<ObjectClone>();
+    }
+
+    private void OnMapChange(LevelMapData mapData)
+    {
+        camOffsets = new Vector2[4]
+        {
+            new Vector2(0f, -mapData.mapSize.y),
+            new Vector2(0f, mapData.mapSize.y),
+            new Vector2(-mapData.mapSize.x, 0f),
+            new Vector2(mapData.mapSize.x, 0f)
+        };
+
+        mapBounds = new Bounds[4]
+        {
+            new Bounds(new Vector3(0f, mapData.mapSize.y), mapData.mapSize.ToVector3()),//haut
+            new Bounds(new Vector3(0f, -mapData.mapSize.y), mapData.mapSize.ToVector3()),//bas
+            new Bounds(new Vector3(mapData.mapSize.x, 0f), mapData.mapSize.ToVector3()),//droite
+            new Bounds(new Vector3(-mapData.mapSize.x, 0f), mapData.mapSize.ToVector3()) //gauche
+        };
     }
 
     /// <summary>
     /// Applique la fonction en param du type de script en param aux clone/GO original
     /// </summary>
-    public void ApplyToOther<T>(string methodName, in float delay = 0f) where T : MonoBehaviour
+    public void ApplyToOther<T>(string methodName, float delay = 0f) where T : MonoBehaviour
     {
         if(isAClone)
         {
@@ -77,7 +81,7 @@ public class ToricObject : MonoBehaviour
 
     private bool CollideWithCamBounds(in int index, out Vector2 offset)
     {
-        if(bounds.Intersects(cameraBounds[index]))
+        if(bounds.Intersects(mapBounds[index]))
         {
             offset = camOffsets[index];
             return true;
@@ -144,7 +148,7 @@ public class ToricObject : MonoBehaviour
                 }
             }
 
-            if(collideWithCamBounds[i] && cameraBounds[i].Contains(bounds.center))
+            if(collideWithCamBounds[i] && mapBounds[i].Contains(bounds.center))
             {
                 //On switch le clone est l'original
                 foreach (ObjectClone clone in lstClones)
@@ -208,13 +212,26 @@ public class ToricObject : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        LevelMapData.onMapChange -= OnMapChange;
+    }
+
+#if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position + boundsOffset.ToVector3(), bounds.size);
 
-        Gizmos.DrawWireCube(Vector3.zero, PhysicsToric.cameraSize);
+        if(LevelMapData.currentMap == null)
+        {
+            LevelMapData.currentMap = GameObject.FindGameObjectWithTag("Map").GetComponent<LevelMapData>();
+        }
+        Gizmos.DrawWireCube(Vector3.zero, LevelMapData.currentMap.mapSize);
     }
+
+#endif
 
     [Serializable]
     public class ObjectClone
