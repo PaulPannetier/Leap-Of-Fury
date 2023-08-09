@@ -13,7 +13,8 @@ public class ColliderDrawer : MonoBehaviour
 
     public bool enableBehaviour = true;
     public bool AddCreatedBoxCollider2D;
-    public bool RemoveAllHitbox;
+    public bool removeAllHitbox;
+    public bool clearSavedCollider;
     public bool drawGrid = true;
     [SerializeField] private GameObject goToAddBoxCollider2D;
     [SerializeField] private Vector2 caseSize = Vector2.one, gridSize = new Vector2(32f, 18f);
@@ -38,10 +39,10 @@ public class ColliderDrawer : MonoBehaviour
     [ExecuteAlways]
     private void Update()
     {
-        if (RemoveAllHitbox)
+        if (removeAllHitbox)
         {
             RemoveBoxColliders();
-            RemoveAllHitbox = false;
+            removeAllHitbox = false;
         }
 
         if (!enableBehaviour)
@@ -87,10 +88,10 @@ public class ColliderDrawer : MonoBehaviour
             SaveCollider();
         }
 
-        if (RemoveAllHitbox)
+        if (removeAllHitbox)
         {
             RemoveBoxColliders();
-            RemoveAllHitbox = false;
+            removeAllHitbox = false;
         }
     }
     
@@ -196,6 +197,13 @@ public class ColliderDrawer : MonoBehaviour
                 boxCollider.size = data.size[i];
             }
             AddCreatedBoxCollider2D = false;
+        }
+
+        if(clearSavedCollider)
+        {
+            recToAdd.Clear();
+            SaveCollider();
+            clearSavedCollider = false;
         }
     }
 

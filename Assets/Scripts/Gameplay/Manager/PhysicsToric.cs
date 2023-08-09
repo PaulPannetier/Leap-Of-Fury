@@ -14,7 +14,7 @@ public static class PhysicsToric
         new Hitbox(new Vector3(cameraSize.x, 0f), cameraSize),//droite
         new Hitbox(new Vector2(-cameraSize.x, 0f), cameraSize) //gauche
     };
-    public static readonly Hitbox cameraHitbox = new Hitbox(Vector2.zero, cameraSize);
+    public static Hitbox cameraHitbox => new Hitbox(Vector2.zero, cameraSize);
 
     /// <param name="point"></param>
     /// <returns>Le point visible au coor donnée en param dans l'espace torique</returns>

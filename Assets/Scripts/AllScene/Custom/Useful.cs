@@ -1853,6 +1853,8 @@ public static class Useful
 
     #region Invoke
 
+    #region Invoke simple
+
     public static void InvokeWaitAFrame(this MonoBehaviour script, string methodName)
     {
         script.StartCoroutine(InvokeWaitAFrameCorout(script, methodName));
@@ -1874,6 +1876,8 @@ public static class Useful
         yield return GetWaitForSeconds(delay);
         method.Invoke();
     }
+
+    #endregion
 
     #region Invoke<T>
 
@@ -1908,6 +1912,66 @@ public static class Useful
     {
         yield return GetWaitForSeconds(delay);
         method.Invoke(param1, param2, param3);
+    }
+
+    #endregion
+
+    #region InvokeRepeating
+
+    public static void InvokeRepeating(this MonoBehaviour script, Action method, float deltaTime)
+    {
+        script.StartCoroutine(InvokeRepeatingCorout(method, deltaTime, -1f));
+    }
+
+    public static void InvokeRepeating(this MonoBehaviour script, Action method, float deltaTime, float duration)
+    {
+        script.StartCoroutine(InvokeRepeatingCorout(method, deltaTime, duration));
+    }
+
+    private static IEnumerator InvokeRepeatingCorout(Action method, float deltaTime, float duration)
+    {
+        float timeBeg = Time.time;
+        float time = Time.time;
+
+        while(duration < Mathf.Epsilon || Time.time - timeBeg < duration)
+        {
+            if(Time.time - time < deltaTime)
+            {
+                method.Invoke();
+                time = Time.time;
+            }
+            yield return null;
+        }
+    }
+
+    #endregion
+
+    #region InvokeRepeating<T>
+
+    public static void InvokeRepeating<T>(this MonoBehaviour script, Action<T> method, T param, float deltaTime)
+    {
+        script.StartCoroutine(InvokeRepeatingCorout(method, param, deltaTime, -1f));
+    }
+
+    public static void InvokeRepeating<T>(this MonoBehaviour script, Action<T> method, T param, float deltaTime, float duration)
+    {
+        script.StartCoroutine(InvokeRepeatingCorout(method, param, deltaTime, duration));
+    }
+
+    private static IEnumerator InvokeRepeatingCorout<T>(Action<T> method, T param, float deltaTime, float duration)
+    {
+        float timeBeg = Time.time;
+        float time = Time.time;
+
+        while (duration < Mathf.Epsilon || Time.time - timeBeg < duration)
+        {
+            if (Time.time - time < deltaTime)
+            {
+                method.Invoke(param);
+                time = Time.time;
+            }
+            yield return null;
+        }
     }
 
     #endregion

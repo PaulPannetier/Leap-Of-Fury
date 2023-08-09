@@ -1,5 +1,5 @@
 Before BUILD : 
-Remove MapTest in all level
+Remove MapTest and remove CharsParentsChild in all level
 
 AFTER BUILD :
 Copy save folder and paste it in the game build folder.

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 public class Lampe : MonoBehaviour
 {
     public bool enableBehaviour = true;
@@ -96,6 +95,8 @@ public class Lampe : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         avgIntensity = Mathf.Max(0f, avgIntensity);
@@ -103,7 +104,13 @@ public class Lampe : MonoBehaviour
         intensityVariation = Mathf.Max(0f, intensityVariation);
         avgWindForce = Mathf.Max(0f, avgWindForce);
         windFrequency = Mathf.Max(0f, windFrequency);
+        lamp = GetComponentInChildren<UnityEngine.Rendering.Universal.Light2D>();
+        lamp.intensity = avgIntensity;
+        lamp.pointLightInnerRadius = innerRadius;
+        lamp.pointLightOuterRadius = radius;
     }
 
-    #endregion
+#endif
+
+#endregion
 }
