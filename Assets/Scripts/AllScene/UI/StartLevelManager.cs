@@ -26,7 +26,7 @@ public class StartLevelManager : MonoBehaviour
 
         AnimationClip animClips = levelNameAnim.GetAnimationsClips()[0];
         levelNameAnim.CrossFade(animClips.name, 0, 0);
-        this.Invoke(nameof(DisableGO), levelNameUI, animClips.length);
+        this.Invoke(DisableGO, levelNameUI, animClips.length);
     }
 
     private void DisableGO(GameObject go)

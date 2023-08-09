@@ -94,9 +94,9 @@ public class MapSelectorController : MonoBehaviour
 
     private void TryLoadNextScene()
     {
-        object[] data = TransitionManager.instance.GetOldSceneData("Selection Char");
+        OldSceneData selectionCharSceneData = TransitionManager.instance.GetOldSceneData("Selection Char");
         MapSelectorItemData mapSelectorItemData = mapSelector.selectedItem.GetComponent<MapSelectorItemData>();
-        TransitionManager.instance.LoadSceneAsync(mapSelectorItemData.sceneName, data);
+        TransitionManager.instance.LoadSceneAsync(mapSelectorItemData.sceneName, selectionCharSceneData);
     }
 
     #region ControllerAlreadyInit

@@ -13,7 +13,7 @@ public class ButtonsFunction : MonoBehaviour
 
     public void LoadCharSelectorScene()
     {
-        TransitionManager.instance.LoadSceneAsync("Selection Char", null);
+        TransitionManager.instance.LoadSceneAsync("Selection Char", new OldSceneData("Screen Title"));
     }
 
     public void LoadOption()

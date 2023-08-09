@@ -50,11 +50,14 @@ public class TransitionManager : MonoBehaviour
 
     public void SetOldSceneData(OldSceneData oldSceneData)
     {
-        if(this.oldScenesData.ContainsKey(oldSceneData.sceneName))
+        if(oldScenesData.ContainsKey(oldSceneData.sceneName))
         {
-            this.oldScenesData[oldSceneData.sceneName] = oldSceneData;
+            oldScenesData[oldSceneData.sceneName] = oldSceneData;
         }
-        oldScenesData.Add(oldSceneData.sceneName, oldSceneData);
+        else
+        {
+            oldScenesData.Add(oldSceneData.sceneName, oldSceneData);
+        }
     }
 
     #region UnitySceneManagement
@@ -259,7 +262,7 @@ public class TransitionManager : MonoBehaviour
 
 }
 
-public abstract class OldSceneData
+public class OldSceneData
 {
     public string sceneName;
 
