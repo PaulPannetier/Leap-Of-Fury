@@ -1230,7 +1230,7 @@ public class Movement : MonoBehaviour
                 float speed = speedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
                 rb.velocity = new Vector2(speed, rb.velocity.y);
             }
-            else if(Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)//else just keep our velocity
+            else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)//else just keep our velocity
             {
                 if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
