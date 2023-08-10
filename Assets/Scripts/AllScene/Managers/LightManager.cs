@@ -10,11 +10,6 @@ public class LightManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
         instance = this;
 
         UnityEngine.Rendering.Universal.Light2D[] allLights = GetComponentsInChildren<UnityEngine.Rendering.Universal.Light2D>();

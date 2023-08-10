@@ -9,10 +9,10 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     private Dictionary<string, AudioSource> currentSounds;
-    private Transform audioParent;
     private Dictionary<string, Coroutine> removeCorout;
     private Dictionary<string, Coroutine> changeVolumeCorout;
 
+    [SerializeField] private Transform audioParent;
     [SerializeField] [Range(0f, 1f)] private float _masterVolume = 1f, _musicVolume = 1f, _soundEffectsVolume = 1f;
     public float masterVolume { get => _masterVolume; set { _masterVolume = Mathf.Clamp01(value); RecaculateSoundVolume(); } }
     public float musicVolume { get => _musicVolume; set { _musicVolume = Mathf.Clamp01(value); RecaculateSoundVolume(); } }
@@ -32,7 +32,6 @@ public class AudioManager : MonoBehaviour
         currentSounds = new Dictionary<string, AudioSource>();
         removeCorout = new Dictionary<string, Coroutine>();
         changeVolumeCorout = new Dictionary<string, Coroutine>();
-        audioParent = transform.GetChild(1);
     }
 
     private void RecaculateSoundVolume()
