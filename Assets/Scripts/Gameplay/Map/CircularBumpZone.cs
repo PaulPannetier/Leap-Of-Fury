@@ -18,16 +18,20 @@ public class CircularBumpZone : BumpsZone
 
     protected override Collider2D[] GetTouchingChar()
     {
-        return PhysicsToric.OverlapCircleAll(transform.position, circleCollider.radius * collisionDetectionScale, charMask);
+        return PhysicsToric.OverlapCircleAll(transform.position, circleCollider.radius * Mathf.Max(collisionDetectionScale.x, collisionDetectionScale.y), charMask);
     }
 
-    protected override float GetBumpTimeOffet() => (circleCollider.radius * collisionDetectionScale - circleCollider.radius) / bumpSpeed;
+    protected override float GetBumpTimeOffet() => (circleCollider.radius * Mathf.Max(collisionDetectionScale.x, collisionDetectionScale.y) - circleCollider.radius) / bumpSpeed;
+
+#if UNITY_EDITOR
 
     protected override void OnDrawGizmosSelected()
     {
         base.OnDrawGizmosSelected();
         circleCollider = GetComponent<CircleCollider2D>();
         Gizmos.color = Color.green;
-        Circle.GizmosDraw((Vector2)transform.position + circleCollider.offset, circleCollider.radius * collisionDetectionScale);
+        Circle.GizmosDraw((Vector2)transform.position + circleCollider.offset, circleCollider.radius * Mathf.Max(collisionDetectionScale.x, collisionDetectionScale.y));
     }
+
+#endif
 }

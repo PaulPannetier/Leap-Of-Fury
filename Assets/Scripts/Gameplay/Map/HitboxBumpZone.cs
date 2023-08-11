@@ -35,12 +35,7 @@ public class HitboxBumpZone : BumpsZone
         return PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * collisionDetectionScale, 0f, charMask);
     }
 
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        hitbox = GetComponent<BoxCollider2D>();
-        transform.GetChild(0).localScale = new Vector3(hitbox.size.x, hitbox.size.y, 1f);
-    }
+#if UNITY_EDITOR
 
     protected override void OnDrawGizmosSelected()
     {
@@ -49,6 +44,8 @@ public class HitboxBumpZone : BumpsZone
         Gizmos.color = Color.green;
         Hitbox.GizmosDraw((Vector2)transform.position + hitbox.offset, hitbox.size * collisionDetectionScale);
     }
+
+#endif
 
     protected override float GetBumpTimeOffet() => (0.5f * Mathf.Max(hitbox.size.x, hitbox.size.y)) / bumpSpeed;
 }

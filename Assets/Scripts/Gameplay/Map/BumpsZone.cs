@@ -6,10 +6,15 @@ public abstract class BumpsZone : MonoBehaviour
     protected LayerMask charMask;
     private List<uint> charAlreadyTouch = new List<uint>();
 
-    [SerializeField] protected float collisionDetectionScale = 1.2f;
+    [SerializeField] protected Vector2 collisionDetectionScale = Vector2.one;
     [SerializeField] protected float bumpSpeed = 20f;
 
     protected virtual void Awake()
+    {
+
+    }
+
+    protected virtual void Start()
     {
         charMask = LayerMask.GetMask("Char");
     }
@@ -55,13 +60,17 @@ public abstract class BumpsZone : MonoBehaviour
         charAlreadyTouch.Clear();
     }
 
+#if UNITY_EDITOR
+
     protected virtual void OnValidate()
     {
-        collisionDetectionScale = Mathf.Max(collisionDetectionScale, 0f);
+        collisionDetectionScale = new Vector2(Mathf.Max(collisionDetectionScale.x, 0f), Mathf.Max(collisionDetectionScale.y, 0f));
     }
 
     protected virtual void OnDrawGizmosSelected()
     {
 
     }
+
+#endif
 }

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using System.Linq;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class MovablePlatefrom : MonoBehaviour
@@ -9,8 +10,6 @@ public class MovablePlatefrom : MonoBehaviour
         up = 0, down = 1, left = 2, right = 3, none = 4
     }
 
-    private static Vector2Int nbCaseGrid = new Vector2Int(32, 18);
-    private static Vector2 caseSize => LevelMapData.currentMap.mapSize / nbCaseGrid;
     private static Vector2[] convertHitboxSideToDir = new Vector2[5]
     {
         Vector2.up, Vector2.down, Vector2.left, Vector2.right, Vector2.zero
@@ -29,6 +28,7 @@ public class MovablePlatefrom : MonoBehaviour
     private Vector2[] convertHitboxSizeToBumbDir;
 
     public bool enableBehaviour = true;
+    [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
     [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
     [SerializeField] private float charDetectionDistance;
     [SerializeField] private float groundDetectionPadding = 0.1f;
@@ -91,7 +91,6 @@ public class MovablePlatefrom : MonoBehaviour
         }
         oldEnableBehaviour = enableBehaviour;
 
-        Vector2 caseSize = MovablePlatefrom.caseSize;
         if(isMoving)
         {
             oldIsShaking = false;
@@ -123,12 +122,12 @@ public class MovablePlatefrom : MonoBehaviour
                         if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
                         {
                             Vector2 tmp = GetCasePos(GetCase(new Vector2(overlapPos.x - overlapSize.x * 0.5f * moveDir.x.Sign(), overlapPos.y)));
-                            reachTargetPos = new Vector2(tmp.x - (0.5f * hitboxSize.x * caseSize.x) * moveDir.x.Sign() + 0.5f * caseSize.x * moveDir.x.Sign(), overlapPos.y);
+                            reachTargetPos = new Vector2(tmp.x - (0.5f * hitboxSize.x * LevelMapData.currentMap.mapSize.x) * moveDir.x.Sign() + 0.5f * LevelMapData.currentMap.mapSize.x * moveDir.x.Sign(), overlapPos.y);
                         }
                         else
                         {
                             Vector2 tmp = GetCasePos(GetCase(new Vector2(overlapPos.x, overlapPos.y - overlapSize.y * 0.5f * moveDir.y.Sign())));
-                            reachTargetPos = new Vector2(overlapPos.x, tmp.y - (0.5f * hitboxSize.y * caseSize.y) * moveDir.y.Sign() + 0.5f * caseSize.y * moveDir.y.Sign());
+                            reachTargetPos = new Vector2(overlapPos.x, tmp.y - (0.5f * hitboxSize.y * LevelMapData.currentMap.mapSize.y) * moveDir.y.Sign() + 0.5f * LevelMapData.currentMap.mapSize.y * moveDir.y.Sign());
                         }
                         isReachingTargetPosition = true;
                     }
@@ -156,13 +155,13 @@ public class MovablePlatefrom : MonoBehaviour
             overlapPos = overlapSize = Vector2.zero;
             if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
             {
-                overlapPos = new Vector2(transform.position.x + 0.5f * moveDir.x.Sign() * (hitboxSize.x * caseSize.x + groundAndCharCrushRange), transform.position.y);
-                overlapSize = new Vector2(groundAndCharCrushRange, hitboxSize.y * caseSize.y);
+                overlapPos = new Vector2(transform.position.x + 0.5f * moveDir.x.Sign() * (hitboxSize.x * LevelMapData.currentMap.mapSize.x + groundAndCharCrushRange), transform.position.y);
+                overlapSize = new Vector2(groundAndCharCrushRange, hitboxSize.y * LevelMapData.currentMap.mapSize.y);
             }
             else
             {
-                overlapPos = new Vector2(transform.position.x, transform.position.y + 0.5f * moveDir.y.Sign() * (hitboxSize.y * caseSize.y + groundAndCharCrushRange));
-                overlapSize = new Vector2(hitboxSize.x * caseSize.x, groundAndCharCrushRange);
+                overlapPos = new Vector2(transform.position.x, transform.position.y + 0.5f * moveDir.y.Sign() * (hitboxSize.y * LevelMapData.currentMap.mapSize.y + groundAndCharCrushRange));
+                overlapSize = new Vector2(hitboxSize.x * LevelMapData.currentMap.mapSize.x, groundAndCharCrushRange);
             }
 
             Collider2D[] cols = PhysicsToric.OverlapBoxAll(overlapPos, overlapSize, 0f, charMask);
@@ -247,14 +246,12 @@ public class MovablePlatefrom : MonoBehaviour
 
     private Vector2Int GetCase(in Vector2 pos)
     {
-        Vector2 caseSize = MovablePlatefrom.caseSize;
-        return new Vector2Int(Useful.ClampModulo(0, nbCaseGrid.x, (int)((pos.x + 0.5f * LevelMapData.currentMap.mapSize.x) / caseSize.x)), (int)((pos.y + 0.5f * LevelMapData.currentMap.mapSize.y) / caseSize.y));
+        return new Vector2Int(Useful.ClampModulo(0, (int)LevelMapData.currentMap.mapSize.x, (int)((pos.x + 0.5f * LevelMapData.currentMap.mapSize.x) / LevelMapData.currentMap.mapSize.x)), (int)((pos.y + 0.5f * LevelMapData.currentMap.mapSize.y) / LevelMapData.currentMap.mapSize.y));
     }
 
     private Vector2 GetCasePos(in Vector2Int casePos)
     {
-        Vector2 caseSize = MovablePlatefrom.caseSize;
-        return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * caseSize.x - 0.5f * LevelMapData.currentMap.mapSize.x, (casePos.y + 0.5f) * caseSize.y - 0.5f * LevelMapData.currentMap.mapSize.y));
+        return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * LevelMapData.currentMap.mapSize.x - 0.5f * LevelMapData.currentMap.mapSize.x, (casePos.y + 0.5f) * LevelMapData.currentMap.mapSize.y - 0.5f * LevelMapData.currentMap.mapSize.y));
     }
 
     private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir, float padding)//ok
@@ -264,29 +261,29 @@ public class MovablePlatefrom : MonoBehaviour
         {
             if (hitboxSize.y.IsEven())//pair
             {
-                Vector2 caseUpPos = GetCasePos(GetCase(new Vector2(pos.x, pos.y + 0.5f * caseSize.y)));
-                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * caseSize.x) * dir.x.Sign(), caseUpPos.y - 0.5f * caseSize.y);
+                Vector2 caseUpPos = GetCasePos(GetCase(new Vector2(pos.x, pos.y + 0.5f * LevelMapData.currentMap.mapSize.y)));
+                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * LevelMapData.currentMap.mapSize.x) * dir.x.Sign(), caseUpPos.y - 0.5f * LevelMapData.currentMap.mapSize.y);
             }
             else
             {
                 Vector2 casePos = GetCasePos(GetCase(pos));
-                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * caseSize.x) * dir.x.Sign(), casePos.y);
+                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * LevelMapData.currentMap.mapSize.x) * dir.x.Sign(), casePos.y);
             }
-            overlapSize = new Vector2(caseSize.x - 2f * padding, Mathf.Max(0f, hitboxSize.y * caseSize.y - 2f * padding));
+            overlapSize = new Vector2(LevelMapData.currentMap.mapSize.x - 2f * padding, Mathf.Max(0f, hitboxSize.y * LevelMapData.currentMap.mapSize.y - 2f * padding));
         }
         else
         {
             if (hitboxSize.x.IsEven())//pair
             {
-                Vector2 caseRightPos = GetCasePos(GetCase(new Vector2(pos.x + 0.5f * caseSize.x, pos.y)));
-                overlapPos = new Vector2(Mathf.Max(0f, caseRightPos.x - 0.5f * caseSize.x), pos.y + (0.5f * (hitboxSize.y + 1) * caseSize.y) * dir.y.Sign());
+                Vector2 caseRightPos = GetCasePos(GetCase(new Vector2(pos.x + 0.5f * LevelMapData.currentMap.mapSize.x, pos.y)));
+                overlapPos = new Vector2(Mathf.Max(0f, caseRightPos.x - 0.5f * LevelMapData.currentMap.mapSize.x), pos.y + (0.5f * (hitboxSize.y + 1) * LevelMapData.currentMap.mapSize.y) * dir.y.Sign());
             }
             else
             {
                 Vector2 casePos = GetCasePos(GetCase(pos));
-                overlapPos = new Vector2(casePos.x, pos.y + (0.5f * (hitboxSize.y + 1) * caseSize.y) * dir.y.Sign());
+                overlapPos = new Vector2(casePos.x, pos.y + (0.5f * (hitboxSize.y + 1) * LevelMapData.currentMap.mapSize.y) * dir.y.Sign());
             }
-            overlapSize = new Vector2(Mathf.Max(0f, hitboxSize.x * caseSize.x - 2f * padding), Mathf.Max(0f, caseSize.y - 2f * padding));
+            overlapSize = new Vector2(Mathf.Max(0f, hitboxSize.x * LevelMapData.currentMap.mapSize.x - 2f * padding), Mathf.Max(0f, LevelMapData.currentMap.mapSize.y - 2f * padding));
         }
         return (overlapPos, overlapSize);
     }
@@ -424,9 +421,8 @@ public class MovablePlatefrom : MonoBehaviour
             hitbox = GetComponent<BoxCollider2D>();
         transform = base.transform;
 
-        Vector2 caseSize = MovablePlatefrom.caseSize;
         hitboxSize = new Vector2Int(Useful.Max(0, hitboxSize.x), Useful.Max(0, hitboxSize.y));
-        hitbox.size = caseSize * hitboxSize;
+        hitbox.size = LevelMapData.currentMap.mapSize * hitboxSize;
         accelerationDuration = Mathf.Max(0f, accelerationDuration);
         maxSpeed = Mathf.Max(0f, maxSpeed);
         groundDetectionPadding = Mathf.Max(0f, groundDetectionPadding);
@@ -438,24 +434,23 @@ public class MovablePlatefrom : MonoBehaviour
     {
         if(gizmosDrawGrid)
         {
-            Vector2 caseSize = MovablePlatefrom.caseSize;
-            Vector2 offset = -0.5f * LevelMapData.currentMap.mapSize + 0.5f * caseSize;
+            Vector2 offset = -0.5f * LevelMapData.currentMap.mapSize + 0.5f * LevelMapData.currentMap.mapSize;
             Gizmos.color = Color.red;
-            for (int y = 0; y < nbCaseGrid.y; y++)
+            for (int y = 0; y < LevelMapData.currentMap.mapSize.y; y++)
             {
-                for (int x = 0; x < nbCaseGrid.x; x++)
+                for (int x = 0; x < LevelMapData.currentMap.mapSize.x; x++)
                 {
-                    Hitbox.GizmosDraw(offset + new Vector2(caseSize.x * x, caseSize.y * y), caseSize);
+                    Hitbox.GizmosDraw(offset + new Vector2(LevelMapData.currentMap.mapSize.x * x, LevelMapData.currentMap.mapSize.y * y), LevelMapData.currentMap.mapSize);
                 }
             }
         }
 
         //hitbox
         Gizmos.color = Color.green;
-        Hitbox.GizmosDraw(transform.position, hitbox.size * caseSize);
+        Hitbox.GizmosDraw(transform.position, hitbox.size * LevelMapData.currentMap.mapSize);
 
         //chardetection
-        Hitbox.GizmosDraw(transform.position, hitbox.size * caseSize + 2f * charDetectionDistance * Vector2.one);
+        Hitbox.GizmosDraw(transform.position, hitbox.size * LevelMapData.currentMap.mapSize + 2f * charDetectionDistance * Vector2.one);
 
         //test GetRecInFront
         (Vector2 pos, Vector2 size) = GetRecInFront(transform.position, Vector2.right, groundDetectionPadding);
@@ -469,15 +464,15 @@ public class MovablePlatefrom : MonoBehaviour
         Hitbox.GizmosDraw(pos, size);
     }
 
-    /*
     private void OnDrawGizmos()
     {
+        return;
+
         //test GetHitboxSide
         GameObject char1 = GameObject.FindGameObjectsWithTag("Char").Where((GameObject go) => go.GetComponent<PlayerCommon>().id == 0).First();
         HitboxSide hitboxSide = GetHitboxSide((Vector2)char1.transform.position + char1.GetComponent<BoxCollider2D>().offset, char1.GetComponent<BoxCollider2D>().size, true);
         print(hitboxSide);
     }
-    */
 
 #endif
 

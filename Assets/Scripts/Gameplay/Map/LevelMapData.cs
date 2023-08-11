@@ -5,7 +5,24 @@ using UnityEngine;
 
 public class LevelMapData : MonoBehaviour
 {
-    public static LevelMapData currentMap;
+    private static LevelMapData _currentMap;
+    public static LevelMapData currentMap
+    {
+        get
+        {
+#if UNITY_EDITOR
+            if(_currentMap == null)
+            {
+                _currentMap = GameObject.FindGameObjectWithTag("Map").GetComponent<LevelMapData>();
+            }
+#endif
+            return _currentMap;
+        }
+        private set
+        {
+            _currentMap = value;
+        }
+    }
     public static Action<LevelMapData> onMapChange = default(Action<LevelMapData>);
 
     private SpawnConfigsData spawnConfigs;

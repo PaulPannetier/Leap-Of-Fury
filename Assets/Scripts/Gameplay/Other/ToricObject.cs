@@ -223,11 +223,6 @@ public class ToricObject : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(transform.position + boundsOffset.ToVector3(), bounds.size);
-
-        if(LevelMapData.currentMap == null)
-        {
-            LevelMapData.currentMap = GameObject.FindGameObjectWithTag("Map").GetComponent<LevelMapData>();
-        }
         Gizmos.DrawWireCube(Vector3.zero, LevelMapData.currentMap.mapSize);
     }
 
