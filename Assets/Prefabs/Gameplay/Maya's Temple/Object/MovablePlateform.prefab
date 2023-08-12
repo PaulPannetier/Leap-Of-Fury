@@ -28,6 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4909847896574820865}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,7 +36,6 @@ Transform:
   m_Children:
   - {fileID: 4909847898038514377}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &4909847896574820868
 BoxCollider2D:
@@ -47,6 +47,25 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -80,6 +99,12 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -137,10 +162,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableBehaviour: 1
-  hitboxSize: {x: 3, y: 2}
-  charDetectionDistance: 0.15
-  groundDetectionPadding: 0.1
-  groundAndCharCrushRange: 0.15
+  enableLeftAndRightDash: 0
+  enableUpAndDownDash: 0
+  collisionOverlapSize: 0.5
+  crushPadding: 1.2
+  dashHitbox: {x: 4, y: 3}
+  activationCooldown: 0.3
   accelerationDuration: 1
   accelerationCurve:
     serializedVersion: 2
@@ -176,14 +203,15 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxSpeed: 10
-  shakeSetting:
-    duration: 0.6
-    strengh: {x: 0.05, y: 0.05, z: 0}
-    vibrato: 10
-    randomness: 90
-    snapping: 0
-    fadeOut: 1
-  gizmosDrawGrid: 0
+  returnBumpSpeedOnChar: 5
+  returnBumpSpeedAngleOnChar: 45
+  drawGizmos: 1
+  drawGroundDetectionHitoxGizmos: 0
+  drawCrushHiboxGizmos: 1
+  drawDashHiboxGizmos: 0
+  colorGroundDetectionHitbox: {r: 0, g: 0, b: 0, a: 1}
+  colorCrushDetectionHitbox: {r: 1, g: 0, b: 0, a: 1}
+  colorDashDetectionHitbox: {r: 0.11532295, g: 1, b: 0, a: 1}
 --- !u!1 &4909847898038514376
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,13 +236,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4909847898038514376}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4909847896574820869}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4909847898038514378
 SpriteRenderer:

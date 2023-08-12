@@ -1090,8 +1090,8 @@ public static class Useful
     public static int Lerp(in int a, in int b, float t) => (int)(a + (b - a) * t);
     public static float Lerp(in float a, in float b, float t) => a + (b - a) * t;
 
-    public static bool IsOdd(this int number) => Mathf.Abs(number) % 2 == 1;
-    public static bool IsEven(this int number) => Mathf.Abs(number) % 2 == 0;
+    public static bool IsOdd(this int number) => (number & 1) != 0;
+    public static bool IsEven(this int number) => (number & 1) == 0;
 
     public static Vector3[] GetVertices(in this Bounds bounds)
     {

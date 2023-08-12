@@ -1,6 +1,5 @@
-using DG.Tweening;
 using UnityEngine;
-using System.Linq;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class MovablePlatefrom : MonoBehaviour
@@ -17,30 +16,38 @@ public class MovablePlatefrom : MonoBehaviour
 
     private BoxCollider2D hitbox;
     private new Transform transform;
-    private bool isMoving, isAccelerating, isReachingTargetPosition, isShaking, oldIsShaking;
     private LayerMask charMask, groundMask;
-    private float lastTimeBeginMove = -10f, lastTimeBeginShake = -10f;
-    private Vector2 moveDir, reachTargetPos;
-    private bool oldEnableBehaviour;
-    private float accelDeltaTime;
+    private bool isMoving, isTargetingPosition;
     private Rigidbody2D rb;
     private GameObject lastCharActivatePlateform;
-    private Vector2[] convertHitboxSizeToBumbDir;
+    private uint lastCharIdActivate;
+    private Vector2[] convertHitboxSideToBumbDir;
+    private float lastTimeActivated = -10f;
+    private HitboxSide lastSideActiavated = HitboxSide.none;
+    private Vector2 targetPosition;
+    private List<uint> charAlreadyCrush;
+    private PauseData pauseData;
+    private bool pauseWasEnableLastFrame;
 
     public bool enableBehaviour = true;
     [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
-    [SerializeField] private Vector2Int hitboxSize = new Vector2Int(1, 1);
-    [SerializeField] private float charDetectionDistance;
-    [SerializeField] private float groundDetectionPadding = 0.1f;
-    [SerializeField] private float groundAndCharCrushRange = 0.15f;
+    [SerializeField, Tooltip("The width or height on the detection hitbox when moving")] private float collisionOverlapSize = 1f;
+    [SerializeField, Tooltip("La marge d'erreur de détection de crush")] private float crushPadding = 1.05f;
+    [SerializeField, Tooltip("The dash detection hitbox")] private Vector2 dashHitbox;
+    [SerializeField] private float activationCooldown = 0.3f;
     [SerializeField] private float accelerationDuration = 1f;
-    [SerializeField, Tooltip("In %age od maxSpeed")] private AnimationCurve accelerationCurve;
+    [SerializeField, Tooltip("In %age of maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float returnBumpSpeedOnChar = 5f;
     [SerializeField, Range(0f, 360f)] private float returnBumpSpeedAngleOnChar = 45f;
-    [SerializeField] private ShakeSetting shakeSetting;
 
-    [SerializeField] private bool gizmosDrawGrid = true;
+#if UNITY_EDITOR
+
+    [SerializeField] private bool drawGizmos = true;
+    [SerializeField] private bool drawGroundDetectionHitoxGizmos = true, drawCrushHiboxGizmos = true, drawDashHiboxGizmos = true;
+    [SerializeField] private Color colorGroundDetectionHitbox, colorCrushDetectionHitbox, colorDashDetectionHitbox;
+
+#endif
 
     #region Awake and Start
 
@@ -49,7 +56,7 @@ public class MovablePlatefrom : MonoBehaviour
         hitbox = GetComponent<BoxCollider2D>();
         transform = base.transform;
         rb = GetComponent<Rigidbody2D>();
-        convertHitboxSizeToBumbDir = new Vector2[5]
+        convertHitboxSideToBumbDir = new Vector2[5]
         {
             Vector2.up,
             Vector2.down,
@@ -57,6 +64,7 @@ public class MovablePlatefrom : MonoBehaviour
             Useful.Vector2FromAngle((180f - returnBumpSpeedAngleOnChar) * Mathf.Deg2Rad),
             Vector2.zero
         };
+        charAlreadyCrush = new List<uint>();
     }
 
     private void Start()
@@ -71,326 +79,396 @@ public class MovablePlatefrom : MonoBehaviour
 
     #region Update
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (!enableBehaviour)
-        {
-            if(oldEnableBehaviour)
-            {
-                if (isAccelerating)
-                {
-                    accelDeltaTime = Time.time - lastTimeBeginMove;
-                }
-                oldEnableBehaviour = enableBehaviour;
-            }
-            if(isAccelerating)
-            {
-                lastTimeBeginMove = Time.time - accelDeltaTime;
-            }
+        if(!enableBehaviour)
             return;
+    
+        if(pauseWasEnableLastFrame)
+        {
+            lastTimeActivated = Time.time - pauseData.lastTimeBeginMoveDeltaTime;
+            pauseWasEnableLastFrame = false;
         }
-        oldEnableBehaviour = enableBehaviour;
-
+        
         if(isMoving)
         {
-            oldIsShaking = false;
-            if (isAccelerating)
+            HandleMoving();
+        }
+        else
+        {
+            HandleStay();
+        }
+
+        void HandleMoving()
+        {
+            //speed
+            if(isTargetingPosition)
             {
-                Vector2 speed = maxSpeed * accelerationCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeBeginMove) / accelerationDuration)) * moveDir;
-                rb.velocity = speed;
-                if (Time.time - lastTimeBeginMove > accelerationDuration)
+                rb.velocity = maxSpeed * convertHitboxSideToDir[(int)lastSideActiavated];
+                if(((Vector2)transform.position).SqrDistance(targetPosition) < 4f * Time.fixedDeltaTime * rb.velocity.sqrMagnitude)
                 {
-                    isAccelerating = false;
+                    OnStopOnGround();
                 }
             }
             else
             {
-                rb.velocity = maxSpeed * moveDir;
+                float speed = Time.time - lastTimeActivated > accelerationDuration ? maxSpeed : accelerationCurve.Evaluate((Time.time - lastTimeActivated) / accelerationDuration);
+                rb.velocity = speed * convertHitboxSideToDir[(int)lastSideActiavated];
             }
 
-            //detecting ground
-            Vector2 overlapPos = Vector2.zero, overlapSize = Vector2.zero;
-            if (!isReachingTargetPosition)
+            //char dash detecttion
+            if(!isTargetingPosition)
             {
-                if (moveDir.sqrMagnitude > 1e-6f)
+                Collider2D[] cols;
+                if (enableLeftAndRightDash)
                 {
-                    (overlapPos, overlapSize) = GetRecInFront(transform.position, moveDir, groundDetectionPadding);
-                    Collider2D groundCol = PhysicsToric.OverlapBox(overlapPos, overlapSize, 0f, groundMask);
-                    if (groundCol != null)
+                    //up
+                    cols = GetCharColliders(HitboxSide.up);
+                    HandleDashCollision(cols, HitboxSide.up);
+                    //down
+                    cols = GetCharColliders(HitboxSide.down);
+                    HandleDashCollision(cols, HitboxSide.down);
+                }
+
+                if (enableLeftAndRightDash)
+                {
+                    //right
+                    cols = GetCharColliders(HitboxSide.right);
+                    HandleDashCollision(cols, HitboxSide.right);
+                    //left
+                    cols = GetCharColliders(HitboxSide.left);
+                    HandleDashCollision(cols, HitboxSide.left);
+                }
+
+                void HandleDashCollision(Collider2D[] cols, HitboxSide hitboxSide)
+                {
+                    if (lastSideActiavated == hitboxSide)
+                        return;
+
+                    foreach (Collider2D col in cols)
                     {
-                        reachTargetPos = Vector2.zero;
-                        if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
+                        if (col.CompareTag("Char"))
                         {
-                            Vector2 tmp = GetCasePos(GetCase(new Vector2(overlapPos.x - overlapSize.x * 0.5f * moveDir.x.Sign(), overlapPos.y)));
-                            reachTargetPos = new Vector2(tmp.x - (0.5f * hitboxSize.x * LevelMapData.currentMap.mapSize.x) * moveDir.x.Sign() + 0.5f * LevelMapData.currentMap.mapSize.x * moveDir.x.Sign(), overlapPos.y);
+                            GameObject player = col.GetComponent<ToricObject>().original;
+                            if (IsPlayerDash(player))
+                            {
+                                if (lastCharIdActivate != player.GetComponent<PlayerCommon>().id)
+                                {
+                                    if (Time.time - lastTimeActivated > activationCooldown)
+                                    {
+                                        rb.velocity = Vector2.zero;
+                                        OnActivated(player, hitboxSide);
+                                    }
+                                }
+                            }
                         }
-                        else
-                        {
-                            Vector2 tmp = GetCasePos(GetCase(new Vector2(overlapPos.x, overlapPos.y - overlapSize.y * 0.5f * moveDir.y.Sign())));
-                            reachTargetPos = new Vector2(overlapPos.x, tmp.y - (0.5f * hitboxSize.y * LevelMapData.currentMap.mapSize.y) * moveDir.y.Sign() + 0.5f * LevelMapData.currentMap.mapSize.y * moveDir.y.Sign());
-                        }
-                        isReachingTargetPosition = true;
                     }
-                }
-                else
-                {
-                    isReachingTargetPosition = isMoving = isAccelerating = false;
-                    return;
-                }
-            }
-            else
-            {
-                rb.velocity = maxSpeed * (reachTargetPos - (Vector2)transform.position).normalized;
-                //transform.position = Vector2.MoveTowards(transform.position, reachTargetPos, maxSpeed * Time.deltaTime);
-                if(reachTargetPos.SqrDistance(transform.position) <= 4f * maxSpeed * maxSpeed * Time.deltaTime * Time.deltaTime)
-                {
-                    isReachingTargetPosition = isMoving = isAccelerating = false;
-                    transform.position = reachTargetPos;
-                    rb.velocity = Vector2.zero;
-                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
                 }
             }
 
-            //crush char
-            overlapPos = overlapSize = Vector2.zero;
-            if (Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
+            //ground Detection
+            if(IsGroundCollision(lastSideActiavated))
             {
-                overlapPos = new Vector2(transform.position.x + 0.5f * moveDir.x.Sign() * (hitboxSize.x * LevelMapData.currentMap.mapSize.x + groundAndCharCrushRange), transform.position.y);
-                overlapSize = new Vector2(groundAndCharCrushRange, hitboxSize.y * LevelMapData.currentMap.mapSize.y);
-            }
-            else
-            {
-                overlapPos = new Vector2(transform.position.x, transform.position.y + 0.5f * moveDir.y.Sign() * (hitboxSize.y * LevelMapData.currentMap.mapSize.y + groundAndCharCrushRange));
-                overlapSize = new Vector2(hitboxSize.x * LevelMapData.currentMap.mapSize.x, groundAndCharCrushRange);
+                targetPosition = CalculateTargetPos(lastSideActiavated);
+                isTargetingPosition = true;
             }
 
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll(overlapPos, overlapSize, 0f, charMask);
-            foreach (Collider2D col in cols)
+            bool IsGroundCollision(HitboxSide hitboxSide)
             {
-                if(col.CompareTag("Char"))
+                switch (hitboxSide)
                 {
-                    GameObject player = col.GetComponent<ToricObject>().original;
-                    BoxCollider2D playerCollider = player.GetComponent<BoxCollider2D>();
-                    if(Mathf.Abs(moveDir.x) >= Mathf.Abs(moveDir.y))
-                    {
-                        overlapPos = new Vector2(player.transform.position.x + moveDir.x.Sign() * playerCollider.offset.x + moveDir.x.Sign() * 0.5f * (playerCollider.size.x + groundAndCharCrushRange), player.transform.position.y + playerCollider.offset.y);
-                        overlapSize = new Vector2(groundAndCharCrushRange, playerCollider.size.y);
-                    }
-                    else
-                    {
-                        overlapPos = new Vector2(player.transform.position.x + playerCollider.offset.x, player.transform.position.y + moveDir.y.Sign() * playerCollider.offset.y + moveDir.y.Sign() * 0.5f * (playerCollider.size.y + groundAndCharCrushRange));
-                        overlapSize = new Vector2(playerCollider.size.x, groundAndCharCrushRange);
-                    }
-                    Collider2D groundCol = PhysicsToric.OverlapBox(overlapPos, overlapSize, 0f, groundMask);
+                    case HitboxSide.up:
+                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask) != null;
+                    case HitboxSide.down:
+                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask) != null;
+                    case HitboxSide.left:
+                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask) != null;
+                    case HitboxSide.right:
+                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask) != null;
+                    default:
+                        return false;
+                }
+            }
+
+            //Crushing Char
+            if(CrushDetectionSimple(lastSideActiavated))
+            {
+                HandleCrushDetectionAdvance(lastSideActiavated);
+            }
+
+            bool CrushDetectionSimple(HitboxSide hitboxSide)
+            {
+                Vector2 center, size;
+                switch (hitboxSide)
+                {
+                    case HitboxSide.up:
+                        center = new Vector2(transform.position.x, transform.position.y + hitbox.size.y * 0.5f + PlayerCommon.charSize.y * crushPadding * 0.5f);
+                        size = new Vector2(hitbox.size.x, PlayerCommon.charSize.y * crushPadding);
+                        break;
+                    case HitboxSide.down:
+                        center = new Vector2(transform.position.x, transform.position.y - hitbox.size.y * 0.5f - PlayerCommon.charSize.y * crushPadding * 0.5f);
+                        size = new Vector2(hitbox.size.x, PlayerCommon.charSize.y * crushPadding);
+                        break;
+                    case HitboxSide.left:
+                        center = new Vector2(transform.position.x - hitbox.size.x * 0.5f - PlayerCommon.charSize.x * crushPadding * 0.5f, transform.position.y);
+                        size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y);
+                        break;
+                    case HitboxSide.right:
+                        center = new Vector2(transform.position.x + hitbox.size.x * 0.5f + PlayerCommon.charSize.x * crushPadding * 0.5f, transform.position.y);
+                        size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y);
+                        break;
+                    default:
+                        return false;
+                }
+
+                Collider2D groundCol = PhysicsToric.OverlapBox(center, size, 0f, groundMask);
+                if (groundCol == null)
+                    return false;
+
+                Collider2D charCols = PhysicsToric.OverlapBox(center, size, 0f, charMask);
+                return charCols != null;
+            }
+
+            void HandleCrushDetectionAdvance(HitboxSide hitboxSide)
+            {
+                Vector2 begPoint, step, size;
+                int nbStep;
+                switch (hitboxSide)
+                {
+                    case HitboxSide.up:
+                        begPoint = new Vector2(transform.position.x + (hitbox.size.x - LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y + hitbox.size.y * 0.5f + PlayerCommon.charSize.y * crushPadding * 0.5f);
+                        size = new Vector2(LevelMapData.currentMap.cellSize.x, PlayerCommon.charSize.y * crushPadding);
+                        step = new Vector2(-LevelMapData.currentMap.cellSize.y, 0f);
+                        nbStep = hitbox.size.x.Round();
+                        break;
+                    case HitboxSide.down:
+                        begPoint = new Vector2(transform.position.x + (hitbox.size.x - LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y - hitbox.size.y * 0.5f - PlayerCommon.charSize.y * crushPadding * 0.5f);
+                        size = new Vector2(LevelMapData.currentMap.cellSize.x, PlayerCommon.charSize.y * crushPadding);
+                        step = new Vector2(-LevelMapData.currentMap.cellSize.y, 0f);
+                        nbStep = hitbox.size.x.Round();
+                        break;
+                    case HitboxSide.left:
+                        begPoint = new Vector2(transform.position.x - hitbox.size.x * 0.5f - PlayerCommon.charSize.x * crushPadding * 0.5f, transform.position.y + (hitbox.size.y - LevelMapData.currentMap.cellSize.y) * 0.5f);
+                        size = new Vector2(PlayerCommon.charSize.x * crushPadding, LevelMapData.currentMap.cellSize.y);
+                        step = new Vector2(0f, -LevelMapData.currentMap.cellSize.y);
+                        nbStep = hitbox.size.y.Round();
+                        break;
+                    case HitboxSide.right:
+                        begPoint = new Vector2(transform.position.x + hitbox.size.x * 0.5f + PlayerCommon.charSize.x * crushPadding * 0.5f, transform.position.y + (hitbox.size.y - LevelMapData.currentMap.cellSize.y) * 0.5f);
+                        size = new Vector2(PlayerCommon.charSize.x * crushPadding, LevelMapData.currentMap.cellSize.y);
+                        step = new Vector2(0f, -LevelMapData.currentMap.cellSize.y);
+                        nbStep = hitbox.size.y.Round();
+                        break;
+                    default:
+                        return;
+                }
+
+                for (int i = 0; i < nbStep; i++)
+                {
+                    Collider2D groundCol = PhysicsToric.OverlapBox(begPoint, size, 0f, groundMask);
                     if(groundCol != null)
                     {
-                        //collision
-                        CrushChar(player, lastCharActivatePlateform);
-                    }
-                }
-            }
-        }
-        else if(isShaking)
-        {
-            if(!oldIsShaking)
-            {
-                transform.DOComplete();
-                transform.DOShakePosition(shakeSetting.duration, shakeSetting.strengh, shakeSetting.vibrato, shakeSetting.randomness, shakeSetting.snapping, shakeSetting.fadeOut);
-                oldIsShaking = true;
-            }
-
-            if(Time.time - lastTimeBeginShake > shakeSetting.duration)
-            {
-                isShaking = false;
-                isAccelerating = isMoving = true;
-            }
-        }
-        else
-        {
-            Collider2D[] cols = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size + 2f * charDetectionDistance * Vector2.one, 0f, charMask);
-            foreach (Collider2D col  in cols)
-            {
-                if(col.CompareTag("Char"))
-                {
-                    GameObject player = col.GetComponent<ToricObject>().original;
-                    FightController fc = player.GetComponent<FightController>();
-                    if (fc.canKillDashing)
-                    {
-                        BoxCollider2D charHitbox = player.GetComponent<BoxCollider2D>();
-                        HitboxSide side = GetHitboxSide((Vector2)player.transform.position + charHitbox.offset, charHitbox.size);
-                        if(side != HitboxSide.none)
+                        Collider2D[] cols = PhysicsToric.OverlapBoxAll(begPoint, size, 0f, charMask);
+                        foreach(Collider2D col in cols)
                         {
-                            isShaking = true;
-                            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-                            moveDir = convertHitboxSideToDir[(int)side];
-                            Vector2 charBumpDir = convertHitboxSizeToBumbDir[(int)side];
-                            player.GetComponent<Movement>().ApplyBump(charBumpDir * returnBumpSpeedOnChar);
-                            lastTimeBeginShake = Time.time;
-                            lastCharActivatePlateform = player;
+                            if(col.CompareTag("Char"))
+                            {
+                                GameObject player = col.GetComponent<ToricObject>().original;
+                                if(!charAlreadyCrush.Contains(player.GetComponent<PlayerCommon>().id))
+                                {
+                                    OnCrushChar(player, lastCharActivatePlateform);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+
+        void HandleStay()
+        {
+            //detect char dash
+            Collider2D[] cols;
+            if (enableLeftAndRightDash)
+            {
+                //up
+                cols = GetCharColliders(HitboxSide.up);
+                HandleDashCollision(cols, HitboxSide.up);
+                //down
+                cols = GetCharColliders(HitboxSide.down);
+                HandleDashCollision(cols, HitboxSide.down);
+            }
+
+            if (enableLeftAndRightDash)
+            {
+                //right
+                cols = GetCharColliders(HitboxSide.right);
+                HandleDashCollision(cols, HitboxSide.right);
+                //left
+                cols = GetCharColliders(HitboxSide.left);
+                HandleDashCollision(cols, HitboxSide.left);
+            }
+
+            void HandleDashCollision(Collider2D[] cols, HitboxSide hitboxSide)
+            {
+                if (isMoving)
+                    return;
+
+                foreach (Collider2D col in cols)
+                {
+                    if (col.CompareTag("Char"))
+                    {
+                        GameObject player = col.GetComponent<ToricObject>().original;
+                        if (IsPlayerDash(player))
+                        {
+                            if (Time.time - lastTimeActivated > activationCooldown)
+                            {
+                                OnActivated(player, hitboxSide);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        bool IsPlayerDash(GameObject player)
+        {
+            return player.GetComponent<Movement>().isDashing;
+        }
+
+        Collider2D[] GetCharColliders(HitboxSide hitboxSide)
+        {
+            Vector2 center, size;
+            switch (hitboxSide)
+            {
+                case HitboxSide.up:
+                    center = new Vector2(transform.position.x, transform.position.y + dashHitbox.y * 0.25f);
+                    size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+                    break;
+                case HitboxSide.down:
+                    center = new Vector2(transform.position.x, transform.position.y - dashHitbox.y * 0.25f);
+                    size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+                    break;
+                case HitboxSide.left:
+                    center = new Vector2(transform.position.x - dashHitbox.x * 0.25f, transform.position.y);
+                    size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+                    break;
+                case HitboxSide.right:
+                    center = new Vector2(transform.position.x + dashHitbox.x * 0.25f, transform.position.y);
+                    size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+                    break;
+                default:
+                    return default(Collider2D[]);
+            }
+            return PhysicsToric.OverlapBoxAll(center, size, 0, charMask);
+        }
+    }
+
+
+    #endregion
+
+    #region CalculateTargetPos
+
+    private Vector2 CalculateTargetPos(HitboxSide side)
+    {
+        switch (side)
+        {
+            case HitboxSide.up:
+                return HandleUp();
+            case HitboxSide.down:
+                return HandleDown();
+            case HitboxSide.left:
+                return HandleLeft();
+            case HitboxSide.right:
+                return HandleRight();
+            default:
+                return (Vector2)transform.position;
+        }
+
+        Vector2 HandleUp()
+        {
+            if (Useful.IsOdd(hitbox.size.x.Round()))
+            {
+                return GetCellCenter(new Vector2(transform.position.x, transform.position.y + hitbox.size.y * 0.5f + collisionOverlapSize - LevelMapData.currentMap.cellSize.y));
+            }
+            else
+            {
+                return GetCellCenter(new Vector2(transform.position.x + LevelMapData.currentMap.cellSize.x * 0.5f, transform.position.y + hitbox.size.y * 0.5f + collisionOverlapSize - LevelMapData.currentMap.cellSize.y)) - new Vector2(LevelMapData.currentMap.cellSize.x * 0.5f, 0f);
+            }
+        }
+
+        Vector2 HandleDown()
+        {
+            if (Useful.IsOdd(hitbox.size.x.Round()))
+            {
+                return GetCellCenter(new Vector2(transform.position.x, transform.position.y - hitbox.size.y * 0.5f - collisionOverlapSize + LevelMapData.currentMap.cellSize.y));
+            }
+            else
+            {
+                return GetCellCenter(new Vector2(transform.position.x + LevelMapData.currentMap.cellSize.x * 0.5f, transform.position.y - hitbox.size.y * 0.5f - collisionOverlapSize + LevelMapData.currentMap.cellSize.y)) - new Vector2(LevelMapData.currentMap.cellSize.x * 0.5f, 0f);
+            }
+        }
+
+        Vector2 HandleRight()
+        {
+            if(Useful.IsOdd(hitbox.size.y.Round()))
+            {
+                return GetCellCenter(new Vector2(transform.position.x + hitbox.size.x * 0.5f + collisionOverlapSize - LevelMapData.currentMap.cellSize.x, transform.position.y));
+            }
+            else
+            {
+                return GetCellCenter(new Vector2(transform.position.x + hitbox.size.x * 0.5f + collisionOverlapSize - LevelMapData.currentMap.cellSize.x, transform.position.y + LevelMapData.currentMap.cellSize.y * 0.5f)) - new Vector2(0f, LevelMapData.currentMap.cellSize.y * 0.5f);
+            }
+        }
+
+        Vector2 HandleLeft()
+        {
+            if (Useful.IsOdd(hitbox.size.y.Round()))
+            {
+                return GetCellCenter(new Vector2(transform.position.x - hitbox.size.x * 0.5f - collisionOverlapSize + LevelMapData.currentMap.cellSize.x, transform.position.y));
+            }
+            else
+            {
+                return GetCellCenter(new Vector2(transform.position.x - hitbox.size.x * 0.5f - collisionOverlapSize + LevelMapData.currentMap.cellSize.x, transform.position.y + LevelMapData.currentMap.cellSize.y * 0.5f)) - new Vector2(0f, LevelMapData.currentMap.cellSize.y * 0.5f);
+            }
+        }
+
+        Vector2 GetCellCenter(in Vector2 position)
+        {
+            Vector2 origin = position + LevelMapData.currentMap.mapSize * 0.5f;
+            Vector2 coord = new Vector2((int)(origin.x / LevelMapData.currentMap.cellSize.x), (int)(origin.y / LevelMapData.currentMap.cellSize.y));
+            return LevelMapData.currentMap.cellSize * coord + LevelMapData.currentMap.cellSize * 0.5f;      
+        }
     }
 
     #endregion
 
-    private void CrushChar(GameObject player, GameObject killer)
+    #region Triggers
+
+    private void OnActivated(GameObject player, HitboxSide hitboxSide)
     {
+        lastCharActivatePlateform = player;
+        lastCharIdActivate = player.GetComponent<PlayerCommon>().id;
+        lastTimeActivated = Time.time;
+        Movement movement = player.GetComponent<Movement>();
+        movement.ApplyBump(returnBumpSpeedOnChar * convertHitboxSideToBumbDir[(int)hitboxSide]);
+        isMoving = true;
+    }
+
+    private void OnStopOnGround()
+    {
+        rb.position = targetPosition;
+        rb.velocity = Vector2.zero;
+        targetPosition = Vector2.zero;
+        isTargetingPosition = isMoving = false;
+        charAlreadyCrush.Clear();
+    }
+
+    private void OnCrushChar(GameObject player, GameObject killer)
+    {
+        charAlreadyCrush.Add(player.GetComponent<PlayerCommon>().id);
         player.GetComponent<EventController>().OnBeenKillInstant(killer);
         killer.GetComponent<EventController>().OnKill(player);
-    }
-
-    #region Grid function
-
-    private Vector2Int GetCase(in Vector2 pos)
-    {
-        return new Vector2Int(Useful.ClampModulo(0, (int)LevelMapData.currentMap.mapSize.x, (int)((pos.x + 0.5f * LevelMapData.currentMap.mapSize.x) / LevelMapData.currentMap.mapSize.x)), (int)((pos.y + 0.5f * LevelMapData.currentMap.mapSize.y) / LevelMapData.currentMap.mapSize.y));
-    }
-
-    private Vector2 GetCasePos(in Vector2Int casePos)
-    {
-        return PhysicsToric.GetPointInsideBounds(new Vector2((casePos.x + 0.5f) * LevelMapData.currentMap.mapSize.x - 0.5f * LevelMapData.currentMap.mapSize.x, (casePos.y + 0.5f) * LevelMapData.currentMap.mapSize.y - 0.5f * LevelMapData.currentMap.mapSize.y));
-    }
-
-    private (Vector2, Vector2) GetRecInFront(in Vector2 pos, in Vector2 dir, float padding)//ok
-    {
-        Vector2 overlapPos = Vector2.zero, overlapSize = Vector2.zero;
-        if (Mathf.Abs(dir.x) >= Mathf.Abs(dir.y))
-        {
-            if (hitboxSize.y.IsEven())//pair
-            {
-                Vector2 caseUpPos = GetCasePos(GetCase(new Vector2(pos.x, pos.y + 0.5f * LevelMapData.currentMap.mapSize.y)));
-                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * LevelMapData.currentMap.mapSize.x) * dir.x.Sign(), caseUpPos.y - 0.5f * LevelMapData.currentMap.mapSize.y);
-            }
-            else
-            {
-                Vector2 casePos = GetCasePos(GetCase(pos));
-                overlapPos = new Vector2(pos.x + (0.5f * (hitboxSize.x + 1) * LevelMapData.currentMap.mapSize.x) * dir.x.Sign(), casePos.y);
-            }
-            overlapSize = new Vector2(LevelMapData.currentMap.mapSize.x - 2f * padding, Mathf.Max(0f, hitboxSize.y * LevelMapData.currentMap.mapSize.y - 2f * padding));
-        }
-        else
-        {
-            if (hitboxSize.x.IsEven())//pair
-            {
-                Vector2 caseRightPos = GetCasePos(GetCase(new Vector2(pos.x + 0.5f * LevelMapData.currentMap.mapSize.x, pos.y)));
-                overlapPos = new Vector2(Mathf.Max(0f, caseRightPos.x - 0.5f * LevelMapData.currentMap.mapSize.x), pos.y + (0.5f * (hitboxSize.y + 1) * LevelMapData.currentMap.mapSize.y) * dir.y.Sign());
-            }
-            else
-            {
-                Vector2 casePos = GetCasePos(GetCase(pos));
-                overlapPos = new Vector2(casePos.x, pos.y + (0.5f * (hitboxSize.y + 1) * LevelMapData.currentMap.mapSize.y) * dir.y.Sign());
-            }
-            overlapSize = new Vector2(Mathf.Max(0f, hitboxSize.x * LevelMapData.currentMap.mapSize.x - 2f * padding), Mathf.Max(0f, LevelMapData.currentMap.mapSize.y - 2f * padding));
-        }
-        return (overlapPos, overlapSize);
-    }
-
-    #endregion
-
-    #region GetHitboxSide
-
-    private HitboxSide GetHitboxSide(in Vector2 pos, in Vector2 size, bool debug = false)
-    {
-        Vector2 hitSize = hitbox.size;
-
-        bool upOrDown = pos.x >= transform.position.x - 0.5f * hitSize.x && pos.x <= transform.position.x + 0.5f * hitSize.x;
-        bool rightOrLeft = pos.y >= transform.position.y - 0.5f * hitSize.y && pos.y <= transform.position.y + 0.5f * hitSize.y;
-
-        if(upOrDown || rightOrLeft)
-        {
-            if(upOrDown && rightOrLeft)
-            {
-                //pos is inside the hitbox
-                float distEdgeX = hitSize.x - Mathf.Abs(pos.x - transform.position.x);
-                float distEdgeY = hitSize.y - Mathf.Abs(pos.y - transform.position.y);
-
-                if(distEdgeX <= distEdgeY)
-                {
-                    return pos.y >= transform.position.y ? HitboxSide.right : HitboxSide.left;
-                }
-                return pos.x >= transform.position.x ? HitboxSide.up : HitboxSide.down;
-            }
-
-            if (upOrDown)
-            {
-                return pos.y >= transform.position.y ? HitboxSide.up : HitboxSide.down;
-            }
-            return pos.x >= transform.position.x ? HitboxSide.right : HitboxSide.left;
-        }
-
-        //!ez case : We get the corners of the hitbox, calculate the closest point width the platefrom hitbox and get the side where this points is
-        Vector2[] corners = new Vector2[4]
-        {
-            new Vector2(pos.x - size.x * 0.5f, pos.y - size.y * 0.5f),//left, bot
-            new Vector2(pos.x + size.x * 0.5f, pos.y - size.y * 0.5f),//right, bot
-            new Vector2(pos.x - size.x * 0.5f, pos.y + size.y * 0.5f),//left, up
-            new Vector2(pos.x + size.x * 0.5f, pos.y + size.y * 0.5f)//right, up
-        };
-
-        Vector2 closestPoint = hitbox.ClosestPoint(corners[0]);
-        float closestPointSqrDist = corners[0].SqrDistance(closestPoint);
-        int closestPointIndex = 0;
-
-        for (int i = 1; i < 4; i++)
-        {
-            Vector2 tmp = hitbox.ClosestPoint(corners[i]);
-            float sqrDist = corners[i].SqrDistance(tmp);
-            if(sqrDist < closestPointSqrDist)
-            {
-                closestPointSqrDist = sqrDist;
-                closestPoint = tmp;
-                closestPointIndex = i;
-            }
-        }
-
-        if(debug)
-        {
-            Vector2[] vertices = new Vector2[4]
-            {
-                new Vector2(hitbox.transform.position.x - hitbox.size.x * 0.5f, hitbox.transform.position.y - hitbox.size.y * 0.5f),//left, bot
-                new Vector2(hitbox.transform.position.x + hitbox.size.x * 0.5f, hitbox.transform.position.y - hitbox.size.y * 0.5f),//right, bot
-                new Vector2(hitbox.transform.position.x - hitbox.size.x * 0.5f, hitbox.transform.position.y + hitbox.size.y * 0.5f),//left, up
-                new Vector2(hitbox.transform.position.x + hitbox.size.x * 0.5f, hitbox.transform.position.y + hitbox.size.y * 0.5f)//right, up
-            };
-
-            Gizmos.color = Color.blue;
-            foreach(Vector2 v in vertices)
-            {
-                Circle.GizmosDraw(v, 0.2f);
-            }
-
-            Gizmos.color = Color.black;
-            foreach (Vector2 v in corners)
-            {
-                Circle.GizmosDraw(v, 0.2f);
-            }
-
-            Gizmos.color = Color.red;
-            Circle.GizmosDraw(closestPoint, 0.3f);
-        }
-
-        foreach (Vector2 corner in corners)
-        {
-            if(corner.SqrDistance(closestPoint) < 1e-6f)
-            {
-                print("corner bug");
-            }
-        }
-
-        if (closestPoint.x >= transform.position.x - 0.5f * hitSize.x && closestPoint.x <= transform.position.x + 0.5f * hitSize.x)
-        {
-            return closestPoint.y >= transform.position.y ? HitboxSide.up : HitboxSide.down;
-        }
-        if (closestPoint.y >= transform.position.y - 0.5f * hitSize.y && closestPoint.y <= transform.position.y + 0.5f * hitSize.y)
-        {
-            return closestPoint.x >= transform.position.x ? HitboxSide.right : HitboxSide.left;
-        }
-
-        Debug.LogWarning("Debug pls");
-        return HitboxSide.none;
     }
 
     #endregion
@@ -400,6 +478,8 @@ public class MovablePlatefrom : MonoBehaviour
     private void Disable()
     {
         enableBehaviour = false;
+        pauseData = new PauseData(Time.time - lastTimeActivated);
+        pauseWasEnableLastFrame = true;
     }
 
     private void Enable()
@@ -417,65 +497,113 @@ public class MovablePlatefrom : MonoBehaviour
 
     private void OnValidate()
     {
-        if (hitbox == null)
-            hitbox = GetComponent<BoxCollider2D>();
-        transform = base.transform;
+        hitbox = GetComponent<BoxCollider2D>();
+        this.transform = base.transform;
 
-        hitboxSize = new Vector2Int(Useful.Max(0, hitboxSize.x), Useful.Max(0, hitboxSize.y));
-        hitbox.size = LevelMapData.currentMap.mapSize * hitboxSize;
-        accelerationDuration = Mathf.Max(0f, accelerationDuration);
+        collisionOverlapSize = Mathf.Max(collisionOverlapSize, 0f);
+        crushPadding = Mathf.Max(crushPadding, 1f);
+        dashHitbox = new Vector2(Mathf.Max(dashHitbox.x, 0f), Mathf.Max(dashHitbox.y, 0f));
+        activationCooldown = Mathf.Max(activationCooldown, 0f);
+        accelerationDuration = Mathf.Max(accelerationDuration, 0f);
         maxSpeed = Mathf.Max(0f, maxSpeed);
-        groundDetectionPadding = Mathf.Max(0f, groundDetectionPadding);
-        shakeSetting.ClampValue();
         returnBumpSpeedOnChar = Mathf.Max(0f, returnBumpSpeedOnChar);
     }
 
     private void OnDrawGizmosSelected()
     {
-        if(gizmosDrawGrid)
+        if(!drawGizmos)
+            return;
+
+        hitbox = GetComponent<BoxCollider2D>();
+        this.transform = base.transform;
+
+        if (drawGroundDetectionHitoxGizmos)
         {
-            Vector2 offset = -0.5f * LevelMapData.currentMap.mapSize + 0.5f * LevelMapData.currentMap.mapSize;
-            Gizmos.color = Color.red;
-            for (int y = 0; y < LevelMapData.currentMap.mapSize.y; y++)
+            Gizmos.color = colorGroundDetectionHitbox;
+            Vector2 center = new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f);
+            Vector2 size = new Vector2(hitbox.size.x, collisionOverlapSize);
+            Hitbox.GizmosDraw(center, size);
+
+            center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f);
+            size = new Vector2(hitbox.size.x, collisionOverlapSize);
+            Hitbox.GizmosDraw(center, size);
+
+            center = new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y);
+            size = new Vector2(collisionOverlapSize, hitbox.size.y);
+            Hitbox.GizmosDraw(center, size);
+
+            center = new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y);
+            size = new Vector2(collisionOverlapSize, hitbox.size.y);
+            Hitbox.GizmosDraw(center, size);
+        }
+
+        if(drawCrushHiboxGizmos)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Char");
+            if(player != null) 
             {
-                for (int x = 0; x < LevelMapData.currentMap.mapSize.x; x++)
-                {
-                    Hitbox.GizmosDraw(offset + new Vector2(LevelMapData.currentMap.mapSize.x * x, LevelMapData.currentMap.mapSize.y * y), LevelMapData.currentMap.mapSize);
-                }
+                Vector2 charSize = player.GetComponent<BoxCollider2D>().size;
+                Gizmos.color = colorCrushDetectionHitbox;
+
+                Vector2 center = new Vector2(transform.position.x, transform.position.y + hitbox.size.y * 0.5f + charSize.y * crushPadding * 0.5f);
+                Vector2 size = new Vector2(hitbox.size.x, charSize.y * crushPadding);
+                Hitbox.GizmosDraw(center, size);
+
+                center = new Vector2(transform.position.x, transform.position.y - hitbox.size.y * 0.5f - charSize.y * crushPadding * 0.5f);
+                size = new Vector2(hitbox.size.x, charSize.y * crushPadding);
+                Hitbox.GizmosDraw(center, size);
+
+                center = new Vector2(transform.position.x - hitbox.size.x * 0.5f - charSize.x * crushPadding * 0.5f, transform.position.y);
+                size = new Vector2(charSize.x * crushPadding, hitbox.size.y);
+                Hitbox.GizmosDraw(center, size);
+
+                center = new Vector2(transform.position.x + hitbox.size.x * 0.5f + charSize.x * crushPadding * 0.5f, transform.position.y);
+                size = new Vector2(charSize.x * crushPadding, hitbox.size.y);
+                Hitbox.GizmosDraw(center, size);
+            }
+            else
+            {
+                Debug.LogWarning("Enable a char to draw craush Hitboxes");
             }
         }
 
-        //hitbox
-        Gizmos.color = Color.green;
-        Hitbox.GizmosDraw(transform.position, hitbox.size * LevelMapData.currentMap.mapSize);
+        if(drawDashHiboxGizmos)
+        {
+            Gizmos.color = colorDashDetectionHitbox;
 
-        //chardetection
-        Hitbox.GizmosDraw(transform.position, hitbox.size * LevelMapData.currentMap.mapSize + 2f * charDetectionDistance * Vector2.one);
+            Vector2 center = new Vector2(transform.position.x, transform.position.y + dashHitbox.y * 0.25f);
+            Vector2 size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+            Hitbox.GizmosDraw(center, size);
 
-        //test GetRecInFront
-        (Vector2 pos, Vector2 size) = GetRecInFront(transform.position, Vector2.right, groundDetectionPadding);
-        Gizmos.color = Color.blue;
-        Hitbox.GizmosDraw(pos, size);
-        (pos, size) = GetRecInFront(transform.position, Vector2.left, groundDetectionPadding);
-        Hitbox.GizmosDraw(pos, size);
-        (pos, size) = GetRecInFront(transform.position, Vector2.up, groundDetectionPadding);
-        Hitbox.GizmosDraw(pos, size);
-        (pos, size) = GetRecInFront(transform.position, Vector2.down, groundDetectionPadding);
-        Hitbox.GizmosDraw(pos, size);
-    }
+            center = new Vector2(transform.position.x, transform.position.y - dashHitbox.y * 0.25f);
+            size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+            Hitbox.GizmosDraw(center, size);
 
-    private void OnDrawGizmos()
-    {
-        return;
+            center = new Vector2(transform.position.x - dashHitbox.x * 0.25f, transform.position.y);
+            size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+            Hitbox.GizmosDraw(center, size);
 
-        //test GetHitboxSide
-        GameObject char1 = GameObject.FindGameObjectsWithTag("Char").Where((GameObject go) => go.GetComponent<PlayerCommon>().id == 0).First();
-        HitboxSide hitboxSide = GetHitboxSide((Vector2)char1.transform.position + char1.GetComponent<BoxCollider2D>().offset, char1.GetComponent<BoxCollider2D>().size, true);
-        print(hitboxSide);
+            center = new Vector2(transform.position.x + dashHitbox.x * 0.25f, transform.position.y);
+            size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+            Hitbox.GizmosDraw(center, size);
+        }
     }
 
 #endif
 
     #endregion
 
+    #region
+
+    private struct PauseData
+    {
+        public float lastTimeBeginMoveDeltaTime;
+
+        public PauseData(float lastTimeBeginMoveDeltaTime)
+        {
+            this.lastTimeBeginMoveDeltaTime = lastTimeBeginMoveDeltaTime;
+        }
+    }
+
+    #endregion
 }

@@ -121,7 +121,10 @@ public static class PhysicsToric
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
 
-        bool containAll = true;
+        Collider2D res = Physics2D.OverlapCircle(center, radius, layerMask);
+        if (res != null)
+            return res;
+
         bool[] collideWithCamHitbox = new bool[4];
         for(int i = 0; i < 4; i++)
         {
@@ -129,18 +132,8 @@ public static class PhysicsToric
             if(CustomCollider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
-                containAll = false;
             }
         }
-
-        if(containAll)//ez case
-        {
-            return Physics2D.OverlapCircle(center, radius, layerMask);
-        }
-
-        Collider2D res = Physics2D.OverlapCircle(center, radius, layerMask);
-        if (res != null)
-            return res;
 
         for (int i = 0; i < 4; i++)
         {
@@ -162,8 +155,8 @@ public static class PhysicsToric
     public static Collider2D[] OverlapCircleAll(in Vector2 center, float radius, in LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
+        Collider2D[] res = Physics2D.OverlapCircleAll(center, radius, layerMask);
 
-        bool containAll = true;
         bool[] collideWithCamHitbox = new bool[4];
         for (int i = 0; i < 4; i++)
         {
@@ -171,16 +164,8 @@ public static class PhysicsToric
             if (CustomCollider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
-                containAll = false;
             }
         }
-
-        if (containAll)//ez case
-        {
-            return Physics2D.OverlapCircleAll(center, radius, layerMask);
-        }
-
-        Collider2D[] res = Physics2D.OverlapCircleAll(center, radius, layerMask);
 
         for (int i = 0; i < 4; i++)
         {
@@ -194,7 +179,7 @@ public static class PhysicsToric
             }
         }
 
-        return res == null ? null : res.Distinct().ToArray();
+        return res.Length <= 0 ? res : res.Distinct().ToArray();
     }
 
     public static Collider2D OverlapBox(Hitbox hitbox, in LayerMask layerMask) => OverlapBox(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
@@ -203,21 +188,6 @@ public static class PhysicsToric
     {
         Hitbox hitbox = new Hitbox(GetPointInsideBounds(point), size);
         hitbox.Rotate(angle);
-        bool containAll = true;
-        foreach (Vector2 p in hitbox.rec.vertices)
-        {
-            if(!mapHitbox.Contains(p))
-            {
-                containAll = false;
-                break;
-            }
-        }
-
-        if(containAll)
-        {
-            //cas simple
-            return Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
-        }
 
         Collider2D res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         if (res != null)
@@ -254,29 +224,13 @@ public static class PhysicsToric
         Hitbox hitbox = new Hitbox(GetPointInsideBounds(point), size);
         hitbox.Rotate(angle);
 
-        bool containAll = true;
-        foreach (Vector2 p in hitbox.rec.vertices)
-        {
-            if (!mapHitbox.Contains(p))
-            {
-                containAll = false;
-                break;
-            }
-        }
-
-        if (containAll)
-        {
-            //cas simple
-            return Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
-        }
-
         Collider2D[] res = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         bool[] contains = new bool[4];
         foreach (Vector2 p in hitbox.rec.vertices)
         {
             for (int i = 0; i < 4; i++)
             {
-                if (!contains[i] && mapHitboxArounds[i].Contains(p))
+                if (mapHitboxArounds[i].Contains(p))
                     contains[i] = true;
             }
         }
@@ -298,7 +252,7 @@ public static class PhysicsToric
     public static Collider2D Physics2DOverlapCapsule(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size, dir);
-        if(Mathf.Abs(angle) > 1e-5)
+        if(Mathf.Abs(angle) > 1e-5f)
             c.Rotate(angle);
         return Physics2DOverlapCapsule(c, layerMask);
     }
