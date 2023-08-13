@@ -34,7 +34,8 @@ public class LevelMapData : MonoBehaviour
     [SerializeField] private string relatifSpawnConfigsPath;
     [SerializeField] private Vector2[] spawnConfig;
 
-    [field: SerializeField] public Vector2 mapSize { get; private set; } = new Vector2(32, 18);
+
+    [SerializeField] public Vector2 mapSize = new Vector2(32, 18);
     [HideInInspector] public Vector2 cellSize { get; private set; }
 
     private void Awake()

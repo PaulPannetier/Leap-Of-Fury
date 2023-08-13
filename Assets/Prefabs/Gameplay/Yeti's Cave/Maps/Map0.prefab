@@ -1618,6 +1618,7 @@ MonoBehaviour:
   clearSpawnConfig: 0
   relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map0SpawnPoints
   spawnConfig: []
+  mapSize: {x: 32, y: 18}
 --- !u!1 &5838678480640160895
 GameObject:
   m_ObjectHideFlags: 0

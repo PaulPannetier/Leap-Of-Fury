@@ -80,7 +80,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3, y: 2}
+  m_Size: {x: 2.95, y: 1.95}
   m_EdgeRadius: 0
 --- !u!50 &2621172564464478623
 Rigidbody2D:
@@ -108,7 +108,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &2329972634777868312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableBehaviour: 1
-  enableLeftAndRightDash: 0
-  enableUpAndDownDash: 0
+  enableLeftAndRightDash: 1
+  enableUpAndDownDash: 1
   collisionOverlapSize: 0.5
   crushPadding: 1.2
   dashHitbox: {x: 4, y: 3}
@@ -207,7 +207,7 @@ MonoBehaviour:
   returnBumpSpeedAngleOnChar: 45
   drawGizmos: 1
   drawGroundDetectionHitoxGizmos: 0
-  drawCrushHiboxGizmos: 1
+  drawCrushHiboxGizmos: 0
   drawDashHiboxGizmos: 0
   colorGroundDetectionHitbox: {r: 0, g: 0, b: 0, a: 1}
   colorCrushDetectionHitbox: {r: 1, g: 0, b: 0, a: 1}

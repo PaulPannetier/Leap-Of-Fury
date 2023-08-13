@@ -3419,7 +3419,7 @@ PrefabInstance:
       objectReference: {fileID: 1393366166460120883}
     - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
       propertyPath: enableBehaviour
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
       propertyPath: mapsPrefabs.Array.size
@@ -3451,7 +3451,7 @@ PrefabInstance:
       objectReference: {fileID: 778908268}
     - target: {fileID: 8676859684077006534, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
       propertyPath: enableBehaviour
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14230,7 +14230,7 @@ MonoBehaviour:
   clearSpawnConfig: 0
   relatifSpawnConfigsPath: /Save/Levels/ThePlain/Map0SpawnPoints
   spawnConfig: []
-  mapSize: {x: 32, y: 18}
+  <mapSize>k__BackingField: {x: 32, y: 18}
 --- !u!233 &3904762825322516193
 HingeJoint2D:
   m_ObjectHideFlags: 0
@@ -26059,6 +26059,7 @@ MonoBehaviour:
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
+  inertiaDurationWhenQuittingGround: 0.1
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -26234,7 +26235,7 @@ MonoBehaviour:
   maxBumpDuration: 1.5
   minBumpDuration: 0.2
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  inertiaSpeedWhenQuittingConvoyerBelt: 1
+  speedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
@@ -26271,6 +26272,7 @@ MonoBehaviour:
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
+  inertiaDurationWhenQuittingGround: 0.1
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -26446,7 +26448,7 @@ MonoBehaviour:
   maxBumpDuration: 1.5
   minBumpDuration: 0.2
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  inertiaSpeedWhenQuittingConvoyerBelt: 1
+  speedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
@@ -27198,6 +27200,7 @@ MonoBehaviour:
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
+  inertiaDurationWhenQuittingGround: 0.1
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -27373,7 +27376,7 @@ MonoBehaviour:
   maxBumpDuration: 1.5
   minBumpDuration: 0.2
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  inertiaSpeedWhenQuittingConvoyerBelt: 1
+  speedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
@@ -29357,6 +29360,7 @@ MonoBehaviour:
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
+  inertiaDurationWhenQuittingGround: 0.1
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -29532,7 +29536,7 @@ MonoBehaviour:
   maxBumpDuration: 1.5
   minBumpDuration: 0.2
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  inertiaSpeedWhenQuittingConvoyerBelt: 1
+  speedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}

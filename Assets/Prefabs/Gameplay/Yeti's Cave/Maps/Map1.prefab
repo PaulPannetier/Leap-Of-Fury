@@ -7372,13 +7372,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1298007740169458772}
-  - {fileID: 3949974969270194379}
+  - {fileID: 5944672956328553472}
   - {fileID: 6558673004873786327}
   - {fileID: 3958986328601406493}
   - {fileID: 8701115073236788731}
-  - {fileID: 5863522450260303072}
+  - {fileID: 4856204658143025374}
   - {fileID: 5998215003270707334}
-  - {fileID: 5719545880875559335}
+  - {fileID: 6729563523562581415}
   m_Father: {fileID: 6424087060659619233}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7836310906376319056
@@ -19499,6 +19499,7 @@ MonoBehaviour:
   clearSpawnConfig: 0
   relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map1SpawnPoints
   spawnConfig: []
+  mapSize: {x: 32, y: 18}
 --- !u!1001 &2651208293566343196
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19756,7 +19757,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
---- !u!4 &3949974969270194379 stripped
+--- !u!4 &5944672956328553472 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1313888849041900545, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
   m_PrefabInstance: {fileID: 4630939003139975169}
@@ -20092,7 +20093,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
---- !u!4 &5719545880875559335 stripped
+--- !u!4 &6729563523562581415 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1313888849041900545, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
   m_PrefabInstance: {fileID: 5719545880875559334}
@@ -20190,7 +20191,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
---- !u!4 &5863522450260303072 stripped
+--- !u!4 &4856204658143025374 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1313888849041900545, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
   m_PrefabInstance: {fileID: 5863522450260303071}

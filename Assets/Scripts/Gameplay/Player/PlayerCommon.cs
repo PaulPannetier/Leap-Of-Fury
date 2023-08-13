@@ -25,12 +25,5 @@ public class PlayerCommon : MonoBehaviour
         {
             charSize = GetComponent<BoxCollider2D>().size;
         }
-#if UNITY_EDITOR
-        else if(charSize.SqrDistance(GetComponent<BoxCollider2D>().size) < 1e-5f)
-        {
-            Debug.LogWarning("Different char hitbox size found!");
-            charSize = GetComponent<BoxCollider2D>().size;
-        }
-#endif
     }
 }

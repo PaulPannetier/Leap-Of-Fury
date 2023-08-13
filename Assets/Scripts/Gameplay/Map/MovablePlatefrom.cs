@@ -49,6 +49,8 @@ public class MovablePlatefrom : MonoBehaviour
 
 #endif
 
+    public Collider2D groundCol;
+
     #region Awake and Start
 
     private void Awake()
@@ -77,7 +79,7 @@ public class MovablePlatefrom : MonoBehaviour
 
     #endregion
 
-    #region Update
+    #region FixedUpdate
 
     private void FixedUpdate()
     {
@@ -112,12 +114,12 @@ public class MovablePlatefrom : MonoBehaviour
             }
             else
             {
-                float speed = Time.time - lastTimeActivated > accelerationDuration ? maxSpeed : accelerationCurve.Evaluate((Time.time - lastTimeActivated) / accelerationDuration);
+                float speed = Time.time - lastTimeActivated > accelerationDuration ? maxSpeed : maxSpeed * accelerationCurve.Evaluate((Time.time - lastTimeActivated) / accelerationDuration);
                 rb.velocity = speed * convertHitboxSideToDir[(int)lastSideActiavated];
             }
 
             //char dash detecttion
-            if(!isTargetingPosition)
+            if(false && !isTargetingPosition)
             {
                 Collider2D[] cols;
                 if (enableLeftAndRightDash)
@@ -169,8 +171,13 @@ public class MovablePlatefrom : MonoBehaviour
             //ground Detection
             if(IsGroundCollision(lastSideActiavated))
             {
+                print("Carotte");
                 targetPosition = CalculateTargetPos(lastSideActiavated);
                 isTargetingPosition = true;
+            }
+            else
+            {
+                print("Pamplemouse");
             }
 
             bool IsGroundCollision(HitboxSide hitboxSide)
@@ -178,20 +185,25 @@ public class MovablePlatefrom : MonoBehaviour
                 switch (hitboxSide)
                 {
                     case HitboxSide.up:
-                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask) != null;
+                        groundCol = PhysicsToric.OverlapBox(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                        break;
                     case HitboxSide.down:
-                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask) != null;
+                        groundCol = PhysicsToric.OverlapBox(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                        break;
                     case HitboxSide.left:
-                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask) != null;
+                        groundCol = PhysicsToric.OverlapBox(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                        break;
                     case HitboxSide.right:
-                        return PhysicsToric.OverlapBox(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask) != null;
+                        groundCol =  PhysicsToric.OverlapBox(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                        break;
                     default:
                         return false;
                 }
+                return groundCol != null;
             }
 
             //Crushing Char
-            if(CrushDetectionSimple(lastSideActiavated))
+            if(false && CrushDetectionSimple(lastSideActiavated))
             {
                 HandleCrushDetectionAdvance(lastSideActiavated);
             }
@@ -450,6 +462,7 @@ public class MovablePlatefrom : MonoBehaviour
         lastCharActivatePlateform = player;
         lastCharIdActivate = player.GetComponent<PlayerCommon>().id;
         lastTimeActivated = Time.time;
+        lastSideActiavated = hitboxSide;
         Movement movement = player.GetComponent<Movement>();
         movement.ApplyBump(returnBumpSpeedOnChar * convertHitboxSideToBumbDir[(int)hitboxSide]);
         isMoving = true;
