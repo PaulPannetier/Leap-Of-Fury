@@ -43,7 +43,7 @@ public abstract class LevelManager : MonoBehaviour
     #if UNITY_EDITOR
 
     [Header("Level initialiser")]
-    [SerializeField] private bool enableBehaviour = true;
+    public bool enableBehaviour = true;
 
     #endif
 
