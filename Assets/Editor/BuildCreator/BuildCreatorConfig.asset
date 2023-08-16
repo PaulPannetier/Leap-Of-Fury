@@ -15,6 +15,11 @@ MonoBehaviour:
   modifyGameplayScene: 1
   gameplayScenes:
   - {fileID: 102900000, guid: 27f17e27e441c6d41b1f6d57c7e7eba3, type: 3}
-  performBuild: 0
-  otherSceneTobuild: []
-  copySaveDirectory: 0
+  - {fileID: 102900000, guid: 857f19da6c4bbbc43b7b9cbe942c62ac, type: 3}
+  - {fileID: 102900000, guid: 2cda990e2423bbf4892e6590ba056729, type: 3}
+  performBuild: 1
+  otherSceneTobuild:
+  - {fileID: 102900000, guid: 95ca349782007214fb012e85db33a963, type: 3}
+  - {fileID: 102900000, guid: e3f090a10911b754087beff83b20acc2, type: 3}
+  - {fileID: 102900000, guid: 61461d4bc41af1348ab49cc35c3deed7, type: 3}
+  copySaveDirectory: 1

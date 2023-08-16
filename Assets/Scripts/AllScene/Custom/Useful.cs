@@ -324,7 +324,7 @@ public static class Save
             return;
         }
 
-        string targetFirstDir = Path.Combine(targetDirectory, Path.GetDirectoryName(sourceDirectory));
+        string targetFirstDir = Path.Combine(targetDirectory, Path.GetRelativePath(Directory.GetParent(sourceDirectory).FullName, sourceDirectory));
         Directory.CreateDirectory(targetFirstDir);
 
         DuplicateDirectoryRecur(Directory.GetDirectories(sourceDirectory), Directory.GetFiles(sourceDirectory), targetFirstDir);
@@ -332,14 +332,22 @@ public static class Save
 
     private static void DuplicateDirectoryRecur(string[] directories, string[] files, string targetDirectory)
     {
+        string parentDirectory = Directory.GetParent(targetDirectory).FullName;
         foreach (string file in files)
         {
-            File.Copy(file, targetDirectory, true);
+            try
+            {
+                File.Copy(file, Path.Combine(targetDirectory, Path.GetRelativePath(parentDirectory, file)), true);
+            }
+            catch 
+            {
+                Debug.Log("!");
+            }
         }
 
         foreach (string directory in directories)
         {
-            string newDirectory = Path.Combine(targetDirectory, Path.GetDirectoryName(directory));
+            string newDirectory = Path.Combine(targetDirectory, Path.GetRelativePath(Directory.GetParent(directory).FullName, directory));
             Directory.CreateDirectory(newDirectory);
 
             DuplicateDirectoryRecur(Directory.GetDirectories(directory), Directory.GetFiles(directory), newDirectory);

@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
+using static SettingsManager;
 
 [CustomEditor(typeof(BuildCreatorConfig))]
 public class BuildCreator : Editor
@@ -89,17 +90,21 @@ public class BuildCreator : Editor
             }
 
             string buildDir = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Build");
-            Debug.Log("BuildDir : " + buildDir);
-            Debug.Log("Scenes : " + scenesPath.ToString());
-            return;
+            Directory.Delete(buildDir, true);
+            Directory.CreateDirectory(buildDir);
 
+            Debug.Log("Start building at " + buildDir);
             BuildReport reporting = BuildPipeline.BuildPlayer(scenesPath.ToArray(), buildDir + "PartyGame.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
 
             //Copy save content
             if(buildCreatorConfig.copySaveDirectory)
             {
+                Debug.Log("Copy Save directory");
+
                 Save.Copy(Path.Combine(Application.dataPath, "Save"), buildDir);
                 RmMetaFile(Path.Combine(buildDir, "Save"));
+
+                Debug.Log("Save directory fully copied!");
 
                 void RmMetaFile(string directory)
                 {
@@ -117,6 +122,10 @@ public class BuildCreator : Editor
                         RmMetaFile(dir);
                     }
                 }
+
+                //set default configuration
+                ConfigurationData defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, "English", FullScreenMode.FullScreenWindow, true);
+                Save.WriteJSONData(defaultConfig, @"/Save/configuration" + saveFileExtension);
             }
         }
     }
