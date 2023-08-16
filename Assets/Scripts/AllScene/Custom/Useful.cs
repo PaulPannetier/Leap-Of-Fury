@@ -3,6 +3,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -307,50 +308,6 @@ public static class Save
             {
                 data.callbackRead(false, string.Empty);
             }
-        }
-    }
-
-    public static void Copy(string sourceDirectory, string targetDirectory)
-    {
-        if (!Directory.Exists(sourceDirectory))
-        {
-            Debug.Log($"The source directory : {sourceDirectory} doesn't exist, can't copy them");
-            return;
-        }
-
-        if (!Directory.Exists(targetDirectory))
-        {
-            Debug.Log($"The target directory : {targetDirectory} doesn't exist!");
-            return;
-        }
-
-        string targetFirstDir = Path.Combine(targetDirectory, Path.GetRelativePath(Directory.GetParent(sourceDirectory).FullName, sourceDirectory));
-        Directory.CreateDirectory(targetFirstDir);
-
-        DuplicateDirectoryRecur(Directory.GetDirectories(sourceDirectory), Directory.GetFiles(sourceDirectory), targetFirstDir);
-    }
-
-    private static void DuplicateDirectoryRecur(string[] directories, string[] files, string targetDirectory)
-    {
-        string parentDirectory = Directory.GetParent(targetDirectory).FullName;
-        foreach (string file in files)
-        {
-            try
-            {
-                File.Copy(file, Path.Combine(targetDirectory, Path.GetRelativePath(parentDirectory, file)), true);
-            }
-            catch 
-            {
-                Debug.Log("!");
-            }
-        }
-
-        foreach (string directory in directories)
-        {
-            string newDirectory = Path.Combine(targetDirectory, Path.GetRelativePath(Directory.GetParent(directory).FullName, directory));
-            Directory.CreateDirectory(newDirectory);
-
-            DuplicateDirectoryRecur(Directory.GetDirectories(directory), Directory.GetFiles(directory), newDirectory);
         }
     }
 

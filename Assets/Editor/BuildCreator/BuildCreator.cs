@@ -92,20 +92,20 @@ public class BuildCreator : Editor
             Directory.Delete(buildDir, true);
             Directory.CreateDirectory(buildDir);
 
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+            buildPlayerOptions.options = BuildOptions.None;
+            buildPlayerOptions.scenes = scenesPath.ToArray();
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, "PartyGame.exe");
+            buildPlayerOptions.target = BuildTarget.StandaloneWindows;
+            buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
             Debug.Log("Start building at " + buildDir);
-            BuildReport reporting = BuildPipeline.BuildPlayer(scenesPath.ToArray(), buildDir + "PartyGame.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
+            BuildReport reporting = BuildPipeline.BuildPlayer(buildPlayerOptions);
 
             //Copy save content
             if(buildCreatorConfig.copySaveDirectory)
             {
-                Debug.Log("Copy Save directory");
-
-                FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), buildDir);
-
-                //Save.Copy(Path.Combine(Application.dataPath, "Save"), buildDir);
+                FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), Path.Combine(buildDir, "Save"));
                 RmMetaFile(Path.Combine(buildDir, "Save"));
-
-                Debug.Log("Save directory fully copied!");
 
                 void RmMetaFile(string directory)
                 {
@@ -127,6 +127,9 @@ public class BuildCreator : Editor
                 //set default configuration
                 ConfigurationData defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, "English", FullScreenMode.FullScreenWindow, true);
                 Save.WriteJSONData(defaultConfig, @"/Save/configuration" + saveFileExtension);
+
+                //reset log file
+                File.WriteAllText(Path.Combine(buildDir, "Save", "Log.txt"), "");
             }
         }
     }
