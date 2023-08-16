@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using static SettingsManager;
 
@@ -101,7 +100,9 @@ public class BuildCreator : Editor
             {
                 Debug.Log("Copy Save directory");
 
-                Save.Copy(Path.Combine(Application.dataPath, "Save"), buildDir);
+                FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), buildDir);
+
+                //Save.Copy(Path.Combine(Application.dataPath, "Save"), buildDir);
                 RmMetaFile(Path.Combine(buildDir, "Save"));
 
                 Debug.Log("Save directory fully copied!");
