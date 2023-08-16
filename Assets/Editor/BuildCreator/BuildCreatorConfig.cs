@@ -11,4 +11,5 @@ public class BuildCreatorConfig : ScriptableObject
     public Object[] otherSceneTobuild;
 
     public bool copySaveDirectory = true;
+    public bool setDefaultSettingAndConfig = true;
 }

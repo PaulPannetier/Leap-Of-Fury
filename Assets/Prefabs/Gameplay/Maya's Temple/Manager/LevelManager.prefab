@@ -69,4 +69,5 @@ MonoBehaviour:
   playFirstMapAtLevelStart: 1
   mapsPrefabs:
   - {fileID: 537159171673598514, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+  - {fileID: 3045429992128422392, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
   enableBehaviour: 1

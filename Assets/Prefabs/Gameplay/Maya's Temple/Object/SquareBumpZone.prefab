@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 380787851878124317}
   - component: {fileID: 7952447901356322828}
   - component: {fileID: 380787851878124315}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SquareBumpZone
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a26fe2e4030a6745b4cb4a195cb5d45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionDetectionScale: 1.1
+  collisionDetectionScale: {x: 1, y: 1}
   bumpSpeed: 20
 --- !u!1 &6631601753472238103
 GameObject:
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6011098805592521193}
   - component: {fileID: 7277242005918892350}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}

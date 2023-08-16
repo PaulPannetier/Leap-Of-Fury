@@ -128,8 +128,14 @@ public class BuildCreator : Editor
                 }
 
                 //set default configuration
-                ConfigurationData defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, "English", FullScreenMode.FullScreenWindow, true);
-                Save.WriteJSONData(defaultConfig, @"/Save/configuration" + saveFileExtension);
+                if(buildCreatorConfig.setDefaultSettingAndConfig)
+                {
+                    ConfigurationData defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, "English", FullScreenMode.FullScreenWindow, true);
+                    File.WriteAllText(Path.Combine(saveDirectory, "configuration" + saveFileExtension), Save.ConvertObjectToJSONString(defaultConfig));
+
+                    //clear stat file
+                    File.WriteAllText(Path.Combine(saveDirectory, "stats" + saveFileExtension), Save.ConvertObjectToJSONString(new StatisticsData(0f, 0f, 0, 0)));
+                }
 
                 //reset log file
                 File.WriteAllText(Path.Combine(saveDirectory, "Log.txt"), "");
@@ -137,9 +143,6 @@ public class BuildCreator : Editor
                 //clear tmp folder
                 Directory.Delete(Path.Combine(saveDirectory, "tmp"), true);
                 Directory.CreateDirectory(Path.Combine(saveDirectory, "tmp"));
-
-                //clear stat file
-                File.WriteAllText(Path.Combine(saveDirectory, "stats" + saveFileExtension), Save.ConvertObjectToJSONString(new StatisticsData(0f, 0f, 0, 0)));
             }
         }
     }

@@ -1223,9 +1223,9 @@ public class Movement : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.fixedDeltaTime));
             }
 
-            //Movement horizontal
+            //Horizontal movement
             //Clamp, on est dans le mauvais sens
-            if(isQuittingConvoyerBelt)
+            if (isQuittingConvoyerBelt)
             {
                 float speed = speedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
                 rb.velocity = new Vector2(speed, rb.velocity.y);
@@ -1234,7 +1234,7 @@ public class Movement : MonoBehaviour
             {
                 if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
-                if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x && playerInput.rawX != 0)
+                if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0)
                 {
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
                 }
