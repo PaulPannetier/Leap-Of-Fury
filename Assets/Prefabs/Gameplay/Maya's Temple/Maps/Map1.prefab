@@ -47513,7 +47513,7 @@ MonoBehaviour:
   clearSpawnConfig: 0
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map1SpawnPoints
   spawnConfig: []
-  <mapSize>k__BackingField: {x: 32, y: 18}
+  mapSize: {x: 32, y: 18}
 --- !u!1 &4607286660551963609
 GameObject:
   m_ObjectHideFlags: 0

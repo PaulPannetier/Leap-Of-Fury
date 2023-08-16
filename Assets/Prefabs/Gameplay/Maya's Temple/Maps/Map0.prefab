@@ -9077,7 +9077,7 @@ GameObject:
   - component: {fileID: -6763219888292426903}
   m_Layer: 0
   m_Name: Map0
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9119,7 +9119,7 @@ MonoBehaviour:
   spawnConfig:
   - {x: -0.02, y: 0}
   - {x: 0, y: 0}
-  <mapSize>k__BackingField: {x: 32, y: 18}
+  mapSize: {x: 32, y: 18}
 --- !u!1 &537159171884627902
 GameObject:
   m_ObjectHideFlags: 0

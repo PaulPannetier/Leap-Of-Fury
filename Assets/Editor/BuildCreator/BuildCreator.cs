@@ -91,17 +91,39 @@ public class BuildCreator : Editor
             string buildDir = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Build");
             Debug.Log("BuildDir : " + buildDir);
             Debug.Log("Scenes : " + scenesPath.ToString());
+            return;
 
-            if(false)
+            BuildReport reporting = BuildPipeline.BuildPlayer(scenesPath.ToArray(), buildDir + "PartyGame.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
+
+            //Copy save content
+            if(buildCreatorConfig.copySaveDirectory)
             {
-                BuildReport reporting =  BuildPipeline.BuildPlayer(scenesPath.ToArray(), buildDir + "PartyGame.exe", BuildTarget.StandaloneWindows, BuildOptions.None);
+                Save.Copy(Path.Combine(Application.dataPath, "Save"), buildDir);
+                RmMetaFile(Path.Combine(buildDir, "Save"));
 
+                void RmMetaFile(string directory)
+                {
+                    foreach (string file in Directory.GetFiles(directory))
+                    {
+                        if (file.EndsWith(".meta"))
+                        {
+                            File.Delete(file);
+                        }
+                    }
+
+                    string[] directories = Directory.GetDirectories(directory);
+                    foreach (string dir in directories)
+                    {
+                        RmMetaFile(dir);
+                    }
+                }
             }
         }
     }
 
     private void ModidyGameplayScenes()
     {
+        string currentScenePath = SceneManager.GetActiveScene().path;
         foreach (Object sceneNoCast in buildCreatorConfig.gameplayScenes)
         {
             //open the scene
@@ -151,8 +173,10 @@ public class BuildCreator : Editor
                 }
             }
 
+            Debug.Log($"Scene {scene.name} done.");
             EditorSceneManager.SaveScene(scene, scenePath);
-            EditorSceneManager.CloseScene(scene, true);
         }
+
+        EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
     }
 }

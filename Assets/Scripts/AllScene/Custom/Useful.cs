@@ -310,7 +310,43 @@ public static class Save
         }
     }
 
-    public static void ImageInPNGFormat(in Color[] pixels, in int w, in int h, string path, string name, in FilterMode filterMode = FilterMode.Point, in TextureWrapMode textureWrapMode = TextureWrapMode.Clamp)
+    public static void Copy(string sourceDirectory, string targetDirectory)
+    {
+        if (!Directory.Exists(sourceDirectory))
+        {
+            Debug.Log($"The source directory : {sourceDirectory} doesn't exist, can't copy them");
+            return;
+        }
+
+        if (!Directory.Exists(targetDirectory))
+        {
+            Debug.Log($"The target directory : {targetDirectory} doesn't exist!");
+            return;
+        }
+
+        string targetFirstDir = Path.Combine(targetDirectory, Path.GetDirectoryName(sourceDirectory));
+        Directory.CreateDirectory(targetFirstDir);
+
+        DuplicateDirectoryRecur(Directory.GetDirectories(sourceDirectory), Directory.GetFiles(sourceDirectory), targetFirstDir);
+    }
+
+    private static void DuplicateDirectoryRecur(string[] directories, string[] files, string targetDirectory)
+    {
+        foreach (string file in files)
+        {
+            File.Copy(file, targetDirectory, true);
+        }
+
+        foreach (string directory in directories)
+        {
+            string newDirectory = Path.Combine(targetDirectory, Path.GetDirectoryName(directory));
+            Directory.CreateDirectory(newDirectory);
+
+            DuplicateDirectoryRecur(Directory.GetDirectories(directory), Directory.GetFiles(directory), newDirectory);
+        }
+    }
+
+    public static void ImageInPNGFormat(Color[] pixels, int w, int h, string path, string name, FilterMode filterMode = FilterMode.Point, TextureWrapMode textureWrapMode = TextureWrapMode.Clamp)
     {
         Texture2D texture = GenerateImage(pixels, w, h, filterMode, textureWrapMode);
         File.WriteAllBytes(Application.dataPath + path + name + @".png", texture.EncodeToPNG());
@@ -321,7 +357,7 @@ public static class Save
         File.WriteAllBytes(Application.dataPath + path + name + @".png", texture.EncodeToPNG());
     }
 
-    public static void ImageInJPGFormat(in Color[] pixels, in int w, in int h, string path, string name, in FilterMode filterMode = FilterMode.Point, in TextureWrapMode textureWrapMode = TextureWrapMode.Clamp)
+    public static void ImageInJPGFormat(Color[] pixels, int w, int h, string path, string name, FilterMode filterMode = FilterMode.Point, TextureWrapMode textureWrapMode = TextureWrapMode.Clamp)
     {
         Texture2D texture = GenerateImage(pixels, w, h, filterMode, textureWrapMode);
         File.WriteAllBytes(Application.dataPath + path + name + @".jpg", texture.EncodeToJPG());
@@ -332,7 +368,7 @@ public static class Save
         File.WriteAllBytes(Application.dataPath + path + name + @".jpg", texture.EncodeToJPG());
     }
 
-    private static Texture2D GenerateImage(in Color[] pixels, in int w, in int h, in FilterMode filterMode = FilterMode.Point, in TextureWrapMode textureWrapMode = TextureWrapMode.Clamp)
+    private static Texture2D GenerateImage(Color[] pixels, int w, int h, FilterMode filterMode = FilterMode.Point, TextureWrapMode textureWrapMode = TextureWrapMode.Clamp)
     {
         Texture2D img = new Texture2D(w, h, TextureFormat.RGBAFloat, false);
         img.SetPixelData(pixels, 0);
