@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Build.Reporting;
 using static SettingsManager;
+using static StatisticsManager;
 
 [CustomEditor(typeof(BuildCreatorConfig))]
 public class BuildCreator : Editor
@@ -99,13 +100,15 @@ public class BuildCreator : Editor
             buildPlayerOptions.target = BuildTarget.StandaloneWindows;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
             Debug.Log("Start building at " + buildDir);
-            BuildReport reporting = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            //BuildReport reporting = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
 
             //Copy save content
             if(buildCreatorConfig.copySaveDirectory)
             {
-                FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), Path.Combine(buildDir, "Save"));
-                RmMetaFile(Path.Combine(buildDir, "Save"));
+                string saveDirectory = Path.Combine(buildDir, "PartyGame_Data", "Save");
+                FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), saveDirectory);
+                RmMetaFile(Path.Combine(saveDirectory));
 
                 void RmMetaFile(string directory)
                 {
@@ -129,7 +132,14 @@ public class BuildCreator : Editor
                 Save.WriteJSONData(defaultConfig, @"/Save/configuration" + saveFileExtension);
 
                 //reset log file
-                File.WriteAllText(Path.Combine(buildDir, "Save", "Log.txt"), "");
+                File.WriteAllText(Path.Combine(saveDirectory, "Log.txt"), "");
+
+                //clear tmp folder
+                Directory.Delete(Path.Combine(saveDirectory, "tmp"), true);
+                Directory.CreateDirectory(Path.Combine(saveDirectory, "tmp"));
+
+                //clear stat file
+                File.WriteAllText(Path.Combine(saveDirectory, "stats" + saveFileExtension), Save.ConvertObjectToJSONString(new StatisticsData(0f, 0f, 0, 0)));
             }
         }
     }

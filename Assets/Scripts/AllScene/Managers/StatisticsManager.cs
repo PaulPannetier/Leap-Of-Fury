@@ -87,7 +87,7 @@ public class StatisticsManager : MonoBehaviour
     }
 
     [Serializable]
-    private struct StatisticsData
+    public struct StatisticsData
     {
         public float timePlayed, timeOpen;
         public int nbKills, levelComplete;//le nombre de manche terminé
