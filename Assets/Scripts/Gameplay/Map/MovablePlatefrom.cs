@@ -102,40 +102,13 @@ public class MovablePlatefrom : MonoBehaviour
         void HandleMoving()
         {
             //ground Detection
-            if (!isTargetingPosition && IsGroundCollision(lastSideActiavated))
+            if (!isTargetingPosition && IsGroundCollision(lastSideActiavated, out Collider2D groundCol))
             {
-                targetPosition = CalculateTargetPos(lastSideActiavated);
+                targetPosition = CalculateTargetPos(lastSideActiavated, groundCol);
                 isTargetingPosition = true;
             }
 
-            bool IsGroundCollision(HitboxSide hitboxSide)
-            {
-                Collider2D[] groundCol;
-                switch (hitboxSide)
-                {
-                    case HitboxSide.up:
-                        groundCol = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
-                        break;
-                    case HitboxSide.down:
-                        groundCol = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
-                        break;
-                    case HitboxSide.left:
-                        groundCol = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
-                        break;
-                    case HitboxSide.right:
-                        groundCol = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
-                        break;
-                    default:
-                        return false;
-                }
 
-                foreach (Collider2D col in groundCol)
-                {
-                    if (col != hitbox)
-                        return true;
-                }
-                return false;
-            }
 
             //speed
             if (isTargetingPosition)
@@ -395,12 +368,45 @@ public class MovablePlatefrom : MonoBehaviour
         }
     }
 
+    bool IsGroundCollision(HitboxSide hitboxSide, out Collider2D groundCol)
+    {
+        Collider2D[] groundCols;
+        switch (hitboxSide)
+        {
+            case HitboxSide.up:
+                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                break;
+            case HitboxSide.down:
+                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                break;
+            case HitboxSide.left:
+                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                break;
+            case HitboxSide.right:
+                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                break;
+            default:
+                groundCol = null;
+                return false;
+        }
+
+        foreach (Collider2D col in groundCols)
+        {
+            if (col != hitbox)
+            {
+                groundCol = col;
+                return true;
+            }
+        }
+        groundCol = null;
+        return false;
+    }
 
     #endregion
 
     #region CalculateTargetPos
 
-    private Vector2 CalculateTargetPos(HitboxSide side)
+    private Vector2 CalculateTargetPos(HitboxSide side, Collider2D groundCol)
     {
         switch (side)
         {
@@ -444,28 +450,12 @@ public class MovablePlatefrom : MonoBehaviour
 
         Vector2 HandleRight()
         {
-            Vector2 offset = hitbox.size.x.Round().IsOdd() ? Vector2.zero : new Vector2(-LevelMapData.currentMap.cellSize.x * 0.5f, 0f);
-            if(Useful.IsOdd(hitbox.size.y.Round()))
-            {
-                return GetCellCenter(new Vector2(transform.position.x + collisionOverlapSize, transform.position.y)) + offset;
-            }
-            else
-            {
-                return GetCellCenter(new Vector2(transform.position.x + collisionOverlapSize, transform.position.y + LevelMapData.currentMap.cellSize.y * 0.5f)) - new Vector2(0f, LevelMapData.currentMap.cellSize.y * 0.5f) + offset;
-            }
+            return new Vector2(transform.position.x + (Mathf.Abs(transform.position.x - groundCol.ClosestPoint(transform.position).x) - hitbox.size.x), transform.position.y);
         }
 
         Vector2 HandleLeft()
         {
-            Vector2 offset = hitbox.size.x.Round().IsOdd() ? Vector2.zero : new Vector2(LevelMapData.currentMap.cellSize.x * 0.5f, 0f);
-            if (Useful.IsOdd(hitbox.size.y.Round()))
-            {
-                return GetCellCenter(new Vector2(transform.position.x - collisionOverlapSize, transform.position.y)) + offset;
-            }
-            else
-            {
-                return GetCellCenter(new Vector2(transform.position.x - collisionOverlapSize, transform.position.y + LevelMapData.currentMap.cellSize.y * 0.5f)) - new Vector2(0f, LevelMapData.currentMap.cellSize.y * 0.5f) + offset;
-            }
+            return new Vector2(transform.position.x - (Mathf.Abs(transform.position.x - groundCol.ClosestPoint(transform.position).x) - hitbox.size.x), transform.position.y);
         }
 
         Vector2 GetCellCenter(in Vector2 position)
@@ -475,6 +465,7 @@ public class MovablePlatefrom : MonoBehaviour
             return LevelMapData.currentMap.cellSize * coord + LevelMapData.currentMap.cellSize * 0.5f - LevelMapData.currentMap.mapSize * 0.5f;
         }
     }
+
 
     #endregion
 
@@ -545,6 +536,10 @@ public class MovablePlatefrom : MonoBehaviour
         returnBumpSpeedOnChar = Mathf.Max(0f, returnBumpSpeedOnChar);
     }
 
+    [SerializeField] private HitboxSide hitboxSideTEST;
+    private Vector2 target;
+    public bool calculateTarget = true;
+
     private void OnDrawGizmosSelected()
     {
         if(!drawGizmos)
@@ -553,11 +548,12 @@ public class MovablePlatefrom : MonoBehaviour
         hitbox = GetComponent<BoxCollider2D>();
         this.transform = base.transform;
 
-        if (isTargetingPosition)
+        if(Application.isPlaying && IsGroundCollision(hitboxSideTEST, out Collider2D c) && calculateTarget)
         {
-            Gizmos.color = Color.red;
-            Circle.GizmosDraw(targetPosition, 0.3f);
+            target = CalculateTargetPos(hitboxSideTEST, c);
         }
+        Gizmos.color = Color.red;
+        Circle.GizmosDraw(target, 0.3f);
 
         if (drawGroundDetectionHitoxGizmos)
         {

@@ -405,21 +405,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map1
       objectReference: {fileID: 0}
+    - target: {fileID: 6190144443966568737, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131433, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawGizmos
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131436, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_Size.x
+      value: 2.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131436, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_Size.y
+      value: 2.95
+      objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131437, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.64
+      value: 7.56
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131437, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 4.69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
