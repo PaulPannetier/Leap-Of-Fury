@@ -33,7 +33,8 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
     [SerializeField, Tooltip("The width or height on the detection hitbox when moving")] private float collisionOverlapSize = 1f;
     [SerializeField, Tooltip("La marge d'erreur de détection de crush")] private float crushPadding = 1.05f;
-    [SerializeField, Tooltip("The dash detection hitbox")] private Vector2 dashHitbox;
+    [SerializeField, Tooltip("The dash detection hitbox size")] private float dashHitboxSize = 1f;
+    [SerializeField, Tooltip("The dash detection hitbox size"), Range(0f, 1f)] private float dashHitboxSafeZone = 0.9f;
     [SerializeField] private float activationCooldown = 0.3f;
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age of maxSpeed")] private AnimationCurve accelerationCurve;
@@ -108,13 +109,45 @@ public class MovablePlatefrom : MonoBehaviour
                 isTargetingPosition = true;
             }
 
+            bool IsGroundCollision(HitboxSide hitboxSide, out Collider2D groundCol)
+            {
+                Collider2D[] groundCols;
+                switch (hitboxSide)
+                {
+                    case HitboxSide.up:
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                        break;
+                    case HitboxSide.down:
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                        break;
+                    case HitboxSide.left:
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                        break;
+                    case HitboxSide.right:
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                        break;
+                    default:
+                        groundCol = null;
+                        return false;
+                }
 
+                foreach (Collider2D col in groundCols)
+                {
+                    if (col != hitbox)
+                    {
+                        groundCol = col;
+                        return true;
+                    }
+                }
+                groundCol = null;
+                return false;
+            }
 
             //speed
             if (isTargetingPosition)
             {
                 rb.velocity = maxSpeed * convertHitboxSideToDir[(int)lastSideActiavated];
-                if(((Vector2)transform.position).SqrDistance(targetPosition) < 4f * Time.fixedDeltaTime * Time.fixedDeltaTime * rb.velocity.sqrMagnitude)
+                if(((Vector2)transform.position).SqrDistance(targetPosition) < 4f * Time.fixedDeltaTime * Time.fixedDeltaTime * maxSpeed * maxSpeed)
                 {
                     OnStopOnGround();
                 }
@@ -346,60 +379,26 @@ public class MovablePlatefrom : MonoBehaviour
             switch (hitboxSide)
             {
                 case HitboxSide.up:
-                    center = new Vector2(transform.position.x, transform.position.y + dashHitbox.y * 0.25f);
-                    size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+                    center = new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + dashHitboxSize) * 0.5f);
+                    size = new Vector2(hitbox.size.x * dashHitboxSafeZone, dashHitboxSize);
                     break;
                 case HitboxSide.down:
-                    center = new Vector2(transform.position.x, transform.position.y - dashHitbox.y * 0.25f);
-                    size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+                    center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + dashHitboxSize) * 0.5f);
+                    size = new Vector2(hitbox.size.x * dashHitboxSafeZone, dashHitboxSize);
                     break;
                 case HitboxSide.left:
-                    center = new Vector2(transform.position.x - dashHitbox.x * 0.25f, transform.position.y);
-                    size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+                    center = new Vector2(transform.position.x - (hitbox.size.x + dashHitboxSize) * 0.5f, transform.position.y);
+                    size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
                     break;
                 case HitboxSide.right:
-                    center = new Vector2(transform.position.x + dashHitbox.x * 0.25f, transform.position.y);
-                    size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+                    center = new Vector2(transform.position.x + (hitbox.size.x + dashHitboxSize) * 0.5f, transform.position.y);
+                    size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
                     break;
                 default:
                     return default(Collider2D[]);
             }
             return PhysicsToric.OverlapBoxAll(center, size, 0, charMask);
         }
-    }
-
-    bool IsGroundCollision(HitboxSide hitboxSide, out Collider2D groundCol)
-    {
-        Collider2D[] groundCols;
-        switch (hitboxSide)
-        {
-            case HitboxSide.up:
-                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
-                break;
-            case HitboxSide.down:
-                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
-                break;
-            case HitboxSide.left:
-                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
-                break;
-            case HitboxSide.right:
-                groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
-                break;
-            default:
-                groundCol = null;
-                return false;
-        }
-
-        foreach (Collider2D col in groundCols)
-        {
-            if (col != hitbox)
-            {
-                groundCol = col;
-                return true;
-            }
-        }
-        groundCol = null;
-        return false;
     }
 
     #endregion
@@ -411,61 +410,44 @@ public class MovablePlatefrom : MonoBehaviour
         switch (side)
         {
             case HitboxSide.up:
-                return HandleUp();
+                return HandleUp(groundCol);
             case HitboxSide.down:
-                return HandleDown();
+                return HandleDown(groundCol);
             case HitboxSide.left:
-                return HandleLeft();
+                return HandleLeft(groundCol);
             case HitboxSide.right:
-                return HandleRight();
+                return HandleRight(groundCol);
             default:
                 return (Vector2)transform.position;
         }
 
-        Vector2 HandleUp()
+        Vector2 HandleUp(Collider2D groundCol)
         {
-            Vector2 offset = hitbox.size.y.Round().IsOdd() ? Vector2.zero : new Vector2(0f, -LevelMapData.currentMap.cellSize.y * 0.5f);
-            if (Useful.IsOdd(hitbox.size.x.Round()))
-            {
-                return GetCellCenter(new Vector2(transform.position.x, transform.position.y + collisionOverlapSize)) + offset;
-            }
-            else
-            {
-                return GetCellCenter(new Vector2(transform.position.x + LevelMapData.currentMap.cellSize.x * 0.5f, transform.position.y + collisionOverlapSize)) - new Vector2(LevelMapData.currentMap.cellSize.x * 0.5f, 0f) + offset;
-            }
+            return new Vector2(transform.position.x, transform.position.y + (Mathf.Abs(transform.position.y - groundCol.ClosestPoint(transform.position).y)) - hitbox.size.y * 0.5f);
         }
 
-        Vector2 HandleDown()
+        Vector2 HandleDown(Collider2D groundCol)
         {
-            Vector2 offset = hitbox.size.y.Round().IsOdd() ? Vector2.zero : new Vector2(0f, LevelMapData.currentMap.cellSize.y * 0.5f);
-            if (Useful.IsOdd(hitbox.size.x.Round()))
-            {
-                return GetCellCenter(new Vector2(transform.position.x, transform.position.y - collisionOverlapSize)) + offset;
-            }
-            else
-            {
-                return GetCellCenter(new Vector2(transform.position.x + LevelMapData.currentMap.cellSize.x * 0.5f, transform.position.y - collisionOverlapSize)) - new Vector2(LevelMapData.currentMap.cellSize.x * 0.5f, 0f) + offset;
-            }
+            return new Vector2(transform.position.x, transform.position.y - (Mathf.Abs(transform.position.y - groundCol.ClosestPoint(transform.position).y)) + hitbox.size.y * 0.5f);
         }
 
-        Vector2 HandleRight()
+        Vector2 HandleRight(Collider2D groundCol)
         {
-            return new Vector2(transform.position.x + (Mathf.Abs(transform.position.x - groundCol.ClosestPoint(transform.position).x) - hitbox.size.x), transform.position.y);
+            return new Vector2(transform.position.x + (Mathf.Abs(transform.position.x - groundCol.ClosestPoint(transform.position).x)) - hitbox.size.x * 0.5f, transform.position.y);
         }
 
-        Vector2 HandleLeft()
+        Vector2 HandleLeft(Collider2D groundCol)
         {
-            return new Vector2(transform.position.x - (Mathf.Abs(transform.position.x - groundCol.ClosestPoint(transform.position).x) - hitbox.size.x), transform.position.y);
-        }
-
-        Vector2 GetCellCenter(in Vector2 position)
-        {
-            Vector2 origin = PhysicsToric.GetPointInsideBounds(position) + LevelMapData.currentMap.mapSize * 0.5f;
-            Vector2 coord = new Vector2((int)(origin.x / LevelMapData.currentMap.cellSize.x), (int)(origin.y / LevelMapData.currentMap.cellSize.y));
-            return LevelMapData.currentMap.cellSize * coord + LevelMapData.currentMap.cellSize * 0.5f - LevelMapData.currentMap.mapSize * 0.5f;
+            return new Vector2(transform.position.x - (Mathf.Abs(transform.position.x - groundCol.ClosestPoint(transform.position).x)) + hitbox.size.x * 0.5f, transform.position.y);
         }
     }
 
+    private Vector2 GetCellCenter(in Vector2 position)
+    {
+        Vector2 origin = PhysicsToric.GetPointInsideBounds(position) + LevelMapData.currentMap.mapSize * 0.5f;
+        Vector2 coord = new Vector2((int)(origin.x / LevelMapData.currentMap.cellSize.x), (int)(origin.y / LevelMapData.currentMap.cellSize.y));
+        return LevelMapData.currentMap.cellSize * coord + LevelMapData.currentMap.cellSize * 0.5f - LevelMapData.currentMap.mapSize * 0.5f;
+    }
 
     #endregion
 
@@ -529,7 +511,7 @@ public class MovablePlatefrom : MonoBehaviour
 
         collisionOverlapSize = Mathf.Max(collisionOverlapSize, 0f);
         crushPadding = Mathf.Max(crushPadding, 1f);
-        dashHitbox = new Vector2(Mathf.Max(dashHitbox.x, 0f), Mathf.Max(dashHitbox.y, 0f));
+        dashHitboxSize = Mathf.Max(dashHitboxSize, 0f);
         activationCooldown = Mathf.Max(activationCooldown, 0f);
         accelerationDuration = Mathf.Max(accelerationDuration, 0f);
         maxSpeed = Mathf.Max(0f, maxSpeed);
@@ -547,13 +529,6 @@ public class MovablePlatefrom : MonoBehaviour
 
         hitbox = GetComponent<BoxCollider2D>();
         this.transform = base.transform;
-
-        if(Application.isPlaying && IsGroundCollision(hitboxSideTEST, out Collider2D c) && calculateTarget)
-        {
-            target = CalculateTargetPos(hitboxSideTEST, c);
-        }
-        Gizmos.color = Color.red;
-        Circle.GizmosDraw(target, 0.3f);
 
         if (drawGroundDetectionHitoxGizmos)
         {
@@ -609,22 +584,22 @@ public class MovablePlatefrom : MonoBehaviour
         {
             Gizmos.color = colorDashDetectionHitbox;
 
-            Vector2 center = new Vector2(transform.position.x, transform.position.y + dashHitbox.y * 0.25f);
-            Vector2 size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+            Vector2 center = new Vector2(transform.position.x , transform.position.y + (hitbox.size.y + dashHitboxSize) * 0.5f);
+            Vector2 size = new Vector2(hitbox.size.x * dashHitboxSafeZone, dashHitboxSize);
             Hitbox.GizmosDraw(center, size);
 
-            center = new Vector2(transform.position.x, transform.position.y - dashHitbox.y * 0.25f);
-            size = new Vector2(hitbox.size.x, dashHitbox.y * 0.5f);
+            center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + dashHitboxSize) * 0.5f);
+            size = new Vector2(hitbox.size.x * dashHitboxSafeZone, dashHitboxSize);
             Hitbox.GizmosDraw(center, size);
 
-            center = new Vector2(transform.position.x - dashHitbox.x * 0.25f, transform.position.y);
-            size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+            center = new Vector2(transform.position.x - (hitbox.size.x + dashHitboxSize) * 0.5f, transform.position.y);
+            size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
             Hitbox.GizmosDraw(center, size);
 
-            center = new Vector2(transform.position.x + dashHitbox.x * 0.25f, transform.position.y);
-            size = new Vector2(dashHitbox.x * 0.5f, hitbox.size.y);
+            center = new Vector2(transform.position.x + (hitbox.size.x + dashHitboxSize) * 0.5f, transform.position.y);
+            size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
             Hitbox.GizmosDraw(center, size);
-        }
+            }
     }
 
 #endif

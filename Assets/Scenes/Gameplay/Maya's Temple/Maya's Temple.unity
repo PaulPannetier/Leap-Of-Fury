@@ -407,7 +407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6190144443966568737, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131433, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_IsActive
@@ -418,8 +418,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
-      propertyPath: drawGroundDetectionHitoxGizmos
+      propertyPath: dashHitboxSize
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: hitboxSideTEST
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: calculateTarget
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: dashHitboxSafeZone
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawDashHiboxGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawGroundDetectionHitoxGizmos
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131436, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_Size.x
@@ -427,15 +447,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131436, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_Size.y
-      value: 2.95
+      value: 1.95
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131437, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.56
+      value: -1.56
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131437, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.69
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
