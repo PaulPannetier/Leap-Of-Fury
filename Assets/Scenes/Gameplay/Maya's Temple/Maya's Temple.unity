@@ -361,6 +361,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 610375399191783476, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: collisionDetectionScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 610375399191783476, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: collisionDetectionScale.y
+      value: 1.05
+      objectReference: {fileID: 0}
     - target: {fileID: 1292924543762612493, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -401,6 +409,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2748876031496117667, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2748876031496117667, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3045429992128422392, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_Name
       value: Map1
@@ -423,7 +439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: hitboxSideTEST
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: calculateTarget
@@ -435,7 +451,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: drawDashHiboxGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawCrushHiboxGizmos
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: groundCollisionHitboxSafeZone
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
@@ -443,19 +467,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131436, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_Size.x
-      value: 2.95
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131436, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_Size.y
-      value: 1.95
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131437, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.56
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131437, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -3.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7164220416241210147, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_Size.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7164220416241210147, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_Size.y
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

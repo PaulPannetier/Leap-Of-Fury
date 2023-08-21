@@ -123,7 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 2.5, y: 1.25, z: 0}
+    m_Extent: {x: 3.1, y: 2.1, z: 0}
   boundsOffset: {x: 0, y: 0}
   enableHorizontal: 1
   enableVertical: 1
@@ -165,8 +165,10 @@ MonoBehaviour:
   enableLeftAndRightDash: 1
   enableUpAndDownDash: 1
   collisionOverlapSize: 0.5
+  groundCollisionHitboxSafeZone: 1
   crushPadding: 1.2
-  dashHitbox: {x: 4, y: 3}
+  dashHitboxSize: 1
+  dashHitboxSafeZone: 0.9
   activationCooldown: 0.3
   accelerationDuration: 1
   accelerationCurve:
@@ -212,6 +214,8 @@ MonoBehaviour:
   colorGroundDetectionHitbox: {r: 0, g: 0, b: 0, a: 1}
   colorCrushDetectionHitbox: {r: 1, g: 0, b: 0, a: 1}
   colorDashDetectionHitbox: {r: 0.11532295, g: 1, b: 0, a: 1}
+  hitboxSideTEST: 0
+  calculateTarget: 1
 --- !u!1 &4909847898038514376
 GameObject:
   m_ObjectHideFlags: 0

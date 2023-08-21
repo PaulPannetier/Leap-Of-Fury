@@ -32,6 +32,7 @@ public class MovablePlatefrom : MonoBehaviour
     public bool enableBehaviour = true;
     [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
     [SerializeField, Tooltip("The width or height on the detection hitbox when moving")] private float collisionOverlapSize = 1f;
+    [SerializeField, Range(0f, 1f)] private float groundCollisionHitboxSafeZone = 1f;
     [SerializeField, Tooltip("La marge d'erreur de détection de crush")] private float crushPadding = 1.05f;
     [SerializeField, Tooltip("The dash detection hitbox size")] private float dashHitboxSize = 1f;
     [SerializeField, Tooltip("The dash detection hitbox size"), Range(0f, 1f)] private float dashHitboxSafeZone = 0.9f;
@@ -115,16 +116,16 @@ public class MovablePlatefrom : MonoBehaviour
                 switch (hitboxSide)
                 {
                     case HitboxSide.up:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize), 0, groundMask);
                         break;
                     case HitboxSide.down:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x, collisionOverlapSize), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize), 0, groundMask);
                         break;
                     case HitboxSide.left:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone), 0, groundMask);
                         break;
                     case HitboxSide.right:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone), 0, groundMask);
                         break;
                     default:
                         groundCol = null;
@@ -135,8 +136,12 @@ public class MovablePlatefrom : MonoBehaviour
                 {
                     if (col != hitbox)
                     {
-                        groundCol = col;
-                        return true;
+                        ToricObject tc = col.GetComponent<ToricObject>();
+                        if (tc == null || tc.original != gameObject)
+                        {
+                            groundCol = col;
+                            return true;
+                        }
                     }
                 }
                 groundCol = null;
@@ -146,7 +151,9 @@ public class MovablePlatefrom : MonoBehaviour
             //speed
             if (isTargetingPosition)
             {
-                rb.velocity = maxSpeed * convertHitboxSideToDir[(int)lastSideActiavated];
+                rb.velocity = Vector2.zero;
+                rb.position = Vector2.MoveTowards(rb.position, targetPosition, maxSpeed * Time.fixedDeltaTime);
+
                 if(((Vector2)transform.position).SqrDistance(targetPosition) < 4f * Time.fixedDeltaTime * Time.fixedDeltaTime * maxSpeed * maxSpeed)
                 {
                     OnStopOnGround();
@@ -209,7 +216,7 @@ public class MovablePlatefrom : MonoBehaviour
             }
 
             //Crushing Char
-            if(false && CrushDetectionSimple(lastSideActiavated))
+            if(CrushDetectionSimple(lastSideActiavated))
             {
                 HandleCrushDetectionAdvance(lastSideActiavated);
             }
@@ -395,11 +402,11 @@ public class MovablePlatefrom : MonoBehaviour
                     size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
                     break;
                 default:
-                    return default(Collider2D[]);
+                    return System.Array.Empty<Collider2D>();
             }
             return PhysicsToric.OverlapBoxAll(center, size, 0, charMask);
         }
-    }
+    }    
 
     #endregion
 
@@ -518,10 +525,6 @@ public class MovablePlatefrom : MonoBehaviour
         returnBumpSpeedOnChar = Mathf.Max(0f, returnBumpSpeedOnChar);
     }
 
-    [SerializeField] private HitboxSide hitboxSideTEST;
-    private Vector2 target;
-    public bool calculateTarget = true;
-
     private void OnDrawGizmosSelected()
     {
         if(!drawGizmos)
@@ -534,19 +537,19 @@ public class MovablePlatefrom : MonoBehaviour
         {
             Gizmos.color = colorGroundDetectionHitbox;
             Vector2 center = new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f);
-            Vector2 size = new Vector2(hitbox.size.x, collisionOverlapSize);
+            Vector2 size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize);
             Hitbox.GizmosDraw(center, size);
 
             center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f);
-            size = new Vector2(hitbox.size.x, collisionOverlapSize);
+            size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize);
             Hitbox.GizmosDraw(center, size);
 
             center = new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y);
-            size = new Vector2(collisionOverlapSize, hitbox.size.y);
+            size = new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone);
             Hitbox.GizmosDraw(center, size);
 
             center = new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y);
-            size = new Vector2(collisionOverlapSize, hitbox.size.y);
+            size = new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone);
             Hitbox.GizmosDraw(center, size);
         }
 
