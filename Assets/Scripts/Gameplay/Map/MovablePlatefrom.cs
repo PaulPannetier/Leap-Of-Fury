@@ -92,6 +92,8 @@ public class MovablePlatefrom : MonoBehaviour
             pauseWasEnableLastFrame = false;
         }
         
+        GetComponentInChildren<SpriteRenderer>().color = isTargetingPosition ? Color.red : Color.green;
+
         if(isMoving)
         {
             HandleMoving();
@@ -169,30 +171,44 @@ public class MovablePlatefrom : MonoBehaviour
             if(!isTargetingPosition)
             {
                 Collider2D[] cols;
-                if (enableLeftAndRightDash)
+                bool dashAlreadyCollide = false;
+                if (enableUpAndDownDash)
                 {
                     //up
                     cols = GetCharColliders(HitboxSide.up);
-                    HandleDashCollision(cols, HitboxSide.up);
+                    if(cols.Length > 1)
+                    {
+                        int a = 10;
+                    }
+                    dashAlreadyCollide = HandleDashCollision(cols, HitboxSide.up);
                     //down
-                    cols = GetCharColliders(HitboxSide.down);
-                    HandleDashCollision(cols, HitboxSide.down);
+                    if(!dashAlreadyCollide)
+                    {
+                        cols = GetCharColliders(HitboxSide.down);
+                        dashAlreadyCollide = HandleDashCollision(cols, HitboxSide.down);
+                    }
                 }
 
                 if (enableLeftAndRightDash)
                 {
-                    //right
-                    cols = GetCharColliders(HitboxSide.right);
-                    HandleDashCollision(cols, HitboxSide.right);
-                    //left
-                    cols = GetCharColliders(HitboxSide.left);
-                    HandleDashCollision(cols, HitboxSide.left);
+                    if (!dashAlreadyCollide)
+                    {
+                        //right
+                        cols = GetCharColliders(HitboxSide.right);
+                        dashAlreadyCollide = HandleDashCollision(cols, HitboxSide.right);
+                    }
+                    if (!dashAlreadyCollide)
+                    {
+                        //left
+                        cols = GetCharColliders(HitboxSide.left);
+                        dashAlreadyCollide =HandleDashCollision(cols, HitboxSide.left);
+                    }
                 }
 
-                void HandleDashCollision(Collider2D[] cols, HitboxSide hitboxSide)
+                bool HandleDashCollision(Collider2D[] cols, HitboxSide hitboxSide)
                 {
                     if (lastSideActiavated == hitboxSide)
-                        return;
+                        return false;
 
                     foreach (Collider2D col in cols)
                     {
@@ -205,18 +221,22 @@ public class MovablePlatefrom : MonoBehaviour
                                 {
                                     if (Time.time - lastTimeActivated > activationCooldown)
                                     {
+                                        print("Dash collision with " + player.name);
+
                                         rb.velocity = Vector2.zero;
                                         OnActivated(player, hitboxSide);
+                                        return true;
                                     }
                                 }
                             }
                         }
                     }
+                    return false;
                 }
             }
 
             //Crushing Char
-            if(CrushDetectionSimple(lastSideActiavated))
+            if(false && CrushDetectionSimple(lastSideActiavated))
             {
                 HandleCrushDetectionAdvance(lastSideActiavated);
             }
@@ -333,7 +353,7 @@ public class MovablePlatefrom : MonoBehaviour
         {
             //detect char dash
             Collider2D[] cols;
-            if (enableLeftAndRightDash)
+            if (enableUpAndDownDash)
             {
                 //up
                 cols = GetCharColliders(HitboxSide.up);
@@ -367,7 +387,9 @@ public class MovablePlatefrom : MonoBehaviour
                         {
                             if (Time.time - lastTimeActivated > activationCooldown)
                             {
+                                print($"The player {player.name} a dash du cote {hitboxSide}");
                                 OnActivated(player, hitboxSide);
+                                break;
                             }
                         }
                     }

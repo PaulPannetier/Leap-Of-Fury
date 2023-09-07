@@ -11,8 +11,8 @@ public class Movement : MonoBehaviour
     private Camera mainCam;
     private CustomPlayerInput playerInput;
     private Collider2D hitbox;
-    private Collider2D groundCollider, oldGroundCollider;
-    private MapColliderData groundColliderData;
+    private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
+    private MapColliderData groundColliderData, leftWallColliderData, rightWallColliderData;
     private FightController fightController;
     private int disableMovementCounter = 0;
 
@@ -209,6 +209,49 @@ public class Movement : MonoBehaviour
 
     #region public methods
 
+    private static Vector2[] directions8 = new Vector2[8]
+    {
+        new Vector2(0, 1),
+        new Vector2(0.70710678118f, 0.70710678118f),
+        new Vector2(1, 0),
+        new Vector2(0.70710678118f, -0.70710678118f),
+        new Vector2(0, -1),
+        new Vector2(-0.70710678118f, -0.70710678118f),
+        new Vector2(-1, 0),
+        new Vector2(-0.70710678118f, 0.70710678118f)
+    };
+
+    public bool GetDashDirection(bool only8Dir, out Vector2 dir)
+    {
+        if (isDashing)
+        {
+            if(only8Dir)
+            {
+                int indexDir = 0;
+                float dot = directions8[0].Dot(lastDashDir);
+                float tmpDot;
+
+                for (int i = 1; i < 8; i++)
+                {
+                    tmpDot = directions8[i].Dot(lastDashDir);
+                    if (tmpDot < dot)
+                    {
+                        dot = tmpDot;
+                        indexDir = i;
+                    }
+                }
+                dir = directions8[indexDir];
+            }
+            else
+            {
+                dir = lastDashDir;
+            }
+            return true;
+        }
+        dir = Vector2.zero;
+        return false;
+    }
+
     public Vector2 GetCurrentDirection(bool only8Dir = false)
     {
         if(only8Dir)
@@ -298,9 +341,13 @@ public class Movement : MonoBehaviour
         oldGroundCollider = groundCollider;
         groundCollider = Physics2D.OverlapCircle((Vector2)transform.position + groundOffset, groundCollisionRadius, groundLayer);
         isGrounded = groundCollider != null;
-        onRightWall = Physics2D.OverlapCircle((Vector2)transform.position + sideOffset, sideCollisionRadius, groundLayer) != null;
-        onLeftWall = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer) != null;
+        rightWallCollider = Physics2D.OverlapCircle((Vector2)transform.position + sideOffset, sideCollisionRadius, groundLayer);
+        onRightWall = rightWallCollider != null;
+        leftWallCollider = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer);
+        onLeftWall = leftWallCollider != null;
         onWall = onRightWall || onLeftWall;
+        rightWallColliderData = onRightWall ? rightWallCollider.GetComponent<MapColliderData>() : null;
+        leftWallColliderData = onLeftWall ? leftWallCollider.GetComponent<MapColliderData>() : null;
         wallSide = onRightWall ? -1 : 1;
 
         //detect quitting convoyerBelt
@@ -399,12 +446,15 @@ public class Movement : MonoBehaviour
         //Trigger wallGrab
         if (!wallGrab && onWall && (playerInput.grabPressed && enableInput) && (!isSliding || (playerInput.rawY >= 0 && enableInput)) && !isDashing && !isJumpingAlongWall && !isBumping && canMove)
         {
-            if (side != wallSide)
+            if((onRightWall && rightWallColliderData.grabable) || (onLeftWall && leftWallColliderData.grabable))
             {
-                anim.Flip(side * -1);
+                if (side != wallSide)
+                {
+                    anim.Flip(side * -1);
+                }
+                wallGrab = true;
+                isFalling = isJumping = isSliding = false;
             }
-            wallGrab = true;
-            isFalling = isJumping = isSliding = false;
         }
 
         //Trigger reach grab Apex

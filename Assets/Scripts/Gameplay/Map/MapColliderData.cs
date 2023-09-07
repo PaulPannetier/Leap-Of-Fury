@@ -18,6 +18,7 @@ public class MapColliderData : MonoBehaviour
 
     public GroundType groundType;
     public bool disableAntiKnockHead = false;
+    public bool grabable = true;
     [Range(0f, 1f), Tooltip("Le coeff de friction quand le sol se déplace")] public float frictionCoefficient = 0f;
     public bool isGripping => frictionCoefficient > 1e-6f;
     [HideInInspector] public Rigidbody2D rb;

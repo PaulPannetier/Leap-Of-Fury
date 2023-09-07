@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class BumpsZone : MonoBehaviour
 {
+    public bool enableBehaviour = true;
     protected LayerMask charMask;
     private List<uint> charAlreadyTouch = new List<uint>();
 
@@ -25,6 +26,9 @@ public abstract class BumpsZone : MonoBehaviour
 
     protected virtual void Update()
     {
+        if(!enableBehaviour)
+            return;
+
         Collider2D[] cols = GetTouchingChar();
         List<uint> newCharTouch = new List<uint>();
         foreach (Collider2D col in cols)

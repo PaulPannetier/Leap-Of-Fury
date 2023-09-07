@@ -9,6 +9,7 @@ public class ToricObject : MonoBehaviour
     private static int[] invertCamOffsetIndex = new int[4] { 1, 0, 3, 2 };
 
     private bool[] oldCollideCamBounds = new bool[4];
+    private new Transform transform;
 
     [SerializeField] private Bounds bounds;
     [SerializeField] private Vector2 boundsOffset;
@@ -23,10 +24,17 @@ public class ToricObject : MonoBehaviour
     public List<GameObject> chidrenToRemoveInClone;
     public GameObject original => isAClone ? cloner : gameObject;
 
+#if UNITY_EDITOR
+
+    [SerializeField] private bool drawGizmos = true;
+
+#endif
+
     private void Awake()
     {
         onTeleportCallback = (Vector2 newPos, Vector2 oldPos) => { };
         LevelMapData.onMapChange += OnMapChange;
+        this.transform = base.transform;
     }
 
     private void Start()
@@ -221,9 +229,17 @@ public class ToricObject : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if(!drawGizmos)
+            return;
+
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(transform.position + boundsOffset.ToVector3(), bounds.size);
-        Gizmos.DrawWireCube(Vector3.zero, LevelMapData.currentMap.mapSize);
+        Hitbox.GizmosDraw((Vector2)transform.position + boundsOffset, bounds.size);
+        Hitbox.GizmosDraw(Vector3.zero, LevelMapData.currentMap.mapSize);
+    }
+
+    private void OnValidate()
+    {
+        this.transform = base.transform;
     }
 
 #endif

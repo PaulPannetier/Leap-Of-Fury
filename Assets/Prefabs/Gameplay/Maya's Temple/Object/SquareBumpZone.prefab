@@ -122,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 0
   disableAntiKnockHead: 1
+  grabable: 0
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!114 &380787851878124315

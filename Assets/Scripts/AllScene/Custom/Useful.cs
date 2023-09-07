@@ -1678,12 +1678,12 @@ public static class Useful
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static float Integrate(Func<float, float> f, float a, float b, float samplePerUnit = 5f)
+    public static float Integrate(Func<float, float> f, float a, float b, float samplePerUnit = 1f)
     {
-        const float x2 = 0.5384693f, x3 = -0.5384693f, x4 = 0.9061798f, x5 = -0.9061798f;
-        const float w1 = 0.5688889f, w2 = 0.4786287f, w4 = 0.2369269f;
+        const float x1 = -0.9491079123f, x2 = -0.7415311856f, x3 = -0.4058451514f, x5 = 0.4058451514f, x6 = 0.7415311856f, x7 = 0.9491079123f;
+        const float w1 = 0.1294849662f, w2 = 0.2797053915f, w3 = 0.3818300505f, w4 = 0.4179591837f;
 
-        if (Mathf.Approximately(a, b) || samplePerUnit <= 0f)
+        if (Mathf.Approximately(a, b) || samplePerUnit < 0f)
             return 0f;
         if (a > b)
             return -Integrate(f, b, a, samplePerUnit);
@@ -1702,10 +1702,10 @@ public static class Useful
 
             aPbO2 = (a1 + b1) * 0.5f;//cache
 
-            //integrate from a1 to b1 of f
-            I += w1 * f(aPbO2) +
-                 w2 * (f(stepT05 * x2 + aPbO2) + f(stepT05 * x3 + aPbO2)) +
-                 w4 * (f(stepT05 * x4 + aPbO2) + f(stepT05 * x5 + aPbO2));
+            I += w1 * (f(stepT05 * x1 + aPbO2) + f(stepT05 * x7 + aPbO2)) +
+                w2 * (f(stepT05 * x2 + aPbO2) + f(stepT05 * x6 + aPbO2)) +
+                w3 * (f(stepT05 * x3 + aPbO2) + f(stepT05 * x5 + aPbO2)) +
+                w4 * f(aPbO2);
         }
         return stepT05 * I;
     }
@@ -1718,7 +1718,7 @@ public static class Useful
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static double Integrate(Func<double, double> f, in double a, in double b, in float samplePerUnit = 5f)
+    public static double Integrate(Func<double, double> f, in double a, in double b, in float samplePerUnit = 1f)
     {
         if (Math.Abs(a - b) < 1e-10d || samplePerUnit <= 0f)
             return 0d;
@@ -1741,7 +1741,7 @@ public static class Useful
             I1 = 0d;
 
             //integrate from a1 to b1 of f
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 7; j++)
             {
                 I1 += wid[j] * f(stepT05 * xid[j] + aPbO2);
             }
@@ -1758,7 +1758,7 @@ public static class Useful
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static decimal Integrate(Func<decimal, decimal> f, in decimal a, in decimal b, in float samplePerUnit = 5f)
+    public static decimal Integrate(Func<decimal, decimal> f, in decimal a, in decimal b, in float samplePerUnit = 1f)
     {
         if (Abs(a - b) < 1e-27m || samplePerUnit <= 0f)
             return 0m;
@@ -1781,7 +1781,7 @@ public static class Useful
             I1 = 0m;
 
             //integrate from a1 to b1 of f
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 7; j++)
             {
                 I1 += wim[j] * f(stepT05 * xim[j] + aPbO2);
             }
@@ -1790,10 +1790,10 @@ public static class Useful
         return stepT05 * I;
     }
 
-    private static double[] xid = new double[5] { 0d, 0.538469310105683d, -0.538469310105683d, 0.906179845938664d, -0.906179845938664d };
-    private static decimal[] xim = new decimal[5] { 0m, 0.5384693101056830910363144206m, -0.5384693101056830910363144206m, 0.9061798459386639927976268782m, -0.9061798459386639927976268782m };
-    private static double[] wid = new double[5] { 0.568888888888889d, 0.478628670499366d, 0.478628670499366d, 0.236926885056189d, 0.236926885056189d };
-    private static decimal[] wim = new decimal[5] { 0.5688888888888888888888888889m, 0.4786286704993664680412915148m, 0.4786286704993664680412915148m, 0.2369268850561890875142640407m, 0.2369268850561890875142640407m };
+    private static readonly double[] xid = new double[7] { -0.94910791234275852452618968404785126240077093767983d, -0.74153118559939443986386477328078840707491461281138d, -0.40584515137739716690660641207696146334738201409984d, 0d, 0.40584515137739716690660641207696146334738201409984d, 0.74153118559939443986386477328078840707491461281138d, 0.94910791234275852452618968404785126240077093767983d };
+    private static readonly decimal[] xim = new decimal[7] { -0.94910791234275852452618968404785126240077093767983m, -0.74153118559939443986386477328078840707491461281138m, -0.40584515137739716690660641207696146334738201409984m, 0m, 0.40584515137739716690660641207696146334738201409984m, 0.74153118559939443986386477328078840707491461281138m, 0.94910791234275852452618968404785126240077093767983m };
+    private static readonly double[] wid = new double[7] { 0.12948496616886969327061143267908201832858781461794d, 0.27970539148927666790146777142377958248692506510661d, 0.38183005050511894495036977548897513387882589377767d, 0.41795918367346938775510204081632653061224489795918d, 0.38183005050511894495036977548897513387882589377767d, 0.27970539148927666790146777142377958248692506510661d, 0.12948496616886969327061143267908201832858781461794d };
+    private static readonly decimal[] wim = new decimal[7] { 0.12948496616886969327061143267908201832858781461794m, 0.27970539148927666790146777142377958248692506510661m, 0.38183005050511894495036977548897513387882589377767m, 0.41795918367346938775510204081632653061224489795918m, 0.38183005050511894495036977548897513387882589377767m, 0.27970539148927666790146777142377958248692506510661m, 0.12948496616886969327061143267908201832858781461794m };
 
     #endregion
 
