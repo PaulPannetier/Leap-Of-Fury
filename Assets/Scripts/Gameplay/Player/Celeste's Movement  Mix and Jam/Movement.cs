@@ -578,7 +578,7 @@ public class Movement : MonoBehaviour
                 DisableBump();
             }
 
-            if (onWall)
+            if (onWall && Time.time - lastTimeBump >= minBumpDuration)
             {
                 DisableBump();
             }
@@ -588,7 +588,7 @@ public class Movement : MonoBehaviour
                 DisableBump();
             }
 
-            if(Time.time - lastTimeBump > minBumpDuration && Mathf.Abs(rb.velocity.x) < minBumpSpeedX)
+            if(Time.time - lastTimeBump >= minBumpDuration && Mathf.Abs(rb.velocity.x) < minBumpSpeedX)
             {
                 DisableBump();
             }
