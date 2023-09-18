@@ -37,6 +37,7 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float groundCollisionHitboxSafeZone = 1f;
     [SerializeField, Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushPadding = 1.05f;
     [SerializeField, Range(0f, 1f), Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushZone = 0.95f;
+    [SerializeField] private float nbDetectionPerCellForCrushDetection = 2;
     [SerializeField, Tooltip("The dash detection hitbox size")] private float dashHitboxSize = 1f;
     [SerializeField, Tooltip("The dash detection hitbox size"), Range(0f, 1f)] private float dashHitboxSafeZone = 0.9f;
     [SerializeField] private float activationCooldown = 0.3f;
@@ -284,25 +285,25 @@ public class MovablePlatefrom : MonoBehaviour
                 switch (hitboxSide)
                 {
                     case HitboxSide.up:
-                        nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
+                        nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
                         size = new Vector2(hitbox.size.x * crushZone / nbStep, PlayerCommon.charSize.y * crushPadding);
                         begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y + hitbox.size.y * 0.5f + size.y * 0.5f);
                         step = new Vector2(size.x, 0f);
                         break;
                     case HitboxSide.down:
-                        nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
+                        nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
                         size = new Vector2(hitbox.size.x * crushZone / nbStep, PlayerCommon.charSize.y * crushPadding);
                         begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y - hitbox.size.y * 0.5f - size.y * 0.5f);
                         step = new Vector2(size.x, 0f);
                         break;
                     case HitboxSide.left:
-                        nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
+                        nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
                         size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                         begPoint = new Vector2(transform.position.x - hitbox.size.x * 0.5f - size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                         step = new Vector2(0f, -size.y);
                         break;
                     case HitboxSide.right:
-                        nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
+                        nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
                         size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                         begPoint = new Vector2(transform.position.x + hitbox.size.x * 0.5f + size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                         step = new Vector2(0f, -size.y);
@@ -501,6 +502,7 @@ public class MovablePlatefrom : MonoBehaviour
         charAlreadyCrush.Add(player.GetComponent<PlayerCommon>().id);
         player.GetComponent<EventController>().OnBeenKillInstant(killer);
         killer.GetComponent<EventController>().OnKill(player);
+        EventManager.instance.OnTriggerPlayerDeath(player, killer);
     }
 
     #endregion
@@ -539,6 +541,7 @@ public class MovablePlatefrom : MonoBehaviour
         accelerationDuration = Mathf.Max(accelerationDuration, 0f);
         maxSpeed = Mathf.Max(0f, maxSpeed);
         returnBumpSpeedOnChar = Mathf.Max(0f, returnBumpSpeedOnChar);
+        nbDetectionPerCellForCrushDetection = Mathf.Max(nbDetectionPerCellForCrushDetection, 0);
     }
 
     private void OnDrawGizmosSelected()
@@ -601,55 +604,33 @@ public class MovablePlatefrom : MonoBehaviour
 
         if (drawCrushHitboxAccurate)
         {
-            /*
-            case HitboxSide.up:
-                nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
-                size = new Vector2(hitbox.size.x * crushZone / nbStep, PlayerCommon.charSize.y * crushPadding);
-                begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y + hitbox.size.y * 0.5f + size.y * 0.5f);
-                step = new Vector2(size.x, 0f);
-            case HitboxSide.down:
-                nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
-                size = new Vector2(hitbox.size.x * crushZone / nbStep, PlayerCommon.charSize.y * crushPadding);
-                begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y - hitbox.size.y * 0.5f - size.y * 0.5f);
-                step = new Vector2(size.x, 0f);
-            case HitboxSide.left:
-                nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
-                size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
-                begPoint = new Vector2(transform.position.x - hitbox.size.x * 0.5f - size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
-                step = new Vector2(0f, -size.y);
-            case HitboxSide.right:
-                nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
-                size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
-                begPoint = new Vector2(transform.position.x + hitbox.size.x * 0.5f + size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
-                step = new Vector2(0f, -size.y);
-            */
             GameObject player = GameObject.FindGameObjectWithTag("Char");
             if (player != null)
             {
                 Vector2 charSize = player.GetComponent<BoxCollider2D>().size;
                 Gizmos.color = colorCrushDetectionHitbox;
 
-                int nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
+                int nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
                 Vector2 size = new Vector2(hitbox.size.x * crushZone / nbStep, charSize.y * crushPadding);
                 Vector2 begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y + hitbox.size.y * 0.5f + size.y * 0.5f);
                 Vector2 step = new Vector2(size.x, 0f);
                 DrawGizmos(begPoint, size, step, nbStep);
 
-                nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
+                nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
                 size = new Vector2(hitbox.size.x * crushZone / nbStep, charSize.y * crushPadding);
                 begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y - hitbox.size.y * 0.5f - size.y * 0.5f);
                 step = new Vector2(size.x, 0f);
                 DrawGizmos(begPoint, size, step, nbStep);
 
 
-                nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
+                nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                 begPoint = new Vector2(transform.position.x - hitbox.size.x * 0.5f - size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                 step = new Vector2(0f, -size.y);
                 DrawGizmos(begPoint, size, step, nbStep);
 
 
-                nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
+                nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                 begPoint = new Vector2(transform.position.x + hitbox.size.x * 0.5f + size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                 step = new Vector2(0f, -size.y);
@@ -666,7 +647,7 @@ public class MovablePlatefrom : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Enable a char to draw craush Hitboxes");
+                Debug.LogWarning("Enable a char to draw craush Hitboxes accurate.");
             }
         }
 
@@ -689,7 +670,7 @@ public class MovablePlatefrom : MonoBehaviour
             center = new Vector2(transform.position.x + (hitbox.size.x + dashHitboxSize) * 0.5f, transform.position.y);
             size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
             Hitbox.GizmosDraw(center, size);
-            }
+        }
     }
 
 #endif

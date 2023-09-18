@@ -67,6 +67,8 @@ public class Pendulum : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
+#if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         if (pendulumCol == null)
@@ -90,4 +92,6 @@ public class Pendulum : MonoBehaviour
         pendulumCol.transform.localScale = new Vector3(2f * radius, 2f * radius, 1f);
         transform.localRotation = Quaternion.Euler(0f, 0f, angleInit);
     }
+
+#endif
 }

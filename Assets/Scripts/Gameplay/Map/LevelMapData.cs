@@ -26,6 +26,7 @@ public class LevelMapData : MonoBehaviour
     public static Action<LevelMapData> onMapChange = default(Action<LevelMapData>);
 
     private SpawnConfigsData spawnConfigs;
+    private Grid grid;
 
     [Header("Save spawn Point")]
     [SerializeField] private bool addSpawnConfig;
@@ -36,7 +37,18 @@ public class LevelMapData : MonoBehaviour
 
     
     public Vector2 mapSize = new Vector2(32f, 18f);
-    [HideInInspector] public Vector2 cellSize { get; private set; }
+
+    public Vector2 cellSize
+    {
+        get
+        {
+            if(grid == null)
+            {
+                grid = GetComponentInChildren<Grid>();
+            }
+            return grid.cellSize;
+        }
+    }
 
     private void Awake()
     {
@@ -54,8 +66,7 @@ public class LevelMapData : MonoBehaviour
                 break;
             }
         }
-        Grid grid = tilemapGo.GetComponent<Grid>();
-        cellSize = grid.cellSize;
+        grid = tilemapGo.GetComponent<Grid>();
         onMapChange.Invoke(this);
     }
 
