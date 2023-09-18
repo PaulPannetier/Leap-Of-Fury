@@ -30,6 +30,7 @@ public class MovablePlatefrom : MonoBehaviour
     private List<uint> charAlreadyCrush;
     private PauseData pauseData;
     private bool pauseWasEnableLastFrame;
+    private ToricObject toricObject;
 
     public bool enableBehaviour = true;
     [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
@@ -71,6 +72,7 @@ public class MovablePlatefrom : MonoBehaviour
             Vector2.zero
         };
         charAlreadyCrush = new List<uint>();
+        toricObject = GetComponent<ToricObject>();
     }
 
     private void Start()
@@ -318,7 +320,13 @@ public class MovablePlatefrom : MonoBehaviour
                     bool isGroundCol = false;
                     foreach (Collider2D col in groundCols)
                     {
-                        if(col != hitbox)
+                        if(col == hitbox)
+                        {
+                            continue;
+                        }
+
+                        ToricObject colTO = col.GetComponent<ToricObject>();
+                        if(colTO == null || colTO.original != toricObject.original)
                         {
                             isGroundCol = true;
                             break;
