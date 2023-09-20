@@ -311,7 +311,7 @@ public class Movement : MonoBehaviour
 
     #endregion
 
-    #region Awake an Start
+    #region Awake and Start
 
     private void Awake()
     {

@@ -409,6 +409,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1951762033198955405, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951762033198955405, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: bounds.m_Extent.x
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1951762033198955405, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: bounds.m_Extent.y
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 2748876031496117667, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_BodyType
       value: 1
@@ -455,7 +467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: drawGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: crushPadding
@@ -486,12 +498,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: returnBumpSpeedOnChar
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: enableLeftAndRightDash
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: drawCrushHitboxAccurate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: drawCrushHiboxSimpleGizmos
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: returnBumpSpeedAngleOnSide
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131434, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: groundCollisionHitboxSafeZone
@@ -523,7 +547,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6190144444818131437, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.4
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 7050540986086645075, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: grabable
@@ -536,6 +560,66 @@ PrefabInstance:
     - target: {fileID: 7164220416241210147, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
       propertyPath: m_Size.y
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440336, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440336, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440340, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: crushZone
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: crushPadding
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: dashHitboxSize
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: dashHitboxSafeZone
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: returnBumpSpeedOnChar
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: enableLeftAndRightDash
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawCrushHitboxAccurate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: drawCrushHiboxSimpleGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: returnBumpSpeedAngleOnSide
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: groundCollisionHitboxSafeZone
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9178613496310440343, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+      propertyPath: nbDetectionPerCellForCrushDetection
+      value: 1.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

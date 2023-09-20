@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using UnityEditor;
 
 [RequireComponent(typeof(BoxCollider2D))]
-public class MovablePlatefrom : MonoBehaviour
+public class MovablePlateform : MonoBehaviour
 {
     private enum HitboxSide
     {
@@ -46,10 +46,11 @@ public class MovablePlatefrom : MonoBehaviour
     [SerializeField, Tooltip("In %age of maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float returnBumpSpeedOnChar = 5f;
-    [SerializeField, Range(0f, 360f)] private float returnBumpSpeedAngleOnSide = 45f;
+    [SerializeField, Range(0f, 90f)] private float returnBumpSpeedAngleOnSide = 45f;
 
 #if UNITY_EDITOR
 
+    [Header("Gizmos")]
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private bool drawGroundDetectionHitoxGizmos = true, drawCrushHiboxSimpleGizmos = true, drawCrushHitboxAccurate = true, drawDashHiboxGizmos = true;
     [SerializeField] private Color colorGroundDetectionHitbox, colorCrushDetectionHitbox, colorDashDetectionHitbox;
