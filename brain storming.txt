@@ -87,6 +87,7 @@ Celui qui fait bouger la plateforme gagne un kill. //ok*
 DA : Un temple maya/jungle amazonienne.
 Name : Maya's Temple
 
+//Pas a mettre pour l'instant
 Carte 3 : 
 Méca : De temps en temps, un portail temporel apparait au milieu de la map, un joueur peut le prendre, il reste dedans pendant quelques secondes
 puis plusieurs portail apparaisse et le joueur se tp devant un (au choix selon la direction de son input), crée une explosion devant 
@@ -94,7 +95,7 @@ le portail,
 debient invinsible pendant quelques seconde, et ralentie le temps(sauf pour lui).***
 De + le pendule de l'hormoge tangue et tue tout sur son passage//ok
 DA : L'atelier d'un horloger / sommet d'une cathédrale avec cloche.
-Name : jsp
+Name : ClockMaker's
 
 Carte 4 :
 Méca : Cycle jour/nuit, 1er tour c'est le jour, tout est visible, puis au tour 3 la nuit tombe, tout deviens noir, seul les joueurs
@@ -114,6 +115,14 @@ Méca : Un clown transparent effraye (immobilise) les joueurs.
 + des ascenseurs verticaux et/ou horizontaux.
 DA : Une fete foraine
 Name : La fete foraine
+
+Carte 7 : 
+Méca : Plusieurs levier sont activable par ls joueurs :
+- un pont levis peu etre levée/baissé
+- Un pendule pique peut etre déverrouiler
+- certaint sol desuus de la lave peuvent etre enlever
+DA : Un chateau fort
+Name : The queen Castle
 
 Dernière carte (carte n):***
 Méca : réunnit toute les méca de toutes les autres cartes

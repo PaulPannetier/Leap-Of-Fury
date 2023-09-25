@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 
 [ExecuteAlways]
@@ -29,3 +31,5 @@ public class RemoveComponent : MonoBehaviour
         componentsTypeToRemove = null;
     }
 }
+
+#endif
