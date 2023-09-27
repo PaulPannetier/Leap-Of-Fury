@@ -48,4 +48,10 @@ public class LightVariator : MonoBehaviour
         PauseManager.instance.callBackOnPauseEnable -= Disable;
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
+
+    private void OnValidate()
+    {
+        light = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        light.intensity = avgIntensity;
+    }
 }

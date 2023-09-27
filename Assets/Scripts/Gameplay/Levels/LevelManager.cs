@@ -72,7 +72,6 @@ public abstract class LevelManager : MonoBehaviour
 
         if (!enableBehaviour)
         {
-            EventManager.instance.OnLevelStart(levelName);
             DEBUG_SetCharControlInputsAndOldSceneData();
             currentMap = GameObject.FindGameObjectWithTag("Map");
             HandleCharPosAndCallback();
@@ -191,7 +190,7 @@ public abstract class LevelManager : MonoBehaviour
         SpawnChar(spawnPoints);
 
         lastTimeBeginLevel = Time.time;
-        EventManager.instance.OnLevelStart(levelName);
+        EventManager.instance.OnLevelRestart(levelName);
     }
 
     private void SpawnChar(List<Vector2> spawnPoints, bool randomiseSpawnPoint = true)

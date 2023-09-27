@@ -29,12 +29,24 @@ public class LucioleManager : MonoBehaviour
             CreateLuciole(lucioleCount);
         }
 
-        EventManager.instance.callbackOnLevelRestart += Restart;
+        EventManager.instance.callbackOnLevelStart += OnLevelStart;
+        EventManager.instance.callbackOnLevelRestart += OnLevelRestart;
         PauseManager.instance.callBackOnPauseDisable += EnableLucioles;
         PauseManager.instance.callBackOnPauseEnable += DisableLucioles;
     }
 
-    private void Restart(string levelName)
+    private void OnLevelStart(string levelName)
+    {
+        foreach (Luciole luciole in lstLucioles)
+        {
+            Destroy(luciole.gameObject);
+        }
+        lstLucioles.Clear();
+
+        StartCoroutine(CreateLucioleIn2FrameAfter());
+    }
+
+    private void OnLevelRestart(string levelName)
     {
         foreach(Luciole luciole in lstLucioles)
         {

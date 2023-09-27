@@ -1,14 +1,14 @@
+using UnityEngine.Rendering.Universal;
 using UnityEngine;
-
 
 public class LightWhenTouchFloor : MonoBehaviour
 {
     private Movement movement;
     private float groundLightMaxIntensity, rightLightMaxIntensity, leftLightMaxIntensity;
 
-    [SerializeField] private UnityEngine.Rendering.Universal.Light2D lightGround;
-    [SerializeField] private UnityEngine.Rendering.Universal.Light2D lightRight;
-    [SerializeField] private UnityEngine.Rendering.Universal.Light2D lightLeft;
+    [SerializeField] private Light2D lightGround;
+    [SerializeField] private Light2D lightRight;
+    [SerializeField] private Light2D lightLeft;
     [Tooltip("temps pour passer de lumi�re etteinte a allumer en %age/sec"), SerializeField] private float intensityLerp;
 
     private void Start()

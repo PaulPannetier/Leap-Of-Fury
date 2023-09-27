@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 8778289041252250656}
   - component: {fileID: 4244743712976068999}
   - component: {fileID: 4235235567787367747}
+  - component: {fileID: 8905496388238206338}
+  - component: {fileID: 8777902526585386819}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -45,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24956b4a47b852c4bb8e9be43984a5c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableBehaviour: 1
+  enableBehaviour: 0
   levelNameUI: {fileID: 0}
 --- !u!114 &4235235567787367747
 MonoBehaviour:
@@ -69,5 +71,41 @@ MonoBehaviour:
   playFirstMapAtLevelStart: 1
   mapsPrefabs:
   - {fileID: 5423039870793654263, guid: 47b2683619b815643ae20acf2b2c32c7, type: 3}
-  enableBehaviour: 1
+  - {fileID: 5423039870793654263, guid: 71d121d9074a3b4429a7522742e40bdb, type: 3}
+  enableBehaviour: 0
   playerLightPrefabs: {fileID: 3197619210662751959, guid: 8fabd73ac4a110d4cb34db517724a3d3, type: 3}
+--- !u!114 &8905496388238206338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464010719440560907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed9b5bc5132c0b048ada49b1c4ece25d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lstLucioles: []
+  luciolePrefab: {fileID: 7476833607417149529, guid: bd1b42d4d4f08954d98abe7affdb9f3f, type: 3}
+  lucioleCount: 16
+--- !u!114 &8777902526585386819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1464010719440560907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d41f562c9e0ffc44e821819ae542f95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nbDay: 3
+  nbNight: 1
+  startLevelAtDay: 1
+  globalLightIntensityAtDay: 1
+  otherLightIntensityAtDay: 0.1
+  globalLightIntensityAtNight: 0.1
+  otherLightIntensityAtNight: 1.2
+  isDay: 0

@@ -8,17 +8,20 @@ public class IntoTheJungleManager : LevelManager
     protected override void StartLevel()
     {
         base.StartLevel();
-        InitIntoTheJungle();
+        InitIntoTheJungle(true);
     }
 
     protected override void RestartLevel()
     {
         base.RestartLevel();
-        InitIntoTheJungle();
+        InitIntoTheJungle(false);
     }
 
-    private void InitIntoTheJungle()
+    private void InitIntoTheJungle(bool start)
     {
+        if ((start && CycleDayNightManager.instance.startLevelAtDay) || CycleDayNightManager.instance.isDay)
+            return;
+
         GameObject[] chars = GameObject.FindGameObjectsWithTag("Char");
         foreach (GameObject charGO in chars)
         {

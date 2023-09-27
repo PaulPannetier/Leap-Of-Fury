@@ -1,9 +1,9 @@
 ﻿#region using
 
 using UnityEngine;
+using Vec2 = UnityEngine.Vector2;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using UnityEditor;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -379,7 +379,7 @@ public static class Random
 
     #region Seed
 
-    public static void SetSeed(in int seed)
+    public static void SetSeed(int seed)
     {
         random = new System.Random(seed);
         Noise2d.Reseed();
@@ -397,17 +397,17 @@ public static class Random
     #region Random Value and vector
 
     /// <returns> A random integer between a and b, [|a, b|]</returns>
-    public static int Rand(in int a, in int b) => random.Next(a, b + 1);
+    public static int Rand(int a, int b) => random.Next(a, b + 1);
     /// <returns> A random float between 0 and 1, [0, 1]</returns>
     public static float Rand() => (float)random.Next(int.MaxValue) / (int.MaxValue - 1);
     /// <returns> A random float between a and b, [a, b]</returns>
-    public static float Rand(in float a, in float b) => Rand() * Mathf.Abs(b - a) + a;
+    public static float Rand(float a, float b) => Rand() * Mathf.Abs(b - a) + a;
     /// <returns> A random int between a and b, [|a, b|[</returns>
-    public static int RandExclude(in int a, in int b) => random.Next(a, b);
+    public static int RandExclude(int a, int b) => random.Next(a, b);
     /// <returns> A random double between a and b, [a, b[</returns>
-    public static float RandExclude(in float a, in float b) => (float)random.NextDouble() * (Mathf.Abs(b - a)) + a;
+    public static float RandExclude(float a, float b) => (float)random.NextDouble() * (Mathf.Abs(b - a)) + a;
     public static float RandExclude() => (float)random.NextDouble();
-    public static float PerlinNoise(in float x, in float y) => Noise2d.Noise(x, y);
+    public static float PerlinNoise(float x, float y) => Noise2d.Noise(x, y);
     public static Color Color() => new Color(Rand(), Rand(), Rand(), 1f);
     /// <returns> A random color with a random opacity</returns>
     public static Color ColorTransparent() => new Color(Rand(0, 255) / 255f, Rand(0, 255) / 255f, Rand(0, 255) / 255f, (float)random.NextDouble());
@@ -455,27 +455,37 @@ public static class Random
 
     public static Vector2 PointInCircle(CircleCollider2D circle) => PointInCircle(circle.transform.position, circle.radius);
     public static Vector2 PointInCircle(Circle circle) => PointInCircle(circle.center, circle.radius);
-    public static Vector2 PointInCircle(in Vector2 center, in float radius) => center + Vector2(Rand(0f, radius));
-
+    public static Vector2 PointInCircle(in Vector2 center, float radius)
+    {
+        float angle = RandExclude(0f, twoPi);
+        float length = Mathf.Sqrt(Rand()) * radius;
+        return new Vector2(center.x + length * Mathf.Cos(angle), center.y + length * Mathf.Sin(angle));
+    }
     public static Vector2 PointInRectangle(BoxCollider2D rec) => PointInRectangle(rec.transform.position, rec.size);
     public static Vector2 PointInRectangle(Hitbox rec) => PointInRectangle(rec.center, rec.size);
     public static Vector2 PointInRectangle(in Vector2 center, in Vector2 size)
     {
-        return new Vector2(center.x + Rand(-0.5f, 0.5f) * size.x, center.y + Rand(-0.5f, 0.5f) * size.y);
+        return new Vector2(center.x + (Rand() - 0.5f) * size.x, center.y + (Rand() - 0.5f) * size.y);
     }
 
     public static Vector2 PointInCapsule(CapsuleCollider2D capsule) => PointInCapsule(new Capsule(capsule.transform.position, capsule.size, capsule.direction));
     public static Vector2 PointInCapsule(Capsule capsule)
     {
-        float area1 = capsule.c1.radius * capsule.c1.radius * Mathf.PI;
-        float area2 = capsule.hitbox.size.y * capsule.hitbox.size.x;
-        if(Rand(0f, 2f * area1 + area2) <= area2)
+        float areaCircles = capsule.c1.radius * capsule.c1.radius * Mathf.PI;
+        float areaRec = capsule.hitbox.size.y * capsule.hitbox.size.x;
+        if(Rand(0f, areaCircles + areaRec) <= areaRec)
         {
             return PointInRectangle(capsule.hitbox.center, capsule.hitbox.size);
         }
         else
         {
-            return (Rand(0, 1) == 0 ? capsule.c1.center : capsule.c2.center) + Vector2(Rand(0f, capsule.c1.radius));
+            Vec2 v = capsule.c1.center - capsule.hitbox.center;
+            Vec2 rand = PointInCircle(Vec2.zero, capsule.c1.radius);
+            if(v.Dot(rand) >= 0f)
+            {
+                return capsule.c1.center + rand;
+            }
+            return capsule.c2.center + rand;
         }
     }
 
@@ -702,8 +712,8 @@ public static class Random
     #region Proba laws
 
     //Generer les lois de probas ! fonction non tester
-    public static int Bernoulli(in float p) => Rand() <= p ? 1 : 0;
-    public static int Binomial(in int n, in int p)
+    public static int Bernoulli(float p) => Rand() <= p ? 1 : 0;
+    public static int Binomial(int n, int p)
     {
         int count = 0;
         for (int i = 0; i < n; i++)
@@ -732,7 +742,7 @@ public static class Random
         return count;
     }
     private static float N01() => Mathf.Sqrt(-2f * Mathf.Log(Rand())) * Mathf.Cos(twoPi * Rand());
-    public static float Normal(in float esp, in float sigma) => N01() * sigma + esp;
+    public static float Normal(float esp, float sigma) => N01() * sigma + esp;
 
     #endregion
 
@@ -748,7 +758,7 @@ public class Array2D<T>
     public T[] array;
     public int width, height;
 
-    public Array2D(in int width, in int height)
+    public Array2D(int width, int height)
     {
         this.width = width; this.height = height;
         array = new T[width * height];
@@ -784,9 +794,10 @@ public class Array2D<T>
         List<List<T>> res = new List<List<T>>();
         for (int i = 0; i < height; i++)
         {
+            res.Add(new List<T>());
             for (int j = 0; j < width; j++)
             {
-                res[i][j] = array[j + i * width];
+                res[i].Add(array[j + i * width]);
             }
         }
         return res;
@@ -2081,7 +2092,6 @@ public static class Useful
         t.DOShakePosition(shakeSetting.duration, shakeSetting.strengh, shakeSetting.vibrato, shakeSetting.randomness,
             shakeSetting.snapping, shakeSetting.fadeOut);
     }
-
 
     #endregion
 }

@@ -1,4 +1,4 @@
-
+using UnityEngine.Rendering.Universal;
 using UnityEngine;
 
 public class CycleDayNightManager : MonoBehaviour
@@ -9,7 +9,7 @@ public class CycleDayNightManager : MonoBehaviour
 
     [SerializeField, Tooltip("Le nombre de jour d'affil�")] private int nbDay;
     [SerializeField, Tooltip("Le nombre de nuit d'affil�")] private int nbNight;
-    [SerializeField] private bool startLevelAtDay = true;
+    public bool startLevelAtDay = true;
     [SerializeField] private float globalLightIntensityAtDay = 1;
     [SerializeField] private float otherLightIntensityAtDay = 0.1f;
     [SerializeField] private float globalLightIntensityAtNight = 0.1f;
@@ -30,14 +30,22 @@ public class CycleDayNightManager : MonoBehaviour
 
     private void Start()
     {
-        EventManager.instance.callbackOnLevelRestart += Restart;
+        EventManager.instance.callbackOnLevelRestart += OnLevelRestart;
+        EventManager.instance.callbackOnLevelStart += OnLevelStart;
         counterDay = 0;
         ActivateDay(startLevelAtDay);
     }
 
-    private void Restart(string levelName)
+    private void OnLevelStart(string levelName)
+    {
+        print("level " + levelName + " start!");
+        ActivateDay(startLevelAtDay);
+    }
+
+    private void OnLevelRestart(string levelName)
     {
         counterDay++;
+        print("Current day : " + counterDay);
         if(isDay)
         {
             if(counterDay >= nbDay)
@@ -67,11 +75,11 @@ public class CycleDayNightManager : MonoBehaviour
 
         void ApplyIntensityWithSettings(float globalLightIntensity, float otherLightIntensity)
         {
-            foreach (UnityEngine.Rendering.Universal.Light2D light in LightManager.instance.globalLights)
+            foreach (Light2D light in LightManager.instance.globalLights)
             {
                 light.intensity = globalLightIntensity;
             }
-            foreach (UnityEngine.Rendering.Universal.Light2D light in LightManager.instance.lights)
+            foreach (Light2D light in LightManager.instance.lights)
             {
                 light.intensity = otherLightIntensity;
             }
@@ -81,7 +89,7 @@ public class CycleDayNightManager : MonoBehaviour
         {
             for (int i = 0; i < LightManager.instance.lights.Length; i++)
             {
-                UnityEngine.Rendering.Universal.Light2D light = LightManager.instance.lights[i];
+                Light2D light = LightManager.instance.lights[i];
                 if (light.TryGetComponent(out LightVariator lv))
                 {
                     lv.enableBehaviour = enable;
