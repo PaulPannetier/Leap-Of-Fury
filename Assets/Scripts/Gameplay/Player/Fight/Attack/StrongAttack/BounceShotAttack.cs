@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Collision2D;
 
 public class BounceShotAttack : StrongAttack
 {
@@ -89,7 +90,7 @@ public class BounceShotAttack : StrongAttack
                     else
                     {
                         //Version générale bugger
-                        Vector2 sim = Droite.Symetric(oldPoint, new Droite(raycast.point, raycast.point + raycast.normal));
+                        Vector2 sim = Collision2D.Ray2D.Symetric(oldPoint, new Collision2D.Ray2D(raycast.point, raycast.point + raycast.normal));
                         data.lastDirection = (sim - raycast.point).normalized;
                     }
 
@@ -99,8 +100,8 @@ public class BounceShotAttack : StrongAttack
                 }
                 else
                 {
-                    Line ray = new Line(oldPoint, raycast.point);
-                    if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 edgePoint))
+                    Line2D ray = new Line2D(oldPoint, raycast.point);
+                    if (Collision2D.Collider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 edgePoint))
                     {
                         data.rayPoints.Add(edgePoint);
                         data.totalDist += oldPoint.Distance(edgePoint);
@@ -131,8 +132,8 @@ public class BounceShotAttack : StrongAttack
                 }
                 else
                 {
-                    Line ray = new Line(oldPoint, endPoint);
-                    if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 edgePoint))
+                    Line2D ray = new Line2D(oldPoint, endPoint);
+                    if (Collision2D.Collider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 edgePoint))
                     {
                         data.rayPoints.Add(edgePoint);
                         data.totalDist += oldPoint.Distance(edgePoint);

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class BouncingBallAttack : StrongAttack
 {

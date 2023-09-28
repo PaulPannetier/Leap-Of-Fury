@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Collision2D;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class CheckPointsMovingPlateform : MonoBehaviour
@@ -109,8 +110,8 @@ public class CheckPointsMovingPlateform : MonoBehaviour
 
             void ApplyDetection(in Vector2 offset, in Vector2 size, in Vector2 dir)
             {
-                Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + offset, size, 0f, charMask);
-                foreach (Collider2D col in cols)
+                UnityEngine.Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + offset, size, 0f, charMask);
+                foreach (UnityEngine.Collider2D col in cols)
                 {
                     if (col.CompareTag("Char"))
                     {

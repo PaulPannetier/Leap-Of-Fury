@@ -1,4 +1,6 @@
 using UnityEngine;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class BouncingBall : MonoBehaviour
 {
@@ -76,7 +78,7 @@ public class BouncingBall : MonoBehaviour
                 */
 
                 //sebastian lague version
-                speed = Droite.Reflection(raycast.normal, raycast.point, speed / v) * v;
+                speed = Collision2D.Ray2D.Reflection(raycast.normal, raycast.point, speed / v) * v;
             }
         }
 

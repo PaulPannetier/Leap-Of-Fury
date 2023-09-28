@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Collision2D;
 
 public class FallAttack : WeakAttack
 {
@@ -74,7 +75,7 @@ public class FallAttack : WeakAttack
         movement.enableBehaviour = false;
 
         //phase tombante
-        Collider2D[] cols;
+        UnityEngine.Collider2D[] cols;
         bool hitGround = false;
         Vector2 fallSpeed = Vector2.down * speedFall;
         float timeBegFall = Time.time;
@@ -87,7 +88,7 @@ public class FallAttack : WeakAttack
             hitGround = Physics2D.OverlapCircle((Vector2)transform.position + movement.groundOffset, movement.groundCollisionRadius, groundMask) != null;
             //Collision avec les autre personnages
             cols = Physics2D.OverlapBoxAll((Vector2)transform.position, hitbox.size, transform.rotation.eulerAngles.z, playerMask);
-            foreach (Collider2D col in cols)
+            foreach (UnityEngine.Collider2D col in cols)
             {
                 if(col.CompareTag("Char"))
                 {
@@ -110,7 +111,7 @@ public class FallAttack : WeakAttack
         //EXPLOSION
         cols = Physics2D.OverlapCircleAll((Vector2)transform.position + movement.groundOffset, explosionRadius, playerMask);
 
-        foreach (Collider2D col in cols)
+        foreach (UnityEngine.Collider2D col in cols)
         {
             if (col.gameObject.CompareTag("Char"))
             {

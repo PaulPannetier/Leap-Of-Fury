@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Collision2D;
 
 public class AmericanFistAttack : WeakAttack
 {
@@ -263,7 +264,7 @@ public class AmericanFistAttack : WeakAttack
 
     private bool CollideWithEnemy(out GameObject[] enemies)
     {
-        Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, enemiesMask);
+        UnityEngine.Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, enemiesMask);
 
         if (cols.Length <= 0)
         {
@@ -272,7 +273,7 @@ public class AmericanFistAttack : WeakAttack
         }
 
         List<GameObject> players = new List<GameObject>();
-        foreach (Collider2D col in cols)
+        foreach (UnityEngine.Collider2D col in cols)
         {
             if (col.CompareTag("Char"))
             {
@@ -314,11 +315,11 @@ public class AmericanFistAttack : WeakAttack
             Circle circle = circles[i];
             if(circle != null)
             {
-                Collider2D col = PhysicsToric.OverlapCircle(circle, groundMask);
+                UnityEngine.Collider2D col = PhysicsToric.OverlapCircle(circle, groundMask);
                 if(col != null)
                 {
-                    CustomCollider2D customCol = CustomCollider2D.FromUnityCollider2D(col);
-                    if(CustomCollider2D.Collide(circle, customCol, out collisionPoint))
+                    Collision2D.Collider2D customCol = Collision2D.Collider2D.FromUnityCollider2D(col);
+                    if(Collision2D.Collider2D.Collide(circle, customCol, out collisionPoint))
                     {
                         return true;
                     }
@@ -350,7 +351,7 @@ public class AmericanFistAttack : WeakAttack
         ExplosionManager.instance.CreateExplosion(collisionPoint, explosionForce);
     }
 
-    private void OnExplosionTouchEnemy(Collider2D collider)
+    private void OnExplosionTouchEnemy(UnityEngine.Collider2D collider)
     {
         if(collider.CompareTag("Char"))
         {

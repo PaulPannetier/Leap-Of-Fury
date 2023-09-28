@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using Collision2D;
 
 public class GrapplingAttack : WeakAttack
 {
@@ -15,7 +16,7 @@ public class GrapplingAttack : WeakAttack
     private bool isSwinging;
     private Vector2 grapDir;
     private Vector2 attachPoint;
-    private Collider2D colliderWhereGrapIsAttach;
+    private UnityEngine.Collider2D colliderWhereGrapIsAttach;
     private float grapLength;
     private Vector2[] lineRendererPoints;
     private float lastTimeBombSpawn = -10f;

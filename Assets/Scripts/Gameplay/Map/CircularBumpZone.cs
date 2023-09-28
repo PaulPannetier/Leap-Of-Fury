@@ -1,4 +1,6 @@
 using UnityEngine;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 [RequireComponent (typeof(CircleCollider2D))]
 public class CircularBumpZone : BumpsZone

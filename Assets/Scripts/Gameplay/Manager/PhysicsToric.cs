@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Collision2D;
+using Collider2D = Collision2D.Collider2D;
 
 public static class PhysicsToric
 {
@@ -94,11 +96,11 @@ public static class PhysicsToric
     {
         float dist = Distance(a, b);
         Vector2 dir = Direction(a, b);
-        Line line = new Line(a, a + dir * dist);
+        Line2D line = new Line2D(a, a + dir * dist);
 
         for (int i = 0; i < 4; i++)
         {
-            if (CustomCollider2D.CollideHitboxLine(mapHitboxArounds[i], line, out toricInter))
+            if (Collider2D.CollideHitboxLine(mapHitboxArounds[i], line, out toricInter))
             {
                 return true;
             }
@@ -111,17 +113,17 @@ public static class PhysicsToric
 
     #region Overlap
 
-    public static Collider2D OverlapPoint(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPoint(GetPointInsideBounds(point), layerMask);
+    public static UnityEngine.Collider2D OverlapPoint(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPoint(GetPointInsideBounds(point), layerMask);
 
-    public static Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
+    public static UnityEngine.Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
 
-    public static Collider2D OverlapCircle(Circle circle, in LayerMask layerMask) => OverlapCircle(circle.center, circle.radius, layerMask);
+    public static UnityEngine.Collider2D OverlapCircle(Circle circle, in LayerMask layerMask) => OverlapCircle(circle.center, circle.radius, layerMask);
     
-    public static Collider2D OverlapCircle(in Vector2 center, float radius, in LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapCircle(in Vector2 center, float radius, in LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
 
-        Collider2D res = Physics2D.OverlapCircle(center, radius, layerMask);
+        UnityEngine.Collider2D res = Physics2D.OverlapCircle(center, radius, layerMask);
         if (res != null)
             return res;
 
@@ -129,7 +131,7 @@ public static class PhysicsToric
         for(int i = 0; i < 4; i++)
         {
             Hitbox h = mapHitboxArounds[i];
-            if(CustomCollider2D.Collide(h, circle))
+            if(Collider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
             }
@@ -150,18 +152,18 @@ public static class PhysicsToric
         return null;
     }
 
-    public static Collider2D[] OverlapCircleAll(Circle circle, in LayerMask layerMask) => OverlapCircleAll(circle.center, circle.radius, layerMask);
+    public static UnityEngine.Collider2D[] OverlapCircleAll(Circle circle, in LayerMask layerMask) => OverlapCircleAll(circle.center, circle.radius, layerMask);
 
-    public static Collider2D[] OverlapCircleAll(in Vector2 center, float radius, in LayerMask layerMask)
+    public static UnityEngine.Collider2D[] OverlapCircleAll(in Vector2 center, float radius, in LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
-        Collider2D[] res = Physics2D.OverlapCircleAll(center, radius, layerMask);
+        UnityEngine.Collider2D[] res = Physics2D.OverlapCircleAll(center, radius, layerMask);
 
         bool[] collideWithCamHitbox = new bool[4];
         for (int i = 0; i < 4; i++)
         {
             Hitbox h = mapHitboxArounds[i];
-            if (CustomCollider2D.Collide(h, circle))
+            if (Collider2D.Collide(h, circle))
             {
                 collideWithCamHitbox[i] = true;
             }
@@ -172,7 +174,7 @@ public static class PhysicsToric
             if (collideWithCamHitbox[i])
             {
                 circle.MoveAt(circle.center - mapHitboxArounds[i].center);
-                Collider2D[] res2 = Physics2D.OverlapCircleAll(center, radius, layerMask);
+                UnityEngine.Collider2D[] res2 = Physics2D.OverlapCircleAll(center, radius, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
                 circle.MoveAt(circle.center + mapHitboxArounds[i].center);
@@ -182,19 +184,19 @@ public static class PhysicsToric
         return res.Length <= 0 ? res : res.Distinct().ToArray();
     }
 
-    public static Collider2D OverlapBox(Hitbox hitbox, in LayerMask layerMask) => OverlapBox(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
+    public static UnityEngine.Collider2D OverlapBox(Hitbox hitbox, in LayerMask layerMask) => OverlapBox(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
 
-    public static Collider2D OverlapBox(in Vector2 point, in Vector2 size, float angle, in LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapBox(in Vector2 point, in Vector2 size, float angle, in LayerMask layerMask)
     {
         Hitbox hitbox = new Hitbox(GetPointInsideBounds(point), size);
         hitbox.Rotate(angle);
 
-        Collider2D res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
+        UnityEngine.Collider2D res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         if (res != null)
             return res;
 
         bool[] contains = new bool[4];
-        foreach (Vector2 p in hitbox.rec.vertices)
+        foreach (Vector2 p in hitbox.vertices)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -217,16 +219,16 @@ public static class PhysicsToric
         return res;
     }
 
-    public static Collider2D[] OverlapBoxAll(Hitbox hitbox, LayerMask layerMask) => OverlapBoxAll(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
+    public static UnityEngine.Collider2D[] OverlapBoxAll(Hitbox hitbox, LayerMask layerMask) => OverlapBoxAll(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
 
-    public static Collider2D[] OverlapBoxAll(in Vector2 point, in Vector2 size, float angle, LayerMask layerMask)
+    public static UnityEngine.Collider2D[] OverlapBoxAll(in Vector2 point, in Vector2 size, float angle, LayerMask layerMask)
     {
         Hitbox hitbox = new Hitbox(GetPointInsideBounds(point), size);
         hitbox.Rotate(angle);
 
-        Collider2D[] res = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
+        UnityEngine.Collider2D[] res = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
         bool[] contains = new bool[4];
-        foreach (Vector2 p in hitbox.rec.vertices)
+        foreach (Vector2 p in hitbox.vertices)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -240,7 +242,7 @@ public static class PhysicsToric
             if (contains[i])
             {
                 hitbox.MoveAt(hitbox.center - mapHitboxArounds[i].center);
-                Collider2D[] res2 = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
+                UnityEngine.Collider2D[] res2 = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
                 hitbox.MoveAt(hitbox.center + mapHitboxArounds[i].center);
@@ -249,7 +251,7 @@ public static class PhysicsToric
         return res == null ? null : res.Distinct().ToArray();
     }
 
-    public static Collider2D Physics2DOverlapCapsule(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
+    public static UnityEngine.Collider2D Physics2DOverlapCapsule(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size, dir);
         if(Mathf.Abs(angle) > 1e-5f)
@@ -257,19 +259,19 @@ public static class PhysicsToric
         return Physics2DOverlapCapsule(c, layerMask);
     }
 
-    public static Collider2D Physics2DOverlapCapsule(Capsule capsule, LayerMask layerMask)
+    public static UnityEngine.Collider2D Physics2DOverlapCapsule(Capsule capsule, LayerMask layerMask)
     {
-        Collider2D res = Physics2D.OverlapBox(capsule.hitbox.center, capsule.hitbox.size, capsule.AngleHori() * Mathf.Rad2Deg, layerMask);
+        UnityEngine.Collider2D res = Physics2D.OverlapBox(capsule.hitbox.center, capsule.hitbox.size, capsule.AngleHori() * Mathf.Rad2Deg, layerMask);
         if (res != null)
             return res;
-        res = Physics2D.OverlapCircle(capsule.c1.center, capsule.c1.radius, layerMask);
+        res = Physics2D.OverlapCircle(capsule.circle1.center, capsule.circle1.radius, layerMask);
         if (res != null)
             return res;
-        res = Physics2D.OverlapCircle(capsule.c2.center, capsule.c2.radius, layerMask);
+        res = Physics2D.OverlapCircle(capsule.circle2.center, capsule.circle2.radius, layerMask);
         return res;
     }
 
-    public static Collider2D[] Physics2DOverlapCapsuleAll(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
+    public static UnityEngine.Collider2D[] Physics2DOverlapCapsuleAll(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size, dir);
         if(Mathf.Abs(angle) > 1e-5)
@@ -277,15 +279,15 @@ public static class PhysicsToric
         return Physics2DOverlapCapsuleAll(c, layerMask);
     }
 
-    public static Collider2D[] Physics2DOverlapCapsuleAll(Capsule capsule, LayerMask layerMask)
+    public static UnityEngine.Collider2D[] Physics2DOverlapCapsuleAll(Capsule capsule, LayerMask layerMask)
     {
-        Collider2D[] res = Physics2D.OverlapBoxAll(capsule.hitbox.center, capsule.hitbox.size, capsule.AngleHori() * Mathf.Rad2Deg, layerMask);
-        res = res.Merge(Physics2D.OverlapCircleAll(capsule.c1.center, capsule.c1.radius, layerMask));
-        res = res.Merge(Physics2D.OverlapCircleAll(capsule.c2.center, capsule.c2.radius, layerMask));
+        UnityEngine.Collider2D[] res = Physics2D.OverlapBoxAll(capsule.hitbox.center, capsule.hitbox.size, capsule.AngleHori() * Mathf.Rad2Deg, layerMask);
+        res = res.Merge(Physics2D.OverlapCircleAll(capsule.circle1.center, capsule.circle1.radius, layerMask));
+        res = res.Merge(Physics2D.OverlapCircleAll(capsule.circle2.center, capsule.circle2.radius, layerMask));
         return res.Distinct().ToArray();
     }
 
-    public static Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
@@ -293,18 +295,18 @@ public static class PhysicsToric
         return OverlapCapsule(c, layerMask);
     }
 
-    public static Collider2D OverlapCapsule(Capsule capsule, in LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapCapsule(Capsule capsule, in LayerMask layerMask)
     {
-        Collider2D res = OverlapBox(capsule.hitbox, layerMask);
+        UnityEngine.Collider2D res = OverlapBox(capsule.hitbox, layerMask);
         if(res != null)
             return res;
-        res = OverlapCircle(capsule.c1, layerMask);
+        res = OverlapCircle(capsule.circle1, layerMask);
         if (res != null)
             return res;
-        return OverlapCircle(capsule.c2, layerMask);
+        return OverlapCircle(capsule.circle2, layerMask);
     }
 
-    public static Collider2D[] OverlapCapsuleAll(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
+    public static UnityEngine.Collider2D[] OverlapCapsuleAll(in Vector2 center, in Vector2 size, float angle, in LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
@@ -312,11 +314,11 @@ public static class PhysicsToric
         return OverlapCapsuleAll(c, layerMask);
     }
 
-    public static Collider2D[] OverlapCapsuleAll(Capsule capsule, in LayerMask layerMask)
+    public static UnityEngine.Collider2D[] OverlapCapsuleAll(Capsule capsule, in LayerMask layerMask)
     {
-        Collider2D[] res = OverlapBoxAll(capsule.hitbox, layerMask);
-        res = res.Merge(OverlapCircleAll(capsule.c1, layerMask));
-        return res.Merge(OverlapCircleAll(capsule.c2, layerMask));
+        UnityEngine.Collider2D[] res = OverlapBoxAll(capsule.hitbox, layerMask);
+        res = res.Merge(OverlapCircleAll(capsule.circle1, layerMask));
+        return res.Merge(OverlapCircleAll(capsule.circle2, layerMask));
     }
 
     #endregion
@@ -347,7 +349,7 @@ public static class PhysicsToric
     private static RaycastHit2D RaycastRecur(in Vector2 from, in Vector2 direction, in float distance, in int layerMask, ref float reachDistance, ref List<Vector2> points)
     {
         RaycastHit2D raycast = Physics2D.Raycast(from, direction, distance, layerMask);
-        Line ray;
+        Line2D ray;
 
         if (raycast.collider == null)
         {
@@ -359,8 +361,8 @@ public static class PhysicsToric
             }
             else
             {
-                ray = new Line(from, B);
-                if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp))
+                ray = new Line2D(from, B);
+                if (Collider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp))
                 {
                     float tmpDist = from.Distance(cp);
                     reachDistance += tmpDist;
@@ -390,8 +392,8 @@ public static class PhysicsToric
             reachDistance += raycast.distance;
             return raycast;
         }
-        ray = new Line(from, from + direction * distance);
-        if (CustomCollider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp2))
+        ray = new Line2D(from, from + direction * distance);
+        if (Collider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp2))
         {
             float tmpDist = from.Distance(cp2);
             reachDistance += tmpDist;
@@ -447,14 +449,14 @@ public static class PhysicsToric
 
     private static RaycastHit2D[] RaycastAllRecur(in Vector2 from, in Vector2 direction, float distance, int layerMask, float reachDistance, int raycastIndex,ref List<Vector2> globalInterPoints, ref List<List<Vector2>> interPoints)
     {
-        Line line = new Line(from, from + direction * distance);
+        Line2D line = new Line2D(from, from + direction * distance);
         bool collide = false;
         Vector2 inter = Vector2.zero;
         float minInterSqrDist = float.MaxValue;
 
         for (int i = 0; i < 4; i++)
         {
-            if (CustomCollider2D.CollideHitboxLine(mapHitboxArounds[i], line, out Vector2 tmpInter))
+            if (Collider2D.CollideHitboxLine(mapHitboxArounds[i], line, out Vector2 tmpInter))
             {
                 collide = true;
                 float sqrDist = from.SqrDistance(tmpInter);
@@ -535,10 +537,10 @@ public static class PhysicsToric
     {
         if (raycasts.Length > 0)
         {
-            CustomCollider2D collider = CustomCollider2D.FromUnityCollider2D(raycasts[raycasts.Length - 1].collider);
+            Collider2D collider = Collider2D.FromUnityCollider2D(raycasts[raycasts.Length - 1].collider);
             Circle circle = new Circle(raycasts.Last().point, radius);
 
-            if (CustomCollider2D.Collide(collider, circle, out Vector2 collisionPoint))
+            if (Collider2D.Collide(collider, circle, out Vector2 collisionPoint))
             {
                 raycasts[raycasts.Length - 1].distance = inter.Count > 0 ? collisionPoint.Distance(inter.Last()) : collisionPoint.Distance(start);
                 raycasts[raycasts.Length - 1].point = collisionPoint;
@@ -565,15 +567,15 @@ public static class PhysicsToric
         {
             Circle c = new Circle(end, radius);
             bool calculateEdge = false;
-            if(CustomCollider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)) ||
-                CustomCollider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)))
+            if(Collider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)) ||
+                Collider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)))
             {
                 end += Vector2.right * (end.x >= 0f ? -mapSize.x : mapSize.x);
                 calculateEdge = true;
             }
 
-            if (CustomCollider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)) ||
-                CustomCollider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)))
+            if (Collider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)) ||
+                Collider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)))
             {
                 end += Vector2.up * (end.y >= 0f ? -mapSize.y : mapSize.y);
                 calculateEdge = true;
@@ -584,7 +586,7 @@ public static class PhysicsToric
         }
         else
         {
-            if (CustomCollider2D.CollideHitboxLine(mapHitbox, start, end, out Vector2 col))
+            if (Collider2D.CollideHitboxLine(mapHitbox, start, end, out Vector2 col))
             {
                 inters.Add(col);
                 float newDist = distance - start.Distance(col);
@@ -594,7 +596,7 @@ public static class PhysicsToric
             else
             {
                 Debug.LogWarning("must be collision");
-                LogManager.instance.WriteLog("must be collision between cameraHitbox and the line in PhysicToric.CircleCastRecur()", mapHitbox, new Line(start, end));
+                LogManager.instance.WriteLog("must be collision between cameraHitbox and the line in PhysicToric.CircleCastRecur()", mapHitbox, new Line2D(start, end));
                 return raycasts;
             }
         }

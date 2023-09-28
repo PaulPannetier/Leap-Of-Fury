@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class TimePortalManager : MonoBehaviour
 {

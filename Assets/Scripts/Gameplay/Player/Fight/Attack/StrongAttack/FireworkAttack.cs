@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class FireworkAttack : StrongAttack
 {

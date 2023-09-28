@@ -1,4 +1,6 @@
 using UnityEngine;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 [RequireComponent (typeof(BoxCollider2D))]
 public class HitboxBumpZone : BumpsZone
@@ -15,7 +17,7 @@ public class HitboxBumpZone : BumpsZone
     {
         Hitbox h = new Hitbox((Vector2)transform.position + hitbox.offset, hitbox.size);
         h.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
-        if (CustomCollider2D.CollideHitboxLine(h, (Vector2)charCollider.transform.position + charCollider.offset, h.center, out Vector2 inter))
+        if (Collision2D.Collider2D.CollideHitboxLine(h, (Vector2)charCollider.transform.position + charCollider.offset, h.center, out Vector2 inter))
         {
             if(h.Normal(inter, out Vector2 normal))
             {

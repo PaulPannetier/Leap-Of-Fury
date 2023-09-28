@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Video;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class CharHelpCanvas : MonoBehaviour
 {

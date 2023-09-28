@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Collision2D;
 
 public class CurveGenerator : MonoBehaviour
 {

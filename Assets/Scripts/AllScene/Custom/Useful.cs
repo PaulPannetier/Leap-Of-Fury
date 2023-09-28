@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Threading;
 using DG.Tweening;
 using System.Threading.Tasks;
+using Collision2D;
 
 #endregion
 
@@ -471,7 +472,7 @@ public static class Random
     public static Vector2 PointInCapsule(CapsuleCollider2D capsule) => PointInCapsule(new Capsule(capsule.transform.position, capsule.size, capsule.direction));
     public static Vector2 PointInCapsule(Capsule capsule)
     {
-        float areaCircles = capsule.c1.radius * capsule.c1.radius * Mathf.PI;
+        float areaCircles = capsule.circle1.radius * capsule.circle1.radius * Mathf.PI;
         float areaRec = capsule.hitbox.size.y * capsule.hitbox.size.x;
         if(Rand(0f, areaCircles + areaRec) <= areaRec)
         {
@@ -479,13 +480,13 @@ public static class Random
         }
         else
         {
-            Vec2 v = capsule.c1.center - capsule.hitbox.center;
-            Vec2 rand = PointInCircle(Vec2.zero, capsule.c1.radius);
+            Vec2 v = capsule.circle1.center - capsule.hitbox.center;
+            Vec2 rand = PointInCircle(Vec2.zero, capsule.circle1.radius);
             if(v.Dot(rand) >= 0f)
             {
-                return capsule.c1.center + rand;
+                return capsule.circle1.center + rand;
             }
-            return capsule.c2.center + rand;
+            return capsule.circle2.center + rand;
         }
     }
 
@@ -1207,7 +1208,17 @@ public static class Useful
 
     public static T GetRandom<T>(this T[] array) => array[Random.RandExclude(0, array.Length)];
 
-    public static T[,] CloneArray<T>(this T[,] Array)
+    public static T[] Clone<T>(this T[] array) where T : ICloneable<T>
+    {
+        T[] res = new T[array.Length];
+        for (int i = 0; i < res.Length; i++)
+        {
+            res[i] = array[i].Clone();
+        }
+        return res;
+    }
+
+    public static T[,] Clone<T>(this T[,] Array)
     {
         T[,] a = new T[Array.GetLength(0), Array.GetLength(1)];
         for (int l = 0; l < a.GetLength(0); l++)

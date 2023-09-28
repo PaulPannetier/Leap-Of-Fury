@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Collision2D;
 
 public class Explosion : MonoBehaviour
 {
@@ -10,11 +11,11 @@ public class Explosion : MonoBehaviour
 
     public bool enableBehaviour = true;
     public ExplosionData explosionData;
-    public Action<Collider2D> callbackOnTouch;
+    public Action<UnityEngine.Collider2D> callbackOnTouch;
 
     private void Awake()
     {
-        callbackOnTouch = (Collider2D arg) => { };
+        callbackOnTouch = (UnityEngine.Collider2D arg) => { };
         toricObject = GetComponent<ToricObject>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
@@ -41,8 +42,8 @@ public class Explosion : MonoBehaviour
     {
         if(enableBehaviour && Time.time - lastTimeLauch <= explosionData.duration)
         {
-            Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + explosionData.offset, explosionData.radius, explosionData.layerMask);
-            foreach (Collider2D col in cols)
+            UnityEngine.Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + explosionData.offset, explosionData.radius, explosionData.layerMask);
+            foreach (UnityEngine.Collider2D col in cols)
             {
                 OnCollide(col);
             }
@@ -59,7 +60,7 @@ public class Explosion : MonoBehaviour
         spriteRenderer.color = color;
     }
 
-    private void OnCollide(Collider2D collider)
+    private void OnCollide(UnityEngine.Collider2D collider)
     {
         if(toricObject.isAClone)
         {

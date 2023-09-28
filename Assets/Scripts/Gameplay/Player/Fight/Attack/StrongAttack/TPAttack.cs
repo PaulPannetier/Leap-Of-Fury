@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Collision2D;
 
 public class TPAttack : StrongAttack
 {
@@ -41,7 +42,7 @@ public class TPAttack : StrongAttack
         Vector2 dir = playerMovement.GetCurrentDirection();
         Vector2 newPos = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + dir * tpRange);
 
-        Collider2D groundCollider = PhysicsToric.OverlapBox(newPos, collisionSize, 0f, groundMask);
+        UnityEngine.Collider2D groundCollider = PhysicsToric.OverlapBox(newPos, collisionSize, 0f, groundMask);
         if(groundCollider == null)
         {
             //tout est ok
@@ -53,7 +54,7 @@ public class TPAttack : StrongAttack
             RaycastHit2D raycasts1 = PhysicsToric.Raycast(transform.position, dir, 2f * tpRange, groundMask);
             RaycastHit2D raycasts2;
             Hitbox mapHitbox = new Hitbox(Vector2.zero, LevelMapData.currentMap.mapSize);
-            if (CustomCollider2D.CollideHitboxLine(mapHitbox, transform.position, (Vector2)transform.position + (2f * tpRange) * dir, out Vector2 colP))
+            if (Collision2D.Collider2D.CollideHitboxLine(mapHitbox, transform.position, (Vector2)transform.position + (2f * tpRange) * dir, out Vector2 colP))
             {
                 Vector2 step = new Vector2(colP.x - mapHitbox.center.x > 0f ? 0.01f : -0.01f, colP.y - mapHitbox.center.y > 0f ? 0.01f : -0.01f);
                 while (mapHitbox.Contains(colP))
@@ -132,8 +133,8 @@ public class TPAttack : StrongAttack
         explosion.transform.localScale = new Vector3(explosionRadius, explosionRadius, 1f);
         Destroy(explosion, 1.5f);
 
-        Collider2D[] cols =  PhysicsToric.OverlapCircleAll(transform.position, explosionRadius, ennemyPlayerMask);
-        foreach (Collider2D col in cols)
+        UnityEngine.Collider2D[] cols =  PhysicsToric.OverlapCircleAll(transform.position, explosionRadius, ennemyPlayerMask);
+        foreach (UnityEngine.Collider2D col in cols)
         {
             if(col.CompareTag("Char"))
             {

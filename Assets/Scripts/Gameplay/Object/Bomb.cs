@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class Bomb : MonoBehaviour
 {

@@ -494,7 +494,7 @@ public class PlayerControllerBonCeleste : MonoBehaviour
     [Header("Collisions")] [SerializeField] private ParticleSystem impactParticles;
     [SerializeField] private float minImpactForce = 2f;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
         if (impactParticles != null && collision.relativeVelocity.sqrMagnitude > minImpactForce * minImpactForce && isGrounded)
             impactParticles.Play();

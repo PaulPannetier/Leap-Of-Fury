@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEditor;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class MovablePlateform : MonoBehaviour

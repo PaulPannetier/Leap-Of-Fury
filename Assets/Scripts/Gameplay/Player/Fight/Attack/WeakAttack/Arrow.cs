@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using Collision2D;
 
 public class Arrow : MonoBehaviour
 {
@@ -47,11 +48,11 @@ public class Arrow : MonoBehaviour
 
         if(isFlying && !toricObject.isAClone)
         {
-            Collider2D[] cols = PhysicsToric.OverlapCircleAll(transform.position, charDetectionRange, charMask);
+            UnityEngine.Collider2D[] cols = PhysicsToric.OverlapCircleAll(transform.position, charDetectionRange, charMask);
             List<Vector2> playerAroundPos = new List<Vector2>();
 
             float currentAngle = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
-            foreach (Collider2D col in cols)
+            foreach (UnityEngine.Collider2D col in cols)
             {
                 if(col.CompareTag("Char"))
                 {
@@ -230,7 +231,7 @@ public class Arrow : MonoBehaviour
         animator.SetTrigger("Land");
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(UnityEngine.Collider2D collision)
     {
         if (!enableBehaviour)
             return;
