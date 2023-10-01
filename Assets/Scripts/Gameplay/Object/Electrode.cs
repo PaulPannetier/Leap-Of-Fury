@@ -3,18 +3,35 @@ using UnityEngine;
 
 public class Electrode : MonoBehaviour
 {
+    public enum Direction
+    {
+        horizontal,
+        vertical,
+        freeLayout
+    }
+
     private LayerMask charMask;
-    private bool isActive;
     private float lastTimeTriggerIsActive = -10f;
+    private bool isActive;
     private List<uint> charAlreadyTouch = new List<uint>();
     private Vector2[][] toricInterPoints;
     private Transform lineRenderersParent;
     private LineRenderer lineRendererPrefabs;
     private List<LineRenderer> lineRenderers;
-    private bool firstTimeIsActive;
 
     [SerializeField] private bool enableBehaviour = true;
-    [SerializeField] private Transform electrode1, electrode2;
+
+    [Header("Position")]
+    [SerializeField] private Transform electrode1;
+    [SerializeField] private Transform electrode2;
+    [SerializeField] private Direction direction = Direction.vertical;
+    [SerializeField] private float electrodesDistance = 3f;
+
+    [Header("Use with trigger")]
+    [SerializeField] private bool useByInterruptor = false;
+    [SerializeField] private Interruptor interruptor;
+
+    [Header("Duration Setings")]
     [SerializeField] private float timeOffset = 0f;
     [SerializeField] private float activationDuration;
     [SerializeField] private float durationBetween2Activation;
@@ -36,8 +53,11 @@ public class Electrode : MonoBehaviour
 
     private void Start()
     {
-        enableBehaviour = false;
-        Invoke(nameof(ActiveSelf), timeOffset);
+        if(!useByInterruptor)
+        {
+            Invoke(nameof(ActiveSelf), timeOffset);
+        }
+
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
     }
@@ -76,12 +96,6 @@ public class Electrode : MonoBehaviour
                 }
             }
 
-            if (firstTimeIsActive)
-            {
-                UpdateLineRenderer();
-                firstTimeIsActive = false;
-            }
-
             if (Time.time - lastTimeTriggerIsActive > activationDuration)
             {
                 isActive = false;
@@ -92,71 +106,83 @@ public class Electrode : MonoBehaviour
         {
             ClearLineRenderer();
 
-            if (Time.time - lastTimeTriggerIsActive > durationBetween2Activation)
+            if(!useByInterruptor)
             {
-                isActive = true;
-                firstTimeIsActive = true;
-                lastTimeTriggerIsActive = Time.time;
-            }
-        }
-
-        void UpdateLineRenderer()
-        {
-            if(PhysicsToric.GetToricIntersection(electrode1.position, electrode2.position, out Vector2 inter))
-            {
-                SetLineRendererCount(2);
-                Vector2 inter2 = PhysicsToric.GetComplementaryPoint(inter);
-                if (inter.SqrDistance(inter2) < 1)
-                    print("debuuuuug");
-                (inter, inter2) = PhysicsToric.Distance(electrode1.position, inter) <= PhysicsToric.Distance(electrode1.position, inter2) ? 
-                    (inter, inter2) : (inter2, inter);
-                lineRenderers[0].positionCount = 2;
-                lineRenderers[1].positionCount = 2;
-                lineRenderers[0].SetPositions(new Vector3[2] { electrode1.position, inter });
-                lineRenderers[1].SetPositions(new Vector3[2] { inter2, electrode2.position });
+                if (Time.time - lastTimeTriggerIsActive > durationBetween2Activation)
+                {
+                    isActive = true;
+                    lastTimeTriggerIsActive = Time.time;
+                    UpdateLineRenderer();
+                }
             }
             else
             {
-                SetLineRendererCount(1);
-                lineRenderers[0].positionCount = 2;
-                lineRenderers[0].SetPositions(new Vector3[2] { electrode1.position, electrode2.position });
-            }
-
-            void SetLineRendererCount(int count)
-            {
-                while (lineRenderers.Count < count)
+                if(interruptor.isActivated)
                 {
-                    lineRenderers.Add(Instantiate(lineRendererPrefabs, lineRenderersParent));
-                }
-                while (lineRenderers.Count > count)
-                {
-                    LineRenderer lrToRm = lineRenderers.Last();
-                    lrToRm.positionCount = 0;
-                    lrToRm.SetPositions(new Vector3[0]);
-                    Destroy(lrToRm.gameObject);
-                    lineRenderers.RemoveLast();
+                    isActive = true;
+                    lastTimeTriggerIsActive = Time.time;
+                    UpdateLineRenderer();
                 }
             }
         }
+    }
 
-        void ClearLineRenderer()
+    private void UpdateLineRenderer()
+    {
+        if (PhysicsToric.GetToricIntersection(electrode1.position, electrode2.position, out Vector2 inter))
         {
-            foreach (LineRenderer lr in lineRenderers)
-            {
-                lr.positionCount = 0;
-                lr.SetPositions(new Vector3[0]);
-                Destroy(lr.gameObject);
-            }
-            lineRenderers.Clear();
+            SetLineRendererCount(2);
+            Vector2 inter2 = PhysicsToric.GetComplementaryPoint(inter);
+            (inter, inter2) = PhysicsToric.Distance(electrode1.position, inter) <= PhysicsToric.Distance(electrode1.position, inter2) ?
+                (inter, inter2) : (inter2, inter);
+            lineRenderers[0].positionCount = 2;
+            lineRenderers[1].positionCount = 2;
+            lineRenderers[0].SetPositions(new Vector3[2] { electrode1.position, inter });
+            lineRenderers[1].SetPositions(new Vector3[2] { inter2, electrode2.position });
         }
+        else
+        {
+            SetLineRendererCount(1);
+            lineRenderers[0].positionCount = 2;
+            lineRenderers[0].SetPositions(new Vector3[2] { electrode1.position, electrode2.position });
+        }
+
+        void SetLineRendererCount(int count)
+        {
+            while (lineRenderers.Count < count)
+            {
+                lineRenderers.Add(Instantiate(lineRendererPrefabs, lineRenderersParent));
+            }
+            while (lineRenderers.Count > count)
+            {
+                LineRenderer lrToRm = lineRenderers.Last();
+                lrToRm.positionCount = 0;
+                lrToRm.SetPositions(new Vector3[0]);
+                Destroy(lrToRm.gameObject);
+                lineRenderers.RemoveLast();
+            }
+        }
+    }
+
+    private void ClearLineRenderer()
+    {
+        foreach (LineRenderer lr in lineRenderers)
+        {
+            lr.positionCount = 0;
+            lr.SetPositions(new Vector3[0]);
+            Destroy(lr.gameObject);
+        }
+        lineRenderers.Clear();
     }
 
     #endregion
 
     private void ActiveSelf()
     {
-        enableBehaviour = isActive = firstTimeIsActive = true;
         lastTimeTriggerIsActive = Time.time;
+        isActive = true;
+        enableBehaviour = true;
+        UpdateLineRenderer();
     }
 
     #region OnDrawizmos/OnValidate
@@ -177,10 +203,31 @@ public class Electrode : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         timeOffset = Mathf.Max(timeOffset, 0f);
         durationBetween2Activation = Mathf.Max(durationBetween2Activation, 0f);
+        electrodesDistance = Mathf.Max(0f, electrodesDistance);
+
+        if(electrode1 != null && electrode2 != null)
+        {
+            if (direction == Direction.vertical)
+            {
+                electrode1.transform.position = transform.position + Vector3.up * electrodesDistance * 0.5f;
+                electrode2.transform.position = transform.position + Vector3.down * electrodesDistance * 0.5f;
+            }
+            else if (direction == Direction.horizontal)
+            {
+                electrode1.transform.position = transform.position + Vector3.right * electrodesDistance * 0.5f;
+                electrode2.transform.position = transform.position + Vector3.left * electrodesDistance * 0.5f;
+            }
+            else
+            {
+                electrodesDistance = electrode1.transform.position.Distance(electrode2.transform.position);
+            }
+        }
     }
 
     private void OnDrawGizmosSelected()
@@ -225,5 +272,7 @@ public class Electrode : MonoBehaviour
         */
     }
 
-    #endregion
+#endif
+
+#endregion
 }

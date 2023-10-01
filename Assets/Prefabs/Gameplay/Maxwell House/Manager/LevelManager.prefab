@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7320278589001595780}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5999535417688878524
 MonoBehaviour:
@@ -61,11 +61,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelType: 3
   levelName: Maxwell House
-  durationToWaitAtBegining: 3
+  durationToWaitAtBegining: 1
   nbKillsToWin: 7
   waitingTimeAfterLastKill: 2
-  scoreMenuDuration: 5
-  scoreCanvas: {fileID: 0}
+  scoreMenu: {fileID: 0}
   suffleMapWhenLevelStart: 1
   playFirstMapAtLevelStart: 1
   mapsPrefabs:

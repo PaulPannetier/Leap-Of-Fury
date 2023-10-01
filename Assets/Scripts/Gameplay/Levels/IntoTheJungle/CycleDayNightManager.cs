@@ -26,6 +26,7 @@ public class CycleDayNightManager : MonoBehaviour
         }
         instance = this;
         isDay = startLevelAtDay;
+        counterDay = 0;
     }
 
     private void Start()
@@ -38,20 +39,22 @@ public class CycleDayNightManager : MonoBehaviour
 
     private void OnLevelStart(string levelName)
     {
-        print("level " + levelName + " start!");
         ActivateDay(startLevelAtDay);
     }
 
     private void OnLevelRestart(string levelName)
     {
         counterDay++;
-        print("Current day : " + counterDay);
-        if(isDay)
+        if (isDay)
         {
             if(counterDay >= nbDay)
             {
                 ActivateDay(false);
                 counterDay = 0;
+            }
+            else
+            {
+                ActivateDay(true);
             }
         }
         else
@@ -60,6 +63,10 @@ public class CycleDayNightManager : MonoBehaviour
             {
                 ActivateDay(true);
                 counterDay = 0;
+            }
+            else
+            {
+                ActivateDay(false);
             }
         }
     }
@@ -70,6 +77,7 @@ public class CycleDayNightManager : MonoBehaviour
 
         float globalLightIntensity = isDay ? globalLightIntensityAtDay : globalLightIntensityAtNight;
         float otherLightIntensity = isDay ? otherLightIntensityAtDay : otherLightIntensityAtNight;
+
         ApplyIntensityWithSettings(globalLightIntensity, otherLightIntensity);
         EnableLightVariator(!isDay);
 

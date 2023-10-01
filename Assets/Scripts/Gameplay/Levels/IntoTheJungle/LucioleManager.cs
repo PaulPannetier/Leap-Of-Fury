@@ -37,27 +37,26 @@ public class LucioleManager : MonoBehaviour
 
     private void OnLevelStart(string levelName)
     {
+        DestroyLucioles();
+        StartCoroutine(CreateLucioleIn2Frames());
+    }
+
+    private void OnLevelRestart(string levelName)
+    {
+        DestroyLucioles();
+        StartCoroutine(CreateLucioleIn2Frames());
+    }
+
+    private void DestroyLucioles()
+    {
         foreach (Luciole luciole in lstLucioles)
         {
             Destroy(luciole.gameObject);
         }
         lstLucioles.Clear();
-
-        StartCoroutine(CreateLucioleIn2FrameAfter());
     }
 
-    private void OnLevelRestart(string levelName)
-    {
-        foreach(Luciole luciole in lstLucioles)
-        {
-            Destroy(luciole.gameObject);
-        }
-        lstLucioles.Clear();
-
-        StartCoroutine(CreateLucioleIn2FrameAfter());
-    }
-
-    private IEnumerator CreateLucioleIn2FrameAfter()
+    private IEnumerator CreateLucioleIn2Frames()
     {
         yield return null;
         yield return null;

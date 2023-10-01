@@ -74,27 +74,31 @@
         "keys": [
             {
                 "keys": [
-                    -64
+                    -69,
+                    -60
                 ]
             },
             {
                 "keys": [
-                    -66
+                    -70,
+                    -62
                 ]
             },
             {
                 "keys": [
-                    -63
+                    -67,
+                    -59
                 ]
             },
             {
                 "keys": [
-                    -65
-                ]
-            },
-            {
-                "keys": [
+                    -68,
                     -61
+                ]
+            },
+            {
+                "keys": [
+                    -57
                 ]
             },
             {
@@ -140,124 +144,12 @@
         "keys": []
     },
     "kbKeys": {
-        "actions": [
-            "MoveRight",
-            "MoveLeft",
-            "MoveUp",
-            "MoveDown",
-            "Dash",
-            "Grab",
-            "Jump",
-            "AttackWeak",
-            "AttackStrong"
-        ],
-        "keys": [
-            {
-                "keys": [
-                    275
-                ]
-            },
-            {
-                "keys": [
-                    276
-                ]
-            },
-            {
-                "keys": [
-                    273
-                ]
-            },
-            {
-                "keys": [
-                    274
-                ]
-            },
-            {
-                "keys": [
-                    99
-                ]
-            },
-            {
-                "keys": [
-                    118
-                ]
-            },
-            {
-                "keys": [
-                    32
-                ]
-            },
-            {
-                "keys": [
-                    100
-                ]
-            },
-            {
-                "keys": [
-                    102
-                ]
-            }
-        ]
+        "actions": [],
+        "keys": []
     },
     "gpKeys": {
-        "actions": [
-            "MoveRight",
-            "MoveLeft",
-            "MoveUp",
-            "MoveDown",
-            "Dash",
-            "Grab",
-            "Jump",
-            "AttackWeak",
-            "AttackStrong"
-        ],
-        "keys": [
-            {
-                "keys": [
-                    -64
-                ]
-            },
-            {
-                "keys": [
-                    -66
-                ]
-            },
-            {
-                "keys": [
-                    -63
-                ]
-            },
-            {
-                "keys": [
-                    -65
-                ]
-            },
-            {
-                "keys": [
-                    -61
-                ]
-            },
-            {
-                "keys": [
-                    335
-                ]
-            },
-            {
-                "keys": [
-                    330
-                ]
-            },
-            {
-                "keys": [
-                    332
-                ]
-            },
-            {
-                "keys": [
-                    333
-                ]
-            }
-        ]
+        "actions": [],
+        "keys": []
     },
     "GP1RightThumbStickDeadZone": {
         "x": 0.10000000149011612,

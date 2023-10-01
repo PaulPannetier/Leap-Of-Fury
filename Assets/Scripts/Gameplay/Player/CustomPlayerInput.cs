@@ -8,9 +8,9 @@ public class CustomPlayerInput : MonoBehaviour
 
     [HideInInspector] public float x, y;
     [HideInInspector] public int rawX, rawY;
-    [HideInInspector] public bool upPressed, rightPressed, downPressed, leftPressed, dashPressed, grabPressed, jumpPressed, attackWeakPressed, attackStrongPressed, shieldPressed;
-    [HideInInspector] public bool upPressedDown, rightPressedDown, downPressedDown, leftPressedDown, dashPressedDown, grabPressedDown, jumpPressedDown, attackWeakPressedDown, attackStrongPressedDown, shieldPressedDown;
-    [HideInInspector] public bool upPressedUp, rightPressedUp, downPressedUp, leftPressedUp, dashPressedUp, grabPressedUp, jumpPressedUp, attackWeakPressedUp, attackStrongPressedUp, shieldPressedUp;
+    [HideInInspector] public bool upPressed, rightPressed, downPressed, leftPressed, dashPressed, grabPressed, jumpPressed, attackWeakPressed, attackStrongPressed, interactPressed;
+    [HideInInspector] public bool upPressedDown, rightPressedDown, downPressedDown, leftPressedDown, dashPressedDown, grabPressedDown, jumpPressedDown, attackWeakPressedDown, attackStrongPressedDown, interactPressedDown;
+    [HideInInspector] public bool upPressedUp, rightPressedUp, downPressedUp, leftPressedUp, dashPressedUp, grabPressedUp, jumpPressedUp, attackWeakPressedUp, attackStrongPressedUp, interactPressedUp;
 
     public ControllerType controllerType;
     [SerializeField] private bool useMovementLerpForKeyboard = true;
@@ -24,6 +24,7 @@ public class CustomPlayerInput : MonoBehaviour
     private void Start()
     {
         x = y = 0f;
+        rawX = rawY = 0;
     }
 
     private void Update()
@@ -38,7 +39,7 @@ public class CustomPlayerInput : MonoBehaviour
             leftPressed = InputManager.GetKey("MoveLeft", playerCommon.playerIndex);
             leftPressedDown = InputManager.GetKeyDown("MoveLeft", playerCommon.playerIndex);
             leftPressedUp = InputManager.GetKeyUp("MoveLeft", playerCommon.playerIndex);
-            newX = leftPressed ? (newX > 0.01f ? 0f : -1f) : newX;
+            newX = leftPressed ? (newX > 1e-6f ? 0f : -1f) : newX;
             upPressed = InputManager.GetKey("MoveUp", playerCommon.playerIndex);
             upPressedDown = InputManager.GetKeyDown("MoveUp", playerCommon.playerIndex);
             upPressedUp = InputManager.GetKeyUp("MoveUp", playerCommon.playerIndex);
@@ -46,7 +47,7 @@ public class CustomPlayerInput : MonoBehaviour
             downPressed = InputManager.GetKey("MoveDown", playerCommon.playerIndex);
             downPressedDown = InputManager.GetKeyDown("MoveDown", playerCommon.playerIndex);
             downPressedUp = InputManager.GetKeyUp("MoveDown", playerCommon.playerIndex);
-            newY = downPressed ? (newY > 0.01f ? 0f : -1f) : newY;
+            newY = downPressed ? (newY > 1e-6f ? 0f : -1f) : newY;
             if(useMovementLerpForKeyboard)
             {
                 x = Mathf.MoveTowards(x, newX, movementLerpForKeyboard * Time.deltaTime);
@@ -66,25 +67,25 @@ public class CustomPlayerInput : MonoBehaviour
             if (stickPos.sqrMagnitude > 1f)
                 stickPos = stickPos.normalized;
 
-            upPressed = stickPos.y > 0.01f;
-            upPressedDown = oldStickPos.y <= 0.01f && stickPos.y > 0.01f;
+            upPressed = stickPos.y > 1e-6f;
+            upPressedDown = oldStickPos.y <= 1e-6f && stickPos.y > 1e-6f;
             if(upPressedDown)
             {
                 upPressedDown = true;
             }
-            upPressedUp = oldStickPos.y > 0.01f && stickPos.y <= 0.01f;
+            upPressedUp = oldStickPos.y > 1e-6f && stickPos.y <= 1e-6f;
 
-            downPressed = stickPos.y < -0.01f;
-            downPressedDown = oldStickPos.y >= -0.01f && stickPos.y < -0.01f;
-            downPressedUp = oldStickPos.y < -0.01f && stickPos.y >= -0.01f;
+            downPressed = stickPos.y < -1e-6f;
+            downPressedDown = oldStickPos.y >= -1e-6f && stickPos.y < -1e-6f;
+            downPressedUp = oldStickPos.y < -1e-6f && stickPos.y >= -1e-6f;
 
-            rightPressed = stickPos.x > 0.01f;
-            rightPressedDown = oldStickPos.x <= 0.01f && stickPos.x > 0.01f;
-            rightPressedUp = oldStickPos.x > 0.01f && stickPos.x <= 0.01f;
+            rightPressed = stickPos.x > 1e-6f;
+            rightPressedDown = oldStickPos.x <= 1e-6f && stickPos.x > 1e-6f;
+            rightPressedUp = oldStickPos.x > 1e-6f && stickPos.x <= 1e-6f;
 
-            leftPressed = stickPos.x < -0.01f;
-            leftPressedDown = oldStickPos.x >= -0.01f && stickPos.x < -0.01f;
-            leftPressedUp = oldStickPos.x < -0.01f && stickPos.x >= -0.01f;
+            leftPressed = stickPos.x < -1e-6f;
+            leftPressedDown = oldStickPos.x >= -1e-6f && stickPos.x < -1e-6f;
+            leftPressedUp = oldStickPos.x < -1e-6f && stickPos.x >= -1e-6f;
 
             x = stickPos.x;
             y = stickPos.y;
@@ -101,7 +102,7 @@ public class CustomPlayerInput : MonoBehaviour
             leftPressed = InputManager.GetKey("MoveLeft", playerCommon.playerIndex);
             leftPressedDown = InputManager.GetKeyDown("MoveLeft", playerCommon.playerIndex);
             leftPressedUp = InputManager.GetKeyUp("MoveLeft", playerCommon.playerIndex);
-            newX = leftPressed ? (newX > 0.01f ? 0f : -1f) : newX;
+            newX = leftPressed ? (newX > 1e-6f ? 0f : -1f) : newX;
             upPressed = InputManager.GetKey("MoveUp", playerCommon.playerIndex);
             upPressedDown = InputManager.GetKeyDown("MoveUp", playerCommon.playerIndex);
             upPressedUp = InputManager.GetKeyUp("MoveUp", playerCommon.playerIndex);
@@ -109,7 +110,7 @@ public class CustomPlayerInput : MonoBehaviour
             downPressed = InputManager.GetKey("MoveDown", playerCommon.playerIndex);
             downPressedDown = InputManager.GetKeyDown("MoveDown", playerCommon.playerIndex);
             downPressedUp = InputManager.GetKeyUp("MoveDown", playerCommon.playerIndex);
-            newY = downPressed ? (newY > 0.01f ? 0f : -1f) : newY;
+            newY = downPressed ? (newY > 1e-6f ? 0f : -1f) : newY;
             if (useMovementLerpForKeyboard)
             {
                 x = Mathf.MoveTowards(x, newX, movementLerpForKeyboard * Time.deltaTime);
@@ -124,23 +125,23 @@ public class CustomPlayerInput : MonoBehaviour
             Vector2 stickPos = InputManager.GetGamepadStickPosition(controllerType, GamepadStick.left);
             if (stickPos.sqrMagnitude > 1f)
                 stickPos = stickPos.normalized;
-            if (Mathf.Abs(newX) <= 0.01f || Mathf.Abs(newY) <= 0.01f)
+            if (Mathf.Abs(newX) <= 1e-6f || Mathf.Abs(newY) <= 1e-6f)
             {
-                upPressed = stickPos.y > 0.01f;
-                upPressedDown = oldStickPos.y <= 0.01f && stickPos.y > 0.01f;
-                upPressedUp = oldStickPos.y > 0.01f && stickPos.y <= 0.01f;
+                upPressed = stickPos.y > 1e-6f;
+                upPressedDown = oldStickPos.y <= 1e-6f && stickPos.y > 1e-6f;
+                upPressedUp = oldStickPos.y > 1e-6f && stickPos.y <= 1e-6f;
 
-                downPressed = stickPos.y < -0.01f;
-                downPressedDown = oldStickPos.y >= -0.01f && stickPos.y < -0.01f;
-                downPressedUp = oldStickPos.y < -0.01f && stickPos.y >= -0.01f;
+                downPressed = stickPos.y < -1e-6f;
+                downPressedDown = oldStickPos.y >= -1e-6f && stickPos.y < -1e-6f;
+                downPressedUp = oldStickPos.y < -1e-6f && stickPos.y >= -1e-6f;
 
-                rightPressed = stickPos.x > 0.01f;
-                rightPressedDown = oldStickPos.x <= 0.01f && stickPos.x > 0.01f;
-                rightPressedUp = oldStickPos.x > 0.01f && stickPos.x <= 0.01f;
+                rightPressed = stickPos.x > 1e-6f;
+                rightPressedDown = oldStickPos.x <= 1e-6f && stickPos.x > 1e-6f;
+                rightPressedUp = oldStickPos.x > 1e-6f && stickPos.x <= 1e-6f;
 
-                leftPressed = stickPos.x < -0.01f;
-                leftPressedDown = oldStickPos.x >= -0.01f && stickPos.x < -0.01f;
-                leftPressedUp = oldStickPos.x < -0.01f && stickPos.x >= -0.01f;
+                leftPressed = stickPos.x < -1e-6f;
+                leftPressedDown = oldStickPos.x >= -1e-6f && stickPos.x < -1e-6f;
+                leftPressedUp = oldStickPos.x < -1e-6f && stickPos.x >= -1e-6f;
 
                 x = stickPos.x;
                 y = stickPos.y;
@@ -148,8 +149,8 @@ public class CustomPlayerInput : MonoBehaviour
             oldStickPos = stickPos;
         }
 
-        rawX = (x > 0.01f) ? 1 : (x < -0.01f ? -1 : 0);
-        rawY = (y > 0.01f) ? 1 : (y < -0.01f ? -1 : 0);
+        rawX = (x > 1e-6f) ? 1 : (x < -1e-6f ? -1 : 0);
+        rawY = (y > 1e-6f) ? 1 : (y < -1e-6f ? -1 : 0);
 
         //Pressed
         dashPressed = InputManager.GetKey("Dash", playerCommon.playerIndex);
@@ -157,6 +158,8 @@ public class CustomPlayerInput : MonoBehaviour
         jumpPressed = InputManager.GetKey("Jump", playerCommon.playerIndex);
         attackWeakPressed = InputManager.GetKey("AttackWeak", playerCommon.playerIndex);
         attackStrongPressed = InputManager.GetKey("AttackStrong", playerCommon.playerIndex);
+        bool oldInteractPressed = interactPressed;
+        interactPressed = newY == 1 && rawX == 0 && !dashPressed && !grabPressed && !jumpPressed && !attackWeakPressed && !attackStrongPressed;
 
         //Down
         dashPressedDown = InputManager.GetKeyDown("Dash", playerCommon.playerIndex);
@@ -164,6 +167,8 @@ public class CustomPlayerInput : MonoBehaviour
         jumpPressedDown = InputManager.GetKeyDown("Jump", playerCommon.playerIndex);
         attackWeakPressedDown = InputManager.GetKeyDown("AttackWeak", playerCommon.playerIndex);
         attackStrongPressedDown = InputManager.GetKeyDown("AttackStrong", playerCommon.playerIndex);
+        interactPressedDown = InputManager.GetKeyDown("Interact", playerCommon.playerIndex);
+        interactPressedDown = !oldInteractPressed && interactPressed;
 
         //Up
         dashPressedUp = InputManager.GetKeyUp("Dash", playerCommon.playerIndex);
@@ -171,6 +176,7 @@ public class CustomPlayerInput : MonoBehaviour
         jumpPressedUp = InputManager.GetKeyUp("Jump", playerCommon.playerIndex);
         attackWeakPressedUp = InputManager.GetKeyUp("AttackWeak", playerCommon.playerIndex);
         attackStrongPressedUp = InputManager.GetKeyUp("AttackStrong", playerCommon.playerIndex);
+        interactPressedUp = oldInteractPressed && !interactPressed;
     }
 
     public CustomPlayerInput Clone()
@@ -186,7 +192,7 @@ public class CustomPlayerInput : MonoBehaviour
         clone.jumpPressed = jumpPressed; clone.jumpPressedDown = jumpPressedDown; clone.jumpPressedUp = jumpPressedUp;
         clone.attackWeakPressed = attackWeakPressed; clone.attackWeakPressedDown = attackWeakPressedDown; clone.attackWeakPressedUp = attackWeakPressedUp;
         clone.attackStrongPressed = attackStrongPressed; clone.attackStrongPressedDown = attackStrongPressedDown; clone.attackStrongPressedUp = attackStrongPressedUp;
-        clone.shieldPressed = shieldPressed; clone.shieldPressedDown = shieldPressedDown; clone.shieldPressedUp = shieldPressedUp;
+        clone.interactPressed = interactPressed; clone.interactPressedDown = interactPressedDown; clone.interactPressedUp = interactPressedUp;
 
         clone.movementLerpForKeyboard = movementLerpForKeyboard;
         clone.playerCommon = playerCommon;
