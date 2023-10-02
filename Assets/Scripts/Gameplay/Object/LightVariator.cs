@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
-[RequireComponent(typeof(UnityEngine.Rendering.Universal.Light2D))]
+[RequireComponent(typeof(Light2D))]
 public class LightVariator : MonoBehaviour
 {
     public bool enableBehaviour = true;
 
-    private new UnityEngine.Rendering.Universal.Light2D light;
+    private new Light2D light;
     private float noiseIndexIntensity, yNoise;
 
     public float avgIntensity;
@@ -14,7 +15,7 @@ public class LightVariator : MonoBehaviour
 
     private void Awake()
     {
-        light = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        light = GetComponent<Light2D>();
         yNoise = Random.Rand();
     }
 
@@ -49,9 +50,13 @@ public class LightVariator : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
-        light = GetComponent<UnityEngine.Rendering.Universal.Light2D>();
+        light = GetComponent<Light2D>();
         light.intensity = avgIntensity;
     }
+
+#endif
 }

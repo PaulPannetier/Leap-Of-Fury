@@ -36,11 +36,11 @@ public class LevelMapData : MonoBehaviour
     [SerializeField] private bool addSpawnConfig;
     [SerializeField] private bool loadSpawnConfig;
     [SerializeField] private bool clearSpawnConfig;
-    [SerializeField] private string relatifSpawnConfigsPath;
     [SerializeField] private Vector2[] spawnConfig;
 
 #endif
 
+    [SerializeField] private string relatifSpawnConfigsPath;
 
     public Vector2 mapSize = new Vector2(32f, 18f);
 
@@ -89,6 +89,8 @@ public class LevelMapData : MonoBehaviour
         return null;
     }
 
+#endif
+
     public List<SpawnConfigsData.SpawnConfigPoints> LoadSpawnPoint(int nbChar)
     {
         if (Save.ReadJSONData<SpawnConfigsData>(relatifSpawnConfigsPath + SettingsManager.saveFileExtension, out spawnConfigs))
@@ -109,8 +111,6 @@ public class LevelMapData : MonoBehaviour
         spawnConfigs = null;
         return null;
     }
-
-#endif
 
     #region Gizmos/OnValidate
 

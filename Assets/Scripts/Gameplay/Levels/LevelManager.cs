@@ -193,13 +193,13 @@ public abstract class LevelManager : MonoBehaviour
         EventManager.instance.OnLevelRestart(levelName);
     }
 
-    private void SpawnChar(List<Vector2> spawnPoints, bool randomiseSpawnPoint = true)
+    private void SpawnChar(List<Vector2> spawnPoints, bool randomiseSpawnPoints = true)
     {
         uint idCount = 0;
         for (int i = 0; i < charData.Length; i++)
         {
             //get random position
-            Vector2 spawnPoint = randomiseSpawnPoint ? spawnPoints.GetRandom() : spawnPoints[0];
+            Vector2 spawnPoint = randomiseSpawnPoints ? spawnPoints.GetRandom() : spawnPoints[0];
             spawnPoints.Remove(spawnPoint);
 
             SelectionCharOldSceneData.CharData playerData = charData[i];

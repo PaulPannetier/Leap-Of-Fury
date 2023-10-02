@@ -24,8 +24,13 @@ public class Electrode : MonoBehaviour
     [Header("Position")]
     [SerializeField] private Transform electrode1;
     [SerializeField] private Transform electrode2;
+
+#if UNITY_EDITOR
+
     [SerializeField] private Direction direction = Direction.vertical;
     [SerializeField] private float electrodesDistance = 3f;
+
+#endif
 
     [Header("Use with trigger")]
     [SerializeField] private bool useByInterruptor = false;
@@ -66,7 +71,7 @@ public class Electrode : MonoBehaviour
 
     private void Update()
     {
-        if(!enableBehaviour)
+        if (!enableBehaviour)
         {
             ClearLineRenderer();
             return;
@@ -96,10 +101,21 @@ public class Electrode : MonoBehaviour
                 }
             }
 
-            if (Time.time - lastTimeTriggerIsActive > activationDuration)
+            if(useByInterruptor)
             {
-                isActive = false;
-                lastTimeTriggerIsActive = Time.time;
+                if(!interruptor.isActivated)
+                {
+                    isActive = false;
+                    ClearLineRenderer();
+                }
+            }
+            else
+            {
+                if (Time.time - lastTimeTriggerIsActive > activationDuration)
+                {
+                    isActive = false;
+                    lastTimeTriggerIsActive = Time.time;
+                }
             }
         }
         else

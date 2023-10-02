@@ -341,6 +341,13 @@ public class Movement : MonoBehaviour
         oldGroundCollider = groundCollider;
         groundCollider = Physics2D.OverlapCircle((Vector2)transform.position + groundOffset, groundCollisionRadius, groundLayer);
         isGrounded = groundCollider != null;
+
+        if(groundCollider != null && oldGroundCollider != groundCollider)
+        {
+            groundColliderData = groundCollider.GetComponent<MapColliderData>();
+        }
+
+
         rightWallCollider = Physics2D.OverlapCircle((Vector2)transform.position + sideOffset, sideCollisionRadius, groundLayer);
         onRightWall = rightWallCollider != null;
         leftWallCollider = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer);
@@ -836,11 +843,6 @@ public class Movement : MonoBehaviour
         void HandleConvoyerBeltWalk()
         {
             ConvoyerBelt convoyer = groundColliderData.GetComponent<ConvoyerBelt>();
-            if(!convoyer.enableBehaviour)
-            {
-                HandleNormalWalk();
-                return;
-            }
 
             //clamp, mauvais sens
             if(playerInput.rawX != 0 && playerInput.rawX != convoyer.maxSpeed.Sign() && enableInput)
@@ -1450,6 +1452,7 @@ public class Movement : MonoBehaviour
     private void GroundTouch()
     {
         groundColliderData = groundCollider.GetComponent<MapColliderData>();
+
         hasDashed = false;
         hasDoubleJump = false;
         isJumping = false;

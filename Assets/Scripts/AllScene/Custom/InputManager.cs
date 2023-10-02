@@ -3297,7 +3297,7 @@ public static class InputManager
             return;
         }
 
-        InputData inputs = gpKeys.ToGamepadInputData(gamepadIndex);
+        InputData inputs = defaultGPKeys.ToGamepadInputData(gamepadIndex);
 
         switch (player)
         {

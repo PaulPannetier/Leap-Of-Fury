@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class Interruptor : MonoBehaviour
     private bool isCharActivating, isCharDesactivating;
     private bool isCharDying;
     private GameObject charDied;
+    private List<GameObject> charInFrontLastFrame;
     private bool isPauseEnable;
 
     public bool enableBehaviour = true;
@@ -21,6 +23,7 @@ public class Interruptor : MonoBehaviour
     [SerializeField] private float durationItTakesToActivate = 1f;
     [SerializeField] private float durationItTakesToDesactivate = 1f;
     [SerializeField] private float activationDuration = -1f;//unlimited if < 0f
+    [SerializeField, Tooltip("Be triggered when a player pass througt the button")] private bool dontUseInputSystem = false;
 
     [HideInInspector] public bool isActivated { get; private set; }
     public PressedInfo pressedInfo { get; private set; }
@@ -41,10 +44,13 @@ public class Interruptor : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
         EventManager.instance.callbackOnPlayerDeath += OnCharDied;
         EventManager.instance.callbackOnPlayerDeathByEnvironnement += OnCharDied;
+        charInFrontLastFrame = new List<GameObject>();
     }
 
     private void Update()
     {
+        GetComponentInChildren<SpriteRenderer>().color = isActivated ? Color.red : Color.green;
+
         if (!enableBehaviour || isPauseEnable)
             return;
 
@@ -83,6 +89,12 @@ public class Interruptor : MonoBehaviour
 
         void Activate(GameObject charWhoPressed)
         {
+            if(dontUseInputSystem)
+            {
+                OnActivate(true, new PressedInfo(charWhoPressed));
+                return;
+            }
+
             StartCoroutine(ActivateCorout(true, new PressedInfo(charWhoPressed)));
         }
 
@@ -91,6 +103,11 @@ public class Interruptor : MonoBehaviour
             if(charWhoPressed == null)
             {
                 OnActivate(false, new PressedInfo(null));
+                return;
+            }
+            if(dontUseInputSystem)
+            {
+                OnActivate(false, new PressedInfo(charWhoPressed));
                 return;
             }
 
@@ -168,26 +185,66 @@ public class Interruptor : MonoBehaviour
 
     private bool TryGetCharacterInteract(out GameObject charWhoPressed)
     {
-        Collider2D[] charCols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitboxOffset, hitboxSize, 0f, charMask);
-        foreach (Collider2D col in charCols)
+        if(dontUseInputSystem)
         {
-            if (col.CompareTag("Char"))
+            return TryGetCharacterInteractNotInputSystem(out charWhoPressed);
+        }
+        else
+        {
+            return TryGetCharacterInteractInputSystem(out charWhoPressed);
+        }
+
+        bool TryGetCharacterInteractNotInputSystem(out GameObject charWhoPressed)
+        {
+            Collider2D[] charCols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitboxOffset, hitboxSize, 0f, charMask);
+            List<GameObject> charInFront = new List<GameObject>();
+            foreach (Collider2D col in charCols)
             {
-                GameObject charGO = col.GetComponent<ToricObject>().original;
-                CustomPlayerInput charInput = charGO.GetComponent<CustomPlayerInput>();
-                if (charInput.interactPressedDown)
+                if (col.CompareTag("Char"))
                 {
-                    Movement charMvt = charGO.GetComponent<Movement>();
-                    if (charMvt.isGrounded)
+                    GameObject charGO = col.GetComponent<ToricObject>().original;
+                    charInFront.Add(charGO);
+                }
+            }
+
+            foreach (GameObject player in charInFront)
+            {
+                if(!charInFrontLastFrame.Contains(player))
+                {
+                    charWhoPressed = player;
+                    charInFrontLastFrame = charInFront;
+                    return true;
+                }
+            }
+
+            charInFrontLastFrame = charInFront;
+            charWhoPressed = null;
+            return false;
+        }
+
+        bool TryGetCharacterInteractInputSystem(out GameObject charWhoPressed)
+        {
+            Collider2D[] charCols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitboxOffset, hitboxSize, 0f, charMask);
+            foreach (Collider2D col in charCols)
+            {
+                if (col.CompareTag("Char"))
+                {
+                    GameObject charGO = col.GetComponent<ToricObject>().original;
+                    CustomPlayerInput charInput = charGO.GetComponent<CustomPlayerInput>();
+                    if (charInput.interactPressedDown)
                     {
-                        charWhoPressed = charGO;
-                        return true;
+                        Movement charMvt = charGO.GetComponent<Movement>();
+                        if (charMvt.isGrounded)
+                        {
+                            charWhoPressed = charGO;
+                            return true;
+                        }
                     }
                 }
             }
+            charWhoPressed = null;
+            return false;
         }
-        charWhoPressed = null;
-        return false;
     }
 
     private void OnDestroy()

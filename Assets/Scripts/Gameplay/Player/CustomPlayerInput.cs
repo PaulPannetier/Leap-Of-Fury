@@ -60,8 +60,7 @@ public class CustomPlayerInput : MonoBehaviour
             }
         }
 
-        if(controllerType == ControllerType.GamepadAll || controllerType == ControllerType.Gamepad1 || controllerType == ControllerType.Gamepad2 ||
-            controllerType == ControllerType.Gamepad3 || controllerType == ControllerType.Gamepad4)
+        if(InputManager.IsAGamepadController(controllerType))
         {
             Vector2 stickPos = InputManager.GetGamepadStickPosition(controllerType, GamepadStick.left);
             if (stickPos.sqrMagnitude > 1f)
@@ -159,7 +158,7 @@ public class CustomPlayerInput : MonoBehaviour
         attackWeakPressed = InputManager.GetKey("AttackWeak", playerCommon.playerIndex);
         attackStrongPressed = InputManager.GetKey("AttackStrong", playerCommon.playerIndex);
         bool oldInteractPressed = interactPressed;
-        interactPressed = newY == 1 && rawX == 0 && !dashPressed && !grabPressed && !jumpPressed && !attackWeakPressed && !attackStrongPressed;
+        interactPressed = rawY == 1 && Mathf.Abs(x) < 0.25f && !dashPressed && !grabPressed && !jumpPressed && !attackWeakPressed && !attackStrongPressed;
 
         //Down
         dashPressedDown = InputManager.GetKeyDown("Dash", playerCommon.playerIndex);

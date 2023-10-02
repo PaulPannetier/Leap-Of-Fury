@@ -391,6 +391,7 @@ MonoBehaviour:
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
+  inertiaDurationWhenQuittingGround: 0.1
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -566,7 +567,7 @@ MonoBehaviour:
   maxBumpDuration: 1.5
   minBumpDuration: 0.2
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  inertiaSpeedWhenQuittingConvoyerBelt: 1
+  speedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
@@ -613,6 +614,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 7830398315898069847}
   chidrenToRemoveInClone: []
+  drawGizmos: 1
 --- !u!114 &2851360491922592125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -665,7 +667,7 @@ MonoBehaviour:
   jumpPressed: 0
   attackWeakPressed: 0
   attackStrongPressed: 0
-  shieldPressed: 0
+  interactPressed: 0
   upPressedDown: 0
   rightPressedDown: 0
   downPressedDown: 0
@@ -675,7 +677,7 @@ MonoBehaviour:
   jumpPressedDown: 0
   attackWeakPressedDown: 0
   attackStrongPressedDown: 0
-  shieldPressedDown: 0
+  interactPressedDown: 0
   upPressedUp: 0
   rightPressedUp: 0
   downPressedUp: 0
@@ -685,7 +687,7 @@ MonoBehaviour:
   jumpPressedUp: 0
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
-  shieldPressedUp: 0
+  interactPressedUp: 0
   controllerType: 1
   useMovementLerpForKeyboard: 1
   movementLerpForKeyboard: 35
@@ -805,7 +807,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7980238354382693259}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 702a90b310a0de744be2fbeebd737a73, type: 3}
   m_Name: 
@@ -814,7 +816,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 0
-  enableBehaviour: 1
+  enableBehaviour: 0
   drawGizmos: 0
   spawnDuration: 15
   spawnWait: 5

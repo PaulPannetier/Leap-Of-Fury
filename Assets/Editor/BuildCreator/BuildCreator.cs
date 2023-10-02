@@ -71,22 +71,39 @@ public class BuildCreator : Editor
         if(buildCreatorConfig.performBuild)
         {
             List<string> scenesPath = new List<string>();
-            foreach (Object sceneNoCast in buildCreatorConfig.gameplayScenes)
-            {
-                AddToScenesPath(scenesPath, sceneNoCast);
-            }
             foreach (Object sceneNoCast in buildCreatorConfig.otherSceneTobuild)
             {
+                if(sceneNoCast == buildCreatorConfig.firstSceneToPlay)
+                {
+                    continue;
+                }
+                AddToScenesPath(scenesPath, sceneNoCast);
+            }
+            foreach (Object sceneNoCast in buildCreatorConfig.gameplayScenes)
+            {
+                if (sceneNoCast == buildCreatorConfig.firstSceneToPlay)
+                {
+                    continue;
+                }
                 AddToScenesPath(scenesPath, sceneNoCast);
             }
 
-            void AddToScenesPath(List<string> scenesPath, Object sceneNoCast)
+            AddToScenesPath(scenesPath, buildCreatorConfig.firstSceneToPlay, true);
+
+            void AddToScenesPath(List<string> scenesPath, Object sceneNoCast, bool atBegining = false)
             {
                 SceneAsset sceneAsset = sceneNoCast as SceneAsset;
                 if (sceneAsset == null)
                     return;
                 string scenePath = AssetDatabase.GetAssetPath(sceneAsset);
-                scenesPath.Add(scenePath);
+                if(atBegining)
+                {
+                    scenesPath.Insert(0, scenePath);
+                }
+                else
+                {
+                    scenesPath.Add(scenePath);
+                }
             }
 
             string buildDir = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Build");

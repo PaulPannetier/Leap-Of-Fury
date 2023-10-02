@@ -9,6 +9,7 @@ public class BuildCreatorConfig : ScriptableObject
     public bool performBuild = true;
     [Tooltip("The non gameplay scene to add to the build")]
     public Object[] otherSceneTobuild;
+    public Object firstSceneToPlay;
 
     public bool copySaveDirectory = true;
     public bool setDefaultSettingAndConfig = true;
