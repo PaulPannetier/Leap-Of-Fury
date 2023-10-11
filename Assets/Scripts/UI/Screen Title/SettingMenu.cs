@@ -163,6 +163,11 @@ public class SettingMenu : MonoBehaviour
         isEnable = true;
     }
 
+    private void OnEnable()
+    {
+        OnEnableOptionMenu();
+    }
+
     private void Update()
     {
         if (!isEnable)
@@ -170,13 +175,10 @@ public class SettingMenu : MonoBehaviour
 
         if(echapInput.IsPressedDown())
         {
-            foreach (Transform t in transform)
-            {
-                t.gameObject.SetActive(false);
-            }
-            isEnable= false;
+            isEnable = false;
             mainMenu.SetActive(true);
             mainMenu.GetComponentInChildren<SelectableUIGroup>().enableBehaviour = true;
+            gameObject.SetActive(false);
         }
     }
 }

@@ -111,7 +111,7 @@ public class BuildCreator : Editor
             Directory.CreateDirectory(buildDir);
 
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-            buildPlayerOptions.options = BuildOptions.None;
+            buildPlayerOptions.options = buildCreatorConfig.developpementBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath.ToArray();
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, "PartyGame.exe");
             buildPlayerOptions.target = BuildTarget.StandaloneWindows;

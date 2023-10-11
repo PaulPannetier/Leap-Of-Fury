@@ -19,6 +19,7 @@ public class ButtonsFunction : MonoBehaviour
     public void LoadOption()
     {
         selectableUIGroup.enableBehaviour = false;
+        settingMenu.gameObject.SetActive(true);
         settingMenu.OnEnableOptionMenu();
     }
 

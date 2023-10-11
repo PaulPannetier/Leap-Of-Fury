@@ -132,6 +132,6 @@ Name : Chaos
 TODO :
 Review PauseManager
 Trad all text
-floor shick wave line 35
+floor shock wave line 35
 menu de fin de niveau
 mays temple level
