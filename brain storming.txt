@@ -56,6 +56,7 @@ perso 3 : *
 
 perso 4 : *
 	  attack faible : Lance un grapin qui grape un mur (8 directions via les input) qui laisse un trainé de bombe confeties au bout qui explose//~ok
+		|| lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur. 
 	  attack forte : tir 3 projectiles en cone dans la dir inverse des input (8 dir possibles) et qui lui applique une forte de propulsion//ok**
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
 

@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 5907287823364622964}
   - component: {fileID: 7598047637200888153}
   - component: {fileID: 7187370182271411996}
-  - component: {fileID: 4128551290350845197}
+  - component: {fileID: 8225929942963548096}
   - component: {fileID: 4277522715158860269}
   - component: {fileID: 1455914444206811459}
   m_Layer: 8
@@ -489,6 +489,7 @@ MonoBehaviour:
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
+  inertiaDurationWhenQuittingGround: 0.1
   jumpInitForce: 6
   jumpForce: 8
   jumpGravityMultiplier: 1
@@ -664,7 +665,7 @@ MonoBehaviour:
   maxBumpDuration: 1.5
   minBumpDuration: 0.2
   inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  inertiaSpeedWhenQuittingConvoyerBelt: 1
+  speedWhenQuittingConvoyerBelt: 1
   dashParticle: {fileID: 0}
   jumpParticle: {fileID: 0}
   wallJumpParticle: {fileID: 0}
@@ -707,9 +708,10 @@ MonoBehaviour:
   - {fileID: 5907287823364622964}
   - {fileID: 7598047637200888153}
   - {fileID: 7187370182271411996}
-  - {fileID: 4128551290350845197}
+  - {fileID: 0}
   chidrenToRemoveInClone:
   - {fileID: 749809687}
+  drawGizmos: 1
 --- !u!114 &4135942895386761519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,7 +764,7 @@ MonoBehaviour:
   jumpPressed: 0
   attackWeakPressed: 0
   attackStrongPressed: 0
-  shieldPressed: 0
+  interactPressed: 0
   upPressedDown: 0
   rightPressedDown: 0
   downPressedDown: 0
@@ -772,7 +774,7 @@ MonoBehaviour:
   jumpPressedDown: 0
   attackWeakPressedDown: 0
   attackStrongPressedDown: 0
-  shieldPressedDown: 0
+  interactPressedDown: 0
   upPressedUp: 0
   rightPressedUp: 0
   downPressedUp: 0
@@ -782,7 +784,7 @@ MonoBehaviour:
   jumpPressedUp: 0
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
-  shieldPressedUp: 0
+  interactPressedUp: 0
   controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 8
@@ -841,7 +843,7 @@ MonoBehaviour:
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.15
---- !u!114 &4128551290350845197
+--- !u!114 &8225929942963548096
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -850,28 +852,78 @@ MonoBehaviour:
   m_GameObject: {fileID: 8090791378756873177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4192e7131b75c154ca3fcfe5326d0e4c, type: 3}
+  m_Script: {fileID: 11500000, guid: e746b3743d283eb4ba4d0f8f99ec663c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 100
+  attackForce: 0
   castDuration: 0
   cooldown:
-    duration: 1
+    duration: 0.5
+  boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
+  distanceToInstantiate: 0.75
+  speedCurvePhase1:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  accelerationCurvePhase2:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00023651123
+      value: 0.0010070801
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.64019763
+      value: 0.16288485
+      inSlope: 0.8246517
+      outSlope: 0.8246517
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxSpeedPhase1: 20
+  maxSpeedPhase2: 8
+  durationPhase1: 1.2
+  accelerationDurationPhase2: 1.5
+  recuperationRange: 0.7
   drawGizmos: 1
-  grapRange: 7.5
-  circleCastRadius: 0.5
-  maxRopeLength: 10
-  minRopeLength: 1
-  maxDurationAttach: 5
-  grapClimbUpSpeed: 4.5
-  grapClimbDownSpeed: 6.5
-  bombPrefabs: {fileID: 1774091555500450334, guid: 1fe7fb9bff7d4044c99d898c4cbc2bc3, type: 3}
-  timeBetweenBombSpawn: 0.15
-  attackPointPrefaps: {fileID: 5643303674285272075, guid: 2d509ff36d2c02045ba03cad79be9c54, type: 3}
-  grapElasticity: 0.2
-  gravityScaleWhenSwinging: 100
-  grapMovementForce: 1300
-  linearDrag: 75
 --- !u!114 &4277522715158860269
 MonoBehaviour:
   m_ObjectHideFlags: 0

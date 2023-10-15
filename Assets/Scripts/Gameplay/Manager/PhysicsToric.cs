@@ -68,28 +68,41 @@ public static class PhysicsToric
 
     public static Vector2 Direction(Vector2 a, Vector2 b)
     {
-        Vector2[] possibleDir = new Vector2[4]
+        Vector2[] possibleA = new Vector2[5]
         {
-            b - a,
-            new Vector2((b.x >= 0f ? -mapSize.x : mapSize.x) - a.x, b.y - a.y),
-            new Vector2(b.x - a.x, (b.y >= 0f ? -mapSize.y : mapSize.y) - a.y),
-            new Vector2((b.x >= 0f ? -mapSize.x : mapSize.x) - a.x, (b.y >= 0f ? -mapSize.y : mapSize.y) - a.y)
+            a,
+            new Vector2(a.x + mapSize.x , a.y),
+            new Vector2(a.x - mapSize.x, a.y),
+            new Vector2(a.x, a.y + mapSize.y),
+            new Vector2(a.x, a.y - mapSize.y)
         };
 
-        Vector2 minDir = possibleDir[0];
-        float minSqrMag = possibleDir[0].sqrMagnitude;
-        float mag;
-
-        for (int i = 1; i < 4; i++)
+        Vector2[] possibleB = new Vector2[5]
         {
-            mag = possibleDir[i].sqrMagnitude;
-            if(mag < minSqrMag)
+            b,
+            new Vector2(b.x + mapSize.x , b.y),
+            new Vector2(b.x - mapSize.x, b.y),
+            new Vector2(b.x, b.y + mapSize.y),
+            new Vector2(b.x, b.y - mapSize.y)
+        };
+
+        Vector2 aKeep = possibleA[0], bKeep = possibleB[0];
+        float minSqrMag = float.MaxValue;
+        float sqrMag;
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
             {
-                minSqrMag = mag;
-                minDir = possibleDir[i];
+                sqrMag = possibleA[i].SqrDistance(possibleB[j]);
+                if (sqrMag < minSqrMag)
+                {
+                    minSqrMag = sqrMag;
+                    aKeep = possibleA[i];
+                    bKeep = possibleB[j];
+                }
             }
         }
-        return minDir.normalized;
+        return (bKeep - aKeep) *  (1f / Mathf.Sqrt(minSqrMag));
     }
 
     public static bool GetToricIntersection(in Vector2 a, in Vector2 b, out Vector2 toricInter)
@@ -327,7 +340,7 @@ public static class PhysicsToric
 
     #region Raycast
 
-    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask)//OK
+    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, int layerMask)//OK
     {
         List<Vector2> _ = new List<Vector2>();
         float reachDistance = 0f;
@@ -336,7 +349,7 @@ public static class PhysicsToric
         return raycast;
     }
 
-    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, in float distance, in int layerMask, out Vector2[] toricHitboxIntersectionsPoints)//ok
+    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, int layerMask, out Vector2[] toricHitboxIntersectionsPoints)//ok
     {
         List<Vector2> points = new List<Vector2>();
         float reachDistance = 0f;
@@ -346,7 +359,7 @@ public static class PhysicsToric
         return raycast;
     }
 
-    private static RaycastHit2D RaycastRecur(in Vector2 from, in Vector2 direction, in float distance, in int layerMask, ref float reachDistance, ref List<Vector2> points)
+    private static RaycastHit2D RaycastRecur(in Vector2 from, in Vector2 direction, float distance, int layerMask, ref float reachDistance, ref List<Vector2> points)
     {
         RaycastHit2D raycast = Physics2D.Raycast(from, direction, distance, layerMask);
         Line2D ray;
@@ -379,7 +392,6 @@ public static class PhysicsToric
                 }
                 else
                 {
-                    Debug.LogWarning("Debug pls");
                     reachDistance += raycast.distance;
                     raycast.point = GetPointInsideBounds(B);
                     return raycast;
@@ -614,6 +626,42 @@ public static class PhysicsToric
     }
 
     #endregion
+
+    #endregion
+
+    #region Gizmos
+
+#if UNITY_EDITOR
+
+    public static void GizmosDrawRaycast(Vector2 from, Vector2 to)
+    {
+        from = GetPointInsideBounds(from);
+        to = GetPointInsideBounds(to);
+        GizmosDrawRaycast(from, Direction(from, to), Distance(from, to));
+    }
+
+    public static void GizmosDrawRaycast(Vector2 from, in Vector2 direction, float distance)
+    {
+        from = GetPointInsideBounds(from);
+        RaycastHit2D raycast = Raycast(GetPointInsideBounds(from), direction, distance, 0, out Vector2[] inters);
+        if(inters.Length <= 0)
+        {
+            Gizmos.DrawLine(from, from + direction * distance);
+        }
+        else
+        {
+            Vector2 beg = from;
+            for (int i = 0; i < inters.Length; i++)
+            {
+                distance -= Distance(beg, inters[i]);
+                Gizmos.DrawLine(beg, inters[i]);
+                beg = GetComplementaryPoint(inters[i]);
+            }
+            Gizmos.DrawLine(beg, beg + distance * direction);
+        }
+    }
+
+#endif
 
     #endregion
 }
