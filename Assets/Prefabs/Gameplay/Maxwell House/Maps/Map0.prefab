@@ -13755,8 +13755,10 @@ MonoBehaviour:
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
-  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map0SpawnPoints
   spawnConfig: []
+  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map0SpawnPoints
+  collidersGameObject:
+  - {fileID: 6710356389431308808}
   mapSize: {x: 32, y: 18}
 --- !u!1 &5033103456007459322
 GameObject:

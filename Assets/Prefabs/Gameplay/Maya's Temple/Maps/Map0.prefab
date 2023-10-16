@@ -9115,10 +9115,12 @@ MonoBehaviour:
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
-  relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map0SpawnPoints
   spawnConfig:
   - {x: -0.02, y: 0}
   - {x: 0, y: 0}
+  relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map0SpawnPoints
+  collidersGameObject:
+  - {fileID: 537159171919158614}
   mapSize: {x: 32, y: 18}
 --- !u!1 &537159171884627902
 GameObject:
@@ -20199,6 +20201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 0
   disableAntiKnockHead: 0
+  grabable: 1
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!61 &8830151340001301763
@@ -21559,6 +21562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 0
   disableAntiKnockHead: 0
+  grabable: 1
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!61 &8171900049029758270

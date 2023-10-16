@@ -1,7 +1,8 @@
+using PathFinding;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BumpsZone : MonoBehaviour
+public abstract class BumpsZone : PathFindingBlocker
 {
     public bool enableBehaviour = true;
     protected LayerMask charMask;
@@ -9,11 +10,6 @@ public abstract class BumpsZone : MonoBehaviour
 
     [SerializeField] protected Vector2 collisionDetectionScale = Vector2.one;
     [SerializeField] protected float bumpSpeed = 20f;
-
-    protected virtual void Awake()
-    {
-
-    }
 
     protected virtual void Start()
     {

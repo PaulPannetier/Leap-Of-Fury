@@ -711,7 +711,7 @@ MonoBehaviour:
   - {fileID: 0}
   chidrenToRemoveInClone:
   - {fileID: 749809687}
-  drawGizmos: 1
+  drawGizmos: 0
 --- !u!114 &4135942895386761519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,6 +924,10 @@ MonoBehaviour:
   accelerationDurationPhase2: 1.5
   recuperationRange: 0.7
   drawGizmos: 1
+  testPathFinder: 0
+  startPoint: {x: 0, y: 0}
+  endPoint: {x: 0, y: 0}
+  sqaurePrefabs: {fileID: 3449800017089620396, guid: 5accdabc5a340d9469058dead2de2c8b, type: 3}
 --- !u!114 &4277522715158860269
 MonoBehaviour:
   m_ObjectHideFlags: 0

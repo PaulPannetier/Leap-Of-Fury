@@ -6844,6 +6844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
+  grabable: 1
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!61 &1951958196010077997
@@ -19497,8 +19498,10 @@ MonoBehaviour:
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
-  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map1SpawnPoints
   spawnConfig: []
+  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map1SpawnPoints
+  collidersGameObject:
+  - {fileID: 6484287583440040385}
   mapSize: {x: 32, y: 18}
 --- !u!1001 &2651208293566343196
 PrefabInstance:

@@ -4,9 +4,12 @@ using System;
 using UnityEngine;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
+using PathFinding;
 
 public class LevelMapData : MonoBehaviour
 {
+    #region Fields
+
     private static LevelMapData _currentMap;
     public static LevelMapData currentMap
     {
@@ -29,6 +32,7 @@ public class LevelMapData : MonoBehaviour
 
     private SpawnConfigsData spawnConfigs;
     private Grid grid;
+    private Collider2D[] mapColliders;
 
 #if UNITY_EDITOR
 
@@ -41,6 +45,7 @@ public class LevelMapData : MonoBehaviour
 #endif
 
     [SerializeField] private string relatifSpawnConfigsPath;
+    [SerializeField] private Transform[] collidersGameObject; 
 
     public Vector2 mapSize = new Vector2(32f, 18f);
 
@@ -55,6 +60,10 @@ public class LevelMapData : MonoBehaviour
             return grid.cellSize;
         }
     }
+
+    #endregion
+
+    #region Awake/Start
 
     private void Awake()
     {
@@ -73,8 +82,93 @@ public class LevelMapData : MonoBehaviour
             }
         }
         grid = tilemapGo.GetComponent<Grid>();
+
+        List<Collider2D> mapColliders = new List<Collider2D>();
+        foreach (Transform t in collidersGameObject)
+        {
+            foreach (Collider2D col in t.GetComponents<Collider2D>())
+            {
+                if(!mapColliders.Contains(col))
+                {
+                    mapColliders.Add(col);
+                }
+            }
+        }
+        this.mapColliders = mapColliders.ToArray();
+
         onMapChange.Invoke(this);
     }
+
+    #endregion
+
+    #region PathFinding
+
+    public Map GetPathfindingMap()
+    {
+        List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();
+
+        List<MapPoint> blockedPoints = new List<MapPoint>();
+
+        foreach (PathFindingBlocker blocker in blockers)
+        {
+            foreach (MapPoint mapPoint in blocker.GetBlockedCells())
+            {
+                if(!blockedPoints.Contains(mapPoint))
+                {
+                    blockedPoints.Add(mapPoint);
+                }
+            }
+        }
+
+        Vector2Int mapCellsSize = new Vector2Int((mapSize.x / cellSize.x).Round(), (mapSize.y / cellSize.y).Round());
+        int[,] costMap = new int[mapCellsSize.x, mapCellsSize.y];
+
+        Vector2 offset = -0.5f * mapSize;
+        Vector2 cellCenter;
+        for (int x = 0; x < costMap.GetLength(0); x++)
+        {
+            for (int y = 0; y < costMap.GetLength(1); y++)
+            {
+                cellCenter = new Vector2(offset.x + (x + 0.5f) * cellSize.x, offset.y + (y + 0.5f) * cellSize.y);
+                costMap[x, y] = GetCostAtPoint(cellCenter, new MapPoint(x, y));
+            }
+        }
+
+        int GetCostAtPoint(in Vector2 point, MapPoint mapPoint)
+        {
+            if(blockedPoints.Contains(mapPoint))
+            {
+                return -1;
+            }
+
+            foreach (Collider2D col in mapColliders)
+            {
+                if(col.OverlapPoint(point))
+                {
+                    return -1;
+                }
+            }
+            return 1;
+        }
+
+        return new Map(costMap);
+    }
+
+    public MapPoint GetMapPointAtPosition(in Vector2 position)
+    {
+        Vector2 origin = PhysicsToric.GetPointInsideBounds(position) + mapSize * 0.5f;
+        Vector2Int coord = new Vector2Int((int)(origin.x / cellSize.x), (int)(origin.y / cellSize.y));
+        return new MapPoint(coord.x, coord.y);
+    }
+
+    public Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
+    {
+        return -0.5f * mapSize + new Vector2((mapPoint.X + 0.5f) * cellSize.x, (mapPoint.Y + 0.5f) * cellSize.y);
+    }
+
+    #endregion
+
+    #region SpawnPoint
 
 #if UNITY_EDITOR
 
@@ -111,6 +205,8 @@ public class LevelMapData : MonoBehaviour
         spawnConfigs = null;
         return null;
     }
+
+    #endregion
 
     #region Gizmos/OnValidate
 

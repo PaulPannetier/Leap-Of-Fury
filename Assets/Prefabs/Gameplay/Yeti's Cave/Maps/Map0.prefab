@@ -1396,6 +1396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
+  grabable: 1
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!61 &7374820873243658505
@@ -1616,8 +1617,11 @@ MonoBehaviour:
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
-  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map0SpawnPoints
   spawnConfig: []
+  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map0SpawnPoints
+  collidersGameObject:
+  - {fileID: 5838678480640160892}
+  - {fileID: 5838678480003020637}
   mapSize: {x: 32, y: 18}
 --- !u!1 &5838678480640160895
 GameObject:
@@ -9544,6 +9548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 0
   disableAntiKnockHead: 0
+  grabable: 1
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!61 &2089747614485841761
@@ -17100,6 +17105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
+  grabable: 1
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!61 &2033046108200749824
