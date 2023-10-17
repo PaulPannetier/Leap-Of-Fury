@@ -1615,6 +1615,17 @@ public static class Useful
 
     public static void RemoveBeg<T>(this List<T> lst) => lst.RemoveAt(0);
 
+    public static List<T> Distinct<T>(this List<T> lst)
+    {
+        List<T> result = new List<T>();
+        foreach (T item in lst)
+        {
+            if(!result.Contains(item))
+                result.Add(item);
+        }
+        return result;
+    }
+
     /// <summary>
     /// Retourne lst1 union lst2
     /// </summary>
@@ -1622,12 +1633,12 @@ public static class Useful
     /// <param name="lst2">La seconde liste</param>
     /// <param name="doublon">SI on autorise ou pas les doublons</param>
     /// <returns></returns>     
-    public static List<T> SumList<T>(this List<T> lst1, in List<T> lst2, bool doublon = false)//pas de doublon par defaut
+    public static List<T> Merge<T>(this List<T> lst1, in List<T> lst2, bool doublon = false)//pas de doublon par defaut
     {
-        return SumList(lst1, lst2);
+        return Merge(lst1, lst2);
     }
 
-    public static List<T> SumList<T>(in List<T> lst1, in List<T> lst2, bool doublon = false)//pas de doublon par defaut
+    public static List<T> Merge<T>(in List<T> lst1, in List<T> lst2, bool doublon = false)//pas de doublon par defaut
     {
         List<T> result = new List<T>();
         foreach (T nb in lst1)
