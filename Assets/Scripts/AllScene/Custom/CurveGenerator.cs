@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Collision2D;
 
 public class CurveGenerator : MonoBehaviour
@@ -306,7 +304,6 @@ public class CurveGenerator : MonoBehaviour
     [ExecuteInEditMode()]
     private void UpdateControlePoints()
     {
-        print("dqsd");
         if(isAcontrolPointSelectedLasFrame)
         {
             if (InputManager.GetKey(KeyCode.Mouse0))

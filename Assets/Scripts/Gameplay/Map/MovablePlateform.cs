@@ -71,6 +71,7 @@ public class MovablePlateform : PathFindingBlocker
 
     protected override void Awake()
     {
+        base.Awake();
         hitbox = GetComponent<BoxCollider2D>();
         transform = base.transform;
         rb = GetComponent<Rigidbody2D>();

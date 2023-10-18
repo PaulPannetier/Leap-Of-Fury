@@ -7335,10 +7335,6 @@ MonoBehaviour:
   accelerationDurationPhase2: 1
   recuperationRange: 0.7
   drawGizmos: 1
-  testPathFinder: 0
-  startPoint: {x: 0, y: 0}
-  endPoint: {x: 0, y: 0}
-  sqaurePrefabs: {fileID: 1972280336118114878, guid: 5accdabc5a340d9469058dead2de2c8b, type: 3}
 --- !u!1 &8017218814868572334
 GameObject:
   m_ObjectHideFlags: 0

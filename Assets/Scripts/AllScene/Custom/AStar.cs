@@ -9,6 +9,14 @@ using System.Collections.Generic;
 
 namespace PathFinding
 {
+    public static class PathFinding
+    {
+        public static MapPoint[] FindBestPath(Map map, MapPoint start, MapPoint end)
+        {
+            return new AStar(map).CalculateBestPath(start, end);
+        }
+    }
+
     /// ----------------------------------------------------------------------------------------
     /// <summary>
     /// Implements the A* Algorithm.
@@ -219,7 +227,8 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
-            if (!(obj is MapPoint)) return false;
+            if (!(obj is MapPoint)) 
+                return false;
             MapPoint point = (MapPoint)obj;
             return point == this;
         }

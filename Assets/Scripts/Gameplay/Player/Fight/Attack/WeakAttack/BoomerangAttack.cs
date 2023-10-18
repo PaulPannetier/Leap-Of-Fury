@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using PathFinding;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
 using static Boomerang;
-using System.Collections.Generic;
 
 public class BoomerangAttack : WeakAttack
 {
@@ -65,50 +65,8 @@ public class BoomerangAttack : WeakAttack
 
 #if UNITY_EDITOR
 
-    [SerializeField] private bool testPathFinder = false;
-    [SerializeField] private Vector2 startPoint, endPoint;
-    private bool drawPath = false;
-    private MapPoint[] bestPath;
-    private List<GameObject> primitives = new List<GameObject>();
-    [SerializeField] private GameObject sqaurePrefabs;
-
     protected void OnValidate()
     {
-        if (testPathFinder)
-        {
-            Map pathFindingMap = LevelMapData.currentMap.GetPathfindingMap();
-            AStar aStar = new AStar(pathFindingMap);
-
-            for (int i = 0; i < primitives.Count; i++)
-            {
-                DestroyImmediate(primitives[i]);
-            }
-            primitives.Clear();
-
-            Vector2Int size = new Vector2Int((LevelMapData.currentMap.mapSize.x / LevelMapData.currentMap.cellSize.x).Round(), (LevelMapData.currentMap.mapSize.y / LevelMapData.currentMap.cellSize.y).Round());
-            for (int x = 0; x < size.x; x++)
-            {
-                for (int y = 0; y < size.y; y++)
-                {
-                    GameObject prim = Instantiate(sqaurePrefabs);
-                    prim.transform.localScale = new Vector3(LevelMapData.currentMap.cellSize.x, LevelMapData.currentMap.cellSize.y, 0.01f);
-
-                    Color r = new Color(1f, 0f, 0f, 0.4f);
-                    Color g = new Color(0f, 1f, 0f, 0.4f);
-                    prim.GetComponent<SpriteRenderer>().material.color = pathFindingMap.IsWall(new MapPoint(x, y)) ? r : g;
-                    Vector2 pos = LevelMapData.currentMap.GetPositionOfMapPoint(new MapPoint(x, y));
-                    prim.transform.position = new Vector3(pos.x, pos.y, 0f);
-                }
-            }
-
-            MapPoint endMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(endPoint);
-            MapPoint startMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(startPoint);
-
-            bestPath = aStar.CalculateBestPath(startMapPoint, endMapPoint);
-            drawPath = true;
-            testPathFinder = false;
-        }
-
         durationPhase1 = Mathf.Max(0f, durationPhase1);
         accelerationDurationPhase2 = Mathf.Max(0f, accelerationDurationPhase2);
         maxSpeedPhase1 = Mathf.Max(0f, maxSpeedPhase1);
@@ -120,21 +78,6 @@ public class BoomerangAttack : WeakAttack
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Circle.GizmosDraw(startPoint, 0.3f);
-        Circle.GizmosDraw(endPoint, 0.3f);
-
-        if(drawPath)
-        {
-            Vector2 beg = LevelMapData.currentMap.GetPositionOfMapPoint(bestPath[0]);
-            for (int i = 1; i < bestPath.Length; i++)
-            {
-                Vector2 end = LevelMapData.currentMap.GetPositionOfMapPoint(bestPath[i]);
-                Gizmos.DrawLine(beg, end);
-                beg = end;
-            }
-        }
-
         if (!drawGizmos)
             return;
 

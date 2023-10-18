@@ -1,9 +1,12 @@
 using UnityEngine;
+using PathFinding;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class MovingPlateform : MonoBehaviour
+public class MovingPlateform : PathFindingBlocker
 {
     private Rigidbody2D rb;
+    private BoxCollider2D hitbox;
 
     public bool enableBehaviour = true;
 
@@ -11,8 +14,10 @@ public class MovingPlateform : MonoBehaviour
 
     public Vector2 targetVelocity = Vector2.up;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+        hitbox = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -20,6 +25,11 @@ public class MovingPlateform : MonoBehaviour
     {
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
+    }
+
+    public override List<MapPoint> GetBlockedCells()
+    {
+        return GetBlockedCellsInRectangle(transform.position, hitbox.size);
     }
 
     private void FixedUpdate()

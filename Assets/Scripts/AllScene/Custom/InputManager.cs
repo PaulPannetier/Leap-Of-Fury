@@ -1458,7 +1458,7 @@ public static class InputManager
             preUpdateystem,
             new PlayerLoopSystem()
             {
-                updateDelegate = TmpPreUpdate,
+                updateDelegate = PreUpdate,
                 type = typeof(InputManager)
             },
         };
@@ -4280,7 +4280,7 @@ public static class InputManager
 
     #region Update
 
-    public static void TmpPreUpdate()
+    public static void PreUpdate()
     {
         oldGP1State = newGP1State;
         oldGP2State = newGP2State;
