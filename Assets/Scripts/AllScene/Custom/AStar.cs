@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using PathFinding.Graph;
 
 /*
  *  Author : Bidou (http://www.csharpfr.com/auteurdetail.aspx?ID=13319)
@@ -9,13 +11,21 @@ using System.Collections.Generic;
 
 namespace PathFinding
 {
-    public static class PathFinding
+    public static class PathFinder
     {
         public static MapPoint[] FindBestPath(Map map, MapPoint start, MapPoint end)
         {
             return new AStar(map).CalculateBestPath(start, end);
         }
+
+        public static Graph.Node[] FindBestPath(Graph.Graph graph, Graph.Node start, Graph.Node end)
+        {
+            return new AStarGraph(graph).CalculateBestPath(start, end);
+        }
     }
+
+
+    #region AStar
 
     /// ----------------------------------------------------------------------------------------
     /// <summary>
@@ -26,8 +36,8 @@ namespace PathFinding
     public class AStar
     {
         private Map _map = null;
-        private SortedNodeList<Node> _open = new SortedNodeList<Node>();
-        private NodeList<Node> _close = new NodeList<Node>();
+        private SortedNodeList<MapNode> _open = new SortedNodeList<MapNode>();
+        private NodeList<MapNode> _close = new NodeList<MapNode>();
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>
@@ -76,13 +86,13 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         private MapPoint[] CalculateBestPath()
         {
-            Node.Map = this._map;
-            Node startNode = new Node(null, this._map.StartPoint);
+            MapNode.Map = this._map;
+            MapNode startNode = new MapNode(null, this._map.StartPoint);
             this._open.Add(startNode);
 
             while (this._open.Count > 0)
             {
-                Node best = this._open.RemoveFirst();           // This is the best node
+                MapNode best = this._open.RemoveFirst();           // This is the best node
                 if (best.MapPoint == this._map.EndPoint)        // We are finished
                 {
                     List<MapPoint> sol = new List<MapPoint>();  // The solution
@@ -107,9 +117,9 @@ namespace PathFinding
         /// <param name="current"> The current nodes. </param>
         /// <param name="nodes"> The nodes to add. </param>
         /// ----------------------------------------------------------------------------------------
-        private void AddToOpen(Node current, IEnumerable<Node> nodes)
+        private void AddToOpen(MapNode current, IEnumerable<MapNode> nodes)
         {
-            foreach (Node node in nodes)
+            foreach (MapNode node in nodes)
             {
                 if (!this._open.Contains(node))
                 {
@@ -123,140 +133,7 @@ namespace PathFinding
             }
         }
     }
-    /// ----------------------------------------------------------------------------------------
-    /// <summary>
-    /// Represents a MapPoint object.
-    /// </summary>
-    /// ----------------------------------------------------------------------------------------
-    public class MapPoint
-    {
-        public int _x = 0;
-        public int _y = 0;
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Create a new MapPoint.
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        public MapPoint()
-        {
-
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Create a new MapPoint.
-        /// </summary>
-        /// <param name="x"> The x-coordinate. </param>
-        /// <param name="y"> The x-coordinate. </param>
-        /// ----------------------------------------------------------------------------------------
-        public MapPoint(int x, int y)
-        {
-            this._x = x;
-            this._y = y;
-        }
-
-        #region Properties
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Get an invalid point.
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        public static MapPoint InvalidPoint
-        {
-            get { return new MapPoint(-1, -1); }
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Get the x-coordinate.
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        public int X
-        {
-            get { return this._x; }
-            internal set { this._x = value; }
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Get the y-coordinate.
-        /// </summary>
-        /// ----------------------------------------------------------------------------------------
-        public int Y
-        {
-            get { return this._y; }
-            internal set { this._y = value; }
-        }
-
-        #endregion
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Operator override ! Now : value comparison.
-        /// </summary>
-        /// <param name="labyPt1"> The 1st point. </param>
-        /// <param name="labyPt2"> The 2nd point. </param>
-        /// <returns> True if the points are equals (by value!). </returns>
-        /// ----------------------------------------------------------------------------------------
-        public static bool operator ==(MapPoint labyPt1, MapPoint labyPt2)
-        {
-            return (labyPt1.X == labyPt2.X && labyPt1.Y == labyPt2.Y);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Operator override ! Now : value comparison.
-        /// </summary>
-        /// <param name="point1"> The 1st point. </param>
-        /// <param name="point2"> The 2nd point. </param>
-        /// <returns> True if the points are equals (by value!). </returns>
-        /// ----------------------------------------------------------------------------------------
-        public static bool operator !=(MapPoint point1, MapPoint point2)
-        {
-            return !(point1 == point2);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Value comparison.
-        /// </summary>
-        /// <param name="obj">The object to compare.</param>
-        /// <returns> True if the points are equals (by value!). </returns>
-        /// ----------------------------------------------------------------------------------------
-        public override bool Equals(object obj)
-        {
-            if (!(obj is MapPoint)) 
-                return false;
-            MapPoint point = (MapPoint)obj;
-            return point == this;
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// This is the same implementation than System.Drawing.Point.
-        /// </summary>
-        /// <returns></returns>
-        /// ----------------------------------------------------------------------------------------
-        public override int GetHashCode()
-        {
-            return (this._x ^ this._y);
-        }
-
-        /// ----------------------------------------------------------------------------------------
-        /// <summary>
-        /// Clone the current object.
-        /// </summary>
-        /// <returns> A new instance with the same content. </returns>
-        /// ----------------------------------------------------------------------------------------
-        public MapPoint Clone()
-        {
-            return new MapPoint(this._x, this._y);
-        }
-
-        public override string ToString() => "{" + this._x.ToString() + ", " + this._y.ToString() + "}";
-    }
+    
     /// ----------------------------------------------------------------------------------------
     /// <summary>
     /// Define a node.
@@ -266,13 +143,13 @@ namespace PathFinding
     /// Read the html file in the documentation directory (AStarAlgo project) for more informations.
     /// </remarks>
     /// ----------------------------------------------------------------------------------------
-    internal class Node : INode
+    internal class MapNode : INode
     {
         // Represents the map
         private static Map _map = null;
 
         private int _costG = 0; // From start point to here
-        private Node _parent = null;
+        private MapNode _parent = null;
         private MapPoint _currentPoint = MapPoint.InvalidPoint;
 
         /// ----------------------------------------------------------------------------------------
@@ -282,7 +159,7 @@ namespace PathFinding
         /// <param name="parent"> The parent node. </param>
         /// <param name="currentPoint"> The current point. </param>
         /// ----------------------------------------------------------------------------------------
-        public Node(Node parent, MapPoint currentPoint)
+        public MapNode(MapNode parent, MapPoint currentPoint)
         {
             this._currentPoint = currentPoint;
             this.SetParent(parent);
@@ -306,7 +183,7 @@ namespace PathFinding
         /// Get or set the parent.
         /// </summary>
         /// ----------------------------------------------------------------------------------------
-        public Node Parent
+        public MapNode Parent
         {
             get { return this._parent; }
             set { this.SetParent(value); }
@@ -350,7 +227,7 @@ namespace PathFinding
         /// </summary>
         /// <param name="parent"> The parent to set. </param>
         /// ----------------------------------------------------------------------------------------
-        private void SetParent(Node parent)
+        private void SetParent(MapNode parent)
         {
             this._parent = parent;
             // Refresh the cost : the cost of the parent + the cost of the current point
@@ -385,30 +262,30 @@ namespace PathFinding
         /// </summary>
         /// <returns> A list of possible node. </returns>
         /// ----------------------------------------------------------------------------------------
-        public List<Node> GetPossibleNode()
+        public List<MapNode> GetPossibleNode()
         {
-            List<Node> nodes = new List<Node>();
+            List<MapNode> nodes = new List<MapNode>();
             MapPoint mapPt = new MapPoint();
 
             // Top
             mapPt.X = _currentPoint.X;
             mapPt.Y = _currentPoint.Y + 1;
-            if (!_map.IsWall(mapPt)) nodes.Add(new Node(this, mapPt.Clone()));
+            if (!_map.IsWall(mapPt)) nodes.Add(new MapNode(this, mapPt.Clone()));
 
             // Right
             mapPt.X = _currentPoint.X + 1;
             mapPt.Y = _currentPoint.Y;
-            if (!_map.IsWall(mapPt)) nodes.Add(new Node(this, mapPt.Clone()));
+            if (!_map.IsWall(mapPt)) nodes.Add(new MapNode(this, mapPt.Clone()));
 
             // Left
             mapPt.X = _currentPoint.X - 1;
             mapPt.Y = _currentPoint.Y;
-            if (!_map.IsWall(mapPt)) nodes.Add(new Node(this, mapPt.Clone()));
+            if (!_map.IsWall(mapPt)) nodes.Add(new MapNode(this, mapPt.Clone()));
 
             // Bottom
             mapPt.X = _currentPoint.X;
             mapPt.Y = _currentPoint.Y - 1;
-            if (!_map.IsWall(mapPt)) nodes.Add(new Node(this, mapPt.Clone()));
+            if (!_map.IsWall(mapPt)) nodes.Add(new MapNode(this, mapPt.Clone()));
 
             return nodes;
         }
@@ -517,6 +394,146 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         MapPoint MapPoint { get; }
     }
+    
+    #endregion
+
+    #region Common
+
+    /// ----------------------------------------------------------------------------------------
+    /// <summary>
+    /// Represents a MapPoint object.
+    /// </summary>
+    /// ----------------------------------------------------------------------------------------
+    public class MapPoint
+    {
+        public int _x = 0;
+        public int _y = 0;
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Create a new MapPoint.
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        public MapPoint()
+        {
+
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Create a new MapPoint.
+        /// </summary>
+        /// <param name="x"> The x-coordinate. </param>
+        /// <param name="y"> The x-coordinate. </param>
+        /// ----------------------------------------------------------------------------------------
+        public MapPoint(int x, int y)
+        {
+            this._x = x;
+            this._y = y;
+        }
+
+        #region Properties
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Get an invalid point.
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        public static MapPoint InvalidPoint
+        {
+            get { return new MapPoint(-1, -1); }
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Get the x-coordinate.
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        public int X
+        {
+            get { return this._x; }
+            internal set { this._x = value; }
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Get the y-coordinate.
+        /// </summary>
+        /// ----------------------------------------------------------------------------------------
+        public int Y
+        {
+            get { return this._y; }
+            internal set { this._y = value; }
+        }
+
+        #endregion
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Operator override ! Now : value comparison.
+        /// </summary>
+        /// <param name="labyPt1"> The 1st point. </param>
+        /// <param name="labyPt2"> The 2nd point. </param>
+        /// <returns> True if the points are equals (by value!). </returns>
+        /// ----------------------------------------------------------------------------------------
+        public static bool operator ==(MapPoint labyPt1, MapPoint labyPt2)
+        {
+            return (labyPt1.X == labyPt2.X && labyPt1.Y == labyPt2.Y);
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Operator override ! Now : value comparison.
+        /// </summary>
+        /// <param name="point1"> The 1st point. </param>
+        /// <param name="point2"> The 2nd point. </param>
+        /// <returns> True if the points are equals (by value!). </returns>
+        /// ----------------------------------------------------------------------------------------
+        public static bool operator !=(MapPoint point1, MapPoint point2)
+        {
+            return !(point1 == point2);
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Value comparison.
+        /// </summary>
+        /// <param name="obj">The object to compare.</param>
+        /// <returns> True if the points are equals (by value!). </returns>
+        /// ----------------------------------------------------------------------------------------
+        public override bool Equals(object obj)
+        {
+            if (!(obj is MapPoint))
+                return false;
+            MapPoint point = (MapPoint)obj;
+            return point == this;
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// This is the same implementation than System.Drawing.Point.
+        /// </summary>
+        /// <returns></returns>
+        /// ----------------------------------------------------------------------------------------
+        public override int GetHashCode()
+        {
+            return (this._x ^ this._y);
+        }
+
+        /// ----------------------------------------------------------------------------------------
+        /// <summary>
+        /// Clone the current object.
+        /// </summary>
+        /// <returns> A new instance with the same content. </returns>
+        /// ----------------------------------------------------------------------------------------
+        public MapPoint Clone()
+        {
+            return new MapPoint(this._x, this._y);
+        }
+
+        public override string ToString() => "{" + this._x.ToString() + ", " + this._y.ToString() + "}";
+    }
+
     /// ----------------------------------------------------------------------------------------
     /// <summary>
     /// Represents a map
@@ -564,6 +581,8 @@ namespace PathFinding
         {
             get { return this._costs.GetLength(0); }
         }
+
+        public int GetLength(int dimension) => this._costs.GetLength(dimension);
 
         /// ----------------------------------------------------------------------------------------
         /// <summary>
@@ -618,7 +637,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public bool IsPointValid(MapPoint mapPoint)
         {
-            return (this.Length > mapPoint.X && mapPoint.X >= 0 && mapPoint.Y >= 0 && this.Length > mapPoint.Y);
+            return (Length > mapPoint.X && mapPoint.X >= 0 && mapPoint.Y >= 0 && Length > mapPoint.Y);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -630,7 +649,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public bool IsWall(MapPoint mapPoint)
         {
-            return this.GetCost(mapPoint) < 0;
+            return GetCost(mapPoint) < 0;
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -642,8 +661,141 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public int GetCost(MapPoint mapPoint)
         {
-            if (IsPointValid(mapPoint)) return this._costs[mapPoint.X, mapPoint.Y];
+            if (IsPointValid(mapPoint)) 
+                return this._costs[mapPoint.X, mapPoint.Y];
             return -2;
         }
     }
+
+    #endregion
 }
+
+#region GraphSearch
+
+namespace PathFinding.Graph
+{
+    public class AStarGraph
+    {
+        public Graph graph { get; set; }
+        private Node start { get; set; }
+        private Node end { get; set; }
+        public float shortestPathCost { get; private set; }
+
+        public AStarGraph(Graph graph)
+        {
+            this.graph = graph;
+        }
+
+        private void BuildShortestPath(List<Node> list, Node node)
+        {
+            if (node.nearestToStart == null)
+                return;
+            list.Add(node.nearestToStart);
+            shortestPathCost += node.connections.Single(x => x.connectedNode == node.nearestToStart).cost;
+            BuildShortestPath(list, node.nearestToStart);
+        }
+
+        public Node[] CalculateBestPath(Node start, Node end)
+        {
+            this.start = start;
+            this.end = end;
+            shortestPathCost = 0f;
+
+            Search();
+            List<Node> shortestPath = new List<Node>()
+            {
+                this.end
+            };
+
+            BuildShortestPath(shortestPath, this.end);
+            shortestPath.Reverse();
+            return shortestPath.ToArray();
+        }
+
+        private void Search()
+        {
+            start.minCostToStart = 0d;
+
+            List<Node> prioQueue = new List<Node>()
+            {
+                start
+            };
+
+            do
+            {
+                prioQueue = prioQueue.OrderBy(x => x.minCostToStart + x.StraightLineDistanceTo(end)).ToList();
+                Node node = prioQueue.First();
+                prioQueue.Remove(node);
+
+                foreach (Edge cnn in node.connections.OrderBy(x => x.cost))
+                {
+                    Node childNode = cnn.connectedNode;
+                    if (childNode.visited)
+                        continue;
+                    if (childNode.minCostToStart == null || node.minCostToStart + cnn.cost < childNode.minCostToStart)
+                    {
+                        childNode.minCostToStart = node.minCostToStart + cnn.cost;
+                        childNode.nearestToStart = node;
+                        if (!prioQueue.Contains(childNode))
+                            prioQueue.Add(childNode);
+                    }
+                }
+
+                node.visited = true;
+                if (node == end)
+                    return;
+
+            } while (prioQueue.Any());
+        }
+    }
+
+    public class Graph
+    {
+        internal List<Node> nodes { get; private set; }
+
+        public Graph(List<Node> nodes)
+        {
+            this.nodes = nodes;
+        }
+    }
+
+    public class Node
+    {
+        public MapPoint point { get; set; }
+        public List<Edge> connections { get; set; }
+
+        internal double? minCostToStart { get; set; }
+        internal Node nearestToStart { get; set; }
+        internal bool visited { get; set; }
+
+        public Node(MapPoint point)
+        {
+            this.point = point;
+            connections = new List<Edge>();
+        }
+
+        public void AddConnection(Edge edge)
+        {
+            connections.Add(edge);
+        }
+
+        internal int StraightLineDistanceTo(Node end)
+        {
+            return Math.Abs(end.point.X - point.X) + Math.Abs(end.point.X - point.X);
+        }
+    }
+
+    public class Edge
+    {
+        public float cost { get; set; }
+        public Node connectedNode { get; set; }
+
+        public Edge(float cost, Node connectedNode)
+        {
+            this.cost = cost;
+            this.connectedNode = connectedNode;
+        }
+    }
+}
+
+#endregion
