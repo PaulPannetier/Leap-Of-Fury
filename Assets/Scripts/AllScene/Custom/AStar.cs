@@ -13,12 +13,18 @@ namespace PathFinding
 {
     public static class PathFinder
     {
-        public static MapPoint[] FindBestPath(Map map, MapPoint start, MapPoint end)
+        public static Path FindBestPath(Map map, MapPoint start, MapPoint end)
         {
-            return new AStar(map).CalculateBestPath(start, end);
+            MapPoint[] mapPoints = new AStar(map).CalculateBestPath(start, end);
+            float cost = 0f;
+            for (int i = 1; i < mapPoints.Length; i++)
+            {
+                cost += map.GetCost(mapPoints[i]);
+            }
+            return new Path(cost, mapPoints);
         }
 
-        public static Graph.Node[] FindBestPath(Graph.Graph graph, Graph.Node start, Graph.Node end)
+        public static Graph.GraphPath FindBestPath(Graph.Graph graph, Graph.Node start, Graph.Node end)
         {
             return new AStarGraph(graph).CalculateBestPath(start, end);
         }
@@ -399,6 +405,18 @@ namespace PathFinding
 
     #region Common
 
+    public class Path
+    {
+        public float totalCost;
+        public MapPoint[] path;
+
+        public Path(float cost, MapPoint[] path)
+        {
+            this.totalCost = cost;
+            this.path = path;
+        }
+    }
+
     /// ----------------------------------------------------------------------------------------
     /// <summary>
     /// Represents a MapPoint object.
@@ -674,6 +692,18 @@ namespace PathFinding
 
 namespace PathFinding.Graph
 {
+    public class GraphPath
+    {
+        public float totalCost;
+        public Node[] path;
+
+        public GraphPath(float cost, Node[] path)
+        {
+            this.totalCost = cost;
+            this.path = path;
+        }
+    }
+
     public class AStarGraph
     {
         public Graph graph { get; set; }
@@ -686,16 +716,7 @@ namespace PathFinding.Graph
             this.graph = graph;
         }
 
-        private void BuildShortestPath(List<Node> list, Node node)
-        {
-            if (node.nearestToStart == null)
-                return;
-            list.Add(node.nearestToStart);
-            shortestPathCost += node.connections.Single(x => x.connectedNode == node.nearestToStart).cost;
-            BuildShortestPath(list, node.nearestToStart);
-        }
-
-        public Node[] CalculateBestPath(Node start, Node end)
+        public GraphPath CalculateBestPath(Node start, Node end)
         {
             this.start = start;
             this.end = end;
@@ -709,7 +730,17 @@ namespace PathFinding.Graph
 
             BuildShortestPath(shortestPath, this.end);
             shortestPath.Reverse();
-            return shortestPath.ToArray();
+
+            return new GraphPath(shortestPathCost, shortestPath.ToArray());
+        }
+
+        private void BuildShortestPath(List<Node> list, Node node)
+        {
+            if (node.nearestToStart == null)
+                return;
+            list.Add(node.nearestToStart);
+            shortestPathCost += node.connections.Single(x => x.connectedNode == node.nearestToStart).cost;
+            BuildShortestPath(list, node.nearestToStart);
         }
 
         private void Search()
@@ -762,7 +793,7 @@ namespace PathFinding.Graph
     public class Node
     {
         public MapPoint point { get; set; }
-        public List<Edge> connections { get; set; }
+        public List<Edge> connections { get; private set; }
 
         internal double? minCostToStart { get; set; }
         internal Node nearestToStart { get; set; }
@@ -781,7 +812,7 @@ namespace PathFinding.Graph
 
         internal int StraightLineDistanceTo(Node end)
         {
-            return Math.Abs(end.point.X - point.X) + Math.Abs(end.point.X - point.X);
+            return Math.Abs(end.point.X - point.X) + Math.Abs(end.point.Y - point.Y);
         }
     }
 

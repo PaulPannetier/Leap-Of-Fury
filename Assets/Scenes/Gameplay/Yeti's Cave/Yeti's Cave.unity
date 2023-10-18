@@ -7335,6 +7335,9 @@ MonoBehaviour:
   accelerationDurationPhase2: 1
   recuperationRange: 0.7
   drawGizmos: 1
+  testPathfinding: 0
+  start: {x: 12.48, y: -0.46}
+  end: {x: 4.7, y: -5.28}
 --- !u!1 &8017218814868572334
 GameObject:
   m_ObjectHideFlags: 0

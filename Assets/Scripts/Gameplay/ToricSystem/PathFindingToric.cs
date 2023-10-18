@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public static class PathFinderToric
 {
-    public static MapPoint[] FindBestPath(Map map, MapPoint start, MapPoint end)
+    public static Path FindBestPath(Map map, MapPoint start, MapPoint end)
     {
         return new AStartToric(map).CalculateBestPath(start, end);
     }
@@ -27,7 +27,7 @@ public class AStartToric
         {
             for (int y = 0; y < map.GetLength(1); y++)
             {
-                nodes[x, y].point = new MapPoint(x, y);
+                nodes[x, y] = new Node(new MapPoint(x, y));
             }
         }
 
@@ -37,90 +37,45 @@ public class AStartToric
             {
                 Node node = nodes[x, y];
 
-                Node up, down, right, left;
+                if (map.IsWall(node.point))
+                    continue;
+
+                Node up = null, down = null, right = null, left = null;
                 if(x == 0)
                 {
                     up = nodes[x, y + 1];
                     down = nodes[x, y - 1];
                     right = nodes[x + 1, y];
-                    if (!map.IsWall(up.point))
-                    {
-                        node.AddConnection(new Edge(1f, up));
-                    }
-                    if (!map.IsWall(down.point))
-                    {
-                        node.AddConnection(new Edge(1f, down));
-                    }
-                    if (!map.IsWall(right.point))
-                    {
-                        node.AddConnection(new Edge(1f, right));
-                    }
-                    continue;
+                    left = nodes[map.GetLength(0) - 1, y];
                 }
-                if (x == map.GetLength(0) - 1)
+                else if (x == map.GetLength(0) - 1)
                 {
                     up = nodes[x, y + 1];
                     down = nodes[x, y - 1];
+                    right = nodes[0, y];
                     left = nodes[x - 1, y];
-                    if (!map.IsWall(up.point))
-                    {
-                        node.AddConnection(new Edge(1f, up));
-                    }
-                    if (!map.IsWall(down.point))
-                    {
-                        node.AddConnection(new Edge(1f, down));
-                    }
-                    if (!map.IsWall(left.point))
-                    {
-                        node.AddConnection(new Edge(1f, left));
-                    }
-                    continue;
                 }
-                if (y == 0)
+                else if (y == 0)
                 {
                     up = nodes[x, y + 1];
+                    down = nodes[x, map.GetLength(1) - 1];
                     right = nodes[x + 1, y];
                     left = nodes[x - 1, y];
-
-                    if (!map.IsWall(up.point))
-                    {
-                        node.AddConnection(new Edge(1f, up));
-                    }
-                    if (!map.IsWall(right.point))
-                    {
-                        node.AddConnection(new Edge(1f, right));
-                    }
-                    if (!map.IsWall(left.point))
-                    {
-                        node.AddConnection(new Edge(1f, left));
-                    }
-                    continue;
                 }
-                if (y == map.GetLength(1) - 1)
+                else if (y == map.GetLength(1) - 1)
                 {
+                    up = nodes[x, 0];
                     down = nodes[x, y - 1];
                     right = nodes[x + 1, y];
                     left = nodes[x - 1, y];
-
-                    if (!map.IsWall(down.point))
-                    {
-                        node.AddConnection(new Edge(1f, down));
-                    }
-                    if (!map.IsWall(right.point))
-                    {
-                        node.AddConnection(new Edge(1f, right));
-                    }
-                    if (!map.IsWall(left.point))
-                    {
-                        node.AddConnection(new Edge(1f, left));
-                    }
-                    continue;
                 }
-
-                up = nodes[x, y + 1];
-                down = nodes[x, y - 1];
-                right = nodes[x + 1, y];
-                left = nodes[x - 1, y];
+                else
+                {
+                    up = nodes[x, y + 1];
+                    down = nodes[x, y - 1];
+                    right = nodes[x + 1, y];
+                    left = nodes[x - 1, y];
+                }
 
                 if (!map.IsWall(up.point))
                 {
@@ -153,7 +108,7 @@ public class AStartToric
         aStar = new AStarGraph(new Graph(res));
     }
 
-    public MapPoint[] CalculateBestPath(MapPoint start, MapPoint end)
+    public Path CalculateBestPath(MapPoint start, MapPoint end)
     {
         Node s = null, e = null;
 
@@ -166,7 +121,7 @@ public class AStartToric
             }
             if (e == null && node.point == end)
             {
-                s = node;
+                e = node;
                 continue;
             }
 
@@ -175,14 +130,14 @@ public class AStartToric
         }
 
 
-        Node[] path = aStar.CalculateBestPath(s, e);
+        GraphPath path = aStar.CalculateBestPath(s, e);
 
-        MapPoint[] res = new MapPoint[path.Length];
-        for (int i = 0; i < path.Length; i++)
+        MapPoint[] res = new MapPoint[path.path.Length];
+        for (int i = 0; i < path.path.Length; i++)
         {
-            res[i] = path[i].point;
+            res[i] = path.path[i].point;
         }
 
-        return res;
+        return new Path(path.totalCost, res);
     }
 }

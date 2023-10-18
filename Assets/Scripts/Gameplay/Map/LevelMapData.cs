@@ -163,7 +163,7 @@ public class LevelMapData : MonoBehaviour
 
     public Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
     {
-        return -0.5f * mapSize + new Vector2((mapPoint.X + 0.5f) * cellSize.x, (mapPoint.Y + 0.5f) * cellSize.y);
+        return new Vector2((mapPoint.X + 0.5f) * cellSize.x - (0.5f * mapSize.x), (mapPoint.Y + 0.5f) * cellSize.y - (0.5f * mapSize.y));
     }
 
     #endregion

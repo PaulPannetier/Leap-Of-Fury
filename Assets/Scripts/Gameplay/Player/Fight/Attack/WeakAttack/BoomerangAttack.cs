@@ -65,19 +65,47 @@ public class BoomerangAttack : WeakAttack
 
 #if UNITY_EDITOR
 
+    [SerializeField] private bool testPathfinding = false;
+    [SerializeField] private Vector2 start, end;
+    private Path path;
+
     protected void OnValidate()
     {
+        if(testPathfinding)
+        {
+            testPathfinding = false;
+            MapPoint start = LevelMapData.currentMap.GetMapPointAtPosition(this.start);
+            MapPoint end = LevelMapData.currentMap.GetMapPointAtPosition(this.end);
+            Map map = LevelMapData.currentMap.GetPathfindingMap();
+            path = PathFinderToric.FindBestPath(map, start, end);
+            print(path.totalCost);
+        }
+
         durationPhase1 = Mathf.Max(0f, durationPhase1);
         accelerationDurationPhase2 = Mathf.Max(0f, accelerationDurationPhase2);
         maxSpeedPhase1 = Mathf.Max(0f, maxSpeedPhase1);
         maxSpeedPhase2 = Mathf.Max(0f, maxSpeedPhase2);
         distanceToInstantiate = Mathf.Max(0f, distanceToInstantiate);
-
         recuperationRange = Mathf.Max(0f, recuperationRange);
     }
 
     private void OnDrawGizmosSelected()
     {
+        Gizmos.color = Color.green;
+        if (path != null)
+        {
+            Vector2 beg = LevelMapData.currentMap.GetPositionOfMapPoint(path.path[0]);
+            for (int i = 1; i < path.path.Length; i++)
+            {
+                Vector2 end = LevelMapData.currentMap.GetPositionOfMapPoint(path.path[i]);
+                PhysicsToric.GizmosDrawRaycast(beg, end);
+                beg = end;
+            }
+        }
+
+        Circle.GizmosDraw(start, 0.3f);
+        Circle.GizmosDraw(end, 0.3f);
+
         if (!drawGizmos)
             return;
 
