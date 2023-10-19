@@ -860,7 +860,7 @@ MonoBehaviour:
   cooldown:
     duration: 0.5
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
-  distanceToInstantiate: 0.75
+  distanceToInstantiate: 0.9
   speedCurvePhase1:
     serializedVersion: 2
     m_Curve:
@@ -919,15 +919,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxSpeedPhase1: 20
-  maxSpeedPhase2: 8
+  maxSpeedPhase2: 12
   durationPhase1: 1.2
   accelerationDurationPhase2: 1.5
-  recuperationRange: 0.7
+  recuperationRange: 1
   drawGizmos: 1
-  testPathFinder: 0
-  startPoint: {x: 0, y: 0}
-  endPoint: {x: 0, y: 0}
-  sqaurePrefabs: {fileID: 3449800017089620396, guid: 5accdabc5a340d9469058dead2de2c8b, type: 3}
 --- !u!114 &4277522715158860269
 MonoBehaviour:
   m_ObjectHideFlags: 0

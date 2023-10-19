@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using PathFinding.Graph;
 
 /*
  *  Author : Bidou (http://www.csharpfr.com/auteurdetail.aspx?ID=13319)
@@ -26,7 +25,7 @@ namespace PathFinding
 
         public static Graph.GraphPath FindBestPath(Graph.Graph graph, Graph.Node start, Graph.Node end)
         {
-            return new AStarGraph(graph).CalculateBestPath(start, end);
+            return new Graph.AStarGraph(graph).CalculateBestPath(start, end);
         }
     }
 
@@ -78,6 +77,11 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public MapPoint[] CalculateBestPath(MapPoint start, MapPoint end)
         {
+            if(start == end)
+            {
+                return new MapPoint[1] { end };
+            }
+
             this._map.StartPoint = start;
             this._map.EndPoint = end;
             return CalculateBestPath();
@@ -379,6 +383,9 @@ namespace PathFinding
             this.Insert(left, node);
         }
     }
+
+    #region INode
+
     /// ----------------------------------------------------------------------------------------
     /// <summary>
     /// Define a node.
@@ -400,10 +407,15 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         MapPoint MapPoint { get; }
     }
-    
+
+    #endregion
+
+
     #endregion
 
     #region Common
+
+    #region Path
 
     public class Path
     {
@@ -416,6 +428,11 @@ namespace PathFinding
             this.path = path;
         }
     }
+
+    #endregion
+
+
+    #region MapPoint
 
     /// ----------------------------------------------------------------------------------------
     /// <summary>
@@ -552,6 +569,10 @@ namespace PathFinding
         public override string ToString() => "{" + this._x.ToString() + ", " + this._y.ToString() + "}";
     }
 
+    #endregion
+
+    #region Map
+
     /// ----------------------------------------------------------------------------------------
     /// <summary>
     /// Represents a map
@@ -686,6 +707,8 @@ namespace PathFinding
     }
 
     #endregion
+
+    #endregion
 }
 
 #region GraphSearch
@@ -697,9 +720,9 @@ namespace PathFinding.Graph
         public float totalCost;
         public Node[] path;
 
-        public GraphPath(float cost, Node[] path)
+        public GraphPath(float totalCost, Node[] path)
         {
-            this.totalCost = cost;
+            this.totalCost = totalCost;
             this.path = path;
         }
     }
@@ -718,6 +741,11 @@ namespace PathFinding.Graph
 
         public GraphPath CalculateBestPath(Node start, Node end)
         {
+            if (start == end)
+            {
+                return new GraphPath(0f, new Node[1] { end });
+            }
+
             this.start = start;
             this.end = end;
             shortestPathCost = 0f;
@@ -810,7 +838,7 @@ namespace PathFinding.Graph
             connections.Add(edge);
         }
 
-        internal int StraightLineDistanceTo(Node end)
+        public virtual int StraightLineDistanceTo(Node end)
         {
             return Math.Abs(end.point.X - point.X) + Math.Abs(end.point.Y - point.Y);
         }
@@ -830,3 +858,4 @@ namespace PathFinding.Graph
 }
 
 #endregion
+

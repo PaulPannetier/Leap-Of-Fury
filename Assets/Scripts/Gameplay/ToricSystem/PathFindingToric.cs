@@ -1,6 +1,8 @@
 using PathFinding;
 using PathFinding.Graph;
 using System.Collections.Generic;
+using System;
+using UnityEngine;
 
 public static class PathFinderToric
 {
@@ -21,13 +23,14 @@ public class AStartToric
 
     private void GenerateGraph(Map map)
     {
-        Node[,] nodes = new Node[map.GetLength(0), map.GetLength(1)];
+        NodeToric[,] nodes = new NodeToric[map.GetLength(0), map.GetLength(1)];
+        NodeToric.mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
 
         for (int x = 0; x < map.GetLength(0); x++)
         {
             for (int y = 0; y < map.GetLength(1); y++)
             {
-                nodes[x, y] = new Node(new MapPoint(x, y));
+                nodes[x, y] = new NodeToric(new MapPoint(x, y));
             }
         }
 
@@ -35,12 +38,12 @@ public class AStartToric
         {
             for (int y = 0; y < map.GetLength(1); y++)
             {
-                Node node = nodes[x, y];
+                NodeToric node = nodes[x, y];
 
                 if (map.IsWall(node.point))
                     continue;
 
-                Node up = null, down = null, right = null, left = null;
+                NodeToric up = null, down = null, right = null, left = null;
                 if(x == 0)
                 {
                     up = nodes[x, y + 1];
@@ -110,6 +113,11 @@ public class AStartToric
 
     public Path CalculateBestPath(MapPoint start, MapPoint end)
     {
+        if(start == end)
+        {
+            return new Path(0f, new MapPoint[1] { end });
+        }
+
         Node s = null, e = null;
 
         foreach (Node node in aStar.graph.nodes)
@@ -139,5 +147,22 @@ public class AStartToric
         }
 
         return new Path(path.totalCost, res);
+    }
+
+    private class NodeToric : Node
+    {
+        public static Vector2Int mapSize;
+
+        public NodeToric(MapPoint point) : base(point)
+        {
+
+        }
+
+        public override int StraightLineDistanceTo(Node end)
+        {
+            int x = Math.Abs(end.point.X - point.X);
+            int y = Math.Abs(end.point.Y - point.Y);
+            return Math.Min(x, mapSize.x - x) + Math.Min(y, mapSize.y - y);
+        }
     }
 }

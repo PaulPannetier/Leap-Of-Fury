@@ -1,4 +1,6 @@
 using UnityEngine;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class Boomerang : MonoBehaviour
 {
@@ -19,12 +21,21 @@ public class Boomerang : MonoBehaviour
     private State state;
     private float timeLaunch = -10f;
     private Vector2 velocity;
+    private LayerMask groundMask;
+
+    [SerializeField] private Vector2 circleOffset;
+    [SerializeField] private float circleRadius;
 
     private void Awake()
     {
         this.transform = base.transform;
         toricObject = GetComponent<ToricObject>();
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        groundMask = LayerMask.GetMask("Floor");
     }
 
     public void Launch(in BoomerangLaunchData boomerangLauchData)
@@ -93,6 +104,24 @@ public class Boomerang : MonoBehaviour
             velocity = maxSpeedPhase2 * dir;
         }
 
+        Circle circleCollider = GetCircleCollider();
+        Collider2D groundCol = PhysicsToric.OverlapCircle(circleCollider, groundMask);
+        if (groundCol != null)
+        {
+            Collision2D.Collider2D col = Collision2D.Collider2D.FromUnityCollider2D(groundCol);
+
+            Vector2 collisionPoint, normal1, normal2;
+            if(!Collision2D.Collider2D.Collide(col, circleCollider, out collisionPoint, out normal1, out normal2))
+            {
+                collisionPoint = (circleCollider.center + col.center) * 0.5f;
+                normal1 = (circleCollider.center - col.center).normalized;
+                normal2 = -normal1;
+            }
+
+            velocity = Collision2D.Ray2D.Symetric(-velocity, new Collision2D.Ray2D(Vector2.zero, normal1)).normalized * velocity.magnitude;
+
+        }
+
         if(PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
         {
             sender.GetBack();
@@ -103,7 +132,15 @@ public class Boomerang : MonoBehaviour
             }
             else
                 Destroy();
+
+            return;
         }
+    }
+
+    private Circle GetCircleCollider()
+    {
+        float ang = Useful.AngleHori(Vector2.zero, circleOffset) + transform.rotation.z * Mathf.Deg2Rad;
+        return new Circle((Vector2)transform.position + Useful.Vector2FromAngle(ang, circleOffset.magnitude), circleRadius);
     }
 
     private void Destroy()
@@ -111,6 +148,24 @@ public class Boomerang : MonoBehaviour
         toricObject.RemoveClones();
         Destroy(gameObject);
     }
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        this.transform = base.transform;
+        circleRadius = Mathf.Max(circleRadius, 0f);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Circle.GizmosDraw((Vector2)transform.position + circleOffset, circleRadius);
+    }
+
+#endif
+
+    #region struct
 
     public struct BoomerangLaunchData
     {
@@ -134,4 +189,6 @@ public class Boomerang : MonoBehaviour
             this.recuperationRange = recuperationRange;
         }
     }
+
+    #endregion
 }
