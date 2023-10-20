@@ -18,10 +18,12 @@ public class Boomerang : MonoBehaviour
     private AnimationCurve speedCurvePhase1, accelerationCurvePhase2;
     private float maxSpeedPhase1, durationPhase1, accelerationDurationPhase2;
     private float maxSpeedPhase2, recuperationRange;
+    private float rotationSpeed;
     private State state;
     private float timeLaunch = -10f;
     private Vector2 velocity;
     private LayerMask groundMask;
+    private bool isDestroy;
 
     [SerializeField] private Vector2 circleOffset;
     [SerializeField] private float circleRadius;
@@ -57,11 +59,15 @@ public class Boomerang : MonoBehaviour
             accelerationCurvePhase2 = data.accelerationCurvePhase2;
             maxSpeedPhase2 = data.maxSpeedPhase2;
             recuperationRange = data.recuperationRange;
+            rotationSpeed = data.rotationSpeed;
         }
     }
 
     private void Update()
     {
+        if (isDestroy)
+            return;
+
         switch (state)
         {
             case State.go:
@@ -80,10 +86,19 @@ public class Boomerang : MonoBehaviour
 
     private void HandleGoState()
     {
-        if(Time.time - timeLaunch > durationPhase1)
+        Circle circleCollider = GetCircleCollider();
+        Collider2D groundCol = PhysicsToric.OverlapCircle(circleCollider, groundMask);
+
+        if(groundCol != null)
+        {
+            transform.position -= (Vector3)(velocity * Time.deltaTime);
+        }
+
+        if (groundCol != null || Time.time - timeLaunch > durationPhase1)
         {
             state = State.getBack;
             velocity = velocity.normalized * speedCurvePhase1.Evaluate(1f);
+            //velocity = PhysicsToric.Direction(transform.position, sender.transform.position) * speedCurvePhase1.Evaluate(1f);
             timeLaunch = Time.time;
             return;
         }
@@ -93,16 +108,7 @@ public class Boomerang : MonoBehaviour
 
     private void HandleGetBackState()
     {
-        dir = PhysicsToric.Direction(transform.position, sender.transform.position);
-
-        if (Time.time - timeLaunch < accelerationDurationPhase2)
-        {
-            velocity = maxSpeedPhase2 * accelerationCurvePhase2.Evaluate(1f) * dir;
-        }
-        else
-        {
-            velocity = maxSpeedPhase2 * dir;
-        }
+        Vector2 targetDir = PhysicsToric.Direction(transform.position, sender.transform.position);
 
         Circle circleCollider = GetCircleCollider();
         Collider2D groundCol = PhysicsToric.OverlapCircle(circleCollider, groundMask);
@@ -117,15 +123,30 @@ public class Boomerang : MonoBehaviour
                 normal1 = (circleCollider.center - col.center).normalized;
                 normal2 = -normal1;
             }
-
-            velocity = Collision2D.Ray2D.Symetric(-velocity, new Collision2D.Ray2D(Vector2.zero, normal1)).normalized * velocity.magnitude;
-
+            dir = Collision2D.Ray2D.Symetric(-velocity, new Collision2D.Ray2D(Vector2.zero, normal1)).normalized;
+            transform.position -= (Vector3)(velocity * Time.deltaTime);
         }
 
-        if(PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
+        float currentAng = Useful.AngleHori(Vector2.zero, dir);
+        float targetAng = Useful.AngleHori(Vector2.zero, targetDir);
+        float ang = Mathf.MoveTowards(currentAng, targetAng, Time.deltaTime * rotationSpeed);
+        dir = Useful.Vector2FromAngle(ang);
+
+        if (Time.time - timeLaunch < accelerationDurationPhase2)
+        {
+            velocity = maxSpeedPhase2 * accelerationCurvePhase2.Evaluate(1f) * dir;
+        }
+        else
+        {
+            velocity = maxSpeedPhase2 * dir;
+        }
+
+        if (PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
         {
             sender.GetBack();
             animator.SetTrigger("destroy");
+            velocity = Vector2.zero;
+            isDestroy = true;
             if (animator.GetAnimationLength("destroy", out float length))
             {
                 Invoke(nameof(Destroy), length);
@@ -175,8 +196,9 @@ public class Boomerang : MonoBehaviour
         public BoomerangAttack sender;
         public float maxSpeedPhase2;
         public float recuperationRange;
+        public float rotationSpeed;
 
-        public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1, float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange)
+        public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1, float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange, float rotationSpeed)
         {
             this.dir = dir;
             this.speedCurvePhase1 = speedCurvePhase1;
@@ -187,6 +209,7 @@ public class Boomerang : MonoBehaviour
             this.sender = sender;
             this.maxSpeedPhase2 = maxSpeedPhase2;
             this.recuperationRange = recuperationRange;
+            this.rotationSpeed = rotationSpeed;
         }
     }
 

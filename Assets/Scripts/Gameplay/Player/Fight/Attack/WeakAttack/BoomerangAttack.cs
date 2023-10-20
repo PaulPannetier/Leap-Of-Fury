@@ -14,6 +14,7 @@ public class BoomerangAttack : WeakAttack
     [SerializeField] private AnimationCurve speedCurvePhase1, accelerationCurvePhase2;
     [SerializeField] private float maxSpeedPhase1, maxSpeedPhase2, durationPhase1, accelerationDurationPhase2;
     [SerializeField] private float recuperationRange;
+    [SerializeField] private float rotationSpeed = 120f;
 
 #if UNITY_EDITOR
 
@@ -53,7 +54,7 @@ public class BoomerangAttack : WeakAttack
     private BoomerangLaunchData CreateLaunchData(in Vector2 dir)
     {
         return new BoomerangLaunchData(dir, speedCurvePhase1, accelerationCurvePhase2, maxSpeedPhase1, durationPhase1,
-            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange);
+            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, rotationSpeed * Mathf.Deg2Rad);
     }
 
     public void GetBack()
@@ -71,6 +72,7 @@ public class BoomerangAttack : WeakAttack
         maxSpeedPhase2 = Mathf.Max(0f, maxSpeedPhase2);
         distanceToInstantiate = Mathf.Max(0f, distanceToInstantiate);
         recuperationRange = Mathf.Max(0f, recuperationRange);
+        rotationSpeed = Mathf.Max(0f, rotationSpeed);
     }
 
     private void OnDrawGizmosSelected()
