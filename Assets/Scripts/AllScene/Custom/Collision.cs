@@ -186,7 +186,7 @@ namespace Collision2D
                 return new Capsule(capsule);
             else if (collider is PolygonCollider2D poly)
                 return new Polygone(poly);
-            Debug.LogWarning($"Cant convert a unity collider2D of typer {collider.GetType()}!");
+            Debug.LogWarning($"Cant convert a unity collider2D of type {collider.GetType()}!");
             return null;
         }
 
