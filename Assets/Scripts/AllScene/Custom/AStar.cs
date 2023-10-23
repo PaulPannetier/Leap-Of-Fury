@@ -513,7 +513,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public static bool operator ==(MapPoint labyPt1, MapPoint labyPt2)
         {
-            return (labyPt1.X == labyPt2.X && labyPt1.Y == labyPt2.Y);
+            return Equals(labyPt1, labyPt2);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -538,10 +538,15 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
-            if (!(obj is MapPoint))
+            if(Object.ReferenceEquals(this, null) && Object.ReferenceEquals(obj, null))
+                return true;
+
+            if (Object.ReferenceEquals(this, null) || Object.ReferenceEquals(obj, null))
                 return false;
-            MapPoint point = (MapPoint)obj;
-            return point == this;
+
+            if (!(obj is MapPoint point))
+                return false;
+            return X == point.X && Y == point.Y;
         }
 
         /// ----------------------------------------------------------------------------------------

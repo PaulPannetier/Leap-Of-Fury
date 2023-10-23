@@ -933,12 +933,12 @@ public static class Useful
     /// <returns>the orthogonal normalised vector of v</returns>
     public static Vector2 NormalVector(in this Vector2 v)
     {
-        if (Mathf.Abs(v.x) > Mathf.Epsilon)
+        if (!Mathf.Approximately(v.x, 0f))
         {
             float y = Mathf.Sqrt(1f / (((v.y * v.y) / (v.x * v.x)) + 1f));
             return new Vector2(-v.y * y / v.x, y);
         }
-        else if (Mathf.Abs(v.y) > Mathf.Epsilon)
+        else if (!Mathf.Approximately(v.y, 0f))
         {
             float x = Mathf.Sqrt(1f / (1f + (v.x * v.x) / (v.y * v.y)));
             return new Vector2(x, -v.x * x / v.y);

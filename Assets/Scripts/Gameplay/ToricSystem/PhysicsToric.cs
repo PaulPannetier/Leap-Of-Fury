@@ -643,7 +643,7 @@ public static class PhysicsToric
     public static void GizmosDrawRaycast(Vector2 from, in Vector2 direction, float distance)
     {
         from = GetPointInsideBounds(from);
-        RaycastHit2D raycast = Raycast(GetPointInsideBounds(from), direction, distance, 0, out Vector2[] inters);
+        RaycastHit2D _ = Raycast(GetPointInsideBounds(from), direction, distance, 0, out Vector2[] inters);
         if(inters.Length <= 0)
         {
             Gizmos.DrawLine(from, from + direction * distance);

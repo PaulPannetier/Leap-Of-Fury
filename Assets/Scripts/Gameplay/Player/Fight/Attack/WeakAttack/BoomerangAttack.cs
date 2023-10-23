@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Collision2D;
+using PathFinding;
 using Collider2D = UnityEngine.Collider2D;
 using static Boomerang;
 
@@ -75,8 +76,52 @@ public class BoomerangAttack : WeakAttack
         rotationSpeed = Mathf.Max(0f, rotationSpeed);
     }
 
+    [SerializeField] private bool testPathNoDiagFinding;
+    [SerializeField] private bool testPathFinding;
+    [SerializeField] private Vector2 start;
+    Path testPathNoDiag, testPath;
+
     private void OnDrawGizmosSelected()
     {
+        Vector2 end = PhysicsToric.GetPointInsideBounds(Useful.mainCamera.ScreenToWorldPoint(InputManager.mousePosition));
+        Gizmos.color = Color.green;
+        Circle.GizmosDraw(start, 0.3f);
+        Circle.GizmosDraw(end, 0.3f);
+
+        if (testPathFinding || testPathNoDiagFinding)
+        {
+            Map map = LevelMapData.currentMap.GetPathfindingMap();
+            MapPoint startMP = LevelMapData.currentMap.GetMapPointAtPosition(start);
+            MapPoint endMP = LevelMapData.currentMap.GetMapPointAtPosition(end);
+
+            if (testPathNoDiagFinding)
+            {
+                testPathNoDiag = PathFinderToric.FindBestPath(map, startMP, endMP, false);
+                Gizmos.color = Color.green;
+                DrawPath(testPathNoDiag);
+            }
+
+            if (testPathFinding)
+            {
+                testPath = PathFinderToric.FindBestPath(map, startMP, endMP, true);
+                Gizmos.color = Color.red;
+                DrawPath(testPath);
+            }
+
+            void DrawPath(Path p)
+            {
+                Vector2 beg = LevelMapData.currentMap.GetPositionOfMapPoint(p.path[0]);
+
+                for (int i = 0; i < p.path.Length; i++)
+                {
+                    Vector2 end = LevelMapData.currentMap.GetPositionOfMapPoint(p.path[i]);
+                    PhysicsToric.GizmosDrawRaycast(beg, end);
+                    beg = end;
+                }
+            }
+        }
+        return;
+
         if (!drawGizmos)
             return;
 

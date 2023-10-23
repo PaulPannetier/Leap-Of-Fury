@@ -1,4 +1,5 @@
 using UnityEngine;
+using PathFinding;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
 
@@ -74,7 +75,7 @@ public class Boomerang : MonoBehaviour
                 HandleGoState();
                 break;
             case State.getBack:
-                HandleGetBackState();
+                HandleGetBackStateV2();
                 break;
             default:
                 break;
@@ -91,7 +92,7 @@ public class Boomerang : MonoBehaviour
 
         if(groundCol != null)
         {
-            transform.position -= (Vector3)(velocity * Time.deltaTime);
+            transform.position -= (Vector3)(velocity * (Time.deltaTime * 2f));
         }
 
         if (groundCol != null || Time.time - timeLaunch > durationPhase1)
@@ -106,7 +107,7 @@ public class Boomerang : MonoBehaviour
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate((Time.time - timeLaunch) / durationPhase1) * dir;
     }
 
-    private void HandleGetBackState()
+    private void HandleGetBackStateV1()
     {
         Vector2 targetDir = PhysicsToric.Direction(transform.position, sender.transform.position);
 
@@ -131,6 +132,77 @@ public class Boomerang : MonoBehaviour
         float targetAng = Useful.AngleHori(Vector2.zero, targetDir);
         float ang = Mathf.MoveTowards(currentAng, targetAng, Time.deltaTime * rotationSpeed);
         dir = Useful.Vector2FromAngle(ang);
+
+        if (Time.time - timeLaunch < accelerationDurationPhase2)
+        {
+            velocity = maxSpeedPhase2 * accelerationCurvePhase2.Evaluate(1f) * dir;
+        }
+        else
+        {
+            velocity = maxSpeedPhase2 * dir;
+        }
+
+        if (PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
+        {
+            sender.GetBack();
+            animator.SetTrigger("destroy");
+            velocity = Vector2.zero;
+            isDestroy = true;
+            if (animator.GetAnimationLength("destroy", out float length))
+            {
+                Invoke(nameof(Destroy), length);
+            }
+            else
+                Destroy();
+
+            return;
+        }
+    }
+
+    private Vector2 targetPos;
+    private bool isTargetingSender;
+    private Path path;
+    private MapPoint oldSenderMapPoint = null;
+    int pathIndex;
+
+    private void HandleGetBackStateV2()
+    {
+        MapPoint currentSenderMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(sender.transform.position);
+
+        if(oldSenderMapPoint == null || oldSenderMapPoint != currentSenderMapPoint)
+        {
+            Map pathFindingMap = LevelMapData.currentMap.GetPathfindingMap();
+            MapPoint start = LevelMapData.currentMap.GetMapPointAtPosition(transform.position);
+
+            if (start == currentSenderMapPoint)
+            {
+                isTargetingSender = true;
+                path = null;
+            }
+            else
+            {
+                path = PathFinderToric.FindBestPath(pathFindingMap, start, currentSenderMapPoint);
+                pathIndex = 1;
+            }
+        }
+        oldSenderMapPoint = currentSenderMapPoint;
+
+        MapPoint currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(transform.position);
+        if(currentMapPoint == currentSenderMapPoint)
+        {
+            isTargetingSender = true;
+        }
+
+        if(!isTargetingSender)
+        {
+            if(PhysicsToric.Distance(LevelMapData.currentMap.GetPositionOfMapPoint(path.path[1]), transform.position) < 3f * maxSpeedPhase2 * Time.deltaTime)
+            {
+                pathIndex++;
+            }
+        }
+
+        Vector2 targetedPos = isTargetingSender ? sender.transform.position : LevelMapData.currentMap.GetPositionOfMapPoint(path.path[pathIndex]);
+        dir = PhysicsToric.Direction(transform.position, targetedPos);
 
         if (Time.time - timeLaunch < accelerationDurationPhase2)
         {

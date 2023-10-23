@@ -146,4 +146,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circleOffset: {x: -0.75, y: 0}
-  circleRadius: 0.5
+  circleRadius: 0.35
