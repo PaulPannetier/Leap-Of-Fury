@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class BezierUtility
 {
+    #region Static
+
     private static float cache0;
 
     private static Hitbox ComputeBezierHitbox(in Vector2 start, in Vector2 handle1, in Vector2 handle2, in Vector2 end)
@@ -85,6 +87,10 @@ public static class BezierUtility
         return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
     }
 
+    #endregion
+
+    #region Spline class
+
     public abstract class Spline
     {
         public abstract Vector2 Evaluate(float t);
@@ -94,6 +100,8 @@ public static class BezierUtility
         public abstract Hitbox Hitbox(); 
         public abstract Hitbox[] Hitboxes();
     }
+
+    #endregion
 
     #region CubicBezierCurve
 
@@ -124,10 +132,10 @@ public static class BezierUtility
 
             Vector2[] res = new Vector2[nbPoints];
             float t;
-            int nbPointM1 = nbPoints - 1;
+            float oneOnbPointM1 = 1f / (nbPoints - 1);
             for (int i = 0; i < nbPoints; i++)
             {
-                t = (float) i / nbPointM1;
+                t = (float) i * oneOnbPointM1;
                 res[i] = start + t * P1 + (t * t) * P2 + (t * t * t) * P3;
             }
             return res;
@@ -152,6 +160,8 @@ public static class BezierUtility
     }
 
     #endregion
+
+    #region CubicBezierSpline
 
     public class CubicBezierSpline : Spline
     {
@@ -185,7 +195,7 @@ public static class BezierUtility
             Vector2[] res = new Vector2[nbPoints];
 
             int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 1)).Round();
-            int nbPointByCurveM1 = nbPointByCurve - 1;//cache
+            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
             int indexRes = 0;
             Vector2 P1, P2, P3;
             for (int i = 0; i < points.Length - 2; i++)
@@ -196,7 +206,7 @@ public static class BezierUtility
 
                 for (int j = 0; j < nbPointByCurve; j++)
                 {
-                    float t = j / nbPointByCurveM1;
+                    float t = j * oneOnbPointByCurveM1;
                     cache0 = t * t;
                     res[indexRes] = points[i] + t * P1 + cache0 * P2 + cache0 * t * P3;
                     indexRes++;
@@ -260,6 +270,8 @@ public static class BezierUtility
         }
     }
 
+    #endregion
+
     #region HermiteSpline
 
     public class HermiteSpline : Spline
@@ -286,7 +298,7 @@ public static class BezierUtility
             }
 
             velocities[0] = 2f * (points[1] - points[0]);
-            velocities[0] = 2f * (points[points.Length - 1] - points[points.Length - 2]);
+            velocities[points.Length - 1] = 2f * (points[points.Length - 1] - points[points.Length - 2]);
         }
 
         public override Vector2 Evaluate(float t)
@@ -304,8 +316,9 @@ public static class BezierUtility
             Vector2[] res = new Vector2[nbPoints];
 
             int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 1)).Round();
-            int nbPointByCurveM1 = nbPointByCurve - 1;//cache
+            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
             int indexRes = 0;
+            float t;
             Vector2 P1, P2, c1, c2, c3;
             for (int i = 0; i < points.Length - 2; i++)
             {
@@ -318,7 +331,7 @@ public static class BezierUtility
 
                 for (int j = 0; j < nbPointByCurve; j++)
                 {
-                    float t = j / nbPointByCurveM1;
+                    t = j * oneOnbPointByCurveM1;
                     //res[indexRes] = EvaluateHermiteCurve(points[i], velocities[i], points[i + 1], velocities[i + 1], t);
                     cache0 = t * t;
                     res[indexRes] = P1 + t * c1 + cache0 * c2 + cache0 * t * c3;
@@ -328,7 +341,7 @@ public static class BezierUtility
 
             //last Curve
             int max = nbPoints - indexRes - 1;
-            int maxM1 = max - 1;
+            float oneOmaxM1 = 1f / (max - 1);
             P1 = points[points.Length - 2] + velocities[velocities.Length - 2];
             P2 = points[points.Length - 1] + velocities[velocities.Length - 1];
 
@@ -337,7 +350,7 @@ public static class BezierUtility
             c3 = P1 - points[points.Length - 2] - P2 + points[points.Length - 1];
             for (int i = 0; i < max; i++)
             {
-                float t = i / maxM1;
+                t = i * oneOmaxM1;
                 //res[indexRes] = EvaluateHermiteCurve(points[points.Length - 2], velocities[velocities.Length - 2], points[points.Length - 1], velocities[velocities.Length - 1], t);
                 cache0 = t * t;
                 res[indexRes] = P1 + t * c1 + cache0 * c2 + cache0 * t * c3;
@@ -388,139 +401,290 @@ public static class BezierUtility
 
     #endregion
 
+    #region CatmulRom
+
     public class CatmulRomSpline : Spline
     {
+        private static readonly float twoO3 = 2f / 3f;
 
+        private Vector2[] points;
+        private Vector2[] handles;
+
+        public CatmulRomSpline(Vector2[] points)
+        {
+            this.points = points;
+
+            handles = new Vector2[points.Length];
+
+            for (int i = 1; i < points.Length - 1; i++)
+            {
+                handles[i] = points[i] + points[i + 1] - points[i - 1];
+            }
+
+            handles[0] = 2f * points[1] - points[0];
+            handles[points.Length - 1] = points[points.Length - 1] + 2f * (points[points.Length - 1] - points[points.Length - 2]);
+        }
+
+        public override Vector2 Evaluate(float t)
+        {
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 1);
+            int indexCurve = (t / interLength).Floor();
+            float newT = (t - (indexCurve * interLength)) / interLength;
+
+            cache0 = newT * newT;
+            return points[indexCurve] * (cache0 - 0.5f * cache0 * newT) + handles[indexCurve] * (1f - 0.5f * newT - 2.5f * cache0 + 1.5f * cache0 * newT) + 
+                points[indexCurve + 1] * (0.5f * newT + 2f * cache0 - 1.5f * cache0 * newT) + handles[indexCurve + 1] * (0.5f * (cache0 * newT - cache0));
+        }
+
+        public override Vector2[] EvaluateFullCurve(int nbPoints)
+        {
+            Vector2[] res = new Vector2[nbPoints];
+
+            int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 1)).Round();
+            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
+            float t;
+            int indexRes = 0;
+            Vector2 P0, P1, P2, P3;
+            for (int i = 0; i < points.Length - 2; i++)
+            {
+                P0 = handles[i];
+                P1 = 0.5f * (points[i + 1] - handles[i]);
+                P2 = points[i] - 2.5f * handles[i] + 2f * points[i + 1] - 0.5f * handles[i + 1];
+                P3 = 1.5f * (handles[i] - points[i + 1]) + 0.5f * (points[i + 1] - points[i]);
+
+                for (int j = 0; j < nbPointByCurve; j++)
+                {
+                    t = j * oneOnbPointByCurveM1;
+                    cache0 = t * t;
+                    res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
+                    indexRes++;
+                }
+            }
+
+            //last Curve
+            int max = nbPoints - indexRes - 1;
+            int maxM1 = max - 1;
+
+            P0 = handles[points.Length - 2];
+            P1 = 0.5f * (points[points.Length - 1] - handles[points.Length - 2]);
+            P2 = points[points.Length - 2] - 2.5f * handles[points.Length - 2] + 2f * points[points.Length - 1] - 0.5f * handles[points.Length - 1];
+            P3 = 1.5f * (handles[points.Length - 2] - points[points.Length - 1]) + 0.5f * (points[points.Length - 1] - points[points.Length - 2]);
+
+            for (int i = 0; i < max; i++)
+            {
+                t = i / maxM1;
+                cache0 = t * t;
+                res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
+                indexRes++;
+            }
+
+            res[nbPoints - 1] = points[points.Length - 1];
+            return res;
+        }
+
+        public override Hitbox Hitbox()
+        {
+            Hitbox[] hitboxes = Hitboxes();
+            float xMin = float.MaxValue, xMax = float.MinValue, yMin = float.MaxValue, yMax = float.MinValue;
+
+            foreach (Hitbox hitbox in hitboxes)
+            {
+                xMin = Mathf.Min(xMin, hitbox.center.x - hitbox.size.x);
+                xMax = Mathf.Max(xMax, hitbox.center.x + hitbox.size.x);
+                yMin = Mathf.Min(yMin, hitbox.center.y - hitbox.size.y);
+                yMax = Mathf.Max(yMax, hitbox.center.y + hitbox.size.y);
+            }
+            return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
+        }
+
+        public override Hitbox[] Hitboxes()
+        {
+            Hitbox[] res = new Hitbox[points.Length - 1];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = ComputeBezierHitbox(points[i], points[i] + (handles[i] - points[i]) * twoO3, points[i + 1] + (handles[i + 1] - points[i + 1]) * twoO3, points[i + 1]);
+            }
+            return res;
+        }
+
+        public override Vector2 Velocity(float t)
+        {
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 1);
+            int indexCurve = (t / interLength).Floor();
+            float newT = (t - (indexCurve * interLength)) / interLength;
+
+            cache0 = newT * newT;
+            return points[indexCurve] * (2f * newT - 1.5f * cache0) + handles[indexCurve] * (4.5f * cache0 - 5f * newT - 0.5f) +
+                points[indexCurve + 1] * (0.5f + 4f * newT - 4.5f * cache0) + handles[indexCurve + 1] * (1.5f * cache0 - newT);
+        }
     }
+
+    #endregion
+
+    #region Cardinal
 
     public class CardinalSpline : Spline
     {
+        private static readonly float oneO3 = 1f / 3f;
 
+        private Vector2[] points;
+        private Vector2[] handles;
+        float s;
+
+        public CardinalSpline(Vector2[] points, float tension)
+        {
+            this.points = points;
+            this.s = tension;
+
+            handles = new Vector2[points.Length];
+
+            for (int i = 1; i < points.Length - 1; i++)
+            {
+                handles[i] = points[i] + (points[i + 1] - points[i - 1]) * s;
+            }
+
+            handles[0] = points[0] + 2f * s * (points[1] - points[0]);
+            handles[points.Length - 1] = points[points.Length - 1] + 2f * s * (points[points.Length - 1] - points[points.Length - 2]);
+        }
+
+        public override Vector2 Evaluate(float t)
+        {
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 1);
+            int indexCurve = (t / interLength).Floor();
+            float newT = (t - (indexCurve * interLength)) / interLength;
+
+            cache0 = newT * newT;
+            return handles[indexCurve] + newT * s * (points[indexCurve + 1] - points[indexCurve]) +
+                cache0 * (2f * s * points[indexCurve] + (s - 3f) * handles[indexCurve] + (3f - 2f * s) * points[indexCurve + 1] - s * handles[indexCurve + 1]) +
+                cache0 * newT * ((2f - s) * handles[indexCurve] - s * points[indexCurve] + (s - 2f) * points[indexCurve + 1] + s * handles[indexCurve + 1]);
+        }
+
+        public override Vector2[] EvaluateFullCurve(int nbPoints)
+        {
+            Vector2[] res = new Vector2[nbPoints];
+
+            int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 1)).Round();
+            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
+            float t;
+            int indexRes = 0;
+            Vector2 P0, P1, P2, P3;
+            for (int i = 0; i < points.Length - 2; i++)
+            {
+                P0 = handles[i];
+                P1 = s * (points[i + 1] - points[i]);
+                P2 = 2f * s * points[i] + (s - 3f) * handles[i] + (3f - 2f * s) * points[i + 1] - s * handles[i + 1];
+                P3 = (2f - s) * handles[i] + - s * points[i] + (s - 2f) * points[i + 1] + s * handles[i + 1];
+
+                for (int j = 0; j < nbPointByCurve; j++)
+                {
+                    t = j * oneOnbPointByCurveM1;
+                    cache0 = t * t;
+                    res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
+                    indexRes++;
+                }
+            }
+
+            //last Curve
+            int max = nbPoints - indexRes - 1;
+            float oneOmaxM1 = 1f / (max - 1);
+
+            P0 = handles[points.Length - 2];
+            P1 = 0.5f * (points[points.Length - 1] - handles[points.Length - 2]);
+            P2 = points[points.Length - 2] - 2.5f * handles[points.Length - 2] + 2f * points[points.Length - 1] - 0.5f * handles[points.Length - 1];
+            P3 = 1.5f * (handles[points.Length - 2] - points[points.Length - 1]) + 0.5f * (points[points.Length - 1] - points[points.Length - 2]);
+
+            for (int i = 0; i < max; i++)
+            {
+                t = i * oneOmaxM1;
+                cache0 = t * t;
+                res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
+                indexRes++;
+            }
+
+            res[nbPoints - 1] = points[points.Length - 1];
+            return res;
+        }
+
+        public override Hitbox Hitbox()
+        {
+            Hitbox[] hitboxes = Hitboxes();
+            float xMin = float.MaxValue, xMax = float.MinValue, yMin = float.MaxValue, yMax = float.MinValue;
+
+            foreach (Hitbox hitbox in hitboxes)
+            {
+                xMin = Mathf.Min(xMin, hitbox.center.x - hitbox.size.x);
+                xMax = Mathf.Max(xMax, hitbox.center.x + hitbox.size.x);
+                yMin = Mathf.Min(yMin, hitbox.center.y - hitbox.size.y);
+                yMax = Mathf.Max(yMax, hitbox.center.y + hitbox.size.y);
+            }
+            return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
+        }
+
+        public override Hitbox[] Hitboxes()
+        {
+            Hitbox[] res = new Hitbox[points.Length - 1];
+            float twoO3s = 2f / (3f * s);
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = ComputeBezierHitbox(points[i], points[i] + (handles[i] - points[i]) * twoO3s, points[i + 1] + (handles[i + 1] - points[i + 1]) * twoO3s, points[i + 1]);
+            }
+            return res;
+        }
+
+        public override Vector2 Velocity(float t)
+        {
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 1);
+            int indexCurve = (t / interLength).Floor();
+            float newT = (t - (indexCurve * interLength)) / interLength;
+
+            return s * (points[indexCurve + 1] - points[indexCurve]) +
+                2f * newT * (2f * s * points[indexCurve] + (s - 3f) * handles[indexCurve] + (3f - 2f * s) * points[indexCurve + 1] - s * handles[indexCurve + 1]) +
+                3f * newT * newT * ((2f - s) * handles[indexCurve] - s * points[indexCurve] + (s - 2f) * points[indexCurve + 1] + s * handles[indexCurve + 1]);
+        }
     }
+
+    #endregion
+
+    #region BSpline
 
     public class BSpline : Spline
     {
+        public override Vector2 Evaluate(float t)
+        {
+            throw new System.NotImplementedException();
+        }
 
+        public override Vector2[] EvaluateFullCurve(int nbPoints)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Hitbox Hitbox()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Hitbox[] Hitboxes()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override Vector2 Velocity(float t)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="controlPoints"></param>
-    /// <param name="handlePoints"></param>
-    /// <returns>La courbe de bézier passant par les points controlPoints et la courbe sera influencé par les handlePoints</returns>
-    public static Vector2[] CubicBezierSpline(in Vector2[] controlPoints, in Vector2[] handlePoints, int pointsPerCurve)
+    #endregion
+
+    /*
+    public class LeonardSpline : Spline
     {
-        //verif
-        if (handlePoints.Length != 2 * controlPoints.Length - 2)
-        {
-            Debug.LogError("wrong parameter for calculate bezier spline : " + handlePoints.Length + " != " + (2 * controlPoints.Length - 2));
-            return null;
-        }
 
-        Vector2[] res = new Vector2[(controlPoints.Length - 1) * pointsPerCurve - controlPoints.Length + 2];
-        int resIndex = 0;
-        float step = 1f / (pointsPerCurve - 1);
-        float t;
-        Vector2 start, end, handle1, handle2;
-
-        for (int i = 0; i < controlPoints.Length - 1; i++)
-        {
-            start = controlPoints[i];
-            end = controlPoints[i + 1];
-            handle1 = handlePoints[2 * i];
-            handle2 = handlePoints[2 * i + 1];
-            res[resIndex] = start;
-            resIndex++;
-            for (int j = 1; j < pointsPerCurve - 1; j++)
-            {
-                t = step * j;
-                res[resIndex] = CubicBezierCurve(start, handle1, handle2, end, t);
-                resIndex++;
-            }
-        }
-        res[resIndex] = controlPoints[controlPoints.Length - 1];
-        return res;
     }
-
-    public static Hitbox[] CubicBezierSplineHitboxes(in Vector2[] controlPoints, in Vector2[] handlePoints)
-    {
-        Hitbox[] res = new Hitbox[controlPoints.Length - 1];
-        for (int i = 0; i < res.Length; i++)
-        {
-            res[i] = CubicBezierCurveHitbox(controlPoints[i], handlePoints[2 * i], handlePoints[2 * i + 1], controlPoints[i + 1]);
-        }
-        return res;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="controlPoints"></param>
-    /// <param name="handlePoints"></param>
-    /// <returns>La courbe de Catmull-Rom passant par les points controlPoints</returns>
-    public static Vector2[] CatmullRomSpline(in Vector2[] controlPoints, int pointsPerCurve)
-    {
-        Vector2[] newControlPoints = new Vector2[controlPoints.Length + 2];
-        newControlPoints[0] = 2f * controlPoints[0] - controlPoints[1];
-        newControlPoints[newControlPoints.Length - 1] = 2f * controlPoints[controlPoints.Length - 1] - controlPoints[controlPoints.Length - 2];
-        for (int i = 1; i < newControlPoints.Length - 1; i++)
-        {
-            newControlPoints[i] = controlPoints[i - 1];
-        }
-
-        Vector2[] handles = new Vector2[controlPoints.Length];
-        for (int i = 0; i < handles.Length; i++)
-        {
-            handles[i] = (newControlPoints[i + 2] - newControlPoints[i]) * 0.5f;
-        }
-
-        Vector2[] res = new Vector2[(controlPoints.Length - 1) * pointsPerCurve - controlPoints.Length + 2];
-        int resIndex = 0;
-        float step = 1f / (pointsPerCurve - 1);
-        float t;
-        Vector2 start, end, v0, v1;
-
-        for (int i = 0; i < controlPoints.Length - 1; i++)
-        {
-            start = controlPoints[i];
-            end = controlPoints[i + 1];
-            v0 = handles[i];
-            v1 = handles[i + 1];
-            res[resIndex] = start;
-            resIndex++;
-            for (int j = 1; j < pointsPerCurve - 1; j++)
-            {
-                t = step * j;
-                res[resIndex] = HermiteCurve(start, v0, v1, end, t);
-                resIndex++;
-            }
-        }
-        res[resIndex] = controlPoints[controlPoints.Length - 1];
-        return res;
-    }
-
-    public static Hitbox[] CatmullRomSplineHitboxes(in Vector2[] controlPoints)
-    {
-        Vector2[] newControlPoints = new Vector2[controlPoints.Length + 2];
-        newControlPoints[0] = 2f * controlPoints[0] - controlPoints[1];
-        newControlPoints[newControlPoints.Length - 1] = 2f * controlPoints[controlPoints.Length - 1] - controlPoints[controlPoints.Length - 2];
-        for (int i = 1; i < newControlPoints.Length - 1; i++)
-        {
-            newControlPoints[i] = controlPoints[i - 1];
-        }
-
-        Vector2[] handles = new Vector2[controlPoints.Length];
-        for (int i = 0; i < handles.Length; i++)
-        {
-            handles[i] = (newControlPoints[i + 2] - newControlPoints[i]) * 0.5f;
-        }
-
-        Hitbox[] res = new Hitbox[controlPoints.Length - 1];
-        for (int i = 0; i < res.Length; i++)
-        {
-            res[i] = HermiteCurveHitbox(controlPoints[i], handles[i], handles[i + 1], controlPoints[i + 1]);
-        }
-        return res;
-    }
+    */
 }
