@@ -407,15 +407,15 @@ MonoBehaviour:
   - {x: 5.32, y: -0.29}
   - {x: 0.36, y: 4.67}
   handles: []
-  tension: 1
-  pointsPerCurve: 70
+  tension: 0.885
+  pointsPerCurve: 25
   showHitbox: 0
   showHitboxes: 0
   testPoints:
-  - {x: -14, y: -7.23}
-  - {x: -6.17, y: -2.12}
-  - {x: 3.19, y: -6.29}
-  - {x: 8.6, y: -0.55}
+  - {x: -10.1, y: -6.89}
+  - {x: -5.04, y: -1.19}
+  - {x: 7.57, y: -4.99}
+  - {x: 9.4, y: 5.18}
 --- !u!4 &2071626505
 Transform:
   m_ObjectHideFlags: 0

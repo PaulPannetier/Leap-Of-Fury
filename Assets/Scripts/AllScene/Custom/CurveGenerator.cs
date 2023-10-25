@@ -32,7 +32,7 @@ public class CurveGenerator : MonoBehaviour
     [SerializeField] private SplineType splineType = SplineType.Catmulrom;
     [SerializeField] private Vector2[] controlPoints;
     [SerializeField] private Vector2[] handles;
-    [SerializeField, Range(0f, 2f)] private float tension;
+    [SerializeField, Range(0f, 1f)] private float tension;
     [SerializeField] private int pointsPerCurve = 70;
     [SerializeField] private bool showHitbox;
     [SerializeField] private bool showHitboxes;
@@ -103,7 +103,6 @@ public class CurveGenerator : MonoBehaviour
     #region Gizmos/OnValidate
 
     [SerializeField] private Vector2[] testPoints;
-    private HermiteSpline testSpline;
 
     private void OnDrawGizmosSelected()
     {
@@ -114,7 +113,7 @@ public class CurveGenerator : MonoBehaviour
             Circle.GizmosDraw(testPoints[i], 0.3f);
         }
 
-        Vector2[] bCurve = spline.EvaluateFullCurve(pointsPerCurve);
+        Vector2[] bCurve = spline.EvaluateFullCurve(pointsPerCurve * (testPoints.Length - 1));
 
         Vector2 beg2 = bCurve[0];
         for (int i = 1; i < bCurve.Length; i++)
@@ -124,9 +123,10 @@ public class CurveGenerator : MonoBehaviour
         }
 
         Gizmos.color = Color.red;
-        for (int i = 0; i <= 10; i++)
+        int nbVel = pointsPerCurve * (testPoints.Length - 1) / 4;
+        for (int i = 0; i <= nbVel; i++)
         {
-            float t = i / 10f;
+            float t = (float)i / nbVel;
             Vector2 p = spline.Evaluate(t);
             Circle.GizmosDraw(p, 0.1f);
             Vector2 s = spline.Velocity(t);
@@ -185,7 +185,7 @@ public class CurveGenerator : MonoBehaviour
 
     private void OnValidate()
     {
-        spline = new HermiteSpline(testPoints);
+        spline = new BSpline(testPoints);
 
         return;
 
