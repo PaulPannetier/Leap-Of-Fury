@@ -491,91 +491,66 @@ public static class BezierUtility
 
     #endregion
 
-    #region BSpline
+    #region Custom Spline
 
-    public class BSpline : Spline
+    public abstract class CustomSpline : Spline
     {
-        private static readonly float oneO6 = 1f / 6f;
+        private Matrix4x4 M;
 
-        private Vector2[] points;
-        private Vector2[] velocities;
+        protected Vector2[] points;
 
-        public BSpline(Vector2[] points)
+        public CustomSpline(Matrix4x4 caracteristicMatrix, Vector2[] points)
         {
+            this.M = caracteristicMatrix;
             this.points = points;
-            velocities = new Vector2[points.Length];
+        }
 
-            for (int i = 1; i < points.Length - 1; i++)
-            {
-                velocities[i] = points[i + 1] - points[i - 1];
-            }
-
-            velocities[0] = 2f * (points[1] - points[0]);
-            velocities[points.Length - 1] = 2f * (points[points.Length - 1] - points[points.Length - 2]);
+        protected (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) PrecomputePolynomialValues(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
+        {
+            Vector2 C0 = M[0,0] * P0 + M[0,1] * P1 + M[0,2] * P2 + M[0,3] * P3;
+            Vector2 C1 = M[1,0] * P0 + M[1,1] * P1 + M[1,2] * P2 + M[1,3] * P3;
+            Vector2 C2 = M[2,0] * P0 + M[2,1] * P1 + M[2,2] * P2 + M[2,3] * P3;
+            Vector2 C3 = M[3,0] * P0 + M[3,1] * P1 + M[3,2] * P2 + M[3,3] * P3;
+            return (C0, C1, C2, C3);
         }
 
         public override Vector2 Evaluate(float t)
         {
-            t = Mathf.Clamp01(t);
-            float interLength = 1f / (points.Length - 1);
-            int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
-            float newT = (t - (i * interLength)) / interLength;
-            Vector2 H1 = points[i] + velocities[i];
-            Vector2 H2 = points[i + 1] - velocities[i + 1];
+            return default(Vector2);
+        }
 
-            cache0 = newT * newT;
-            return oneO6 * (points[i] + 4f * H1 + H2) + t * 0.5f * (H2 - points[i]) + cache0 * (0.5f * (points[i] + H2) - H1) +
-                cache0 * t * oneO6 * (3f * (H1 - H2) - points[i] + points[i + 1]);
+        public override Vector2 Velocity(float t)
+        {
+            return default(Vector2);
         }
 
         public override Vector2[] EvaluateFullCurve(int nbPoints)
         {
-            Vector2[] res = new Vector2[nbPoints];
+            return default(Vector2[]);
+        }
 
-            int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 1)).Round();
-            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
-            float t;
-            int indexRes = 0;
-            Vector2 P0, P1, P2, P3, H1, H2;
-            for (int i = 0; i < points.Length - 2; i++)
-            {
-                H1 = points[i] + velocities[i];
-                H2 = points[i + 1] - velocities[i + 1];
-                P0 = oneO6 * (points[i] + 4f * H1 + H2);
-                P1 = 0.5f * (H2 - points[i]);
-                P2 = 0.5f * (points[i] + H2) - H1;
-                P3 = oneO6 * (3f * (H1 - H2) - points[i] + points[i + 1]);
+        public override Hitbox Hitbox()
+        {
+            return default(Hitbox);
+        }
 
-                for (int j = 0; j < nbPointByCurve; j++)
-                {
-                    t = j * oneOnbPointByCurveM1;
-                    cache0 = t * t;
-                    res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
-                    indexRes++;
-                }
-            }
+        public override Hitbox[] Hitboxes()
+        {
+            return default(Hitbox[]);
+        }
+    }
 
-            //last Curve
-            int max = nbPoints - indexRes - 1;
-            float oneOmaxM1 = 1f / (max - 1);
+    #endregion
 
-            H1 = points[points.Length - 2] + velocities[velocities.Length - 2];
-            H2 = points[points.Length - 1] - velocities[velocities.Length - 1];
-            P0 = oneO6 * (points[points.Length - 2] + 4f * H1 + H2);
-            P1 = 0.5f * (H2 - points[points.Length - 2]);
-            P2 = 0.5f * (points[points.Length - 2] + H2) - H1;
-            P3 = oneO6 * (3f * (H1 - H2) - points[points.Length - 2] + points[points.Length - 1]);
+    #region BSpline
 
-            for (int i = 0; i < max; i++)
-            {
-                t = i * oneOmaxM1;
-                cache0 = t * t;
-                res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
-                indexRes++;
-            }
+    public class BSpline : CustomSpline
+    {
+        private static readonly float oneO6 = 1f / 6f;
 
-            res[nbPoints - 1] = points[points.Length - 1];
-            return res;
+        public BSpline(Vector2[] points) : base(default, points)
+        {
+
         }
 
         public override Hitbox Hitbox()
@@ -598,7 +573,7 @@ public static class BezierUtility
             Hitbox[] res = new Hitbox[points.Length - 1];
             for (int i = 0; i < res.Length; i++)
             {
-                res[i] = HitboxBCurve(points[i], points[i] + velocities[i], points[i + 1] - velocities[i + 1], points[i + 1]);
+                //res[i] = HitboxBCurve(points[i], points[i] + velocities[i], points[i + 1] - velocities[i + 1], points[i + 1]);
             }
             return res;
         }
@@ -681,19 +656,6 @@ public static class BezierUtility
             }
 
             return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
-        }
-
-        public override Vector2 Velocity(float t)
-        {
-            t = Mathf.Clamp01(t);
-            float interLength = 1f / (points.Length - 1);
-            int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
-            float newT = (t - (i * interLength)) / interLength;
-            Vector2 H1 = points[i] + velocities[i];
-            Vector2 H2 = points[i + 1] - velocities[i + 1];
-
-            return 0.5f * (H2 - points[i]) + newT * (points[i] + H2 - 2f * H1) +
-                newT * newT * 0.5f * (3f * (H1 - H2) - points[i] + points[i + 1]);
         }
     }
 
