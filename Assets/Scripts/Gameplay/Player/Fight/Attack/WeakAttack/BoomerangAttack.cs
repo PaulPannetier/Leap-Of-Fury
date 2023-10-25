@@ -120,7 +120,6 @@ public class BoomerangAttack : WeakAttack
                 }
             }
         }
-        return;
 
         if (!drawGizmos)
             return;

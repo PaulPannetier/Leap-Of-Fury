@@ -369,6 +369,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1212375675141333562, guid: 20c51873747073248a228b6566e5976a, type: 3}
   m_PrefabInstance: {fileID: 2047863314}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2071626503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2071626505}
+  - component: {fileID: 2071626504}
+  m_Layer: 0
+  m_Name: tmp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2071626504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071626503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45c4f424e9c041f459f4a07c3ce55435, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generateCollider: 0
+  colliderEdgeRadius: 0
+  colliderResolutionPerCurve: 7
+  splineType: 0
+  controlPoints:
+  - {x: -5.93, y: -1.88}
+  - {x: 5.32, y: -0.29}
+  - {x: 0.36, y: 4.67}
+  handles: []
+  tension: 1
+  pointsPerCurve: 70
+  showHitbox: 0
+  showHitboxes: 0
+  testPoints:
+  - {x: -11.4, y: -3.17}
+  - {x: -5.79, y: -2.12}
+  - {x: 4.42, y: -3.64}
+  - {x: 11.29, y: -3.64}
+  testHandles:
+  - {x: -14.44, y: 4.09}
+  - {x: -6.22, y: 1.93}
+  - {x: -5.31, y: -8.52}
+  - {x: 5.71, y: -5.64}
+  - {x: 2.08, y: 0.37}
+  - {x: 12.5, y: 1.07}
+--- !u!4 &2071626505
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071626503}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.7401463, y: 0.013976339, z: -5.925745}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2085145698
 GameObject:
   m_ObjectHideFlags: 0
@@ -7334,7 +7403,11 @@ MonoBehaviour:
   durationPhase1: 1
   accelerationDurationPhase2: 3
   recuperationRange: 0.7
+  rotationSpeed: 120
   drawGizmos: 1
+  testPathNoDiagFinding: 0
+  testPathFinding: 0
+  start: {x: 0, y: 0}
 --- !u!1 &8017218814868572334
 GameObject:
   m_ObjectHideFlags: 0
@@ -8242,3 +8315,4 @@ SceneRoots:
   - {fileID: 1393366166460120882}
   - {fileID: 2036405239}
   - {fileID: 2085145699}
+  - {fileID: 2071626505}

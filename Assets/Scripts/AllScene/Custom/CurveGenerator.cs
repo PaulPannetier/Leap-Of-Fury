@@ -1,186 +1,242 @@
 using UnityEngine;
+using UnityEditor;
 using Collision2D;
+using static BezierUtility;
+using System;
+using System.Collections.Generic;
 
+[ExecuteInEditMode]
 public class CurveGenerator : MonoBehaviour
 {
+    public enum SplineType
+    {
+        Bezier,
+        Hermite,
+        Catmulrom,
+        Cardinal,
+        BSline
+    }
+
+#if UNITY_EDITOR
+
     private EdgeCollider2D edgeCollider;
     private Vector2[] curve;
+    private Spline spline;
 
     [Header("Collider")]
-    [SerializeField, HideInInspector] private bool useCollider = false;
-    [SerializeField, HideInInspector] private float colliderEdgeRadius;
-    [SerializeField, HideInInspector] private int colliderResolutionPerCurve = 7;
+    [SerializeField] private bool generateCollider = false;
+    [SerializeField] private float colliderEdgeRadius;
+    [SerializeField] private int colliderResolutionPerCurve = 7;
 
     [Header("Shape")]
+    [SerializeField] private SplineType splineType = SplineType.Catmulrom;
     [SerializeField] private Vector2[] controlPoints;
+    [SerializeField] private Vector2[] handles;
+    [SerializeField, Range(0f, 2f)] private float tension;
     [SerializeField] private int pointsPerCurve = 70;
-
-    private void Awake()
-    {
-        if(useCollider)
-        {
-            edgeCollider = GetComponent<EdgeCollider2D>();
-            if(edgeCollider == null)
-            {
-                AddEdgeCollider();
-            }
-        }
-    }
-
-    private void Start()
-    {
-        CalculateCurve();
-    }
+    [SerializeField] private bool showHitbox;
+    [SerializeField] private bool showHitboxes;
 
     private void AddEdgeCollider()
     {
-        edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
-        edgeCollider.edgeRadius = colliderEdgeRadius;
-    }
-
-    public void CalculateCurve()
-    {
-        curve = CatmullRomSpline(controlPoints, pointsPerCurve);
-        if(useCollider)
+        edgeCollider = GetComponent<EdgeCollider2D>();
+        if(edgeCollider == null)
         {
-            if(edgeCollider == null)
-                AddEdgeCollider();
-
+            edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
             edgeCollider.edgeRadius = colliderEdgeRadius;
-
-            Vector2[] colliderPoints = new Vector2[(controlPoints.Length - 1) * colliderResolutionPerCurve];
-            int indexColliderPoints = 0;
-            int gap = Mathf.Max(pointsPerCurve / colliderResolutionPerCurve, 1);
-            for (int i = 0; i < controlPoints.Length - 1; i++)
-            {
-                for (int j = 0; j < colliderResolutionPerCurve; j++)
-                {
-                    if (indexColliderPoints >= colliderPoints.Length || i * pointsPerCurve + j * gap >= curve.Length)
-                        break;
-                    colliderPoints[indexColliderPoints] = curve[i * pointsPerCurve + j * gap];
-                    indexColliderPoints++;
-                }
-            }
-            colliderPoints[colliderPoints.Length - 1] = curve[curve.Length - 1];
-
-            edgeCollider.points = colliderPoints;
         }
     }
 
-    private bool isAcontrolPointSelectedLasFrame = false;
-    private int indexSelectedPoint = -1;
-    [ExecuteInEditMode()]
-    private void UpdateControlePoints()
+    private void CreateSpline()
     {
-        if(isAcontrolPointSelectedLasFrame)
+        spline = null;
+        switch (splineType)
         {
-            if (InputManager.GetKey(KeyCode.Mouse0))
+            case SplineType.Bezier:
+                spline = new CubicBezierSpline(controlPoints, handles);
+                break;
+            case SplineType.Hermite:
+                spline = new HermiteSpline(controlPoints);
+                break;
+            case SplineType.Catmulrom:
+                spline = new CatmulRomSpline(controlPoints);
+                break;
+            case SplineType.Cardinal:
+                spline = new CardinalSpline(controlPoints, tension);
+                break;
+            case SplineType.BSline:
+                spline = new BSpline(controlPoints);
+                break;
+            default:
+                break;
+        }
+
+        curve = spline.EvaluateFullCurve(pointsPerCurve * (controlPoints.Length - 1));
+    }
+
+    private void GenerateCollider()
+    {
+        if (edgeCollider == null)
+        {
+            AddEdgeCollider();
+        }
+        edgeCollider.edgeRadius = colliderEdgeRadius;
+
+        Vector2[] colliderPoints = new Vector2[(controlPoints.Length - 1) * colliderResolutionPerCurve];
+        int indexColliderPoints = 0;
+        int gap = Mathf.Max(pointsPerCurve / colliderResolutionPerCurve, 1);
+        for (int i = 0; i < controlPoints.Length - 1; i++)
+        {
+            for (int j = 0; j < colliderResolutionPerCurve; j++)
             {
-                Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                controlPoints[indexSelectedPoint] = mousePos;
-            }
-            else
-            {
-                isAcontrolPointSelectedLasFrame = false;
+                if (indexColliderPoints >= colliderPoints.Length || i * pointsPerCurve + j * gap >= curve.Length)
+                    break;
+                colliderPoints[indexColliderPoints] = curve[i * pointsPerCurve + j * gap];
+                indexColliderPoints++;
             }
         }
-        else
-        {
-            if(InputManager.GetKey(KeyCode.Mouse0))
-            {
-                for (int i = 0; i < controlPoints.Length; i++)
-                {
-                    Vector2 mousePos = Useful.mainCamera.ScreenToWorldPoint(Input.mousePosition);
-                    if (mousePos.SqrDistance(controlPoints[i]) < 0.3f * 0.3f)
-                    {
-                        isAcontrolPointSelectedLasFrame = true;
-                        indexSelectedPoint = i;
-                        break;
-                    }
-                }
-            }
-        }
+        colliderPoints[colliderPoints.Length - 1] = curve[curve.Length - 1];
+
+        edgeCollider.points = colliderPoints;
     }
 
     #region Gizmos/OnValidate
 
+    [SerializeField] private Vector2[] testPoints, testHandles;
+    private CubicBezierSpline bezierSpline;
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        foreach (Vector2 v in controlPoints)
+
+        for (int i = 0; i < testPoints.Length - 1; i++)
         {
-            Circle.GizmosDraw(v, 0.3f);
+            int c = 2 * i;
+            Vector2 h1 = testHandles[c];
+            Vector2 h2 = testHandles[c + 1];
+            Circle.GizmosDraw(testPoints[i], 0.3f);
+            Circle.GizmosDraw(testPoints[i + 1], 0.3f);
+            Circle.GizmosDraw(h1, 0.3f);
+            Circle.GizmosDraw(h2, 0.3f);
+
+            Gizmos.DrawLine(testPoints[i], h1);
+            Gizmos.DrawLine(testPoints[i + 1], h2);
         }
 
-        CalculateCurve();
+        Vector2[] bCurve = bezierSpline.EvaluateFullCurve(pointsPerCurve);
 
-        Vector2 previous = curve[0];
-        for (int i = 1; i < curve.Length; i++)
+        Vector2 beg2 = bCurve[0];
+        for (int i = 1; i < bCurve.Length; i++)
         {
-            Gizmos.DrawLine(previous, curve[i]);
-            previous = curve[i];
+            Gizmos.DrawLine(beg2, bCurve[i]);
+            beg2 = bCurve[i];
         }
 
-        Hitbox[] hitboxes = CatmullRomSplineHitboxes(controlPoints);
         Gizmos.color = Color.red;
-        foreach (Hitbox hitbox in hitboxes)
+        for (int i = 0; i <= 10; i++)
         {
-            if(hitbox != null)
-                Hitbox.GizmosDraw(hitbox);
+            float t = i / 10f;
+            Vector2 p = bezierSpline.Evaluate(t);
+            Circle.GizmosDraw(p, 0.1f);
+            Vector2 s = bezierSpline.Velocity(t);
+            Useful.GizmoDrawVector(p, s);
+        }
+
+        //Hitbox.GizmosDraw(bezierSpline.Hitbox());
+        foreach (Hitbox h in bezierSpline.Hitboxes())
+        {
+            Hitbox.GizmosDraw(h);
+        }
+
+        return;
+        Gizmos.color = Color.green;
+        foreach (Vector2 point in controlPoints)
+        {
+            Circle.GizmosDraw(point, 0.3f);
+        }
+
+        if(splineType == SplineType.Bezier)
+        {
+            Gizmos.color = Color.green;
+            foreach (Vector2 point in handles)
+            {
+                Circle.GizmosDraw(point, 0.3f);
+            }
+        }
+
+        if(curve != null && curve.Length > 0)
+        {
+            Vector2 beg = curve[0];
+            for (int i = 1; i < curve.Length; i++)
+            {
+                Gizmos.DrawLine(beg, curve[i]);
+                beg = curve[i];
+            }
+        }
+
+        if(spline != null)
+        {
+            if (showHitbox)
+            {
+                Hitbox.GizmosDraw(spline.Hitbox());
+            }
+
+            if (showHitboxes)
+            {
+                Hitbox[] hitboxes = spline.Hitboxes();
+                foreach (Hitbox hitbox in hitboxes)
+                {
+                    Hitbox.GizmosDraw(hitbox);
+                }
+            }
         }
     }
 
     private void OnValidate()
     {
-        if(useCollider)
-        {
-            edgeCollider = GetComponent<EdgeCollider2D>();
-            if(edgeCollider == null)
-            {
-                AddEdgeCollider();
-            }
-        }
+        bezierSpline = new CubicBezierSpline(testPoints, testHandles);
+
+        return;
+
         colliderEdgeRadius = Mathf.Max(0f, colliderEdgeRadius);
         colliderResolutionPerCurve = Mathf.Max(1, colliderResolutionPerCurve);
-        pointsPerCurve = Mathf.Max(0, pointsPerCurve); 
+        pointsPerCurve = Mathf.Max(0, pointsPerCurve);
+        if(controlPoints == null)
+            controlPoints = Array.Empty<Vector2>();
+        if(handles == null)
+            handles = Array.Empty<Vector2>();
+
+        if(splineType == SplineType.Bezier)
+        {
+            if(controlPoints.Length >= 2 && 2 * controlPoints.Length - 2 != handles.Length)
+            {
+                List<Vector2> tmp = new List<Vector2>(handles);
+                while(tmp.Count > 2 * controlPoints.Length - 2)
+                {
+                    tmp.RemoveLast();
+                }
+                while (tmp.Count < 2 * controlPoints.Length - 2)
+                {
+                    tmp.Add(Vector2.zero);
+                }
+            }
+        }
+        else
+        {
+            handles = Array.Empty<Vector2>();
+        }
+
+        if(controlPoints.Length >= 2)
+        {
+            CreateSpline();
+            if (generateCollider)
+            {
+                GenerateCollider();
+            }
+        }
     }
 
     #endregion
 
+#endif
 }
-
-/*
-[CustomEditor(typeof(CurveGenerator))]
-public class CurveGeneratorEditor : Editor
-{
-    // this are serialized variables in YourClass
-    SerializedProperty useCollider;
-    SerializedProperty colliderEdgeRadius;
-    SerializedProperty colliderResolutionPerCurve;
-
-    private void OnEnable()
-    {
-        useCollider = serializedObject.FindProperty("useCollider");
-        colliderEdgeRadius = serializedObject.FindProperty("colliderEdgeRadius");
-        colliderResolutionPerCurve = serializedObject.FindProperty("colliderResolutionPerCurve");
-    }
-
-    public override void OnInspectorGUI()
-    {
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(useCollider);
-
-        if (useCollider.boolValue)
-        {
-            EditorGUILayout.PropertyField(colliderEdgeRadius);
-            EditorGUILayout.PropertyField(colliderResolutionPerCurve);
-        }
-
-        // must be on the end.
-        serializedObject.ApplyModifiedProperties();
-
-        // add this to render base
-        base.OnInspectorGUI();
-    }
-}
-*/

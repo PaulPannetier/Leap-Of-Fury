@@ -53,8 +53,6 @@ public class InputEditor : MonoBehaviour
             ListenAndShowInput();
     }
 
-    #if UNITY_EDITOR
-
     private void OnValidate()
     {
         if (saveInput)
@@ -80,7 +78,6 @@ public class InputEditor : MonoBehaviour
         }
     }
 
-    #endif
 
     [Serializable]
     private struct InputDataKB
