@@ -298,13 +298,7 @@ public static class BezierUtility
 
     public class HermiteSpline : Spline
     {
-        private static readonly float oneO3 = 1f / 3f;
-
-        private static Vector2 EvaluateHermiteCurve(in Vector2 start, in Vector2 v0, in Vector2 v1, in Vector2 end, float t)
-        {
-            cache0 = t * t * t;
-            return start * (1f - 3f * t * t + 2f * cache0) + v0 * (t - 2f * t * t + cache0) + end * (3f * t * t - 2f * cache0) + v1 * (-t * t + cache0);
-        }
+        private const float oneO3 = 1f / 3f;
 
         private Vector2[] points;
         private Vector2[] velocities;
@@ -327,10 +321,12 @@ public static class BezierUtility
         {
             t = Mathf.Clamp01(t);
             float interLength = 1f / (points.Length - 1);
-            int indexCurve = (t / interLength).Floor();
-            float newT = (t - (indexCurve * interLength)) / interLength;
+            int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
+            float newT = (t - (i * interLength)) / interLength;
 
-            return EvaluateHermiteCurve(points[indexCurve], velocities[indexCurve], points[indexCurve + 1], velocities[indexCurve + 1], newT);
+            cache0 = newT * newT;
+            return points[i] + newT * velocities[i] + cache0 * (3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1]) +
+                cache0 * newT * (2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1]);
         }
 
         public override Vector2[] EvaluateFullCurve(int nbPoints)
@@ -341,22 +337,19 @@ public static class BezierUtility
             float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
             int indexRes = 0;
             float t;
-            Vector2 P1, P2, c1, c2, c3;
+            Vector2 P0, P1, P2, P3;
             for (int i = 0; i < points.Length - 2; i++)
             {
-                P1 = points[i] + velocities[i];
-                P2 = points[i + 1] + velocities[i + 1];
-
-                c1 = P2 - points[i];
-                c2 = 2f * points[i] - 2f * P1 + P2 - points[i + 1];
-                c3 = P1 - points[i] - P2 + points[i + 1];
-
+                P0 = points[i];
+                P1 = velocities[i];
+                P2 = 3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1];
+                P3 = 2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1];
                 for (int j = 0; j < nbPointByCurve; j++)
                 {
                     t = j * oneOnbPointByCurveM1;
                     //res[indexRes] = EvaluateHermiteCurve(points[i], velocities[i], points[i + 1], velocities[i + 1], t);
                     cache0 = t * t;
-                    res[indexRes] = P1 + t * c1 + cache0 * c2 + cache0 * t * c3;
+                    res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
                     indexRes++;
                 }
             }
@@ -364,18 +357,17 @@ public static class BezierUtility
             //last Curve
             int max = nbPoints - indexRes - 1;
             float oneOmaxM1 = 1f / (max - 1);
-            P1 = points[points.Length - 2] + velocities[velocities.Length - 2];
-            P2 = points[points.Length - 1] + velocities[velocities.Length - 1];
+            P0 = points[points.Length - 2];
+            P1 = velocities[velocities.Length - 2];
+            P2 = 3f * (points[points.Length - 1] - P0) - 2f * P1 - velocities[velocities.Length - 1];
+            P3 = 2f * (P0 - points[points.Length - 1]) + P1 + velocities[velocities.Length - 1];
 
-            c1 = P2 - points[points.Length - 2];
-            c2 = 2f * points[points.Length - 2] - 2f * P1 + P2 - points[points.Length - 1];
-            c3 = P1 - points[points.Length - 2] - P2 + points[points.Length - 1];
             for (int i = 0; i < max; i++)
             {
                 t = i * oneOmaxM1;
                 //res[indexRes] = EvaluateHermiteCurve(points[points.Length - 2], velocities[velocities.Length - 2], points[points.Length - 1], velocities[velocities.Length - 1], t);
                 cache0 = t * t;
-                res[indexRes] = P1 + t * c1 + cache0 * c2 + cache0 * t * c3;
+                res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
                 indexRes++;
             }
 
@@ -390,10 +382,10 @@ public static class BezierUtility
 
             foreach (Hitbox hitbox in hitboxes)
             {
-                xMin = Mathf.Min(xMin, hitbox.center.x - hitbox.size.x);
-                xMax = Mathf.Max(xMax, hitbox.center.x + hitbox.size.x);
-                yMin = Mathf.Min(yMin, hitbox.center.y - hitbox.size.y);
-                yMax = Mathf.Max(yMax, hitbox.center.y + hitbox.size.y);
+                xMin = Mathf.Min(xMin, hitbox.center.x - 0.5f * hitbox.size.x);
+                xMax = Mathf.Max(xMax, hitbox.center.x + 0.5f * hitbox.size.x);
+                yMin = Mathf.Min(yMin, hitbox.center.y - 0.5f * hitbox.size.y);
+                yMax = Mathf.Max(yMax, hitbox.center.y + 0.5f * hitbox.size.y);
             }
             return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
         }
@@ -403,7 +395,7 @@ public static class BezierUtility
             Hitbox[] res = new Hitbox[points.Length - 1];
             for (int i = 0; i < res.Length; i++)
             {
-                res[i] = ComputeBezierHitbox(points[i], points[i] + velocities[i] * oneO3, points[i + 1] + velocities[i + 1] * oneO3, points[i + 1]);
+                res[i] = ComputeBezierHitbox(points[i], points[i] + (velocities[i] * oneO3), points[i + 1] + (velocities[i + 1] * oneO3), points[i + 1]);
             }
             return res;
         }
@@ -412,12 +404,12 @@ public static class BezierUtility
         {
             t = Mathf.Clamp01(t);
             float interLength = 1f / (points.Length - 1);
-            int indexCurve = (t / interLength).Floor();
-            float newT = (t - (indexCurve * interLength)) / interLength;
+            int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
+            float newT = (t - (i * interLength)) / interLength;
 
             cache0 = newT * newT;
-            return points[indexCurve] * (-3f * cache0 + 6f * newT - 3f) + (points[indexCurve] + (velocities[indexCurve] * oneO3)) * (9f * cache0 - 12f * newT + 3f) +
-                (points[indexCurve + 1] + (velocities[indexCurve + 1] * oneO3)) * (-9f * cache0 + 6f * newT) + points[indexCurve + 1] * (3f * cache0);
+            return points[i] * (-3f * cache0 + 6f * newT - 3f) + (points[i] + (velocities[i] * oneO3)) * (9f * cache0 - 12f * newT + 3f) +
+                (points[i + 1] + (velocities[i + 1] * oneO3)) * (-9f * cache0 + 6f * newT) + points[i + 1] * (3f * cache0);
         }
     }
 

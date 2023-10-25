@@ -102,28 +102,19 @@ public class CurveGenerator : MonoBehaviour
 
     #region Gizmos/OnValidate
 
-    [SerializeField] private Vector2[] testPoints, testHandles;
-    private CubicBezierSpline bezierSpline;
+    [SerializeField] private Vector2[] testPoints;
+    private HermiteSpline testSpline;
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
 
-        for (int i = 0; i < testPoints.Length - 1; i++)
+        for (int i = 0; i < testPoints.Length; i++)
         {
-            int c = 2 * i;
-            Vector2 h1 = testHandles[c];
-            Vector2 h2 = testHandles[c + 1];
             Circle.GizmosDraw(testPoints[i], 0.3f);
-            Circle.GizmosDraw(testPoints[i + 1], 0.3f);
-            Circle.GizmosDraw(h1, 0.3f);
-            Circle.GizmosDraw(h2, 0.3f);
-
-            Gizmos.DrawLine(testPoints[i], h1);
-            Gizmos.DrawLine(testPoints[i + 1], h2);
         }
 
-        Vector2[] bCurve = bezierSpline.EvaluateFullCurve(pointsPerCurve);
+        Vector2[] bCurve = spline.EvaluateFullCurve(pointsPerCurve);
 
         Vector2 beg2 = bCurve[0];
         for (int i = 1; i < bCurve.Length; i++)
@@ -136,14 +127,14 @@ public class CurveGenerator : MonoBehaviour
         for (int i = 0; i <= 10; i++)
         {
             float t = i / 10f;
-            Vector2 p = bezierSpline.Evaluate(t);
+            Vector2 p = spline.Evaluate(t);
             Circle.GizmosDraw(p, 0.1f);
-            Vector2 s = bezierSpline.Velocity(t);
-            Useful.GizmoDrawVector(p, s);
+            Vector2 s = spline.Velocity(t);
+            Useful.GizmoDrawVector(p, s.normalized);
         }
 
         //Hitbox.GizmosDraw(bezierSpline.Hitbox());
-        foreach (Hitbox h in bezierSpline.Hitboxes())
+        foreach (Hitbox h in spline.Hitboxes())
         {
             Hitbox.GizmosDraw(h);
         }
@@ -194,7 +185,7 @@ public class CurveGenerator : MonoBehaviour
 
     private void OnValidate()
     {
-        bezierSpline = new CubicBezierSpline(testPoints, testHandles);
+        spline = new HermiteSpline(testPoints);
 
         return;
 
