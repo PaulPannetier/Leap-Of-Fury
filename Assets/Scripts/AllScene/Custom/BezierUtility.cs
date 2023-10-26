@@ -716,10 +716,10 @@ public static class BezierUtility
         private const float oneO6 = 1f / 6f;
 
         public BSpline(Vector2[] points) : base(new Matrix4x4(
-            new Vector4(1f, -3f, 3f, -1f) * oneO6, 
-            new Vector4(4f, 0f, -6f, 3f) * oneO6, 
-            new Vector4(1f, 3f, 3f, -3f) * oneO6, 
-            new Vector4(0f, 0f, 0f, 1f) * oneO6
+            new Vector4(oneO6, -0.5f, 0.5f, -oneO6), 
+            new Vector4(4f * oneO6, 0f, -1f, 0.5f), 
+            new Vector4(oneO6, 0.5f, 0.5f, -0.5f), 
+            new Vector4(0f, 0f, 0f, oneO6)
             ), points)
         {
 
