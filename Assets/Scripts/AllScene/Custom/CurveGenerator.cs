@@ -115,11 +115,14 @@ public class CurveGenerator : MonoBehaviour
 
         Vector2[] bCurve = spline.EvaluateFullCurve(pointsPerCurve * (testPoints.Length - 1));
 
-        Vector2 beg2 = bCurve[0];
-        for (int i = 1; i < bCurve.Length; i++)
+        if(bCurve != null && bCurve.Length >= 2)
         {
-            Gizmos.DrawLine(beg2, bCurve[i]);
-            beg2 = bCurve[i];
+            Vector2 beg2 = bCurve[0];
+            for (int i = 1; i < bCurve.Length; i++)
+            {
+                Gizmos.DrawLine(beg2, bCurve[i]);
+                beg2 = bCurve[i];
+            }
         }
 
         Gizmos.color = Color.red;

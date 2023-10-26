@@ -501,12 +501,21 @@ public static class BezierUtility
 
         public CustomSpline(Matrix4x4 caracteristicMatrix, Vector2[] points)
         {
-            if(points == null || points.Length < 2)
+            if(points == null || points.Length < 4)
             {
-                throw new Exception("A Spline must have at least 2 points");
+                throw new Exception("A CustomSpline must have at least 4 points!");
             }
+
             this.M = caracteristicMatrix;
-            this.points = points;
+            this.points = new Vector2[points.Length + 2];
+
+            for (int i = 0; i < points.Length; i++)
+            {
+                this.points[i + 1] = points[i];
+            }
+
+            this.points[0] =  2f * points[0] - points[1];
+            this.points[this.points.Length - 1] = 2f * this.points[this.points.Length - 1] - this.points[this.points.Length - 2];
         }
 
         protected (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) PrecomputePolynomialValues(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
@@ -518,43 +527,72 @@ public static class BezierUtility
             return (C0, C1, C2, C3);
         }
 
-        public override Vector2 Evaluate(float t)
+        protected (Vector2 C0, Vector2 C1, Vector2 C2) PrecomputeDerivativePolynomialValues(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
         {
-            return default(Vector2);
+            Vector2 C0 = M[1, 0] * P0 + M[1, 1] * P1 + M[1, 2] * P2 + M[1, 3] * P3;
+            Vector2 C1 = 2f * (M[2, 0] * P0 + M[2, 1] * P1 + M[2, 2] * P2 + M[2, 3] * P3);
+            Vector2 C2 = 3f *(M[3, 0] * P0 + M[3, 1] * P1 + M[3, 2] * P2 + M[3, 3] * P3);
+            return (C0, C1, C2);
         }
 
-        public override Vector2 Velocity(float t)
+        public override Vector2 Evaluate(float t)
         {
-            return default(Vector2);
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 3);
+            int i = t < 1f ? (t / interLength).Floor() : points.Length - 4;
+            t = (t - (i * interLength)) / interLength;
+
+            (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) = PrecomputePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
+            cache0 = t * t;
+            return C0 + t * C1 + cache0 * C2 + t * cache0 * C3;
         }
 
         public override Vector2[] EvaluateFullCurve(int nbPoints)
         {
-            return default(Vector2[]);
+            Vector2[] res = new Vector2[nbPoints];
+
+            int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 3)).Round();
+            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
+            int indexRes = 0;
+            float t;
+            Vector2 P0, P1, P2, P3;
+            for (int i = 0; i < points.Length - 3; i++)
+            {
+                (P0, P1, P2, P3) = PrecomputePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
+                for (int j = 0; j < nbPointByCurve; j++)
+                {
+                    t = j * oneOnbPointByCurveM1;
+                    cache0 = t * t;
+                    res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
+                    indexRes++;
+                }
+            }
+
+            //last Curve
+            int max = nbPoints - indexRes;
+            float oneOmaxM1 = 1f / (max - 1);
+
+            (P0, P1, P2, P3) = PrecomputePolynomialValues(points[points.Length - 4], points[points.Length - 3], points[points.Length - 2], points[points.Length - 1]);
+            for (int i = 0; i < max; i++)
+            {
+                t = i * oneOmaxM1;
+                cache0 = t * t;
+                res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
+                indexRes++;
+            }
+
+            return res;
         }
 
-        public override Hitbox Hitbox()
+        public override Vector2 Velocity(float t)
         {
-            return default(Hitbox);
-        }
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 3);
+            int i = t < 1f ? (t / interLength).Floor() : points.Length - 4;
+            t = (t - (i * interLength)) / interLength;
 
-        public override Hitbox[] Hitboxes()
-        {
-            return default(Hitbox[]);
-        }
-    }
-
-    #endregion
-
-    #region BSpline
-
-    public class BSpline : CustomSpline
-    {
-        private static readonly float oneO6 = 1f / 6f;
-
-        public BSpline(Vector2[] points) : base(default, points)
-        {
-
+            (Vector2 C0, Vector2 C1, Vector2 C2) = PrecomputeDerivativePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
+            return C0 + t * C1 + t * t * C2;
         }
 
         public override Hitbox Hitbox()
@@ -564,31 +602,31 @@ public static class BezierUtility
 
             foreach (Hitbox hitbox in hitboxes)
             {
-                xMin = Mathf.Min(xMin, hitbox.center.x - hitbox.size.x);
-                xMax = Mathf.Max(xMax, hitbox.center.x + hitbox.size.x);
-                yMin = Mathf.Min(yMin, hitbox.center.y - hitbox.size.y);
-                yMax = Mathf.Max(yMax, hitbox.center.y + hitbox.size.y);
+                xMin = Mathf.Min(xMin, hitbox.center.x - 0.5f * hitbox.size.x);
+                xMax = Mathf.Max(xMax, hitbox.center.x + 0.5f * hitbox.size.x);
+                yMin = Mathf.Min(yMin, hitbox.center.y - 0.5f * hitbox.size.y);
+                yMax = Mathf.Max(yMax, hitbox.center.y + 0.5f * hitbox.size.y);
             }
             return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
         }
 
         public override Hitbox[] Hitboxes()
         {
-            Hitbox[] res = new Hitbox[points.Length - 1];
+            Hitbox[] res = new Hitbox[points.Length - 3];
             for (int i = 0; i < res.Length; i++)
             {
-                //res[i] = HitboxBCurve(points[i], points[i] + velocities[i], points[i + 1] - velocities[i + 1], points[i + 1]);
+                res[i] = ComputeCurveHitbox(points[i], points[i + 1], points[i + 2], points[i + 3]);
             }
             return res;
         }
 
-        private Hitbox HitboxBCurve(in Vector2 start, in Vector2 handle1, in Vector2 handle2, in Vector2 end)
+        private Hitbox ComputeCurveHitbox(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
         {
             //Search t €[0,1] | P'(t).x == 0 || P'(t).y == 0
             float[] t = new float[4] { -1f, -1f, -1f, -1f };
-            Vector2 a = 0.5f * (3f * (handle1 - handle2) - start + end);
-            Vector2 b = start + handle2 - 2f * handle1;
-            Vector2 c = 0.5f * (handle2 - start);
+            Vector2 a = 3f * (M[3, 0] * P0 + M[3, 1] * P1 + M[3, 2] * P2 + M[3, 3] * P3);
+            Vector2 b = 2f * (M[2, 0] * P0 + M[2, 1] * P1 + M[2, 2] * P2 + M[2, 3] * P3);
+            Vector2 c = M[1, 0] * P0 + M[1, 1] * P1 + M[1, 2] * P2 + M[1, 3] * P3;
 
             cache0 = (b.x * b.x) - (4f * a.x * c.x);
             if (cache0 >= 0f)
@@ -632,20 +670,26 @@ public static class BezierUtility
                     t[index] = -1f;
             }
 
-            List<Vector2> extremaPoints = new List<Vector2>
+            List<Vector2> extremaPoints = new List<Vector2>()
             {
-                start,
-                end
+                Evaluate(P0, P1, P2, P3, 0f), Evaluate(P0, P1, P2, P3, 1f)
             };
 
+            Vector2 C0, C1, C2, C3;
             for (int i = 0; i < 4; i++)
             {
                 if (t[i] >= 0f)
                 {
-                    cache0 = t[i] * t[i] * t[i];
-                    Vector2 evaluatePoint = start * (-cache0 + 3f * t[i] * t[i] - 3f * t[i] + 1f) + handle1 * (3f * cache0 - 6f * t[i] * t[i] + 3f * t[i]) + handle2 * (-3f * cache0 + 3f * t[i] * t[i]) + end * cache0;
+                    Vector2 evaluatePoint = Evaluate(P0, P1, P2, P3, t[i]);
                     extremaPoints.Add(evaluatePoint);
                 }
+            }
+
+            Vector2 Evaluate(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3, float t)
+            {
+                (C0, C1, C2, C3) = PrecomputePolynomialValues(P0, P1, P2, P3);
+                cache0 = t * t;
+                return C0 + t * C1 + cache0 * C2 + cache0 * t * C3;
             }
 
             //on crée la boite de collision avec les points extremes
@@ -665,10 +709,40 @@ public static class BezierUtility
 
     #endregion
 
-    /*
-    public class LeonardSpline : Spline
+    #region BSpline
+
+    public class BSpline : CustomSpline
     {
+        private const float oneO6 = 1f / 6f;
+
+        public BSpline(Vector2[] points) : base(new Matrix4x4(
+            new Vector4(1f, -3f, 3f, -1f) * oneO6, 
+            new Vector4(4f, 0f, -6f, 3f) * oneO6, 
+            new Vector4(1f, 3f, 3f, -3f) * oneO6, 
+            new Vector4(0f, 0f, 0f, 1f) * oneO6
+            ), points)
+        {
+
+        }
 
     }
-    */
+
+    #endregion
+
+    #region Léonard Spline
+
+    public class LeonardSpline : CustomSpline
+    {
+        public LeonardSpline(Vector2[] points) : base(new Matrix4x4(
+            new Vector4(),
+            new Vector4(),
+            new Vector4(),
+            new Vector4()
+            ), points)
+        {
+
+        }
+    }
+
+    #endregion
 }
