@@ -501,6 +501,10 @@ public static class BezierUtility
 
         public CustomSpline(Matrix4x4 caracteristicMatrix, Vector2[] points)
         {
+            if(points == null || points.Length < 2)
+            {
+                throw new Exception("A Spline must have at least 2 points");
+            }
             this.M = caracteristicMatrix;
             this.points = points;
         }
