@@ -82,67 +82,15 @@ public class CurveGenerator : MonoBehaviour
         }
         edgeCollider.edgeRadius = colliderEdgeRadius;
 
-        Vector2[] colliderPoints = new Vector2[(controlPoints.Length - 1) * colliderResolutionPerCurve];
-        int indexColliderPoints = 0;
-        int gap = Mathf.Max(pointsPerCurve / colliderResolutionPerCurve, 1);
-        for (int i = 0; i < controlPoints.Length - 1; i++)
-        {
-            for (int j = 0; j < colliderResolutionPerCurve; j++)
-            {
-                if (indexColliderPoints >= colliderPoints.Length || i * pointsPerCurve + j * gap >= curve.Length)
-                    break;
-                colliderPoints[indexColliderPoints] = curve[i * pointsPerCurve + j * gap];
-                indexColliderPoints++;
-            }
-        }
-        colliderPoints[colliderPoints.Length - 1] = curve[curve.Length - 1];
-
+        Vector2[] colliderPoints = spline.EvaluateFullCurve(colliderResolutionPerCurve * (controlPoints.Length - 1));
         edgeCollider.points = colliderPoints;
+        edgeCollider.offset = new Vector2(-0.725f, 0f);
     }
 
     #region Gizmos/OnValidate
 
-    [SerializeField] private Vector2[] testPoints;
-
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-
-        for (int i = 0; i < testPoints.Length; i++)
-        {
-            Circle.GizmosDraw(testPoints[i], 0.3f);
-        }
-
-        Vector2[] bCurve = spline.EvaluateFullCurve(pointsPerCurve * (testPoints.Length - 1));
-
-        if(bCurve != null && bCurve.Length >= 2)
-        {
-            Vector2 beg2 = bCurve[0];
-            for (int i = 1; i < bCurve.Length; i++)
-            {
-                Gizmos.DrawLine(beg2, bCurve[i]);
-                beg2 = bCurve[i];
-            }
-        }
-
-        Gizmos.color = Color.red;
-        int nbVel = pointsPerCurve * (testPoints.Length - 1) / 4;
-        for (int i = 0; i <= nbVel; i++)
-        {
-            float t = (float)i / nbVel;
-            Vector2 p = spline.Evaluate(t);
-            Circle.GizmosDraw(p, 0.1f);
-            Vector2 s = spline.Velocity(t);
-            Useful.GizmoDrawVector(p, s.normalized);
-        }
-
-        //Hitbox.GizmosDraw(bezierSpline.Hitbox());
-        foreach (Hitbox h in spline.Hitboxes())
-        {
-            Hitbox.GizmosDraw(h);
-        }
-
-        return;
         Gizmos.color = Color.green;
         foreach (Vector2 point in controlPoints)
         {
@@ -188,10 +136,6 @@ public class CurveGenerator : MonoBehaviour
 
     private void OnValidate()
     {
-        spline = new BSpline(testPoints);
-
-        return;
-
         colliderEdgeRadius = Mathf.Max(0f, colliderEdgeRadius);
         colliderResolutionPerCurve = Mathf.Max(1, colliderResolutionPerCurve);
         pointsPerCurve = Mathf.Max(0, pointsPerCurve);

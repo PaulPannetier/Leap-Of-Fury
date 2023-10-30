@@ -94,12 +94,102 @@ public static class BezierUtility
 
     public abstract class Spline
     {
+        protected const int nbPointsLUTPerCurve = 100;
+
+        protected LUT lut;
+
         public abstract Vector2 Evaluate(float t);
         public abstract Vector2 Velocity(float t);
-        public virtual Vector2 Normal(float t) => Velocity(t).NormalVector();
+        public Vector2 Normal(float t)
+        {
+            Vector2 v = Velocity(t);
+            Vector2 n = v.NormalVector();
+            if(Vector2.SignedAngle(n, v) < 0f)
+                return -n;
+            return n;
+        }
         public abstract Vector2[] EvaluateFullCurve(int nbPoints);
+        public abstract Vector2[] EvaluateFullCurve(float[] t);
         public abstract Hitbox Hitbox(); 
         public abstract Hitbox[] Hitboxes();
+        public virtual Vector2[] EvaluateDistance(int nbPoints)
+        {
+            float[] x = new float[nbPoints];
+            float step = 1f / (nbPoints - 1);
+            for(int i = 1; i < nbPoints; i++)
+            {
+                x[i] = x[i - 1] + step;
+            }
+            return EvaluateFullCurve(ConvertDistanceToTime(x));
+        }
+        public Vector2 EvaluateDistance(float x) => Evaluate(ConvertDistanceToTime(x));
+
+        protected float ConvertDistanceToTime(float x)
+        {
+            x = Mathf.Clamp01(x);
+            int index = 0;
+
+            for (int i = 0; i < lut.x.Length; i++)
+            {
+                if (lut.x[i] >= x)
+                {
+                    index = i - 1;
+                    break;
+                }
+            }
+
+            return Mathf.Lerp(lut.t[index], lut.t[index + 1], (x - lut.x[index]) / (lut.x[index + 1] - lut.x[index]));
+        }
+
+        protected float[] ConvertDistanceToTime(float[] x)
+        {
+            float[] t = new float[x.Length];
+
+            int lastIndex = 0;
+
+            float tmpX;
+            for(int i = 0; i < t.Length; lastIndex++)
+            {
+                tmpX = Mathf.Clamp01(x[i]);
+                while (lut.x[lastIndex] < tmpX)
+                {
+                    lastIndex++;
+                }
+                lastIndex--;
+
+                t[i] = Mathf.Lerp(lut.t[lastIndex], lut.t[lastIndex + 1], (tmpX - lut.x[lastIndex]) / (lut.x[lastIndex + 1] - lut.x[lastIndex]));
+            }
+
+            return t;
+        }
+
+        protected virtual void GenerateLUT(int nbPoints)
+        {
+            Vector2[] points = EvaluateFullCurve(nbPoints);
+            float[] x = new float[nbPoints];
+            float[] t = new float[nbPoints];
+
+            float nbPointF = (float)nbPoints;
+            for (int i = 1; i < nbPoints; i++)
+            {
+                t[i] = i / nbPointF;
+                x[i] = x[i - 1] + points[i].Distance(points[i - 1]);
+            }
+
+            x[nbPoints] = t[nbPoints] = 1f;
+            lut = new LUT(x, t);
+        }
+
+        protected struct LUT
+        {
+            public float[] x, t;
+
+            public LUT(float[] x, float[] t)
+            {
+                this.x = x;
+                this.t = t;
+            }
+        }
     }
 
     #endregion
@@ -116,6 +206,7 @@ public static class BezierUtility
             this.end = end;
             this.handle1 = handle1;
             this.handle2 = handle2;
+            GenerateLUT(nbPointsLUTPerCurve);
         }
 
         public override Vector2 Evaluate(float t)
@@ -139,6 +230,22 @@ public static class BezierUtility
                 t = (float) i * oneOnbPointM1;
                 res[i] = start + t * P1 + (t * t) * P2 + (t * t * t) * P3;
             }
+            return res;
+        }
+
+        public override Vector2[] EvaluateFullCurve(float[] t)
+        {
+            Vector2[] res = new Vector2[t.Length];
+
+            Vector2 P1 = -3f * start + 3f * handle1;
+            Vector2 P2 = 3f * start - 6f * handle1 + 3f * handle2;
+            Vector2 P3 = -start + 3f * handle1 - 3f * handle2 + end;
+
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = start + t[i] * P1 + t[i] * t[i] * P2 + t[i] * t[i] * t[i] * P3;
+            }
+
             return res;
         }
 
@@ -185,6 +292,7 @@ public static class BezierUtility
 
             this.points = points;
             this.handles = handles;
+            GenerateLUT(nbPointsLUTPerCurve * (points.Length - 1));
         }
 
         private (Vector2 handle1, Vector2 handle2) GetHandles(int i)
@@ -249,6 +357,49 @@ public static class BezierUtility
             }
 
             res[nbPoints - 1] = points[points.Length - 1];
+            return res;
+        }
+
+        public override Vector2[] EvaluateFullCurve(float[] t)
+        {
+            Vector2[] res = new Vector2[t.Length];
+
+            int nbPointByCurve = ((float)(t.Length - 1) / (points.Length - 1)).Round();
+            int indexRes = 0;
+            Vector2 P0, P1, P2, P3, h1, h2;
+            for (int i = 0; i < points.Length - 2; i++)
+            {
+                (h1, h2) = GetHandles(i);
+
+                P0 = points[i];
+                P1 = 3f * (h1 - P0);
+                P2 = 3f * P0 - 6f * h1 + 3f * h2;
+                P3 = 3f * (h1 - h2) - P0 + points[i + 1];
+
+                for (int j = 0; j < nbPointByCurve; j++)
+                {
+                    cache0 = t[indexRes] * t[indexRes];
+                    res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
+                    indexRes++;
+                }
+            }
+
+            //last Curve
+            int max = t.Length - indexRes - 1;
+
+            (h1, h2) = GetHandles(points.Length - 2);
+            P0 = points[points.Length - 2];
+            P1 = 3f * (h1 - P0);
+            P2 = 3f * P0 - 6f * h1 + 3f * h2;
+            P3 = 3f * (h1 - h2) - P0 + points[points.Length - 1];
+            for (int i = 0; i < max; i++)
+            {
+                cache0 = t[indexRes] * t[indexRes];
+                res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
+                indexRes++;
+            }
+
+            res[res.Length - 1] = points[points.Length - 1];
             return res;
         }
 
@@ -329,6 +480,7 @@ public static class BezierUtility
 
             velocities[0] = 2f * (points[1] - points[0]);
             velocities[points.Length - 1] = 2f * (points[points.Length - 1] - points[points.Length - 2]);
+            GenerateLUT(nbPointsLUTPerCurve * (points.Length - 1));
         }
 
         public override Vector2 Evaluate(float t)
@@ -386,6 +538,45 @@ public static class BezierUtility
             }
 
             res[nbPoints - 1] = points[points.Length - 1];
+            return res;
+        }
+
+        public override Vector2[] EvaluateFullCurve(float[] t)
+        {
+            Vector2[] res = new Vector2[t.Length];
+
+            int nbPointByCurve = ((float)(t.Length - 1) / (points.Length - 1)).Round();
+            int indexRes = 0;
+            Vector2 P0, P1, P2, P3;
+            for (int i = 0; i < points.Length - 2; i++)
+            {
+                P0 = points[i];
+                P1 = velocities[i];
+                P2 = 3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1];
+                P3 = 2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1];
+                for (int j = 0; j < nbPointByCurve; j++)
+                {
+                    cache0 = t[indexRes] * t[indexRes];
+                    res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
+                    indexRes++;
+                }
+            }
+
+            //last Curve
+            int max = t.Length - indexRes - 1;
+            P0 = points[points.Length - 2];
+            P1 = velocities[velocities.Length - 2];
+            P2 = 3f * (points[points.Length - 1] - P0) - 2f * P1 - velocities[velocities.Length - 1];
+            P3 = 2f * (P0 - points[points.Length - 1]) + P1 + velocities[velocities.Length - 1];
+
+            for (int i = 0; i < max; i++)
+            {
+                cache0 = t[indexRes] * t[indexRes];
+                res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
+                indexRes++;
+            }
+
+            res[res.Length - 1] = points[points.Length - 1];
             return res;
         }
 
@@ -453,6 +644,7 @@ public static class BezierUtility
 
             velocities[0] = points[1] - points[0];
             velocities[points.Length - 1] = points[points.Length - 1] - points[points.Length - 2];
+            GenerateLUT(nbPointsLUTPerCurve * (points.Length - 1));
         }
     }
 
@@ -486,6 +678,7 @@ public static class BezierUtility
 
             velocities[0] = 2f * s * (points[1] - points[0]);
             velocities[points.Length - 1] = 2f * s * (points[points.Length - 1] - points[points.Length - 2]);
+            GenerateLUT(nbPointsLUTPerCurve * (points.Length - 1));
         }
     }
 
@@ -516,6 +709,7 @@ public static class BezierUtility
 
             this.points[0] =  2f * points[0] - points[1];
             this.points[this.points.Length - 1] = 2f * this.points[this.points.Length - 1] - this.points[this.points.Length - 2];
+            GenerateLUT(nbPointsLUTPerCurve * (points.Length - 1));
         }
 
         protected (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) PrecomputePolynomialValues(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
@@ -578,6 +772,38 @@ public static class BezierUtility
                 t = i * oneOmaxM1;
                 cache0 = t * t;
                 res[indexRes] = P0 + t * P1 + cache0 * P2 + cache0 * t * P3;
+                indexRes++;
+            }
+
+            return res;
+        }
+
+        public override Vector2[] EvaluateFullCurve(float[] t)
+        {
+            Vector2[] res = new Vector2[t.Length];
+
+            int nbPointByCurve = ((float)(t.Length - 1) / (points.Length - 3)).Round();
+            int indexRes = 0;
+            Vector2 P0, P1, P2, P3;
+            for (int i = 0; i < points.Length - 3; i++)
+            {
+                (P0, P1, P2, P3) = PrecomputePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
+                for (int j = 0; j < nbPointByCurve; j++)
+                {
+                    cache0 = t[indexRes] * t[indexRes];
+                    res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
+                    indexRes++;
+                }
+            }
+
+            //last Curve
+            int max = t.Length - indexRes;
+
+            (P0, P1, P2, P3) = PrecomputePolynomialValues(points[points.Length - 4], points[points.Length - 3], points[points.Length - 2], points[points.Length - 1]);
+            for (int i = 0; i < max; i++)
+            {
+                cache0 = t[indexRes] * t[indexRes];
+                res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
                 indexRes++;
             }
 
@@ -731,14 +957,39 @@ public static class BezierUtility
 
     #region Léonard Spline
 
-    public class LeonardSpline : CustomSpline
+    public class LeonardSpline : CustomSpline // c de la merde en barquette
     {
-        public LeonardSpline(Vector2[] points) : base(new Matrix4x4(
-            new Vector4(),
-            new Vector4(),
-            new Vector4(),
-            new Vector4()
-            ), points)
+        private static Matrix4x4 ComputeMatrix(float p1, float p2, float p3)
+        {
+            float x30 = p1;
+            float x32 = p2;
+            float x33 = p3;
+
+            float x03 = 0f;
+            float x13 = 0f;
+            float x01 = 1f;
+            float x02 = 1f;
+            float x00 = -1f;
+
+            float x20 = -2f * x30 - 1f;
+            float x10 = -3f * x30 - 2f * x20;
+
+            float x12 = -x32;
+            float x31 = x01 + 1f - x12;
+            float x11 = x31 - x10 - x01 - 1f;
+            float x23 = -x12 - 3f;
+            float x21 = -x31 - x11 + x10;
+            float x22 = -x23 - x20 - x21;
+
+            Vector4 c0 = new Vector4(x00, x10, x20, x30);    
+            Vector4 c1 = new Vector4(x01, x11, x21, x31);    
+            Vector4 c2 = new Vector4(x02, x12, x22, x32);    
+            Vector4 c3 = new Vector4(x03, x13, x23, x33);
+
+            return new Matrix4x4(c0, c1, c2, c3);
+        }
+
+        public LeonardSpline(Vector2[] points, float p1, float p2, float p3) : base(ComputeMatrix(p1, p2, p3), points)
         {
 
         }
