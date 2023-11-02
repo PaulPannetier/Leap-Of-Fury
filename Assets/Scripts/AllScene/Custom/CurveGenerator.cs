@@ -71,7 +71,13 @@ public class CurveGenerator : MonoBehaviour
                 break;
         }
 
-        curve = spline.EvaluateFullCurve(pointsPerCurve * (controlPoints.Length - 1));
+        //curve = spline.EvaluateFullCurve(pointsPerCurve * (controlPoints.Length - 1));
+        float[] t = new float[pointsPerCurve * (controlPoints.Length - 1)];
+        for (int i = 0; i < t.Length; i++)
+        {
+            t[i] = (float)i / (t.Length - 1);
+        }
+        curve = spline.EvaluateFullCurve(t);
     }
 
     private void GenerateCollider()
@@ -100,9 +106,9 @@ public class CurveGenerator : MonoBehaviour
         if(splineType == SplineType.Bezier)
         {
             Gizmos.color = Color.green;
-            foreach (Vector2 point in handles)
+            for (int i = 0; i < handles.Length; i++)
             {
-                Circle.GizmosDraw(point, 0.3f);
+                Circle.GizmosDraw(handles[i], 0.3f);
             }
         }
 
@@ -131,6 +137,15 @@ public class CurveGenerator : MonoBehaviour
                     Hitbox.GizmosDraw(hitbox);
                 }
             }
+
+            /*
+            Vector2[] distPoints = spline.EvaluateDistance(pointsPerCurve * (controlPoints.Length - 1));
+            Gizmos.color = Color.red;
+            foreach (Vector2 p in distPoints)
+            {
+                Circle.GizmosDraw(p, 0.2f);
+            }
+            */
         }
     }
 

@@ -109,23 +109,28 @@ public static class BezierUtility
             return n;
         }
         public abstract Vector2[] EvaluateFullCurve(int nbPoints);
-        public abstract Vector2[] EvaluateFullCurve(float[] t);
+        public abstract Vector2[] EvaluateFullCurve(float[] t);//!pb
         public abstract Hitbox Hitbox(); 
         public abstract Hitbox[] Hitboxes();
         public virtual Vector2[] EvaluateDistance(int nbPoints)
         {
             float[] x = new float[nbPoints];
             float step = 1f / (nbPoints - 1);
-            for(int i = 1; i < nbPoints; i++)
+            for(int i = 1; i < nbPoints - 1; i++)
             {
                 x[i] = x[i - 1] + step;
             }
+            x[nbPoints - 1] = 1f;
+
             return EvaluateFullCurve(ConvertDistanceToTime(x));
         }
         public Vector2 EvaluateDistance(float x) => Evaluate(ConvertDistanceToTime(x));
 
         protected float ConvertDistanceToTime(float x)
         {
+            if (x <= 0)
+                return 0f;
+
             x = Mathf.Clamp01(x);
             int index = 0;
 
@@ -141,16 +146,23 @@ public static class BezierUtility
             return Mathf.Lerp(lut.t[index], lut.t[index + 1], (x - lut.x[index]) / (lut.x[index + 1] - lut.x[index]));
         }
 
+        //x must be sorted
         protected float[] ConvertDistanceToTime(float[] x)
         {
             float[] t = new float[x.Length];
 
             int lastIndex = 0;
+            int beg = 0;
+            while (beg < x.Length && x[beg] <= 0f)
+            {
+                beg++;
+            }
 
             float tmpX;
-            for(int i = 0; i < t.Length; lastIndex++)
+            for(int i = beg; i < t.Length; i++)
             {
-                tmpX = Mathf.Clamp01(x[i]);
+                tmpX = x[i];
+
                 while (lut.x[lastIndex] < tmpX)
                 {
                     lastIndex++;
@@ -169,14 +181,20 @@ public static class BezierUtility
             float[] x = new float[nbPoints];
             float[] t = new float[nbPoints];
 
-            float nbPointF = (float)nbPoints;
+            float oneOnbPointF = 1f / nbPoints;
             for (int i = 1; i < nbPoints; i++)
             {
-                t[i] = i / nbPointF;
+                t[i] = i * oneOnbPointF;
                 x[i] = x[i - 1] + points[i].Distance(points[i - 1]);
             }
 
-            x[nbPoints] = t[nbPoints] = 1f;
+            float oneOMax = 1f / x[nbPoints - 1];
+            for (int i = 1; i < nbPoints; i++)
+            {
+                x[i] *= oneOMax;
+            }
+
+            x[nbPoints - 1] = t[nbPoints - 1] = 1f;
             lut = new LUT(x, t);
         }
 
