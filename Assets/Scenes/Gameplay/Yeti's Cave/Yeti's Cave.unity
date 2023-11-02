@@ -403,10 +403,10 @@ MonoBehaviour:
   colliderResolutionPerCurve: 20
   splineType: 1
   controlPoints:
-  - {x: -4.92, y: -1.88}
-  - {x: -2.52, y: 2.79}
-  - {x: 1.6, y: 3.54}
-  - {x: 4.35, y: -2.43}
+  - {x: -3.61, y: -1.88}
+  - {x: -3.8, y: 2.79}
+  - {x: 2.94, y: 3.54}
+  - {x: 6.57, y: -0.75}
   handles: []
   tension: 0.795
   pointsPerCurve: 25
