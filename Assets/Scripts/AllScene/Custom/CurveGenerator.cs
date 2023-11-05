@@ -71,13 +71,7 @@ public class CurveGenerator : MonoBehaviour
                 break;
         }
 
-        //curve = spline.EvaluateFullCurve(pointsPerCurve * (controlPoints.Length - 1));
-        float[] t = new float[pointsPerCurve * (controlPoints.Length - 1)];
-        for (int i = 0; i < t.Length; i++)
-        {
-            t[i] = (float)i / (t.Length - 1);
-        }
-        curve = spline.EvaluateFullCurve(t);
+        curve = spline.EvaluateFullCurve(pointsPerCurve * (controlPoints.Length - 1));
     }
 
     private void GenerateCollider()
@@ -114,6 +108,7 @@ public class CurveGenerator : MonoBehaviour
 
         if(curve != null && curve.Length > 0)
         {
+            Gizmos.color = Color.green;
             Vector2 beg = curve[0];
             for (int i = 1; i < curve.Length; i++)
             {
@@ -138,14 +133,26 @@ public class CurveGenerator : MonoBehaviour
                 }
             }
 
-            /*
-            Vector2[] distPoints = spline.EvaluateDistance(pointsPerCurve * (controlPoints.Length - 1));
-            Gizmos.color = Color.red;
-            foreach (Vector2 p in distPoints)
+            float[] x = new float[10];
+
+            for (int i = 1; i < x.Length; i++)
+            {
+                x[i] = (float)i / (x.Length - 1);
+            }
+
+            float[] t = spline.ConvertDistanceToTime(x);
+
+            Gizmos.color = Color.yellow;
+            Vector2[] p0 = spline.EvaluateFullCurve(t);
+            Vector2[] p1 = spline.EvaluateFullCurve(x);
+            foreach (Vector2 p in p0)
+            {
+                Circle.GizmosDraw(p, 0.1f);
+            }
+            foreach (Vector2 p in p1)
             {
                 Circle.GizmosDraw(p, 0.2f);
             }
-            */
         }
     }
 
