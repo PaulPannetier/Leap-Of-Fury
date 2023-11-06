@@ -3,12 +3,159 @@ using PathFinding.Graph;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using static BezierUtility;
 
 public static class PathFinderToric
 {
     public static Path FindBestPath(Map map, MapPoint start, MapPoint end, bool allowDiagonal = false)
     {
         return new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
+    }
+
+    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom)
+    {
+        Path path = new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
+
+        if(path.path.Length <= 1)
+        {
+            return null;
+        }
+
+        List<List<MapPoint>> subPath = new List<List<MapPoint>>();
+        int index = 0;
+        subPath.Add(new List<MapPoint>() { path.path[0] });
+
+        for (int i = 1; i < path.path.Length; i++)
+        {
+            if (Mathf.Max(Mathf.Abs(path.path[i].X - path.path[i].X), Mathf.Abs(path.path[i].Y - path.path[i].Y)) > 1)
+            {
+                //TO DO: add toric inter
+                index++;
+                subPath.Add(new List<MapPoint>());
+            }
+            subPath[index].Add(path.path[i]);
+        }
+
+        Spline CreateSpline(SplineType splineType, List<MapPoint> points, Func<MapPoint, Vector2> convertMapPointToWorldPosition)
+        {
+            Vector2[] points2 = new Vector2[points.Count];
+            for (int i = 0; i < points2.Length; i++)
+            {
+                points2[i] = convertMapPointToWorldPosition(points[i]);
+            }
+
+            switch (splineType)
+            {
+                case SplineType.Bezier:
+                    return new HermiteSpline(points2);
+                case SplineType.Hermite:
+                    return new HermiteSpline(points2);
+                case SplineType.Catmulrom:
+                    return new CatmulRomSpline(points2);
+                case SplineType.Cardinal:
+                    return new CatmulRomSpline(points2);
+                case SplineType.BSline:
+                    return new BSpline(points2);
+                default:
+                    return new CatmulRomSpline(points2);
+            }
+        }
+
+        Spline[] splines = new Spline[subPath.Count];
+        for (int i = 0; i < splines.Length; i++)
+        {
+            splines[i] = CreateSpline(splineType, subPath[i], convertMapPointToWorldPosition);
+        }
+
+        return new SplinePath(path.totalCost, splines);
+    }
+
+    public class SplinePath
+    {
+        private Spline[] path;
+        private float[] joints;
+        private float[] lengthCumSum;
+
+        public float totalCost;
+        public float length { get; private set; }
+
+        internal SplinePath(float cost, Spline[] path)
+        {
+            this.totalCost = cost;
+            this.path = path;
+
+            length = 0f;
+            foreach (Spline s in path)
+            {
+                length += s.length;
+            }
+
+            if(path.Length > 1)
+            {
+                joints = new float[path.Length - 1];
+                joints[0] = path[0].length / length;
+                for (int i = 1; i < joints.Length; i++)
+                {
+                    joints[i] = joints[i - 1] + (path[i].length / length);
+                }
+
+                lengthCumSum = new float[path.Length];
+                lengthCumSum[0] = 0f;
+                for (int i = 1; i < lengthCumSum.Length; i++)
+                {
+                    lengthCumSum[i] = lengthCumSum[i - 1] + path[i - 1].length;
+                }
+            }
+            else
+            {
+                joints = Array.Empty<float>();
+                lengthCumSum = Array.Empty<float>();
+            }
+        }
+
+        public Vector2 EvaluateDistance(float x)
+        {
+            if(joints.Length <= 0)
+            {
+                return path[0].EvaluateDistance(x);
+            }
+
+            x = Mathf.Clamp01(x);
+            int splineIndex = joints.Length;
+            for (int i = 0; i < joints.Length; i++)
+            {
+                if (x <= joints[i])
+                {
+                    splineIndex = i;
+                    break;
+                }
+            }
+
+            float beforeLength = lengthCumSum[splineIndex];
+            float newX = (x * length - beforeLength) / path[splineIndex].length;
+            return path[splineIndex].EvaluateDistance(newX);
+        }
+
+        public Vector2[] EvaluateDistance(float[] x)
+        {
+            Vector2[] res = new Vector2[x.Length];
+            for (int i = 0; i < x.Length; i++)
+            {
+                res[i] = EvaluateDistance(x[i]);
+            }
+            return res;
+        }
+
+        public Vector2[] EvaluateDistance(int nbPoints)
+        {
+            float[] x = new float[nbPoints];
+            float step = 1f / (nbPoints - 1);
+            for (int i = 1; i < x.Length; i++)
+            {
+                x[i] = x[i - 1] + step;
+            }
+            return EvaluateDistance(x);
+        }
     }
 }
 

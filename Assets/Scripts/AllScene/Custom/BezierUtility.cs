@@ -1,10 +1,20 @@
 using Collision2D;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class BezierUtility
 {
+    public enum SplineType
+    {
+        Bezier,
+        Hermite,
+        Catmulrom,
+        Cardinal,
+        BSline
+    }
+
     #region Static
 
     private static float cache0;
@@ -111,7 +121,7 @@ public static class BezierUtility
             return n;
         }
 
-        public Vector2[] EvaluateFullCurve(int nbPoints)
+        public virtual Vector2[] EvaluateFullCurve(int nbPoints)
         {
             float[] t = new float[nbPoints];
 
@@ -124,6 +134,7 @@ public static class BezierUtility
             return EvaluateFullCurve(t);
         }
         public abstract Vector2[] EvaluateFullCurve(float[] t);
+        public Vector2[] EvaluateFullCurve(IEnumerable<float> t) => EvaluateFullCurve(t.ToArray());
         public abstract Hitbox Hitbox(); 
         public abstract Hitbox[] Hitboxes();
         public virtual Vector2[] EvaluateDistance(int nbPoints)
@@ -139,7 +150,21 @@ public static class BezierUtility
             float[] t = ConvertDistanceToTime(x);
             return EvaluateFullCurve(t);
         }
+
         public Vector2 EvaluateDistance(float x) => Evaluate(ConvertDistanceToTime(x));
+
+        private int FindRecur(float x, int start, int end, float[] arr)
+        {
+            if (end - start <= 1)
+                return arr[end] <= x ? end : start;
+
+            int mid = (start + end) / 2;
+            if (x < arr[mid])
+            {
+                return FindRecur(x, start, mid, arr);
+            }
+            return FindRecur(x, mid, end, arr);
+        }
 
         public float ConvertDistanceToTime(float x)
         {
@@ -149,21 +174,18 @@ public static class BezierUtility
                 return 1f;
 
             int index = FindRecur(x, 0, lut.x.Length - 1, lut.x);
-
-            int FindRecur(float x, int start, int end, float[] arr)
-            {
-                if (end - start <= 1)
-                    return arr[end] <= x ? end : start;
-
-                int mid = (start + end) / 2;
-                if (x < arr[mid])
-                {
-                    return FindRecur(x, start, mid, arr);
-                }
-                return FindRecur(x, mid, end, arr);
-            }
-
             return Mathf.Lerp(lut.t[index], lut.t[index + 1], (x - lut.x[index]) / (lut.x[index + 1] - lut.x[index]));
+        }
+
+        public float ConvertTimeToDistance(float t)
+        {
+            if (t <= 0f)
+                return 0f;
+            if (t >= 1f)
+                return 1f;
+
+            int index = FindRecur(t, 0, lut.t.Length - 1, lut.t);
+            return Mathf.Lerp(lut.x[index], lut.x[index + 1], (t - lut.t[index]) / (lut.t[index + 1] - lut.t[index]));
         }
 
         //x must be sorted
@@ -477,51 +499,11 @@ public static class BezierUtility
                 cache0 * newT * (2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1]);
         }
 
-        public override Vector2[] EvaluateFullCurve(float[] t)
+        public override Vector2[] EvaluateFullCurve(int nbPoints)
         {
-            int GetCurveIndex(float[] joints, float t)
-            {
-                int FindRecur(float x, int start, int end, float[] arr)
-                {
-                    if (end - start <= 1)
-                        return arr[end] <= x ? end : start;
+            Vector2[] res = new Vector2[nbPoints];
 
-                    int mid = (start + end) / 2;
-                    if (x < arr[mid])
-                    {
-                        return FindRecur(x, start, mid, arr);
-                    }
-                    return FindRecur(x, mid, end, arr);
-                }
-
-                return FindRecur(t, 0, joints.Length - 1, joints);
-            }
-
-            Vector2[] res = new Vector2[t.Length];
-
-            List<float>[] times = new List<float>[points.Length - 1];
-            float[] joints = new float[points.Length];
-
-            float step = 1f / joints.Length;
-            for (int i = 0; i < joints.Length - 1; i++)
-            {
-                joints[i] = (i + 1) * step;
-            }
-            joints[joints.Length - 1] = float.MaxValue;
-
-            int index;
-            for (int i = 0; i < t.Length; i++)
-            {
-                index = GetCurveIndex(t[i]);
-                times[index].Add(t[i]);
-            }
-
-            return res;
-
-            /*
-            Vector2[] res = new Vector2[t.Length];
-
-            int nbPointByCurve = ((float)(t.Length - 1) / (points.Length - 1)).Round();
+            int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 1)).Round();
             float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
             int indexRes = 0;
             float T;
@@ -559,7 +541,77 @@ public static class BezierUtility
 
             res[res.Length - 1] = points[points.Length - 1];
             return res;
-            */
+        }
+
+        public override Vector2[] EvaluateFullCurve(float[] t)
+        {
+            int GetCurveIndex(float[] joints, float t)
+            {
+                //return i st joints[i - 1] < t <= joints[i]
+                int FindRecur(float t, int start, int end, in float[] arr)
+                {
+                    if (end - start <= 1)
+                        return end;
+
+                    int mid = (start + end) / 2;
+                    if (t <= arr[mid])
+                    {
+                        return FindRecur(t, start, mid, arr);
+                    }
+                    return FindRecur(t, mid, end, arr);
+                }
+
+                return FindRecur(t, 0, joints.Length - 1, joints) - 1;
+            }
+
+            Vector2[] res = new Vector2[t.Length];
+
+            List<float>[] times = new List<float>[points.Length - 1];
+            for (int i = 0; i < times.Length; i++)
+            {
+                times[i] = new List<float>();
+            }
+
+            float[] joints = new float[points.Length];
+            float step = 1f / (joints.Length - 1);
+            for (int i = 1; i < joints.Length - 1; i++)
+            {
+                joints[i] = i * step;
+            }
+            joints[0] = float.MinValue;
+            joints[joints.Length - 1] = 1f;
+
+            int index;
+            float clampT;
+            for (int i = 0; i < t.Length; i++)
+            {
+                clampT = Mathf.Clamp01(t[i]);
+                index = GetCurveIndex(joints, clampT);
+                times[index].Add(clampT);
+            }
+
+            index = 0;
+            Vector2 P0, P1, P2, P3;
+            float timeOffsetPerCurve = 1f / (points.Length - 1);
+            float oneOtimeOffsetPerCurve = 1f / timeOffsetPerCurve;
+            float offset, curveTime; ;
+            for (int i = 0; i < times.Length; i++)
+            {
+                P0 = points[i];
+                P1 = velocities[i];
+                P2 = 3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1];
+                P3 = 2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1];
+                offset = -i * timeOffsetPerCurve;
+                for(int j = 0; j < times[i].Count; j++)
+                {
+                    curveTime = (times[i][j] + offset) * oneOtimeOffsetPerCurve;
+                    cache0 = curveTime * curveTime;
+                    res[index] = P0 + curveTime * P1 + cache0 * P2 + cache0 * curveTime * P3;
+                    index++;
+                }
+            }
+
+            return res;
         }
 
         public override Hitbox Hitbox()
@@ -723,6 +775,7 @@ public static class BezierUtility
             return C0 + t * C1 + cache0 * C2 + t * cache0 * C3;
         }
 
+        /*
         public override Vector2[] EvaluateFullCurve(float[] t)
         {
             Vector2[] res = new Vector2[t.Length];
@@ -757,6 +810,18 @@ public static class BezierUtility
                 indexRes++;
             }
 
+            return res;
+        }
+        */
+
+        public override Vector2[] EvaluateFullCurve(float[] t)
+        {
+            Vector2[] res = new Vector2[t.Length];
+            for (int i = 0; i < res.Length; i++)
+            {
+                res[i] = Evaluate(t[i]);
+            }
+      
             return res;
         }
 

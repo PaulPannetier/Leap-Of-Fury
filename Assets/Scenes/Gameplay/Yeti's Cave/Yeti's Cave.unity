@@ -369,64 +369,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1212375675141333562, guid: 20c51873747073248a228b6566e5976a, type: 3}
   m_PrefabInstance: {fileID: 2047863314}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2071626503
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2071626505}
-  - component: {fileID: 2071626504}
-  m_Layer: 0
-  m_Name: tmp
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2071626504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071626503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45c4f424e9c041f459f4a07c3ce55435, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  generateCollider: 0
-  colliderEdgeRadius: 0.24
-  colliderResolutionPerCurve: 20
-  splineType: 1
-  controlPoints:
-  - {x: -3.61, y: -1.88}
-  - {x: -4.76, y: 2.72}
-  - {x: 4.35, y: 4.01}
-  - {x: 4.01, y: 0.62}
-  handles: []
-  tension: 0.736
-  pointsPerCurve: 82
-  showHitbox: 0
-  showHitboxes: 0
---- !u!4 &2071626505
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071626503}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2085145698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,27 +1262,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 1
---- !u!231 &1939460644746093184
-SpringJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7824206245177752595}
-  m_Enabled: 0
-  serializedVersion: 4
-  m_EnableCollision: 1
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_BreakAction: 3
-  m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_AutoConfigureDistance: 1
-  m_Distance: 8.15032
-  m_DampingRatio: 1
-  m_Frequency: 3
 --- !u!1 &1977461258347662260
 GameObject:
   m_ObjectHideFlags: 0
@@ -3290,7 +3211,7 @@ MonoBehaviour:
   lstClones: []
   cloner: {fileID: 0}
   componentsToDisableInClone:
-  - {fileID: 1939460644746093184}
+  - {fileID: 0}
   - {fileID: 9110194846028482583}
   - {fileID: 3412524650899343817}
   - {fileID: 5247269349027984163}
@@ -3300,7 +3221,7 @@ MonoBehaviour:
   - {fileID: 0}
   chidrenToRemoveInClone:
   - {fileID: 2079934895246796765}
-  drawGizmos: 1
+  drawGizmos: 0
 --- !u!114 &3857593812807085118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3401,7 +3322,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &4928134350993091929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4492,7 +4413,7 @@ RectTransform:
   m_Father: {fileID: 7047816001519475824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4825,7 +4746,7 @@ RectTransform:
   m_Father: {fileID: 7047816000889932033}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6405,7 +6326,6 @@ GameObject:
   - component: {fileID: 1416430105591482284}
   - component: {fileID: 2609936825530580588}
   - component: {fileID: 5196232130909997237}
-  - component: {fileID: 1939460644746093184}
   - component: {fileID: 9110194846028482583}
   - component: {fileID: 3836061075410566336}
   - component: {fileID: 2718128955352338149}
@@ -6423,7 +6343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &7941257350971714609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6457,7 +6377,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 3857593812807085118}
   chidrenToRemoveInClone: []
-  drawGizmos: 1
+  drawGizmos: 0
 --- !u!224 &7984010155790505984
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6642,7 +6562,7 @@ RectTransform:
   m_Father: {fileID: 7984010157822288353}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6939,7 +6859,7 @@ RectTransform:
   m_Father: {fileID: 7984010157210317968}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7396,6 +7316,8 @@ MonoBehaviour:
   drawGizmos: 1
   testPathNoDiagFinding: 0
   testPathFinding: 0
+  useSplinePathFinding: 0
+  splineType: 2
   start: {x: 0, y: 0}
 --- !u!1 &8017218814868572334
 GameObject:
@@ -8304,4 +8226,3 @@ SceneRoots:
   - {fileID: 1393366166460120882}
   - {fileID: 2036405239}
   - {fileID: 2085145699}
-  - {fileID: 2071626505}

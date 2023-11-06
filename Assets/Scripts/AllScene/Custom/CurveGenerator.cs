@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using Collision2D;
 using static BezierUtility;
 using System;
@@ -8,15 +7,6 @@ using System.Collections.Generic;
 [ExecuteInEditMode]
 public class CurveGenerator : MonoBehaviour
 {
-    public enum SplineType
-    {
-        Bezier,
-        Hermite,
-        Catmulrom,
-        Cardinal,
-        BSline
-    }
-
 #if UNITY_EDITOR
 
     private EdgeCollider2D edgeCollider;
@@ -134,12 +124,10 @@ public class CurveGenerator : MonoBehaviour
             }
 
             float[] x = new float[10];
-
             for (int i = 1; i < x.Length; i++)
             {
                 x[i] = (float)i / (x.Length - 1);
             }
-
             float[] t = spline.ConvertDistanceToTime(x);
 
             Gizmos.color = Color.yellow;
@@ -149,6 +137,7 @@ public class CurveGenerator : MonoBehaviour
             {
                 Circle.GizmosDraw(p, 0.1f);
             }
+            Gizmos.color = Color.black;
             foreach (Vector2 p in p1)
             {
                 Circle.GizmosDraw(p, 0.2f);

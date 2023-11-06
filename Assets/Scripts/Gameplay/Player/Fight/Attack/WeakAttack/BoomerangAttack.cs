@@ -78,8 +78,11 @@ public class BoomerangAttack : WeakAttack
 
     [SerializeField] private bool testPathNoDiagFinding;
     [SerializeField] private bool testPathFinding;
+    [SerializeField] private bool useSplinePathFinding;
+    [SerializeField] private BezierUtility.SplineType splineType = BezierUtility.SplineType.Catmulrom;
     [SerializeField] private Vector2 start;
     Path testPathNoDiag, testPath;
+    PathFinderToric.SplinePath splinePathNoDiag, splinePath;
 
     private void OnDrawGizmosSelected()
     {
@@ -96,16 +99,41 @@ public class BoomerangAttack : WeakAttack
 
             if (testPathNoDiagFinding)
             {
-                testPathNoDiag = PathFinderToric.FindBestPath(map, startMP, endMP, false);
-                Gizmos.color = Color.green;
-                DrawPath(testPathNoDiag);
+                if(useSplinePathFinding)
+                {
+                    splinePathNoDiag = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, false, splineType);
+                    if(splinePathNoDiag != null)
+                    {
+                        Gizmos.color = Color.green;
+                        DrawPoints(splinePathNoDiag.EvaluateDistance(1000));
+                    }
+                }
+                else
+                {
+                    testPathNoDiag = PathFinderToric.FindBestPath(map, startMP, endMP, false);
+
+                    Gizmos.color = Color.green;
+                    DrawPath(testPathNoDiag);
+                }
             }
 
             if (testPathFinding)
             {
-                testPath = PathFinderToric.FindBestPath(map, startMP, endMP, true);
-                Gizmos.color = Color.red;
-                DrawPath(testPath);
+                if (useSplinePathFinding)
+                {
+                    splinePath = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, true, splineType);
+                    if (splinePath != null)
+                    {
+                        Gizmos.color = Color.green;
+                        DrawPoints(splinePath.EvaluateDistance(1000));
+                    }
+                }
+                else
+                {
+                    testPath = PathFinderToric.FindBestPath(map, startMP, endMP, true);
+                    Gizmos.color = Color.red;
+                    DrawPath(testPath);
+                }
             }
 
             void DrawPath(Path p)
@@ -117,6 +145,20 @@ public class BoomerangAttack : WeakAttack
                     Vector2 end = LevelMapData.currentMap.GetPositionOfMapPoint(p.path[i]);
                     PhysicsToric.GizmosDrawRaycast(beg, end);
                     beg = end;
+                }
+            }
+
+            void DrawPoints(Vector2[] points)
+            {
+                Vector2 beg = points[0];
+                for (int i = 1; i < points.Length; i++)
+                {
+                    Color c = Gizmos.color;
+                    Gizmos.color = Color.red;
+                    Circle.GizmosDraw(PhysicsToric.GetPointInsideBounds(points[i]), 0.05f);
+                    Gizmos.color = c;
+                    PhysicsToric.GizmosDrawRaycast(beg, points[i]);
+                    beg = points[i];
                 }
             }
         }
