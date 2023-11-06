@@ -16,7 +16,12 @@ public static class PathFinderToric
     {
         Path path = new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
 
-        if(path.path.Length <= 1)
+        if (InputManager.GetKey(KeyCode.T))
+        {
+            int DEBUG = 0;
+        }
+
+        if (path.path.Length <= 1)
         {
             return null;
         }
@@ -27,7 +32,7 @@ public static class PathFinderToric
 
         for (int i = 1; i < path.path.Length; i++)
         {
-            if (Mathf.Max(Mathf.Abs(path.path[i].X - path.path[i].X), Mathf.Abs(path.path[i].Y - path.path[i].Y)) > 1)
+            if (Mathf.Max(Mathf.Abs(path.path[i].X - path.path[i - 1].X), Mathf.Abs(path.path[i].Y - path.path[i - 1].Y)) > 1)
             {
                 //TO DO: add toric inter
                 index++;
@@ -36,35 +41,111 @@ public static class PathFinderToric
             subPath[index].Add(path.path[i]);
         }
 
-        Spline CreateSpline(SplineType splineType, List<MapPoint> points, Func<MapPoint, Vector2> convertMapPointToWorldPosition)
+        Vector2[] CreatePoints(List<MapPoint> mapPoints, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool prepolate, MapPoint previousMapPoint, bool extrapolate, MapPoint nextMapPoint)
         {
-            Vector2[] points2 = new Vector2[points.Count];
-            for (int i = 0; i < points2.Length; i++)
+            Vector2[] points = new Vector2[(prepolate ? 1 : 0) + (extrapolate ? 1 : 0) + mapPoints.Count];
+
+            if(prepolate)
             {
-                points2[i] = convertMapPointToWorldPosition(points[i]);
+                Vector2 previousPoint = convertMapPointToWorldPosition(previousMapPoint);
+                Vector2 firstPoint = convertMapPointToWorldPosition(mapPoints[0]);
+                if (PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter))
+                {
+                    float deltaX = firstPoint.x - inter.x;
+                    float deltaY = firstPoint.y - inter.y;
+                    inter.x += 0.001f * deltaX.Sign();
+                    inter.y += 0.001f * deltaY.Sign();
+                    points[0] = PhysicsToric.GetPointInsideBounds(inter);
+                }
+                else
+                {
+#if UNITY_EDITOR
+                    Debug.LogWarning("Debug plz");
+#endif
+                    LogManager.instance.WriteLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(prepolate) block", previousPoint, firstPoint);
+                    prepolate = false;
+                    points = new Vector2[(extrapolate ? 1 : 0) + mapPoints.Count];
+                }
             }
 
+            int beg = prepolate ? 1 : 0;
+            int end = extrapolate ? points.Length - 1 : points.Length;
+            int offset = prepolate ? -1 : 0;
+            for (int i = beg; i < end; i++)
+            {
+                MapPoint mapPoint = mapPoints[i + offset];
+                points[i] = convertMapPointToWorldPosition(mapPoint);
+            }
+
+            if (extrapolate)
+            {
+                Vector2 nextPoint = convertMapPointToWorldPosition(nextMapPoint);
+                Vector2 lastPoint = points[points.Length - 2];
+                if (PhysicsToric.GetToricIntersection(lastPoint, nextPoint, out Vector2 inter))
+                {
+                    float deltaX = lastPoint.x - inter.x;
+                    float deltaY = lastPoint.y - inter.y;
+                    inter.x += 0.001f * deltaX.Sign();
+                    inter.y += 0.001f * deltaY.Sign();
+                    points[points.Length - 1] = PhysicsToric.GetPointInsideBounds(inter);
+                }
+                else
+                {
+#if UNITY_EDITOR
+                    Debug.LogWarning("Debug plz");
+#endif
+                    LogManager.instance.WriteLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(extrapolate) block", nextPoint, lastPoint);
+                    extrapolate = false;
+                    Vector2[] tmp = new Vector2[points.Length - 1];
+                    for (int i = 0; i < tmp.Length; i++)
+                    {
+                        tmp[i] = points[i];
+                    }
+                    points = tmp;
+                }
+            }
+
+            return points;
+        }
+
+        Spline CreateSpline(Vector2[] points, SplineType splineType)
+        {
             switch (splineType)
             {
                 case SplineType.Bezier:
-                    return new HermiteSpline(points2);
+                    return new HermiteSpline(points);
                 case SplineType.Hermite:
-                    return new HermiteSpline(points2);
+                    return new HermiteSpline(points);
                 case SplineType.Catmulrom:
-                    return new CatmulRomSpline(points2);
+                    return new CatmulRomSpline(points);
                 case SplineType.Cardinal:
-                    return new CatmulRomSpline(points2);
+                    return new CatmulRomSpline(points);
                 case SplineType.BSline:
-                    return new BSpline(points2);
+                    return new BSpline(points);
                 default:
-                    return new CatmulRomSpline(points2);
+                    return new CatmulRomSpline(points);
             }
         }
 
         Spline[] splines = new Spline[subPath.Count];
-        for (int i = 0; i < splines.Length; i++)
+
+        if(splines.Length <= 1)
         {
-            splines[i] = CreateSpline(splineType, subPath[i], convertMapPointToWorldPosition);
+            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, null, false, null), splineType);
+        }
+        else if (splines.Length == 2)
+        {
+            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, null, true, subPath[1][0]), splineType);
+            splines[1] = CreateSpline(CreatePoints(subPath[1], convertMapPointToWorldPosition, true, subPath[0].Last(), false, null), splineType);
+        }
+        else
+        {
+            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, null, true, subPath[1][0]), splineType);
+            for (int i = 1; i < splines.Length - 1; i++)
+            {
+                splines[i] = CreateSpline(CreatePoints(subPath[i], convertMapPointToWorldPosition, true, subPath[i - 1].Last(), true, subPath[i + 1][0]), splineType);
+            }
+            splines[splines.Length - 1] = CreateSpline(CreatePoints(subPath[splines.Length - 1], convertMapPointToWorldPosition, true, subPath[splines.Length - 2].Last(), false, null), splineType);
         }
 
         return new SplinePath(path.totalCost, splines);

@@ -979,7 +979,7 @@ public static class Useful
     /// <returns>l'angle en rad entre 0 et 2pi entre le vecteur (1,0) et (b-a) </returns>
     public static float AngleHori(this in Vector2 a, in Vector2 b) => Mathf.Atan2(a.y - b.y, a.x - b.x) + Mathf.PI;
     public static float Angle(this in Vector2 a, in Vector2 b) => ClampModulo(-Mathf.PI, Mathf.PI, AngleHori(Vector2.zero, a) + AngleHori(Vector2.zero, b));
-    public static float Sign(this float a) => Mathf.Abs(a) <= Mathf.Epsilon ? 0f : (a > 0f ? 1f : -1f);
+    public static float Sign(this float a) => Mathf.Approximately(a, 0f) ? 0f : (a > 0f ? 1f : -1f);
     public static int Sign(this int a) => a == 0 ? 0 : (a > 0 ? 1 : -1);
 
     /// <summary>
