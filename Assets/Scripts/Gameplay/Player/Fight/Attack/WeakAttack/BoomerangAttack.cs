@@ -79,8 +79,10 @@ public class BoomerangAttack : WeakAttack
     [SerializeField] private bool testPathNoDiagFinding;
     [SerializeField] private bool testPathFinding;
     [SerializeField] private bool useSplinePathFinding;
+    [SerializeField] private bool useExtraSmoothness;
     [SerializeField] private BezierUtility.SplineType splineType = BezierUtility.SplineType.Catmulrom;
     [SerializeField] private Vector2 start;
+    [SerializeField, Range(0f, 1f)] private float tension;
     Path testPathNoDiag, testPath;
     PathFinderToric.SplinePath splinePathNoDiag, splinePath;
 
@@ -101,7 +103,7 @@ public class BoomerangAttack : WeakAttack
             {
                 if(useSplinePathFinding)
                 {
-                    splinePathNoDiag = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, false, splineType);
+                    splinePathNoDiag = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, false, splineType, useExtraSmoothness, tension);
                     if(splinePathNoDiag != null)
                     {
                         Gizmos.color = Color.green;
@@ -121,7 +123,7 @@ public class BoomerangAttack : WeakAttack
             {
                 if (useSplinePathFinding)
                 {
-                    splinePath = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, true, splineType);
+                    splinePath = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, true, splineType, useExtraSmoothness, tension);
                     if (splinePath != null)
                     {
                         Gizmos.color = Color.green;

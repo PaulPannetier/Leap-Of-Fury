@@ -12,7 +12,7 @@ public static class PathFinderToric
         return new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
     }
 
-    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom)
+    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, bool extraSmootness = false, float tension = 1f)
     {
         Path path = new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
 
@@ -33,6 +33,25 @@ public static class PathFinderToric
                 subPath.Add(new List<MapPoint>());
             }
             subPath[index].Add(path.path[i]);
+        }
+
+        if(extraSmootness)
+        {
+            MapPoint next, cur, prev;
+            for (int i = 0; i < subPath.Count; i++)
+            {
+                for (int j = subPath[i].Count - 2; j >= 1; j--)
+                {
+                    next = subPath[i][j + 1];
+                    cur = subPath[i][j];
+                    prev = subPath[i][j - 1];
+                    
+                    if((next.X == cur.X && cur.X == prev.X) || (next.Y == cur.Y && cur.Y == prev.Y))
+                    {
+                        subPath[i].RemoveAt(j);
+                    }
+                }
+            }
         }
 
         Vector2[] CreatePoints(List<MapPoint> mapPoints, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool prepolate, MapPoint previousMapPoint, bool extrapolate, MapPoint nextMapPoint)
@@ -117,7 +136,7 @@ public static class PathFinderToric
                 case SplineType.Catmulrom:
                     return new CatmulRomSpline(points);
                 case SplineType.Cardinal:
-                    return new CatmulRomSpline(points);
+                    return new CardinalSpline(points, tension);
                 case SplineType.BSline:
                     return new BSpline(points);
                 default:
@@ -126,6 +145,7 @@ public static class PathFinderToric
         }
 
         Spline[] splines = new Spline[subPath.Count];
+        tension = Mathf.Clamp01(tension);
 
         if(splines.Length <= 1)
         {
