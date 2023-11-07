@@ -2574,7 +2574,7 @@ namespace Collision2D
 
 namespace Collission3D
 {
-    #region customCollider3
+    #region CustomCollider3
 
     public abstract class CustomCollider3D
     {
@@ -2698,8 +2698,6 @@ namespace Collission3D
         #endregion
 
         #region customCollider3D
-
-        public const float accuracy = 1e-5f;
 
         public static CustomCollider3D FromUnityCollider2D(Collider collider)
         {
@@ -2836,7 +2834,7 @@ namespace Collission3D
         {
             Vector3 v1 = B - A, v2 = d.B - d.A;
             float denum = v1.Cross(v2).sqrMagnitude;
-            if (denum <= CustomCollider3D.accuracy)
+            if (Mathf.Approximately(denum, 0f))
                 return float.MaxValue;
 
             Vector3 v = d.A - A;
@@ -2849,7 +2847,7 @@ namespace Collission3D
         {
             Vector3 v1 = B - A, v2 = d.B - d.A;
             float denum = v1.Cross(v2).magnitude;
-            if (denum <= CustomCollider3D.accuracy)
+            if (Mathf.Approximately(denum, 0f))
                 return float.MaxValue;
 
             Vector3 v = d.A - A;
@@ -2928,12 +2926,12 @@ namespace Collission3D
 
         public override void SetScale(in Vector3 scale)
         {
-            radius *= (scale.x + scale.y + scale.z) / 3f;
+            radius *= (scale.x + scale.y + scale.z) * 0.333333333f;
         }
 
         public override bool Normal(in Vector3 point, out Vector3 normal)
         {
-            if (Mathf.Abs(point.SqrDistance(center) - radius * radius) <= accuracy)
+            if (Mathf.Approximately(point.SqrDistance(center), radius * radius))
             {
                 normal = (point - center).normalized;
                 return true;
@@ -3053,7 +3051,7 @@ namespace Collission3D
             Vector3 u = line.B - line.A;
             Vector3 n = (p2 - p1).Cross(p3 - p1);
 
-            if (Mathf.Abs(n.Dot(u)) <= accuracy)//droite et plan sont parallèles
+            if (Mathf.Approximately(n.Dot(u), 0f))//droite et plan sont parallèles
             {
                 intersection = Vector3.zero;
                 return false;
@@ -3088,7 +3086,7 @@ namespace Collission3D
             Vector3 u = droite.B - droite.A;
             Vector3 n = (p2 - p1).Cross(p3 - p1);
 
-            if (Mathf.Abs(n.Dot(u)) <= accuracy)//droite et plan sont parallèles
+            if (Mathf.Approximately(n.Dot(u), 0f))//droite et plan sont parallèles
             {
                 intersection = Vector3.zero;
                 return false;

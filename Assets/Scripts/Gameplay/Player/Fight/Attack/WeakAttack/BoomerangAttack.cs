@@ -83,6 +83,7 @@ public class BoomerangAttack : WeakAttack
     [SerializeField] private BezierUtility.SplineType splineType = BezierUtility.SplineType.Catmulrom;
     [SerializeField] private Vector2 start;
     [SerializeField, Range(0f, 1f)] private float tension;
+    [SerializeField, Range(0f, 1f)] private float x;
     Path testPathNoDiag, testPath;
     PathFinderToric.SplinePath splinePathNoDiag, splinePath;
 
@@ -98,6 +99,8 @@ public class BoomerangAttack : WeakAttack
             Map map = LevelMapData.currentMap.GetPathfindingMap();
             MapPoint startMP = LevelMapData.currentMap.GetMapPointAtPosition(start);
             MapPoint endMP = LevelMapData.currentMap.GetMapPointAtPosition(end);
+            testPathNoDiag = testPath = null;
+            splinePathNoDiag = splinePath = null;
 
             if (testPathNoDiagFinding)
             {
@@ -113,7 +116,6 @@ public class BoomerangAttack : WeakAttack
                 else
                 {
                     testPathNoDiag = PathFinderToric.FindBestPath(map, startMP, endMP, false);
-
                     Gizmos.color = Color.green;
                     DrawPath(testPathNoDiag);
                 }
@@ -135,6 +137,22 @@ public class BoomerangAttack : WeakAttack
                     testPath = PathFinderToric.FindBestPath(map, startMP, endMP, true);
                     Gizmos.color = Color.red;
                     DrawPath(testPath);
+                }
+            }
+
+            if(useSplinePathFinding && (splinePathNoDiag != null || splinePath != null))
+            {
+                if(splinePathNoDiag != null)
+                {
+                    Vector2 p = splinePathNoDiag.EvaluateDistance(x);
+                    Gizmos.color = Color.red;
+                    Circle.GizmosDraw(p, 0.3f);
+                }
+                if (splinePath != null)
+                {
+                    Vector2 p = splinePath.EvaluateDistance(x);
+                    Gizmos.color = Color.red;
+                    Circle.GizmosDraw(p, 0.3f);
                 }
             }
 
