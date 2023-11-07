@@ -16,11 +16,6 @@ public static class PathFinderToric
     {
         Path path = new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
 
-        if (InputManager.GetKey(KeyCode.T))
-        {
-            int DEBUG = 0;
-        }
-
         if (path.path.Length <= 1)
         {
             return null;
@@ -34,7 +29,6 @@ public static class PathFinderToric
         {
             if (Mathf.Max(Mathf.Abs(path.path[i].X - path.path[i - 1].X), Mathf.Abs(path.path[i].Y - path.path[i - 1].Y)) > 1)
             {
-                //TO DO: add toric inter
                 index++;
                 subPath.Add(new List<MapPoint>());
             }
@@ -51,6 +45,8 @@ public static class PathFinderToric
                 Vector2 firstPoint = convertMapPointToWorldPosition(mapPoints[0]);
                 if (PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter))
                 {
+                    if(firstPoint.SqrDistance(inter) > previousPoint.SqrDistance(inter))
+                        inter = PhysicsToric.GetComplementaryPoint(inter);
                     float deltaX = firstPoint.x - inter.x;
                     float deltaY = firstPoint.y - inter.y;
                     inter.x += 0.001f * deltaX.Sign();
@@ -83,6 +79,8 @@ public static class PathFinderToric
                 Vector2 lastPoint = points[points.Length - 2];
                 if (PhysicsToric.GetToricIntersection(lastPoint, nextPoint, out Vector2 inter))
                 {
+                    if (lastPoint.SqrDistance(inter) > nextPoint.SqrDistance(inter))
+                        inter = PhysicsToric.GetComplementaryPoint(inter);
                     float deltaX = lastPoint.x - inter.x;
                     float deltaY = lastPoint.y - inter.y;
                     inter.x += 0.001f * deltaX.Sign();
