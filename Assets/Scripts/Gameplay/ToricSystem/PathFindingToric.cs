@@ -7,12 +7,19 @@ using static BezierUtility;
 
 public static class PathFinderToric
 {
+    public enum SmoothnessMode
+    {
+        None,
+        ExtraSmoothness,
+        Smoothnesspp
+    }
+
     public static Path FindBestPath(Map map, MapPoint start, MapPoint end, bool allowDiagonal = false)
     {
         return new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
     }
 
-    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, bool extraSmootness = false, float tension = 1f)
+    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None, float tension = 1f)
     {
         Path path = new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
 
@@ -35,7 +42,22 @@ public static class PathFinderToric
             subPath[index].Add(path.path[i]);
         }
 
-        if(extraSmootness)
+
+        switch (smoothnessMode)
+        {
+            case SmoothnessMode.None:
+                break;
+            case SmoothnessMode.ExtraSmoothness:
+                HandleSmoothnessMode(ref subPath);
+                break;
+            case SmoothnessMode.Smoothnesspp:
+                HandleSmoothnessModepp(ref subPath);
+                break;
+            default:
+                break;
+        }
+
+        void HandleSmoothnessMode(ref List<List<MapPoint>> subPath)
         {
             MapPoint next, cur, prev;
             for (int i = 0; i < subPath.Count; i++)
@@ -45,11 +67,48 @@ public static class PathFinderToric
                     next = subPath[i][j + 1];
                     cur = subPath[i][j];
                     prev = subPath[i][j - 1];
-                    
-                    if((next.X == cur.X && cur.X == prev.X) || (next.Y == cur.Y && cur.Y == prev.Y))
+
+                    if ((next.X == cur.X && cur.X == prev.X) || (next.Y == cur.Y && cur.Y == prev.Y))
                     {
                         subPath[i].RemoveAt(j);
                     }
+                }
+            }
+        }
+
+        void HandleSmoothnessModepp(ref List<List<MapPoint>> subPath)
+        {
+            for (int i = 0; i < subPath.Count; i++)
+            {
+                if (subPath[i].Count <= 2)
+                    continue;
+
+                int index = subPath[i].Count - 1;
+                MapPoint mapPoint;
+                while(index >= 1)
+                {
+                    for (int j = index - 1; j >= 0; j--)
+                    {
+                        mapPoint = subPath[i][j];
+
+                        if (mapPoint.X != subPath[i][index].X && mapPoint.Y != subPath[i][index].Y)
+                        {
+                            if(index - j <= 1)
+                            {
+                                index--;
+                                break;
+                            }
+
+                            for (int k = index - 1; k > j; k--)
+                            {
+                                subPath[i].RemoveAt(k);
+                            }
+
+                            index = j;
+                            break;
+                        }
+                    }
+                    index--;
                 }
             }
         }
@@ -212,11 +271,11 @@ public static class PathFinderToric
             }
         }
 
-        public Vector2 EvaluateDistance(float x)
+        private (int splineIndex, float newX) GetIndexFromGlobalX(float x)
         {
-            if(joints.Length <= 0)
+            if (joints.Length <= 0)
             {
-                return path[0].EvaluateDistance(x);
+                return (0, Mathf.Clamp01(x));
             }
 
             x = Mathf.Clamp01(x);
@@ -232,6 +291,12 @@ public static class PathFinderToric
 
             float beforeLength = lengthCumSum[splineIndex];
             float newX = (x * length - beforeLength) / path[splineIndex].length;
+            return (splineIndex, newX);
+        }
+
+        public Vector2 EvaluateDistance(float x)
+        {
+            (int splineIndex, float newX) = GetIndexFromGlobalX(x);
             return path[splineIndex].EvaluateDistance(newX);
         }
 
@@ -254,6 +319,12 @@ public static class PathFinderToric
                 x[i] = x[i - 1] + step;
             }
             return EvaluateDistance(x);
+        }
+
+        public Vector2 Velocity(float x)
+        {
+            (int splineIndex, float newX) = GetIndexFromGlobalX(x);
+            return path[splineIndex].Velocity(path[splineIndex].ConvertDistanceToTime(newX));
         }
     }
 }

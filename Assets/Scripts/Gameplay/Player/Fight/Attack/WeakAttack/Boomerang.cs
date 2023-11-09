@@ -2,6 +2,8 @@ using UnityEngine;
 using PathFinding;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
+using static PathFinderToric;
+using static BezierUtility;
 
 public class Boomerang : MonoBehaviour
 {
@@ -25,6 +27,11 @@ public class Boomerang : MonoBehaviour
     private Vector2 velocity;
     private LayerMask groundMask;
     private bool isDestroy;
+    private Vector2 targetPos;
+    private bool isTargetingSender;
+    private SplinePath path;
+    private MapPoint oldSenderMapPoint = null;
+    private float reachDist;
 
     [SerializeField] private Vector2 circleOffset;
     [SerializeField] private float circleRadius;
@@ -75,14 +82,13 @@ public class Boomerang : MonoBehaviour
                 HandleGoState();
                 break;
             case State.getBack:
-                HandleGetBackStateV2();
+                HandleGetBackState();
                 break;
             default:
                 break;
         }
 
-        Vector2 pos = transform.position + (Vector3)(velocity * Time.deltaTime);
-        transform.SetPositionAndRotation(pos, Quaternion.Euler(0f, 0f, (velocity.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg));
+        transform.position += (Vector3)(velocity * Time.deltaTime);
     }
 
     private void HandleGoState()
@@ -100,78 +106,21 @@ public class Boomerang : MonoBehaviour
             state = State.getBack;
             velocity = velocity.normalized * speedCurvePhase1.Evaluate(1f);
             //velocity = PhysicsToric.Direction(transform.position, sender.transform.position) * speedCurvePhase1.Evaluate(1f);
+            oldSenderMapPoint = null;
             timeLaunch = Time.time;
             return;
         }
 
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate((Time.time - timeLaunch) / durationPhase1) * dir;
+        transform.rotation = Quaternion.Euler(0f, 0f, (velocity.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg);
     }
 
-    private void HandleGetBackStateV1()
-    {
-        Vector2 targetDir = PhysicsToric.Direction(transform.position, sender.transform.position);
-
-        Circle circleCollider = GetCircleCollider();
-        Collider2D groundCol = PhysicsToric.OverlapCircle(circleCollider, groundMask);
-        if (groundCol != null)
-        {
-            Collision2D.Collider2D col = Collision2D.Collider2D.FromUnityCollider2D(groundCol);
-
-            Vector2 collisionPoint, normal1, normal2;
-            if(!Collision2D.Collider2D.Collide(col, circleCollider, out collisionPoint, out normal1, out normal2))
-            {
-                collisionPoint = (circleCollider.center + col.center) * 0.5f;
-                normal1 = (circleCollider.center - col.center).normalized;
-                normal2 = -normal1;
-            }
-            dir = Collision2D.Ray2D.Symetric(-velocity, new Collision2D.Ray2D(Vector2.zero, normal1)).normalized;
-            transform.position -= (Vector3)(velocity * Time.deltaTime);
-        }
-
-        float currentAng = Useful.AngleHori(Vector2.zero, dir);
-        float targetAng = Useful.AngleHori(Vector2.zero, targetDir);
-        float ang = Mathf.MoveTowards(currentAng, targetAng, Time.deltaTime * rotationSpeed);
-        dir = Useful.Vector2FromAngle(ang);
-
-        if (Time.time - timeLaunch < accelerationDurationPhase2)
-        {
-            velocity = maxSpeedPhase2 * accelerationCurvePhase2.Evaluate(1f) * dir;
-        }
-        else
-        {
-            velocity = maxSpeedPhase2 * dir;
-        }
-
-        if (PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
-        {
-            sender.GetBack();
-            animator.SetTrigger("destroy");
-            velocity = Vector2.zero;
-            isDestroy = true;
-            if (animator.GetAnimationLength("destroy", out float length))
-            {
-                Invoke(nameof(Destroy), length);
-            }
-            else
-                Destroy();
-
-            return;
-        }
-    }
-
-    private Vector2 targetPos;
-    private bool isTargetingSender;
-    private Path path;
-    private MapPoint oldSenderMapPoint = null;
-    int pathIndex;
-
-    private void HandleGetBackStateV2()
+    private void HandleGetBackState()
     {
         MapPoint currentSenderMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(sender.transform.position);
 
         if(oldSenderMapPoint == null || oldSenderMapPoint != currentSenderMapPoint)
         {
-            Map pathFindingMap = LevelMapData.currentMap.GetPathfindingMap();
             MapPoint start = LevelMapData.currentMap.GetMapPointAtPosition(transform.position);
 
             if (start == currentSenderMapPoint)
@@ -181,8 +130,27 @@ public class Boomerang : MonoBehaviour
             }
             else
             {
-                path = PathFinderToric.FindBestPath(pathFindingMap, start, currentSenderMapPoint);
-                pathIndex = 1;
+                Map pathFindingMap = LevelMapData.currentMap.GetPathfindingMap();
+                path = PathFinderToric.FindBestCurve(pathFindingMap, start, currentSenderMapPoint, LevelMapData.currentMap.GetPositionOfMapPoint,
+                    true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
+
+                int maxIter = 20;
+                while(path == null && maxIter > 0)
+                {
+                    transform.position -= (Vector3)(velocity * Time.deltaTime);
+                    start = LevelMapData.currentMap.GetMapPointAtPosition(transform.position);
+                    path = PathFinderToric.FindBestCurve(pathFindingMap, start, currentSenderMapPoint, LevelMapData.currentMap.GetPositionOfMapPoint,
+                        true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
+                    maxIter--;
+                }
+
+                if(path == null)
+                {
+                    StartDestroy();
+                    return;
+                }
+
+                reachDist = 0f;
             }
         }
         oldSenderMapPoint = currentSenderMapPoint;
@@ -193,41 +161,58 @@ public class Boomerang : MonoBehaviour
             isTargetingSender = true;
         }
 
-        if(!isTargetingSender)
+        if(isTargetingSender && (currentMapPoint != currentSenderMapPoint))
         {
-            if(PhysicsToric.Distance(LevelMapData.currentMap.GetPositionOfMapPoint(path.path[1]), transform.position) < 3f * maxSpeedPhase2 * Time.deltaTime)
-            {
-                pathIndex++;
-            }
+            isTargetingSender = false;
         }
 
-        Vector2 targetedPos = isTargetingSender ? sender.transform.position : LevelMapData.currentMap.GetPositionOfMapPoint(path.path[pathIndex]);
-        dir = PhysicsToric.Direction(transform.position, targetedPos);
-
+        float speed = 0f;
         if (Time.time - timeLaunch < accelerationDurationPhase2)
         {
-            velocity = maxSpeedPhase2 * accelerationCurvePhase2.Evaluate(1f) * dir;
+            speed = maxSpeedPhase2 * accelerationCurvePhase2.Evaluate((Time.time - timeLaunch) / accelerationDurationPhase2);
         }
         else
         {
-            velocity = maxSpeedPhase2 * dir;
+            speed = maxSpeedPhase2;
         }
+
+        Vector2 direction;
+        //Move!
+        if(isTargetingSender)
+        {
+            transform.position = Vector2.Lerp(transform.position, sender.transform.position, speed * Time.deltaTime);
+            direction = PhysicsToric.Direction(transform.position, sender.transform.position);
+        }
+        else
+        {
+            reachDist += speed * Time.deltaTime;
+            float reachDistPercent = reachDist / path.length;
+            transform.position = path.EvaluateDistance(reachDistPercent);
+            direction = path.Velocity(reachDistPercent).normalized;
+        }
+
+        //Rotate
+        transform.rotation = Quaternion.Euler(0f, 0f, Useful.AngleHori(Vector2.zero, direction) * Mathf.Rad2Deg + 180f);
 
         if (PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
         {
-            sender.GetBack();
-            animator.SetTrigger("destroy");
-            velocity = Vector2.zero;
-            isDestroy = true;
-            if (animator.GetAnimationLength("destroy", out float length))
-            {
-                Invoke(nameof(Destroy), length);
-            }
-            else
-                Destroy();
-
+            StartDestroy();
             return;
         }
+    }
+
+    private void StartDestroy()
+    {
+        sender.GetBack();
+        animator.SetTrigger("destroy");
+        velocity = Vector2.zero;
+        isDestroy = true;
+        if (animator.GetAnimationLength("destroy", out float length))
+        {
+            Invoke(nameof(Destroy), length);
+        }
+        else
+            Destroy();
     }
 
     private Circle GetCircleCollider()

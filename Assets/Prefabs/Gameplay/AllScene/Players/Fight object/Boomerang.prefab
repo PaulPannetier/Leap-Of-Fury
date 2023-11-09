@@ -122,7 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.5, y: 2, z: 0}
+    m_Extent: {x: 1.5, y: 1.5, z: 0}
   boundsOffset: {x: 0, y: 0}
   enableHorizontal: 1
   enableVertical: 1
