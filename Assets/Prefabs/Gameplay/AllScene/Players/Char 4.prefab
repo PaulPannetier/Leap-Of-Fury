@@ -874,14 +874,32 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 0.42325032
+      value: 0.95784366
+      inSlope: 0.4066074
+      outSlope: 0.4066074
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.17115004
+      outWeight: 0.13045838
+    - serializedVersion: 3
+      time: 0.9249037
+      value: 0.705582
+      inSlope: -2.0993886
+      outSlope: -2.0993886
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0
+      outWeight: 0.41707036
+    - serializedVersion: 3
+      time: 0.99954665
+      value: 0.38534477
+      inSlope: -1.4558069
+      outSlope: -1.4558069
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -918,12 +936,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxSpeedPhase1: 20
-  maxSpeedPhase2: 12
-  durationPhase1: 1.2
+  maxSpeedPhase1: 18
+  maxSpeedPhase2: 18
+  durationPhase1: 1.4
   accelerationDurationPhase2: 1.5
   recuperationRange: 1
-  rotationSpeed: 360
+  rotationSpeed: 1440
   drawGizmos: 1
 --- !u!114 &4277522715158860269
 MonoBehaviour:
@@ -946,6 +964,7 @@ MonoBehaviour:
   fireworkDiffusionAngle: 90
   distanceFromCharWhenLauch: 0.2
   fireworkPrefaps: {fileID: 8656721268289568354, guid: 0ff773371c0e3e44ebd9b5531232c400, type: 3}
+  drawGizmos: 0
 --- !u!114 &1455914444206811459
 MonoBehaviour:
   m_ObjectHideFlags: 0

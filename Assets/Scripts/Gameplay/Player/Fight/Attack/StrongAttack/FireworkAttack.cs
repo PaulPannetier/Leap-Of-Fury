@@ -1,7 +1,9 @@
 using System;
 using UnityEngine;
+#if UNITY_EDITOR
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
+#endif
 
 public class FireworkAttack : StrongAttack
 {
@@ -13,6 +15,12 @@ public class FireworkAttack : StrongAttack
     [SerializeField, Range(0f, 360f)] private float fireworkDiffusionAngle = 90f;
     [SerializeField] private float distanceFromCharWhenLauch = 0.2f;
     [SerializeField] private Firework fireworkPrefaps;
+
+#if UNITY_EDITOR
+
+    [SerializeField] private bool drawGizmos = true;
+
+#endif
 
     protected override void Awake()
     {
@@ -63,6 +71,8 @@ public class FireworkAttack : StrongAttack
         OnTouchEnemy(ennemy);
     }
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         bumpVelocity = Mathf.Max(bumpVelocity, 0f);
@@ -72,6 +82,9 @@ public class FireworkAttack : StrongAttack
 
     private void OnDrawGizmosSelected()
     {
+        if (!drawGizmos)
+            return;
+
         Gizmos.color = Color.green;
         float a1 = (270f + fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;
         float a2 = (270f - fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;
@@ -79,4 +92,6 @@ public class FireworkAttack : StrongAttack
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(a2));
         Circle.GizmosDraw(transform.position, 1f, a2, a1);
     }
+
+#endif
 }

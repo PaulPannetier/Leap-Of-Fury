@@ -55,7 +55,7 @@ public class BoomerangAttack : WeakAttack
     private BoomerangLaunchData CreateLaunchData(in Vector2 dir)
     {
         return new BoomerangLaunchData(dir, speedCurvePhase1, accelerationCurvePhase2, maxSpeedPhase1, durationPhase1,
-            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, rotationSpeed * Mathf.Deg2Rad);
+            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, rotationSpeed);
     }
 
     public void GetBack()

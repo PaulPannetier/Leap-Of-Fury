@@ -27,7 +27,6 @@ public class Boomerang : MonoBehaviour
     private Vector2 velocity;
     private LayerMask groundMask;
     private bool isDestroy;
-    private Vector2 targetPos;
     private bool isTargetingSender;
     private SplinePath path;
     private MapPoint oldSenderMapPoint = null;
@@ -87,8 +86,6 @@ public class Boomerang : MonoBehaviour
             default:
                 break;
         }
-
-        transform.position += (Vector3)(velocity * Time.deltaTime);
     }
 
     private void HandleGoState()
@@ -105,14 +102,14 @@ public class Boomerang : MonoBehaviour
         {
             state = State.getBack;
             velocity = velocity.normalized * speedCurvePhase1.Evaluate(1f);
-            //velocity = PhysicsToric.Direction(transform.position, sender.transform.position) * speedCurvePhase1.Evaluate(1f);
             oldSenderMapPoint = null;
             timeLaunch = Time.time;
             return;
         }
 
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate((Time.time - timeLaunch) / durationPhase1) * dir;
-        transform.rotation = Quaternion.Euler(0f, 0f, (velocity.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg);
+        Vector3 newPos = (Vector2)transform.position + velocity * Time.deltaTime;
+        transform.SetPositionAndRotation(newPos, Quaternion.Euler(0f, 0f, (velocity.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg));
     }
 
     private void HandleGetBackState()
@@ -176,23 +173,26 @@ public class Boomerang : MonoBehaviour
             speed = maxSpeedPhase2;
         }
 
+        //Compute direction
         Vector2 direction;
-        //Move!
         if(isTargetingSender)
         {
-            transform.position = Vector2.Lerp(transform.position, sender.transform.position, speed * Time.deltaTime);
             direction = PhysicsToric.Direction(transform.position, sender.transform.position);
         }
         else
         {
             reachDist += speed * Time.deltaTime;
             float reachDistPercent = reachDist / path.length;
-            transform.position = path.EvaluateDistance(reachDistPercent);
-            direction = path.Velocity(reachDistPercent).normalized;
+            Vector2 targetPosition = path.EvaluateDistance(reachDistPercent);
+            direction = PhysicsToric.Direction(transform.position, targetPosition);
         }
 
-        //Rotate
-        transform.rotation = Quaternion.Euler(0f, 0f, Useful.AngleHori(Vector2.zero, direction) * Mathf.Rad2Deg + 180f);
+        //Move and Rotate
+        velocity = speed * direction;
+        Vector3 newPos = (Vector2)transform.position + velocity * Time.deltaTime;
+        float newAngle = (direction.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg;
+        float currentAngle = transform.rotation.eulerAngles.z;
+        transform.SetPositionAndRotation(newPos, Quaternion.Euler(0f, 0f, Mathf.MoveTowardsAngle(currentAngle, newAngle, Time.deltaTime * rotationSpeed)));
 
         if (PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
         {
