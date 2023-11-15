@@ -21,7 +21,7 @@ public class TurningSelector : MonoBehaviour
     [SerializeField] private float minTimeBetweenMove = 0.2f;
     [SerializeField] private float itemsScaleMultiplier = 1f;
     [SerializeField] private AnimationCurve itemScaleByDistance;
-    [field:SerializeField] public Vector2 offset { get; private set; } = Vector2.zero;
+    [SerializeField] public Vector2 offset = Vector2.zero;
     [Tooltip("Angular speed in degrees/sec")][SerializeField] private float angularSpeed = 360f;
     [SerializeField] private bool isHorizontal = true;
     [SerializeField] private bool isInvers = false;

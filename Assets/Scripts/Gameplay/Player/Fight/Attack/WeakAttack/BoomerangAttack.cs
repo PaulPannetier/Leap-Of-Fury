@@ -63,6 +63,11 @@ public class BoomerangAttack : WeakAttack
         currentBoomerang = null;
     }
 
+    public override void OnTouchEnemy(GameObject enemy)
+    {
+        base.OnTouchEnemy(enemy);
+    }
+
 #if UNITY_EDITOR
 
     protected void OnValidate()

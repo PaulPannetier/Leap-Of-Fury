@@ -20,13 +20,6 @@ public class CharSelectorController : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput previousItemInput;
     [SerializeField] private InputManager.GeneralInput applyItemInput;
 
-    #if UNITY_EDITOR
-
-    private bool debugMode;
-    [SerializeField] private InputKey DEBUG_AddGhostCharKey = InputKey.F2;
-
-    #endif
-
     private void Awake()
     {
         turningSelectors = new TurningSelector[4];
@@ -115,18 +108,6 @@ public class CharSelectorController : MonoBehaviour
                 controllerIndexs[indexToInit] = controllerType;
                 indexToInit++;
             }
-
-            #if UNITY_EDITOR
-
-            if(InputManager.GetKeyDown(DEBUG_AddGhostCharKey))
-            {
-                isTurningSelectorInit[indexToInit] = true;
-                controllerIndexs[indexToInit] = ControllerType.Gamepad1;
-                indexToInit++;
-                debugMode = true;
-            }
-
-            #endif
         }
 
         bool allIsSelected = true;
@@ -140,16 +121,6 @@ public class CharSelectorController : MonoBehaviour
         }
 
         canLoadNextScene = allIsSelected && indexToInit >= 2;
-
-        #if UNITY_EDITOR
-
-        if(debugMode)
-        {
-            allIsSelected = isTurningSelectorInit[0] && !isTurningSelectorsFinishSelection[0];
-            canLoadNextScene = allIsSelected;
-        }
-
-        #endif
 
         if(canLoadNextScene && !nextSceneIsLoading)
         {

@@ -40,7 +40,7 @@ Caracter Controller
 Compétences des perso : 
 
 perso 1 : *
-	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose 'repetable 3fois).//ok
+	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose (repetable 3fois).//ok
 	  attack forte : clone du joueur qui fait ces attaque avec un delai de 3 sec.//ok
 	  Passif : le joueur laisse un trainé de flamme sur le sol.//ok **
 
@@ -55,22 +55,17 @@ perso 3 : *
 	  Passif : jsp ***
 
 perso 4 : *
-	  attack faible : Lance un grapin qui grape un mur (8 directions via les input) qui laisse un trainé de bombe confeties au bout qui explose//~ok
-		|| lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur. 
+	  attack faible : lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur. 
 	  attack forte : tir 3 projectiles en cone dans la dir inverse des input (8 dir possibles) et qui lui applique une forte de propulsion//ok**
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
-
-Idée attack en rab :
--Un projectile qui reviens vers le joueur.
-
 
 Niveau :
 - Composé de plusieurs cartes.
 - Homéomorphe à un tore.
-- Une a 2 mécaniques de gameplay propre.:
+- Une a 2 mécaniques de gameplay propre.
 
 Niveau 0 :
-Méca : rien, un carte simple pour les débutants ou les fdp qui désactive les jokers sur smash
+Méca : rien, un carte simple pour les débutants ou les fdp qui désactive les jokers sur smash.
 DA : jsp
 Name : The Plain
 
@@ -109,14 +104,16 @@ Au centre de la map il y a un bouton, quand un joueur passe devant, active les t
 De + des paires d'electrode s'active est crée un éclair en eux a un rythme régulier, 
 tuant les joueur entre les 2 électrode.//ok
 DA : Une usine électrique/electromagnétique avec des bobine, des électrode des fil ect.
-name : Maxwell house ou Maxwell factory
+name : Maxwell house
 
+/Pas a mettre pour l'instant
 Carte 6 : *** := plus j'y pense plus je trouve l'idée éclaté
 Méca : Un clown transparent effraye (immobilise) les joueurs.
 + des ascenseurs verticaux et/ou horizontaux.
 DA : Une fete foraine
 Name : La fete foraine
 
+/Pas a mettre pour l'instant
 Carte 7 : 
 Méca : Plusieurs levier sont activable par ls joueurs :
 - un pont levis peu etre levée/baissé
@@ -125,6 +122,7 @@ Méca : Plusieurs levier sont activable par ls joueurs :
 DA : Un chateau fort
 Name : The queen Castle
 
+/Pas a mettre pour l'instant
 Dernière carte (carte n):***
 Méca : réunnit toute les méca de toutes les autres cartes
 DA : jsp
@@ -135,4 +133,4 @@ Review PauseManager
 Trad all text
 floor shock wave line 35
 menu de fin de niveau
-mays temple level
+mayas temple level

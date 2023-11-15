@@ -4,6 +4,7 @@ using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
 using static PathFinderToric;
 using static BezierUtility;
+using System.Collections.Generic;
 
 public class Boomerang : MonoBehaviour
 {
@@ -25,26 +26,32 @@ public class Boomerang : MonoBehaviour
     private State state;
     private float timeLaunch = -10f;
     private Vector2 velocity;
-    private LayerMask groundMask;
+    private LayerMask groundMask, charMask;
     private bool isDestroy;
     private bool isTargetingSender;
     private SplinePath path;
     private MapPoint oldSenderMapPoint = null;
     private float reachDist;
+    private PlayerCommon playerCommon;
+    private List<uint> charAlreadyTouch;
 
-    [SerializeField] private Vector2 circleOffset;
-    [SerializeField] private float circleRadius;
+    [SerializeField] private Vector2 groundCircleOffset;
+    [SerializeField] private float groundCircleRadius;
+    [SerializeField] private Vector2 charCircleOffset;
+    [SerializeField] private float charCircleRadius;
 
     private void Awake()
     {
         this.transform = base.transform;
         toricObject = GetComponent<ToricObject>();
         animator = GetComponent<Animator>();
+        charAlreadyTouch = new List<uint>();
     }
 
     private void Start()
     {
         groundMask = LayerMask.GetMask("Floor");
+        groundMask = LayerMask.GetMask("Char");
     }
 
     public void Launch(in BoomerangLaunchData boomerangLauchData)
@@ -54,6 +61,7 @@ public class Boomerang : MonoBehaviour
         state = State.go;
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate(0f) * dir;
         timeLaunch = Time.time;
+        this.playerCommon = sender.GetComponent<PlayerCommon>();
 
         void Builder(in BoomerangLaunchData data)
         {
@@ -86,11 +94,36 @@ public class Boomerang : MonoBehaviour
             default:
                 break;
         }
+
+        CheckCharCollission();
+    }
+
+    private void CheckCharCollission()
+    {
+        Circle circle = GetCharCircleCollider();
+
+        Collider2D[] cols = PhysicsToric.OverlapCircleAll(circle, charMask);
+        foreach (Collider2D col in cols)
+        {
+            if(col.CompareTag("Char"))
+            {
+                GameObject player = col.GetComponent<ToricObject>().original;
+                PlayerCommon playerTouchCommon = player.GetComponent<PlayerCommon>();
+                if(playerCommon.id !=  playerTouchCommon.id)
+                {
+                    if(!charAlreadyTouch.Contains(playerTouchCommon.id))
+                    {
+                        charAlreadyTouch.Add(playerTouchCommon.id);
+                        sender.OnTouchEnemy(player);
+                    }
+                }
+            }
+        }
     }
 
     private void HandleGoState()
     {
-        Circle circleCollider = GetCircleCollider();
+        Circle circleCollider = GetGroundCircleCollider();
         Collider2D groundCol = PhysicsToric.OverlapCircle(circleCollider, groundMask);
 
         if(groundCol != null)
@@ -215,10 +248,16 @@ public class Boomerang : MonoBehaviour
             Destroy();
     }
 
-    private Circle GetCircleCollider()
+    private Circle GetGroundCircleCollider()
     {
-        float ang = Useful.AngleHori(Vector2.zero, circleOffset) + transform.rotation.z * Mathf.Deg2Rad;
-        return new Circle((Vector2)transform.position + Useful.Vector2FromAngle(ang, circleOffset.magnitude), circleRadius);
+        float ang = Useful.AngleHori(Vector2.zero, groundCircleOffset) + transform.rotation.z * Mathf.Deg2Rad;
+        return new Circle((Vector2)transform.position + Useful.Vector2FromAngle(ang, groundCircleOffset.magnitude), groundCircleRadius);
+    }
+
+    private Circle GetCharCircleCollider()
+    {
+        float ang = Useful.AngleHori(Vector2.zero, charCircleOffset) + transform.rotation.z * Mathf.Deg2Rad;
+        return new Circle((Vector2)transform.position + Useful.Vector2FromAngle(ang, charCircleOffset.magnitude), charCircleRadius);
     }
 
     private void Destroy()
@@ -232,13 +271,14 @@ public class Boomerang : MonoBehaviour
     private void OnValidate()
     {
         this.transform = base.transform;
-        circleRadius = Mathf.Max(circleRadius, 0f);
+        groundCircleRadius = Mathf.Max(groundCircleRadius, 0f);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Circle.GizmosDraw((Vector2)transform.position + circleOffset, circleRadius);
+        Circle.GizmosDraw((Vector2)transform.position + groundCircleOffset, groundCircleRadius);
+        Circle.GizmosDraw((Vector2)transform.position + charCircleOffset, charCircleRadius);
     }
 
 #endif
