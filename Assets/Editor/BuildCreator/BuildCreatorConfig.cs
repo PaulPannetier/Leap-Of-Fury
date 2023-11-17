@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BuildCreatorConfig : ScriptableObject
 {
-    public bool modifyGameplayScene = true;
     [Tooltip("The gameplay scene to modify before build")]
     public Object[] gameplayScenes;
 
@@ -10,6 +9,7 @@ public class BuildCreatorConfig : ScriptableObject
     public Object[] otherSceneTobuild;
     public Object firstSceneToPlay;
 
+    public bool modifyGameplayScene = true;
     public bool performBuild = true;
     public bool developpementBuild = true;
     public bool copySaveDirectory = true;

@@ -18,14 +18,15 @@ public class Boomerang : MonoBehaviour
     private ToricObject toricObject;
     private Animator animator;
     private BoomerangAttack sender;
-    private Vector2 dir;
+    private Vector2 dir, targetDir;
     private AnimationCurve speedCurvePhase1, accelerationCurvePhase2;
     private float maxSpeedPhase1, durationPhase1, accelerationDurationPhase2;
-    private float maxSpeedPhase2, recuperationRange;
+    private float maxSpeedPhase2, recuperationRange, notRepurableDuration;
     private float rotationSpeed;
     private State state;
     private float timeLaunch = -10f;
     private Vector2 velocity;
+    private float startPhase2Velocity;
     private LayerMask groundMask, charMask;
     private bool isDestroy;
     private bool isTargetingSender;
@@ -51,7 +52,7 @@ public class Boomerang : MonoBehaviour
     private void Start()
     {
         groundMask = LayerMask.GetMask("Floor");
-        groundMask = LayerMask.GetMask("Char");
+        charMask = LayerMask.GetMask("Char");
     }
 
     public void Launch(in BoomerangLaunchData boomerangLauchData)
@@ -61,11 +62,11 @@ public class Boomerang : MonoBehaviour
         state = State.go;
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate(0f) * dir;
         timeLaunch = Time.time;
-        this.playerCommon = sender.GetComponent<PlayerCommon>();
+        playerCommon = sender.GetComponent<PlayerCommon>();
 
         void Builder(in BoomerangLaunchData data)
         {
-            dir = data.dir; 
+            targetDir = dir = data.dir; 
             speedCurvePhase1 = data.speedCurvePhase1;
             maxSpeedPhase1 = data.maxSpeedPhase1;
             durationPhase1 = data.durationPhase1;
@@ -74,7 +75,9 @@ public class Boomerang : MonoBehaviour
             accelerationCurvePhase2 = data.accelerationCurvePhase2;
             maxSpeedPhase2 = data.maxSpeedPhase2;
             recuperationRange = data.recuperationRange;
+            notRepurableDuration = data.notRecuperableDuration;
             rotationSpeed = data.rotationSpeed;
+            accelerationDurationPhase2 = data.accelerationDurationPhase2;
         }
     }
 
@@ -109,7 +112,7 @@ public class Boomerang : MonoBehaviour
             {
                 GameObject player = col.GetComponent<ToricObject>().original;
                 PlayerCommon playerTouchCommon = player.GetComponent<PlayerCommon>();
-                if(playerCommon.id !=  playerTouchCommon.id)
+                if(playerCommon.id != playerTouchCommon.id)
                 {
                     if(!charAlreadyTouch.Contains(playerTouchCommon.id))
                     {
@@ -131,14 +134,30 @@ public class Boomerang : MonoBehaviour
             transform.position -= (Vector3)(velocity * (Time.deltaTime * 2f));
         }
 
-        if (groundCol != null || Time.time - timeLaunch > durationPhase1)
+        if(Time.time - timeLaunch > notRepurableDuration)
         {
-            state = State.getBack;
-            velocity = velocity.normalized * speedCurvePhase1.Evaluate(1f);
-            oldSenderMapPoint = null;
-            timeLaunch = Time.time;
-            return;
+            if (groundCol != null || Time.time - timeLaunch > durationPhase1)
+            {
+                state = State.getBack;
+                startPhase2Velocity = velocity.magnitude;
+                oldSenderMapPoint = null;
+                timeLaunch = Time.time;
+                return;
+            }
+            targetDir = dir;
         }
+        else
+        {
+            if(groundCol != null)
+            {
+                targetDir = dir;
+                dir *= -1f;
+            }
+        }
+
+        float ang = Useful.AngleHori(Vector2.zero, dir) * Mathf.Rad2Deg;
+        float targetAng = Useful.AngleHori(Vector2.zero, targetDir) * Mathf.Rad2Deg;
+        dir = Useful.Vector2FromAngle(Mathf.MoveTowardsAngle(ang, targetAng, rotationSpeed * Time.deltaTime) * Mathf.Deg2Rad).normalized;
 
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate((Time.time - timeLaunch) / durationPhase1) * dir;
         Vector3 newPos = (Vector2)transform.position + velocity * Time.deltaTime;
@@ -199,7 +218,9 @@ public class Boomerang : MonoBehaviour
         float speed = 0f;
         if (Time.time - timeLaunch < accelerationDurationPhase2)
         {
-            speed = maxSpeedPhase2 * accelerationCurvePhase2.Evaluate((Time.time - timeLaunch) / accelerationDurationPhase2);
+            float currentSpeed = velocity.magnitude;
+            float delta = currentSpeed - startPhase2Velocity;
+            speed = currentSpeed + delta * accelerationCurvePhase2.Evaluate((Time.time - timeLaunch) / accelerationDurationPhase2);
         }
         else
         {
@@ -250,13 +271,13 @@ public class Boomerang : MonoBehaviour
 
     private Circle GetGroundCircleCollider()
     {
-        float ang = Useful.AngleHori(Vector2.zero, groundCircleOffset) + transform.rotation.z * Mathf.Deg2Rad;
+        float ang = Useful.AngleHori(Vector2.zero, groundCircleOffset) + transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
         return new Circle((Vector2)transform.position + Useful.Vector2FromAngle(ang, groundCircleOffset.magnitude), groundCircleRadius);
     }
 
     private Circle GetCharCircleCollider()
     {
-        float ang = Useful.AngleHori(Vector2.zero, charCircleOffset) + transform.rotation.z * Mathf.Deg2Rad;
+        float ang = Useful.AngleHori(Vector2.zero, charCircleOffset) + transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
         return new Circle((Vector2)transform.position + Useful.Vector2FromAngle(ang, charCircleOffset.magnitude), charCircleRadius);
     }
 
@@ -277,8 +298,20 @@ public class Boomerang : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Circle.GizmosDraw((Vector2)transform.position + groundCircleOffset, groundCircleRadius);
-        Circle.GizmosDraw((Vector2)transform.position + charCircleOffset, charCircleRadius);
+        Circle.GizmosDraw(GetGroundCircleCollider());
+        Circle.GizmosDraw(GetCharCircleCollider());
+
+        if(path != null && state == State.getBack)
+        {
+            Vector2[] points = path.EvaluateDistance(200);
+            Vector2 beg = points[0];
+
+            foreach(Vector2 point in points)
+            {
+                PhysicsToric.GizmosDrawRaycast(beg, point);
+                beg = point;
+            }
+        }
     }
 
 #endif
@@ -293,9 +326,12 @@ public class Boomerang : MonoBehaviour
         public BoomerangAttack sender;
         public float maxSpeedPhase2;
         public float recuperationRange;
+        public float notRecuperableDuration;
         public float rotationSpeed;
 
-        public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1, float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange, float rotationSpeed)
+        public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1,
+            float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange,
+            float notRecuperableDuration, float rotationSpeed)
         {
             this.dir = dir;
             this.speedCurvePhase1 = speedCurvePhase1;
@@ -306,6 +342,7 @@ public class Boomerang : MonoBehaviour
             this.sender = sender;
             this.maxSpeedPhase2 = maxSpeedPhase2;
             this.recuperationRange = recuperationRange;
+            this.notRecuperableDuration = notRecuperableDuration;
             this.rotationSpeed = rotationSpeed;
         }
     }

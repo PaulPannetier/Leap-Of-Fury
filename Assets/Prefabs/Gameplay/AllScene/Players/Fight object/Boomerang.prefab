@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20586f9d7f995642a1721e601853ded, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCircleOffset: {x: -1.05, y: -0.03}
+  groundCircleOffset: {x: -0.72, y: -0.03}
   groundCircleRadius: 0.54
   charCircleOffset: {x: 0.18, y: 0}
   charCircleRadius: 0.64

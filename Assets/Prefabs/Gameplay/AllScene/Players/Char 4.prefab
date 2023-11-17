@@ -941,7 +941,8 @@ MonoBehaviour:
   durationPhase1: 1.4
   accelerationDurationPhase2: 1.5
   recuperationRange: 1
-  rotationSpeed: 1440
+  notRecuperableDuration: 2
+  rotationSpeed: 120
   drawGizmos: 1
 --- !u!114 &4277522715158860269
 MonoBehaviour:

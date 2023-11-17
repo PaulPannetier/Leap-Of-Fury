@@ -15,7 +15,7 @@ public class PathFindingToricTest : MonoBehaviour
     [SerializeField] private Vector2 start;
     [SerializeField, Range(0f, 1f)] private float tension;
     [SerializeField, Range(0f, 1f)] private float x;
-    [SerializeField] private InputKey freezeEendKey = InputKey.Space;
+    [SerializeField] private InputKey freezeEndKey = InputKey.Space;
     private Path testPathNoDiag, testPath;
     private PathFinderToric.SplinePath splinePathNoDiag, splinePath;
     private bool freezeEnd;
@@ -23,7 +23,7 @@ public class PathFindingToricTest : MonoBehaviour
 
     private void Update()
     {
-        if(InputManager.GetKeyDown(freezeEendKey))
+        if(InputManager.GetKeyDown(freezeEndKey))
         {
             freezeEnd = !freezeEnd;
             end = PhysicsToric.GetPointInsideBounds(Useful.mainCamera.ScreenToWorldPoint(InputManager.mousePosition));
