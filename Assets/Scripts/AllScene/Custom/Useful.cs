@@ -816,6 +816,132 @@ public interface ICloneable<T>
 
 #endregion
 
+#region Polynome
+
+public class Polynome
+{
+    public static float[] Degrees1Roots(Polynome p)
+    {
+        return new float[1] { -p.coefficient[0] / p.coefficient[1] };
+    }
+
+    public static float[] Degrees2Roots(Polynome p)
+    {
+        float a = p.coefficient[0];
+        float b = p.coefficient[1];
+        float c = p.coefficient[2];
+        float delta = b * b - 4f * a * c;
+
+        if (Mathf.Approximately(delta, 0f))
+            return new float[1] { -b / (2f * a) };
+        if (delta < 0f)
+            return Array.Empty<float>();
+
+        delta = Mathf.Sqrt(delta);
+        return new float[2] { (-b - delta) / (2f * a), (-b + delta) / (2f * a) };
+    }
+
+    public static float[] Degrees3Roots(Polynome p)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static float[] Degrees4Roots(Polynome p)
+    {
+        throw new NotImplementedException();
+    }
+
+    public float[] coefficient { get; private set; }
+    private Polynome derivative;
+
+    public int deg => coefficient.Length - 1;
+
+    public Polynome(float[] coefficient, bool cacheDerivative = false)
+    {
+        if(Mathf.Approximately(coefficient.Last(), 0f))
+            this.coefficient = coefficient.Where((float c, int i) => i < coefficient.Length - 1).ToArray();
+
+        this.coefficient = coefficient;
+        if (cacheDerivative)
+            derivative = Derivative();
+    }
+
+    public Polynome Derivative()
+    {
+        float[] coeff = new float[coefficient.Length - 1];
+
+        for (int i = 0; i < coeff.Length; i++)
+        {
+            coeff[i] = (i + 1) * coefficient[i + 1];
+        }
+
+        return new Polynome(coeff);
+    }
+
+    public float Evaluate(float x)
+    {
+        float result = coefficient[0];
+
+        for (int i = 1; i < coefficient.Length; i++)
+            result = result * x + coefficient[i];
+
+        return result;
+    }
+
+    public float Derivative(float x)
+    {
+        if(derivative != null)
+            return derivative.Evaluate(x);
+        return Derivative().Evaluate(x);
+    }
+
+    public float[] Roots() => Roots(1e-6f, 200);
+
+    public float[] Roots(float accuracy, int maxIter)
+    {
+         if(deg == 0)
+            return Array.Empty<float>();
+        if (deg == 1)
+            Degrees1Roots(this);
+        if (deg == 2)
+            return Degrees2Roots(this);
+        if (deg == 3)
+            return Degrees3Roots(this);
+        if (deg == 4)
+            return Degrees4Roots(this);
+
+        return Array.Empty<float>();
+    }
+
+    //Newtons method
+    private bool FindRoot(float accuracy, int maxIter, out float root)
+    {
+        if (derivative == null)
+            derivative = Derivative();
+
+        root = Random.Rand(-20f, 20f);
+        int iter = 0;
+        float fx = Evaluate(root);
+
+        do
+        {
+            root -= fx / derivative.Evaluate(root);
+            fx = Evaluate(root);
+            iter++;
+        } while (Mathf.Abs(fx) > accuracy && iter < maxIter);
+
+        return Mathf.Abs(fx) <= accuracy;
+    }
+
+    private float[] Factorise(float root)
+    {
+        return Array.Empty<float>();
+    }
+
+}
+
+#endregion
+
 #region Useful
 
 public static class Useful
