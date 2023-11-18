@@ -820,6 +820,8 @@ public interface ICloneable<T>
 
 public class Polynome
 {
+    public static Polynome Empty = new Polynome(Array.Empty<float>());
+
     public static float[] Degrees1Roots(Polynome p)
     {
         return new float[1] { -p.coefficient[0] / p.coefficient[1] };
@@ -858,7 +860,7 @@ public class Polynome
 
     public Polynome(float[] coefficient, bool cacheDerivative = false)
     {
-        if(Mathf.Approximately(coefficient.Last(), 0f))
+        if(coefficient.Length > 0 && Mathf.Approximately(coefficient.Last(), 0f))
             this.coefficient = coefficient.Where((float c, int i) => i < coefficient.Length - 1).ToArray();
 
         this.coefficient = coefficient;
@@ -868,7 +870,7 @@ public class Polynome
 
     public Polynome Derivative()
     {
-        float[] coeff = new float[coefficient.Length - 1];
+        float[] coeff = new float[Mathf.Max(coefficient.Length - 1, 0)];
 
         for (int i = 0; i < coeff.Length; i++)
         {
@@ -910,7 +912,31 @@ public class Polynome
         if (deg == 4)
             return Degrees4Roots(this);
 
-        return Array.Empty<float>();
+        List<float> roots = new List<float>();
+        RootsRecur(this, accuracy, maxIter, ref roots);
+
+        return roots.ToArray();
+    }
+
+    public void RootsRecur(Polynome current, float accuracy, int maxIter, ref List<float> roots)
+    {
+        if(current.deg == 2)
+        {
+            float[] rs = Degrees2Roots(current);
+            for (int i = 0; i < rs.Length; i++)
+            {
+                roots.Add(rs[i]);
+            }
+            return;
+        }
+
+        if(current.FindRoot(accuracy, maxIter, out float r))
+        {
+            roots.Add(r);
+            (Polynome newP, Polynome _) = current / new Polynome(new float[2] { -r, 1f });
+            RootsRecur(newP, accuracy, maxIter, ref roots);
+        }
+
     }
 
     //Newtons method
@@ -933,11 +959,150 @@ public class Polynome
         return Mathf.Abs(fx) <= accuracy;
     }
 
-    private float[] Factorise(float root)
+    private (Polynome Q, Polynome R) EuclidianDivision(Polynome A, Polynome B)
     {
-        return Array.Empty<float>();
+        Polynome Q = Polynome.Empty;
+        Polynome R = A;
+
+        float t;
+        while (R != Empty && R.deg >= B.deg)
+        {
+            t = R.coefficient.Last() / B.coefficient.Last();
+            Q += t;
+            R = R - t * B;
+        }
+
+        return (Q, R);
     }
 
+    public override bool Equals(object obj)
+    {
+        if(ReferenceEquals(this, null) && ReferenceEquals(obj, null))
+            return true;
+        if (ReferenceEquals(this, null) || ReferenceEquals(obj, null))
+            return false;
+
+        if(obj is  Polynome p)
+        {
+            return p.coefficient == coefficient;
+        }
+
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(coefficient);
+    }
+
+    public override string ToString()
+    {
+        if(coefficient.Length <= 0)
+            return "0";
+        if (coefficient.Length == 1)
+            return coefficient[0].ToString();
+        if (coefficient.Length == 2)
+            return coefficient[1] + "X + " + coefficient[0];
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = coefficient.Length - 1; i > 1; i--)
+        {
+            sb.Append(coefficient[i]);
+            sb.Append("X^");
+            sb.Append(i);
+            sb.Append(" + ");
+        }
+
+        sb.Append(coefficient[1]);
+        sb.Append("X + ");
+        sb.Append(coefficient[0]);
+        return sb.ToString();
+    }
+
+    public static bool operator ==(Polynome p1, Polynome p2) => p1.coefficient == p2.coefficient;
+    public static bool operator !=(Polynome p1, Polynome p2) => !(p1 == p2);
+    public static Polynome operator -(Polynome p)
+    {
+        float[] coeff = new float[p.coefficient.Length];
+
+        for (int i = 0; i < p.coefficient.Length; i++)
+        {
+            coeff[i] = -p.coefficient[i];
+        }
+
+        return new Polynome(coeff);
+    }
+
+    public static Polynome operator +(Polynome p1, Polynome p2)
+    {
+        float[] coeff = new float[Mathf.Max(p1.coefficient.Length, p2.coefficient.Length)];
+
+        for (int i = 0; i < p1.coefficient.Length; i++)
+        {
+            coeff[i] = p1.coefficient[i];
+        }
+        for (int i = 0; i < p2.coefficient.Length; i++)
+        {
+            coeff[i] += p2.coefficient[i];
+        }
+        return new Polynome(coeff);
+    }
+
+    public static Polynome operator +(Polynome p1, float t)
+    {
+        float[] coeff = p1.coefficient;
+        coeff[0] += t;
+        return new Polynome(coeff);
+    }
+
+    public static Polynome operator +(float t, Polynome p1) => p1 + t;
+    public static Polynome operator -(Polynome p1, float t) => p1 + (-t);
+    public static Polynome operator -(float t, Polynome p1) => t + (-p1);
+
+    public static Polynome operator -(Polynome p1, Polynome p2)
+    {
+        float[] coeff = new float[Mathf.Max(p1.coefficient.Length, p2.coefficient.Length)];
+
+        for (int i = 0; i < p1.coefficient.Length; i++)
+        {
+            coeff[i] = p1.coefficient[i];
+        }
+        for (int i = 0; i < p2.coefficient.Length; i++)
+        {
+            coeff[i] -= p2.coefficient[i];
+        }
+        return new Polynome(coeff);
+    }
+
+    public static Polynome operator *(Polynome p1, Polynome p2)
+    {
+        float[] coeff = new float[p1.deg + p2.deg];
+
+        for (int k = 0; k < coeff.Length; k++)
+        {
+            for (int i = 0; i <= k; i++)
+            {
+                coeff[k] += p1.coefficient[i] * p2.coefficient[k - i];
+            }
+        }
+        return new Polynome(coeff);
+    }
+
+    public static Polynome operator *(Polynome p1, float t)
+    {
+        float[] coeff = p1.coefficient;
+
+        for (int i = 0; i < coeff.Length; i++)
+        {
+            coeff[i] *= t;
+        }
+        return new Polynome(coeff);
+    }
+
+    public static Polynome operator *(float t, Polynome p1) => p1 * t;
+
+
+    public static (Polynome Q, Polynome R) operator /(Polynome p1, Polynome p2) => p1.EuclidianDivision(p1, p2);
 }
 
 #endregion
