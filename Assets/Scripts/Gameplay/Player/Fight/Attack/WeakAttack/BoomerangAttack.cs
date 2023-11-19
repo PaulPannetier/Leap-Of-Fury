@@ -82,7 +82,7 @@ public class BoomerangAttack : WeakAttack
     }
 
     private void OnDrawGizmosSelected()
-    {       
+    {
         if (!drawGizmos)
             return;
 

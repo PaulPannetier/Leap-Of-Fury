@@ -103,7 +103,7 @@ public class LevelMapData : MonoBehaviour
 
     #region PathFinding
 
-    public Map GetPathfindingMap()
+    public Map GetPathfindingMap(int accuracy = 1)
     {
         List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();
 

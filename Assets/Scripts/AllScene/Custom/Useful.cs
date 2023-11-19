@@ -820,7 +820,14 @@ public interface ICloneable<T>
 
 public class Polynome
 {
-    public static Polynome Empty = new Polynome(Array.Empty<float>());
+    public static Polynome Empty => new Polynome(new float[1]);
+
+    public static Polynome Unit(int i)
+    {
+        float[] coeff = new float[i + 1];
+        coeff[coeff.Length - 1] = 1f;
+        return new Polynome(coeff);
+    }
 
     public static float[] Degrees1Roots(Polynome p)
     {
@@ -829,9 +836,9 @@ public class Polynome
 
     public static float[] Degrees2Roots(Polynome p)
     {
-        float a = p.coefficient[0];
+        float a = p.coefficient[2];
         float b = p.coefficient[1];
-        float c = p.coefficient[2];
+        float c = p.coefficient[0];
         float delta = b * b - 4f * a * c;
 
         if (Mathf.Approximately(delta, 0f))
@@ -845,7 +852,61 @@ public class Polynome
 
     public static float[] Degrees3Roots(Polynome p)
     {
-        throw new NotImplementedException();
+        double a = p.coefficient[3];
+        double b = p.coefficient[2];
+        double c = p.coefficient[1];
+        double d = p.coefficient[0];
+
+        double P = -b * b / (3d * a * a) + c / a;
+        double Q = (b / (27d * a)) * (2d * b * b / (a * a) - 9d * c / a) + d / a;
+
+        float[] res = CardanFormula(P, Q);
+        float tmp = (float)(b / (3d * a));
+        for (int i = 0; i < res.Length; i++)
+        {
+            res[i] += tmp;
+        }
+
+        return res;
+
+        //return the real roots of the function f(x) = x^3 + px + q
+        float[] CardanFormula(double p, double q)
+        {
+            double delta = -(4d * p * p * p + 27d * q * q);
+            
+            if(((float)delta).Approximately(0f))
+            {
+                if (((float)p).Approximately(0f) && ((float)q).Approximately(0f))
+                    return new float[1] { 0f };
+
+                return new float[2]
+                {
+                    (float)(3d * q / p), (float)(-3d * q / (2d * p))
+                };
+            }
+
+            if(delta > 0f)
+            {
+                double a = 2 * Math.Sqrt(-p / 3d);
+                double b = Math.Acos((3d * q / (2d * p)) * Math.Sqrt(-3d / p)) / 3d;
+                double c = 2d * Math.PI / 3d;
+                return new float[3]
+                {
+                    (float)(a * Math.Cos(b)),
+                    (float)(a * Math.Cos(b + c)),
+                    (float)(a * Math.Cos(b + 2f * c))
+                };
+            }
+
+            //delta < 0f
+            double tmp = Math.Sqrt(-delta / 27d);
+            double u = Math.Cbrt(0.5d * (tmp - q));
+            double v = Math.Cbrt(-0.5d * (tmp + q));
+            return new float[1]
+            {
+                (float)(u + v)
+            };
+        }
     }
 
     public static float[] Degrees4Roots(Polynome p)
@@ -860,12 +921,21 @@ public class Polynome
 
     public Polynome(float[] coefficient, bool cacheDerivative = false)
     {
-        if(coefficient.Length > 0 && Mathf.Approximately(coefficient.Last(), 0f))
-            this.coefficient = coefficient.Where((float c, int i) => i < coefficient.Length - 1).ToArray();
-
+        if(coefficient.Length <= 0)
+            coefficient = new float[1];
         this.coefficient = coefficient;
+        RemoveUselessCoeff();
+
         if (cacheDerivative)
             derivative = Derivative();
+    }
+
+    private void RemoveUselessCoeff()
+    {
+        while (coefficient.Length > 1 && Mathf.Approximately(coefficient.Last(), 0f))
+        {
+            coefficient = coefficient.Where((float c, int i) => i < coefficient.Length - 1).ToArray();
+        }
     }
 
     public Polynome Derivative()
@@ -882,9 +952,9 @@ public class Polynome
 
     public float Evaluate(float x)
     {
-        float result = coefficient[0];
+        float result = coefficient.Last();
 
-        for (int i = 1; i < coefficient.Length; i++)
+        for (int i = coefficient.Length - 2; i >= 0; i--)
             result = result * x + coefficient[i];
 
         return result;
@@ -897,7 +967,7 @@ public class Polynome
         return Derivative().Evaluate(x);
     }
 
-    public float[] Roots() => Roots(1e-6f, 200);
+    public float[] Roots() => Roots(1e-4f, 200);
 
     public float[] Roots(float accuracy, int maxIter)
     {
@@ -907,10 +977,10 @@ public class Polynome
             Degrees1Roots(this);
         if (deg == 2)
             return Degrees2Roots(this);
-        if (deg == 3)
-            return Degrees3Roots(this);
-        if (deg == 4)
-            return Degrees4Roots(this);
+        //if (deg == 3)
+        //    return Degrees3Roots(this);
+        //if (deg == 4)
+        //    return Degrees4Roots(this);
 
         List<float> roots = new List<float>();
         RootsRecur(this, accuracy, maxIter, ref roots);
@@ -918,11 +988,11 @@ public class Polynome
         return roots.ToArray();
     }
 
-    public void RootsRecur(Polynome current, float accuracy, int maxIter, ref List<float> roots)
+    private void RootsRecur(Polynome current, float accuracy, int maxIter, ref List<float> roots)
     {
-        if(current.deg == 2)
+        if(current.deg == 3)
         {
-            float[] rs = Degrees2Roots(current);
+            float[] rs = Degrees3Roots(current);
             for (int i = 0; i < rs.Length; i++)
             {
                 roots.Add(rs[i]);
@@ -936,7 +1006,6 @@ public class Polynome
             (Polynome newP, Polynome _) = current / new Polynome(new float[2] { -r, 1f });
             RootsRecur(newP, accuracy, maxIter, ref roots);
         }
-
     }
 
     //Newtons method
@@ -964,12 +1033,20 @@ public class Polynome
         Polynome Q = Polynome.Empty;
         Polynome R = A;
 
-        float t;
-        while (R != Empty && R.deg >= B.deg)
+        float b = B.coefficient.Last();
+        float a;
+        while (R.deg >= B.deg)
         {
-            t = R.coefficient.Last() / B.coefficient.Last();
-            Q += t;
-            R = R - t * B;
+            a = R.coefficient.Last() / b;
+            Q += Unit(R.deg - B.deg, a);
+            R -= Unit(R.deg - B.deg, a) * B;
+        }
+
+        Polynome Unit(int i, float coeff)
+        {
+            float[] coeffs = new float[i + 1];
+            coeffs[coeffs.Length - 1] = coeff;
+            return new Polynome(coeffs);
         }
 
         return (Q, R);
@@ -1019,7 +1096,7 @@ public class Polynome
         return sb.ToString();
     }
 
-    public static bool operator ==(Polynome p1, Polynome p2) => p1.coefficient == p2.coefficient;
+    public static bool operator ==(Polynome p1, Polynome p2) => Equals(p1, p2);
     public static bool operator !=(Polynome p1, Polynome p2) => !(p1 == p2);
     public static Polynome operator -(Polynome p)
     {
@@ -1076,11 +1153,15 @@ public class Polynome
 
     public static Polynome operator *(Polynome p1, Polynome p2)
     {
-        float[] coeff = new float[p1.deg + p2.deg];
+        float[] coeff = new float[p1.deg + p2.deg + 1];
+        int m = p1.coefficient.Length - 1;
+        int n = p2.coefficient.Length - 1;
 
+        int end;
         for (int k = 0; k < coeff.Length; k++)
         {
-            for (int i = 0; i <= k; i++)
+            end = Mathf.Min(m, k);
+            for (int i = Mathf.Max(0, k - n); i <= end; i++)
             {
                 coeff[k] += p1.coefficient[i] * p2.coefficient[k - i];
             }
@@ -1365,6 +1446,16 @@ public static class Useful
     public static int Floor(this double n) => (int)Math.Floor(n);
     public static int Ceil(this double n) => (int)Math.Ceiling(n);
 
+    public static bool Approximately(this float a, float b)
+    {
+        return MathF.Abs(b - a) < 1e-5f * MathF.Max(MathF.Pow(10f, MathF.Ceiling(MathF.Log10(MathF.Max(a, b)))), 1f);
+    }
+
+    public static bool Approximately(this double a, double b)
+    {
+        return Math.Abs(b - a) < 1e-11d * Math.Max(Math.Pow(10d, Math.Ceiling(Math.Log10(Math.Max(a, b)))), 1d);
+    }
+
     public static int Max(int a, int b) => a >= b  ? a : b;
     public static int Max(int a, int b, int c) => Max(c, Max(a, b));
     public static int Max(params int[] args)
@@ -1457,18 +1548,6 @@ public static class Useful
     }
 
     public static decimal Abs(in decimal x) => x >= 0m ? x : -x;
-
-    public static List<float> Solve2DegresEquation(float a, float b, float c)
-    {
-        float d = b * b - 4f * a * c;
-        if (d < 0f)
-            return null;
-        if (d >= 0f && d < 1e-5)
-            return new List<float>() { -b / (2f * a) };
-
-        d = Mathf.Sqrt(d);
-        return new List<float>() { (-b - d) / (2f * a), (-b + d) / (2f * a) };
-    }
 
     public static bool FindARoot(Func<float, float> f, Func<float, float> fPrime, out float root, int maxIter = 50, float accuracy = 1e-5f)
     {
@@ -1584,13 +1663,16 @@ public static class Useful
 
     #region Show
 
-    public static void ShowArray<T>(this T[] tab, string begMessage = "", string endMessage = "")
+    public static void Print<T>(this T[] tab, string begMessage = "", string endMessage = "")
     {
         Debug.Log(begMessage + tab.ToString<T>() + endMessage);
     }
 
     public static string ToString<T>(this T[] arr)
     {
+        if (arr.Length <= 0)
+            return "[]";
+
         StringBuilder sb = new StringBuilder("[ ");
         for (int l = 0; l < arr.Length; l++)
         {
