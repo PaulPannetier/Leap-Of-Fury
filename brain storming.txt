@@ -1,0 +1,136 @@
+Notes, toute infos noté par * sera suseptible d'être légèrement changé, ** sera plus ou moins changé, *** est juste une idée.
+Toute info notée par //ok est actuellement déjà programmer correctement.
+Toute info notée par //~ok est partiellement programmer ou possèdes des bugs.
+Toute info précèdé de := est juste un note
+
+Pour tout le document, la DA est à titre indivative (des idées que jai eu) mais c'est le graphiste qui la choisira du moment qu'elle est adapté au gameplay.
+
+Nom du jeu : 
+Leap of Fury **
+
+2 mode de jeu :
+Campagne (solo ou coop) := On vera se mode dans un second temps apres avoir fini le mode duel local
+Duel local (2 a 4 joueurs)
+
+Duel local :
+- le but est d'être le premier a atteigne 9 kills
+- 1er tour, tout less joueurs apparaisent un un endroit aléatoire de la carte choisi, s'entre tue, des qu'il n'y a qu'un survivant le niveau recommence tant qu'aucun joueur n'a 9 kill.
+
+
+Plusieurs perso jouable (objectif 4 pour l'instant)
+Plusieurs niveau (meme pour la campagne et le mode duel) (objectif 5 niveau min)
+ATTENTION : chaque niveau et chaque perso doivent etre VRAIMENT different niveau gameplay et visuel.
+
+Perso :
+- Une couleur par perso
+- Une compétence passif
+- Une attaque faible/attaque 1
+- Une attaque forte/attaque 2
+- Un dash (invincibilité + compte comme une attaque)
+- un seul point de vie (une attaque tue obligatoirement)
+
+Caracter Controller
+- un saut a partir du sol //ok
+- un double jump //ok
+- un dash//ok
+- grimper sur les murs //ok
+- saut a partir des mur //ok
+- controlle du personage en l'air //ok
+
+Compétences des perso : 
+
+perso 1 : *
+	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose (repetable 3fois).//ok
+	  attack forte : clone du joueur qui fait ces attaque avec un delai de 3 sec.//ok
+	  Passif : le joueur laisse un trainé de flamme sur le sol.//ok **
+
+perso 2 : *
+	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
+	  attack forte : Le joueur tire X projectiles dans un cone devant lui qui ricoche sur les murs 3 fois.//ok
+	  Passif : Des fioles/bonus apparaise donnant + 1 au X, augmente la vitesse des tir.//ok
+
+perso 3 : *
+	  attack faible : tir de flèche légèrement téléguidé à récup, si on reclick la flèche se divise en 3.//ok
+	  attack forte : tp a moyenne porté (traversé de mur possible) qui explose //ok
+	  Passif : jsp ***
+
+perso 4 : *
+	  attack faible : lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur. 
+	  attack forte : tir 3 projectiles en cone dans la dir inverse des input (8 dir possibles) et qui lui applique une forte de propulsion//ok**
+	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
+
+Niveau :
+- Composé de plusieurs cartes.
+- Homéomorphe à un tore.
+- Une a 2 mécaniques de gameplay propre.
+
+Niveau 0 :
+Méca : rien, un carte simple pour les débutants ou les fdp qui désactive les jokers sur smash.
+DA : jsp
+Name : The Plain
+
+Carte 1 :
+Méca : Certain sol glisse, il y a des jumper.//ok
+DA : la grotte du yéti, glace neige.
+Name : Yeti's Cave
+
+Carte 2 :
+Méca : Il ya des bumpers.//ok*
++ certaine plateforme bouge dans la direction opposé quand on dash dessus
+et rajoute une force au joueur la touchant donne la bonne direction pour qu'il évite le mouvement de la plateforme.
+Quand un plateforme s'écrase sur un mur, il tue/écrase les joueurs entre la plateforme et les murs.
+Celui qui fait bouger la plateforme gagne un kill. //ok*
+DA : Un temple maya/jungle amazonienne.
+Name : Maya's Temple
+
+//Pas a mettre pour l'instant
+Carte 3 : 
+Méca : De temps en temps, un portail temporel apparait au milieu de la map, un joueur peut le prendre, il reste dedans pendant quelques secondes
+puis plusieurs portail apparaisse et le joueur se tp devant un (au choix selon la direction de son input), crée une explosion devant 
+le portail, 
+debient invinsible pendant quelques seconde, et ralentie le temps(sauf pour lui).***
+De + le pendule de l'hormoge tangue et tue tout sur son passage//ok
+DA : L'atelier d'un horloger / sommet d'une cathédrale avec cloche.
+Name : ClockMaker's
+
+Carte 4 :
+Méca : Cycle jour/nuit, 1er tour c'est le jour, tout est visible, puis au tour 3 la nuit tombe, tout deviens noir, seul les joueurs
+crée de la lumière en touchant le sol/mur. Des luciole se promère créant un pêu de lumière.//ok
+DA : Dans la foret.
+Name : Into the jungle
+
+carte 5 :
+Au centre de la map il y a un bouton, quand un joueur passe devant, active les tapis roulant de la map//ok
+De + des paires d'electrode s'active est crée un éclair en eux a un rythme régulier, 
+tuant les joueur entre les 2 électrode.//ok
+DA : Une usine électrique/electromagnétique avec des bobine, des électrode des fil ect.
+name : Maxwell house
+
+/Pas a mettre pour l'instant
+Carte 6 : *** := plus j'y pense plus je trouve l'idée éclaté
+Méca : Un clown transparent effraye (immobilise) les joueurs.
++ des ascenseurs verticaux et/ou horizontaux.
+DA : Une fete foraine
+Name : La fete foraine
+
+/Pas a mettre pour l'instant
+Carte 7 : 
+Méca : Plusieurs levier sont activable par ls joueurs :
+- un pont levis peu etre levée/baissé
+- Un pendule pique peut etre déverrouiler
+- certaint sol desuus de la lave peuvent etre enlever
+DA : Un chateau fort
+Name : The queen Castle
+
+/Pas a mettre pour l'instant
+Dernière carte (carte n):***
+Méca : réunnit toute les méca de toutes les autres cartes
+DA : jsp
+Name : Chaos
+
+TODO :
+Review PauseManager
+Trad all text
+floor shock wave line 35
+menu de fin de niveau
+mayas temple level

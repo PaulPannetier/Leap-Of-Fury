@@ -1,0 +1,66 @@
+LogMessage : 
+{
+    Error : The text with id : moveUpTextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : jumpTextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : attack2TextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : keyboard with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : moveDownTextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : moveRightTextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : moveLeftTextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : dashTextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : attack1TextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : grabTextSettingMenu with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}
+LogMessage : 
+{
+    Error : The text with id : gamepad with the language : Francais doesn't exist,
+    Params : 0
+    {    }
+}

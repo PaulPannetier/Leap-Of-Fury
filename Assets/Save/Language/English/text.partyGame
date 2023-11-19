@@ -1,0 +1,69 @@
+{
+    "language": "English",
+    "data": [
+        {
+            "textID": "applyOptionButton",
+            "content": "Apply"
+        },
+        {
+            "textID": "defaultOptionButton",
+            "content": "Default"
+        },
+		{
+            "textID": "windowedMode",
+            "content": "Windowed"
+        },
+		{
+            "textID": "fullscreenMode",
+            "content": "Fullscreen"
+        },
+		{
+            "textID": "controlTextSettingMenu",
+            "content": "Controls"
+        },		
+		{
+            "textID": "moveUpTextSettingMenu",
+            "content": "Up"
+        },
+		{
+            "textID": "moveDownTextSettingMenu",
+            "content": "Down"
+        },
+		{
+            "textID": "moveRightTextSettingMenu",
+            "content": "Right"
+        },
+		{
+            "textID": "moveLeftTextSettingMenu",
+            "content": "Left"
+        },		
+		{
+            "textID": "dashTextSettingMenu",
+            "content": "Dash"
+        },
+		{
+            "textID": "jumpTextSettingMenu",
+            "content": "Jump"
+        },
+		{
+            "textID": "attack1TextSettingMenu",
+            "content": "Attack 1"
+        },
+		{
+            "textID": "attack2TextSettingMenu",
+            "content": "Attack 2"
+        },
+		{
+            "textID": "grabTextSettingMenu",
+            "content": "Grab"
+        },
+		{
+            "textID": "keyboard",
+            "content": "Keyboard"
+        },
+		{
+            "textID": "gamepad",
+            "content": "Gamepad"
+        }
+    ]
+}
