@@ -148,4 +148,5 @@ MonoBehaviour:
   groundCircleOffset: {x: -0.72, y: -0.03}
   groundCircleRadius: 0.54
   charCircleOffset: {x: 0.18, y: 0}
-  charCircleRadius: 0.64
+  charCircleRadius: 0.79
+  pathFindingMapAccuracy: 1

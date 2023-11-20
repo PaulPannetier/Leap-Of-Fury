@@ -128,6 +128,54 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
   m_PrefabInstance: {fileID: 8970924278945479409}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &772079704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 772079706}
+  - component: {fileID: 772079705}
+  m_Layer: 0
+  m_Name: _DEBUG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &772079705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772079704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63f61234f62f1c14d8ece1d35aaa49f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  squarePrefabs: {fileID: 2103269425306154730, guid: 77377335cca8356499642a6ed07b141a, type: 3}
+  generateMap: 0
+  removeMap: 0
+  accuracy: 1
+--- !u!4 &772079706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772079704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &778908268 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2119721185, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
@@ -3288,7 +3336,7 @@ MonoBehaviour:
   cooldown:
     duration: 0.5
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
-  distanceToInstantiate: 0.9
+  distanceToInstantiate: 0.5
   speedCurvePhase1:
     serializedVersion: 2
     m_Curve:
@@ -3302,17 +3350,35 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.42325032
-      value: 0.95784366
-      inSlope: 0.4066074
-      outSlope: 0.4066074
+      time: 0.32434285
+      value: 0.94092166
+      inSlope: 0.5933335
+      outSlope: 0.5933335
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.17115004
-      outWeight: 0.13045838
+      outWeight: 0.80704635
     - serializedVersion: 3
-      time: 0.9249037
-      value: 0.705582
+      time: 0.41945022
+      value: 0.9973885
+      inSlope: -0.010908905
+      outSlope: -0.010908905
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.8862128
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.67766774
+      value: 0.9391059
+      inSlope: -0.52475667
+      outSlope: -0.52475667
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.88827366
+      value: 0.69881386
       inSlope: -2.0993886
       outSlope: -2.0993886
       tangentMode: 0
@@ -3331,12 +3397,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  accelerationCurvePhase2:
+  speedCurvePhase2:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.00023651123
-      value: 0.0010070801
+      time: 0
+      value: 0.39593506
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3344,10 +3410,10 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.64019763
-      value: 0.16288485
-      inSlope: 0.8246517
-      outSlope: 0.8246517
+      time: 0.541686
+      value: 0.49574733
+      inSlope: 0.50982815
+      outSlope: 0.50982815
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
@@ -3369,8 +3435,7 @@ MonoBehaviour:
   durationPhase1: 1.4
   accelerationDurationPhase2: 1.5
   recuperationRange: 1
-  notRecuperableDuration: 2
-  rotationSpeed: 120
+  pathFindingAccuracy: 1
   drawGizmos: 1
 --- !u!114 &2730665143740131318
 MonoBehaviour:
@@ -8270,3 +8335,4 @@ SceneRoots:
   - {fileID: 1653521282}
   - {fileID: 2047863314}
   - {fileID: 1745074063}
+  - {fileID: 772079706}

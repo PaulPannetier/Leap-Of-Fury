@@ -18,28 +18,30 @@ public class Boomerang : MonoBehaviour
     private ToricObject toricObject;
     private Animator animator;
     private BoomerangAttack sender;
-    private Vector2 dir, targetDir;
-    private AnimationCurve speedCurvePhase1, accelerationCurvePhase2;
+    private Vector2 dir;
+    private AnimationCurve speedCurvePhase1, speedCurvePhase2;
     private float maxSpeedPhase1, durationPhase1, accelerationDurationPhase2;
-    private float maxSpeedPhase2, recuperationRange, notRepurableDuration;
+    private float maxSpeedPhase2, recuperationRange;
     private float rotationSpeed;
     private State state;
-    private float timeLaunch = -10f;
+    private float timeLaunch = -10f, lastPathFindingSearch = -10f;
     private Vector2 velocity;
     private float startPhase2Velocity;
     private LayerMask groundMask, charMask;
     private bool isDestroy;
-    private bool isTargetingSender;
+    private bool isTargetingSender, requestSearchPath;
     private SplinePath path;
-    private MapPoint oldSenderMapPoint = null;
     private float reachDist;
     private PlayerCommon playerCommon;
     private List<uint> charAlreadyTouch;
+    private Map pathFindingMap;
+    private float minDelayBetweenPathfindingSearch;
 
     [SerializeField] private Vector2 groundCircleOffset;
     [SerializeField] private float groundCircleRadius;
     [SerializeField] private Vector2 charCircleOffset;
     [SerializeField] private float charCircleRadius;
+    [SerializeField, Range(1, 10)] private int pathFindingAccuracy = 1;
 
     private void Awake()
     {
@@ -66,18 +68,17 @@ public class Boomerang : MonoBehaviour
 
         void Builder(in BoomerangLaunchData data)
         {
-            targetDir = dir = data.dir; 
+            dir = data.dir; 
             speedCurvePhase1 = data.speedCurvePhase1;
             maxSpeedPhase1 = data.maxSpeedPhase1;
             durationPhase1 = data.durationPhase1;
             sender = data.sender;
             maxSpeedPhase2 = data.maxSpeedPhase2;
-            accelerationCurvePhase2 = data.accelerationCurvePhase2;
-            maxSpeedPhase2 = data.maxSpeedPhase2;
+            speedCurvePhase2 = data.speedCurvePhase2;
             recuperationRange = data.recuperationRange;
-            notRepurableDuration = data.notRecuperableDuration;
-            rotationSpeed = data.rotationSpeed;
             accelerationDurationPhase2 = data.accelerationDurationPhase2;
+            pathFindingAccuracy = data.pathFindingAccuracy;
+            minDelayBetweenPathfindingSearch = data.minDelayBetweenPathfindingSearch;
         }
     }
 
@@ -134,93 +135,77 @@ public class Boomerang : MonoBehaviour
             transform.position -= (Vector3)(velocity * (Time.deltaTime * 2f));
         }
 
-        if(Time.time - timeLaunch > notRepurableDuration)
+        if (groundCol != null || Time.time - timeLaunch > durationPhase1)
         {
-            if (groundCol != null || Time.time - timeLaunch > durationPhase1)
-            {
-                state = State.getBack;
-                startPhase2Velocity = velocity.magnitude;
-                oldSenderMapPoint = null;
-                timeLaunch = Time.time;
-                return;
-            }
-            targetDir = dir;
+            LaunchGetBackState();
+            return;
         }
-        else
-        {
-            if(groundCol != null)
-            {
-                targetDir = dir;
-                dir *= -1f;
-            }
-        }
-
-        float ang = Useful.AngleHori(Vector2.zero, dir) * Mathf.Rad2Deg;
-        float targetAng = Useful.AngleHori(Vector2.zero, targetDir) * Mathf.Rad2Deg;
-        dir = Useful.Vector2FromAngle(Mathf.MoveTowardsAngle(ang, targetAng, rotationSpeed * Time.deltaTime) * Mathf.Deg2Rad).normalized;
 
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate((Time.time - timeLaunch) / durationPhase1) * dir;
         Vector3 newPos = (Vector2)transform.position + velocity * Time.deltaTime;
         transform.SetPositionAndRotation(newPos, Quaternion.Euler(0f, 0f, (velocity.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg));
     }
 
+    private void LaunchGetBackState()
+    {
+        state = State.getBack;
+        pathFindingMap = LevelMapData.currentMap.GetPathfindingMap(pathFindingAccuracy);
+        timeLaunch = lastPathFindingSearch = Time.time;
+    }
+
     private void HandleGetBackState()
     {
-        MapPoint currentSenderMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(sender.transform.position);
+        MapPoint currentSenderMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(pathFindingMap, sender.transform.position);
+        MapPoint currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(pathFindingMap, transform.position);
 
-        if(oldSenderMapPoint == null || oldSenderMapPoint != currentSenderMapPoint)
-        {
-            MapPoint start = LevelMapData.currentMap.GetMapPointAtPosition(transform.position);
-
-            if (start == currentSenderMapPoint)
-            {
-                isTargetingSender = true;
-                path = null;
-            }
-            else
-            {
-                Map pathFindingMap = LevelMapData.currentMap.GetPathfindingMap();
-                path = PathFinderToric.FindBestCurve(pathFindingMap, start, currentSenderMapPoint, LevelMapData.currentMap.GetPositionOfMapPoint,
-                    true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
-
-                int maxIter = 20;
-                while(path == null && maxIter > 0)
-                {
-                    transform.position -= (Vector3)(velocity * Time.deltaTime);
-                    start = LevelMapData.currentMap.GetMapPointAtPosition(transform.position);
-                    path = PathFinderToric.FindBestCurve(pathFindingMap, start, currentSenderMapPoint, LevelMapData.currentMap.GetPositionOfMapPoint,
-                        true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
-                    maxIter--;
-                }
-
-                if(path == null)
-                {
-                    StartDestroy();
-                    return;
-                }
-
-                reachDist = 0f;
-            }
-        }
-        oldSenderMapPoint = currentSenderMapPoint;
-
-        MapPoint currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(transform.position);
-        if(currentMapPoint == currentSenderMapPoint)
+        if (currentMapPoint == currentSenderMapPoint)
         {
             isTargetingSender = true;
+            path = null;
         }
 
-        if(isTargetingSender && (currentMapPoint != currentSenderMapPoint))
+        if (isTargetingSender && (currentMapPoint != currentSenderMapPoint))
         {
             isTargetingSender = false;
+        }
+
+        if (requestSearchPath || (path == null && !isTargetingSender) || (Time.time - lastPathFindingSearch > minDelayBetweenPathfindingSearch))
+        {
+            Map pathFindingMap = LevelMapData.currentMap.GetPathfindingMap(pathFindingAccuracy);
+
+            Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
+            {
+                return LevelMapData.currentMap.GetPositionOfMapPoint(pathFindingMap, mapPoint);
+            }
+
+            path = PathFinderToric.FindBestCurve(pathFindingMap, currentMapPoint, currentSenderMapPoint, GetPositionOfMapPoint,
+                true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
+
+            int maxIter = 20;
+            while (path == null && maxIter > 0)
+            {
+                transform.position -= (Vector3)(velocity * Time.deltaTime);
+                currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(pathFindingMap, transform.position);
+                path = PathFinderToric.FindBestCurve(pathFindingMap, currentMapPoint, currentSenderMapPoint, GetPositionOfMapPoint,
+                    true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
+                maxIter--;
+            }
+
+            if (path == null)
+            {
+                StartDestroy();
+                return;
+            }
+
+            lastPathFindingSearch = Time.time;
+            requestSearchPath = false;
+            reachDist = 0f;
         }
 
         float speed = 0f;
         if (Time.time - timeLaunch < accelerationDurationPhase2)
         {
-            float currentSpeed = velocity.magnitude;
-            float delta = currentSpeed - startPhase2Velocity;
-            speed = currentSpeed + delta * accelerationCurvePhase2.Evaluate((Time.time - timeLaunch) / accelerationDurationPhase2);
+            speed = maxSpeedPhase2 * speedCurvePhase2.Evaluate((Time.time - timeLaunch) / accelerationDurationPhase2);
         }
         else
         {
@@ -239,14 +224,17 @@ public class Boomerang : MonoBehaviour
             float reachDistPercent = reachDist / path.length;
             Vector2 targetPosition = path.EvaluateDistance(reachDistPercent);
             direction = PhysicsToric.Direction(transform.position, targetPosition);
+            if(reachDistPercent >= 1f)
+            {
+                requestSearchPath = true;
+            }
         }
 
         //Move and Rotate
         velocity = speed * direction;
+
         Vector3 newPos = (Vector2)transform.position + velocity * Time.deltaTime;
-        float newAngle = (direction.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg;
-        float currentAngle = transform.rotation.eulerAngles.z;
-        transform.SetPositionAndRotation(newPos, Quaternion.Euler(0f, 0f, Mathf.MoveTowardsAngle(currentAngle, newAngle, Time.deltaTime * rotationSpeed)));
+        transform.SetPositionAndRotation(newPos, Quaternion.Euler(0f, 0f, (velocity.Angle(Vector2.right) + Mathf.PI) * Mathf.Rad2Deg));
 
         if (PhysicsToric.Distance(transform.position, sender.transform.position) < recuperationRange)
         {
@@ -321,29 +309,29 @@ public class Boomerang : MonoBehaviour
     public struct BoomerangLaunchData
     {
         public Vector2 dir;
-        public AnimationCurve speedCurvePhase1, accelerationCurvePhase2;
+        public AnimationCurve speedCurvePhase1, speedCurvePhase2;
         public float maxSpeedPhase1, durationPhase1, accelerationDurationPhase2;
         public BoomerangAttack sender;
         public float maxSpeedPhase2;
         public float recuperationRange;
-        public float notRecuperableDuration;
-        public float rotationSpeed;
+        public int pathFindingAccuracy;
+        public float minDelayBetweenPathfindingSearch;
 
         public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1,
             float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange,
-            float notRecuperableDuration, float rotationSpeed)
+            int pathFindingAccuracy, float minDelayBetweenPathfindingSearch)
         {
             this.dir = dir;
             this.speedCurvePhase1 = speedCurvePhase1;
-            this.accelerationCurvePhase2 = accelerationCurvePhase2;
+            this.speedCurvePhase2 = accelerationCurvePhase2;
             this.maxSpeedPhase1 = maxSpeedPhase1;
             this.durationPhase1 = durationPhase1;
             this.accelerationDurationPhase2 = accelerationDurationPhase2;
             this.sender = sender;
             this.maxSpeedPhase2 = maxSpeedPhase2;
             this.recuperationRange = recuperationRange;
-            this.notRecuperableDuration = notRecuperableDuration;
-            this.rotationSpeed = rotationSpeed;
+            this.pathFindingAccuracy = pathFindingAccuracy;
+            this.minDelayBetweenPathfindingSearch = minDelayBetweenPathfindingSearch;
         }
     }
 

@@ -41,9 +41,9 @@ public class HitboxBumpZone : BumpsZone
 
     protected override float GetBumpTimeOffet() => (0.5f * Mathf.Max(hitbox.size.x, hitbox.size.y)) / bumpSpeed;
 
-    public override List<MapPoint> GetBlockedCells()
+    public override List<MapPoint> GetBlockedCells(Map map)
     {
-        return GetBlockedCellsInRectangle(transform.position, hitbox.size);
+        return GetBlockedCellsInRectangle(map, transform.position, hitbox.size);
     }
 
     #region Gizmos

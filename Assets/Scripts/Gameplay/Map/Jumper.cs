@@ -16,9 +16,9 @@ public class Jumper : PathFindingBlocker
         hitbox = GetComponent<BoxCollider2D>();
     }
 
-    public override List<MapPoint> GetBlockedCells()
+    public override List<MapPoint> GetBlockedCells(Map map)
     {
-        return GetBlockedCellsInRectangle(transform.position, hitbox.size);
+        return GetBlockedCellsInRectangle(map, transform.position, hitbox.size);
     }
 
     private void OnDrawGizmosSelected()

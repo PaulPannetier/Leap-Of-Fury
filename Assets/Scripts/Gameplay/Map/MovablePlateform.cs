@@ -60,9 +60,9 @@ public class MovablePlateform : PathFindingBlocker
 
     #region PathFinding
 
-    public override List<MapPoint> GetBlockedCells()
+    public override List<MapPoint> GetBlockedCells(Map map)
     {
-        return GetBlockedCellsInRectangle(transform.position, hitbox.size);
+        return GetBlockedCellsInRectangle(map, transform.position, hitbox.size);
     }
 
     #endregion

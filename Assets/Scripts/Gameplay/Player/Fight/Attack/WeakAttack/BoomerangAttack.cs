@@ -12,10 +12,14 @@ public class BoomerangAttack : WeakAttack
 
     [SerializeField] private GameObject boomerangPrefab;
     [SerializeField] private float distanceToInstantiate = 0.4f;
-    [SerializeField] private AnimationCurve speedCurvePhase1, accelerationCurvePhase2;
+    [SerializeField] private AnimationCurve speedCurvePhase1, speedCurvePhase2;
     [SerializeField] private float maxSpeedPhase1, maxSpeedPhase2, durationPhase1, accelerationDurationPhase2;
-    [SerializeField] private float recuperationRange, notRecuperableDuration;
-    [SerializeField] private float rotationSpeed = 120f;
+    [SerializeField] private float recuperationRange;
+
+    [Header("PathFinding")]
+    [SerializeField, Range(1, 3)] private int pathFindingAccuracy = 1;
+    [SerializeField] private float minDelayBetweenPathfinfindSearch = 0.5f;
+
 
 #if UNITY_EDITOR
 
@@ -28,7 +32,6 @@ public class BoomerangAttack : WeakAttack
         base.Awake();
         movement = GetComponent<Movement>();
     }
-
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
@@ -54,8 +57,8 @@ public class BoomerangAttack : WeakAttack
 
     private BoomerangLaunchData CreateLaunchData(in Vector2 dir)
     {
-        return new BoomerangLaunchData(dir, speedCurvePhase1, accelerationCurvePhase2, maxSpeedPhase1, durationPhase1,
-            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, notRecuperableDuration, rotationSpeed);
+        return new BoomerangLaunchData(dir, speedCurvePhase1, speedCurvePhase2, maxSpeedPhase1, durationPhase1,
+            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, pathFindingAccuracy, minDelayBetweenPathfinfindSearch);
     }
 
     public void GetBack()
@@ -78,7 +81,6 @@ public class BoomerangAttack : WeakAttack
         maxSpeedPhase2 = Mathf.Max(0f, maxSpeedPhase2);
         distanceToInstantiate = Mathf.Max(0f, distanceToInstantiate);
         recuperationRange = Mathf.Max(0f, recuperationRange);
-        rotationSpeed = Mathf.Max(0f, rotationSpeed);
     }
 
     private void OnDrawGizmosSelected()

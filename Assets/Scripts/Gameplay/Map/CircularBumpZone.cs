@@ -27,9 +27,9 @@ public class CircularBumpZone : BumpsZone
 
     protected override float GetBumpTimeOffet() => (circleCollider.radius * Mathf.Max(collisionDetectionScale.x, collisionDetectionScale.y) - circleCollider.radius) / bumpSpeed;
 
-    public override List<MapPoint> GetBlockedCells()
+    public override List<MapPoint> GetBlockedCells(Map map)
     {
-        return GetBlockedCellsInCircle(transform.position, circleCollider.radius);
+        return GetBlockedCellsInCircle(map, transform.position, circleCollider.radius);
     }
 
     #region Gizmos

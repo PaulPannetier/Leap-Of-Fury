@@ -105,13 +105,23 @@ public class LevelMapData : MonoBehaviour
 
     public Map GetPathfindingMap(int accuracy = 1)
     {
+        if (accuracy < 1)
+        {
+            accuracy = 1;
+            LogManager.instance.WriteLog("Accuracy must be >= 1 in LevelMapData.GetPathfindingMap(int accuracy = 1)", accuracy);
+        }
+
         List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();
 
         List<MapPoint> blockedPoints = new List<MapPoint>();
 
+        Vector2Int mapCellsSize = new Vector2Int((mapSize.x / cellSize.x).Round(), (mapSize.y / cellSize.y).Round());
+        int[,] costMap = new int[mapCellsSize.x * accuracy, mapCellsSize.y * accuracy];
+        Map res = new Map(costMap, accuracy);
+
         foreach (PathFindingBlocker blocker in blockers)
         {
-            foreach (MapPoint mapPoint in blocker.GetBlockedCells())
+            foreach (MapPoint mapPoint in blocker.GetBlockedCells(res))
             {
                 if(!blockedPoints.Contains(mapPoint))
                 {
@@ -120,16 +130,15 @@ public class LevelMapData : MonoBehaviour
             }
         }
 
-        Vector2Int mapCellsSize = new Vector2Int((mapSize.x / cellSize.x).Round(), (mapSize.y / cellSize.y).Round());
-        int[,] costMap = new int[mapCellsSize.x, mapCellsSize.y];
-
         Vector2 offset = -0.5f * mapSize;
         Vector2 cellCenter;
+        Vector2 cellSizeWithAccuracy = cellSize / accuracy;
+
         for (int x = 0; x < costMap.GetLength(0); x++)
         {
             for (int y = 0; y < costMap.GetLength(1); y++)
             {
-                cellCenter = new Vector2(offset.x + (x + 0.5f) * cellSize.x, offset.y + (y + 0.5f) * cellSize.y);
+                cellCenter = new Vector2(offset.x + (x + 0.5f) * cellSizeWithAccuracy.x, offset.y + (y + 0.5f) * cellSizeWithAccuracy.y);
                 costMap[x, y] = GetCostAtPoint(cellCenter, new MapPoint(x, y));
             }
         }
@@ -151,7 +160,16 @@ public class LevelMapData : MonoBehaviour
             return 1;
         }
 
-        return new Map(costMap);
+        return res;
+    }
+
+    public MapPoint GetMapPointAtPosition(Map map, in Vector2 position)
+    {
+        Vector2 origin = PhysicsToric.GetPointInsideBounds(position) + mapSize * 0.5f;
+        Vector2 cellSizeWithAccuracy = cellSize / map.accuracy;
+
+        Vector2Int coord = new Vector2Int((int)(origin.x / cellSizeWithAccuracy.x), (int)(origin.y / cellSizeWithAccuracy.y));
+        return new MapPoint(coord.x, coord.y);
     }
 
     public MapPoint GetMapPointAtPosition(in Vector2 position)
@@ -159,6 +177,12 @@ public class LevelMapData : MonoBehaviour
         Vector2 origin = PhysicsToric.GetPointInsideBounds(position) + mapSize * 0.5f;
         Vector2Int coord = new Vector2Int((int)(origin.x / cellSize.x), (int)(origin.y / cellSize.y));
         return new MapPoint(coord.x, coord.y);
+    }
+
+    public Vector2 GetPositionOfMapPoint(Map map, MapPoint mapPoint)
+    {
+        Vector2 cellSizeWithAccuracy = cellSize / map.accuracy;
+        return new Vector2((mapPoint.X + 0.5f) * cellSizeWithAccuracy.x - (0.5f * mapSize.x), (mapPoint.Y + 0.5f) * cellSizeWithAccuracy.y - (0.5f * mapSize.y));
     }
 
     public Vector2 GetPositionOfMapPoint(MapPoint mapPoint)

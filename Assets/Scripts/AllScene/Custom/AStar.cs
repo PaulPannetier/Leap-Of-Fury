@@ -590,17 +590,20 @@ namespace PathFinding
         private MapPoint _startPt = MapPoint.InvalidPoint;
         private MapPoint _endPt = MapPoint.InvalidPoint;
 
+        public int accuracy { get; private set; }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="cost">Le cout de passage d'une case, -1 pour un mur</param>
         /// <param name="start">Point de départ</param>
         /// <param name="end">Point d'arrivé</param>
-        public Map(int[,] cost, MapPoint start, MapPoint end)
+        public Map(int[,] cost, MapPoint start, MapPoint end, int accuracy = 1)
         {
             this._costs = cost;
             this._startPt = start;
             this._endPt = end;
+            this.accuracy = accuracy;
         }
 
         /// <summary>
@@ -609,9 +612,10 @@ namespace PathFinding
         /// <param name="cost">Le cout de passage d'une case, -1 pour un mur</param>
         /// <param name="start">Point de départ</param>
         /// <param name="end">Point d'arrivé</param>
-        public Map(int[,] cost)
+        public Map(int[,] cost, int accuracy = 1)
         {
             this._costs = cost;
+            this.accuracy = accuracy;
         }
 
         #region Properties

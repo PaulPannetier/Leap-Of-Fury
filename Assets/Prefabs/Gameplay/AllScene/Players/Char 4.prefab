@@ -860,7 +860,7 @@ MonoBehaviour:
   cooldown:
     duration: 0.5
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
-  distanceToInstantiate: 0.9
+  distanceToInstantiate: 0.5
   speedCurvePhase1:
     serializedVersion: 2
     m_Curve:
@@ -874,16 +874,25 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.42325032
-      value: 0.95784366
-      inSlope: 0.4066074
-      outSlope: 0.4066074
+      time: 0.34083182
+      value: 0.9155417
+      inSlope: 1.3104961
+      outSlope: 1.3104961
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.17115004
+      inWeight: 0.10260485
       outWeight: 0.13045838
     - serializedVersion: 3
-      time: 0.9249037
+      time: 0.4744078
+      value: 1.0010476
+      inSlope: 0.020987086
+      outSlope: 0.020987086
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8406546
       value: 0.705582
       inSlope: -2.0993886
       outSlope: -2.0993886
@@ -893,7 +902,7 @@ MonoBehaviour:
       outWeight: 0.41707036
     - serializedVersion: 3
       time: 0.99954665
-      value: 0.38534477
+      value: 0.20089653
       inSlope: -1.4558069
       outSlope: -1.4558069
       tangentMode: 0
@@ -903,12 +912,12 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  accelerationCurvePhase2:
+  speedCurvePhase2:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.00023651123
-      value: 0.0010070801
+      time: 0
+      value: 0.4991455
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -916,33 +925,42 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.64019763
-      value: 0.16288485
-      inSlope: 0.8246517
-      outSlope: 0.8246517
+      time: 0.43572724
+      value: 0.73388016
+      inSlope: 1.0076777
+      outSlope: 1.0076777
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.28458902
+    - serializedVersion: 3
+      time: 0.6615714
+      value: 0.92504776
+      inSlope: 0.61856484
+      outSlope: 0.61856484
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.42473584
+      outWeight: 0.20446803
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0.059330344
+      outSlope: 0.059330344
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.51227427
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  maxSpeedPhase1: 18
-  maxSpeedPhase2: 18
-  durationPhase1: 1.4
-  accelerationDurationPhase2: 1.5
-  recuperationRange: 1
-  notRecuperableDuration: 2
-  rotationSpeed: 120
+  maxSpeedPhase1: 16
+  maxSpeedPhase2: 25
+  durationPhase1: 1.2
+  accelerationDurationPhase2: 0.75
+  recuperationRange: 0.9
+  pathFindingAccuracy: 1
+  minDelayBetweenPathfinfindSearch: 0.5
   drawGizmos: 1
 --- !u!114 &4277522715158860269
 MonoBehaviour:
