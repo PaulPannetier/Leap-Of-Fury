@@ -1529,6 +1529,61 @@ public static class Useful
         return true;
     }
 
+    public enum Side { Up, Down, Right, Left }
+
+    public static bool IsPointInRectangle(in Vector2 center, in Vector2 size, in Vector2 point)
+    {
+        return point.x >= center.x - size.x * 0.5f && point.x <= center.x + size.x * 0.5f && point.y >= center.y - size.y * 0.5f && point.y <= center.y + size.y * 0.5f;
+    }
+
+    public static Side GetRectangleSide(in Vector2 center, in Vector2 size, in Vector2 point)
+    {
+        bool up = IsPointInRectangle(new Vector2(center.x, center.y + (size.y * 0.25f)), new Vector2(size.x, size.y * 0.5f), point);
+        bool down = !up && IsPointInRectangle(new Vector2(center.x, center.y - (size.y * 0.25f)), new Vector2(size.x, size.y * 0.5f), point);
+
+        if(up || down)
+        {
+            bool right = IsPointInRectangle(new Vector2(center.x + (size.x * 0.25f), center.y), new Vector2(size.x * 0.5f, size.y), point);
+            float vPercent = Mathf.Abs(point.y - center.y) / size.y;
+            float hPercent = Mathf.Abs(point.x - center.x) / size.x;
+            return vPercent >= hPercent ? (up ? Side.Up : Side.Down) : (right ? Side.Right : Side.Left);
+        }
+
+        float angle1, angle2;
+        Vector2 topRight = new Vector2(center.x + (size.x * 0.5f), center.y + (size.y * 0.5f));
+        Vector2 topLeft = new Vector2(center.x - (size.x * 0.5f), center.y + (size.y * 0.5f));
+
+        angle1 = AngleHori(topRight, point);
+        angle2 = AngleHori(topLeft, point);
+        if (angle1 >= Mathf.PI * 0.25f && angle2 <= Mathf.PI * 0.75f)
+        {
+            return Side.Up;
+        }
+
+        Vector2 botRight = new Vector2(center.x + (size.x * 0.5f), center.y - (size.y * 0.5f));
+
+        angle2 = AngleHori(botRight, point);
+        if ((angle1 <= Mathf.PI * 0.25f || angle1 >= 1.5f * Mathf.PI) && (angle2 <= Mathf.PI * 0.5f || angle2 >= Mathf.PI * 1.75f))
+        {
+            return Side.Right;
+        }
+
+        Vector2 botLeft = new Vector2(center.x - (size.x * 0.5f), center.y - (size.y * 0.5f));
+        angle1 = AngleHori(botLeft, point);
+        if (angle1 >= Mathf.PI * 1.25f && angle2 <= Mathf.PI * 1.75f)
+        {
+            return Side.Down;
+        }
+
+        angle2 = AngleHori(topLeft, point);
+        if ((angle1 <= Mathf.PI * 1.25f && angle1 >= Mathf.PI * 0.5f) && angle2 >= Mathf.PI * 0.75f)
+        {
+            return Side.Left;
+        }
+
+        return Side.Up;
+    }
+
     public static float NearestFromZero(in float a, in float b) => Mathf.Abs(a) < Mathf.Abs(b) ? a : b;
     public static float FarestFromZero(in float a, in float b) => Mathf.Abs(a) > Mathf.Abs(b) ? a : b;
 

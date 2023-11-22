@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c8dd3d49041a3947bce7d47ce963b02, type: 3}
   m_Name: BuildCreatorConfig
   m_EditorClassIdentifier: 
-  modifyGameplayScene: 1
   gameplayScenes:
   - {fileID: 102900000, guid: 27f17e27e441c6d41b1f6d57c7e7eba3, type: 3}
   - {fileID: 102900000, guid: 857f19da6c4bbbc43b7b9cbe942c62ac, type: 3}
@@ -24,7 +23,8 @@ MonoBehaviour:
   - {fileID: 102900000, guid: e3f090a10911b754087beff83b20acc2, type: 3}
   - {fileID: 102900000, guid: 61461d4bc41af1348ab49cc35c3deed7, type: 3}
   firstSceneToPlay: {fileID: 102900000, guid: 95ca349782007214fb012e85db33a963, type: 3}
-  performBuild: 0
-  developpementBuild: 0
-  copySaveDirectory: 0
-  setDefaultSettingAndConfig: 0
+  modifyGameplayScene: 1
+  performBuild: 1
+  developpementBuild: 1
+  copySaveDirectory: 1
+  setDefaultSettingAndConfig: 1

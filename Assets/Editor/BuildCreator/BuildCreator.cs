@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿#if UNITY_EDITOR
+
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -107,7 +109,8 @@ public class BuildCreator : Editor
             }
 
             string buildDir = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Build");
-            Directory.Delete(buildDir, true);
+            if(Directory.Exists(buildDir))
+                Directory.Delete(buildDir, true);
             Directory.CreateDirectory(buildDir);
 
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
@@ -223,3 +226,5 @@ public class BuildCreator : Editor
         EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
     }
 }
+
+#endif

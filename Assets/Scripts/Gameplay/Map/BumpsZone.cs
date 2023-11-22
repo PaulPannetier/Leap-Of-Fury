@@ -10,6 +10,7 @@ public abstract class BumpsZone : PathFindingBlocker
 
     [SerializeField] protected Vector2 collisionDetectionScale = Vector2.one;
     [SerializeField] protected float bumpSpeed = 20f;
+    [SerializeField] protected float minDurationBetween2Bumps = 0.1f;
 
     protected virtual void Start()
     {
@@ -26,38 +27,30 @@ public abstract class BumpsZone : PathFindingBlocker
             return;
 
         Collider2D[] cols = GetTouchingChar();
-        List<uint> newCharTouch = new List<uint>();
         foreach (Collider2D col in cols)
         {
             if(col.CompareTag("Char"))
             {
                 GameObject player = col.GetComponent<ToricObject>().original;
                 uint id = player.GetComponent<PlayerCommon>().id;
-                newCharTouch.Add(id);
                 if(!charAlreadyTouch.Contains(id))
                 {
                     charAlreadyTouch.Add(id);
                     Vector2 dir = GetColliderNormal(col);
                     player.GetComponent<Movement>().ApplyBump(dir * bumpSpeed);
-                    Invoke(nameof(ClearCharAlreadyTouch), GetBumpTimeOffet());
+                    this.Invoke(ClearCharAlreadyTouch, id, minDurationBetween2Bumps);
                 }
-            }
-        }
-
-        for (int i = charAlreadyTouch.Count - 1; i >= 0; i--)
-        {
-            if (!newCharTouch.Contains(charAlreadyTouch[i]))
-            {
-                charAlreadyTouch.RemoveAt(i);
             }
         }
     }
 
-    protected abstract float GetBumpTimeOffet();
-
-    private void ClearCharAlreadyTouch()
+    private void ClearCharAlreadyTouch(uint id)
     {
-        charAlreadyTouch.Clear();
+        for (int i = charAlreadyTouch.Count - 1; i >= 0; i--)
+        {
+            if (charAlreadyTouch[i] == id)
+                charAlreadyTouch.RemoveAt(i);
+        }
     }
 
 #if UNITY_EDITOR

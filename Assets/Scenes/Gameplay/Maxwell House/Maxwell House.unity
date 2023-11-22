@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 1393366166460120884}
     - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
       propertyPath: enableBehaviour
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
       propertyPath: mapsPrefabs.Array.data[0]
@@ -149,7 +149,7 @@ PrefabInstance:
       objectReference: {fileID: 1393366166460120883}
     - target: {fileID: 5999535417688878524, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
       propertyPath: enableBehaviour
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
       propertyPath: m_Name

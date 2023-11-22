@@ -25,8 +25,6 @@ public class CircularBumpZone : BumpsZone
         return PhysicsToric.OverlapCircleAll(transform.position, circleCollider.radius * Mathf.Max(collisionDetectionScale.x, collisionDetectionScale.y), charMask);
     }
 
-    protected override float GetBumpTimeOffet() => (circleCollider.radius * Mathf.Max(collisionDetectionScale.x, collisionDetectionScale.y) - circleCollider.radius) / bumpSpeed;
-
     public override List<MapPoint> GetBlockedCells(Map map)
     {
         return GetBlockedCellsInCircle(map, transform.position, circleCollider.radius);

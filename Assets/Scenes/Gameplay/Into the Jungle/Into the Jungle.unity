@@ -523,6 +523,10 @@ PrefabInstance:
       value: LevelManager
       objectReference: {fileID: 0}
     - target: {fileID: 4235235567787367747, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4235235567787367747, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
       propertyPath: scoreMenu
       value: 
       objectReference: {fileID: 232399293}

@@ -2813,7 +2813,7 @@ GameObject:
   - component: {fileID: -3424494351658979434}
   m_Layer: 0
   m_Name: Map0
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2851,9 +2851,7 @@ MonoBehaviour:
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
-  spawnConfig:
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
+  spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/IntoTheJungle/Map0SpawnPoints
   collidersGameObject:
   - {fileID: 5423039871038564499}

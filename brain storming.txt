@@ -133,4 +133,3 @@ Review PauseManager
 Trad all text
 floor shock wave line 35
 menu de fin de niveau
-mayas temple level

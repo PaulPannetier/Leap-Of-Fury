@@ -22,6 +22,7 @@ public class Arrow : MonoBehaviour
     [SerializeField] private float charDetectionRange = 2f;
     [SerializeField, Range(0f, 180f)] private float charDetectionAngle = 2f;
     [SerializeField] private float rotationDetectionSpeed = 180f;
+    [SerializeField] private float gravityScale = 1f;
     [SerializeField] private LayerMask wallProjectileMask;
     [SerializeField] private LayerMask charMask;
 
@@ -37,6 +38,7 @@ public class Arrow : MonoBehaviour
     {
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
+        rb.gravityScale = this.gravityScale;
     }
 
     #region FixedUpdate
@@ -233,6 +235,12 @@ public class Arrow : MonoBehaviour
 
     private void OnTriggerEnter2D(UnityEngine.Collider2D collision)
     {
+        if(toricObject.isAClone)
+        {
+            toricObject.original.GetComponent<Arrow>().OnTriggerEnter2D(collision);
+            return;
+        }
+
         if (!enableBehaviour)
             return;
 

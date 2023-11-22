@@ -3,11 +3,14 @@ using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
 using PathFinding;
 using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent (typeof(BoxCollider2D))]
 public class HitboxBumpZone : BumpsZone
 {
     protected BoxCollider2D hitbox;
+
+    [SerializeField] private bool enableUpBump = true, enableDownBump = true, enableRightBump = true, enableLeftBump = true;
 
     protected override void Awake()
     {
@@ -36,10 +39,34 @@ public class HitboxBumpZone : BumpsZone
 
     protected override Collider2D[] GetTouchingChar()
     {
-        return PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * collisionDetectionScale, 0f, charMask);
-    }
+        Collider2D[] tmp = PhysicsToric.OverlapBoxAll(transform.position, hitbox.size * collisionDetectionScale, 0f, charMask);
+        if (tmp.Length <= 0)
+            return tmp;
 
-    protected override float GetBumpTimeOffet() => (0.5f * Mathf.Max(hitbox.size.x, hitbox.size.y)) / bumpSpeed;
+        List<Collider2D> cols = tmp.ToList();
+        for (int i = cols.Count - 1; i >= 0; i--)
+        {
+            Useful.Side side = Useful.GetRectangleSide(transform.position, hitbox.size, cols[i].transform.position);
+            if (enableUpBump && side == Useful.Side.Up)
+            {
+                continue;
+            }
+            if (enableDownBump && side == Useful.Side.Down)
+            {
+                continue;
+            }
+            if (enableRightBump && side == Useful.Side.Right)
+            {
+                continue;
+            }
+            if (enableLeftBump && side == Useful.Side.Left)
+            {
+                continue;
+            }
+            cols.RemoveAt(i);
+        }
+        return cols.ToArray();
+    }
 
     public override List<MapPoint> GetBlockedCells(Map map)
     {
@@ -61,5 +88,4 @@ public class HitboxBumpZone : BumpsZone
 #endif
 
     #endregion
-
 }
