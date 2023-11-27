@@ -436,7 +436,7 @@ MonoBehaviour:
   - {fileID: 8331574599252283194}
   - {fileID: 0}
   chidrenToRemoveInClone: []
-  drawGizmos: 1
+  drawGizmos: 0
 --- !u!114 &4135942895386761519
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -42,6 +42,9 @@ public abstract class BumpsZone : PathFindingBlocker
                 }
             }
         }
+
+        DebugText.instance.text += charAlreadyTouch.Count + "\n";
+        DebugText.instance.text += cols.Length + "\n";
     }
 
     private void ClearCharAlreadyTouch(uint id)
@@ -58,6 +61,7 @@ public abstract class BumpsZone : PathFindingBlocker
     protected virtual void OnValidate()
     {
         collisionDetectionScale = new Vector2(Mathf.Max(collisionDetectionScale.x, 0f), Mathf.Max(collisionDetectionScale.y, 0f));
+        minDurationBetween2Bumps = Mathf.Max(0f, minDurationBetween2Bumps);
     }
 
     protected virtual void OnDrawGizmosSelected()

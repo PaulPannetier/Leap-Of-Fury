@@ -16,6 +16,7 @@ public class Arrow : MonoBehaviour
     private bool isMainArrow;
     private bool isGuiding = false;
     private float timeWhenLaunch = -10f;
+    private LayerMask charMask, wallProjectileMask;
 
     public bool enableBehaviour = true;
 
@@ -23,8 +24,6 @@ public class Arrow : MonoBehaviour
     [SerializeField, Range(0f, 180f)] private float charDetectionAngle = 2f;
     [SerializeField] private float rotationDetectionSpeed = 180f;
     [SerializeField] private float gravityScale = 1f;
-    [SerializeField] private LayerMask wallProjectileMask;
-    [SerializeField] private LayerMask charMask;
 
     private void Awake()
     {
@@ -38,7 +37,9 @@ public class Arrow : MonoBehaviour
     {
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
-        rb.gravityScale = this.gravityScale;
+        rb.gravityScale = gravityScale;
+        charMask = LayerMask.GetMask("Char");
+        wallProjectileMask = LayerMask.GetMask("WallProjectile");
     }
 
     #region FixedUpdate

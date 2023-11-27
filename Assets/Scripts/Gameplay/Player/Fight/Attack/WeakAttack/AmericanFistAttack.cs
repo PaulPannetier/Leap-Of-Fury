@@ -159,7 +159,7 @@ public class AmericanFistAttack : WeakAttack
                     }
                 }
 
-                rb.velocity = lastDir * (dashSpeedCurve.Evaluate((Time.time - lastTimeDash) / dashDuration) * dashSpeed);
+                rb.velocity = lastDir * (dashSpeedCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeDash) / dashDuration)) * dashSpeed);
 
                 if (CollideWithEnemy(out GameObject[] enemies))
                 {

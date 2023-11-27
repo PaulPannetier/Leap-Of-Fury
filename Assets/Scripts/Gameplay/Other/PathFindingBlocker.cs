@@ -60,6 +60,11 @@ namespace PathFinding
             }
             return res;
         }
+
+        protected virtual void OnDestroy()
+        {
+            blockers.Remove(this);
+        }
     }
 }
 

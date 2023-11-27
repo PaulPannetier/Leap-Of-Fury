@@ -50,8 +50,9 @@ public class MovingPlateform : PathFindingBlocker
         enableBehaviour = true;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         PauseManager.instance.callBackOnPauseEnable -= Disable;
         PauseManager.instance.callBackOnPauseDisable -= Enable;
     }

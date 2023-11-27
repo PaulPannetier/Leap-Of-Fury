@@ -69719,11 +69719,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.x
-      value: 1.22
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.y
-      value: 1.04
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124317, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -69821,11 +69821,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.x
-      value: 1.22
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.y
-      value: 1.04
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124317, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: m_LocalPosition.x

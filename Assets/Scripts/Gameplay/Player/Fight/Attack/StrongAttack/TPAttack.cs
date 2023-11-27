@@ -5,14 +5,13 @@ using Collision2D;
 public class TPAttack : StrongAttack
 {
     private Movement playerMovement;
+    private LayerMask groundMask, ennemyPlayerMask;
 
     [SerializeField] private float tpRange = 1f;
     [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private float detectionStep = 0.05f;
     [SerializeField] private Vector2 collisionOffset = Vector2.zero;
     [SerializeField] private Vector2 collisionSize = new Vector2(0.5f, 1f);
-    [SerializeField] private LayerMask ennemyPlayerMask;
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private float explosionForce;
     [SerializeField] private GameObject explosionPrefabs;
 
@@ -20,6 +19,13 @@ public class TPAttack : StrongAttack
     {
         base.Awake();
         playerMovement = GetComponent<Movement>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
+        ennemyPlayerMask = LayerMask.GetMask("Char");
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
