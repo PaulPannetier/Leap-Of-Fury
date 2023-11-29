@@ -1,34 +1,35 @@
 using UnityEngine;
+using System;
 
 public class TestScript : MonoBehaviour
 {
-    [SerializeField] int seed;
-    [SerializeField] Vector2 scale;
-    [SerializeField] bool recalculateTexture = false;
+    [SerializeField] private bool test;
 
-    private void Start()
+    private void Test()
     {
-        Material material = GetComponent<SpriteRenderer>().material;
+        Polynome p0 = new Polynome(new float[] { 0.5f, -4, 2, 1 });
+        Polynome p1 = new Polynome(new float[] { 1f, -4, 2, -3 });
 
-        Texture2D texture = new Texture2D(500, 500);
-        Random.SetSeed(seed);
-        Array2D<float> textValue = Random.CellsNoise(500, 500, scale);
-        for (int x = 0; x < 500; x++)
+        SubTest(p0);
+        SubTest(p1);
+
+        void SubTest(Polynome p)
         {
-            for (int y = 0; y < 500; y++)
+            print(p);
+            float[] roots = p.Roots();
+            foreach (float root in roots)
             {
-                texture.SetPixel(x, y, Color.Lerp(Color.white, Color.black, textValue[x, y]));
+                print(root + " accuracy : " + p.Evaluate(root));
             }
         }
-        texture.Apply();
-
-        material.mainTexture = texture;
     }
 
     private void OnValidate()
     {
-        if (recalculateTexture)
-            Start();
-        recalculateTexture = false;
+        if(test)
+        {
+            test = false;
+            Test();
+        }
     }
 }

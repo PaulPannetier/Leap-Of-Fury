@@ -857,8 +857,54 @@ public class Polynome
         double c = p.coefficient[1];
         double d = p.coefficient[0];
 
+        float[] SolveCubicEquation(double a, double b, double c, double d)
+        {
+            // Cardano's formula
+            double p = c / a - (b * b) / (3d * a * a);
+            double q = (2d * (b * b * b) - 9d * a * b * c + 27d * (a * a) * d) / (27d * (a * a * a));
+
+            double delta = (q * q) / 4d + (p * p * p) / 27d;
+
+            if(delta.Approximately(0d))
+            {
+                return new float[1] { (float)(b / (-3d * a)) };
+            }
+
+            if (delta >= 0)
+            {
+                // One real root and two complex conjugate roots
+                double u = -q / 2d + Math.Sqrt(delta);
+                double v = -q / 2d - Math.Sqrt(delta);
+
+                double realRoot = Math.Cbrt(u) - Math.Cbrt(v) - b / (3d * a);
+                return new float[1] { (float)realRoot };
+            }
+            else // ok
+            {
+                double rho = Math.Sqrt((-p * p * p) / 27d);
+                double theta = Math.Acos(-q / (2d * rho));
+
+                rho = 2d * Math.Cbrt(rho);
+                double offset = -b / (3d * a);
+
+                double root1 = rho * Math.Cos(theta / 3d) + offset;
+                double root2 = rho * Math.Cos((theta + 2d * Math.PI) / 3d) + offset;
+                double root3 = rho * Math.Cos((theta + 4d * Math.PI) / 3d) + offset;
+
+                return new float[3] { (float)root1, (float)root2, (float)root3 };
+            }
+        }
+
+        return SolveCubicEquation(a, b, c, d);
+
+        /*
+        
         double P = -b * b / (3d * a * a) + c / a;
         double Q = (b / (27d * a)) * (2d * b * b / (a * a) - 9d * c / a) + d / a;
+
+        // my own computation
+        //P = ((3d * c * a) - (b * b)) / (3d * a * a);
+        //Q = (-b / 3d) + (b * b * b / (9d * a * a)) + d - (b * c / (3d * a));
 
         float[] res = CardanFormula(P, Q);
         float tmp = (float)(b / (3d * a));
@@ -868,6 +914,7 @@ public class Polynome
         }
 
         return res;
+
 
         //return the real roots of the function f(x) = x^3 + px + q
         float[] CardanFormula(double p, double q)
@@ -907,6 +954,7 @@ public class Polynome
                 (float)(u + v)
             };
         }
+        */
     }
 
     public static float[] Degrees4Roots(Polynome p)
@@ -977,8 +1025,8 @@ public class Polynome
             Degrees1Roots(this);
         if (deg == 2)
             return Degrees2Roots(this);
-        //if (deg == 3)
-        //    return Degrees3Roots(this);
+        if (deg == 3)
+            return Degrees3Roots(this);
         //if (deg == 4)
         //    return Degrees4Roots(this);
 
@@ -990,9 +1038,17 @@ public class Polynome
 
     private void RootsRecur(Polynome current, float accuracy, int maxIter, ref List<float> roots)
     {
-        if(current.deg == 3)
+        if(current.deg <= 3)
         {
-            float[] rs = Degrees3Roots(current);
+            float[] rs = Array.Empty<float>();
+
+            if (current.deg == 3)
+                rs = Degrees3Roots(current);
+            else if (current.deg == 2)
+                rs = Degrees2Roots(current);
+            else if (current.deg == 1)
+                rs = Degrees1Roots(current);
+
             for (int i = 0; i < rs.Length; i++)
             {
                 roots.Add(rs[i]);
@@ -2131,6 +2187,13 @@ public static class Useful
 
     #region Integrate
 
+    private static readonly float[] xf = { -0.99312859918f, -0.96397192727f, -0.91223442825f, -0.83911697182f, -0.74633190646f, -0.63605368072f, -0.51086700195f, -0.37370608871f, -0.22778585114f, -0.07652652113f };
+    private static readonly float[] wf = { 0.0176140071f, 0.0406014298f, 0.0626720483f, 0.0832767415f, 0.1019301198f, 0.1181945319f, 0.1316886384f, 0.1420961093f, 0.1491729864f, 0.1527533871f };
+    private static readonly double[] xd = { -0.99312859918509492479, -0.96397192727791379127, -0.91223442825132590587, -0.83911697182221882339, -0.74633190646015079261, -0.63605368072651502545, -0.51086700195082709800, -0.37370608871541956067, -0.22778585114164507808, -0.07652652113349733375 };
+    private static readonly double[] wd = { 0.01761400713915211831, 0.04060142980038694133, 0.06267204833410906357, 0.08327674157670474872, 0.10193011981724043504, 0.11819453196151841731, 0.13168863844917662690, 0.14209610931838205133, 0.14917298647260374679, 0.15275338713072585070, };
+    private static readonly decimal[] xm = {-0.99312859918509492478612238847132027822264464433825m, -0.96397192727791379126766613119727722191206032780642m, -0.91223442825132590586775244120329811304998996651304m, -0.83911697182221882339452906170152068532962931231767m, -0.74633190646015079261430507035564159031073067668055m, -0.63605368072651502545283669622628593674338911647884m, -0.51086700195082709800436405095525099842543987456776m, -0.37370608871541956067254817702492723739574618234639m, -0.22778585114164507808049619536857462474308816338187m, -0.07652652113349733375464040939883821100467147181940m };
+    private static readonly decimal[] wm = { 0.01761400713915211831186196235185281636214355980522m, 0.04060142980038694133103995227493210987909063994881m, 0.06267204833410906356950653518704160635160186567984m, 0.08327674157670474872475814322204620610017782858333m, 0.10193011981724043503675013548034987616669109253665m, 0.11819453196151841731237737771138228700504121954834m, 0.13168863844917662689849449974816313491611051175818m, 0.14209610931838205132929832506716493303451541339205m, 0.14917298647260374678782873700196943669267926962838m, 0.15275338713072585069808433195509759349194896951277m };
+
     /// <summary>
     /// Return the integral between a and b of f(x)dx
     /// </summary>
@@ -2141,9 +2204,6 @@ public static class Useful
     /// <returns>The integral between a and b of f(x)dx</returns>
     public static float Integrate(Func<float, float> f, float a, float b, float samplePerUnit = 1f)
     {
-        const float x1 = -0.9491079123f, x2 = -0.7415311856f, x3 = -0.4058451514f, x5 = 0.4058451514f, x6 = 0.7415311856f, x7 = 0.9491079123f;
-        const float w1 = 0.1294849662f, w2 = 0.2797053915f, w3 = 0.3818300505f, w4 = 0.4179591837f;
-
         if (Mathf.Approximately(a, b) || samplePerUnit < 0f)
             return 0f;
         if (a > b)
@@ -2156,6 +2216,7 @@ public static class Useful
         float stepT05 = step * 0.5f;//cache
 
         float a1, b1, aPbO2;
+        float[] cache = new float[20];
         for (int i = 0; i < nbSub; i++)
         {
             a1 = a + i * step;
@@ -2163,11 +2224,39 @@ public static class Useful
 
             aPbO2 = (a1 + b1) * 0.5f;//cache
 
-            I += w1 * (f(stepT05 * x1 + aPbO2) + f(stepT05 * x7 + aPbO2)) +
-                w2 * (f(stepT05 * x2 + aPbO2) + f(stepT05 * x6 + aPbO2)) +
-                w3 * (f(stepT05 * x3 + aPbO2) + f(stepT05 * x5 + aPbO2)) +
-                w4 * f(aPbO2);
+            cache[0] = stepT05 * xf[0];
+            cache[1] = stepT05 * xf[1];
+            cache[2] = stepT05 * xf[2];
+            cache[3] = stepT05 * xf[3];
+            cache[4] = stepT05 * xf[4];
+            cache[5] = stepT05 * xf[5];
+            cache[6] = stepT05 * xf[6];
+            cache[7] = stepT05 * xf[7];
+            cache[8] = stepT05 * xf[8];
+            cache[9] = stepT05 * xf[9];
+            cache[10] = -cache[0];
+            cache[11] = -cache[1];
+            cache[12] = -cache[2];
+            cache[13] = -cache[3];
+            cache[14] = -cache[4];
+            cache[15] = -cache[5];
+            cache[16] = -cache[6];
+            cache[17] = -cache[7];
+            cache[18] = -cache[8];
+            cache[19] = -cache[9];
+
+            I += wf[0] * (f(cache[0] + aPbO2) + f(cache[10] + aPbO2)) +
+                wf[1] * (f(cache[1] + aPbO2) + f(cache[11] + aPbO2)) +
+                wf[2] * (f(cache[2] + aPbO2) + f(cache[12] + aPbO2)) +
+                wf[3] * (f(cache[3] + aPbO2) + f(cache[13] + aPbO2)) +
+                wf[4] * (f(cache[4] + aPbO2) + f(cache[14] + aPbO2)) +
+                wf[5] * (f(cache[5] + aPbO2) + f(cache[15] + aPbO2)) +
+                wf[6] * (f(cache[6] + aPbO2) + f(cache[16] + aPbO2)) +
+                wf[7] * (f(cache[7] + aPbO2) + f(cache[17] + aPbO2)) +
+                wf[8] * (f(cache[8] + aPbO2) + f(cache[18] + aPbO2)) +
+                wf[9] * (f(cache[9] + aPbO2) + f(cache[19] + aPbO2));
         }
+
         return stepT05 * I;
     }
 
@@ -2192,21 +2281,46 @@ public static class Useful
         double step = (b - a) / nbSub;
         double stepT05 = step * 0.5d;//cache
 
-        double a1, b1, I1, aPbO2;
+        double a1, b1, aPbO2;
+        double[] cache = new double[20];
         for (int i = 0; i < nbSub; i++)
         {
             a1 = a + i * step;
             b1 = a1 + step;
 
             aPbO2 = (a1 + b1) * 0.5d;//cache
-            I1 = 0d;
 
-            //integrate from a1 to b1 of f
-            for (int j = 0; j < 7; j++)
-            {
-                I1 += wid[j] * f(stepT05 * xid[j] + aPbO2);
-            }
-            I += I1;
+            cache[0] = stepT05 * xd[0];
+            cache[1] = stepT05 * xd[1];
+            cache[2] = stepT05 * xd[2];
+            cache[3] = stepT05 * xd[3];
+            cache[4] = stepT05 * xd[4];
+            cache[5] = stepT05 * xd[5];
+            cache[6] = stepT05 * xd[6];
+            cache[7] = stepT05 * xd[7];
+            cache[8] = stepT05 * xd[8];
+            cache[9] = stepT05 * xd[9];
+            cache[10] = -cache[0];
+            cache[11] = -cache[1];
+            cache[12] = -cache[2];
+            cache[13] = -cache[3];
+            cache[14] = -cache[4];
+            cache[15] = -cache[5];
+            cache[16] = -cache[6];
+            cache[17] = -cache[7];
+            cache[18] = -cache[8];
+            cache[19] = -cache[9];
+
+            I += wd[0] * (f(cache[0] + aPbO2) + f(cache[10] + aPbO2)) +
+                wd[1] * (f(cache[1] + aPbO2) + f(cache[11] + aPbO2)) +
+                wd[2] * (f(cache[2] + aPbO2) + f(cache[12] + aPbO2)) +
+                wd[3] * (f(cache[3] + aPbO2) + f(cache[13] + aPbO2)) +
+                wd[4] * (f(cache[4] + aPbO2) + f(cache[14] + aPbO2)) +
+                wd[5] * (f(cache[5] + aPbO2) + f(cache[15] + aPbO2)) +
+                wd[6] * (f(cache[6] + aPbO2) + f(cache[16] + aPbO2)) +
+                wd[7] * (f(cache[7] + aPbO2) + f(cache[17] + aPbO2)) +
+                wd[8] * (f(cache[8] + aPbO2) + f(cache[18] + aPbO2)) +
+                wd[9] * (f(cache[9] + aPbO2) + f(cache[19] + aPbO2));
         }
         return stepT05 * I;
     }
@@ -2232,29 +2346,49 @@ public static class Useful
         decimal step = (b - a) / nbSub;
         decimal stepT05 = step * 0.5m;//cache
 
-        decimal a1, b1, I1, aPbO2;
+        decimal a1, b1, aPbO2;
+        decimal[] cache = new decimal[20];
         for (int i = 0; i < nbSub; i++)
         {
             a1 = a + i * step;
             b1 = a1 + step;
 
             aPbO2 = (a1 + b1) * 0.5m;//cache
-            I1 = 0m;
 
-            //integrate from a1 to b1 of f
-            for (int j = 0; j < 7; j++)
-            {
-                I1 += wim[j] * f(stepT05 * xim[j] + aPbO2);
-            }
-            I += I1;
+            cache[0] = stepT05 * xm[0];
+            cache[1] = stepT05 * xm[1];
+            cache[2] = stepT05 * xm[2];
+            cache[3] = stepT05 * xm[3];
+            cache[4] = stepT05 * xm[4];
+            cache[5] = stepT05 * xm[5];
+            cache[6] = stepT05 * xm[6];
+            cache[7] = stepT05 * xm[7];
+            cache[8] = stepT05 * xm[8];
+            cache[9] = stepT05 * xm[9];
+            cache[10] = -cache[0];
+            cache[11] = -cache[1];
+            cache[12] = -cache[2];
+            cache[13] = -cache[3];
+            cache[14] = -cache[4];
+            cache[15] = -cache[5];
+            cache[16] = -cache[6];
+            cache[17] = -cache[7];
+            cache[18] = -cache[8];
+            cache[19] = -cache[9];
+
+            I += wm[0] * (f(cache[0] + aPbO2) + f(cache[10] + aPbO2)) +
+                wm[1] * (f(cache[1] + aPbO2) + f(cache[11] + aPbO2)) +
+                wm[2] * (f(cache[2] + aPbO2) + f(cache[12] + aPbO2)) +
+                wm[3] * (f(cache[3] + aPbO2) + f(cache[13] + aPbO2)) +
+                wm[4] * (f(cache[4] + aPbO2) + f(cache[14] + aPbO2)) +
+                wm[5] * (f(cache[5] + aPbO2) + f(cache[15] + aPbO2)) +
+                wm[6] * (f(cache[6] + aPbO2) + f(cache[16] + aPbO2)) +
+                wm[7] * (f(cache[7] + aPbO2) + f(cache[17] + aPbO2)) +
+                wm[8] * (f(cache[8] + aPbO2) + f(cache[18] + aPbO2)) +
+                wm[9] * (f(cache[9] + aPbO2) + f(cache[19] + aPbO2));
         }
         return stepT05 * I;
     }
-
-    private static readonly double[] xid = new double[7] { -0.94910791234275852452618968404785126240077093767983d, -0.74153118559939443986386477328078840707491461281138d, -0.40584515137739716690660641207696146334738201409984d, 0d, 0.40584515137739716690660641207696146334738201409984d, 0.74153118559939443986386477328078840707491461281138d, 0.94910791234275852452618968404785126240077093767983d };
-    private static readonly decimal[] xim = new decimal[7] { -0.94910791234275852452618968404785126240077093767983m, -0.74153118559939443986386477328078840707491461281138m, -0.40584515137739716690660641207696146334738201409984m, 0m, 0.40584515137739716690660641207696146334738201409984m, 0.74153118559939443986386477328078840707491461281138m, 0.94910791234275852452618968404785126240077093767983m };
-    private static readonly double[] wid = new double[7] { 0.12948496616886969327061143267908201832858781461794d, 0.27970539148927666790146777142377958248692506510661d, 0.38183005050511894495036977548897513387882589377767d, 0.41795918367346938775510204081632653061224489795918d, 0.38183005050511894495036977548897513387882589377767d, 0.27970539148927666790146777142377958248692506510661d, 0.12948496616886969327061143267908201832858781461794d };
-    private static readonly decimal[] wim = new decimal[7] { 0.12948496616886969327061143267908201832858781461794m, 0.27970539148927666790146777142377958248692506510661m, 0.38183005050511894495036977548897513387882589377767m, 0.41795918367346938775510204081632653061224489795918m, 0.38183005050511894495036977548897513387882589377767m, 0.27970539148927666790146777142377958248692506510661m, 0.12948496616886969327061143267908201832858781461794m };
 
     #endregion
 
