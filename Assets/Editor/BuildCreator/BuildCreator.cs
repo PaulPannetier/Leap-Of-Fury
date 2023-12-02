@@ -212,7 +212,6 @@ public class BuildCreator : Editor
                 {
                     if (t.name == "LevelManager")
                     {
-                        t.gameObject.GetComponent<StartLevelManager>().enableBehaviour = true;
                         t.gameObject.GetComponent<LevelManager>().enableBehaviour = true;
                         break;
                     }

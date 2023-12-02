@@ -179,6 +179,10 @@ PrefabInstance:
       propertyPath: musicName
       value: Screen Title
       objectReference: {fileID: 0}
+    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
+      propertyPath: startVolume
+      value: 0.623
+      objectReference: {fileID: 0}
     - target: {fileID: 7598418670503221542, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
       propertyPath: m_RootOrder
       value: 3

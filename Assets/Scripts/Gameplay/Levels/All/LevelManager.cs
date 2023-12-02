@@ -25,7 +25,7 @@ public abstract class LevelManager : MonoBehaviour
     private float lastTimeBeginLevel = -10f;
     private GameObject currentMap;
     private int currentMapIndex;
-    protected SelectionCharOldSceneData.CharData[] charData;
+    protected SelectionCharOldSceneData selectionCharOldSceneData;
 
     [Header("Level Management")]
     [SerializeField] protected LevelType levelType;
@@ -34,6 +34,7 @@ public abstract class LevelManager : MonoBehaviour
     [SerializeField] protected int nbKillsToWin = 7;
     [SerializeField] protected float waitingTimeAfterLastKill = 2f;
     [SerializeField] protected ScoreMenu scoreMenu;
+    [SerializeField] protected EndLevelMenu endLevelMenu;
 
     [Header("Maps")]
     [SerializeField] private bool suffleMapWhenLevelStart = true;
@@ -44,6 +45,7 @@ public abstract class LevelManager : MonoBehaviour
 
     [Header("Level initialiser")]
     public bool enableBehaviour = true;
+    [SerializeField] private bool endLevel;
 
     #endif
 
@@ -60,6 +62,8 @@ public abstract class LevelManager : MonoBehaviour
         }
         instance = this;
     }
+
+    #region Start/ReStart level
 
     protected virtual void Start()
     {
@@ -102,7 +106,7 @@ public abstract class LevelManager : MonoBehaviour
         {
             SelectionCharOldSceneData oldSceneData = TransitionManager.instance.GetOldSceneData("Selection Char") as SelectionCharOldSceneData;
             currentNbPlayerAlive = oldSceneData.charData.Length;
-            charData = oldSceneData.charData;
+            selectionCharOldSceneData = oldSceneData;
         }
 
         void HandleMap()
@@ -145,13 +149,13 @@ public abstract class LevelManager : MonoBehaviour
 
         void InstanciateChar()
         {
-            List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(charData.Length);
+            List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(selectionCharOldSceneData.charData.Length);
             List<Vector2> spawnPoints = spawnConfigsData.GetRandom().points.ToList();
 
             //spawn char
             charParent = GameObject.FindGameObjectWithTag("CharsParent").transform;
             charParent.DestroyChildren();
-            playersScore = new PlayerScore[charData.Length];
+            playersScore = new PlayerScore[selectionCharOldSceneData.charData.Length];
 
             SpawnChar(spawnPoints);
         }
@@ -161,10 +165,10 @@ public abstract class LevelManager : MonoBehaviour
             BlockPlayers();
             Invoke(nameof(ReleasePlayers), durationToWaitAtBegining);
 
-            playersScore = new PlayerScore[charData.Length];
+            playersScore = new PlayerScore[selectionCharOldSceneData.charData.Length];
             for (int i = 0; i < playersScore.Length; i++)
             {
-                playersScore[i].playerIndex = charData[i].playerIndex;
+                playersScore[i].playerIndex = selectionCharOldSceneData.charData[i].playerIndex;
                 playersScore[i].nbKills = 0;
             }
 
@@ -184,7 +188,7 @@ public abstract class LevelManager : MonoBehaviour
         currentMapIndex = (currentMapIndex + 1) % mapsPrefabs.Length;
         Destroy(currentMap);
         currentMap = Instantiate(mapsPrefabs[currentMapIndex]);
-        List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(charData.Length);
+        List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(selectionCharOldSceneData.charData.Length);
         List<Vector2> spawnPoints = spawnConfigsData.GetRandom().points.ToList();
 
         SpawnChar(spawnPoints);
@@ -196,13 +200,13 @@ public abstract class LevelManager : MonoBehaviour
     private void SpawnChar(List<Vector2> spawnPoints, bool randomiseSpawnPoints = true)
     {
         uint idCount = 0;
-        for (int i = 0; i < charData.Length; i++)
+        for (int i = 0; i < selectionCharOldSceneData.charData.Length; i++)
         {
             //get random position
             Vector2 spawnPoint = randomiseSpawnPoints ? spawnPoints.GetRandom() : spawnPoints[0];
             spawnPoints.Remove(spawnPoint);
 
-            SelectionCharOldSceneData.CharData playerData = charData[i];
+            SelectionCharOldSceneData.CharData playerData = selectionCharOldSceneData.charData[i];
             GameObject tmpGO = Instantiate(playerData.charPrefabs, charParent);
             PlayerCommon tmpPC = tmpGO.GetComponent<PlayerCommon>();
             tmpPC.playerIndex = playerData.playerIndex;
@@ -255,11 +259,13 @@ public abstract class LevelManager : MonoBehaviour
 
         charParent.DestroyChildren();
 
-        charData = lstCharData.ToArray();
+        selectionCharOldSceneData = new SelectionCharOldSceneData(lstCharData.ToArray());
         SpawnChar(spawnPoint, false);
     }
 
 #endif
+
+    #endregion
 
     #endregion
 
@@ -357,7 +363,7 @@ public abstract class LevelManager : MonoBehaviour
 
         if(indexesPlayerWin.Count == 1)
         {
-            StartCoroutine(LaunchEndGameMenu(indexesPlayerWin[0]));
+            LaunchEndGameMenu(indexesPlayerWin[0]);
         }
         else if(indexesPlayerWin.Count > 1)
         {
@@ -385,19 +391,29 @@ public abstract class LevelManager : MonoBehaviour
         RestartLevel();
     }
 
-    private IEnumerator LaunchEndGameMenu(int indexWinner)
+    private void LaunchEndGameMenu(int indexWinner)
     {
         PauseManager.instance.EnablePause();
-
-        yield return Useful.GetWaitForSeconds(2f);
-
-        PauseManager.instance.DisablePause();
-
         EventManager.instance.OnLevelEnd(levelName);
-        TransitionManager.instance.LoadScene("Selection Map", null);
+        endLevelMenu.DisplayEndLevelMenu(OnEndDisplayEndLevelMenu);
+
+        void OnEndDisplayEndLevelMenu()
+        {
+            PauseManager.instance.DisablePause();
+            TransitionManager.instance.LoadSceneAsync("Selection Map");
+        }
     }
 
-    #endregion
+#if UNITY_EDITOR
+
+    private void DEBUG_EndLevel()
+    {
+        LaunchEndGameMenu(0);
+    }
+        
+#endif
+
+#endregion
 
     #region OnDestroy
 
@@ -409,7 +425,20 @@ public abstract class LevelManager : MonoBehaviour
 
     #endregion
 
-    #region struts
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        if(endLevel)
+        {
+            endLevel = false;
+            DEBUG_EndLevel();
+        }
+    }
+
+#endif
+
+    #region Struts
 
     public struct PlayerScore
     {

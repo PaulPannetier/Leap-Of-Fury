@@ -50,6 +50,9 @@ public class TransitionManager : MonoBehaviour
 
     public void SetOldSceneData(OldSceneData oldSceneData)
     {
+        if (oldSceneData == null)
+            return;
+
         if(oldScenesData.ContainsKey(oldSceneData.sceneName))
         {
             oldScenesData[oldSceneData.sceneName] = oldSceneData;
