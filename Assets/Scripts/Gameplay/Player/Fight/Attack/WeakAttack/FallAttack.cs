@@ -8,8 +8,7 @@ public class FallAttack : WeakAttack
     private Rigidbody2D rb;
     private BoxCollider2D hitbox;
     private Movement movement;
-    private LayerMask playerMask;
-    private LayerMask groundMask;
+    private LayerMask charMask, groundMask;
 
     [SerializeField] private bool drawGizmos = true;
     [SerializeField] private float explosionRadius = 1f;
@@ -33,7 +32,7 @@ public class FallAttack : WeakAttack
     protected override void Start()
     {
         base.Start();
-        playerMask = LayerMask.GetMask("Char");
+        charMask = LayerMask.GetMask("Char");
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
@@ -69,7 +68,15 @@ public class FallAttack : WeakAttack
     {
         movement.Freeze();
 
-        yield return Useful.GetWaitForSeconds(castDuration);
+        float timeCounter = 0f;
+        while(timeCounter < castDuration)
+        {
+            yield return null;
+            if(!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
 
         movement.UnFreeze();
         movement.enableBehaviour = false;
@@ -78,16 +85,27 @@ public class FallAttack : WeakAttack
         UnityEngine.Collider2D[] cols;
         bool hitGround = false;
         Vector2 fallSpeed = Vector2.down * speedFall;
-        float timeBegFall = Time.time;
+        float timeFallCounter = 0f;
         bool fallStopByOvertime = false;
 
         while(!hitGround)
         {
+            if(PauseManager.instance.isPauseEnable)
+            {
+                movement.Freeze();
+
+                while(PauseManager.instance.isPauseEnable)
+                {
+                    yield return null;
+                }
+                movement.UnFreeze();
+            }
+
             //collision avec le sol
             rb.velocity = fallSpeed;
             hitGround = Physics2D.OverlapCircle((Vector2)transform.position + movement.groundOffset, movement.groundCollisionRadius, groundMask) != null;
             //Collision avec les autre personnages
-            cols = Physics2D.OverlapBoxAll((Vector2)transform.position, hitbox.size, transform.rotation.eulerAngles.z, playerMask);
+            cols = Physics2D.OverlapBoxAll((Vector2)transform.position, hitbox.size, transform.rotation.eulerAngles.z, charMask);
             foreach (UnityEngine.Collider2D col in cols)
             {
                 if(col.CompareTag("Char"))
@@ -99,17 +117,19 @@ public class FallAttack : WeakAttack
                     }
                 }
             }
-            if(Time.time -  timeBegFall > maxFallDuration)
+
+            if(timeFallCounter > maxFallDuration)
             {
                 fallStopByOvertime = true;
                 break;
             }
+            timeFallCounter += Time.deltaTime;
 
             yield return null;
         }
 
         //EXPLOSION
-        cols = Physics2D.OverlapCircleAll((Vector2)transform.position + movement.groundOffset, explosionRadius, playerMask);
+        cols = Physics2D.OverlapCircleAll((Vector2)transform.position + movement.groundOffset, explosionRadius, charMask);
 
         foreach (UnityEngine.Collider2D col in cols)
         {
@@ -158,6 +178,10 @@ public class FallAttack : WeakAttack
         attackForce = tmp;
     }
 
+    #region Gizmos/OnValidate
+
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         minDistanceFromGround = Mathf.Max(0f, minDistanceFromGround);
@@ -179,4 +203,8 @@ public class FallAttack : WeakAttack
         Gizmos.color = Color.black;
         Gizmos.DrawLine((Vector2)transform.position + movement.groundOffset, (Vector2)transform.position + movement.groundOffset + Vector2.down * minDistanceFromGround);
     }
+
+#endif
+
+    #endregion
 }

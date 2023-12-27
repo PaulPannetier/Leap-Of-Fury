@@ -660,7 +660,7 @@ public class Movement : MonoBehaviour
 
     #endregion
 
-    #region fixedUpdate
+    #region FixedUpdate
 
     private void FixedUpdate()
     {
@@ -1515,8 +1515,8 @@ public class Movement : MonoBehaviour
 
         while(!enableBehaviour)
         {
-            yield return null;
             Freeze();
+            yield return null;
         }
 
         UnFreeze();

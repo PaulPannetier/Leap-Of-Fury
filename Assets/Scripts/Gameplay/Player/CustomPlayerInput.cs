@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CustomPlayerInput : MonoBehaviour
+public class CustomPlayerInput : MonoBehaviour, ICloneable<CustomPlayerInput>
 {
     private PlayerCommon playerCommon;
     private float newX, newY;//cache

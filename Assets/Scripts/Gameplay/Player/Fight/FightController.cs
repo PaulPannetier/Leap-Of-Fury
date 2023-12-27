@@ -76,8 +76,15 @@ public class FightController : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.instance.isPauseEnable)
+        {
+            lastInputLauchingWeakAttack += Time.deltaTime;
+            lastInputLauchingStrongAttack += Time.deltaTime;
+            return;
+        }
+
         //attaques
-        if(playerInput.attackWeakPressedDown && enableAttackWeak)
+        if (playerInput.attackWeakPressedDown && enableAttackWeak)
         {
             if(canLauchWeakAttack)
             {
@@ -245,7 +252,17 @@ public class FightController : MonoBehaviour
     private IEnumerator DisableDashCollisionCorout(float duration)
     {
         canKillDashingCounter--;
-        yield return Useful.GetWaitForSeconds(duration);
+
+        float timeCounter = 0f;
+        while(timeCounter < duration)
+        {
+            yield return null;
+            if(!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         canKillDashingCounter++;
     }
 
@@ -257,18 +274,56 @@ public class FightController : MonoBehaviour
 
     private IEnumerator StartDashingCorout()
     {
-        yield return Useful.GetWaitForSeconds(dashKillTimeOffset);
+        float timeCounter = 0f;
+        while (timeCounter < dashKillTimeOffset)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         canKillDashingCounter++;
-        yield return Useful.GetWaitForSeconds(dashKillDuration);
+
+        timeCounter = 0f;
+        while (timeCounter < dashKillDuration)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         canKillDashingCounter--;
         charAlreadyTouchByDash.Clear();
     }
 
     private IEnumerator StartInvicibilityCorout()
     {
-        yield return Useful.GetWaitForSeconds(dashInvicibilityTimeOffset);
+        float timeCounter = 0f;
+        while (timeCounter < dashInvicibilityTimeOffset)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         EnableInvicibility();
-        yield return Useful.GetWaitForSeconds(invicibilityDurationWhenDashing);
+
+        timeCounter = 0f;
+        while (timeCounter < invicibilityDurationWhenDashing)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         DisableInvicibility();
     }
 
@@ -291,7 +346,17 @@ public class FightController : MonoBehaviour
     private IEnumerator EnableInvicibilityCorout(float duration)
     {
         EnableInvicibility();
-        yield return Useful.GetWaitForSeconds(duration);
+
+        float timeCounter = 0f;
+        while (timeCounter < duration)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         DisableInvicibility();
     }
 
@@ -382,6 +447,8 @@ public class FightController : MonoBehaviour
 
     #endregion
 
+    #region OnBeen...
+
     private void OnBeenTouchAttack(Attack attack)
     {
         if (isInvicible || attack.gameObject.GetComponent<PlayerCommon>().id == playerCommon.id)
@@ -417,6 +484,10 @@ public class FightController : MonoBehaviour
     {
         Death();
     }
+
+    #endregion
+
+    #region OnDestroy/OnValidate/Gizmos
 
     private void Death()
     {
@@ -454,4 +525,6 @@ public class FightController : MonoBehaviour
     }
 
 #endif
+
+    #endregion
 }

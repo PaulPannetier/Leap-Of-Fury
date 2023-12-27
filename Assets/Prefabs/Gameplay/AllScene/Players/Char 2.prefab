@@ -581,6 +581,7 @@ MonoBehaviour:
     snapping: 0
     fadeOut: 1
   side: -1
+  DEBUG_pause: 1
 --- !u!114 &3969579585314972504
 MonoBehaviour:
   m_ObjectHideFlags: 0

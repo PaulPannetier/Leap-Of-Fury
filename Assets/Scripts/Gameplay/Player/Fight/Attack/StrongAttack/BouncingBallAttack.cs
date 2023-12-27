@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
@@ -54,7 +53,15 @@ public class BouncingBallAttack : StrongAttack
 
     private IEnumerator DoBounceAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        yield return Useful.GetWaitForSeconds(castDuration);
+        float timeCounter = 0f;
+        while (timeCounter < castDuration)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
 
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();

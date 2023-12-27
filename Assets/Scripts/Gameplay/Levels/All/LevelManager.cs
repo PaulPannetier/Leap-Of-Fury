@@ -45,7 +45,7 @@ public abstract class LevelManager : MonoBehaviour
 
     [Header("Level initialiser")]
     public bool enableBehaviour = true;
-    [SerializeField] private bool endLevel;
+    [SerializeField] private bool _DEBUGendLevel;
 
     #endif
 
@@ -429,9 +429,9 @@ public abstract class LevelManager : MonoBehaviour
 
     private void OnValidate()
     {
-        if(endLevel)
+        if(_DEBUGendLevel)
         {
-            endLevel = false;
+            _DEBUGendLevel = false;
             DEBUG_EndLevel();
         }
     }

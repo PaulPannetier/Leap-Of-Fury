@@ -19,6 +19,7 @@ public class FloorShockWave : MonoBehaviour
     [Tooltip("Vertical detection")]
     [SerializeField] private float rayLengthVerti = 1f;
     [SerializeField] private Vector2 offsetVertiRaycast = new Vector2(1f, 0.2f);
+
     [Tooltip("Stat")]
     [Range(0f, 100f)] public float attackForce = 30f;
 
@@ -59,6 +60,9 @@ public class FloorShockWave : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.instance.isPauseEnable)
+            return;
+
         Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, playersMask);
         foreach (Collider2D col in cols)
         {
@@ -96,6 +100,10 @@ public class FloorShockWave : MonoBehaviour
         }
     }
 
+    #region Gizmos/OnValidate
+
+#if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
@@ -123,4 +131,8 @@ public class FloorShockWave : MonoBehaviour
         distanceFromFloor = Mathf.Max(0f, distanceFromFloor);
         colliderSize = new Vector2(Mathf.Max(0f, colliderSize.x), Mathf.Max(0f, colliderSize.y));
     }
+
+#endif
+
+    #endregion
 }

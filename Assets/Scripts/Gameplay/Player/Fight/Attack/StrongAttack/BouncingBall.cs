@@ -35,6 +35,12 @@ public class BouncingBall : MonoBehaviour
 
     private void Update()
     {
+        if(PauseManager.instance.isPauseEnable)
+        {
+            timeLaunch += Time.deltaTime;
+            return;
+        }
+
         if(!toricObj.isAClone && Time.time - timeLaunch > maxDuration)
         {
             Destroy();
@@ -118,6 +124,10 @@ public class BouncingBall : MonoBehaviour
         Destroy(gameObject);
     }
 
+    #region Gizmos/OnValidate
+
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         colliderRadius = Mathf.Max(0f, colliderRadius);
@@ -130,4 +140,8 @@ public class BouncingBall : MonoBehaviour
         Circle.GizmosDraw((Vector2)transform.position + colliderOffset, colliderRadius);
         Gizmos.DrawLine((Vector2)transform.position, (Vector2)transform.position + Vector2.right * rayCastLength);
     }
+
+#endif
+
+    #endregion
 }

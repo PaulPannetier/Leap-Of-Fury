@@ -2216,7 +2216,7 @@ public static class Useful
         float stepT05 = step * 0.5f;//cache
 
         float a1, b1, aPbO2;
-        float[] cache = new float[20];
+        float[] cache = new float[10];
         for (int i = 0; i < nbSub; i++)
         {
             a1 = a + i * step;
@@ -2234,27 +2234,17 @@ public static class Useful
             cache[7] = stepT05 * xf[7];
             cache[8] = stepT05 * xf[8];
             cache[9] = stepT05 * xf[9];
-            cache[10] = -cache[0];
-            cache[11] = -cache[1];
-            cache[12] = -cache[2];
-            cache[13] = -cache[3];
-            cache[14] = -cache[4];
-            cache[15] = -cache[5];
-            cache[16] = -cache[6];
-            cache[17] = -cache[7];
-            cache[18] = -cache[8];
-            cache[19] = -cache[9];
 
-            I += wf[0] * (f(cache[0] + aPbO2) + f(cache[10] + aPbO2)) +
-                wf[1] * (f(cache[1] + aPbO2) + f(cache[11] + aPbO2)) +
-                wf[2] * (f(cache[2] + aPbO2) + f(cache[12] + aPbO2)) +
-                wf[3] * (f(cache[3] + aPbO2) + f(cache[13] + aPbO2)) +
-                wf[4] * (f(cache[4] + aPbO2) + f(cache[14] + aPbO2)) +
-                wf[5] * (f(cache[5] + aPbO2) + f(cache[15] + aPbO2)) +
-                wf[6] * (f(cache[6] + aPbO2) + f(cache[16] + aPbO2)) +
-                wf[7] * (f(cache[7] + aPbO2) + f(cache[17] + aPbO2)) +
-                wf[8] * (f(cache[8] + aPbO2) + f(cache[18] + aPbO2)) +
-                wf[9] * (f(cache[9] + aPbO2) + f(cache[19] + aPbO2));
+            I += wf[0] * (f(cache[0] + aPbO2) + f(-cache[0] + aPbO2)) +
+                wf[1] * (f(cache[1] + aPbO2) + f(-cache[1] + aPbO2)) +
+                wf[2] * (f(cache[2] + aPbO2) + f(-cache[2] + aPbO2)) +
+                wf[3] * (f(cache[3] + aPbO2) + f(-cache[3] + aPbO2)) +
+                wf[4] * (f(cache[4] + aPbO2) + f(-cache[4] + aPbO2)) +
+                wf[5] * (f(cache[5] + aPbO2) + f(-cache[5] + aPbO2)) +
+                wf[6] * (f(cache[6] + aPbO2) + f(-cache[6] + aPbO2)) +
+                wf[7] * (f(cache[7] + aPbO2) + f(-cache[7] + aPbO2)) +
+                wf[8] * (f(cache[8] + aPbO2) + f(-cache[8] + aPbO2)) +
+                wf[9] * (f(cache[9] + aPbO2) + f(-cache[9] + aPbO2));
         }
 
         return stepT05 * I;
