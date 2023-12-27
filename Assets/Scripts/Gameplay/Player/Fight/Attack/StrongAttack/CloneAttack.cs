@@ -62,6 +62,18 @@ public class CloneAttack : StrongAttack
     protected override void Update()
     {
         base.Update();
+
+        if(PauseManager.instance.isPauseEnable)
+        {
+            for (int i = 0; i < lstCloneDatas.Count; i++)
+            {
+                CloneData cloneData = lstCloneDatas[i];
+                cloneData.time += Time.deltaTime;
+                lstCloneDatas[i] = cloneData;
+            }
+            return;
+        }
+
         if(!disableRegisteringData)
             AddData();
 
@@ -268,7 +280,17 @@ public class CloneAttack : StrongAttack
     private IEnumerator EnableCloneAttack()
     {
         isCloneAttackEnable = true;
-        yield return Useful.GetWaitForSeconds(duration);
+
+        float timeCounter = 0f;
+        while (timeCounter < duration)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         isCloneAttackEnable = false;
     }
 

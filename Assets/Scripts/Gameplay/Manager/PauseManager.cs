@@ -8,6 +8,8 @@ public class PauseManager : MonoBehaviour
     private int pauseCounter = 0;
 
     public bool isPauseEnable => pauseCounter > 0;
+    public bool isPauseEnableThisFrame {  get; private set; }
+    public bool isPauseDisableThisFrame { get; private set; }
     public Action callBackOnPauseEnable;
     public Action callBackOnPauseDisable;
 
@@ -24,11 +26,13 @@ public class PauseManager : MonoBehaviour
     private void Start()
     {
         pauseCounter = 0;
+        EventManager.instance.callbackPreUpdate += PreUpdate;
     }
 
-    private void Update()
+    private void PreUpdate()
     {
-        if(InputManager.GetKeyDown(KeyCode.P))
+        isPauseEnableThisFrame = isPauseDisableThisFrame = false;
+        if (InputManager.GetKeyDown(KeyCode.P))
         {
             if(isPauseEnable)
             {
@@ -47,6 +51,7 @@ public class PauseManager : MonoBehaviour
         if(pauseCounter > 0)
         {
             callBackOnPauseEnable.Invoke();
+            isPauseEnableThisFrame = true;
         }
     }
 
@@ -56,6 +61,12 @@ public class PauseManager : MonoBehaviour
         if(pauseCounter <= 0)
         {
             callBackOnPauseDisable.Invoke();
+            isPauseDisableThisFrame = true;
         }
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.instance.callbackPreUpdate -= PreUpdate;
     }
 }

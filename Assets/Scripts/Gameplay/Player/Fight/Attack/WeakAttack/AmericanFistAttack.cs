@@ -14,13 +14,15 @@ public class AmericanFistAttack : WeakAttack
     private AmericanFistAttack originalAmericanFistAttack;
     private bool isAttackEnable = false, onLaunchAttack = false, isDashing = false, wantDash = false;
     private int indexDash = 0;
-    private Vector2 lastDir, initSpeed;
+    private Vector2 lastDir, initSpeed, lastVelocityForPause;
     private float lastTimeDash = -10;
-    private LayerMask groundMask, enemiesMask;
+    private LayerMask groundMask, charMask;
     private bool alreadyCreateExplosionWinthThisDash;
 
 #if UNITY_EDITOR
+
     [SerializeField] private bool drawGizmos = true;
+
 #endif
 
     [SerializeField] private bool isAClone;
@@ -36,7 +38,7 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private float groundDetectionRadius = 0.1f;
 
     [HideInInspector] public bool activateCloneDash;//true one frame when the original char dash
-    [HideInInspector] public bool activateWallExplosion;//true one frame when the original char dash
+    [HideInInspector] public bool activateWallExplosion;
     [HideInInspector] public Vector2 cloneExplosionPosition;
 
     private GameObject _original;
@@ -55,10 +57,9 @@ public class AmericanFistAttack : WeakAttack
     protected override void Awake()
     {
         if (isAClone)
-        {
             return;
-        }
         base.Awake();
+
         playerInput = GetComponent<CustomPlayerInput>();
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
@@ -73,13 +74,21 @@ public class AmericanFistAttack : WeakAttack
 
         base.Start();
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
-        enemiesMask = LayerMask.GetMask("Char");
+        charMask = LayerMask.GetMask("Char");
+        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
 
     #region Update
 
     protected override void Update()
     {
+        if(PauseManager.instance.isPauseEnable)
+        {
+            lastTimeDash += Time.deltaTime;
+            return;
+        }
+
         if (isAClone)
         {
             UpdateClone();
@@ -118,6 +127,7 @@ public class AmericanFistAttack : WeakAttack
                 activateCloneDash = false;
             }
         }
+
         if (activateWallExplosion)
         {
             activateWallExplosion = false;
@@ -231,9 +241,20 @@ public class AmericanFistAttack : WeakAttack
     {
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
+
         initSpeed = rb.velocity;
         movement.Freeze();
-        yield return Useful.GetWaitForSeconds(castDuration);
+
+        float timeCounter = 0f;
+        while (timeCounter < castDuration)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         movement.UnFreeze();
         lastDir = dir;
         isAttackEnable = onLaunchAttack = true;
@@ -241,9 +262,41 @@ public class AmericanFistAttack : WeakAttack
 
     private IEnumerator ApplyAttackCloneCorout()
     {
-        yield return Useful.GetWaitForSeconds(castDuration);
+        float timeCounter = 0f;
+        while (timeCounter < castDuration)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         lastTimeDash = Time.time;
         isDashing = true;
+    }
+
+    #endregion
+
+    #region Pause
+
+    private void OnPauseEnable()
+    {
+        lastVelocityForPause = rb.velocity;
+        movement.Freeze();
+    }
+
+    private void OnPauseDisable()
+    {
+        movement.UnFreeze();
+        rb.velocity = lastVelocityForPause;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
     }
 
     #endregion
@@ -264,7 +317,7 @@ public class AmericanFistAttack : WeakAttack
 
     private bool CollideWithEnemy(out GameObject[] enemies)
     {
-        UnityEngine.Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, enemiesMask);
+        UnityEngine.Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, charMask);
 
         if (cols.Length <= 0)
         {
@@ -404,7 +457,7 @@ public class AmericanFistAttack : WeakAttack
                     afa.maxTimeBetweenDash = maxTimeBetweenDash;
                     afa.dashBufferTime = dashBufferTime;
                     afa.nbDash = nbDash;
-                    afa.enemiesMask = enemiesMask;
+                    afa.charMask = charMask;
                     afa.colliderSize = colliderSize;
                     afa.colliderOffset = colliderOffset;
                 }

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Collision2D;
+using System.Collections;
 
 public class Explosion : MonoBehaviour
 {
@@ -23,12 +24,26 @@ public class Explosion : MonoBehaviour
     public void Lauch(ExplosionData explosionData)
     {
         this.explosionData = explosionData;
-        Invoke(nameof(StartExplode), explosionData.delay);
+        StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
     }
 
     public void Launch()
     {
-        Invoke(nameof(StartExplode), explosionData.delay);
+        StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
+    }
+
+    private IEnumerator InvokeWithPause(Action method, float delay)
+    {
+        float timeCounter = 0f;
+        while (timeCounter < delay)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+        method.Invoke();
     }
 
     private void StartExplode()
@@ -40,6 +55,12 @@ public class Explosion : MonoBehaviour
 
     private void Update()
     {
+        if(PauseManager.instance.isPauseEnable)
+        {
+            lastTimeLauch += Time.deltaTime;
+            return;
+        }
+
         if(enableBehaviour && Time.time - lastTimeLauch <= explosionData.duration)
         {
             UnityEngine.Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + explosionData.offset, explosionData.radius, explosionData.layerMask);
@@ -76,11 +97,19 @@ public class Explosion : MonoBehaviour
         Destroy(gameObject);
     }
 
+    #region Gizmos
+
+#if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Circle.GizmosDraw((Vector2)transform.position + explosionData.offset, explosionData.radius);
     }
+
+#endif
+
+    #endregion
 
     [Serializable]
     public struct ExplosionData
