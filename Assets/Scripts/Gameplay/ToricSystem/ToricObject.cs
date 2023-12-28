@@ -140,7 +140,7 @@ public class ToricObject : MonoBehaviour
 
             foreach (PropertyInfo propertyInfo in properties)
             {
-                if (propertyInfo.CanWrite && propertyInfo.CanRead || propertyInfo.GetCustomAttribute<SerializeField>() != null)
+                if (propertyInfo.CanWrite && propertyInfo.CanRead)
                 {
                     object value = propertyInfo.GetValue(comp);
                     propertyInfo.SetValue(cloneComp, value);
