@@ -420,7 +420,7 @@ MonoBehaviour:
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  lstClones: []
+  clones: []
   cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 7111324779284635613}
@@ -431,7 +431,8 @@ MonoBehaviour:
   - {fileID: 7187370182271411996}
   - {fileID: 1125352181698265087}
   - {fileID: 8331574599252283194}
-  - {fileID: 0}
+  componentsToSynchroniseInClone:
+  - {fileID: 1113869503384375398}
   chidrenToRemoveInClone: []
   bounds:
     m_Center: {x: 0, y: 0, z: 0}

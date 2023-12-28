@@ -691,14 +691,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.1, y: 0.66, z: 0}
   boundsOffset: {x: 0, y: -0.17}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  lstClones: []
+  clones: []
   cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 447880469633971530}
@@ -708,9 +705,16 @@ MonoBehaviour:
   - {fileID: 5907287823364622964}
   - {fileID: 7598047637200888153}
   - {fileID: 7187370182271411996}
-  - {fileID: 0}
+  - {fileID: 8225929942963548096}
+  - {fileID: 4277522715158860269}
+  - {fileID: 1455914444206811459}
+  componentsToSynchroniseInClone:
+  - {fileID: 1113869503384375398}
   chidrenToRemoveInClone:
   - {fileID: 749809687}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1.1, y: 0.66, z: 0}
   drawGizmos: 0
 --- !u!114 &4135942895386761519
 MonoBehaviour:

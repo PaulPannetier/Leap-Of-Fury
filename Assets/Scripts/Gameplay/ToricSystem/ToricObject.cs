@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Collision2D;
-using Collider2D = UnityEngine.Collider2D;
 using System.Collections;
+using System.Reflection;
 
 public class ToricObject : MonoBehaviour
 {
@@ -18,11 +18,12 @@ public class ToricObject : MonoBehaviour
     [SerializeField] private bool enableHorizontal = true, enableVertical = true;
 
     [HideInInspector] public bool isAClone;
-    [HideInInspector] public List<ObjectClone> lstClones;
+    [HideInInspector] public List<ObjectClone> clones;
     [HideInInspector] public GameObject cloner;
     [HideInInspector] public Action<Vector2, Vector2> onTeleportCallback;
 
     public List<Component> componentsToDisableInClone;
+    public List<Component> componentsToSynchroniseInClone;
     public List<GameObject> chidrenToRemoveInClone;
     public GameObject original => isAClone ? cloner : gameObject;
     public Bounds bounds;
@@ -44,14 +45,16 @@ public class ToricObject : MonoBehaviour
 
     private void Start()
     {
-        if(lstClones == null)
-            lstClones = new List<ObjectClone>();
+        if(clones == null)
+            clones = new List<ObjectClone>();
 
         PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
 
     #endregion
+
+    #region OnMapChange
 
     private void OnMapChange(LevelMapData mapData)
     {
@@ -72,6 +75,10 @@ public class ToricObject : MonoBehaviour
         };
     }
 
+    #endregion
+
+    #region Synchronisation methods
+
     /// <summary>
     /// Applique la fonction en param du type de script en param aux clone/GO original
     /// </summary>
@@ -88,11 +95,11 @@ public class ToricObject : MonoBehaviour
         }
         else
         {
-            //on applique la fonction à tout les clones
-            foreach(ObjectClone clone in lstClones)
+            //Apply the method for all clones
+            foreach(ObjectClone clone in clones)
             {
                 MonoBehaviour comp = clone.go.GetComponent<T>();
-                comp.Invoke(methodName, delay);
+                StartCoroutine(InvokePause(comp, methodName, delay));
             }
         }
     }
@@ -112,7 +119,39 @@ public class ToricObject : MonoBehaviour
         comp.Invoke(methodName, 0f);
     }
 
-    private bool CollideWithCamBounds(in int index, out Vector2 offset)
+    private void SynchComponent<T>(T comp) where T : Component
+    {
+        foreach (ObjectClone clone in clones)
+        {
+            T cloneComp = (T)clone.go.GetComponent(comp.GetType());
+            Type type = cloneComp.GetType();
+
+            FieldInfo[] fields = type.GetFields();
+            PropertyInfo[] properties = type.GetProperties();
+
+            foreach (FieldInfo fieldInfo in fields)
+            {
+                if(fieldInfo.IsPublic || fieldInfo.GetCustomAttribute<SerializeField>() != null)
+                {
+                    object value = fieldInfo.GetValue(comp);
+                    fieldInfo.SetValue(cloneComp, value);
+                }
+            }
+
+            foreach (PropertyInfo propertyInfo in properties)
+            {
+                if (propertyInfo.CanWrite && propertyInfo.CanRead || propertyInfo.GetCustomAttribute<SerializeField>() != null)
+                {
+                    object value = propertyInfo.GetValue(comp);
+                    propertyInfo.SetValue(cloneComp, value);
+                }
+            }
+        }
+    }
+
+    #endregion
+
+    private bool CollideWithCamBounds(int index, out Vector2 offset)
     {
         if(bounds.Intersects(mapBounds[index]))
         {
@@ -129,8 +168,8 @@ public class ToricObject : MonoBehaviour
     {
         if (isAClone)
             return;
-        
-        if(PauseManager.instance.isPauseEnable)
+
+        if (PauseManager.instance.isPauseEnable)
             return;
 
         bounds.center = transform.position + boundsOffset.ToVector3();
@@ -159,15 +198,21 @@ public class ToricObject : MonoBehaviour
                     go.SetActive(false);
                     Destroy(go);
                 }
-                lstClones.Add(clone);
+                clones.Add(clone);
             }
         }
 
-        //Update des clones
-        foreach (ObjectClone clone in lstClones)
+        //Update clones
+        foreach (ObjectClone clone in clones)
         {
             clone.go.transform.SetPositionAndRotation(transform.position + clone.offset, transform.rotation);
             clone.go.transform.localScale = transform.localScale;
+
+            foreach(Component comp in componentsToSynchroniseInClone)
+            {
+                string mess = comp.GetType().Name;
+                SynchComponent(comp);
+            }
         }
 
         //Update qui est le GO originel
@@ -176,12 +221,12 @@ public class ToricObject : MonoBehaviour
             if (oldCollideCamBounds[i] && !collideWithCamBounds[i])
             {
                 //On suppr le iéme clone
-                foreach (ObjectClone clone in lstClones)
+                foreach (ObjectClone clone in clones)
                 {
                     if(clone.boundsIndex == i)
                     {
                         Destroy(clone.go);
-                        lstClones.Remove(clone);
+                        clones.Remove(clone);
                         break;
                     }
                 }
@@ -190,7 +235,7 @@ public class ToricObject : MonoBehaviour
             if(collideWithCamBounds[i] && mapBounds[i].Contains(bounds.center))
             {
                 //On switch le clone est l'original
-                foreach (ObjectClone clone in lstClones)
+                foreach (ObjectClone clone in clones)
                 {
                     if (clone.boundsIndex == i)
                     {
@@ -239,17 +284,19 @@ public class ToricObject : MonoBehaviour
 
     #endregion
 
+    #region RemoveClone
+
     private void RemoveClone(ObjectClone clone)
     {
-        lstClones.Remove(clone);
+        clones.Remove(clone);
         Destroy(clone.go);
     }
 
     public void RemoveClones()
     {
-        for (int i = lstClones.Count - 1; i >= 0; i--)
+        for (int i = clones.Count - 1; i >= 0; i--)
         {
-            RemoveClone(lstClones[i]);
+            RemoveClone(clones[i]);
         }
     }
 
@@ -260,11 +307,13 @@ public class ToricObject : MonoBehaviour
         PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
     }
 
+    #endregion
+
     #region Gizmos/OnValidate/Pause
 
     private void OnPauseEnable()
     {
-        foreach (ObjectClone clone in lstClones)
+        foreach (ObjectClone clone in clones)
         {
             if(clone.animator != null)
             {
@@ -275,7 +324,7 @@ public class ToricObject : MonoBehaviour
 
     private void OnPauseDisable()
     {
-        foreach (ObjectClone clone in lstClones)
+        foreach (ObjectClone clone in clones)
         {
             if (clone.animator != null)
             {

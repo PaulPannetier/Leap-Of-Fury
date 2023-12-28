@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
+using System;
 
 public class Firework : MonoBehaviour
 {
@@ -70,6 +72,15 @@ public class Firework : MonoBehaviour
 
     private void Update()
     {
+        if (toricObject.isAClone)
+            return;
+
+        if (PauseManager.instance.isPauseEnable)
+        {
+            timeWhenIsLaunch += Time.deltaTime;
+            return;
+        }
+
         if (isExploding)
         {
             if(Time.time - timeWhenIsLaunch <= explosionDuration)
@@ -109,9 +120,6 @@ public class Firework : MonoBehaviour
                 StartExplode();
             }
 
-            if (toricObject.isAClone)
-                return;
-
             if (Time.time - timeWhenIsLaunch > maxDuration)
             {
                 StartExplode();
@@ -122,12 +130,6 @@ public class Firework : MonoBehaviour
 
     private void TouchChar(Collider2D col)
     {
-        if(toricObject.isAClone)
-        {
-            toricObject.original.GetComponent<Firework>().TouchChar(col);
-            return;
-        }
-
         GameObject player = col.GetComponent<ToricObject>().original;
         uint id = player.GetComponent<PlayerCommon>().id;
 
@@ -138,7 +140,6 @@ public class Firework : MonoBehaviour
             if(!isExploding)
             {
                 StartExplode();
-                //print("explode touch a char");
             }
         }
     }
@@ -147,14 +148,30 @@ public class Firework : MonoBehaviour
     {
         if(toricObject.isAClone)
         {
-            toricObject.original.GetComponent<Firework>().StartExplode();
+            animator.SetTrigger("Explode");
             return;
         }
+
         isExploding = true;
         animator.SetTrigger("Explode");
         timeWhenIsLaunch = Time.time;
         ExplosionManager.instance.CreateExplosion(transform.position, explosionForce);
-        Invoke(nameof(Destroy), Mathf.Max(explosionAnimationLength * 1.1f, explosionDuration));
+        StartCoroutine(InvokePause(Destroy, Mathf.Max(explosionAnimationLength * 1.1f, explosionDuration)));
+        toricObject.ApplyToOther<Firework>(nameof(StartExplode), 0f);
+    }
+
+    private IEnumerator InvokePause(Action method, float delay)
+    {
+        float timeCounter = 0f;
+        while (timeCounter < delay)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+        method.Invoke();
     }
 
     private void Destroy()
@@ -168,6 +185,10 @@ public class Firework : MonoBehaviour
         toricObject.RemoveClones();
         Destroy(gameObject);
     }
+
+    #region  Gizmos/OnValidate
+
+#if UNITY_EDITOR
 
     private void OnValidate()
     {
@@ -194,4 +215,8 @@ public class Firework : MonoBehaviour
         Capsule.GizmosDraw(capsuleCollider);
         Circle.GizmosDraw(transform.position, explosionRadius);
     }
+
+#endif
+
+    #endregion
 }
