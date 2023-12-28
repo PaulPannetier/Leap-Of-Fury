@@ -62,7 +62,7 @@ public class MovablePlateform : PathFindingBlocker
 
     public override List<MapPoint> GetBlockedCells(Map map)
     {
-        return GetBlockedCellsInRectangle(map, transform.position, hitbox.size);
+        return GetBlockedCellsInRectangle(map, transform.position, hitbox.size - LevelMapData.currentMap.cellSize * 0.1f);
     }
 
     #endregion

@@ -18,12 +18,16 @@ public class Jumper : PathFindingBlocker
 
     public override List<MapPoint> GetBlockedCells(Map map)
     {
-        return GetBlockedCellsInRectangle(map, transform.position, hitbox.size);
+        return GetBlockedCellsInRectangle(map, transform.position, hitbox.size - LevelMapData.currentMap.cellSize * 0.1f);
     }
+
+#if UNITY_EDITOR
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Useful.GizmoDrawVector((Vector2)transform.position, new Vector2(Mathf.Cos(angleDir * Mathf.Deg2Rad), Mathf.Sin(angleDir * Mathf.Deg2Rad)));
     }
+
+#endif
 }

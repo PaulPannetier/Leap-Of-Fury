@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
 using Collision2D;
-using PathFinding;
-using Collider2D = UnityEngine.Collider2D;
 using static Boomerang;
 
 public class BoomerangAttack : WeakAttack
@@ -71,6 +69,8 @@ public class BoomerangAttack : WeakAttack
         base.OnTouchEnemy(enemy);
     }
 
+    #region Gizmos/OnValidate
+
 #if UNITY_EDITOR
 
     protected void OnValidate()
@@ -95,4 +95,6 @@ public class BoomerangAttack : WeakAttack
     }
 
 #endif
+
+    #endregion
 }

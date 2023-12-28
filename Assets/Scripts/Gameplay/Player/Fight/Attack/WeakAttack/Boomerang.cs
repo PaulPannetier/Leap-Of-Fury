@@ -5,6 +5,8 @@ using Collider2D = UnityEngine.Collider2D;
 using static PathFinderToric;
 using static BezierUtility;
 using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class Boomerang : MonoBehaviour
 {
@@ -55,6 +57,8 @@ public class Boomerang : MonoBehaviour
     {
         groundMask = LayerMask.GetMask("Floor");
         charMask = LayerMask.GetMask("Char");
+        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
 
     public void Launch(in BoomerangLaunchData boomerangLauchData)
@@ -86,6 +90,13 @@ public class Boomerang : MonoBehaviour
     {
         if (isDestroy)
             return;
+
+        if(PauseManager.instance.isPauseEnable)
+        {
+            lastPathFindingSearch += Time.deltaTime;
+            timeLaunch += Time.deltaTime;
+            return;
+        }
 
         switch (state)
         {
@@ -251,10 +262,24 @@ public class Boomerang : MonoBehaviour
         isDestroy = true;
         if (animator.GetAnimationLength("destroy", out float length))
         {
-            Invoke(nameof(Destroy), length);
+            StartCoroutine(InvokePause(Destroy, length));
         }
         else
             Destroy();
+    }
+
+    private IEnumerator InvokePause(Action method, float delay)
+    {
+        float timeCounter = 0f;
+        while (timeCounter < delay)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+        method.Invoke();
     }
 
     private Circle GetGroundCircleCollider()
@@ -273,6 +298,24 @@ public class Boomerang : MonoBehaviour
     {
         toricObject.RemoveClones();
         Destroy(gameObject);
+    }
+
+    #region Gizmos/OnValidate/Pause
+
+    private void OnPauseEnable()
+    {
+        animator.speed = 0f;
+    }
+
+    private void OnPauseDisable()
+    {
+        animator.speed = 1f;
+    }
+
+    private void OnDestroy()
+    {
+        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable-= OnPauseEnable;
     }
 
 #if UNITY_EDITOR
@@ -303,6 +346,8 @@ public class Boomerang : MonoBehaviour
     }
 
 #endif
+
+    #endregion
 
     #region struct
 

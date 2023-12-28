@@ -24,7 +24,7 @@ public class TransparencyPassif : PassifAttack
 
     protected override void Update()
     {
-        if (!enableBehaviour)
+        if (!enableBehaviour || PauseManager.instance.isPauseEnable)
             return;
 
         base.Update();
@@ -33,8 +33,12 @@ public class TransparencyPassif : PassifAttack
         spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, current);
     }
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         transitionTime = Mathf.Max(transitionTime, 0f);
     }
+
+#endif
 }

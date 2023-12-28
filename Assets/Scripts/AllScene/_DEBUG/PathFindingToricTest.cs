@@ -34,6 +34,7 @@ public class PathFindingToricTest : MonoBehaviour
     {
         if(!freezeEnd)
             end = PhysicsToric.GetPointInsideBounds(Useful.mainCamera.ScreenToWorldPoint(InputManager.mousePosition));
+
         Gizmos.color = Color.green;
         Circle.GizmosDraw(start, 0.3f);
         Circle.GizmosDraw(end, 0.3f);
