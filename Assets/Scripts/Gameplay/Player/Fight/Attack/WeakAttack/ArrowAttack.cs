@@ -76,7 +76,16 @@ public class ArrowAttack : WeakAttack
 
     private IEnumerator WaitEndAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        yield return Useful.GetWaitForSeconds(castDuration);
+        float timeCounter = 0f;
+        while (timeCounter < castDuration)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
     }
@@ -104,9 +113,17 @@ public class ArrowAttack : WeakAttack
         arrowIsFlying = false;
     }
 
+    #region OnValidate
+
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         arrowLaunchDistance = Mathf.Max(0f, arrowLaunchDistance);
         initArrow = Mathf.Max(0, initArrow);
     }
+
+#endif
+
+#endregion
 }

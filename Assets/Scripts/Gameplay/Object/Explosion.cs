@@ -13,15 +13,17 @@ public class Explosion : MonoBehaviour
     public bool enableBehaviour = true;
     public ExplosionData explosionData;
     public Action<UnityEngine.Collider2D> callbackOnTouch;
+    public Action<Explosion> callbackOnDestroy;
 
     private void Awake()
     {
         callbackOnTouch = (UnityEngine.Collider2D arg) => { };
+        callbackOnDestroy = (Explosion arg) => { };
         toricObject = GetComponent<ToricObject>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public void Lauch(ExplosionData explosionData)
+    public void Launch(ExplosionData explosionData)
     {
         this.explosionData = explosionData;
         StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
@@ -48,6 +50,7 @@ public class Explosion : MonoBehaviour
 
     private void StartExplode()
     {
+        toricObject.bounds = new Bounds(Vector3.zero, new Vector3(explosionData.radius, explosionData.radius, 0.01f));
         lastTimeLauch = Time.time;
         isExploding = true;
         ExplosionManager.instance.CreateExplosion((Vector2)transform.position + explosionData.offset, explosionData.force);
@@ -93,6 +96,7 @@ public class Explosion : MonoBehaviour
 
     public void Destroy()
     {
+        callbackOnDestroy.Invoke(this);
         toricObject.RemoveClones();
         Destroy(gameObject);
     }
@@ -110,6 +114,8 @@ public class Explosion : MonoBehaviour
 #endif
 
     #endregion
+
+    #region Custom Struct
 
     [Serializable]
     public struct ExplosionData
@@ -133,4 +139,6 @@ public class Explosion : MonoBehaviour
 
         public ExplosionData Clone() => new ExplosionData(offset, force, radius, delay, duration, layerMask);
     }
+
+#endregion
 }

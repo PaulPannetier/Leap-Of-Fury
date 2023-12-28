@@ -416,9 +416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.1, y: 0.66, z: 0}
   boundsOffset: {x: 0, y: -0.17}
   enableHorizontal: 1
   enableVertical: 1
@@ -436,6 +433,9 @@ MonoBehaviour:
   - {fileID: 8331574599252283194}
   - {fileID: 0}
   chidrenToRemoveInClone: []
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 1.1, y: 0.66, z: 0}
   drawGizmos: 0
 --- !u!114 &4135942895386761519
 MonoBehaviour:
@@ -612,14 +612,9 @@ MonoBehaviour:
   detectionStep: 0.01
   collisionOffset: {x: 0, y: -0.15}
   collisionSize: {x: 0.5, y: 1}
-  ennemyPlayerMask:
-    serializedVersion: 2
-    m_Bits: 256
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 16392
   explosionForce: 0.8
-  explosionPrefabs: {fileID: 8542062651220399977, guid: 9c19b9e382562f841b697e6263e8dfc5, type: 3}
+  explosionDuration: 1.5
+  explosionPrefabs: {fileID: 8784538023861173684, guid: 9c19b9e382562f841b697e6263e8dfc5, type: 3}
 --- !u!1001 &6885330059463784344
 PrefabInstance:
   m_ObjectHideFlags: 0

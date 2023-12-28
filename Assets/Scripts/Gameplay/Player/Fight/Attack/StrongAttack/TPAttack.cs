@@ -5,7 +5,8 @@ using Collision2D;
 public class TPAttack : StrongAttack
 {
     private Movement playerMovement;
-    private LayerMask groundMask, ennemyPlayerMask;
+    private LayerMask groundMask, charMask;
+    private Explosion explosion;
 
     [SerializeField] private float tpRange = 1f;
     [SerializeField] private float explosionRadius = 1f;
@@ -13,7 +14,8 @@ public class TPAttack : StrongAttack
     [SerializeField] private Vector2 collisionOffset = Vector2.zero;
     [SerializeField] private Vector2 collisionSize = new Vector2(0.5f, 1f);
     [SerializeField] private float explosionForce;
-    [SerializeField] private GameObject explosionPrefabs;
+    [SerializeField] private float explosionDuration;
+    [SerializeField] private Explosion explosionPrefabs;
 
     protected override void Awake()
     {
@@ -25,7 +27,9 @@ public class TPAttack : StrongAttack
     {
         base.Start();
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
-        ennemyPlayerMask = LayerMask.GetMask("Char");
+        charMask = LayerMask.GetMask("Char");
+        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -91,9 +95,6 @@ public class TPAttack : StrongAttack
 
             for (int i = 1; i < raycasts.Length; i++)
             {
-                //debug
-                //rayPoints.Add(raycasts[i].point);
-
                 d = newPos.SqrDistance(raycasts[i].point);
                 if(d < minSqrDist)
                 {
@@ -133,25 +134,70 @@ public class TPAttack : StrongAttack
 
     private void ApplyDamage()
     {
-        GameObject explosion = Instantiate(explosionPrefabs, transform.position, Quaternion.Euler(0f, 0f, Random.RandExclude(0f, 360f)), CloneParent.cloneParent);
+        explosion = Instantiate(explosionPrefabs, transform.position, Quaternion.Euler(0f, 0f, Random.RandExclude(0f, 360f)), CloneParent.cloneParent);
 
-        //temp
+        Explosion.ExplosionData explosionData = new Explosion.ExplosionData(Vector2.zero, explosionForce, explosionRadius, 0f, explosionDuration, charMask);
+        explosion.Launch(explosionData);
+        explosion.callbackOnTouch += OnExplosionTouch;
+        explosion.callbackOnDestroy += OnExplosionEnd;
+
         explosion.transform.localScale = new Vector3(explosionRadius, explosionRadius, 1f);
-        Destroy(explosion, 1.5f);
+    }
 
-        UnityEngine.Collider2D[] cols =  PhysicsToric.OverlapCircleAll(transform.position, explosionRadius, ennemyPlayerMask);
-        foreach (UnityEngine.Collider2D col in cols)
+    private void OnExplosionTouch(UnityEngine.Collider2D collider)
+    {
+        if (collider.CompareTag("Char"))
         {
-            if(col.CompareTag("Char"))
+            GameObject player = collider.GetComponent<ToricObject>().original;
+            if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
             {
-                GameObject player = col.GetComponent<ToricObject>().original;
-                if(playerCommon.id != player.GetComponent<PlayerCommon>().id)
-                {
-                    OnTouchEnemy(player);
-                }
+                OnTouchEnemy(player);
             }
         }
     }
+
+    private void OnExplosionEnd(Explosion explosion)
+    {
+        if(this.explosion == explosion)
+        {
+            this.explosion = null;
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
+    }
+
+    #region Gizmos/OnValidate/Pause
+
+    private void OnPauseEnable()
+    {
+        if(explosion != null)
+        {
+            Animator explosionAnimator = explosion.GetComponentInChildren<Animator>();
+            if (explosionAnimator != null)
+            {
+                explosionAnimator.speed = 0f;
+            }
+        }
+    }
+
+    private void OnPauseDisable()
+    {
+        if (explosion != null)
+        {
+            Animator explosionAnimator = explosion.GetComponentInChildren<Animator>();
+            if (explosionAnimator != null)
+            {
+                explosionAnimator.speed = 1f;
+            }
+        }
+    }
+
+#if UNITY_EDITOR
 
     private void OnDrawGizmosSelected()
     {
@@ -168,5 +214,10 @@ public class TPAttack : StrongAttack
         explosionRadius = Mathf.Max(0f, explosionRadius);
         tpRange = Mathf.Max(0f, tpRange);
         explosionForce = Mathf.Max(explosionForce, 0f);
+        explosionDuration = Mathf.Max(0f, explosionDuration);
     }
+
+#endif
+
+    #endregion
 }

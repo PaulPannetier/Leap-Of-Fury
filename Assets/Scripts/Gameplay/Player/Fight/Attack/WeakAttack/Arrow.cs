@@ -35,8 +35,7 @@ public class Arrow : MonoBehaviour
 
     private void Start()
     {
-        PauseManager.instance.callBackOnPauseDisable += Enable;
-        PauseManager.instance.callBackOnPauseEnable += Disable;
+        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
         rb.gravityScale = gravityScale;
         charMask = LayerMask.GetMask("Char");
         wallProjectileMask = LayerMask.GetMask("WallProjectile");
@@ -48,6 +47,12 @@ public class Arrow : MonoBehaviour
     {
         if (!enableBehaviour)
             return;
+
+        if(PauseManager.instance.isPauseEnable) 
+        {
+            timeWhenLaunch += Time.deltaTime;
+            return;
+        }
 
         if(isFlying && !toricObject.isAClone)
         {
@@ -280,11 +285,10 @@ public class Arrow : MonoBehaviour
         }
     }
 
-    #region Gizmos/OnValidate
-
-    private void Disable()
+    #region Gizmos/OnValidate/Pause
+    
+    private void OnPauseEnable()
     {
-        enableBehaviour = false;
         StartCoroutine(PauseCorout());
 ;    }
 
@@ -294,26 +298,26 @@ public class Arrow : MonoBehaviour
         float angularSpeed = rb.angularVelocity;
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0f;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        animator.speed = 0f;
 
-        while(!enableBehaviour)
+        while(PauseManager.instance.isPauseEnable)
         {
             yield return null;
         }
 
+        animator.speed = 1f;
+        rb.constraints = RigidbodyConstraints2D.None;
         rb.velocity = rbVel;
         rb.angularVelocity = angularSpeed;
     }
 
-    private void Enable()
-    {
-        enableBehaviour = true;
-    }
-
     private void OnDestroy()
     {
-        PauseManager.instance.callBackOnPauseEnable -= Disable;
-        PauseManager.instance.callBackOnPauseDisable -= Enable;
+        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
     }
+
+#if UNITY_EDITOR
 
     private void OnValidate()
     {
@@ -348,5 +352,7 @@ public class Arrow : MonoBehaviour
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(-charDetectionAngle * Mathf.Deg2Rad, charDetectionRange));
     }
 
-    #endregion
+#endif
+
+#endregion
 }

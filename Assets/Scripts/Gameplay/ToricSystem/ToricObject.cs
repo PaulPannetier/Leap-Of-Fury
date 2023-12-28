@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
+using System.Collections;
 
 public class ToricObject : MonoBehaviour
 {
@@ -13,7 +14,6 @@ public class ToricObject : MonoBehaviour
     private bool[] oldCollideCamBounds = new bool[4];
     private new Transform transform;
 
-    [SerializeField] private Bounds bounds;
     [SerializeField] private Vector2 boundsOffset;
     [SerializeField] private bool enableHorizontal = true, enableVertical = true;
 
@@ -25,12 +25,15 @@ public class ToricObject : MonoBehaviour
     public List<Component> componentsToDisableInClone;
     public List<GameObject> chidrenToRemoveInClone;
     public GameObject original => isAClone ? cloner : gameObject;
+    public Bounds bounds;
 
 #if UNITY_EDITOR
 
     [SerializeField] private bool drawGizmos = true;
 
 #endif
+
+    #region Awake/Start
 
     private void Awake()
     {
@@ -43,7 +46,12 @@ public class ToricObject : MonoBehaviour
     {
         if(lstClones == null)
             lstClones = new List<ObjectClone>();
+
+        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
+
+    #endregion
 
     private void OnMapChange(LevelMapData mapData)
     {
@@ -75,7 +83,7 @@ public class ToricObject : MonoBehaviour
             MonoBehaviour comp = cloner.GetComponent<T>();
             if(comp != null)
             {
-                comp.Invoke(methodName, delay);
+                StartCoroutine(InvokePause(comp, methodName, delay));
             }
         }
         else
@@ -89,6 +97,21 @@ public class ToricObject : MonoBehaviour
         }
     }
 
+    private IEnumerator InvokePause(MonoBehaviour comp,  string methodName, float delay)
+    {
+        float timeCounter = 0f;
+        while (timeCounter < delay)
+        {
+            yield return null;
+            if (!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
+        comp.Invoke(methodName, 0f);
+    }
+
     private bool CollideWithCamBounds(in int index, out Vector2 offset)
     {
         if(bounds.Intersects(mapBounds[index]))
@@ -100,9 +123,14 @@ public class ToricObject : MonoBehaviour
         return false;
     }
 
+    #region Update
+
     private void Update()
     {
         if (isAClone)
+            return;
+        
+        if(PauseManager.instance.isPauseEnable)
             return;
 
         bounds.center = transform.position + boundsOffset.ToVector3();
@@ -134,6 +162,7 @@ public class ToricObject : MonoBehaviour
                 lstClones.Add(clone);
             }
         }
+
         //Update des clones
         foreach (ObjectClone clone in lstClones)
         {
@@ -208,6 +237,8 @@ public class ToricObject : MonoBehaviour
         oldCollideCamBounds = collideWithCamBounds;
     }
 
+    #endregion
+
     private void RemoveClone(ObjectClone clone)
     {
         lstClones.Remove(clone);
@@ -225,6 +256,32 @@ public class ToricObject : MonoBehaviour
     private void OnDestroy()
     {
         LevelMapData.onMapChange -= OnMapChange;
+        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
+    }
+
+    #region Gizmos/OnValidate/Pause
+
+    private void OnPauseEnable()
+    {
+        foreach (ObjectClone clone in lstClones)
+        {
+            if(clone.animator != null)
+            {
+                clone.animator.speed = 0f;
+            }
+        }
+    }
+
+    private void OnPauseDisable()
+    {
+        foreach (ObjectClone clone in lstClones)
+        {
+            if (clone.animator != null)
+            {
+                clone.animator.speed = 1f;
+            }
+        }
     }
 
 #if UNITY_EDITOR
@@ -246,6 +303,10 @@ public class ToricObject : MonoBehaviour
 
 #endif
 
+    #endregion
+
+    #region Class
+
     [Serializable]
     public class ObjectClone
     {
@@ -253,6 +314,7 @@ public class ToricObject : MonoBehaviour
         public Vector3 offset;
         public int boundsIndex;
         public ToricObject toricObject;
+        public Animator animator;
 
         public ObjectClone(GameObject clone, GameObject cloner, in Vector3 offset, in int boundsIndex)
         {
@@ -262,6 +324,9 @@ public class ToricObject : MonoBehaviour
             toricObject = clone.GetComponent<ToricObject>();
             toricObject.isAClone = true;
             toricObject.cloner = cloner;
+            animator = clone.GetComponent<Animator>();
         }
     }
+
+    #endregion
 }
