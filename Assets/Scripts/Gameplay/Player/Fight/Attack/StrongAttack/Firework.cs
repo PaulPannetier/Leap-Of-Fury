@@ -176,13 +176,6 @@ public class Firework : MonoBehaviour
 
     private void Destroy()
     {
-        if (toricObject.isAClone)
-        {
-            toricObject.original.GetComponent<Firework>().Destroy();
-            return;
-        }
-
-        toricObject.RemoveClones();
         Destroy(gameObject);
     }
 

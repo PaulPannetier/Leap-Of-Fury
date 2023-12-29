@@ -491,7 +491,6 @@ public class FightController : MonoBehaviour
 
     private void Death()
     {
-        toricObject.RemoveClones();
         Destroy(gameObject);
     }
 

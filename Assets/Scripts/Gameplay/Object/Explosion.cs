@@ -97,7 +97,6 @@ public class Explosion : MonoBehaviour
     public void Destroy()
     {
         callbackOnDestroy.Invoke(this);
-        toricObject.RemoveClones();
         Destroy(gameObject);
     }
 

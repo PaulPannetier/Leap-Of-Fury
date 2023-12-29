@@ -140,11 +140,11 @@ public class Fire : MonoBehaviour
 
     private void Destroy()
     {
-        toricObject.RemoveClones();
-        charsAlreadyTouch.Clear();
         fires.Remove(this);
         Destroy(gameObject);
     }
+
+#if UNITY_EDITOR
 
     private void OnDrawGizmos()
     {
@@ -158,4 +158,6 @@ public class Fire : MonoBehaviour
             Gizmos.DrawLine(beg, beg + Vector2.down * fireAttack.fireSize.y);
         }
     }
+
+#endif
 }

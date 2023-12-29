@@ -292,7 +292,7 @@ public class ToricObject : MonoBehaviour
         Destroy(clone.go);
     }
 
-    public void RemoveClones()
+    private void RemoveClones()
     {
         for (int i = clones.Count - 1; i >= 0; i--)
         {
@@ -305,6 +305,9 @@ public class ToricObject : MonoBehaviour
         LevelMapData.onMapChange -= OnMapChange;
         PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
+
+        if(!isAClone)
+            RemoveClones();
     }
 
     #endregion

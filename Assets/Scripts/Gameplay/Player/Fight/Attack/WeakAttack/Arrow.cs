@@ -148,7 +148,6 @@ public class Arrow : MonoBehaviour
         else
         {
             isDestroy = true;
-            toricObject.RemoveClones();
             Destroy(gameObject);
         }
     }
@@ -173,7 +172,6 @@ public class Arrow : MonoBehaviour
             arrowAttack.RecoverArrow();
 
         isDestroy = true;
-        toricObject.RemoveClones();
         Destroy(gameObject);
     }
 
@@ -188,7 +186,6 @@ public class Arrow : MonoBehaviour
         if(!isMainArrow)
         {
             isDestroy = true;
-            toricObject.RemoveClones();
             Destroy(gameObject);
             return;
         }

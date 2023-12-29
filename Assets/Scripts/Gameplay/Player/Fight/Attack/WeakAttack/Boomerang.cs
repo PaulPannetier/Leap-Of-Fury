@@ -296,7 +296,6 @@ public class Boomerang : MonoBehaviour
 
     private void Destroy()
     {
-        toricObject.RemoveClones();
         Destroy(gameObject);
     }
 

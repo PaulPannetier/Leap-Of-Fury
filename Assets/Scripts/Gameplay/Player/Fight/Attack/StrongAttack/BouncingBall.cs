@@ -43,7 +43,7 @@ public class BouncingBall : MonoBehaviour
 
         if(!toricObj.isAClone && Time.time - timeLaunch > maxDuration)
         {
-            Destroy();
+            Destroy(gameObject);
             return;
         }
 
@@ -55,7 +55,7 @@ public class BouncingBall : MonoBehaviour
                 nbBounce++;
                 if (nbBounce >= maxBounce)
                 {
-                    Destroy();
+                    Destroy(gameObject);
                     return;
                 }
 
@@ -114,14 +114,8 @@ public class BouncingBall : MonoBehaviour
         if (player.GetComponent<PlayerCommon>().id != playerCommon.id)
         {
             toricObj.original.GetComponent<BouncingBall>().bouncingBallAttack.OnTouchEnemy(player);
-            Destroy();
+            Destroy(gameObject);
         }
-    }
-
-    private void Destroy()
-    {
-        toricObj.RemoveClones();
-        Destroy(gameObject);
     }
 
     #region Gizmos/OnValidate

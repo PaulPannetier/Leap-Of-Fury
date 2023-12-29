@@ -91,7 +91,6 @@ public class FloorShockWave : MonoBehaviour
 
         if (isFinish)
         {
-            toricObject.RemoveClones();
             Destroy(gameObject);
         }
         else

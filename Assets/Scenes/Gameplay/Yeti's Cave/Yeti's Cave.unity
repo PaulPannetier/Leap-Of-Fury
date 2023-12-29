@@ -848,27 +848,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!231 &447880470010140898
-SpringJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8090791379116787313}
-  m_Enabled: 0
-  serializedVersion: 4
-  m_EnableCollision: 1
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_BreakAction: 3
-  m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_AutoConfigureDistance: 1
-  m_Distance: 8.15032
-  m_DampingRatio: 1
-  m_Frequency: 3
 --- !u!4 &705880008176640920
 Transform:
   m_ObjectHideFlags: 0
@@ -1265,10 +1244,10 @@ MonoBehaviour:
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  lstClones: []
+  clones: []
   cloner: {fileID: 0}
   componentsToDisableInClone:
-  - {fileID: 447880470010140898}
+  - {fileID: 0}
   - {fileID: 7111324779107693173}
   - {fileID: 3712884546013000619}
   - {fileID: 6057168255546640705}
@@ -1276,6 +1255,7 @@ MonoBehaviour:
   - {fileID: 7598047637627915505}
   - {fileID: 7187370182096030388}
   - {fileID: 1455914444585075947}
+  componentsToSynchroniseInClone: []
   chidrenToRemoveInClone:
   - {fileID: 908402111}
   bounds:
@@ -2208,7 +2188,7 @@ MonoBehaviour:
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  lstClones: []
+  clones: []
   cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 9141071500929686742}
@@ -2221,6 +2201,7 @@ MonoBehaviour:
   - {fileID: 158512333066200229}
   - {fileID: 0}
   - {fileID: 7942087564909029390}
+  componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -3529,7 +3510,6 @@ GameObject:
   - component: {fileID: 1113869503492128206}
   - component: {fileID: 4099738503796950030}
   - component: {fileID: 6107391627819905751}
-  - component: {fileID: 447880470010140898}
   - component: {fileID: 7111324779107693173}
   - component: {fileID: 3017698710352447138}
   - component: {fileID: 4135942895209297031}

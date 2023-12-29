@@ -103,17 +103,11 @@ public class Bomb : MonoBehaviour
 
                 if (timeCount > explosionDuration)
                 {
-                    Destroy();
+                    Destroy(gameObject);
                     break;
                 }
             }
         }
-    }
-
-    private void Destroy()
-    {
-        toricObject.RemoveClones();
-        Destroy(gameObject);
     }
 
     private void Explode()
