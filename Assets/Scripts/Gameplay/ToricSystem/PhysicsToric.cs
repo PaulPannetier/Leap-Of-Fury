@@ -559,7 +559,7 @@ public static class PhysicsToric
             }
             else
             {
-                Debug.LogWarning("Denug pls");
+                Debug.LogWarning("Debug pls");
             }
         }
     }
