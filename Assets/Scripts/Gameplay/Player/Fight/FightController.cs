@@ -16,19 +16,17 @@ public class FightController : MonoBehaviour
     private float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack;
     private bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
     private ToricObject toricObject;
-    [HideInInspector] public bool canLauchWeakAttack = true, canLaunchStrongAttack = true;
     private bool isInvicible => invicibilityCounter > 0;
-    private int invicibilityCounter, canLaunchWeakAttackCounter, canLaunchStrongAttackCounter;
+    private short invicibilityCounter, canLaunchWeakAttackCounter, canLaunchStrongAttackCounter, canKillDashingCounter, isStunCounter;
     private int charMask;
-    private int canKillDashingCounter;
-
+    private bool isStun => isStunCounter > 0;
     private List<uint> charAlreadyTouchByDash = new List<uint>();
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
 
     [SerializeField] private bool drawGizmos = true;
 
-    #endif
+#endif
 
     [Header("Fight")]
     [SerializeField] private float dashBumpSpeed = 10f;
@@ -45,6 +43,8 @@ public class FightController : MonoBehaviour
     [Tooltip("Temps ou l'on considère l'appuye sur un touche alors que le perso est occupé/ne peut pas lancé l'attaque")][SerializeField] private float castCoyoteTime = 0.2f;
 
     [HideInInspector] public bool canKillDashing => canKillDashingCounter > 0;
+    [HideInInspector] public bool canBeStun => !isInvicible;
+    [HideInInspector] public bool canLauchWeakAttack = true, canLaunchStrongAttack = true;
 
     #region Awake and Start
 
@@ -82,6 +82,9 @@ public class FightController : MonoBehaviour
             lastInputLauchingStrongAttack += Time.deltaTime;
             return;
         }
+
+        if (isStun)
+            return;
 
         //attaques
         if (playerInput.attackWeakPressedDown && enableAttackWeak)
@@ -362,6 +365,56 @@ public class FightController : MonoBehaviour
 
     #endregion
 
+    #region Stun
+
+    public bool RequestStun(float duration)
+    {
+        if(!canBeStun)
+            return false;
+
+        if(duration < 0f)
+            StartCoroutine(StunCoroutInfinite());
+        else
+            StartCoroutine(StunCorout(duration));
+
+        return true;
+    }
+
+    private IEnumerator StunCoroutInfinite()
+    {
+        isStunCounter++;
+        movement.Freeze();
+
+        while (true)
+        {
+            yield return null;
+        }
+    }
+
+    private IEnumerator StunCorout(float duration)
+    {
+        isStunCounter++;
+        if (isStun)
+            movement.Freeze();
+
+        float timeCounter = 0f;
+        while (timeCounter < duration)
+        {
+            yield return null;
+            if(!PauseManager.instance.isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
+        }
+
+        isStunCounter--;
+
+        if(!isStun)
+            movement.UnFreeze();
+    }
+
+    #endregion
+
     #region OnBegin/end Strong/Weak attack
 
     private void DisableWeakAttack()
@@ -433,8 +486,8 @@ public class FightController : MonoBehaviour
 
     private IEnumerator Dl(float duration)
     {
-        int weakAttackCount = canLaunchWeakAttackCounter + 1;
-        int strongAttackCount = canLaunchStrongAttackCounter + 1;
+        short weakAttackCount = (short)(canLaunchWeakAttackCounter + 1);
+        short strongAttackCount = (short)(canLaunchStrongAttackCounter + 1);
         canLaunchWeakAttackCounter -= weakAttackCount;
         canLaunchStrongAttackCounter -= strongAttackCount;
         canLauchWeakAttack = canLaunchStrongAttack = false;

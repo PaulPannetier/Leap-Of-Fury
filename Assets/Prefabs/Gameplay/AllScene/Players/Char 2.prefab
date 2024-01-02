@@ -609,7 +609,7 @@ MonoBehaviour:
   - {fileID: 9027861815646793550}
   - {fileID: 3329611578031353287}
   - {fileID: 49532349443289084}
-  - {fileID: 0}
+  - {fileID: 6848550487051244944}
   - {fileID: 7830398315898069847}
   componentsToSynchroniseInClone:
   - {fileID: 1261712740702541876}
@@ -735,8 +735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
   drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
@@ -749,6 +747,8 @@ MonoBehaviour:
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.15
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
 --- !u!114 &6848550487051244944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -767,8 +767,110 @@ MonoBehaviour:
     duration: 0
   castRadius: 0.5
   range: 7
-  waitingTimeWhenWallGrab: 1
-  waitingTimeWhenCharGrab: 0.1
+  collisionRadius: 0.8
+  collisionOffset: {x: 0, y: -0.14}
+  keepSpeedAtEnd: 1
+  waitingTimeWhenWallGrab: 0.5
+  maxWallGrabDuration: 1
+  wallDurationOverDistance:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  wallPositionOverTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  wallGap: 0.7
+  waitingTimeWhenCharGrab: 0.3
+  maxCharGrabDuration: 0.7
+  charDurationOverDistance:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  charPositionOverTime:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &3329611578031353287
 MonoBehaviour:
   m_ObjectHideFlags: 0
