@@ -9,6 +9,7 @@ using System.Linq;
 public class GrabAttack : StrongAttack
 {
     private GameObject charTouch, walltouch;
+    private Rigidbody2D rb;
     private Movement movement;
     private LayerMask charMask, groundMask;
     private Vector2 collisionPoint;
@@ -50,6 +51,7 @@ public class GrabAttack : StrongAttack
     {
         base.Start();
         movement = GetComponent<Movement>();
+        rb = GetComponent<Rigidbody2D>();
 
         charMask = LayerMask.GetMask("Char");
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
@@ -162,7 +164,6 @@ public class GrabAttack : StrongAttack
 
         IEnumerator PerformCharTouch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
         {
-            print("char");
             FightController charFc = charTouch.GetComponent<FightController>();
             charFc.RequestStun(-1);
             movement.Freeze();
@@ -171,9 +172,10 @@ public class GrabAttack : StrongAttack
 
             float duration = maxCharGrabDuration * charDurationOverDistance.Evaluate(Mathf.Clamp01(((Vector2)transform.position).Distance(collisionPoint) / range));
             Vector2 begPos = transform.position;
+            Vector2 oldPos = begPos;
+
             float timeCounter = 0f;
             uint[] ignoreID = new uint[1] { charTouch.GetComponent<PlayerCommon>().id };
-
 
             while (timeCounter < duration)
             {
@@ -182,12 +184,19 @@ public class GrabAttack : StrongAttack
                 timeCounter += Time.deltaTime;
 
                 Vector2 newPos = Vector2.Lerp(begPos, collisionPoint, charPositionOverTime.Evaluate(timeCounter / duration));
+                oldPos = transform.position;
                 movement.Teleport(newPos);
 
                 while (PauseManager.instance.isPauseEnable)
                 {
                     yield return null;
                 }
+            }
+
+            if(keepSpeedAtEnd)
+            {
+                Vector2 currentVelocity = ((Vector2)transform.position - oldPos) / Time.deltaTime;
+                rb.velocity = currentVelocity;
             }
 
             movement.UnFreeze();
@@ -200,8 +209,6 @@ public class GrabAttack : StrongAttack
 
         IEnumerator PerformWallTouch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
         {
-            print("Wall");
-
             movement.Freeze();
             yield return Wait(waitingTimeWhenWallGrab);
 
@@ -210,6 +217,7 @@ public class GrabAttack : StrongAttack
             float duration = maxWallGrabDuration * wallDurationOverDistance.Evaluate(Mathf.Clamp01(((Vector2)transform.position).Distance(target) / range));
 
             Vector2 begPos = transform.position;
+            Vector2 oldPos = begPos;
 
             float timeCounter = 0f;
             while(timeCounter < duration)
@@ -219,12 +227,19 @@ public class GrabAttack : StrongAttack
                 timeCounter += Time.deltaTime;
 
                 Vector2 newPos = Vector2.Lerp(begPos, target, wallPositionOverTime.Evaluate(timeCounter / duration));
+                oldPos = transform.position;
                 movement.Teleport(newPos);
 
                 while (PauseManager.instance.isPauseEnable)
                 {
                     yield return null;
                 }
+            }
+
+            if (keepSpeedAtEnd)
+            {
+                Vector2 currentVelocity = ((Vector2)transform.position - oldPos) / Time.deltaTime;
+                rb.velocity = currentVelocity;
             }
 
             movement.UnFreeze();
@@ -243,7 +258,7 @@ public class GrabAttack : StrongAttack
             if (col.CompareTag("Char") && col.gameObject != gameObject)
             {
                 PlayerCommon pc = col.GetComponent<PlayerCommon>();
-                if (!charAlreadyTouch.Contains(pc.id) && (ignoreID != null || !ignoreID.Contains(pc.id)))
+                if (!charAlreadyTouch.Contains(pc.id) && (ignoreID == null || !ignoreID.Contains(pc.id)))
                 {
                     charAlreadyTouch.Add(pc.id);
                     base.OnTouchEnemy(col.gameObject);
