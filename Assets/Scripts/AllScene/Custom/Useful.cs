@@ -458,9 +458,14 @@ public static class Random
     public static Vector2 PointInCircle(Circle circle) => PointInCircle(circle.center, circle.radius);
     public static Vector2 PointInCircle(in Vector2 center, float radius)
     {
-        float angle = RandExclude(0f, twoPi);
-        float length = Mathf.Sqrt(Rand()) * radius;
-        return new Vector2(center.x + length * Mathf.Cos(angle), center.y + length * Mathf.Sin(angle));
+        float x, y;
+        while(true)
+        {
+            x = Rand() * 2f * radius - radius;
+            y = Rand() * 2f * radius - radius;
+            if(x * x + (y * y) <= radius * radius)
+                return new Vector2(center.x + x, center.y + y);
+        }
     }
     public static Vector2 PointInRectangle(BoxCollider2D rec) => PointInRectangle(rec.transform.position, rec.size);
     public static Vector2 PointInRectangle(Hitbox rec) => PointInRectangle(rec.center, rec.size);
@@ -746,7 +751,6 @@ public static class Random
     public static float Normal(float esp, float sigma) => N01() * sigma + esp;
 
     #endregion
-
 }
 
 #endregion
