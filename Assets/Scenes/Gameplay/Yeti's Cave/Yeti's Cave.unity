@@ -1262,34 +1262,6 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 1.1, y: 0.66, z: 0}
   drawGizmos: 0
---- !u!114 &3218375394265589406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7792177096275880146}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c81fb592b0686a1468e1cd4595e024d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackForce: 70
-  castDuration: 0
-  cooldown:
-    duration: 2
-  drawGizmos: 0
-  shootDistanceFromChar: 0.35
-  initSpeed: 18
-  maxSpeed: 25
-  speedVariation: 0.2
-  maxBallDuration: 7
-  nbBounce: 3
-  initNbBalls: 2
-  maxNbBalls: 10
-  shootAngle: 11.5
-  shootTime: 0.08
-  bouncingBallPrefabs: {fileID: 646947081894951354, guid: 70e9b1f7d2292b74e994b5b2b4c28ab1, type: 3}
 --- !u!114 &3453641881015917832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2197,7 +2169,7 @@ MonoBehaviour:
   - {fileID: 5589524411742833023}
   - {fileID: 8438246231053378130}
   - {fileID: 9211470051644302359}
-  - {fileID: 3218375394265589406}
+  - {fileID: 0}
   - {fileID: 158512333066200229}
   - {fileID: 0}
   - {fileID: 7942087564909029390}
@@ -3340,8 +3312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
   drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
@@ -3354,6 +3324,8 @@ MonoBehaviour:
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.15
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
 --- !u!1 &7586707905996385501
 GameObject:
   m_ObjectHideFlags: 0
@@ -3455,7 +3427,7 @@ GameObject:
   - component: {fileID: 5589524411742833023}
   - component: {fileID: 8438246231053378130}
   - component: {fileID: 9211470051644302359}
-  - component: {fileID: 3218375394265589406}
+  - component: {fileID: 9211470051644302360}
   - component: {fileID: 158512333066200229}
   - component: {fileID: 7942087564909029390}
   m_Layer: 8
@@ -3527,7 +3499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &8225929943390044776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4006,7 +3978,7 @@ RectTransform:
   m_Father: {fileID: 9012747990130697746}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4491,7 +4463,7 @@ RectTransform:
   m_Father: {fileID: 9012747989736829795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4795,8 +4767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
   drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
@@ -4809,6 +4779,59 @@ MonoBehaviour:
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.15
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
+--- !u!114 &9211470051644302360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7792177096275880146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b457fea88e6e44593e520f86a69d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackForce: 0
+  castDuration: 0
+  cooldown:
+    duration: 0
+  castRadius: 0.5
+  minRange: 1.5
+  range: 10
+  collisionRadius: 1
+  collisionOffset: {x: 0, y: 0}
+  keepSpeedAtEnd: 1
+  waitingTimeWhenWallGrab: 0.1
+  maxWallGrabDuration: 0.7
+  wallDurationOverDistance:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  wallPositionOverTime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  wallGap: 0.5
+  waitingTimeWhenCharGrab: 0.1
+  maxCharGrabDuration: 0.7
+  charDurationOverDistance:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  charPositionOverTime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -64,3 +64,21 @@ LogMessage :
     Params : 0
     {    }
 }
+LogMessage : 
+{
+    Error : must be collision between cameraHitbox and the line in PhysicToric.CircleCastRecur(),
+    Params : 2
+    {
+        Type : Hitbox,
+        Value : Vertices number : 4
+Vertices : 
+    (-16.00, -9.00),
+    (16.00, -9.00),
+    (16.00, 9.00),
+    (-16.00, 9.00)
+
+
+        Type : Line2D,
+        Value : Collision2D.Line2D
+    }
+}

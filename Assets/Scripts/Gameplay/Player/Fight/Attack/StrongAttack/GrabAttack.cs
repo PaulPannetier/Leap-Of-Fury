@@ -11,7 +11,7 @@ public class GrabAttack : StrongAttack
     private GameObject charTouch, walltouch;
     private Rigidbody2D rb;
     private Movement movement;
-    private LayerMask charMask, groundMask;
+    private LayerMask charAndGroundMask, charMask;
     private Vector2 collisionPoint;
     private new Transform transform;
     private List<uint> charAlreadyTouch;
@@ -19,6 +19,7 @@ public class GrabAttack : StrongAttack
     private bool isCharTouch => charTouch != null;
 
     [SerializeField] private float castRadius = 0.5f;
+    [SerializeField] private float minRange = 1.5f;
     [SerializeField] private float range = 10f;
     [SerializeField] private float collisionRadius = 1f;
     [SerializeField] private Vector2 collisionOffset= Vector2.zero;
@@ -53,8 +54,8 @@ public class GrabAttack : StrongAttack
         movement = GetComponent<Movement>();
         rb = GetComponent<Rigidbody2D>();
 
+        charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
         charMask = LayerMask.GetMask("Char");
-        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
     #endregion
@@ -83,44 +84,58 @@ public class GrabAttack : StrongAttack
         charTouch = walltouch = null;
 
         Vector2 dir = movement.GetCurrentDirection(true);
-        RaycastHit2D[] raycastCharAll = PhysicsToric.CircleCastAll(transform.position, dir, castRadius, range, charMask);
-        RaycastHit2D raycastChar = default(RaycastHit2D);
+        RaycastHit2D[] raycastAll = PhysicsToric.CircleCastAll(transform.position, dir, castRadius, range, charAndGroundMask);
 
-        float minDist = float.MaxValue;
-        for (int i = 0; i < raycastCharAll.Length; i++)
+        int RaycastComparer(RaycastHit2D r1, RaycastHit2D r2)
         {
-            GameObject player = raycastCharAll[i].collider.gameObject;
-            if (player != gameObject)
+            if (r1.distance < r2.distance)
+                return -1;
+            if (r1.distance > r2.distance)
+                return 1;
+            return 0;
+        }
+
+        Array.Sort(raycastAll, RaycastComparer);
+        RaycastHit2D raycast = default(RaycastHit2D);
+        bool isCharCollision = false;
+
+        for (int i = 0; i < raycastAll.Length; i++)
+        {
+            if (raycastAll[i].collider.gameObject.CompareTag("Char"))
             {
-                FightController charFc = player.GetComponent<FightController>();
-                if (charFc.canBeStun && raycastCharAll[i].distance < minDist)
+                GameObject player = raycastAll[i].collider.gameObject;
+                if (player != gameObject)
                 {
-                    raycastChar = raycastCharAll[i];
-                    minDist = raycastChar.distance;
+                    FightController charFc = player.GetComponent<FightController>();
+                    if (charFc.canBeStun && raycastAll[i].distance > minRange)
+                    {
+                        raycast = raycastAll[i];
+                        isCharCollision = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (raycastAll[i].distance > minRange)
+                {
+                    raycast = raycastAll[i];
+                    isCharCollision = false;
+                    break;
                 }
             }
         }
 
-        RaycastHit2D raycastGround = PhysicsToric.CircleCast(transform.position, dir, castRadius, range, groundMask);
-
-        if(raycastChar.collider == null && raycastGround.collider == null)
+        if (raycast.collider == null)
             return false;
 
-        if (raycastChar.collider != null && raycastGround.collider != null)
+        if (isCharCollision)
         {
-            if(raycastChar.distance <= raycastGround.distance)
-                SetCharData(raycastChar);
-            else
-                SetWallData(raycastGround);
+            SetCharData(raycast);
         }
-
-        if (raycastChar.collider != null)
+        else
         {
-            SetCharData(raycastChar);
-        }
-        else //raycastGround.collider != null
-        {
-            SetWallData(raycastGround);
+            SetWallData(raycast);
         }
 
         return true;
@@ -128,12 +143,14 @@ public class GrabAttack : StrongAttack
         void SetCharData(in RaycastHit2D raycastChar)
         {
             charTouch = raycastChar.collider.gameObject;
+            walltouch = null;
             collisionPoint = raycastChar.point;
         }
 
         void SetWallData(in RaycastHit2D raycastGround)
         {
             walltouch = raycastGround.collider.gameObject;
+            charTouch = null;
             collisionPoint = raycastGround.point;
         }
     }
@@ -275,6 +292,7 @@ public class GrabAttack : StrongAttack
     {
         Gizmos.color = Color.green;
         Circle.GizmosDraw(transform.position, range);
+        Circle.GizmosDraw(transform.position, minRange);
         Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, castRadius);
         Circle.GizmosDraw((Vector2)transform.position + collisionOffset, collisionRadius);
         Gizmos.color = Color.red;
@@ -291,6 +309,8 @@ public class GrabAttack : StrongAttack
         collisionRadius = Mathf.Max(0f, collisionRadius);
         wallGap = Mathf.Max(0f, wallGap);
         this.transform = base.transform;
+        charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
+        charMask = LayerMask.GetMask("Char");
     }
 
 #endif

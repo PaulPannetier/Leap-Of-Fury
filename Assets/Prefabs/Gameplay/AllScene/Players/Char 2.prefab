@@ -197,7 +197,6 @@ GameObject:
   - component: {fileID: 8612698283953875211}
   - component: {fileID: 9027861815646793550}
   - component: {fileID: 6848550487051244944}
-  - component: {fileID: 3329611578031353287}
   - component: {fileID: 49532349443289084}
   - component: {fileID: 7830398315898069847}
   m_Layer: 8
@@ -607,7 +606,7 @@ MonoBehaviour:
   - {fileID: 5696250467530998310}
   - {fileID: 8612698283953875211}
   - {fileID: 9027861815646793550}
-  - {fileID: 3329611578031353287}
+  - {fileID: 0}
   - {fileID: 49532349443289084}
   - {fileID: 6848550487051244944}
   - {fileID: 7830398315898069847}
@@ -766,6 +765,7 @@ MonoBehaviour:
   cooldown:
     duration: 0
   castRadius: 0.5
+  minRange: 0.38
   range: 7
   collisionRadius: 0.8
   collisionOffset: {x: 0, y: -0.14}
@@ -871,34 +871,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &3329611578031353287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7980238354382693259}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c81fb592b0686a1468e1cd4595e024d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackForce: 70
-  castDuration: 0
-  cooldown:
-    duration: 2
-  drawGizmos: 0
-  shootDistanceFromChar: 0.35
-  initSpeed: 18
-  maxSpeed: 25
-  speedVariation: 0.2
-  maxBallDuration: 7
-  nbBounce: 3
-  initNbBalls: 2
-  maxNbBalls: 10
-  shootAngle: 11.5
-  shootTime: 0.08
-  bouncingBallPrefabs: {fileID: 646947081894951354, guid: 70e9b1f7d2292b74e994b5b2b4c28ab1, type: 3}
 --- !u!114 &49532349443289084
 MonoBehaviour:
   m_ObjectHideFlags: 0
