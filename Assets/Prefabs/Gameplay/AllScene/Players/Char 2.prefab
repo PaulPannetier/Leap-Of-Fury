@@ -198,7 +198,6 @@ GameObject:
   - component: {fileID: 9027861815646793550}
   - component: {fileID: 6848550487051244944}
   - component: {fileID: 49532349443289084}
-  - component: {fileID: 7830398315898069847}
   m_Layer: 8
   m_Name: Char 2
   m_TagString: Char
@@ -609,7 +608,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 49532349443289084}
   - {fileID: 6848550487051244944}
-  - {fileID: 7830398315898069847}
+  - {fileID: 0}
   componentsToSynchroniseInClone:
   - {fileID: 1261712740702541876}
   chidrenToRemoveInClone: []
@@ -897,38 +896,6 @@ MonoBehaviour:
   floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}
   shockWaveHoriOffset: 0.2
   shockWaveSpeed: 15
---- !u!114 &7830398315898069847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7980238354382693259}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 702a90b310a0de744be2fbeebd737a73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackForce: 0
-  castDuration: 0
-  cooldown:
-    duration: 0
-  enableBehaviour: 0
-  drawGizmos: 0
-  spawnDuration: 15
-  spawnWait: 5
-  fiolePrefabs: {fileID: 3908213530835512177, guid: 6cd1e1bb3f3ed814db6b8a5e21693f0c, type: 3}
-  spawnPoints:
-  - {x: 10.5, y: 5.1}
-  - {x: -10.5, y: 5.1}
-  - {x: 5.3, y: -1.5}
-  - {x: -5.3, y: -1.5}
-  - {x: 0, y: 6.66}
-  - {x: -12.5, y: -5.5}
-  - {x: 12.5, y: -5.5}
-  - {x: 0.45, y: -1.33}
-  - {x: -9, y: 0.3}
-  - {x: 9, y: 0.3}
 --- !u!1001 &2058277902702790084
 PrefabInstance:
   m_ObjectHideFlags: 0

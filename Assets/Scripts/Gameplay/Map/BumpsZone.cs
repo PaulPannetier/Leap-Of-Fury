@@ -42,9 +42,6 @@ public abstract class BumpsZone : PathFindingBlocker
                 }
             }
         }
-
-        DebugText.instance.text += charAlreadyTouch.Count + "\n";
-        DebugText.instance.text += cols.Length + "\n";
     }
 
     private void ClearCharAlreadyTouch(uint id)

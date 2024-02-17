@@ -47,7 +47,7 @@ perso 1 : *
 perso 2 : *
 	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
 	  attack forte : Le joueur tire X projectiles dans un cone devant lui qui ricoche sur les murs 3 fois.//ok
-	  attack forte 2ème idée : Le joueur accroche le mur ou le perso dans la direction des input (8dir). Si c'est un joueur il le tue, sinon il va sur le mur en tuant tout sur son passage.
+	  attack forte 2ème idée : Le joueur accroche le mur ou le perso dans la direction des input (8dir). Si c'est un joueur il le tue, sinon il va sur le mur en tuant tout sur son passage.//ok
 	  Passif : Des fioles/bonus apparaise donnant + 1 au X, augmente la vitesse des tir.//ok
 
 perso 3 : *
@@ -56,7 +56,7 @@ perso 3 : *
 	  Passif : jsp ***
 
 perso 4 : *
-	  attack faible : lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur. 
+	  attack faible : lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur.//ok
 	  attack forte : tir 3 projectiles en cone dans la dir inverse des input (8 dir possibles) et qui lui applique une forte de propulsion//ok**
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
 
