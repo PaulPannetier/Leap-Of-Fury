@@ -655,7 +655,7 @@ public class Movement : MonoBehaviour
 
         // VIII-Debug
 
-        //DebugText.instance.text += rb.velocity + ", " + rb.velocity.magnitude.Round(1) + " m/s\n";
+        //DebugText.instance.text += "Bump : " + isBumping;
     }
 
     #endregion
@@ -1399,7 +1399,7 @@ public class Movement : MonoBehaviour
 
     private void HandleWallSlide()
     {
-        if (!isSliding)
+        if (!isSliding || isBumping)
             return;
 
         if (wallSide != side)
