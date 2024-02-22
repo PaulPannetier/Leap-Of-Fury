@@ -80,7 +80,7 @@ Méca : Il y a des bumpers.//ok*
 + certaine plateforme bouge dans la direction opposé quand on dash dessus
 et rajoute une force au joueur la touchant donne la bonne direction pour qu'il évite le mouvement de la plateforme.
 Quand un plateforme s'écrase sur un mur, il tue/écrase les joueurs entre la plateforme et les murs.
-Celui qui fait bouger la plateforme gagne un kill. //ok*
+Celui qui fait bouger la plateforme gagne un kill. //~ok*
 DA : Un temple maya/jungle amazonienne.
 Name : Maya's Temple
 
