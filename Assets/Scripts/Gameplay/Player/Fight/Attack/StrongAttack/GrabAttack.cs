@@ -206,7 +206,8 @@ public class GrabAttack : StrongAttack
                 yield return null;
                 timeCounter += Time.deltaTime;
 
-                Vector2 newPos = begPos + (totalDistance * charPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir); 
+                Vector2 newPos = begPos + (totalDistance * charPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
+                newPos = PhysicsToric.GetPointInsideBounds(newPos);
                 oldPos = transform.position;
                 movement.Teleport(newPos);
 
@@ -250,6 +251,7 @@ public class GrabAttack : StrongAttack
                 timeCounter += Time.deltaTime;
 
                 Vector2 newPos = begPos + (totalDistance * wallPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
+                newPos = PhysicsToric.GetPointInsideBounds(newPos);
                 oldPos = transform.position;
                 movement.Teleport(newPos);
 

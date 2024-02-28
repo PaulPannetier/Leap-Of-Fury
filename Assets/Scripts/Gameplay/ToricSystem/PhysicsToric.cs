@@ -31,6 +31,8 @@ public static class PhysicsToric
         mapHitbox = new Hitbox(Vector2.zero, LevelMapData.currentMap.mapSize);
     }
 
+    public static bool IsPointInsideBound(in Vector2 point) => -mapSize.x * 0.5f <= point.x && mapSize.x * 0.5f >= point.x && -mapSize.y * 0.5f <= point.y && mapSize.y * 0.5f >= point.y;
+
     /// <param name="point"></param>
     /// <returns>Le point visible au coor donnée en param dans l'espace torique</returns>
     public static Vector2 GetPointInsideBounds(in Vector2 point)

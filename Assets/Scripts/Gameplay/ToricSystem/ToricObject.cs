@@ -260,6 +260,44 @@ public class ToricObject : MonoBehaviour
                     }
                 }
             }
+
+            //Anti bug
+            int maxClone = enableHorizontal ? (enableVertical ? 3 : 1) : 0;
+            if(clones.Count > maxClone)
+            {
+                RemoveClones();
+                transform.position = PhysicsToric.GetPointInsideBounds(transform.position);
+                print("Debug pls");
+            }
+
+            //Anti bug 2
+            if (clones.Count <= 0 && !PhysicsToric.IsPointInsideBound(transform.position))
+            {
+                transform.position = PhysicsToric.GetPointInsideBounds(transform.position);
+                print("Debug pls");
+            }
+
+            //Anti bug 3
+            if (clones.Count > 0)
+            {
+                bool allClonesIsOutBounded = true;
+                foreach (ObjectClone clone in clones)
+                {
+                    if(PhysicsToric.IsPointInsideBound(clone.go.transform.position))
+                    {
+                        allClonesIsOutBounded = false;
+                        break;
+                    }
+                }
+
+                if(allClonesIsOutBounded && !PhysicsToric.IsPointInsideBound(transform.position))
+                {
+                    RemoveClones();
+                    transform.position = PhysicsToric.GetPointInsideBounds(transform.position);
+                    print("Debug pls");
+                }
+            }
+
             /*
             if (collideWithCamBounds[i] && cameraBounds[i].Contain(bounds))
             {
