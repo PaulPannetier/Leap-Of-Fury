@@ -18,6 +18,12 @@ public class GrabAttack : StrongAttack
 
     private bool isCharTouch => charTouch != null;
 
+#if UNITY_EDITOR
+
+    [SerializeField] private bool drawGizmos = true;
+
+#endif
+
     [SerializeField] private float castRadius = 0.5f;
     [SerializeField] private float minRange = 1.5f;
     [SerializeField] private float range = 10f;
@@ -37,7 +43,6 @@ public class GrabAttack : StrongAttack
     [SerializeField] private float maxCharGrabDuration = 0.7f;
     [SerializeField, Tooltip("The duration of the dash compare to the distance, in %age of maxCharGrabDuration")] private AnimationCurve charDurationOverDistance;
     [SerializeField, Tooltip("The position (position progress) over time in %age")] private AnimationCurve charPositionOverTime;
-
 
     #region Awake/Start
 
@@ -186,10 +191,11 @@ public class GrabAttack : StrongAttack
             movement.Freeze();
 
             yield return Wait(waitingTimeWhenCharGrab);
-
-            float duration = maxCharGrabDuration * charDurationOverDistance.Evaluate(Mathf.Clamp01(((Vector2)transform.position).Distance(collisionPoint) / range));
             Vector2 begPos = transform.position;
             Vector2 oldPos = begPos;
+            Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);
+            float totalDistance = PhysicsToric.Distance(begPos, collisionPoint);
+            float duration = maxCharGrabDuration * charDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / range));
 
             float timeCounter = 0f;
             uint[] ignoreID = new uint[1] { charTouch.GetComponent<PlayerCommon>().id };
@@ -200,7 +206,7 @@ public class GrabAttack : StrongAttack
                 yield return null;
                 timeCounter += Time.deltaTime;
 
-                Vector2 newPos = Vector2.Lerp(begPos, collisionPoint, charPositionOverTime.Evaluate(timeCounter / duration));
+                Vector2 newPos = begPos + (totalDistance * charPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir); 
                 oldPos = transform.position;
                 movement.Teleport(newPos);
 
@@ -229,12 +235,12 @@ public class GrabAttack : StrongAttack
             movement.Freeze();
             yield return Wait(waitingTimeWhenWallGrab);
 
-            Vector2 dir = (collisionPoint - (Vector2)transform.position).normalized;
-            Vector2 target = collisionPoint - wallGap * dir;
-            float duration = maxWallGrabDuration * wallDurationOverDistance.Evaluate(Mathf.Clamp01(((Vector2)transform.position).Distance(target) / range));
-
             Vector2 begPos = transform.position;
             Vector2 oldPos = begPos;
+            Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);
+            Vector2 target = collisionPoint - wallGap * dir;
+            float totalDistance = PhysicsToric.Distance(begPos, target);
+            float duration = maxWallGrabDuration * wallDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / range));
 
             float timeCounter = 0f;
             while(timeCounter < duration)
@@ -243,7 +249,7 @@ public class GrabAttack : StrongAttack
                 yield return null;
                 timeCounter += Time.deltaTime;
 
-                Vector2 newPos = Vector2.Lerp(begPos, target, wallPositionOverTime.Evaluate(timeCounter / duration));
+                Vector2 newPos = begPos + (totalDistance * wallPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
                 oldPos = transform.position;
                 movement.Teleport(newPos);
 
@@ -290,6 +296,9 @@ public class GrabAttack : StrongAttack
 
     private void OnDrawGizmosSelected()
     {
+        if (!drawGizmos)
+            return;
+
         Gizmos.color = Color.green;
         Circle.GizmosDraw(transform.position, range);
         Circle.GizmosDraw(transform.position, minRange);

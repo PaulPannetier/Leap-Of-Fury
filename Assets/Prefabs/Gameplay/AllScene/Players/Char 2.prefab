@@ -605,10 +605,8 @@ MonoBehaviour:
   - {fileID: 5696250467530998310}
   - {fileID: 8612698283953875211}
   - {fileID: 9027861815646793550}
-  - {fileID: 0}
   - {fileID: 49532349443289084}
   - {fileID: 6848550487051244944}
-  - {fileID: 0}
   componentsToSynchroniseInClone:
   - {fileID: 1261712740702541876}
   chidrenToRemoveInClone: []
@@ -763,6 +761,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 0
+  drawGizmos: 1
   castRadius: 0.5
   minRange: 0.38
   range: 7

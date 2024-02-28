@@ -676,7 +676,6 @@ MonoBehaviour:
   clones: []
   cloner: {fileID: 0}
   componentsToDisableInClone:
-  - {fileID: 0}
   - {fileID: 7111324779284635613}
   - {fileID: 3712884546189942275}
   - {fileID: 6057168255707342057}
@@ -811,8 +810,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
   drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
@@ -825,6 +822,8 @@ MonoBehaviour:
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.15
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
 --- !u!114 &8225929942963548096
 MonoBehaviour:
   m_ObjectHideFlags: 0

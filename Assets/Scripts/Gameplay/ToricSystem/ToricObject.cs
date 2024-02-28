@@ -210,7 +210,6 @@ public class ToricObject : MonoBehaviour
 
             foreach(Component comp in componentsToSynchroniseInClone)
             {
-                string mess = comp.GetType().Name;
                 SynchComponent(comp);
             }
         }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.U2D;
 
 [RequireComponent(typeof(Movement), typeof(SpriteRenderer))]
 public class TransparencyPassif : PassifAttack
@@ -30,7 +31,7 @@ public class TransparencyPassif : PassifAttack
         base.Update();
         float target = movement.isGrounded || movement.onWall ? 1f : minTransparency;
         float current = Mathf.MoveTowards(spriteRenderer.color.a, target, ((1f - minTransparency) / transitionTime) * Time.deltaTime);
-        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, current);
+        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, current); ; ;
     }
 
 #if UNITY_EDITOR
