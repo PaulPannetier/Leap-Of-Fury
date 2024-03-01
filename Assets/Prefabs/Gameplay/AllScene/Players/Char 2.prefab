@@ -765,7 +765,7 @@ MonoBehaviour:
   castRadius: 0.5
   minRange: 0.38
   range: 7
-  collisionRadius: 0.8
+  charCollisionRadius: 0.8
   collisionOffset: {x: 0, y: -0.14}
   keepSpeedAtEnd: 1
   waitingTimeWhenWallGrab: 0.5

@@ -2684,7 +2684,7 @@ MonoBehaviour:
   castRadius: 0.5
   minRange: 0.38
   range: 7
-  collisionRadius: 0.8
+  charCollisionRadius: 1
   collisionOffset: {x: 0, y: -0.14}
   keepSpeedAtEnd: 1
   waitingTimeWhenWallGrab: 0.5
@@ -3045,7 +3045,7 @@ Transform:
   m_GameObject: {fileID: 1897991045993384735}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.77, y: -1.12, z: 0}
+  m_LocalPosition: {x: -8.77, y: -1.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

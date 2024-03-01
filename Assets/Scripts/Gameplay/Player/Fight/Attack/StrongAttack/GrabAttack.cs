@@ -27,7 +27,7 @@ public class GrabAttack : StrongAttack
     [SerializeField] private float castRadius = 0.5f;
     [SerializeField] private float minRange = 1.5f;
     [SerializeField] private float range = 10f;
-    [SerializeField] private float collisionRadius = 1f;
+    [SerializeField] private float charCollisionRadius = 1f;
     [SerializeField] private Vector2 collisionOffset= Vector2.zero;
     [SerializeField] private bool keepSpeedAtEnd = true;
 
@@ -276,7 +276,7 @@ public class GrabAttack : StrongAttack
 
     private void PerformCollision(uint[] ignoreID = null)
     {
-        Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + collisionOffset, collisionRadius, charMask);
+        Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + collisionOffset, charCollisionRadius, charMask);
 
         foreach (Collider2D col in cols)
         {
@@ -305,7 +305,7 @@ public class GrabAttack : StrongAttack
         Circle.GizmosDraw(transform.position, range);
         Circle.GizmosDraw(transform.position, minRange);
         Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, castRadius);
-        Circle.GizmosDraw((Vector2)transform.position + collisionOffset, collisionRadius);
+        Circle.GizmosDraw((Vector2)transform.position + collisionOffset, charCollisionRadius);
         Gizmos.color = Color.red;
         Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, wallGap);
     }
@@ -317,7 +317,7 @@ public class GrabAttack : StrongAttack
         waitingTimeWhenWallGrab = Mathf.Max(0f, waitingTimeWhenWallGrab);
         waitingTimeWhenCharGrab = Mathf.Max(0f, waitingTimeWhenCharGrab);
         maxWallGrabDuration = Mathf.Max(0f, maxWallGrabDuration);
-        collisionRadius = Mathf.Max(0f, collisionRadius);
+        charCollisionRadius = Mathf.Max(0f, charCollisionRadius);
         wallGap = Mathf.Max(0f, wallGap);
         this.transform = base.transform;
         charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
