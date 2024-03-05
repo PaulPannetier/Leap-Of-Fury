@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 7187370182271411996}
   - component: {fileID: 1125352181698265087}
   - component: {fileID: 8331574599252283194}
+  - component: {fileID: -5930288376104977610}
   m_Layer: 8
   m_Name: Char 3
   m_TagString: Char
@@ -555,8 +556,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
   drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
@@ -569,6 +568,8 @@ MonoBehaviour:
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.15
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
 --- !u!114 &1125352181698265087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,6 +617,27 @@ MonoBehaviour:
   explosionForce: 0.8
   explosionDuration: 1.5
   explosionPrefabs: {fileID: 8784538023861173684, guid: 9c19b9e382562f841b697e6263e8dfc5, type: 3}
+--- !u!114 &-5930288376104977610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090791378756873177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74aa3b3f011deb646bf44c5ca6173250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackForce: 0
+  castDuration: 0
+  cooldown:
+    duration: 0
+  enableBehaviour: 1
+  durationToWait: 1
+  transparency: 0.06
+  maxSpeedWhenNotMove: 0.1
+  colorFadeDuration: 0.5
 --- !u!1001 &6885330059463784344
 PrefabInstance:
   m_ObjectHideFlags: 0

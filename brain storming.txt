@@ -53,7 +53,7 @@ perso 2 : *
 perso 3 : *
 	  attack faible : tir de flèche légèrement téléguidé à récup, si on reclick la flèche se divise en 3.//ok
 	  attack forte : tp a moyenne porté (traversé de mur possible) qui explose //ok
-	  Passif : jsp ***
+	  Passif : Deviens quasi completement invisible si il ne bouge plus pendant X sec.
 
 perso 4 : *
 	  attack faible : lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur.//ok
