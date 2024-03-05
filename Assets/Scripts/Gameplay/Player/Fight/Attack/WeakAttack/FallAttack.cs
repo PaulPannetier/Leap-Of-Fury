@@ -172,10 +172,7 @@ public class FallAttack : WeakAttack
 
     public void OnTouchEnemyByShockWave(GameObject enemy, FloorShockWave shockWave)
     {
-        float tmp = attackForce;
-        attackForce = shockWave.attackForce;
         OnTouchEnemy(enemy);
-        attackForce = tmp;
     }
 
     #region Gizmos/OnValidate

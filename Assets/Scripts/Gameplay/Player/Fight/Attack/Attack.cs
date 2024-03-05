@@ -7,7 +7,6 @@ public abstract class Attack : MonoBehaviour
     protected EventController eventController;
     protected PlayerCommon playerCommon;
 
-    [Range(0f, 100f)] public float attackForce;
     [Tooltip("Durée l'immobilité après avoir lancé le sort en sec")] public float castDuration;
     [SerializeField] protected Cooldown cooldown;
 

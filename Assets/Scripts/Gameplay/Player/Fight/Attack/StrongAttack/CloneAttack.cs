@@ -28,8 +28,6 @@ public class CloneAttack : StrongAttack
     [HideInInspector] public bool originalCreateExplosionThisFrame;
     [HideInInspector] public Vector2 originalExplosionPosition;
 
-    public new float attackForce => cloneWeakAttack.attackForce;
-
     protected override void Awake()
     {
         base.Awake();
