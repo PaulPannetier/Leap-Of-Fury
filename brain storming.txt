@@ -46,9 +46,8 @@ perso 1 : *
 
 perso 2 : *
 	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
-	  attack forte : Le joueur tire X projectiles dans un cone devant lui qui ricoche sur les murs 3 fois.//ok
 	  attack forte 2ème idée : Le joueur accroche le mur ou le perso dans la direction des input (8dir). Si c'est un joueur il le tue, sinon il va sur le mur en tuant tout sur son passage.//ok
-	  Passif : Des fioles/bonus apparaise donnant + 1 au X, augmente la vitesse des tir.//ok
+	  Passif :
 
 perso 3 : *
 	  attack faible : tir de flèche légèrement téléguidé à récup, si on reclick la flèche se divise en 3.//ok

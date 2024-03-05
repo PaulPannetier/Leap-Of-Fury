@@ -12,9 +12,24 @@ public class LightManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
 
-        Light2D[] allLights = GetComponentsInChildren<Light2D>();
+    private void Start()
+    {
+        EventManager.instance.callbackOnMapChanged += OnMapLoaded;
+    }
+
+    private void OnMapLoaded(LevelMapData levelMapData)
+    {
+        Light2D[] allLights = levelMapData.GetComponentsInChildren<Light2D>();
         globalLights = allLights.Where((Light2D l) => l.lightType == Light2D.LightType.Global).ToArray();
         lights = allLights.Where((Light2D l) => l.lightType != Light2D.LightType.Global).ToArray();
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this)
+            instance = null;
+        EventManager.instance.callbackOnMapChanged -= OnMapLoaded;
     }
 }

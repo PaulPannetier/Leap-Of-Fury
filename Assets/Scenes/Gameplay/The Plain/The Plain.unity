@@ -128,11 +128,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
   m_PrefabInstance: {fileID: 8970924278945479409}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &778908268 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2119721185, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
-  m_PrefabInstance: {fileID: 1393366166460120882}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1229850465
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,6 +502,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089837d590454ee4f9a13e9f78072885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1393366166460120884 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6305118734668143482, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+  m_PrefabInstance: {fileID: 1393366166460120882}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d158fa302b63274dbe3bdd09b468ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1911427560590060146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -560,44 +566,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1393366166460120883}
     - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: enableBehaviour
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: mapsPrefabs.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: suffleMapWhenLevelStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: durationToWaitAtBegining
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: playFirstMapAtLevelStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: mapsPrefabs.Array.data[0]
+      propertyPath: endLevelMenu
       value: 
-      objectReference: {fileID: 6462490999691983995, guid: 28ef629c5f6483444be80e242b5fd977, type: 3}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: mapsPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 704354889442834312, guid: 18169cbf44d6e3143a6d96b3a12c5ede, type: 3}
+      objectReference: {fileID: 1393366166460120884}
     - target: {fileID: 6537150797850709026, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
       propertyPath: m_Name
       value: LevelManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 8676859684077006534, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: levelNameUI
-      value: 
-      objectReference: {fileID: 778908268}
-    - target: {fileID: 8676859684077006534, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: enableBehaviour
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

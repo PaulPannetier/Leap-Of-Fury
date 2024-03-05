@@ -483,8 +483,8 @@ public class AStartToric
                 up = down = right = left = upRight = upLeft = downRight = downLeft = null;
                 if (x == 0)
                 {
-                    up = nodes[x, y + 1];
-                    down = nodes[x, y - 1];
+                    up = nodes[x, (y + 1) % map.GetLength(1)];
+                    down = nodes[x, Useful.ClampModulo(0, map.GetLength(1), y - 1)];
                     right = nodes[x + 1, y];
                     left = nodes[map.GetLength(0) - 1, y];
 
@@ -512,8 +512,8 @@ public class AStartToric
                 }
                 else if (x == map.GetLength(0) - 1)
                 {
-                    up = nodes[x, y + 1];
-                    down = nodes[x, y - 1];
+                    up = nodes[x, (y + 1) % map.GetLength(1)];
+                    down = nodes[x, Useful.ClampModulo(0, map.GetLength(1), y - 1)];
                     right = nodes[0, y];
                     left = nodes[x - 1, y];
 
@@ -542,25 +542,29 @@ public class AStartToric
                 }
                 else if (y == 0)
                 {
+                    int xP1 = (x + 1) % map.GetLength(0);
+                    int xM1 = Useful.ClampModulo(0, map.GetLength(0), x - 1);
                     up = nodes[x, y + 1];
                     down = nodes[x, map.GetLength(1) - 1];
-                    right = nodes[x + 1, y];
-                    left = nodes[x - 1, y];
-                    upRight = nodes[x + 1, y + 1];
-                    upLeft = nodes[x - 1, y + 1];
-                    downRight = nodes[x + 1, map.GetLength(1) - 1];
-                    downLeft = nodes[x - 1, map.GetLength(1) - 1];
+                    right = nodes[xP1, y];
+                    left = nodes[xM1, y];
+                    upRight = nodes[xP1, y + 1];
+                    upLeft = nodes[xM1, y + 1];
+                    downRight = nodes[xP1, map.GetLength(1) - 1];
+                    downLeft = nodes[xM1, map.GetLength(1) - 1];
                 }
                 else if (y == map.GetLength(1) - 1)
                 {
+                    int xP1 = (x + 1) % map.GetLength(0);
+                    int xM1 = Useful.ClampModulo(0, map.GetLength(0), x - 1);
                     up = nodes[x, 0];
                     down = nodes[x, y - 1];
-                    right = nodes[x + 1, y];
-                    left = nodes[x - 1, y];
-                    upRight = nodes[x + 1, 0];
-                    upLeft = nodes[x - 1, 0];
-                    downRight = nodes[x + 1, y - 1];
-                    downLeft = nodes[x - 1, y - 1];
+                    right = nodes[xP1, y];
+                    left = nodes[xM1, y];
+                    upRight = nodes[xP1, 0];
+                    upLeft = nodes[xM1, 0];
+                    downRight = nodes[xP1, y - 1];
+                    downLeft = nodes[xM1, y - 1];
                 }
                 else
                 {

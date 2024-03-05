@@ -34,7 +34,6 @@ public class CycleDayNightManager : MonoBehaviour
         EventManager.instance.callbackOnLevelRestart += OnLevelRestart;
         EventManager.instance.callbackOnLevelStart += OnLevelStart;
         counterDay = 0;
-        ActivateDay(startLevelAtDay);
     }
 
     private void OnLevelStart(string levelName)
@@ -104,5 +103,11 @@ public class CycleDayNightManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.instance.callbackOnLevelRestart -= OnLevelRestart;
+        EventManager.instance.callbackOnLevelStart -= OnLevelStart;
     }
 }

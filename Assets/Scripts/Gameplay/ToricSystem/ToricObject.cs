@@ -39,7 +39,7 @@ public class ToricObject : MonoBehaviour
     private void Awake()
     {
         onTeleportCallback = (Vector2 newPos, Vector2 oldPos) => { };
-        LevelMapData.onMapChange += OnMapChange;
+        EventManager.instance.callbackOnMapChanged += OnMapChange;
         this.transform = base.transform;
     }
 
@@ -340,7 +340,7 @@ public class ToricObject : MonoBehaviour
 
     private void OnDestroy()
     {
-        LevelMapData.onMapChange -= OnMapChange;
+        EventManager.instance.callbackOnMapChanged -= OnMapChange;
         PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
 

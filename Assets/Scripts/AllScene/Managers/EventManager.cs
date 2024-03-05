@@ -11,6 +11,7 @@ public class EventManager : MonoBehaviour
     public Action<string> callbackOnLevelStart;
     public Action<string> callbackOnLevelEnd;
     public Action<string> callbackOnLevelRestart;
+    public Action<LevelMapData> callbackOnMapChanged;
 
     private void Awake()
     {
@@ -57,5 +58,10 @@ public class EventManager : MonoBehaviour
     public void OnLevelEnd(string levelName)
     {
         callbackOnLevelEnd.Invoke(levelName);
+    }
+
+    public void OnMapChanged(LevelMapData levelMapData)
+    {
+        callbackOnMapChanged.Invoke(levelMapData);
     }
 }

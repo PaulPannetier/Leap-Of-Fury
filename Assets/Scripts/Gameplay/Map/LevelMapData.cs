@@ -28,7 +28,7 @@ public class LevelMapData : MonoBehaviour
             _currentMap = value;
         }
     }
-    public static Action<LevelMapData> onMapChange = default(Action<LevelMapData>);
+    //public static Action<LevelMapData> onMapChange = default(Action<LevelMapData>);
 
     private SpawnConfigsData spawnConfigs;
     private Grid grid;
@@ -96,7 +96,7 @@ public class LevelMapData : MonoBehaviour
         }
         this.mapColliders = mapColliders.ToArray();
 
-        onMapChange.Invoke(this);
+        EventManager.instance.OnMapChanged(this);
     }
 
     #endregion

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7320278589001595787}
-  - component: {fileID: 5999535417688878524}
   - component: {fileID: 2181117585642853210}
   m_Layer: 0
   m_Name: LevelManager
@@ -33,20 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5999535417688878524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7320278589001595780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24956b4a47b852c4bb8e9be43984a5c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableBehaviour: 0
-  levelNameUI: {fileID: 0}
 --- !u!114 &2181117585642853210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,8 +50,10 @@ MonoBehaviour:
   nbKillsToWin: 7
   waitingTimeAfterLastKill: 2
   scoreMenu: {fileID: 0}
+  endLevelMenu: {fileID: 0}
   suffleMapWhenLevelStart: 1
   playFirstMapAtLevelStart: 1
   mapsPrefabs:
-  - {fileID: 5838678480386065176, guid: 422a70df7074b7d4f8f588735e305b8d, type: 3}
+  - {fileID: 4099163099544890892, guid: 422a70df7074b7d4f8f588735e305b8d, type: 3}
   enableBehaviour: 0
+  _DEBUGendLevel: 0

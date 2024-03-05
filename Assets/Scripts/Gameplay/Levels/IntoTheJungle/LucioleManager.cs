@@ -79,17 +79,17 @@ public class LucioleManager : MonoBehaviour
 
     private void DisableLucioles()
     {
-        foreach (Luciole l in lstLucioles)
+        foreach (Luciole luciole in lstLucioles)
         {
-            l.enableBehaviour = false;
+            luciole.enableBehaviour = false;
         }
     }
 
     private void EnableLucioles()
     {
-        foreach (Luciole l in lstLucioles)
+        foreach (Luciole luciole in lstLucioles)
         {
-            l.enableBehaviour = true;
+            luciole.enableBehaviour = true;
         }
     }
 
@@ -97,7 +97,10 @@ public class LucioleManager : MonoBehaviour
     {
         if (instance != this)
             return;
+
         PauseManager.instance.callBackOnPauseEnable -= DisableLucioles;
         PauseManager.instance.callBackOnPauseDisable -= EnableLucioles;
+        EventManager.instance.callbackOnLevelStart -= OnLevelStart;
+        EventManager.instance.callbackOnLevelRestart -= OnLevelRestart;
     }
 }

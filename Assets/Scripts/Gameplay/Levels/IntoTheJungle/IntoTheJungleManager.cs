@@ -22,10 +22,9 @@ public class IntoTheJungleManager : LevelManager
         if ((start && CycleDayNightManager.instance.startLevelAtDay) || CycleDayNightManager.instance.isDay)
             return;
 
-        GameObject[] chars = GameObject.FindGameObjectsWithTag("Char");
-        foreach (GameObject charGO in chars)
+        foreach (Transform t in charParent)
         {
-            GameObject lightTouchFloor = Instantiate(playerLightPrefabs, charGO.transform.position, Quaternion.identity, charGO.transform);
+            GameObject lightTouchFloor = Instantiate(playerLightPrefabs, t.position, Quaternion.identity, t.transform);
             lightTouchFloor.transform.localPosition = Vector3.zero;
         }
     }

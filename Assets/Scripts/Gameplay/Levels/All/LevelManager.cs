@@ -63,7 +63,7 @@ public abstract class LevelManager : MonoBehaviour
         instance = this;
     }
 
-    #region Start/ReStart level
+    #region Start/Restart level
 
     protected virtual void Start()
     {
@@ -176,8 +176,15 @@ public abstract class LevelManager : MonoBehaviour
             EventManager.instance.callbackOnPlayerDeath += OnPlayerDie;
             EventManager.instance.callbackOnPlayerDeathByEnvironnement += OnPlayerDieByEnvironnement;
             PlayerScore.nbKillsToWin = nbKillsToWin;
-            EventManager.instance.OnLevelStart(levelName);
+            StartCoroutine(CallbackOnLevelStart());
         }
+    }
+
+    private IEnumerator CallbackOnLevelStart()
+    {
+        yield return null;
+        yield return null;
+        EventManager.instance.OnLevelStart(levelName);
     }
 
     protected virtual void RestartLevel()
@@ -194,6 +201,13 @@ public abstract class LevelManager : MonoBehaviour
         SpawnChar(spawnPoints);
 
         lastTimeBeginLevel = Time.time;
+        StartCoroutine(CallbackOnLevelRestart());
+    }
+
+    private IEnumerator CallbackOnLevelRestart()
+    {
+        yield return null;
+        yield return null;
         EventManager.instance.OnLevelRestart(levelName);
     }
 

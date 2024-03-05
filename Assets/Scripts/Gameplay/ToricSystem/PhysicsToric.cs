@@ -15,7 +15,7 @@ public static class PhysicsToric
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Start()
     {
-        LevelMapData.onMapChange += OnMapChange;
+        EventManager.instance.callbackOnMapChanged += OnMapChange;
     }
 
     private static void OnMapChange(LevelMapData mapData)
