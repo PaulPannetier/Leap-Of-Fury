@@ -15,6 +15,7 @@ public class GrabAttack : StrongAttack
     private Vector2 collisionPoint;
     private new Transform transform;
     private List<uint> charAlreadyTouch;
+    private float currentWallGap;
 
     private bool isCharTouch => charTouch != null;
 
@@ -36,7 +37,7 @@ public class GrabAttack : StrongAttack
     [SerializeField] private float maxWallGrabDuration = 0.7f;
     [SerializeField, Tooltip("The duration of the dash compare to the distance, in %age of maxWallGrabDuration")] private AnimationCurve wallDurationOverDistance;
     [SerializeField, Tooltip("The position (position progress) over time in %age")] private AnimationCurve wallPositionOverTime;
-    [SerializeField] private float wallGap = 0.5f;
+    [SerializeField] private float wallGapUp = 0.7f, wallGapDown, wallGapRight, wallGapLeft;
 
     [Header("Char")]
     [SerializeField] private float waitingTimeWhenCharGrab = 0.1f;
@@ -89,6 +90,55 @@ public class GrabAttack : StrongAttack
         charTouch = walltouch = null;
 
         Vector2 dir = movement.GetCurrentDirection(true);
+
+        if (dir.x > Mathf.Epsilon)
+        {
+            if (dir.y > Mathf.Epsilon)
+            {
+                currentWallGap = (wallGapRight + wallGapUp) * 0.5f * Mathf.Sqrt(2f);
+            }
+            else if (dir.y < -Mathf.Epsilon)
+            {
+                currentWallGap = (wallGapRight + wallGapDown) * 0.5f * Mathf.Sqrt(2f);
+            }
+            else
+            {
+                currentWallGap = wallGapRight;
+            }
+        }
+        else if (dir.x < -Mathf.Epsilon)
+        {
+            if (dir.y > Mathf.Epsilon)
+            {
+                currentWallGap = (wallGapLeft + wallGapUp) * 0.5f * Mathf.Sqrt(2f);
+            }
+            else if (dir.y < -Mathf.Epsilon)
+            {
+                currentWallGap = (wallGapLeft + wallGapDown) * 0.5f * Mathf.Sqrt(2f);
+            }
+            else
+            {
+                currentWallGap = wallGapLeft;
+            }
+        }
+        else
+        {
+            if (dir.y > Mathf.Epsilon)
+            {
+                currentWallGap = wallGapUp;
+            }
+            else if (dir.y < -Mathf.Epsilon)
+            {
+                currentWallGap = wallGapDown;
+            }
+            else
+            {
+                currentWallGap = (wallGapRight + wallGapLeft) * 0.5f;
+                Debug.LogWarning("Debug pls");
+                LogManager.instance.WriteLog("Movement.GetCurrentDirection cannot return the vector : " + dir, dir, currentWallGap);
+            }
+        }
+
         RaycastHit2D[] raycastAll = PhysicsToric.CircleCastAll(transform.position, dir, castRadius, range, charAndGroundMask);
 
         int RaycastComparer(RaycastHit2D r1, RaycastHit2D r2)
@@ -194,6 +244,7 @@ public class GrabAttack : StrongAttack
             Vector2 begPos = transform.position;
             Vector2 oldPos = begPos;
             Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);
+
             float totalDistance = PhysicsToric.Distance(begPos, collisionPoint);
             float duration = maxCharGrabDuration * charDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / range));
 
@@ -238,8 +289,9 @@ public class GrabAttack : StrongAttack
 
             Vector2 begPos = transform.position;
             Vector2 oldPos = begPos;
-            Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);
-            Vector2 target = collisionPoint - wallGap * dir;
+            Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);            
+
+            Vector2 target = collisionPoint - currentWallGap * dir;
             float totalDistance = PhysicsToric.Distance(begPos, target);
             float duration = maxWallGrabDuration * wallDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / range));
 
@@ -307,7 +359,6 @@ public class GrabAttack : StrongAttack
         Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, castRadius);
         Circle.GizmosDraw((Vector2)transform.position + collisionOffset, charCollisionRadius);
         Gizmos.color = Color.red;
-        Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, wallGap);
     }
 
     private void OnValidate()
@@ -317,8 +368,12 @@ public class GrabAttack : StrongAttack
         waitingTimeWhenWallGrab = Mathf.Max(0f, waitingTimeWhenWallGrab);
         waitingTimeWhenCharGrab = Mathf.Max(0f, waitingTimeWhenCharGrab);
         maxWallGrabDuration = Mathf.Max(0f, maxWallGrabDuration);
+        maxCharGrabDuration = Mathf.Max(0f, maxCharGrabDuration);
         charCollisionRadius = Mathf.Max(0f, charCollisionRadius);
-        wallGap = Mathf.Max(0f, wallGap);
+        wallGapUp = Mathf.Max(0f, wallGapUp);
+        wallGapDown = Mathf.Max(0f, wallGapDown);
+        wallGapLeft = Mathf.Max(0f, wallGapLeft);
+        wallGapRight = Mathf.Max(0f, wallGapRight);
         this.transform = base.transform;
         charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
         charMask = LayerMask.GetMask("Char");

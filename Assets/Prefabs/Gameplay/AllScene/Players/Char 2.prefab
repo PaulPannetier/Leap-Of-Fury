@@ -768,16 +768,16 @@ MonoBehaviour:
   charCollisionRadius: 0.8
   collisionOffset: {x: 0, y: -0.14}
   keepSpeedAtEnd: 1
-  waitingTimeWhenWallGrab: 0.5
-  maxWallGrabDuration: 1
+  waitingTimeWhenWallGrab: 0.25
+  maxWallGrabDuration: 0.6
   wallDurationOverDistance:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -785,8 +785,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -818,17 +818,20 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  wallGap: 0.7
-  waitingTimeWhenCharGrab: 0.3
-  maxCharGrabDuration: 0.7
+  wallGapUp: 0.7
+  wallGapDown: 1.05
+  wallGapRight: 0.5
+  wallGapLeft: 0.5
+  waitingTimeWhenCharGrab: 0.25
+  maxCharGrabDuration: 0.6
   charDurationOverDistance:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -836,8 +839,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
