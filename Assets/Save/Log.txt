@@ -112,3 +112,18 @@ LogMessage :
         Value : (-15.97, 7.54, 0.00)
     }
 }
+LogMessage : 
+{
+    Error : The number of clones of th GO cannot exceed 3 but reach 4,
+    Params : 3
+    {
+        Type : List`1,
+        Value : System.Collections.Generic.List`1[ToricObject+ObjectClone]
+
+        Type : Int32,
+        Value : 3
+
+        Type : Vector3,
+        Value : (-15.96, 7.67, 0.00)
+    }
+}
