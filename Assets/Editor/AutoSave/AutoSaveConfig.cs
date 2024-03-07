@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 
 namespace Tarodev {
@@ -12,3 +14,5 @@ namespace Tarodev {
         public bool Logging;
     }
 }
+
+#endif

@@ -119,6 +119,7 @@ public class BuildCreator : Editor
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, "PartyGame.exe");
             buildPlayerOptions.target = BuildTarget.StandaloneWindows;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.advancedDebug ? new string[] { "ADVANCE_DEBUG" } : new string[] { };
             Debug.Log("Start building at " + buildDir);
             //BuildReport reporting = BuildPipeline.BuildPlayer(buildPlayerOptions);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
@@ -148,13 +149,21 @@ public class BuildCreator : Editor
                 }
 
                 //set default configuration
-                if(buildCreatorConfig.setDefaultSettingAndConfig)
+                if(buildCreatorConfig.setDefaultSettingAndInput)
                 {
-                    ConfigurationData defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, "English", FullScreenMode.FullScreenWindow, true);
-                    File.WriteAllText(Path.Combine(saveDirectory, "configuration" + saveFileExtension), Save.ConvertObjectToJSONString(defaultConfig));
+                    File.WriteAllText(Path.Combine(saveDirectory, "configuration" + saveFileExtension),  "");
 
                     //clear stat file
                     File.WriteAllText(Path.Combine(saveDirectory, "stats" + saveFileExtension), Save.ConvertObjectToJSONString(new StatisticsData(0f, 0f, 0, 0)));
+
+                    InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "inputs" + saveFileExtension));
+                    InputManager.SetCurrentController(BaseController.KeyboardAndGamepad);
+                    InputManager.SaveConfiguration(@"//" + Path.Combine("Save", "tmp", "inputs.tmp"));
+                    string tmpPath = Path.Combine(Application.dataPath, "Save", "tmp", "inputs.tmp");
+                    string inputsText = File.ReadAllText(tmpPath);
+                    File.WriteAllText(Path.Combine(saveDirectory, "inputs" + saveFileExtension), inputsText);
+                    File.Delete(tmpPath);
+                    InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "inputs" + saveFileExtension));
                 }
 
                 //reset log file

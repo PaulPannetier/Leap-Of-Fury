@@ -7,6 +7,12 @@ public class SettingsManager : MonoBehaviour
 {
     public static SettingsManager instance;
 
+#if UNITY_EDITOR
+
+    [SerializeField] private bool clearConfiguration = false;
+
+#endif
+
     public const string saveFileExtension = ".partyGame";
     [HideInInspector] public ConfigurationData defaultConfig { get; private set; }
     [HideInInspector] public ConfigurationData currentConfig { get; private set; }
@@ -23,26 +29,47 @@ public class SettingsManager : MonoBehaviour
 
     private void Start()
     {
+        LoadSettings();
+    }
+
+    private ConfigurationData GetDefaultConfig()
+    {
         string defaultLanguage = "English";
         if (Application.systemLanguage == SystemLanguage.French)
         {
             defaultLanguage = "Francais";
         }
-        defaultConfig = new ConfigurationData(new Vector2Int(1920, 1080), new RefreshRate { numerator = 60, denominator = 1 }, defaultLanguage, FullScreenMode.FullScreenWindow, true);
-        LoadSettings();
+
+        Vector2Int defaultResolusion = GetAvailableResolutions()[0];
+        RefreshRate defaultRefreshRate = GetAvailableRefreshRate()[0];
+
+        return new ConfigurationData(defaultResolusion, defaultRefreshRate, defaultLanguage, FullScreenMode.FullScreenWindow, true, SystemInfo.deviceUniqueIdentifier);
     }
 
     public void LoadSettings()
     {
-        if(!Save.ReadJSONData(@"/Save/configuration" + saveFileExtension, out ConfigurationData tmp))
+        defaultConfig = GetDefaultConfig();
+
+        if (!Save.ReadJSONData(@"/Save/configuration" + saveFileExtension, out ConfigurationData tmp))
         {
             currentConfig = defaultConfig.Clone();
-            currentConfig = new ConfigurationData(currentConfig.resolusion, currentConfig.targetedFPS, currentConfig.language, currentConfig.windowMode, false);
-            Save.WriteJSONDataAsync(currentConfig, @"/Save/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
+
+            tmp = currentConfig.Clone();
+            tmp.firstTimeLaunch = false;
+
+            Save.WriteJSONDataAsync(tmp, @"/Save/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
         }
         else
         {
-            currentConfig = tmp.Clone();
+            if(tmp.deviceID != defaultConfig.deviceID)
+            {
+                currentConfig = new ConfigurationData(defaultConfig.resolusion, defaultConfig.targetedFPS, defaultConfig.language, defaultConfig.windowMode, false, defaultConfig.deviceID);
+                SaveCurrentConfiguration();
+            }
+            else
+            {
+                currentConfig = tmp.Clone();
+            }
         }
 
         ApplyConfiguration();
@@ -53,7 +80,7 @@ public class SettingsManager : MonoBehaviour
         Save.WriteJSONData(currentConfig, @"/Save/configuration" + saveFileExtension);
     }
 
-    public void SetCurrentConfig(ConfigurationData config)
+    public void SetCurrentConfig(in ConfigurationData config)
     {
         currentConfig = config.Clone();
         ApplyConfiguration();
@@ -112,6 +139,21 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        if(clearConfiguration)
+        {
+            clearConfiguration = false;
+            Save.WriteStringAsync("", @"/Save/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
+        }
+    }
+
+#endif
+
+    #region Struct
+
     [Serializable]
     public struct ConfigurationData : ICloneable<ConfigurationData>
     {
@@ -120,6 +162,7 @@ public class SettingsManager : MonoBehaviour
         public string language;
         public FullScreenMode windowMode;
         public bool firstTimeLaunch;
+        public string deviceID;
 
         public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch)
         {
@@ -128,11 +171,24 @@ public class SettingsManager : MonoBehaviour
             this.language = language;
             this.windowMode = windowMode;
             this.firstTimeLaunch = firstTimeLaunch;
+            this.deviceID = SystemInfo.deviceUniqueIdentifier;
+        }
+
+        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, string deviceID)
+        {
+            this.resolusion = resolusion;
+            this.targetedFPS = targetedFPS;
+            this.language = language;
+            this.windowMode = windowMode;
+            this.firstTimeLaunch = firstTimeLaunch;
+            this.deviceID = deviceID;
         }
 
         public ConfigurationData Clone()
         {
-            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch);
+            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch, deviceID);
         }
     }
+
+    #endregion
 }

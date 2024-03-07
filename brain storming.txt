@@ -129,7 +129,7 @@ DA : jsp
 Name : Chaos
 
 TODO :
-Review PauseManager
 Trad all text
-floor shock wave line 35
+Menu Option
+Menu pause
 menu de fin de niveau

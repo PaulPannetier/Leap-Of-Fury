@@ -25,10 +25,7 @@ public class InputEditor : MonoBehaviour
             return;
         }
         instance = this;
-    }
 
-    private void Start()
-    {
         InputManager.LoadConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
     }
 

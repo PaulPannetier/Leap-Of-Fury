@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System.Collections;
 using UnityEngine;
 
@@ -44,3 +46,5 @@ public class TMP : MonoBehaviour
         movement.UnFreeze();
     }
 }
+
+#endif

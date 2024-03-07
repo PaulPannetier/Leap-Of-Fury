@@ -82,6 +82,15 @@ public class ControlManagerSettingMenu : MonoBehaviour
     public void OnApplyButtonDown()
     {
         BaseController curCon = GetSelectedBaseController();
+
+        if (curCon == BaseController.Keyboard)
+        {
+            InputManager.ReplaceAction("MoveUp", moveUp.key, curCon);
+            InputManager.ReplaceAction("MoveDown", moveDown.key, curCon);
+            InputManager.ReplaceAction("MoveRight", moveRight.key, curCon);
+            InputManager.ReplaceAction("MoveLeft", moveLeft.key, curCon);
+        }
+
         InputManager.ReplaceAction("Dash", dashControl.key, curCon);
         InputManager.ReplaceAction("Jump", jumpControl.key, curCon);
         InputManager.ReplaceAction("AttackWeak", attack1Control.key, curCon);

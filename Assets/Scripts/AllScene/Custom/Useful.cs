@@ -124,15 +124,15 @@ public static class Save
             string s = ConvertObjectToJSONString(objToWrite, withIndentation);
             if (s == "{}")
             {
-                callback.Invoke(false);
+                callback?.Invoke(false);
                 return false;
             }
             await File.WriteAllTextAsync(Application.dataPath + fileName, s);
-            callback.Invoke(true);
+            callback?.Invoke(true);
         }
         catch
         {
-            callback.Invoke(false);
+            callback?.Invoke(false);
             return false;
         }
         return true;
@@ -159,15 +159,15 @@ public static class Save
                 string s = ConvertObjectToJSONString(objToWrite, withIndentation);
                 if (s == "{}")
                 {
-                    data.callbackWrite(false);
+                    data.callbackWrite?.Invoke(false);
                     return;
                 }
                 File.WriteAllText(data.completeFilename, s);
-                data.callbackWrite(true);
+                data.callbackWrite?.Invoke(true);
             }
             catch
             {
-                data.callbackWrite(false);
+                data.callbackWrite?.Invoke(false);
                 return;
             }
         }
@@ -208,15 +208,15 @@ public static class Save
             string jsonString = await File.ReadAllTextAsync(Application.dataPath + fileName);
             if (jsonString == "{}")
             {
-                callback.Invoke(false, default(T));
+                callback?.Invoke(false, default(T));
                 return false;
             }
-            callback.Invoke(true, ConvertJSONStringToObject<T>(jsonString));
+            callback?.Invoke(true, ConvertJSONStringToObject<T>(jsonString));
             return true;
         }
         catch (Exception)
         {
-            callback.Invoke(false, default(T));
+            callback?.Invoke(false, default(T));
             return false;
         }
     }
@@ -240,15 +240,15 @@ public static class Save
                 string jsonString = File.ReadAllText(data.completeFilename);
                 if(jsonString == "{}")
                 {
-                    data.callbackRead.Invoke(false, default(T));
+                    data.callbackRead?.Invoke(false, default(T));
                     return;
                 }
                 T objRead = ConvertJSONStringToObject<T>(jsonString);
-                data.callbackRead(true, objRead);
+                data.callbackRead?.Invoke(true, objRead);
             }
             catch (Exception)
             {
-                data.callbackRead(false, default(T));
+                data.callbackRead?.Invoke(false, default(T));
             }
         }
     }
@@ -280,11 +280,11 @@ public static class Save
                 {
                     File.WriteAllText(threadData2.completeFilename, data);
                 }
-                threadData2.callbackWrite(true);
+                threadData2.callbackWrite?.Invoke(true);
             }
             catch
             {
-                threadData2.callbackWrite(false);
+                threadData2.callbackWrite?.Invoke(false);
                 return;
             }
         }
@@ -303,11 +303,11 @@ public static class Save
             try
             {
                 string jsonString = File.ReadAllText(data.completeFilename);
-                data.callbackRead(true, jsonString);
+                data.callbackRead?.Invoke(true, jsonString);
             }
             catch (Exception)
             {
-                data.callbackRead(false, string.Empty);
+                data.callbackRead?.Invoke(false, string.Empty);
             }
         }
     }

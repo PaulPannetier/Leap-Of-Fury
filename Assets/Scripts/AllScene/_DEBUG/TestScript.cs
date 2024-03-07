@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 using System;
 
@@ -33,3 +35,5 @@ public class TestScript : MonoBehaviour
         }
     }
 }
+
+#endif

@@ -144,12 +144,128 @@
         "keys": []
     },
     "kbKeys": {
-        "actions": [],
-        "keys": []
+        "actions": [
+            "MoveRight",
+            "MoveLeft",
+            "MoveUp",
+            "MoveDown",
+            "Dash",
+            "Grab",
+            "Jump",
+            "AttackWeak",
+            "AttackStrong"
+        ],
+        "keys": [
+            {
+                "keys": [
+                    275
+                ]
+            },
+            {
+                "keys": [
+                    276
+                ]
+            },
+            {
+                "keys": [
+                    273
+                ]
+            },
+            {
+                "keys": [
+                    274
+                ]
+            },
+            {
+                "keys": [
+                    99
+                ]
+            },
+            {
+                "keys": [
+                    118
+                ]
+            },
+            {
+                "keys": [
+                    32
+                ]
+            },
+            {
+                "keys": [
+                    100
+                ]
+            },
+            {
+                "keys": [
+                    102
+                ]
+            }
+        ]
     },
     "gpKeys": {
-        "actions": [],
-        "keys": []
+        "actions": [
+            "MoveRight",
+            "MoveLeft",
+            "MoveUp",
+            "MoveDown",
+            "Dash",
+            "Grab",
+            "Jump",
+            "AttackWeak",
+            "AttackStrong"
+        ],
+        "keys": [
+            {
+                "keys": [
+                    -73,
+                    -64
+                ]
+            },
+            {
+                "keys": [
+                    -74,
+                    -66
+                ]
+            },
+            {
+                "keys": [
+                    -71,
+                    -63
+                ]
+            },
+            {
+                "keys": [
+                    -72,
+                    -65
+                ]
+            },
+            {
+                "keys": [
+                    -62
+                ]
+            },
+            {
+                "keys": [
+                    335
+                ]
+            },
+            {
+                "keys": [
+                    330
+                ]
+            },
+            {
+                "keys": [
+                    332
+                ]
+            },
+            {
+                "keys": [
+                    333
+                ]
+            }
+        ]
     },
     "GP1RightThumbStickDeadZone": {
         "x": 0.10000000149011612,

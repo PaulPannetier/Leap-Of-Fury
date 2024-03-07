@@ -1,0 +1,38 @@
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : [ (2560, 1440), (1920, 1440), (1920, 1200), (1920, 1080), (1680, 1050), (1600, 1200), (1600, 1024), (1600, 900), (1440, 1080), (1440, 900), (1400, 1050), (1366, 768), (1360, 768), (1280, 1024), (1280, 960), (1280, 800), (1280, 768), (1280, 720), (1176, 664), (1152, 864), (1024, 768), (800, 600), (720, 576), (720, 480), (640, 480) ]
+
+        Type : String,
+        Value : UnityEngine.Debug:Log (object)
+Useful:Print<UnityEngine.Vector2Int> (UnityEngine.Vector2Int[],string,string) (at Assets/Scripts/AllScene/Custom/Useful.cs:1783)
+SettingsManager:GetDefaultConfig () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs:39)
+SettingsManager:Start () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs:27)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : [ 165.002 ]
+
+        Type : String,
+        Value : UnityEngine.Debug:Log (object)
+Useful:Print<UnityEngine.RefreshRate> (UnityEngine.RefreshRate[],string,string) (at Assets/Scripts/AllScene/Custom/Useful.cs:1783)
+SettingsManager:GetDefaultConfig () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs:42)
+SettingsManager:Start () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs:27)
+
+    }
+}

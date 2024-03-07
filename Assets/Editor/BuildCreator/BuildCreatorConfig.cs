@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 
 public class BuildCreatorConfig : ScriptableObject
@@ -12,6 +14,9 @@ public class BuildCreatorConfig : ScriptableObject
     public bool modifyGameplayScene = true;
     public bool performBuild = true;
     public bool developpementBuild = true;
+    public bool advancedDebug = false;
     public bool copySaveDirectory = true;
-    public bool setDefaultSettingAndConfig = true;
+    public bool setDefaultSettingAndInput = true;
 }
+
+#endif

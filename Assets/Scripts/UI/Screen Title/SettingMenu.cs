@@ -4,13 +4,13 @@ using TMPro;
 
 public class SettingMenu : MonoBehaviour
 {
-    private static Dictionary<int, FullScreenMode> convertIntToFullScreenMode = new Dictionary<int, FullScreenMode>
+    private static readonly Dictionary<int, FullScreenMode> convertIntToFullScreenMode = new Dictionary<int, FullScreenMode>
     {
         { 0, FullScreenMode.FullScreenWindow },
         { 1, FullScreenMode.Windowed }
     };
 
-    private static Dictionary<FullScreenMode, int> convertFullScreenModeToInt = new Dictionary<FullScreenMode, int>
+    private static readonly Dictionary<FullScreenMode, int> convertFullScreenModeToInt = new Dictionary<FullScreenMode, int>
     {
         { FullScreenMode.FullScreenWindow, 0 },
         { FullScreenMode.Windowed, 1 }
@@ -151,7 +151,7 @@ public class SettingMenu : MonoBehaviour
         ControlManagerSettingMenu.instance.OnDefaultButtonDown();
     }
 
-    public void OnEnableOptionMenu()
+    private void OnEnable()
     {
         Refresh();
 
@@ -161,11 +161,6 @@ public class SettingMenu : MonoBehaviour
         }
         mainMenu.SetActive(false);
         isEnable = true;
-    }
-
-    private void OnEnable()
-    {
-        OnEnableOptionMenu();
     }
 
     private void Update()

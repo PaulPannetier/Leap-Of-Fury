@@ -27,6 +27,14 @@ public class DebugText : MonoBehaviour
 
     private void Awake()
     {
+
+#if !UNITY_EDITOR
+
+        Destroy(gameObject);
+        return;
+
+#else
+
         if(instance != null)
         {
             Destroy(gameObject);
@@ -34,6 +42,8 @@ public class DebugText : MonoBehaviour
         }
         instance = this;
         _Text = GetComponent<TextMeshProUGUI>();
+
+#endif
     }
 
     private void Start()

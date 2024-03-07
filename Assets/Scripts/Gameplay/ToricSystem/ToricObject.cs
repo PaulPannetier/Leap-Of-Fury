@@ -265,7 +265,11 @@ public class ToricObject : MonoBehaviour
             int maxClone = enableHorizontal ? (enableVertical ? 3 : 1) : 0;
             if(clones.Count > maxClone)
             {
+#if UNITY_EDITOR || ADVANCE_DEBUG
+
                 LogManager.instance.WriteLog($"The number of clones of the GO cannot exceed {maxClone} but reach {clones.Count}", clones, maxClone, transform.position, gameObject);
+
+#endif
                 RemoveClones();
                 transform.position = PhysicsToric.GetPointInsideBounds(transform.position);
                 print("Debug pls");

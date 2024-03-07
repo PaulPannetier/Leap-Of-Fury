@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿#if UNITY_EDITOR
+
+using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
@@ -98,3 +100,5 @@ public class LineCounter : Editor
         }
     }
 }
+
+#endif

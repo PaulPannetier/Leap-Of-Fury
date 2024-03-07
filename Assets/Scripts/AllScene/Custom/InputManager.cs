@@ -1338,7 +1338,7 @@ public static class InputManager
 
         public bool ReplaceAction(string action, int key)
         {
-            if (actions.Contains(action))
+            if (controlsDic.ContainsKey(action))
             {
                 controlsDic[action] = new ListInt(key);
                 return true;
