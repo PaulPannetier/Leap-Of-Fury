@@ -19,7 +19,10 @@ public class SettingsManager : MonoBehaviour
             return;
         }
         instance = this;
+    }
 
+    private void Start()
+    {
         string defaultLanguage = "English";
         if (Application.systemLanguage == SystemLanguage.French)
         {

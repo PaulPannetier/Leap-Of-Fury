@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class IntoTheJungleManager : LevelManager
 {
@@ -8,13 +9,21 @@ public class IntoTheJungleManager : LevelManager
     protected override void StartLevel()
     {
         base.StartLevel();
-        InitIntoTheJungle(true);
+        StartCoroutine(InitIntoTheJungleCorout(true));
     }
 
     protected override void RestartLevel()
     {
         base.RestartLevel();
-        InitIntoTheJungle(false);
+        StartCoroutine(InitIntoTheJungleCorout(false));
+    }
+
+    private IEnumerator InitIntoTheJungleCorout(bool start)
+    {
+        yield return null;
+        yield return null;
+
+        InitIntoTheJungle(start);
     }
 
     private void InitIntoTheJungle(bool start)

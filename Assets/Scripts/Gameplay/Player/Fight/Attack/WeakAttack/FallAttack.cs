@@ -10,7 +10,12 @@ public class FallAttack : WeakAttack
     private Movement movement;
     private LayerMask charMask, groundMask;
 
+#if UNITY_EDITOR
+
     [SerializeField] private bool drawGizmos = true;
+
+#endif
+
     [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private float minDistanceFromGround = 0.2f;
     [SerializeField] private float speedFall = 3f;

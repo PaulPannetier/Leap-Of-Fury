@@ -16,6 +16,12 @@ public class LogManager : MonoBehaviour
     private logMessages messages;
     private bool isWritingLogs = false;
 
+#if UNITY_EDITOR
+
+    [SerializeField] private bool clearLogFile = false;
+
+#endif
+
     private void Awake()
     {
         if (instance != null)
@@ -25,6 +31,16 @@ public class LogManager : MonoBehaviour
         }
         instance = this;
         messages = new logMessages();
+    }
+
+    private void Start()
+    {
+        Application.logMessageReceived += OnLogMessageReceive;
+    }
+
+    private void OnLogMessageReceive(string condition, string stackTrace, LogType type)
+    {
+        WriteLog("An Exeption occur in runtime", type, condition, stackTrace);
     }
 
     public void AddLog(string message, params object[] values)
@@ -53,17 +69,32 @@ public class LogManager : MonoBehaviour
 
     public void ClearLog()
     {
-        StartCoroutine(WriteLogAsync(""));
+        StartCoroutine(WriteLogAsync("", false));
     }
 
-    private IEnumerator WriteLogAsync(string logData)
+    private IEnumerator WriteLogAsync(string logData, bool append = true)
     {
         while (isWritingLogs)
             yield return null;
 
         isWritingLogs = true;
-        Save.WriteStringMultiThread(logData, logPath, (bool b) => { isWritingLogs = false; }, true);
+        Save.WriteStringMultiThread(logData, logPath, (bool b) => { isWritingLogs = false; }, append);
     }
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        if(clearLogFile)
+        {
+            clearLogFile = false;
+            ClearLog();
+        }
+    }
+
+#endif
+
+    #region Struct
 
     private class logMessages
     {
@@ -131,4 +162,6 @@ public class LogManager : MonoBehaviour
             return sb.ToString();
         }
     }
+
+    #endregion
 }
