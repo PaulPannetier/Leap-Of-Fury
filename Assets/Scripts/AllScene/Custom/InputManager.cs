@@ -1370,16 +1370,17 @@ public static class InputManager
         public InputData ToGeneralGamepadInputData()
         {
             InputData res = new InputData();
-            for (int i = 0; i < actions.Count; i++)
+            foreach (KeyValuePair<string, ListInt> item in controlsDic)
             {
-                foreach (int key in controlsDic[actions[i]].keys)
+                foreach(int input in item.Value)
                 {
-                    if (IsGamepadKey((InputKey)key))
+                    if (IsGamepadKey((InputKey)input))
                     {
-                        res.AddAction(actions[i], (int)ConvertGamepadKeyToGeneralKey((GamepadKey)key));
+                        res.AddAction(item.Key, (int)ConvertGamepadKeyToGeneralKey((GamepadKey)input));
                     }
                 }
             }
+
             return res;
         }
 

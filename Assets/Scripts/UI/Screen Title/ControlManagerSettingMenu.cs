@@ -55,7 +55,6 @@ public class ControlManagerSettingMenu : MonoBehaviour
             new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("keyboard") },
             new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("gamepad") }
         };
-        inputTypeDropdown.value = 0;
 
         inputTypeDropdown.onValueChanged.RemoveAllListeners();
         inputTypeDropdown.onValueChanged.AddListener(OnInputTypeChanged);
@@ -132,6 +131,10 @@ public class ControlManagerSettingMenu : MonoBehaviour
     private IEnumerator OnEnableCorout()
     {
         yield return null;
+        yield return null;
+
+        inputTypeDropdown.value = 0;
+
         RefreshSettings();
         RefreshControl(false);
     }

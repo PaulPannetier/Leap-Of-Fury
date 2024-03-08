@@ -54,8 +54,6 @@ public class BuildCreator : Editor
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        EditorGUILayout.Space();
-        EditorGUILayout.HelpBox("You can move this asset where ever you'd like :p, good code;", MessageType.Info);
 
         if (GUILayout.Button("Create build!"))
         {
@@ -156,6 +154,7 @@ public class BuildCreator : Editor
                     //clear stat file
                     File.WriteAllText(Path.Combine(saveDirectory, "stats" + saveFileExtension), Save.ConvertObjectToJSONString(new StatisticsData(0f, 0f, 0, 0)));
 
+                    //Write default inputs
                     InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "inputs" + saveFileExtension));
                     InputManager.SetCurrentController(BaseController.KeyboardAndGamepad);
                     InputManager.SaveConfiguration(@"//" + Path.Combine("Save", "tmp", "inputs.tmp"));
