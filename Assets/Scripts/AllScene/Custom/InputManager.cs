@@ -3216,20 +3216,20 @@ public static class InputManager
     }
 
     /// <summary>
-    /// Set the current Configuration as the default one.
+    /// Set the current Configuration of a player.
     /// </summary>
     /// <param name="player"></param>
     /// <param name="controller"></param>
-    public static void SetCurrentController(PlayerIndex player, BaseController controller)
+    public static void SetCurrentController(PlayerIndex player, BaseController controller, bool defaultConfig = false)
     {
         InputData inputs = null;
         switch (controller)
         {
             case BaseController.Keyboard:
-                inputs = defaultKBKeys;
+                inputs = defaultConfig ? defaultKBKeys : kbKeys;
                 break;
             case BaseController.Gamepad:
-                inputs = defaultGPKeys;
+                inputs = (defaultConfig ? defaultGPKeys : gpKeys).ToGeneralGamepadInputData();
                 break;
             case BaseController.KeyboardAndGamepad:
                 Debug.LogWarning("Can't load multiple inputs system for one player!");
@@ -3276,14 +3276,14 @@ public static class InputManager
         }
         if(controller == BaseController.Gamepad)
         {
-            gpKeys = defaultGPKeys.Clone();
+            gpKeys = defaultGPKeys.Clone().ToGeneralGamepadInputData();
             return;
         }
         kbKeys = defaultKBKeys.Clone();
-        gpKeys = defaultGPKeys.Clone();
+        gpKeys = defaultGPKeys.Clone().ToGeneralGamepadInputData();
     }
 
-    public static void SetCurrentControllerForGamepad(PlayerIndex player, ControllerType gamepadIndex)
+    public static void SetCurrentControllerForGamepad(PlayerIndex player, ControllerType gamepadIndex, bool defaultConfig = false)
     {
         if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
         {
@@ -3296,7 +3296,7 @@ public static class InputManager
             return;
         }
 
-        InputData inputs = defaultGPKeys.ToGamepadInputData(gamepadIndex);
+        InputData inputs = (defaultConfig ? defaultGPKeys : gpKeys).ToGamepadInputData(gamepadIndex);
 
         switch (player)
         {

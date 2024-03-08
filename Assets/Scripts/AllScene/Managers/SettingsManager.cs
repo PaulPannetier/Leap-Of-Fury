@@ -43,7 +43,7 @@ public class SettingsManager : MonoBehaviour
         Vector2Int defaultResolusion = GetAvailableResolutions()[0];
         RefreshRate defaultRefreshRate = GetAvailableRefreshRate()[0];
 
-        return new ConfigurationData(defaultResolusion, defaultRefreshRate, defaultLanguage, FullScreenMode.FullScreenWindow, true, SystemInfo.deviceUniqueIdentifier);
+        return new ConfigurationData(defaultResolusion, defaultRefreshRate, defaultLanguage, FullScreenMode.FullScreenWindow, true, false, SystemInfo.deviceUniqueIdentifier);
     }
 
     public void LoadSettings()
@@ -63,7 +63,7 @@ public class SettingsManager : MonoBehaviour
         {
             if(tmp.deviceID != defaultConfig.deviceID)
             {
-                currentConfig = new ConfigurationData(defaultConfig.resolusion, defaultConfig.targetedFPS, defaultConfig.language, defaultConfig.windowMode, false, defaultConfig.deviceID);
+                currentConfig = new ConfigurationData(defaultConfig.resolusion, defaultConfig.targetedFPS, defaultConfig.language, defaultConfig.windowMode, false, false, defaultConfig.deviceID);
                 SaveCurrentConfiguration();
             }
             else
@@ -91,6 +91,7 @@ public class SettingsManager : MonoBehaviour
     {
         Application.targetFrameRate = ((float)currentConfig.targetedFPS.value).Round();
         Screen.SetResolution(currentConfig.resolusion.x, currentConfig.resolusion.y, currentConfig.windowMode, currentConfig.targetedFPS);
+        QualitySettings.vSyncCount = currentConfig.vSync ? 1 : 0;
         LanguageManager.instance.currentlanguage = currentConfig.language;
     }
 
@@ -127,9 +128,19 @@ public class SettingsManager : MonoBehaviour
 
         foreach (Resolution resolution in resolutions)
         {
-            res.Add(resolution.refreshRateRatio);
+            bool toAdd = true;
+            foreach (RefreshRate rate in res)
+            {
+                if(rate.value.Round() == resolution.refreshRateRatio.value.Round())
+                {
+                    toAdd = false;
+                    break;
+                }
+            }
+            if(toAdd)
+                res.Add(resolution.refreshRateRatio);
         }
-        res = res.Distinct().ToList();
+
         res.Sort(RefreshRateComparison);
         return res.ToArray();
 
@@ -163,8 +174,9 @@ public class SettingsManager : MonoBehaviour
         public FullScreenMode windowMode;
         public bool firstTimeLaunch;
         public string deviceID;
+        public bool vSync;
 
-        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch)
+        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSynch)
         {
             this.resolusion = resolusion;
             this.targetedFPS = targetedFPS;
@@ -172,9 +184,10 @@ public class SettingsManager : MonoBehaviour
             this.windowMode = windowMode;
             this.firstTimeLaunch = firstTimeLaunch;
             this.deviceID = SystemInfo.deviceUniqueIdentifier;
+            this.vSync = vSynch;
         }
 
-        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, string deviceID)
+        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSynch, string deviceID)
         {
             this.resolusion = resolusion;
             this.targetedFPS = targetedFPS;
@@ -182,11 +195,12 @@ public class SettingsManager : MonoBehaviour
             this.windowMode = windowMode;
             this.firstTimeLaunch = firstTimeLaunch;
             this.deviceID = deviceID;
+            this.vSync = vSynch;
         }
 
         public ConfigurationData Clone()
         {
-            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch, deviceID);
+            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch,vSync, deviceID);
         }
     }
 

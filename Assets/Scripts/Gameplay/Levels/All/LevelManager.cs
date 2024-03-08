@@ -230,11 +230,11 @@ public abstract class LevelManager : MonoBehaviour
 
             if(InputManager.IsAGamepadController(playerData.controllerType))
             {
-                InputManager.SetCurrentControllerForGamepad(playerData.playerIndex, playerData.controllerType);
+                InputManager.SetCurrentControllerForGamepad(playerData.playerIndex, playerData.controllerType, false);
             }
             else
             {
-                InputManager.SetCurrentController(playerData.playerIndex, BaseController.Keyboard);
+                InputManager.SetCurrentController(playerData.playerIndex, BaseController.Keyboard, false);
             }
 
             tmpGO.GetComponent<Movement>().Teleport(spawnPoint);

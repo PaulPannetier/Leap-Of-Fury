@@ -64,6 +64,26 @@
 		{
             "textID": "gamepad",
             "content": "Gamepad"
+        },
+		{
+            "textID": "windowMode",
+            "content": "WindowMode"
+        },
+		{
+            "textID": "resolution",
+            "content": "Resolution"
+        },
+		{
+            "textID": "framerate",
+            "content": "Framerate"
+        },
+		{
+            "textID": "language",
+            "content": "Language"
+        },
+		{
+            "textID": "vsync",
+            "content": "vSync"
         }
     ]
 }

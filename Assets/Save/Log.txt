@@ -36,3 +36,153 @@ SettingsManager:Start () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|23_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:108)
+LevelManager.<StartLevel>g__NormalStartLevel|23_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:96)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:85)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : ControlItem.SetNameText (System.String text) (at Assets/Scripts/UI/Screen Title/ControlItem.cs:33)
+ControlManagerSettingMenu.RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:39)
+ControlManagerSettingMenu.OnEnable () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:128)
+UnityEngine.GameObject:SetActive(GameObject, Boolean)
+ButtonsFunction:LoadOption() (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:22)
+UnityEngine.Events.UnityEvent:Invoke()
+SelectableUI:OnPressed() (at Assets/Scripts/AllScene/UI/SelectableUI.cs:27)
+SelectableUIGroup:Update() (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:132)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : ControlItem.SetNameText (System.String text) (at Assets/Scripts/UI/Screen Title/ControlItem.cs:33)
+ControlManagerSettingMenu.RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:39)
+ControlManagerSettingMenu.OnEnable () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:128)
+UnityEngine.GameObject:SetActive(GameObject, Boolean)
+ButtonsFunction:LoadOption() (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:22)
+UnityEngine.Events.UnityEvent:Invoke()
+SelectableUI:OnPressed() (at Assets/Scripts/AllScene/UI/SelectableUI.cs:27)
+SelectableUIGroup:Update() (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:132)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : SettingMenu.ShowConfig (SettingsManager+ConfigurationData& configurationData) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:121)
+SettingMenu.OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:162)
+UnityEngine.GameObject:SetActive(GameObject, Boolean)
+ButtonsFunction:LoadOption() (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:22)
+UnityEngine.Events.UnityEvent:Invoke()
+SelectableUI:OnPressed() (at Assets/Scripts/AllScene/UI/SelectableUI.cs:27)
+SelectableUIGroup:Update() (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:132)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : SettingMenu.ShowConfig (SettingsManager+ConfigurationData& configurationData) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:121)
+SettingMenu.OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:162)
+UnityEngine.GameObject:SetActive(GameObject, Boolean)
+ButtonsFunction:LoadOption() (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:22)
+UnityEngine.Events.UnityEvent:Invoke()
+SelectableUI:OnPressed() (at Assets/Scripts/AllScene/UI/SelectableUI.cs:27)
+SelectableUIGroup:Update() (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:132)
+
+    }
+}

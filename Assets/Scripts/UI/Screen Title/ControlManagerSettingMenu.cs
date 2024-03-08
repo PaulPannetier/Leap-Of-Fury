@@ -1,6 +1,7 @@
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class ControlManagerSettingMenu : MonoBehaviour
 {
@@ -31,12 +32,9 @@ public class ControlManagerSettingMenu : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
-    {
-        Refresh();
-    }
+    public BaseController GetSelectedBaseController() => inputTypeDropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
 
-    private void Refresh()
+    private void RefreshSettings()
     {
         controlText.text = LanguageManager.instance.GetText("controlTextSettingMenu");
         moveUp.SetNameText(LanguageManager.instance.GetText("moveUpTextSettingMenu"));
@@ -48,7 +46,10 @@ public class ControlManagerSettingMenu : MonoBehaviour
         attack1Control.SetNameText(LanguageManager.instance.GetText("attack1TextSettingMenu"));
         attack2Control.SetNameText(LanguageManager.instance.GetText("attack2TextSettingMenu"));
         grapControl.SetNameText(LanguageManager.instance.GetText("grabTextSettingMenu"));
+    }
 
+    private void RefreshControl(bool defaultControl)
+    {
         inputTypeDropdown.options = new List<TMP_Dropdown.OptionData>()
         {
             new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("keyboard") },
@@ -59,7 +60,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         inputTypeDropdown.onValueChanged.RemoveAllListeners();
         inputTypeDropdown.onValueChanged.AddListener(OnInputTypeChanged);
 
-        SetKeysKey();
+        SetKeysKey(defaultControl);
     }
 
     private void OnInputTypeChanged(int value)
@@ -76,7 +77,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         moveDown.gameObject.SetActive(activeKB);
         moveRight.gameObject.SetActive(activeKB);
         moveLeft.gameObject.SetActive(activeKB);
-        SetKeysKey();
+        SetKeysKey(false);
     }
 
     public void OnApplyButtonDown()
@@ -101,26 +102,37 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     public void OnDefaultButtonDown()
     {
-        Refresh();
+        RefreshSettings();
+        RefreshControl(true);
     }
 
-    public BaseController GetSelectedBaseController() => inputTypeDropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
-
-    private void SetKeysKey()
+    private void SetKeysKey(bool defaultConfig)
     {
         BaseController curCon = GetSelectedBaseController();
         if (curCon == BaseController.Keyboard)
         {
-            moveUp.key = InputManager.GetInputKey("MoveUp", curCon)[0];
-            moveDown.key = InputManager.GetInputKey("MoveDown", curCon)[0];
-            moveRight.key = InputManager.GetInputKey("MoveRight", curCon)[0];
-            moveLeft.key = InputManager.GetInputKey("MoveLeft", curCon)[0];
+            moveUp.key = InputManager.GetInputKey("MoveUp", curCon, defaultConfig)[0];
+            moveDown.key = InputManager.GetInputKey("MoveDown", curCon, defaultConfig)[0];
+            moveRight.key = InputManager.GetInputKey("MoveRight", curCon, defaultConfig)[0];
+            moveLeft.key = InputManager.GetInputKey("MoveLeft", curCon, defaultConfig)[0];
         }
 
-        dashControl.key = InputManager.GetInputKey("Dash", curCon)[0];
-        jumpControl.key = InputManager.GetInputKey("Jump", curCon)[0];
-        attack1Control.key = InputManager.GetInputKey("AttackWeak", curCon)[0];
-        attack2Control.key = InputManager.GetInputKey("AttackStrong", curCon)[0];
-        grapControl.key = InputManager.GetInputKey("Grab", curCon)[0];
+        dashControl.key = InputManager.GetInputKey("Dash", curCon, defaultConfig)[0];
+        jumpControl.key = InputManager.GetInputKey("Jump", curCon, defaultConfig)[0];
+        attack1Control.key = InputManager.GetInputKey("AttackWeak", curCon, defaultConfig)[0];
+        attack2Control.key = InputManager.GetInputKey("AttackStrong", curCon, defaultConfig)[0];
+        grapControl.key = InputManager.GetInputKey("Grab", curCon, defaultConfig)[0];
+    }
+
+    private void OnEnable()
+    {
+        StartCoroutine(OnEnableCorout());
+    }
+
+    private IEnumerator OnEnableCorout()
+    {
+        yield return null;
+        RefreshSettings();
+        RefreshControl(false);
     }
 }
