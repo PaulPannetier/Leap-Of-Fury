@@ -168,39 +168,64 @@ public class SettingsManager : MonoBehaviour
     [Serializable]
     public struct ConfigurationData : ICloneable<ConfigurationData>
     {
+        [SerializeField] private CustomRefreshRate customRefreshRate;
+
         public Vector2Int resolusion;
-        public RefreshRate targetedFPS;
+        public RefreshRate targetedFPS
+        {
+            get
+            {
+                RefreshRate refreshRate;
+                refreshRate.numerator = customRefreshRate.numerator;
+                refreshRate.denominator = customRefreshRate.denominator;
+                return refreshRate;
+            }
+        }
+
         public string language;
         public FullScreenMode windowMode;
         public bool firstTimeLaunch;
         public string deviceID;
         public bool vSync;
 
-        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSynch)
+        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSync)
         {
             this.resolusion = resolusion;
-            this.targetedFPS = targetedFPS;
+            this.customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
             this.language = language;
             this.windowMode = windowMode;
             this.firstTimeLaunch = firstTimeLaunch;
             this.deviceID = SystemInfo.deviceUniqueIdentifier;
-            this.vSync = vSynch;
+            this.vSync = vSync;
         }
 
-        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSynch, string deviceID)
+        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSync, string deviceID)
         {
             this.resolusion = resolusion;
-            this.targetedFPS = targetedFPS;
+            this.customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
             this.language = language;
             this.windowMode = windowMode;
             this.firstTimeLaunch = firstTimeLaunch;
             this.deviceID = deviceID;
-            this.vSync = vSynch;
+            this.vSync = vSync;
         }
 
         public ConfigurationData Clone()
         {
-            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch,vSync, deviceID);
+            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch, vSync, deviceID);
+        }
+
+        [Serializable]
+        private struct CustomRefreshRate
+        {
+            public uint numerator;
+            public uint denominator;
+
+            public CustomRefreshRate(uint numerator, uint denominator)
+            {
+                this.numerator = numerator;
+                this.denominator = denominator;
+            }
         }
     }
 

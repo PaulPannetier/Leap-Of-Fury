@@ -43,16 +43,6 @@ public class SettingMenu : MonoBehaviour
 
     private void InitOptions()
     {
-
-    }
-
-    private void RefreshText()
-    {
-
-    }
-
-    private void Refresh()
-    {
         //Window dropdown
         List<TMP_Dropdown.OptionData> windowModeOptions = new List<TMP_Dropdown.OptionData>
         {
@@ -60,7 +50,6 @@ public class SettingMenu : MonoBehaviour
             new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image),
         };
         windowModeDropdown.options = windowModeOptions;
-        windowModeText.text = LanguageManager.instance.GetText("windowMode") + " :";
 
         //resolution dropdown
         Sprite resolutionSprite = resolutionDropdown.options[0].image;
@@ -76,7 +65,6 @@ public class SettingMenu : MonoBehaviour
         }
 
         resolutionDropdown.options = resolutionOptions;
-        resolutionText.text = LanguageManager.instance.GetText("resolution") + " :";
 
         //framerate dropdown
         List<TMP_Dropdown.OptionData> framerateOptions = new List<TMP_Dropdown.OptionData>();
@@ -86,7 +74,6 @@ public class SettingMenu : MonoBehaviour
             framerateOptions.Add(new TMP_Dropdown.OptionData(availableFramerate[i].value.Round().ToString() + " Hz", framerateSprite));
         }
         framerateDropdown.options = framerateOptions;
-        framerateText.text = LanguageManager.instance.GetText("framerate") + " :";
 
         //language dropdown
         List<TMP_Dropdown.OptionData> languageOptions = new List<TMP_Dropdown.OptionData>();
@@ -96,6 +83,13 @@ public class SettingMenu : MonoBehaviour
             languageOptions.Add(new TMP_Dropdown.OptionData(language, languageSprite));
         }
         languageDropdown.options = languageOptions;
+    }
+
+    private void RefreshText()
+    {
+        windowModeText.text = LanguageManager.instance.GetText("windowMode") + " :";
+        resolutionText.text = LanguageManager.instance.GetText("resolution") + " :";
+        framerateText.text = LanguageManager.instance.GetText("framerate") + " :";
         languageText.text = LanguageManager.instance.GetText("language") + " :";
 
         //VSynch
@@ -118,8 +112,6 @@ public class SettingMenu : MonoBehaviour
         SettingsManager.instance.SetCurrentConfig(configurationData);
 
         ControlManagerSettingMenu.instance.OnApplyButtonDown();
-
-        Refresh();
     }
 
     private void ShowConfig(in SettingsManager.ConfigurationData configurationData)
@@ -154,13 +146,15 @@ public class SettingMenu : MonoBehaviour
                 break;
             }
         }
+
+        RefreshText();
     }
 
     public void OnDefaultButtonDown()
     {
         ShowConfig(SettingsManager.instance.defaultConfig);
 
-        Refresh();
+        RefreshText();
 
         ControlManagerSettingMenu.instance.OnDefaultButtonDown();
     }
@@ -170,9 +164,9 @@ public class SettingMenu : MonoBehaviour
         availableResolutions = SettingsManager.instance.GetAvailableResolutions();
         availableFramerate = SettingsManager.instance.GetAvailableRefreshRate();
 
-        ShowConfig(SettingsManager.instance.currentConfig);
+        InitOptions();
 
-        Refresh();
+        ShowConfig(SettingsManager.instance.currentConfig);
 
         foreach (Transform t in transform)
         {
