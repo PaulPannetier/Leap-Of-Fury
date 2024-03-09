@@ -41,6 +41,16 @@ public class SettingMenu : MonoBehaviour
         isEnable = false;
     }
 
+    private void InitOptions()
+    {
+
+    }
+
+    private void RefreshText()
+    {
+
+    }
+
     private void Refresh()
     {
         //Window dropdown

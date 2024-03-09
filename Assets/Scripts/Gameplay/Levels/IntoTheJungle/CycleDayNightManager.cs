@@ -82,10 +82,8 @@ public class CycleDayNightManager : MonoBehaviour
 
         void ApplyIntensityWithSettings(float globalLightIntensity, float otherLightIntensity)
         {
-            foreach (Light2D light in LightManager.instance.globalLights)
-            {
-                light.intensity = globalLightIntensity;
-            }
+            LightManager.instance.globalLight.intensity = globalLightIntensity;
+
             foreach (Light2D light in LightManager.instance.lights)
             {
                 light.intensity = otherLightIntensity;

@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
 
@@ -6,8 +5,8 @@ public class LightManager : MonoBehaviour
 {
     public static LightManager instance;
 
-    [HideInInspector] public Light2D[] globalLights;
     [HideInInspector] public Light2D[] lights;
+    public Light2D globalLight => GlobalLight.globalLight;
 
     private void Awake()
     {
@@ -21,9 +20,7 @@ public class LightManager : MonoBehaviour
 
     private void OnMapLoaded(LevelMapData levelMapData)
     {
-        Light2D[] allLights = levelMapData.GetComponentsInChildren<Light2D>();
-        globalLights = allLights.Where((Light2D l) => l.lightType == Light2D.LightType.Global).ToArray();
-        lights = allLights.Where((Light2D l) => l.lightType != Light2D.LightType.Global).ToArray();
+        lights = levelMapData.GetComponentsInChildren<Light2D>();
     }
 
     private void OnDestroy()

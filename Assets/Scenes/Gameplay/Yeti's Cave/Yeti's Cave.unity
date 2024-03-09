@@ -185,18 +185,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
-    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
-      propertyPath: enable
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5546883787782556602, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
-      propertyPath: musicName
-      value: Yeti's Cave Theme
-      objectReference: {fileID: 0}
-    - target: {fileID: 7598418670503221542, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7598418670503221542, guid: 8c89df3dbe6c2824ab6fbc8122d6ae3e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -475,21 +463,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
-    - target: {fileID: 5034790997836796944, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
-      propertyPath: orthographic size
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5034790997836796945, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5034790997836796947, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_Name
       value: Main Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 5034790997836797167, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5034790997836797167, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -531,8 +507,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5034790997836797165, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

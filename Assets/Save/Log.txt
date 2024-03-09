@@ -451,3 +451,75 @@ UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingReferenceException: The object of type 'AudioSource' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.
+
+        Type : String,
+        Value : AudioManager+<SetVolumeSmoothCorout>d__28.MoveNext () (at Assets/Scripts/AllScene/Managers/AudioManager.cs:130)
+UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingReferenceException: The object of type 'AudioSource' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.
+
+        Type : String,
+        Value : AudioManager+<SetVolumeSmoothCorout>d__28.MoveNext () (at Assets/Scripts/AllScene/Managers/AudioManager.cs:130)
+UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|23_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:108)
+LevelManager.<StartLevel>g__NormalStartLevel|23_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:96)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:85)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|23_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:108)
+LevelManager.<StartLevel>g__NormalStartLevel|23_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:96)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:85)
+
+    }
+}

@@ -262,11 +262,43 @@ public class AudioManager : MonoBehaviour
         RmMusic(name);
     }
 
+    public string GetSoundName(string audioClipName)
+    {
+        Sound sound = Array.Find(audioClips, item => item.audioClip.name == audioClipName);
+        if (sound == null)
+            return "";
+        return sound.name;
+    }
+
+    public void OnMusicDestroy(string name)
+    {
+        if(removeCorout.ContainsKey(name))
+        {
+            Coroutine coroutine = removeCorout[name];
+            StopCoroutine(coroutine);
+            removeCorout.Remove(name);
+        }
+        if (changeVolumeCorout.ContainsKey(name))
+        {
+            Coroutine coroutine = changeVolumeCorout[name];
+            StopCoroutine(coroutine);
+            changeVolumeCorout.Remove(name);
+        }
+        if (currentSounds.ContainsKey(name))
+        {
+            currentSounds.Remove(name);
+        }
+    }
+
+#if UNITY_EDITOR
+
     public void OnValidate()
     {
         if(currentSounds != null)
             RecaculateSoundVolume();
     }
+
+#endif
 
     [Serializable]
     private class Sound

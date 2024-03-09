@@ -155,9 +155,9 @@ MonoBehaviour:
   m_AssetsPPU: 60
   m_RefResolutionX: 1920
   m_RefResolutionY: 1080
-  m_CropFrame: 0
+  m_CropFrame: 4
   m_GridSnapping: 2
-  m_FilterMode: 0
+  m_FilterMode: 1
   m_UpscaleRT: 1
   m_PixelSnapping: 0
   m_CropFrameX: 0
