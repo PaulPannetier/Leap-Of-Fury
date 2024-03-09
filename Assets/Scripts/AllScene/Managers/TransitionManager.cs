@@ -11,7 +11,12 @@ public class TransitionManager : MonoBehaviour
     public static TransitionManager instance;
 
     private Dictionary<string, OldSceneData> oldScenesData;
-    private string oldSceneName;
+    private AsyncOperation preloadSceneAsyncOperation;
+    private bool isPreloadingAScene;
+    private string scenePreload;
+
+    public string oldSceneName { get; private set; }
+    public string activeScene => SceneManager.GetActiveScene().name;
 
     private void Awake()
     {
@@ -61,17 +66,16 @@ public class TransitionManager : MonoBehaviour
         {
             oldScenesData.Add(oldSceneData.sceneName, oldSceneData);
         }
+
+        oldSceneName = oldSceneData.sceneName;
     }
 
     #region UnitySceneManagement
 
-    private AsyncOperation preloadSceneAsyncOperation;
-    private bool isPreloadingAScene;
-    private string scenePreload;
-
     public void LoadScene(string sceneName)
     {
         OnSceneLoad();
+        oldSceneName = sceneName;
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
@@ -136,6 +140,8 @@ public class TransitionManager : MonoBehaviour
             Debug.LogWarning("The scene : " + sceneName + " is not preloaded.");
             return;
         }
+        isPreloadingAScene = false;
+        scenePreload = string.Empty;
         preloadSceneAsyncOperation.allowSceneActivation = true;
     }
 

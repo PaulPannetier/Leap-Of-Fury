@@ -186,3 +186,268 @@ SelectableUIGroup:Update() (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:1
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Input listen : GPStart
+
+        Type : String,
+        Value : UnityEngine.Debug:Log (object)
+InputEditor:<Update>g__ListenAndShowInput|8_0 () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:45)
+InputEditor:Update () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:50)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : MapSelectorController.TryLoadNextScene () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:107)
+MapSelectorController.Update () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:56)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : MapSelectorController.TryLoadNextScene () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:107)
+MapSelectorController.Update () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:56)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : MapSelectorController.TryLoadNextScene () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:107)
+MapSelectorController.Update () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:56)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : MapSelectorController.TryLoadNextScene () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:107)
+MapSelectorController.Update () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:56)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|23_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:108)
+LevelManager.<StartLevel>g__NormalStartLevel|23_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:96)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:85)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|23_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:108)
+LevelManager.<StartLevel>g__NormalStartLevel|23_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:96)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:85)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : MapSelectorController.TryLoadNextScene () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:107)
+MapSelectorController.Update () (at Assets/Scripts/UI/Selection Map/MapSelectorController.cs:56)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : More than one global light on layer Default for light blend style index 0
+
+        Type : String,
+        Value : UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject)
+LevelManager:RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:197)
+LevelManager:OnEndDisplayScoreMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:405)
+ScoreMenu:DisableScoreMenu () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:62)
+ScoreMenu/<FadeSkull>d__17:MoveNext () (at Assets/Scripts/Gameplay/UI/ScoreMenu.cs:91)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+    }
+}

@@ -25,7 +25,7 @@ public abstract class LevelManager : MonoBehaviour
     private float lastTimeBeginLevel = -10f;
     private GameObject currentMap;
     private int currentMapIndex;
-    protected SelectionCharOldSceneData selectionCharOldSceneData;
+    protected SelectionMapOldSceneData selectionMapOldSceneData;
 
     [Header("Level Management")]
     [SerializeField] protected LevelType levelType;
@@ -104,9 +104,9 @@ public abstract class LevelManager : MonoBehaviour
 
         void FillCharData()
         {
-            SelectionCharOldSceneData oldSceneData = TransitionManager.instance.GetOldSceneData("Selection Char") as SelectionCharOldSceneData;
+            SelectionMapOldSceneData oldSceneData = TransitionManager.instance.GetOldSceneData("Selection Map") as SelectionMapOldSceneData;
             currentNbPlayerAlive = oldSceneData.charData.Length;
-            selectionCharOldSceneData = oldSceneData;
+            selectionMapOldSceneData = oldSceneData;
         }
 
         void HandleMap()
@@ -149,13 +149,13 @@ public abstract class LevelManager : MonoBehaviour
 
         void InstanciateChar()
         {
-            List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(selectionCharOldSceneData.charData.Length);
+            List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(selectionMapOldSceneData.charData.Length);
             List<Vector2> spawnPoints = spawnConfigsData.GetRandom().points.ToList();
 
             //spawn char
             charParent = GameObject.FindGameObjectWithTag("CharsParent").transform;
             charParent.DestroyChildren();
-            playersScore = new PlayerScore[selectionCharOldSceneData.charData.Length];
+            playersScore = new PlayerScore[selectionMapOldSceneData.charData.Length];
 
             SpawnChar(spawnPoints);
         }
@@ -165,10 +165,10 @@ public abstract class LevelManager : MonoBehaviour
             BlockPlayers();
             Invoke(nameof(ReleasePlayers), durationToWaitAtBegining);
 
-            playersScore = new PlayerScore[selectionCharOldSceneData.charData.Length];
+            playersScore = new PlayerScore[selectionMapOldSceneData.charData.Length];
             for (int i = 0; i < playersScore.Length; i++)
             {
-                playersScore[i].playerIndex = selectionCharOldSceneData.charData[i].playerIndex;
+                playersScore[i].playerIndex = selectionMapOldSceneData.charData[i].playerIndex;
                 playersScore[i].nbKills = 0;
             }
 
@@ -195,7 +195,7 @@ public abstract class LevelManager : MonoBehaviour
         currentMapIndex = (currentMapIndex + 1) % mapsPrefabs.Length;
         Destroy(currentMap);
         currentMap = Instantiate(mapsPrefabs[currentMapIndex]);
-        List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(selectionCharOldSceneData.charData.Length);
+        List<SpawnConfigsData.SpawnConfigPoints> spawnConfigsData = currentMap.GetComponent<LevelMapData>().LoadSpawnPoint(selectionMapOldSceneData.charData.Length);
         List<Vector2> spawnPoints = spawnConfigsData.GetRandom().points.ToList();
 
         SpawnChar(spawnPoints);
@@ -214,13 +214,13 @@ public abstract class LevelManager : MonoBehaviour
     private void SpawnChar(List<Vector2> spawnPoints, bool randomiseSpawnPoints = true)
     {
         uint idCount = 0;
-        for (int i = 0; i < selectionCharOldSceneData.charData.Length; i++)
+        for (int i = 0; i < selectionMapOldSceneData.charData.Length; i++)
         {
             //get random position
             Vector2 spawnPoint = randomiseSpawnPoints ? spawnPoints.GetRandom() : spawnPoints[0];
             spawnPoints.Remove(spawnPoint);
 
-            SelectionCharOldSceneData.CharData playerData = selectionCharOldSceneData.charData[i];
+            CharData playerData = selectionMapOldSceneData.charData[i];
             GameObject tmpGO = Instantiate(playerData.charPrefabs, charParent);
             PlayerCommon tmpPC = tmpGO.GetComponent<PlayerCommon>();
             tmpPC.playerIndex = playerData.playerIndex;
@@ -258,7 +258,7 @@ public abstract class LevelManager : MonoBehaviour
         };
 
         int nbChar = 0;
-        List<SelectionCharOldSceneData.CharData> lstCharData = new List<SelectionCharOldSceneData.CharData>();
+        List<CharData> lstCharData = new List<CharData>();
         List<Vector2> spawnPoint = new List<Vector2>();
         for (int i = 0; i < charParent.childCount; i++)
         {
@@ -266,14 +266,14 @@ public abstract class LevelManager : MonoBehaviour
             if(!charI.gameObject.activeSelf)
                 continue;
 
-            lstCharData.Add(new SelectionCharOldSceneData.CharData(playerIndexes[nbChar], controllerTypes[nbChar], charI.GetComponent<PlayerCommon>().prefabs));
+            lstCharData.Add(new CharData(playerIndexes[nbChar], controllerTypes[nbChar], charI.GetComponent<PlayerCommon>().prefabs));
             spawnPoint.Add(charI.transform.position);
             nbChar++;
         }
 
         charParent.DestroyChildren();
 
-        selectionCharOldSceneData = new SelectionCharOldSceneData(lstCharData.ToArray());
+        selectionMapOldSceneData = new SelectionMapOldSceneData(lstCharData.ToArray());
         SpawnChar(spawnPoint, false);
     }
 

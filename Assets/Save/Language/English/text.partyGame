@@ -84,6 +84,18 @@
 		{
             "textID": "vsync",
             "content": "vSync"
+        },
+		{
+            "textID": "resumeButton",
+            "content": "Resume"
+        },
+		{
+            "textID": "mapSelectionButton",
+            "content": "Map Selection"
+        },
+		{
+            "textID": "mainTitleButton",
+            "content": "Main Title"
         }
     ]
 }

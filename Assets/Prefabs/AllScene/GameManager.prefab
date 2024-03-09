@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58bfdd0b588904d43859ae90ab73cdec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clearConfiguration: 0
 --- !u!114 &8970924279353906114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +230,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27346870f9e1be8448b9170559d9cec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseInput:
+    keysKeyboard: 70000000
+    keyGamepad1: 65010000
+    keyGamepad2: 79010000
+    keyGamepad3: 8d010000
+    keyGamepad4: a0010000
+    controllerType: 6
 --- !u!114 &7240525843777044602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,6 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0206203348553854da528f7f305e9602, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clearLogFile: 0
 --- !u!114 &6842532504228175351
 MonoBehaviour:
   m_ObjectHideFlags: 0

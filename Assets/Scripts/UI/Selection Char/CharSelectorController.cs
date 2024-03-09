@@ -159,12 +159,12 @@ public class CharSelectorController : MonoBehaviour
 
     private void LoadSelectionMapScene()
     {
-        SelectionCharOldSceneData.CharData[] data = new SelectionCharOldSceneData.CharData[indexToInit];
+        CharData[] data = new CharData[indexToInit];
         for (int i = 0; i < data.Length; i++)
         {
             CharSelectorItemData selectorData = turningSelectors[i].selectedItem.GetComponent<CharSelectorItemData>();
             PlayerIndex playerIndex = (PlayerIndex)(i + 1);
-            data[i] = new SelectionCharOldSceneData.CharData(playerIndex, controllerIndexs[i], selectorData.charPrefabs);
+            data[i] = new CharData(playerIndex, controllerIndexs[i], selectorData.charPrefabs);
         }
         TransitionManager.instance.LoadSceneAsync("Selection Map", new SelectionCharOldSceneData(data));
     }

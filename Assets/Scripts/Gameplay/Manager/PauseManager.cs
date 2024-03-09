@@ -7,6 +7,8 @@ public class PauseManager : MonoBehaviour
 
     private int pauseCounter = 0;
 
+    [SerializeField] private InputManager.GeneralInput pauseInput;
+
     public bool isPauseEnable => pauseCounter > 0;
     public bool isPauseEnableThisFrame {  get; private set; }
     public bool isPauseDisableThisFrame { get; private set; }
@@ -21,6 +23,8 @@ public class PauseManager : MonoBehaviour
             return;
         }
         instance = this;
+        callBackOnPauseEnable = new Action(() => { });
+        callBackOnPauseDisable = new Action(() => { });
     }
 
     private void Start()
@@ -32,7 +36,7 @@ public class PauseManager : MonoBehaviour
     private void PreUpdate()
     {
         isPauseEnableThisFrame = isPauseDisableThisFrame = false;
-        if (InputManager.GetKeyDown(KeyCode.P))
+        if (pauseInput.IsPressedDown())
         {
             if(isPauseEnable)
             {
