@@ -128,6 +128,8 @@ public class CharSelectorController : MonoBehaviour
             LoadSelectionMapScene();
         }
 
+        escapeButton.controllerType = ControllerType.All;
+
         for (int i = 0; i < indexToInit; i++)
         {
             if (isHelpCanvasOpen[i])

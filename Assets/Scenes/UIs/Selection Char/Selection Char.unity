@@ -411,6 +411,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharSelectorCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2503747462559950870, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503747462559950870, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: m_ScreenMatchMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503747462559950870, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503747462559950870, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: m_ReferencePixelsPerUnit
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 2503747462559950872, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -489,6 +505,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2503747462559950872, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2503747462559950873, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: m_PixelPerfect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4169894382128917433, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: escapeButton.controllerType
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

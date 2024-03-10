@@ -130,6 +130,5 @@ Name : Chaos
 
 TODO :
 Trad all text
-Menu Option
-Menu pause
 menu de fin de niveau
+char helper in charselection scene

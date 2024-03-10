@@ -523,3 +523,123 @@ LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.c
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}

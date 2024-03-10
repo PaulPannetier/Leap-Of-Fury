@@ -2172,7 +2172,8 @@ public static class Useful
         {
             sb.Append((lst[i] == null ? "null" : lst[i].ToString()) + ", ");
         }
-        sb.Remove(sb.Length - 2, 2);
+        if(sb.Length >= 3)
+            sb.Remove(sb.Length - 2, 2);
         sb.Append("]");
         Debug.Log(sb.ToString());
     }
