@@ -21,6 +21,12 @@ public class SettingMenu : MonoBehaviour
     private RefreshRate[] availableFramerate;
     private bool isEnable;
 
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private TMP_Text masterText;
+    [SerializeField] private Slider musicSlider;
+    [SerializeField] private TMP_Text musicText;
+    [SerializeField] private Slider soundFXSlider;
+    [SerializeField] private TMP_Text soundFXText;
     [SerializeField] private TMP_Dropdown windowModeDropdown;
     [SerializeField] private TMP_Text windowModeText;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
@@ -87,6 +93,9 @@ public class SettingMenu : MonoBehaviour
 
     private void RefreshText()
     {
+        masterText.text = LanguageManager.instance.GetText("masterVolume") + " :";
+        musicText.text = LanguageManager.instance.GetText("musicVolume") + " :";
+        soundFXText.text = LanguageManager.instance.GetText("soundFXVolume") + " :";
         windowModeText.text = LanguageManager.instance.GetText("windowMode") + " :";
         resolutionText.text = LanguageManager.instance.GetText("resolution") + " :";
         framerateText.text = LanguageManager.instance.GetText("framerate") + " :";
@@ -107,7 +116,7 @@ public class SettingMenu : MonoBehaviour
         string language = LanguageManager.instance.availableLanguage[languageDropdown.value];
         FullScreenMode windowMode = convertIntToFullScreenMode[windowModeDropdown.value];
 
-        SettingsManager.ConfigurationData configurationData = new SettingsManager.ConfigurationData(resolution, targetedFPS, language, windowMode, false, vSynchToggle.isOn);
+        SettingsManager.ConfigurationData configurationData = new SettingsManager.ConfigurationData(masterSlider.value, musicSlider.value, soundFXSlider.value, resolution, targetedFPS, language, windowMode, false, vSynchToggle.isOn);
 
         SettingsManager.instance.SetCurrentConfig(configurationData);
 
@@ -116,6 +125,10 @@ public class SettingMenu : MonoBehaviour
 
     private void ShowConfig(in SettingsManager.ConfigurationData configurationData)
     {
+        masterSlider.value = configurationData.masterVolume;
+        musicSlider.value = configurationData.musicVolume;
+        soundFXSlider.value = configurationData.soundFXVolume;
+
         windowModeDropdown.value = convertFullScreenModeToInt[configurationData.windowMode];
 
         for (int i = 0; i < availableResolutions.Length; i++)

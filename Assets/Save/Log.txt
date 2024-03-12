@@ -643,3 +643,92 @@ UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LanguageManager+LanguageData.Clone () (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:107)
+LanguageManager.LoadTextLanguage () (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:67)
+LanguageManager.set_currentlanguage (System.String value) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:29)
+SettingsManager.ApplyConfiguration () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs:95)
+SettingsManager.LoadSettings () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs:75)
+SettingsManager.Start () (at Assets/Scripts/AllScene/Managers/SettingsManager.cs:32)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : SettingMenu.ShowConfig (SettingsManager+ConfigurationData& configurationData) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:128)
+SettingMenu.OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:182)
+UnityEngine.GameObject:SetActive(GameObject, Boolean)
+ButtonsFunction:LoadOption() (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:22)
+UnityEngine.Events.UnityEvent:Invoke()
+SelectableUI:OnPressed() (at Assets/Scripts/AllScene/UI/SelectableUI.cs:27)
+SelectableUIGroup:Update() (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:132)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : SettingMenu.OnApplyButtonDown () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:119)
+UnityEngine.Events.InvokableCall.Invoke () (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+UnityEngine.Events.UnityEvent.Invoke () (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+UnityEngine.UI.Button.Press () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs:70)
+UnityEngine.UI.Button.OnPointerClick (UnityEngine.EventSystems.PointerEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs:114)
+UnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerClickHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:57)
+UnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)
+UnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : SettingMenu.OnApplyButtonDown () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:119)
+UnityEngine.Events.InvokableCall.Invoke () (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+UnityEngine.Events.UnityEvent.Invoke () (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+UnityEngine.UI.Button.Press () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs:70)
+UnityEngine.UI.Button.OnPointerClick (UnityEngine.EventSystems.PointerEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs:114)
+UnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerClickHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:57)
+UnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)
+UnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}

@@ -43,7 +43,7 @@ public class SettingsManager : MonoBehaviour
         Vector2Int defaultResolusion = GetAvailableResolutions()[0];
         RefreshRate defaultRefreshRate = GetAvailableRefreshRate()[0];
 
-        return new ConfigurationData(defaultResolusion, defaultRefreshRate, defaultLanguage, FullScreenMode.FullScreenWindow, true, false, SystemInfo.deviceUniqueIdentifier);
+        return new ConfigurationData(1f, 1f, 1f, defaultResolusion, defaultRefreshRate, defaultLanguage, FullScreenMode.FullScreenWindow, true, false, SystemInfo.deviceUniqueIdentifier);
     }
 
     public void LoadSettings()
@@ -63,7 +63,7 @@ public class SettingsManager : MonoBehaviour
         {
             if(tmp.deviceID != defaultConfig.deviceID)
             {
-                currentConfig = new ConfigurationData(defaultConfig.resolusion, defaultConfig.targetedFPS, defaultConfig.language, defaultConfig.windowMode, false, false, defaultConfig.deviceID);
+                currentConfig = new ConfigurationData(tmp.masterVolume, tmp.musicVolume, tmp.soundFXVolume, defaultConfig.resolusion, defaultConfig.targetedFPS, tmp.language, defaultConfig.windowMode, false, false, defaultConfig.deviceID);
                 SaveCurrentConfiguration();
             }
             else
@@ -93,6 +93,9 @@ public class SettingsManager : MonoBehaviour
         Screen.SetResolution(currentConfig.resolusion.x, currentConfig.resolusion.y, currentConfig.windowMode, currentConfig.targetedFPS);
         QualitySettings.vSyncCount = currentConfig.vSync ? 1 : 0;
         LanguageManager.instance.currentlanguage = currentConfig.language;
+        AudioManager.instance.masterVolume = currentConfig.masterVolume;
+        AudioManager.instance.musicVolume = currentConfig.musicVolume;
+        AudioManager.instance.soundEffectsVolume = currentConfig.soundFXVolume;
     }
 
     public Vector2Int[] GetAvailableResolutions()
@@ -168,6 +171,9 @@ public class SettingsManager : MonoBehaviour
     [Serializable]
     public struct ConfigurationData : ICloneable<ConfigurationData>
     {
+        public float masterVolume;
+        public float musicVolume;
+        public float soundFXVolume;
         [SerializeField] private CustomRefreshRate customRefreshRate;
 
         public Vector2Int resolusion;
@@ -188,8 +194,11 @@ public class SettingsManager : MonoBehaviour
         public string deviceID;
         public bool vSync;
 
-        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSync)
+        public ConfigurationData(float masterVolume, float musicVolume, float soundFXVolume, in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSync)
         {
+            this.masterVolume = masterVolume;
+            this.musicVolume = musicVolume;
+            this.soundFXVolume = soundFXVolume;
             this.resolusion = resolusion;
             this.customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
             this.language = language;
@@ -199,8 +208,11 @@ public class SettingsManager : MonoBehaviour
             this.vSync = vSync;
         }
 
-        public ConfigurationData(in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSync, string deviceID)
+        public ConfigurationData(float masterVolume, float musicVolume, float soundFXVolume, in Vector2Int resolusion, in RefreshRate targetedFPS, string language, FullScreenMode windowMode, bool firstTimeLaunch, bool vSync, string deviceID)
         {
+            this.masterVolume = masterVolume;
+            this.musicVolume = musicVolume;
+            this.soundFXVolume = soundFXVolume;
             this.resolusion = resolusion;
             this.customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
             this.language = language;
@@ -212,7 +224,7 @@ public class SettingsManager : MonoBehaviour
 
         public ConfigurationData Clone()
         {
-            return new ConfigurationData(resolusion, targetedFPS, language, windowMode, firstTimeLaunch, vSync, deviceID);
+            return new ConfigurationData(masterVolume, musicVolume, soundFXVolume, resolusion, targetedFPS, language, windowMode, firstTimeLaunch, vSync, deviceID);
         }
 
         [Serializable]

@@ -96,6 +96,18 @@
 		{
             "textID": "mainTitleButton",
             "content": "Main Title"
+        },
+		{
+            "textID": "masterVolume",
+            "content": "Master"
+        },
+		{
+            "textID": "musicVolume",
+            "content": "Music"
+        },
+		{
+            "textID": "soundFXVolume",
+            "content": "SoundFX"
         }
     ]
 }
