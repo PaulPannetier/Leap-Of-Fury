@@ -1,0 +1,18 @@
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Mario!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+GameManager:OnQuitApplication () (at Assets/Scripts/AllScene/Managers/GameManager.cs:50)
+UnityEngine.Application:Internal_ApplicationQuit ()
+
+    }
+}

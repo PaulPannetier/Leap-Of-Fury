@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.Experimental.Rendering.Universal;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
         instance = this;
         pixelPerfectCam = Camera.main.GetComponent<PixelPerfectCamera>();
         transform.parent = null;
+        Application.quitting += OnQuitApplication;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -40,8 +43,29 @@ public class GameManager : MonoBehaviour
         currentResolution = new Vector2Int(1920 / divisor[pixelQuality], 1080 / divisor[pixelQuality]);
     }
 
+    private void OnQuitApplication()
+    {
+        //clear tmp files
+        string path = Path.Combine(Application.dataPath, "Save", "tmp");
+        string[] dirs = Directory.GetDirectories(path);
+        string[] files = Directory.GetFiles(path);
+
+        foreach (string dir in dirs)
+        {
+            FileUtil.DeleteFileOrDirectory(Path.Combine(path, dir));
+        }
+        foreach (string file in files)
+        {
+            FileUtil.DeleteFileOrDirectory(Path.Combine(path, file));
+        }
+    }
+
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         SetPixelQuality();
     }
+
+#endif
 }
