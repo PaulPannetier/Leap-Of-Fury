@@ -18,6 +18,7 @@ public class PlayerCommon : MonoBehaviour
     [ColorUsage(true, true)] public Color color;
     public uint id;
     public GameObject prefabs;
+    public GameObject charImageUIPrefabs;
 
     private void Start()
     {

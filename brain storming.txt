@@ -132,3 +132,5 @@ TODO :
 Trad all text
 menu de fin de niveau
 char helper in charselection scene
+control UI gamepad
+netoyer tout les fichiers du projet

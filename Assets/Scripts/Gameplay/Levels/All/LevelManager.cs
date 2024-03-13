@@ -142,6 +142,11 @@ public abstract class LevelManager : MonoBehaviour
             charParent = GameObject.FindGameObjectWithTag("CharsParent").transform;
             charParent.DestroyChildren();
             playersScore = new PlayerScore[selectionMapOldSceneData.charData.Length];
+            for (int i = 0; i < playersScore.Length; i++)
+            {
+                playersScore[i].playerIndex = selectionMapOldSceneData.charData[i].playerIndex;
+                playersScore[i].nbKills = 0;
+            }
 
             SpawnChar(spawnPoints);
         }
@@ -150,13 +155,6 @@ public abstract class LevelManager : MonoBehaviour
         {
             BlockPlayers();
             Invoke(nameof(ReleasePlayers), durationToWaitAtBegining);
-
-            playersScore = new PlayerScore[selectionMapOldSceneData.charData.Length];
-            for (int i = 0; i < playersScore.Length; i++)
-            {
-                playersScore[i].playerIndex = selectionMapOldSceneData.charData[i].playerIndex;
-                playersScore[i].nbKills = 0;
-            }
 
             lastTimeBeginLevel = Time.time;
             EventManager.instance.callbackOnPlayerDeath += OnPlayerDie;
@@ -171,6 +169,11 @@ public abstract class LevelManager : MonoBehaviour
         yield return null;
         yield return null;
         EventManager.instance.OnLevelStart(levelName);
+    }
+
+    public void OnEndDisplayEndMenu()
+    {
+        RestartLevel();
     }
 
     protected virtual void RestartLevel()
@@ -208,9 +211,9 @@ public abstract class LevelManager : MonoBehaviour
 
             CharData playerData = selectionMapOldSceneData.charData[i];
             GameObject tmpGO = Instantiate(playerData.charPrefabs, charParent);
-            PlayerCommon tmpPC = tmpGO.GetComponent<PlayerCommon>();
-            tmpPC.playerIndex = playerData.playerIndex;
-            tmpPC.id = idCount;
+            PlayerCommon playerCommon = tmpGO.GetComponent<PlayerCommon>();
+            playerCommon.playerIndex = playerData.playerIndex;
+            playerCommon.id = idCount;
             idCount++;
             tmpGO.GetComponent<CustomPlayerInput>().controllerType = playerData.controllerType;
 
@@ -221,6 +224,15 @@ public abstract class LevelManager : MonoBehaviour
             else
             {
                 InputManager.SetCurrentController(playerData.playerIndex, BaseController.Keyboard, false);
+            }
+
+            for (int j = 0; j < playersScore.Length; j++)
+            {
+                if (playersScore[j].playerIndex == playerData.playerIndex)
+                {
+                    playersScore[j].playerCommon = playerCommon;
+                    break;
+                }
             }
 
             tmpGO.GetComponent<Movement>().Teleport(spawnPoint);
@@ -343,6 +355,34 @@ public abstract class LevelManager : MonoBehaviour
 
     protected void OnEndLevelTurn()
     {
+        List<PlayerScore> playerWin = new List<PlayerScore>();
+
+        for (int i = 0;i < playersScore.Length;i++)
+        {
+            if (playersScore[i].nbKills >= PlayerScore.nbKillsToWin)
+            {
+                playerWin.Add(playersScore[i]);
+            }
+        }
+
+        if(playerWin.Count == 1)
+        {
+            // enable End level menu
+            SelectionMapOldSceneData selectionMapSceneData = TransitionManager.instance.GetOldSceneData("Selection Map") as SelectionMapOldSceneData;
+            TransitionManager.instance.LoadSceneAsync("Selection Map", new LevelOldSceneData(TransitionManager.instance.activeScene, selectionMapSceneData.charData));
+            return;
+        }
+        else if (playerWin.Count > 1)
+        {
+            for (int i = 0; i < playersScore.Length; i++)
+            {
+                if (playersScore[i].nbKills >= PlayerScore.nbKillsToWin)
+                {
+                    playersScore[i].nbKills = PlayerScore.nbKillsToWin - 1;
+                }
+            }
+        }
+
         EventManager.instance.OnLevelEnd(new EndLevelData(levelName, playersScore));
     }
 
@@ -365,11 +405,13 @@ public abstract class LevelManager : MonoBehaviour
         public static int nbKillsToWin = 7;
         public int nbKills;
         public PlayerIndex playerIndex;
+        public PlayerCommon playerCommon;
 
-        public PlayerScore(PlayerIndex playerIndex, int nbKills = 0)
+        public PlayerScore(PlayerIndex playerIndex, int nbKills, PlayerCommon playerCommon)
         {
             this.playerIndex = playerIndex;
             this.nbKills = nbKills;
+            this.playerCommon = playerCommon;
         }
     }
 

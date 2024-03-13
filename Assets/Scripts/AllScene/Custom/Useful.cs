@@ -2582,17 +2582,6 @@ public static class Useful
         return res;
     }
 
-    [Obsolete]
-    public static T Clone<T>(this T obj)
-    {
-        string s = Save.ConvertObjectToJSONString(obj);
-        if(s != "{}")
-            return Save.ConvertJSONStringToObject<T>(s);
-
-        MethodInfo inst = obj.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);
-        return (T)inst?.Invoke(obj, null);
-    }
-
     public static List<T> Clone<T>(this List<T> lst) => new List<T>(lst);
 
     [Obsolete]

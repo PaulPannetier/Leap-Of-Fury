@@ -16,3 +16,118 @@ UnityEngine.Application:Internal_ApplicationQuit ()
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : EndLevelMenu.OnLevelEnd (LevelManager+EndLevelData endLevelData) (at Assets/Scripts/Gameplay/UI/EndLevelMenu.cs:22)
+EventManager.OnLevelEnd (LevelManager+EndLevelData& endLevelData) (at Assets/Scripts/AllScene/Managers/EventManager.cs:60)
+LevelManager.OnEndLevelTurn () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:360)
+LevelManager.OnPlayerDie (UnityEngine.GameObject player, UnityEngine.GameObject killer) (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:334)
+EventManager.OnTriggerPlayerDeath (UnityEngine.GameObject player, UnityEngine.GameObject killer) (at Assets/Scripts/AllScene/Managers/EventManager.cs:40)
+FightController.OnBeenTouchAttack (Attack attack) (at Assets/Scripts/Gameplay/Player/Fight/FightController.cs:513)
+EventController.OnBeenTouchAttack (Attack attack) (at Assets/Scripts/Gameplay/Player/EventController.cs:82)
+Attack.OnTouchEnemy (UnityEngine.GameObject enemy) (at Assets/Scripts/Gameplay/Player/Fight/Attack/Attack.cs:48)
+BoomerangAttack.OnTouchEnemy (UnityEngine.GameObject enemy) (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/BoomerangAttack.cs:69)
+Boomerang.CheckCharCollission () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:132)
+Boomerang.Update () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:113)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : EndLevelMenu.OnLevelEnd (LevelManager+EndLevelData endLevelData) (at Assets/Scripts/Gameplay/UI/EndLevelMenu.cs:22)
+EventManager.OnLevelEnd (LevelManager+EndLevelData& endLevelData) (at Assets/Scripts/AllScene/Managers/EventManager.cs:60)
+LevelManager.OnEndLevelTurn () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:360)
+LevelManager.OnPlayerDie (UnityEngine.GameObject player, UnityEngine.GameObject killer) (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:334)
+EventManager.OnTriggerPlayerDeath (UnityEngine.GameObject player, UnityEngine.GameObject killer) (at Assets/Scripts/AllScene/Managers/EventManager.cs:40)
+FightController.OnBeenTouchAttack (Attack attack) (at Assets/Scripts/Gameplay/Player/Fight/FightController.cs:513)
+EventController.OnBeenTouchAttack (Attack attack) (at Assets/Scripts/Gameplay/Player/EventController.cs:82)
+Attack.OnTouchEnemy (UnityEngine.GameObject enemy) (at Assets/Scripts/Gameplay/Player/Fight/Attack/Attack.cs:48)
+BoomerangAttack.OnTouchEnemy (UnityEngine.GameObject enemy) (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/BoomerangAttack.cs:69)
+Boomerang.CheckCharCollission () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:132)
+Boomerang.Update () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:113)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : IndexOutOfRangeException: Index was outside the bounds of the array.
+
+        Type : String,
+        Value : EndMenuPlayerDisplayer.Display (EndMenuPlayerDisplayer+DisplaySettings displaySettings) (at Assets/Scripts/Gameplay/UI/EndMenuPlayerDisplayer.cs:24)
+EndLevelMenu.OnLevelEnd (LevelManager+EndLevelData endLevelData) (at Assets/Scripts/Gameplay/UI/EndLevelMenu.cs:25)
+EventManager.OnLevelEnd (LevelManager+EndLevelData& endLevelData) (at Assets/Scripts/AllScene/Managers/EventManager.cs:60)
+LevelManager.OnEndLevelTurn () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:358)
+LevelManager.OnPlayerDie (UnityEngine.GameObject player, UnityEngine.GameObject killer) (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:332)
+EventManager.OnTriggerPlayerDeath (UnityEngine.GameObject player, UnityEngine.GameObject killer) (at Assets/Scripts/AllScene/Managers/EventManager.cs:40)
+FightController.OnBeenTouchAttack (Attack attack) (at Assets/Scripts/Gameplay/Player/Fight/FightController.cs:513)
+EventController.OnBeenTouchAttack (Attack attack) (at Assets/Scripts/Gameplay/Player/EventController.cs:82)
+Attack.OnTouchEnemy (UnityEngine.GameObject enemy) (at Assets/Scripts/Gameplay/Player/Fight/Attack/Attack.cs:48)
+BoomerangAttack.OnTouchEnemy (UnityEngine.GameObject enemy) (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/BoomerangAttack.cs:69)
+Boomerang.CheckCharCollission () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:132)
+Boomerang.Update () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:113)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)
+LevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)
+LevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)
+
+    }
+}

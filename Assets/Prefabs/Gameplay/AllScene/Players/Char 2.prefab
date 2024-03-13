@@ -707,6 +707,7 @@ MonoBehaviour:
   color: {r: 1, g: 0.042311423, b: 0.011612245, a: 1}
   id: 1
   prefabs: {fileID: 7980238354382693259}
+  charImageUIPrefabs: {fileID: 651130587728809415, guid: d3a5c9e61155d3246a1b16d851484aa4, type: 3}
 --- !u!114 &8612698283953875211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -757,7 +758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b457fea88e6e44593e520f86a69d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 0
   castDuration: 0
   cooldown:
     duration: 0
@@ -884,7 +884,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd64418b8a39244bb5698c3499e080e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 80
   castDuration: 0.8
   cooldown:
     duration: 3

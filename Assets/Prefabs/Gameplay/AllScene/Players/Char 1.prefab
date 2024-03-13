@@ -533,6 +533,7 @@ MonoBehaviour:
   color: {r: 0.34509805, g: 1, b: 0.10980393, a: 1}
   id: 0
   prefabs: {fileID: 9211636111085214947}
+  charImageUIPrefabs: {fileID: 651130587728809415, guid: 35f6a39d5a7092f49b8103af3b380806, type: 3}
 --- !u!114 &7417355783801099875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,8 +558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
   drawGizmos: 0
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
@@ -571,6 +570,8 @@ MonoBehaviour:
   enableAttackStrong: 1
   enableInvisibilityWhenDashing: 1
   castCoyoteTime: 0.15
+  canLauchWeakAttack: 1
+  canLaunchStrongAttack: 1
 --- !u!114 &249455240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,7 +584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6076f156ec0b7104084af103613515d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 40
   castDuration: 0.2
   cooldown:
     duration: 4
@@ -658,7 +658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928280bb0dad7004e9895e8bdc12f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 0
   castDuration: 0
   cooldown:
     duration: 5
@@ -682,7 +681,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4770c9bf661a2d4491e84ebbd464610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackForce: 50
   castDuration: 0
   cooldown:
     duration: 0
