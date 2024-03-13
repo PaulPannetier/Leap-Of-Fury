@@ -36,7 +36,7 @@ public class StatisticsManager : MonoBehaviour
         isCurrentGameplayScene = true;
     }
 
-    private void OnLevelEnd(string levelName)
+    private void OnLevelEnd(LevelManager.EndLevelData endLevelData)
     {
         isCurrentGameplayScene = false;
         SaveStats();

@@ -117,7 +117,10 @@ public class AudioManager : MonoBehaviour
             StopCoroutine(changeVolumeCorout[name]);
             changeVolumeCorout.Remove(name);
         }
-        Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(name, audioSource, Mathf.Clamp01(newVolume), Mathf.Max(duration, 0f)));
+
+        Sound sound = Array.Find(audioClips, item => item.name == name);
+        newVolume = Mathf.Clamp01(newVolume) * masterVolume * (sound.soundEffect? soundEffectsVolume : musicVolume);
+        Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(name, audioSource, newVolume, Mathf.Max(duration, 0f)));
         changeVolumeCorout.Add(name, changeVolCorout);
     }
 
@@ -266,7 +269,7 @@ public class AudioManager : MonoBehaviour
     {
         Sound sound = Array.Find(audioClips, item => item.audioClip.name == audioClipName);
         if (sound == null)
-            return "";
+            return string.Empty;
         return sound.name;
     }
 

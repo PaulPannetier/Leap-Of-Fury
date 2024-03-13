@@ -5,16 +5,6 @@ using UnityEngine;
 
 public abstract class LevelManager : MonoBehaviour
 {
-    protected enum LevelType
-    {
-        YetisCave,
-        MayasTemple,
-        IntoTheJungle,
-        MaxwellHouse,
-        ClockMaker,
-        ThePlain
-    }
-
     #region Fields
 
     public static LevelManager instance;
@@ -28,13 +18,10 @@ public abstract class LevelManager : MonoBehaviour
     protected SelectionMapOldSceneData selectionMapOldSceneData;
 
     [Header("Level Management")]
-    [SerializeField] protected LevelType levelType;
     [SerializeField] private string levelName;
     [SerializeField] protected float durationToWaitAtBegining = 3f;
     [SerializeField] protected int nbKillsToWin = 7;
     [SerializeField] protected float waitingTimeAfterLastKill = 2f;
-    [SerializeField] protected ScoreMenu scoreMenu;
-    [SerializeField] protected EndLevelMenu endLevelMenu;
 
     [Header("Maps")]
     [SerializeField] private bool suffleMapWhenLevelStart = true;
@@ -45,7 +32,6 @@ public abstract class LevelManager : MonoBehaviour
 
     [Header("Level initialiser")]
     public bool enableBehaviour = true;
-    [SerializeField] private bool _DEBUGendLevel;
 
     #endif
 
@@ -355,79 +341,12 @@ public abstract class LevelManager : MonoBehaviour
         }
     }
 
-    #endregion
-
-    #region Menu
-
     protected void OnEndLevelTurn()
     {
-        StartCoroutine(OnEndLevelTurnCorout());
+        EventManager.instance.OnLevelEnd(new EndLevelData(levelName, playersScore));
     }
 
-    protected IEnumerator OnEndLevelTurnCorout()
-    {
-        yield return Useful.GetWaitForSeconds(waitingTimeAfterLastKill);
-        List<int> indexesPlayerWin = new List<int>();
-
-        for (int i = 0; i < playersScore.Length; i++)
-        {
-            if (playersScore[i].nbKills >= nbKillsToWin)
-                indexesPlayerWin.Add(i);
-        }
-
-        if(indexesPlayerWin.Count == 1)
-        {
-            LaunchEndGameMenu(indexesPlayerWin[0]);
-        }
-        else if(indexesPlayerWin.Count > 1)
-        {
-            foreach (int indexWin in indexesPlayerWin)
-            {
-                playersScore[indexWin].nbKills--;
-            }
-            LaunchScoreMenu();
-        }
-        else
-        {
-            LaunchScoreMenu();
-        }
-    }
-
-    private void LaunchScoreMenu()
-    {
-        PauseManager.instance.EnablePause();
-        scoreMenu.DisplayScoreMenu(playersScore, OnEndDisplayScoreMenu);
-    }
-
-    private void OnEndDisplayScoreMenu()
-    {
-        PauseManager.instance.DisablePause();
-        RestartLevel();
-    }
-
-    private void LaunchEndGameMenu(int indexWinner)
-    {
-        PauseManager.instance.EnablePause();
-        EventManager.instance.OnLevelEnd(levelName);
-        endLevelMenu.DisplayEndLevelMenu(OnEndDisplayEndLevelMenu);
-
-        void OnEndDisplayEndLevelMenu()
-        {
-            PauseManager.instance.DisablePause();
-            TransitionManager.instance.LoadSceneAsync("Selection Map");
-        }
-    }
-
-#if UNITY_EDITOR
-
-    private void DEBUG_EndLevel()
-    {
-        LaunchEndGameMenu(0);
-    }
-        
-#endif
-
-#endregion
+    #endregion
 
     #region OnDestroy
 
@@ -438,19 +357,6 @@ public abstract class LevelManager : MonoBehaviour
     }
 
     #endregion
-
-#if UNITY_EDITOR
-
-    private void OnValidate()
-    {
-        if(_DEBUGendLevel)
-        {
-            _DEBUGendLevel = false;
-            DEBUG_EndLevel();
-        }
-    }
-
-#endif
 
     #region Struts
 
@@ -464,6 +370,18 @@ public abstract class LevelManager : MonoBehaviour
         {
             this.playerIndex = playerIndex;
             this.nbKills = nbKills;
+        }
+    }
+
+    public struct EndLevelData
+    {
+        public PlayerScore[] playersScore;
+        public string levelName;
+
+        public EndLevelData(string levelName, PlayerScore[] playersScore)
+        {
+            this.levelName = levelName;
+            this.playersScore = playersScore;
         }
     }
 

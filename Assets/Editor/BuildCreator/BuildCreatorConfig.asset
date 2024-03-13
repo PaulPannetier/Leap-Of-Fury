@@ -25,7 +25,7 @@ MonoBehaviour:
   firstSceneToPlay: {fileID: 102900000, guid: 95ca349782007214fb012e85db33a963, type: 3}
   modifyGameplayScene: 1
   performBuild: 1
-  developpementBuild: 0
-  advancedDebug: 0
+  developpementBuild: 1
+  advancedDebug: 1
   copySaveDirectory: 1
   setDefaultSettingAndInput: 1

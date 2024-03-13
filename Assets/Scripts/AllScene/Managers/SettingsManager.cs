@@ -30,6 +30,7 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
         LoadSettings();
+
     }
 
     private ConfigurationData GetDefaultConfig()
