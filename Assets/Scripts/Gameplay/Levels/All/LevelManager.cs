@@ -363,9 +363,32 @@ public abstract class LevelManager : MonoBehaviour
 
     protected void OnEndLevelTurn()
     {
+        StartCoroutine(EndLevelCorout());
+    }
+
+    private IEnumerator EndLevelCorout()
+    {
+        float time = 0f;
+
+        while (time < waitingTimeAfterLastKill)
+        {
+            yield return null;
+            time += Time.deltaTime;
+
+            while (PauseManager.instance.isPauseEnable)
+            {
+                yield return null; ;
+            }
+        }
+
+        EndLevel();
+    }
+
+    private void EndLevel()
+    {
         List<PlayerScore> playerWin = new List<PlayerScore>();
 
-        for (int i = 0;i < playersScore.Length;i++)
+        for (int i = 0; i < playersScore.Length; i++)
         {
             if (playersScore[i].nbKills >= PlayerScore.nbKillsToWin)
             {
@@ -373,7 +396,7 @@ public abstract class LevelManager : MonoBehaviour
             }
         }
 
-        if(playerWin.Count == 1)
+        if (playerWin.Count == 1)
         {
             SelectionMapOldSceneData selectionMapSceneData = TransitionManager.instance.GetOldSceneData("Selection Map") as SelectionMapOldSceneData;
             TransitionManager.instance.LoadSceneAsync("Selection Map", new LevelOldSceneData(TransitionManager.instance.activeScene, selectionMapSceneData.charData));
