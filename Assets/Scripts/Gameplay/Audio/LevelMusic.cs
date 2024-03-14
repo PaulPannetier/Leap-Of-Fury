@@ -19,13 +19,18 @@ public class LevelMusic : MonoBehaviour
                 AudioManager.instance.SetVolumeSmooth(musicName, musicVolume, volumeFadeDuration);
             }
 
-            EventManager.instance.callbackOnLevelEnd += OnLevenEnd;
+            EventManager.instance.callbackOnLevelFinish += OnLevelFinish;
         }
     }
 
-    private void OnLevenEnd(LevelManager.EndLevelData endLevelData)
+    private void OnLevelFinish(string levelName)
     {
         AudioManager.instance.StopSmooth(musicName, volumeFadeDuration);
+    }
+
+    private void OnDestroy()
+    {
+            EventManager.instance.callbackOnLevelFinish -= OnLevelFinish;
     }
 
 #if UNITY_EDITOR

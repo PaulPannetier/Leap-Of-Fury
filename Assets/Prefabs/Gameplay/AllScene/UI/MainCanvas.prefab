@@ -1093,7 +1093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layoutGroup: {fileID: 2653355624935795358}
   playerMenuDisplayerPrefabs: {fileID: 8122003343431501259, guid: 9e5f96acbb992de4f926957e0d955a71, type: 3}
-  displayDuration: 6
+  displayDuration: 4
 --- !u!1 &4632514418326069758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1405,6 +1405,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d818dd6c7d24d0b46b9d221308d33b9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseInput:
+    keysKeyboard: 70000000
+    keyGamepad1: 65010000
+    keyGamepad2: 79010000
+    keyGamepad3: 8d010000
+    keyGamepad4: a0010000
+    controllerType: 6
   resumeButton: {fileID: 6760598542376933112}
   resumeText: {fileID: 8951532012000269659}
   mapSelectionButton: {fileID: 1419431392224242381}

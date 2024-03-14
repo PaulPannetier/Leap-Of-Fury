@@ -48,6 +48,7 @@ public class AudioManager : MonoBehaviour
         if(sound == null)
         {
             Debug.LogWarning("The sound " + name + " wasn't find in the AudioManager's audioClips array.");
+            LogManager.instance.WriteLog("The sound " + name + " wasn't find in the AudioManager's audioClips array.", name);
             return;
         }
         AudioSource audioSource = Instantiate(sound.soundEffect ? soundEffectSourcePrefab : musicSourcePrefab, audioParent);
@@ -69,6 +70,7 @@ public class AudioManager : MonoBehaviour
         if(!IsPlayingSound(currentSoundName))
         {
             Debug.Log("The sound " + currentSoundName + " is not playing, can't crossfade!");
+            LogManager.instance.WriteLog("The sound " + currentSoundName + " is not playing, can't crossfade!", currentSoundName);
             PlaySound(newSoundName, 0f);
             SetVolumeSmooth(newSoundName, newSoundVolume, duration);
             return;
@@ -102,6 +104,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + name + "is not currently playing.");
+        LogManager.instance.WriteLog("The sound " + name + "is not currently playing.", name);
     }
 
     public void SetVolumeSmooth(string name, float newVolume, float duration)
@@ -109,11 +112,13 @@ public class AudioManager : MonoBehaviour
         if(!currentSounds.TryGetValue(name, out AudioSource audioSource))
         {
             Debug.Log("The sound : " + name + " is not playing, can't set volume of a non playing sound.");
+            LogManager.instance.WriteLog("The sound : " + name + " is not playing, can't set volume of a non playing sound.", name);
             return;
         }
         if(changeVolumeCorout.ContainsKey(name))
         {
             Debug.Log("The sound : " + name + " is already changing volume smootly.");
+            LogManager.instance.WriteLog("The sound : " + name + " is already changing volume smootly.", name);
             StopCoroutine(changeVolumeCorout[name]);
             changeVolumeCorout.Remove(name);
         }
@@ -148,6 +153,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + name + "is not currently playing, can't mute them.");
+        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't mute them.", name);
     }
 
     public void UnMuteSound(string name)
@@ -158,6 +164,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + name + "is not currently playing, can't unmute them.");
+        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't unmute them.", name);
     }
 
     public void PauseSound(string name)
@@ -168,6 +175,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + name + "is not currently playing, can't pause them.");
+        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't pause them.", name);
     }
 
     public void ResumeSound(string name)
@@ -178,6 +186,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + name + "is not currently playing, can't resume them.");
+        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't resume them.", name);
     }
 
     public void StopAllSound()

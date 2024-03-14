@@ -23,16 +23,13 @@ public class EndMenuPlayerDisplayer : MonoBehaviour
         {
             Animator animator = skulls[i].GetComponent<Animator>();
             animator.SetTrigger("Activate");
+            animator.SetTrigger("ActivateColorFade");
         }
-
-        Invoke(nameof(EndDisplay), displaySettings.duration);
     }
 
-    private void EndDisplay()
+    public void EndDisplay()
     {
         Destroy(gameObject);
-
-        LevelManager.instance.OnEndDisplayEndMenu();
     }
 
     public struct DisplaySettings

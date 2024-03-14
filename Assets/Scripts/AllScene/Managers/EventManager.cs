@@ -10,6 +10,7 @@ public class EventManager : MonoBehaviour
     public Action callbackPreUpdate;
     public Action<string> callbackOnLevelStart;
     public Action<LevelManager.EndLevelData> callbackOnLevelEnd;
+    public Action<string> callbackOnLevelFinish;
     public Action<string> callbackOnLevelRestart;
     public Action<LevelMapData> callbackOnMapChanged;
 
@@ -58,6 +59,11 @@ public class EventManager : MonoBehaviour
     public void OnLevelEnd(in LevelManager.EndLevelData endLevelData)
     {
         callbackOnLevelEnd.Invoke(endLevelData);
+    }
+
+    public void OnLevelFinish(string levelName)
+    {
+        callbackOnLevelFinish.Invoke(levelName);
     }
 
     public void OnMapChanged(LevelMapData levelMapData)

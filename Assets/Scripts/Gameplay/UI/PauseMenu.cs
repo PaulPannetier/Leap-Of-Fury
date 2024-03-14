@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
+    private bool isLevelPlaying;
+
+    [SerializeField] private InputManager.GeneralInput pauseInput;
     [SerializeField] private Button resumeButton;
     [SerializeField] private TMP_Text resumeText;
     [SerializeField] private Button mapSelectionButton;
@@ -18,13 +21,44 @@ public class PauseMenu : MonoBehaviour
             t.gameObject.SetActive(false);
         }
 
-        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
-        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
+        EventManager.instance.callbackOnLevelStart += OnLevelStart;
+        EventManager.instance.callbackOnLevelRestart += OnLevelRestart;
+        EventManager.instance.callbackOnLevelEnd += OnLevelEnd;
+    }
+
+    private void OnLevelStart(string levelName)
+    {
+        isLevelPlaying = true;
+    }
+
+    private void OnLevelRestart(string levelName)
+    {
+        isLevelPlaying = true;
+    }
+
+    private void OnLevelEnd(LevelManager.EndLevelData endLevelData)
+    {
+        isLevelPlaying = false;
+    }
+
+    private void Update()
+    {
+        if(isLevelPlaying && pauseInput.IsPressedDown())
+        {
+            if(PauseManager.instance.isPauseEnable)
+            {
+                OnPauseDisable();
+            }
+            else
+            {
+                OnPauseEnable();
+            }
+        }
     }
 
     private void OnResumeButtonDown()
     {
-        PauseManager.instance.DisablePause();
+        OnPauseDisable();
     }
 
     private void OnMapSelectionButtonDown()
@@ -58,6 +92,8 @@ public class PauseMenu : MonoBehaviour
         resumeText.text = LanguageManager.instance.GetText("resumeButton");
         mapSelectionText.text = LanguageManager.instance.GetText("mapSelectionButton");
         mainTitleText.text = LanguageManager.instance.GetText("mainTitleButton");
+
+        PauseManager.instance.EnablePause();
     }
 
     private void OnPauseDisable()
@@ -66,11 +102,13 @@ public class PauseMenu : MonoBehaviour
         {
             t.gameObject.SetActive(false);
         }
+        PauseManager.instance.DisablePause();
     }
 
     private void OnDestroy()
     {
-        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
-        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
+        EventManager.instance.callbackOnLevelStart -= OnLevelStart;
+        EventManager.instance.callbackOnLevelRestart -= OnLevelRestart;
+        EventManager.instance.callbackOnLevelEnd -= OnLevelEnd;
     }
 }

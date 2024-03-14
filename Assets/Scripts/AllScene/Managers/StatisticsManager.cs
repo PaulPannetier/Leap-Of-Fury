@@ -75,6 +75,15 @@ public class StatisticsManager : MonoBehaviour
         Save.WriteJSONDataAsync(currentData, "/Save/stats" + SettingsManager.saveFileExtension, SaveCallback).GetAwaiter();
     }
 
+    private void OnDestroy()
+    {
+        EventManager.instance.callbackOnLevelStart -= OnLevelStart;
+        EventManager.instance.callbackOnLevelEnd -= OnLevelEnd;
+        EventManager.instance.callbackOnPlayerDeath -= OnPlayerDeath;
+    }
+
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         if(resetStats)
@@ -85,6 +94,8 @@ public class StatisticsManager : MonoBehaviour
         }
         saveInterval = Mathf.Max(0f, saveInterval);
     }
+
+#endif
 
     [Serializable]
     public struct StatisticsData

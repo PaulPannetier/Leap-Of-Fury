@@ -173,6 +173,7 @@ public abstract class LevelManager : MonoBehaviour
 
     public void OnEndDisplayEndMenu()
     {
+        PauseManager.instance.DisablePause();
         RestartLevel();
     }
 
@@ -272,6 +273,13 @@ public abstract class LevelManager : MonoBehaviour
         charParent.DestroyChildren();
 
         selectionMapOldSceneData = new SelectionMapOldSceneData(lstCharData.ToArray());
+        playersScore = new PlayerScore[selectionMapOldSceneData.charData.Length];
+        for (int i = 0; i < playersScore.Length; i++)
+        {
+            playersScore[i].playerIndex = selectionMapOldSceneData.charData[i].playerIndex;
+            playersScore[i].nbKills = 0;
+        }
+
         SpawnChar(spawnPoint, false);
     }
 
@@ -367,7 +375,6 @@ public abstract class LevelManager : MonoBehaviour
 
         if(playerWin.Count == 1)
         {
-            // enable End level menu
             SelectionMapOldSceneData selectionMapSceneData = TransitionManager.instance.GetOldSceneData("Selection Map") as SelectionMapOldSceneData;
             TransitionManager.instance.LoadSceneAsync("Selection Map", new LevelOldSceneData(TransitionManager.instance.activeScene, selectionMapSceneData.charData));
             return;
@@ -383,6 +390,7 @@ public abstract class LevelManager : MonoBehaviour
             }
         }
 
+        PauseManager.instance.EnablePause();
         EventManager.instance.OnLevelEnd(new EndLevelData(levelName, playersScore));
     }
 
