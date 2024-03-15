@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public abstract class LevelManager : MonoBehaviour
 {
@@ -153,10 +154,10 @@ public abstract class LevelManager : MonoBehaviour
 
         void HandleCharPosAndCallback()
         {
-            BlockPlayers();
-            Invoke(nameof(ReleasePlayers), durationToWaitAtBegining);
-
             lastTimeBeginLevel = Time.time;
+
+            BlockPlayers();
+
             EventManager.instance.callbackOnPlayerDeath += OnPlayerDie;
             EventManager.instance.callbackOnPlayerDeathByEnvironnement += OnPlayerDieByEnvironnement;
             PlayerScore.nbKillsToWin = nbKillsToWin;
@@ -295,26 +296,7 @@ public abstract class LevelManager : MonoBehaviour
     {
         foreach (Transform t in charParent)
         {
-            t.GetComponent<Movement>().canMove = false;
-        }
-    }
-
-    public void ReleasePlayers()
-    {
-        StopCoroutine(nameof(ReleasePlayerCorout));
-        StartCoroutine(ReleasePlayerCorout());
-    }
-
-    private IEnumerator ReleasePlayerCorout()
-    {
-        while (Time.time - lastTimeBeginLevel < durationToWaitAtBegining)
-        {
-            yield return null;
-        }
-
-        foreach (Transform t in charParent)
-        {
-            t.GetComponent<Movement>().canMove = true;
+            t.GetComponent<Movement>().DisableMovement(durationToWaitAtBegining);
         }
     }
 

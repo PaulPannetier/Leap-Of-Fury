@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour
     private MapColliderData groundColliderData, leftWallColliderData, rightWallColliderData;
     private FightController fightController;
     private int disableMovementCounter = 0;
+    private new Transform transform;
 
     public bool enableInput = true;
     private bool _enableBehaviour = true;
@@ -271,6 +272,11 @@ public class Movement : MonoBehaviour
         transform.position = newPosition;
     }
 
+    public void DisableMovement(float duration)
+    {
+        StartCoroutine(DisableMovementCorout(duration));
+    }
+
     public void Freeze()
     {
         rb.velocity = Vector2.zero;
@@ -315,6 +321,7 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
+        this.transform = base.transform;
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<AnimationScript>();
         mainCam = Camera.main;
@@ -889,7 +896,7 @@ public class Movement : MonoBehaviour
 
     private void HandleGrab()
     {
-        if (isBumping)
+        if (isBumping || !canMove)
             return;
 
         if (reachGrabApex)
@@ -1204,8 +1211,8 @@ public class Movement : MonoBehaviour
             return;
         }
 
-        StopCoroutine(DisableMovement(0f));
-        StartCoroutine(DisableMovement(0.1f));
+        StopCoroutine(nameof(DisableMovementCorout));
+        StartCoroutine(DisableMovementCorout(0.1f));
     }
 
     private void WallJumpAlongWall(bool right)
@@ -1227,6 +1234,26 @@ public class Movement : MonoBehaviour
         side *= -1;
     }
 
+    private IEnumerator DisableMovementCorout(float duration)
+    {
+        disableMovementCounter++;
+        canMove = false;
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            yield return null;
+            timer += Time.deltaTime;
+            while (PauseManager.instance.isPauseEnable)
+            {
+                yield return null;
+            }
+        }
+
+        disableMovementCounter--;
+        canMove = disableMovementCounter <= 0;
+    }
+
     #endregion
 
     #endregion
@@ -1235,21 +1262,21 @@ public class Movement : MonoBehaviour
 
     private void HandleFall()
     {
-        if (!isFalling || isJumping  || isWallJumping || isJumpingAlongWall || isSliding || wallGrab || isBumping || !enableBehaviour)
+        if (!canMove && !isFalling || isJumping  || isWallJumping || isJumpingAlongWall || isSliding || wallGrab || isBumping || !enableBehaviour)
             return;
 
         //phase montante en l'air
         if (rb.velocity.y > 0f)
         {
             //Gravity
-            float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
+            float coeff = playerInput.rawY == -1 && (enableInput && canMove) ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
             rb.velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.fixedDeltaTime);
 
             //Movement horizontal
             //Clamp, on est dans le mauvais sens
-            if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+            if (enableInput && canMove && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
                 rb.velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
-            if (enableInput && Mathf.Abs(rb.velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+            if (enableInput && canMove && Mathf.Abs(rb.velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
             {
                 rb.velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
             }
@@ -1263,7 +1290,16 @@ public class Movement : MonoBehaviour
         else//phase descendante
         {
             //Clamp the fall speed
-            float targetedSpeed = (playerInput.rawY == -1 && enableInput) ? -fallSpeed.y * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f) : -fallSpeed.y;
+            float targetedSpeed;
+            if(playerInput.rawY == -1 && enableInput && canMove)
+            {
+                targetedSpeed = -fallSpeed.y * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f);
+            }
+            else
+            {
+                targetedSpeed = -fallSpeed.y;
+            }
+
             if (rb.velocity.y < targetedSpeed)//slow
             {
                 rb.velocity = new Vector2(rb.velocity.x, Mathf.MoveTowards(rb.velocity.y, targetedSpeed, fallDecelerationSpeedLerp * Time.fixedDeltaTime));
@@ -1284,15 +1320,15 @@ public class Movement : MonoBehaviour
             }
             else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)//else just keep our velocity
             {
-                if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+                if (canMove && enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
-                if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0)
+                if (canMove && enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0)
                 {
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
                 }
                 else
                 {
-                    float targetSpeed = !enableInput ? 0f : playerInput.x * fallSpeed.x;
+                    float targetSpeed = !enableInput || !canMove ? 0f : playerInput.x * fallSpeed.x;
                     rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, fallSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
                 }
             }
@@ -1382,15 +1418,6 @@ public class Movement : MonoBehaviour
         lastTimeDashBegin = Time.time;
         hasDashed = isDashing = dash = true;
         fightController.StartDashing();
-    }
-
-    private IEnumerator DisableMovement(float time)
-    {
-        disableMovementCounter++;
-        canMove = false;
-        yield return Useful.GetWaitForSeconds(time);
-        disableMovementCounter--;
-        canMove = disableMovementCounter <= 0;
     }
 
     #endregion
@@ -1564,6 +1591,7 @@ public class Movement : MonoBehaviour
 
     private void OnValidate()
     {
+        this.transform = base.transform;
         grabSpeed = Mathf.Max(0f, grabSpeed);
         walkSpeed = Mathf.Max(0f, walkSpeed);
         dashSpeed = Mathf.Max(0f, dashSpeed);
