@@ -192,6 +192,8 @@ public abstract class LevelManager : MonoBehaviour
         SpawnChar(spawnPoints);
 
         lastTimeBeginLevel = Time.time;
+        BlockPlayers();
+
         StartCoroutine(CallbackOnLevelRestart());
     }
 

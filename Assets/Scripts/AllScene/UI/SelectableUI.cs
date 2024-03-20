@@ -1,23 +1,52 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
-public class SelectableUI : MonoBehaviour
+public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
-    private bool oldIsSelected = false;
-    protected TextMeshProUGUI textMeshPro;
+    private List<Coroutine> changeColorCorout;
+    private bool isSelected = false;
+    private bool isMouseOver;
+
+    [SerializeField] private bool mouseInteractable = true;
+
+    [SerializeField] ColorFader[] colors;
 
     public SelectableUI upSelectableUI;
     public SelectableUI downSelectableUI;
     public SelectableUI rightSelectableUI;
     public SelectableUI leftSelectableUI;
 
-    public bool isSelected = false;
     public UnityEvent onPressed;
+
+    [HideInInspector] public SelectableUIGroup selectableUIGroup;
 
     private void Awake()
     {
-        textMeshPro = GetComponent<TextMeshProUGUI>();
+        changeColorCorout = new List<Coroutine>();
+    }
+
+    public void ResetToDefault()
+    {
+        foreach (Coroutine coroutine in changeColorCorout)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        foreach (ColorFader fader in colors)
+        {
+            if(fader.text != null)
+                fader.text.color = fader.normalColor;
+            if (fader.image != null)
+                fader.image.color = fader.normalColor;
+        }
+
+        isSelected = isMouseOver = false;
+        selectableUIGroup = null;
     }
 
     public void OnPressed()
@@ -29,26 +58,134 @@ public class SelectableUI : MonoBehaviour
         }
     }
 
-    protected virtual void OnSelected()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        textMeshPro.color = new Color(textMeshPro.color.r, textMeshPro.color.g, textMeshPro.color.b, 0.5f);
+        if (!mouseInteractable)
+            return;
+
+        isMouseOver = true;
+        selectableUIGroup.RequestSelected(this);
+        OnSelected();
     }
 
-    protected virtual void OnDeselected()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        textMeshPro.color = new Color(textMeshPro.color.r, textMeshPro.color.g, textMeshPro.color.b, 1f);
+        if (!mouseInteractable)
+            return;
+
+        isMouseOver = false;
+        selectableUIGroup.RequestDeselected(this);
+        OnDeselected();
     }
 
-    private void Update()
+    public void OnPointerDown(PointerEventData eventData)
     {
-        if(isSelected && !oldIsSelected)
+        if (!mouseInteractable || !isMouseOver)
+            return;
+
+        foreach(Coroutine coroutine in changeColorCorout)
         {
-            OnSelected();
+            StopCoroutine(coroutine);
         }
-        if(!isSelected && !oldIsSelected)
+
+        foreach (ColorFader fader in colors)
         {
-            OnDeselected();
+            changeColorCorout.Add(StartCoroutine(ChangeColor(fader, fader.pressedColor)));
         }
-        oldIsSelected = isSelected;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (!mouseInteractable || !isMouseOver)
+            return;
+
+        foreach (Coroutine coroutine in changeColorCorout)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        foreach (ColorFader fader in colors)
+        {
+            changeColorCorout.Add(StartCoroutine(ChangeColor(fader, fader.highlightedColor)));
+        }
+
+        OnPressed();
+    }
+
+    public void OnSelected()
+    {
+        isSelected = true;
+        foreach (Coroutine coroutine in changeColorCorout)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        foreach (ColorFader fader in colors)
+        {
+            changeColorCorout.Add(StartCoroutine(ChangeColor(fader, fader.selectedColor)));
+        }
+    }
+
+    public void OnDeselected()
+    {
+        isSelected = false;
+        foreach (Coroutine coroutine in changeColorCorout)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        foreach (ColorFader fader in colors)
+        {
+            changeColorCorout.Add(StartCoroutine(ChangeColor(fader, fader.normalColor)));
+        }
+    }
+
+    private IEnumerator ChangeColor(ColorFader colorFader, Color target)
+    {
+        float timer = 0f;
+        Color? textColor = colorFader.text == null ? null : colorFader.text.color;
+        Color? imageColor = colorFader.image == null ? null : colorFader.image.color;
+
+        while (timer < colorFader.fadeDuration)
+        {
+            yield return null;
+            timer += Time.deltaTime;
+            float t = timer / colorFader.fadeDuration;
+            if (textColor != null)
+            {
+                colorFader.text.color = Color.Lerp(textColor.Value, target, t);
+            }
+            if(imageColor != null)
+            {
+                colorFader.image.color = Color.Lerp(imageColor.Value, target, t); ;
+            }
+        }
+    }
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        if(colors != null)
+        {
+            for (int i = 0; i < colors.Length; i++)
+            {
+                colors[i].fadeDuration = Mathf.Max(0f, colors[i].fadeDuration);
+            }
+        }
+    }
+
+#endif
+
+    [System.Serializable]
+    private struct ColorFader
+    {
+        public Color normalColor;
+        public Color highlightedColor;
+        public Color pressedColor;
+        public Color selectedColor;
+        public TextMeshProUGUI text;
+        public Image image;
+        public float fadeDuration;
     }
 }

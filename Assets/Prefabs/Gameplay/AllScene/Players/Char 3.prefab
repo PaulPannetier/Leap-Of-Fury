@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 1125352181698265087}
   - component: {fileID: 8331574599252283194}
   - component: {fileID: -5930288376104977610}
+  - component: {fileID: -951241358715958971}
   m_Layer: 8
   m_Name: Char 3
   m_TagString: Char
@@ -636,6 +637,18 @@ MonoBehaviour:
   transparency: 0.06
   maxSpeedWhenNotMove: 0.1
   colorFadeDuration: 0.5
+--- !u!114 &-951241358715958971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090791378756873177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3908af4cbc1045b4a95f41c0d09565e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6885330059463784344
 PrefabInstance:
   m_ObjectHideFlags: 0

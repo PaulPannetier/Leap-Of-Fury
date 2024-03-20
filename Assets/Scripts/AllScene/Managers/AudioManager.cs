@@ -7,9 +7,9 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
 
-    private Dictionary<string, AudioSource> currentSounds;
-    private Dictionary<string, Coroutine> removeCorout;
-    private Dictionary<string, Coroutine> changeVolumeCorout;
+    private Dictionary<SoundID, AudioSource> currentSounds;
+    private Dictionary<SoundID, Coroutine> removeCorout;
+    private Dictionary<SoundID, Coroutine> changeVolumeCorout;
 
     [SerializeField] private Transform audioParent;
     [SerializeField] [Range(0f, 1f)] private float _masterVolume = 1f, _musicVolume = 1f, _soundEffectsVolume = 1f;
@@ -28,28 +28,56 @@ public class AudioManager : MonoBehaviour
             return;
         }
         instance = this;
-        currentSounds = new Dictionary<string, AudioSource>();
-        removeCorout = new Dictionary<string, Coroutine>();
-        changeVolumeCorout = new Dictionary<string, Coroutine>();
+        currentSounds = new Dictionary<SoundID, AudioSource>();
+        removeCorout = new Dictionary<SoundID, Coroutine>();
+        changeVolumeCorout = new Dictionary<SoundID, Coroutine>();
     }
 
     private void RecaculateSoundVolume()
     {
-        foreach (string key in currentSounds.Keys)
+        foreach (SoundID key in currentSounds.Keys)
         {
-            Sound sound = Array.Find(audioClips, item => item.name == key);
+            Sound sound = Array.Find(audioClips, item => item.name == key.name);
             currentSounds[key].volume = sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVolume : musicVolume);
         }
     }
 
-    public void PlaySound(string name, float volume)
+    private SoundID GetNewId(string name)
+    {
+        SoundID.ids++;
+        return new SoundID(name, SoundID.ids);
+    }
+
+    private SoundID GetIdFromName(string name)
+    {
+        foreach (SoundID soundID in currentSounds.Keys)
+        {
+            if(soundID.name == name)
+                return soundID;
+        }
+        return default(SoundID);
+    }
+
+    private SoundID GetSoundID(uint id)
+    {
+        foreach (SoundID soundID in currentSounds.Keys)
+        {
+            if (soundID.id == id)
+                return soundID;
+        }
+        return default(SoundID);
+    }
+
+    public uint PlaySound(string name, float volume) => PlaySoundPrivate(name, volume).id;
+
+    private SoundID PlaySoundPrivate(string name, float volume)
     {
         Sound sound = Array.Find(audioClips, item => item.name == name);
         if(sound == null)
         {
             Debug.LogWarning("The sound " + name + " wasn't find in the AudioManager's audioClips array.");
             LogManager.instance.WriteLog("The sound " + name + " wasn't find in the AudioManager's audioClips array.", name);
-            return;
+            return default(SoundID);
         }
         AudioSource audioSource = Instantiate(sound.soundEffect ? soundEffectSourcePrefab : musicSourcePrefab, audioParent);
         audioSource.clip = sound.audioClip;
@@ -57,79 +85,98 @@ public class AudioManager : MonoBehaviour
         audioSource.loop = sound.loop;
         volume = Mathf.Clamp01(volume);
         audioSource.volume = volume * sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVolume : musicVolume);
-        currentSounds.Add(name, audioSource);
+        SoundID id = GetNewId(name);
+        currentSounds.Add(id, audioSource);
+        audioSource.GetComponent<AudioContent>().soundId = id.id;
         if (!sound.loop)
-            StopSound(name, sound.audioClip.length);
+            StopSound(id, sound.audioClip.length);
         audioSource.Play();
+        return id;
     }
 
     #region CrossFade
 
     public void CrossFade(string currentSoundName, string newSoundName, float newSoundVolume, float duration)
     {
-        if(!IsPlayingSound(currentSoundName))
+        CrossFade(GetIdFromName(currentSoundName), newSoundName, newSoundVolume, duration);
+    }
+
+    public void CrossFade(uint currentSoundId, string newSoundName, float newSoundVolume, float duration)
+    {
+        CrossFade(GetSoundID(currentSoundId), newSoundName, newSoundVolume, duration);
+    }
+
+    private void CrossFade(in SoundID currentSoundId, string newSoundName, float newSoundVolume, float duration)
+    {
+        if(!IsPlayingSound(currentSoundId))
         {
-            Debug.Log("The sound " + currentSoundName + " is not playing, can't crossfade!");
-            LogManager.instance.WriteLog("The sound " + currentSoundName + " is not playing, can't crossfade!", currentSoundName);
+            Debug.Log("The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName);
+            LogManager.instance.WriteLog("The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName, currentSoundId.name, newSoundName);
             PlaySound(newSoundName, 0f);
             SetVolumeSmooth(newSoundName, newSoundVolume, duration);
             return;
         }
-        StartCoroutine(CrossFadeCorout(currentSoundName, currentSounds[currentSoundName], newSoundName, newSoundVolume, duration));
+        StartCoroutine(CrossFadeCorout(currentSoundId, currentSounds[currentSoundId], newSoundName, newSoundVolume, duration));
     }
 
-    private IEnumerator CrossFadeCorout(string currentSoundName, AudioSource currentSource, string newSoundName, float targetVolume, float duration)
+    private IEnumerator CrossFadeCorout(SoundID currentSoundId, AudioSource currentSource, string newSoundName, float targetVolume, float duration)
     {
         float duration1 = duration * (currentSource.volume / (currentSource.volume + targetVolume));
-        Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(currentSoundName, currentSource, 0f, duration1));
-        changeVolumeCorout.Add(currentSoundName, changeVolCorout);
+        Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(currentSoundId, currentSource, 0f, duration1));
+        changeVolumeCorout.Add(currentSoundId, changeVolCorout);
         yield return Useful.GetWaitForSeconds(duration1);
-        RmMusic(currentSoundName);
+        RmMusic(currentSoundId);
 
-        PlaySound(newSoundName, 0f);
-        Coroutine changeVolCorout2 = StartCoroutine(SetVolumeSmoothCorout(newSoundName, currentSounds[newSoundName], targetVolume, duration - duration1));
-        changeVolumeCorout.Add(newSoundName, changeVolCorout2);
+        SoundID newSoundId = PlaySoundPrivate(newSoundName, 0f);
+        Coroutine changeVolCorout2 = StartCoroutine(SetVolumeSmoothCorout(newSoundId, currentSounds[newSoundId], targetVolume, duration - duration1));
+        changeVolumeCorout.Add(newSoundId, changeVolCorout2);
     }
 
     #endregion
 
-    public bool IsPlayingSound(string name) => currentSounds.ContainsKey(name);
+    public bool IsPlayingSound(string name) => IsPlayingSound(GetIdFromName(name));
+    public bool IsPlayingSound(uint id) => IsPlayingSound(GetSoundID(id));
+    private bool IsPlayingSound(in SoundID id) => currentSounds.ContainsKey(id);
 
-    public void SetVolume(string name, float newVolume)
+    public void SetVolume(string name, float newVolume) => SetVolume(GetIdFromName(name), newVolume);
+    public void SetVolume(uint id, float newVolume) => SetVolume(GetSoundID(id), newVolume);
+    private void SetVolume(SoundID id, float newVolume)
     {
-        if (currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if (currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
-            Sound sound = Array.Find(audioClips, item => item.name == name);
+            Sound sound = Array.Find(audioClips, item => item.name == id.name);
             audioSource.volume = Mathf.Clamp01(newVolume) * sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVolume : musicVolume);
             return;
         }
-        Debug.LogWarning("The sound " + name + "is not currently playing.");
-        LogManager.instance.WriteLog("The sound " + name + "is not currently playing.", name);
+        Debug.LogWarning("The sound " + id + " is not currently playing.");
+        LogManager.instance.WriteLog("The sound with id:" + id + " is not currently playing.", id);
     }
 
-    public void SetVolumeSmooth(string name, float newVolume, float duration)
+    public void SetVolumeSmooth(string name, float newVolume, float duration) => SetVolumeSmooth(GetIdFromName(name), newVolume, duration);
+    public void SetVolumeSmooth(uint id, float newVolume, float duration) => SetVolumeSmooth(GetSoundID(id), newVolume, duration);
+    private void SetVolumeSmooth(SoundID id, float newVolume, float duration)
     {
-        if(!currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if(!currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
-            Debug.Log("The sound : " + name + " is not playing, can't set volume of a non playing sound.");
-            LogManager.instance.WriteLog("The sound : " + name + " is not playing, can't set volume of a non playing sound.", name);
+            Debug.Log("The sound : " + id + " is not playing, can't set volume of a non playing sound.");
+            LogManager.instance.WriteLog("The sound : " + id + " is not playing, can't set volume of a non playing sound.", id);
             return;
         }
-        if(changeVolumeCorout.ContainsKey(name))
+        if(changeVolumeCorout.ContainsKey(id))
         {
-            Debug.Log("The sound : " + name + " is already changing volume smootly.");
-            LogManager.instance.WriteLog("The sound : " + name + " is already changing volume smootly.", name);
-            StopCoroutine(changeVolumeCorout[name]);
-            changeVolumeCorout.Remove(name);
+            Debug.Log("The sound : " + id + " is already changing volume smootly.");
+            LogManager.instance.WriteLog("The sound : " + id + " is already changing volume smootly.", id);
+            StopCoroutine(changeVolumeCorout[id]);
+            changeVolumeCorout.Remove(id);
         }
 
-        Sound sound = Array.Find(audioClips, item => item.name == name);
+        Sound sound = Array.Find(audioClips, item => item.name == id.name);
         newVolume = Mathf.Clamp01(newVolume) * masterVolume * (sound.soundEffect? soundEffectsVolume : musicVolume);
-        Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(name, audioSource, newVolume, Mathf.Max(duration, 0f)));
-        changeVolumeCorout.Add(name, changeVolCorout);
+        Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(id, audioSource, newVolume, Mathf.Max(duration, 0f)));
+        changeVolumeCorout.Add(id, changeVolCorout);
     }
 
-    private IEnumerator SetVolumeSmoothCorout(string name, AudioSource source, float targetVolume, float duration)
+    private IEnumerator SetVolumeSmoothCorout(SoundID id, AudioSource source, float targetVolume, float duration)
     {
         float volume = source.volume;
         float time = Time.time;
@@ -142,57 +189,65 @@ public class AudioManager : MonoBehaviour
         }
         if (source != null)
             source.volume = targetVolume;
-        changeVolumeCorout.Remove(name);
+        changeVolumeCorout.Remove(id);
     }
 
-    public void MuteSound(string name)
+    public void MuteSound(string name) => MuteSound(GetIdFromName(name));
+    public void MuteSound(uint id) => MuteSound(GetSoundID(id));
+    private void MuteSound(in SoundID id)
     {
-        if (currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if (currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
             audioSource.mute = true;
             return;
         }
-        Debug.LogWarning("The sound " + name + "is not currently playing, can't mute them.");
-        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't mute them.", name);
+        Debug.LogWarning("The sound " + id + "is not currently playing, can't mute them.");
+        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't mute them.", id);
     }
 
-    public void UnMuteSound(string name)
+    public void UnMuteSound(string name) => MuteSound(GetIdFromName(name));
+    public void UnMuteSound(uint id) => MuteSound(GetSoundID(id));
+    private void UnMuteSound(in SoundID id)
     {
-        if (currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if (currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
             audioSource.mute = false;
             return;
         }
-        Debug.LogWarning("The sound " + name + "is not currently playing, can't unmute them.");
-        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't unmute them.", name);
+        Debug.LogWarning("The sound " + id + "is not currently playing, can't unmute them.");
+        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't unmute them.", id);
     }
 
-    public void PauseSound(string name)
+    public void PauseSound(string name) => PauseSound(GetIdFromName(name));
+    public void PauseSound(uint id) => PauseSound(GetSoundID(id));
+    private void PauseSound(in SoundID id)
     {
-        if (currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if (currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
             audioSource.Pause();
             return;
         }
-        Debug.LogWarning("The sound " + name + "is not currently playing, can't pause them.");
-        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't pause them.", name);
+        Debug.LogWarning("The sound " + id + "is not currently playing, can't pause them.");
+        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't pause them.", id);
     }
 
-    public void ResumeSound(string name)
+    public void ResumeSound(string id) => ResumeSound(GetIdFromName(id));
+    public void ResumeSound(uint id) => ResumeSound(GetSoundID(id));
+    private void ResumeSound(in SoundID id)
     {
-        if (currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if (currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
             audioSource.UnPause();
             return;
         }
-        Debug.LogWarning("The sound " + name + "is not currently playing, can't resume them.");
-        LogManager.instance.WriteLog("The sound " + name + "is not currently playing, can't resume them.", name);
+        Debug.LogWarning("The sound " + id + "is not currently playing, can't resume them.");
+        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't resume them.", id);
     }
 
     public void StopAllSound()
     {
-        List<string> keys = new List<string>(currentSounds.Keys);
-        foreach (string key in keys)
+        List<SoundID> keys = new List<SoundID>(currentSounds.Keys);
+        foreach (SoundID key in keys)
         {
             StopSound(key);
         }
@@ -200,49 +255,55 @@ public class AudioManager : MonoBehaviour
 
     public void StopAllSound(float delay)
     {
-        List<string> keys = new List<string>(currentSounds.Keys);
-        foreach (string key in keys)
+        List<SoundID> keys = new List<SoundID>(currentSounds.Keys);
+        foreach (SoundID key in keys)
         {
             StopSound(key, delay);
         }
     }
 
-    public void StopSound(string name)
+    public void StopSound(string id) => StopSound(GetIdFromName(id));
+    public void StopSound(uint id) => StopSound(GetSoundID(id));
+    private void StopSound(in SoundID id)
     {
-        RmMusic(name);
+        RmMusic(id);
     }
 
-    public void StopSound(string name, float delay)
+    public void StopSound(string id, float delay) => StopSound(GetIdFromName(id), delay);
+    public void StopSound(uint id, float delay) => StopSound(GetSoundID(id), delay);
+    private void StopSound(in SoundID id, float delay)
     {
         if (Mathf.Approximately(delay, 0f))
         {
-            RmMusic(name);
+            RmMusic(id);
             return;
         }
 
-        if(removeCorout.TryGetValue(name, out Coroutine c))
+        if(removeCorout.TryGetValue(id, out Coroutine c))
         {
             StopCoroutine(c);
-            removeCorout.Remove(name);
+            removeCorout.Remove(id);
         }
-        removeCorout.Add(name, StartCoroutine(RemoveSoundCoroutine(name, delay)));
+        removeCorout.Add(id, StartCoroutine(RemoveSoundCoroutine(id, delay)));
     }
 
-    public void StopSmooth(string name, float duration)
+    public void StopSmooth(string id, float duration) => StopSmooth(GetIdFromName(id), duration);
+    public void StopSmooth(uint id, float duration) => StopSmooth(GetSoundID(id), duration);
+    private void StopSmooth(in SoundID id, float duration)
     {
-        if(removeCorout.TryGetValue(name, out Coroutine c))
+        if(removeCorout.TryGetValue(id, out Coroutine c))
         {
             StopCoroutine(c);
-            removeCorout.Remove(name);
+            removeCorout.Remove(id);
         }
 
-        if (currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if (currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
-            removeCorout.Add(name, StartCoroutine(StopSmoothCorout(audioSource, duration)));
+            removeCorout.Add(id, StartCoroutine(StopSmoothCorout(id, audioSource, duration)));
         }
     }
 
-    private IEnumerator StopSmoothCorout(AudioSource audioSource, float duration)
+    private IEnumerator StopSmoothCorout(SoundID id, AudioSource audioSource, float duration)
     {
         float time = Time.time;
         float volume = audioSource.volume;
@@ -251,54 +312,53 @@ public class AudioManager : MonoBehaviour
             audioSource.volume = Mathf.Lerp(volume, 0f, (Time.time - time) / duration);
             yield return null;
         }
-        RmMusic(name);
+        RmMusic(id);
     }
 
-    private void RmMusic(string name)
+    private void RmMusic(in SoundID id)
     {
-        if (!currentSounds.TryGetValue(name, out AudioSource audioSource))
+        if (!currentSounds.TryGetValue(id, out AudioSource audioSource))
             return;
         audioSource.mute = true;
         Destroy(audioSource.gameObject);
-        currentSounds.Remove(name);
-        if (removeCorout.TryGetValue(name, out Coroutine coroutine))
+        currentSounds.Remove(id);
+        if (removeCorout.TryGetValue(id, out Coroutine coroutine))
         {
             StopCoroutine(coroutine);
-            removeCorout.Remove(name);
+            removeCorout.Remove(id);
         }
     }
 
-    private IEnumerator RemoveSoundCoroutine(string name, float delay)
+    private IEnumerator RemoveSoundCoroutine(SoundID id, float delay)
     {
         yield return Useful.GetWaitForSeconds(delay);
-        RmMusic(name);
+        RmMusic(id);
     }
 
-    public string GetSoundName(string audioClipName)
+    public float GetSoundLength(string audioClipName)
     {
         Sound sound = Array.Find(audioClips, item => item.audioClip.name == audioClipName);
-        if (sound == null)
-            return string.Empty;
-        return sound.name;
+        return sound == null ? 0f : sound.audioClip.length;
     }
 
-    public void OnMusicDestroy(string name)
+    public void OnMusicDestroy(uint id)
     {
-        if(removeCorout.ContainsKey(name))
+        SoundID soundID = GetSoundID(id);
+        if (removeCorout.ContainsKey(soundID))
         {
-            Coroutine coroutine = removeCorout[name];
+            Coroutine coroutine = removeCorout[soundID];
             StopCoroutine(coroutine);
-            removeCorout.Remove(name);
+            removeCorout.Remove(soundID);
         }
-        if (changeVolumeCorout.ContainsKey(name))
+        if (changeVolumeCorout.ContainsKey(soundID))
         {
-            Coroutine coroutine = changeVolumeCorout[name];
+            Coroutine coroutine = changeVolumeCorout[soundID];
             StopCoroutine(coroutine);
-            changeVolumeCorout.Remove(name);
+            changeVolumeCorout.Remove(soundID);
         }
-        if (currentSounds.ContainsKey(name))
+        if (currentSounds.ContainsKey(soundID))
         {
-            currentSounds.Remove(name);
+            currentSounds.Remove(soundID);
         }
     }
 
@@ -311,6 +371,39 @@ public class AudioManager : MonoBehaviour
     }
 
 #endif
+
+    private struct SoundID
+    {
+        public static uint ids = 0;
+
+        public string name;
+        public uint id;
+
+        public SoundID(uint id)
+        {
+            this.name = string.Empty;
+            this.id = id;
+        }
+
+        public SoundID(string name, uint id)
+        {
+            this.name = name;
+            this.id = id;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is SoundID soundID ? this == soundID : false;
+        }
+
+        public override string ToString() => "{id:" + id + ",name:" + name + "}";
+
+        public override int GetHashCode() => id.GetHashCode();
+
+        public static bool operator ==(SoundID a, SoundID b) => a.id == b.id;
+
+        public static bool operator !=(SoundID a, SoundID b) => !(a == b);
+    }
 
     [Serializable]
     private class Sound

@@ -257,3 +257,3532 @@ CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:95)
+LevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:83)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:72)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:95)
+LevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:83)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:72)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Joystick connected ("Controller (Xbox One For Windows)").
+
+        Type : String,
+        Value : 
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Enter
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Exit
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerExit (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:50)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : RGBA(1.000, 0.000, 0.826, 1.000)
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:44)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : RGBA(1.000, 0.000, 0.826, 1.000)
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:44)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Carotte
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : SINGLE
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:36)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : RGBA(0.000, 0.439, 1.000, 0.498)
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:42)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : RGBA(0.000, 0.439, 1.000, 0.498)
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+SelectableUI:OnPointerEnter (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:42)
+UnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Assets\Scripts\AllScene\UI\SelectableUI.cs(58,9): warning CS0162: Unreachable code detected
+
+        Type : String,
+        Value : 
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentNullException: Value cannot be null.
+Parameter name: _unity_self
+
+        Type : String,
+        Value : UnityEditor.UIElements.Bindings.SerializedObjectList.get_Count () (at <57e65cdc8c38484c871080aa2b2d0569>:0)
+UnityEngine.UIElements.VerticalVirtualizationController`1[T].get_itemsCount () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].IsIndexOutOfBounds (System.Int32 i) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].CleanItemHeightCache () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.DynamicHeightVirtualizationController`1[T].Refresh (System.Boolean rebuild) (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.RefreshItems () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.UIElements.BaseVerticalCollectionView.UnityEngine.ISerializationCallbackReceiver.OnAfterDeserialize () (at <05f2afe6185f419bbdba66c4cec39481>:0)
+UnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:95)
+LevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:83)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:72)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'ResumeButton' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu:OnPauseDisable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:95)
+PauseMenu:Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:47)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'ResumeButton' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu:OnPauseDisable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:95)
+PauseMenu:Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:47)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'MainTitleButton' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu:OnPauseDisable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:95)
+PauseMenu:Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:47)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'MainTitleButton' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu:OnPauseDisable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:95)
+PauseMenu:Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:47)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'MapSelection' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu:OnPauseDisable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:95)
+PauseMenu:Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:47)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'MapSelection' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu:OnPauseDisable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:95)
+PauseMenu:Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:47)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:101)
+SelectableUIGroup.Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:124)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:101)
+SelectableUIGroup.Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:124)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:101)
+SelectableUIGroup.Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:124)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:101)
+SelectableUIGroup.Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:124)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:101)
+SelectableUIGroup.Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:124)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:101)
+SelectableUIGroup.Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:124)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:115)
+SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.List`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+PauseMenu.OnPauseEnable () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:84)
+PauseMenu.Update () (at Assets/Scripts/Gameplay/UI/PauseMenu.cs:51)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: routine is null
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour.StopCoroutine (UnityEngine.Coroutine routine) (at <228a75ed9d5b4a658c89f48527e7e2e0>:0)
+SelectableUI.OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:101)
+SelectableUIGroup.Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:124)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'Single' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+SelectableUIGroup:OnDisable () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:229)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'Quit' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+SelectableUIGroup:OnDisable () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:229)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'Credit' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+SelectableUIGroup:OnDisable () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:229)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'Option' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+SelectableUIGroup:OnDisable () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:229)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Error
+
+        Type : String,
+        Value : Coroutine couldn't be started because the the game object 'Multi' is inactive!
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SelectableUI:OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:120)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:74)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:<Init>g__InitRecur|14_0 (SelectableUI,System.Collections.Generic.List`1<SelectableUI>&) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:77)
+SelectableUIGroup:Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)
+SelectableUIGroup:OnDisable () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:229)
+
+    }
+}

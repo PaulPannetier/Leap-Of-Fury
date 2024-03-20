@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public enum PlayerSelector
 {
@@ -52,8 +53,75 @@ public class SelectableUIGroup : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput leftItemInput;
     [SerializeField] private InputManager.GeneralInput applyInput;
 
-    private void Awake()
+    private void Start()
     {
+        Init();
+    }
+
+    public void Init()
+    {
+        selectedUI = null;
+
+        List<SelectableUI> lst = new List<SelectableUI>();
+        InitRecur(defaultUISelected, ref lst);
+
+        void InitRecur(SelectableUI selectableUI, ref List<SelectableUI> cache)
+        {
+            if (cache.Contains(selectableUI))
+                return;
+
+            selectableUI.selectableUIGroup = this;
+            selectableUI.OnDeselected();
+            cache.Add(selectableUI);
+            if (selectableUI.upSelectableUI != null)
+                InitRecur(selectableUI.upSelectableUI, ref cache);
+            if (selectableUI.downSelectableUI != null)
+                InitRecur(selectableUI.downSelectableUI, ref cache);
+            if (selectableUI.rightSelectableUI != null)
+                InitRecur(selectableUI.rightSelectableUI, ref cache);
+            if (selectableUI.leftSelectableUI != null)
+                InitRecur(selectableUI.leftSelectableUI, ref cache);
+        }
+    }
+
+    public void ResetToDefault()
+    {
+        List<SelectableUI> lst = new List<SelectableUI>();
+        ResetSelectableUIRecur(defaultUISelected, ref lst);
+
+        void ResetSelectableUIRecur(SelectableUI selectableUI, ref List<SelectableUI> cache)
+        {
+            if (cache.Contains(selectableUI))
+                return;
+
+            selectableUI.ResetToDefault();
+            cache.Add(selectableUI);
+            if (selectableUI.upSelectableUI != null)
+                ResetSelectableUIRecur(selectableUI.upSelectableUI, ref cache);
+            if (selectableUI.downSelectableUI != null)
+                ResetSelectableUIRecur(selectableUI.downSelectableUI, ref cache);
+            if (selectableUI.rightSelectableUI != null)
+                ResetSelectableUIRecur(selectableUI.rightSelectableUI, ref cache);
+            if (selectableUI.leftSelectableUI != null)
+                ResetSelectableUIRecur(selectableUI.leftSelectableUI, ref cache);
+        }
+    }
+
+    public void RequestSelected(SelectableUI selectableUI)
+    {
+        if (selectedUI != null)
+        {
+            selectedUI.OnDeselected();    
+        }
+        selectedUI = selectableUI;
+    }
+
+    public void RequestDeselected(SelectableUI selectableUI)
+    {
+        if(selectedUI != selectableUI)
+        {
+            selectedUI.OnDeselected();
+        }
         selectedUI = null;
     }
 
@@ -76,6 +144,7 @@ public class SelectableUIGroup : MonoBehaviour
                 if(ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                 {
                     selectedUI = defaultUISelected;
+                    selectedUI.OnSelected();
                     this.controllerType = controllerType;
                 }
             }
@@ -99,30 +168,30 @@ public class SelectableUIGroup : MonoBehaviour
             {
                 if (selectedUI.upSelectableUI != null && upItemInput.IsPressedDown())
                 {
-                    selectedUI.isSelected = false;
-                    selectedUI.upSelectableUI.isSelected = true;
+                    selectedUI.OnDeselected();
                     selectedUI = selectedUI.upSelectableUI;
+                    selectedUI.OnSelected();
                 }
 
                 if (selectedUI.downSelectableUI != null && downItemInput.IsPressedDown())
                 {
-                    selectedUI.isSelected = false;
-                    selectedUI.downSelectableUI.isSelected = true;
+                    selectedUI.OnDeselected();
                     selectedUI = selectedUI.downSelectableUI;
+                    selectedUI.OnSelected();
                 }
 
                 if (selectedUI.rightSelectableUI != null && rightItemInput.IsPressedDown())
                 {
-                    selectedUI.isSelected = false;
-                    selectedUI.rightSelectableUI.isSelected = true;
+                    selectedUI.OnDeselected();
                     selectedUI = selectedUI.rightSelectableUI;
+                    selectedUI.OnSelected();
                 }
 
                 if (selectedUI.leftSelectableUI != null && leftItemInput.IsPressedDown())
                 {
-                    selectedUI.isSelected = false;
-                    selectedUI.leftSelectableUI.isSelected = true;
+                    selectedUI.OnDeselected();
                     selectedUI = selectedUI.leftSelectableUI;
+                    selectedUI.OnSelected();
                 }
 
 
