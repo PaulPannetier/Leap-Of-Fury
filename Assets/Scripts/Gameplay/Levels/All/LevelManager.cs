@@ -2,7 +2,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Threading;
 
 public abstract class LevelManager : MonoBehaviour
 {
@@ -382,8 +381,7 @@ public abstract class LevelManager : MonoBehaviour
 
         if (playerWin.Count == 1)
         {
-            SelectionMapOldSceneData selectionMapSceneData = TransitionManager.instance.GetOldSceneData("Selection Map") as SelectionMapOldSceneData;
-            TransitionManager.instance.LoadSceneAsync("Selection Map", new LevelOldSceneData(TransitionManager.instance.activeScene, selectionMapSceneData.charData));
+            EventManager.instance.OnLevelFinish(new FinishLevelData(levelName, playersScore));
             return;
         }
         else if (playerWin.Count > 1)
@@ -442,5 +440,16 @@ public abstract class LevelManager : MonoBehaviour
         }
     }
 
+    public struct FinishLevelData
+    {
+        public PlayerScore[] playersScore;
+        public string levelName;
+
+        public FinishLevelData(string levelName, PlayerScore[] playersScore)
+        {
+            this.levelName = levelName;
+            this.playersScore = playersScore;
+        }
+    }
     #endregion
 }

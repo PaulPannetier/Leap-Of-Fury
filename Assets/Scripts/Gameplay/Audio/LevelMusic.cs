@@ -23,7 +23,7 @@ public class LevelMusic : MonoBehaviour
         }
     }
 
-    private void OnLevelFinish(string levelName)
+    private void OnLevelFinish(LevelManager.FinishLevelData finishLevelData)
     {
         AudioManager.instance.StopSmooth(musicName, volumeFadeDuration);
     }

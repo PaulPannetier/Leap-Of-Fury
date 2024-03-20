@@ -10,7 +10,7 @@ public class EventManager : MonoBehaviour
     public Action callbackPreUpdate;
     public Action<string> callbackOnLevelStart;
     public Action<LevelManager.EndLevelData> callbackOnLevelEnd;
-    public Action<string> callbackOnLevelFinish;
+    public Action<LevelManager.FinishLevelData> callbackOnLevelFinish;
     public Action<string> callbackOnLevelRestart;
     public Action<LevelMapData> callbackOnMapChanged;
 
@@ -28,6 +28,7 @@ public class EventManager : MonoBehaviour
         callbackPreUpdate = new Action(() => { });
         callbackOnLevelStart = new Action<string>((string arg1) => { });
         callbackOnLevelEnd = new Action<LevelManager.EndLevelData>((LevelManager.EndLevelData arg1) => { });
+        callbackOnLevelFinish = new Action<LevelManager.FinishLevelData>((LevelManager.FinishLevelData finishLevelData) => { });
         callbackOnLevelRestart = new Action<string>((string arg1) => { });
     }
 
@@ -61,9 +62,9 @@ public class EventManager : MonoBehaviour
         callbackOnLevelEnd.Invoke(endLevelData);
     }
 
-    public void OnLevelFinish(string levelName)
+    public void OnLevelFinish(in LevelManager.FinishLevelData finishLevelData)
     {
-        callbackOnLevelFinish.Invoke(levelName);
+        callbackOnLevelFinish.Invoke(finishLevelData);
     }
 
     public void OnMapChanged(LevelMapData levelMapData)

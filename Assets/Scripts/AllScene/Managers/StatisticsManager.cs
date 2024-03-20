@@ -29,6 +29,7 @@ public class StatisticsManager : MonoBehaviour
         EventManager.instance.callbackOnLevelStart += OnLevelStart;
         EventManager.instance.callbackOnLevelEnd += OnLevelEnd;
         EventManager.instance.callbackOnPlayerDeath += OnPlayerDeath;
+        EventManager.instance.callbackOnLevelFinish += OnLevelFinish;
     }
 
     private void OnLevelStart(string levelName)
@@ -39,6 +40,12 @@ public class StatisticsManager : MonoBehaviour
     private void OnLevelEnd(LevelManager.EndLevelData endLevelData)
     {
         isCurrentGameplayScene = false;
+        SaveStats();
+    }
+
+    private void OnLevelFinish(LevelManager.FinishLevelData finishLevelData)
+    {
+        currentData.levelComplete++;
         SaveStats();
     }
 
@@ -80,6 +87,7 @@ public class StatisticsManager : MonoBehaviour
         EventManager.instance.callbackOnLevelStart -= OnLevelStart;
         EventManager.instance.callbackOnLevelEnd -= OnLevelEnd;
         EventManager.instance.callbackOnPlayerDeath -= OnPlayerDeath;
+        EventManager.instance.callbackOnLevelFinish -= OnLevelFinish;
     }
 
 #if UNITY_EDITOR
@@ -88,9 +96,9 @@ public class StatisticsManager : MonoBehaviour
     {
         if(resetStats)
         {
+            resetStats = false;
             currentData = new StatisticsData();
             SaveStats();
-            resetStats = false;
         }
         saveInterval = Mathf.Max(0f, saveInterval);
     }
