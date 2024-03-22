@@ -123,7 +123,7 @@ public class FloorShockWave : MonoBehaviour
         Gizmos.DrawLine((Vector2)transform.position, (Vector2)transform.position + Vector2.down * distanceFromFloor);
     }
 
-    private void OnValidate()
+    protected void OnValidate()
     {
         rayLengthHori = Mathf.Max(0f, rayLengthHori);
         rayLengthVerti = Mathf.Max(0f, rayLengthVerti);

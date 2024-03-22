@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.U2D;
 
 [RequireComponent(typeof(Movement), typeof(SpriteRenderer))]
 public class TransparencyPassif : PassifAttack
@@ -36,8 +35,9 @@ public class TransparencyPassif : PassifAttack
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         transitionTime = Mathf.Max(transitionTime, 0f);
     }
 

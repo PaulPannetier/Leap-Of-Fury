@@ -73,8 +73,9 @@ public class FireworkAttack : StrongAttack
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         bumpVelocity = Mathf.Max(bumpVelocity, 0f);
         nbFireworkLaunch = Mathf.Max(nbFireworkLaunch, 0);
         distanceFromCharWhenLauch = Mathf.Max(distanceFromCharWhenLauch, 0f);

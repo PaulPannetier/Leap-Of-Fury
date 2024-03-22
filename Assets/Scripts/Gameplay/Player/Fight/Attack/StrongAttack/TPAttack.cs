@@ -207,8 +207,9 @@ public class TPAttack : StrongAttack
         Circle.GizmosDraw((Vector2)transform.position + Vector2.up * tpRange, explosionRadius);
     }
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         detectionStep = Mathf.Max(0.000001f, detectionStep);
         collisionSize = new Vector2(Mathf.Max(0.0000001f, collisionSize.x), Mathf.Max(0.0000001f, collisionSize.y));
         explosionRadius = Mathf.Max(0f, explosionRadius);

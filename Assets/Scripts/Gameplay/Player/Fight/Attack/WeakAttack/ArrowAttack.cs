@@ -117,8 +117,9 @@ public class ArrowAttack : WeakAttack
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         arrowLaunchDistance = Mathf.Max(0f, arrowLaunchDistance);
         initArrow = Mathf.Max(0, initArrow);
     }

@@ -292,6 +292,12 @@ public class CloneAttack : StrongAttack
         isCloneAttackEnable = false;
     }
 
+    protected override void SaveAttackStats()
+    {
+        base.SaveAttackStats();
+        GameStatisticManager.instance.SetStat("char1WeakAttackDuration", duration.Round(2).ToString());
+    }
+
     #region CloneData struct
 
     private struct CloneData
@@ -321,4 +327,5 @@ public class CloneAttack : StrongAttack
     }
 
     #endregion
+
 }

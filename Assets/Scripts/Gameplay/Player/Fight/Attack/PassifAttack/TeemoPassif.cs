@@ -95,8 +95,9 @@ public class TeemoPassif : PassifAttack
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         durationToWait = Mathf.Max(0f, durationToWait);
         maxSpeedWhenNotMove = Mathf.Max(0f, maxSpeedWhenNotMove);
         colorFadeDuration = Mathf.Max(0f, colorFadeDuration);

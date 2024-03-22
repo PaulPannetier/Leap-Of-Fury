@@ -361,8 +361,10 @@ public class GrabAttack : StrongAttack
         Gizmos.color = Color.red;
     }
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
+        this.transform = base.transform;
         range = Mathf.Max(0f, range);
         castRadius = Mathf.Max(0f, castRadius);
         waitingTimeWhenWallGrab = Mathf.Max(0f, waitingTimeWhenWallGrab);
@@ -374,7 +376,6 @@ public class GrabAttack : StrongAttack
         wallGapDown = Mathf.Max(0f, wallGapDown);
         wallGapLeft = Mathf.Max(0f, wallGapLeft);
         wallGapRight = Mathf.Max(0f, wallGapRight);
-        this.transform = base.transform;
         charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
         charMask = LayerMask.GetMask("Char");
     }

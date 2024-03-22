@@ -7,8 +7,6 @@ using Collider2D = UnityEngine.Collider2D;
 
 public class CharHelpCanvas : MonoBehaviour
 {
-    private TurningSelector turningSelector;
-    private ControllerType controllerType;
     private int id;
     private Action<int> callbackCloseHelpCanvas;
     private VideoPlayer videoPlayer;
@@ -26,20 +24,20 @@ public class CharHelpCanvas : MonoBehaviour
     private void Awake()
     {
         videoPlayer = GetComponentInChildren<VideoPlayer>();
-        explicationText = GetComponentInChildren<TextMeshProUGUI>();  
+        explicationText = GetComponentInChildren<TextMeshProUGUI>();
+        selectedHelpIndex = 0;
     }
 
     private void Start()
     {
-        selectedHelpIndex = 0;
         OnUpdateUI();
     }
 
-    public void Lauch(TurningSelector turningSelector, ControllerType controllerType, int id, Action<int> callbackCloseHelpCanvas)
+    public void Launch(TurningSelector turningSelector, ControllerType controllerType, int id, Action<int> callbackCloseHelpCanvas)
     {
-        this.turningSelector = turningSelector;
-        this.controllerType = controllerType;
         closeHelpCanvasInput.controllerType = controllerType;
+        nextHelpInput.controllerType = controllerType;
+        previousHelpInput.controllerType = controllerType;
         transform.position = turningSelector.center + turningSelectorOffset;
         this.id = id;
         this.callbackCloseHelpCanvas = callbackCloseHelpCanvas;
@@ -72,16 +70,20 @@ public class CharHelpCanvas : MonoBehaviour
     {
         videoPlayer.clip = selectedData.video;
         videoPlayer.Play();
-        explicationText.text = selectedData.description;
+        explicationText.text = LanguageManager.instance.GetText(selectedData.descriptionKey);
     }
 
     #region Gizmos/OnValidate
+
+#if UNITY_EDITOR
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
         Circle.GizmosDraw((Vector2)transform.position - turningSelectorOffset, 50f);
     }
+
+#endif
 
     #endregion
 
@@ -91,12 +93,14 @@ public class CharHelpCanvas : MonoBehaviour
     private struct AttackVideoData
     {
         public VideoClip video;
-        public string description;
+        public string descriptionKey;
+        public TextMeshProUGUI descriptionText;
 
-        public AttackVideoData(VideoClip video, string description)
+        public AttackVideoData(VideoClip video, string description, TextMeshProUGUI descriptionText)
         {
             this.video = video;
-            this.description = description;
+            this.descriptionKey = description;
+            this.descriptionText = descriptionText;
         }
     }
 

@@ -10,6 +10,12 @@ public abstract class Attack : MonoBehaviour
     [Tooltip("Durée l'immobilité après avoir lancé le sort en sec")] public float castDuration;
     [SerializeField] protected Cooldown cooldown;
 
+#if UNITY_EDITOR
+
+    [SerializeField] private bool saveAttackStats;
+
+#endif
+
     protected virtual void Awake()
     {
         eventController = GetComponent<EventController>();
@@ -72,4 +78,22 @@ public abstract class Attack : MonoBehaviour
     {
 
     }
+
+#if UNITY_EDITOR
+
+    protected virtual void SaveAttackStats()
+    {
+
+    }
+
+    protected virtual void OnValidate()
+    {
+        if(saveAttackStats)
+        {
+            saveAttackStats = false;
+            SaveAttackStats();
+        }
+    }
+
+#endif
 }

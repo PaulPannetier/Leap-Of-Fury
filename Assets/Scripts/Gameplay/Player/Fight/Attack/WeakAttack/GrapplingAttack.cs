@@ -321,8 +321,11 @@ public class GrapplingAttack : WeakAttack
 
     #region Gizmos / OnValidate
 
-    private void OnValidate()
+#if UNITY_EDITOR
+
+    protected override void OnValidate()
     {
+        base.OnValidate();
         grapClimbUpSpeed = Mathf.Max(0f, grapClimbUpSpeed);
         grapClimbDownSpeed = Mathf.Max(0f, grapClimbDownSpeed);
         grapRange = Mathf.Max(0f, grapRange);
@@ -345,5 +348,7 @@ public class GrapplingAttack : WeakAttack
         Circle.GizmosDraw((Vector2)transform.position + grapRange * Vector2.up, circleCastRadius);
     }
 
-    #endregion
+#endif
+
+#endregion
 }

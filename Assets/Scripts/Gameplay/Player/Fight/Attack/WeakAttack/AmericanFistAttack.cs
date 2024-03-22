@@ -435,8 +435,9 @@ public class AmericanFistAttack : WeakAttack
         Circle.GizmosDraw(center, groundDetectionRadius);
     }
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         nbDash = Mathf.Max(0, nbDash);
         colliderSize = new Vector2(Mathf.Max(0f, colliderSize.x), Mathf.Max(0f, colliderSize.y));
 

@@ -162,6 +162,8 @@ public class TurningSelector : MonoBehaviour
 
     #region OnValidate/Gizmos
 
+#if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
@@ -182,5 +184,7 @@ public class TurningSelector : MonoBehaviour
         }
     }
 
-    #endregion
+#endif
+
+#endregion
 }

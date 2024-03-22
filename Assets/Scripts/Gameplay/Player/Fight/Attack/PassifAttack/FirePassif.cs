@@ -132,9 +132,14 @@ public class FirePassif : PassifAttack
         fireGO.GetComponent<Fire>().OnCreate(this);
     }
 
-    private void OnValidate()
+#if UNITY_EDITOR
+
+    protected override void OnValidate()
     {
+        base.OnValidate();
         fireDuration = Mathf.Max(0f, fireDuration);
         fireDecreasement = Mathf.Max(0f, fireDecreasement);
     }
+
+#endif
 }

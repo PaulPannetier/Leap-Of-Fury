@@ -73,8 +73,9 @@ public class BoomerangAttack : WeakAttack
 
 #if UNITY_EDITOR
 
-    protected void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         durationPhase1 = Mathf.Max(0f, durationPhase1);
         accelerationDurationPhase2 = Mathf.Max(0f, accelerationDurationPhase2);
         maxSpeedPhase1 = Mathf.Max(0f, maxSpeedPhase1);

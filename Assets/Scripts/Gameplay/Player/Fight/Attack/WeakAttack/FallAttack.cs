@@ -184,8 +184,9 @@ public class FallAttack : WeakAttack
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
+        base.OnValidate();
         minDistanceFromGround = Mathf.Max(0f, minDistanceFromGround);
         explosionRadius = Mathf.Max(0f, explosionRadius);
     }

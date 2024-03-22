@@ -12,8 +12,6 @@ public class CharSelectorController : MonoBehaviour
     private bool canLoadNextScene = false;
     private bool nextSceneIsLoading = false;
 
-    [SerializeField] private GameObject[] charHelperCanvasPrefabs;
-
     [SerializeField] private InputManager.GeneralInput helpButton;
     [SerializeField] private InputManager.GeneralInput escapeButton;
     [SerializeField] private InputManager.GeneralInput nextItemInput;
@@ -148,10 +146,10 @@ public class CharSelectorController : MonoBehaviour
     {
         isHelpCanvasOpen[indexTuringSelector] = true;
         GameObject selectedChar = turningSelectors[indexTuringSelector].selectedItem;
-        int charNumber = selectedChar.GetComponent<CharSelectorItemData>().charNumber;
-        helpCanvas[indexTuringSelector] = Instantiate(charHelperCanvasPrefabs[charNumber], transform);
+        CharSelectorItemData charSelectorItemData = selectedChar.GetComponent<CharSelectorItemData>();
+        helpCanvas[indexTuringSelector] = Instantiate(charSelectorItemData.helpCanvasPrefab, transform);
         CharHelpCanvas charHelpCanvas = helpCanvas[indexTuringSelector].GetComponent<CharHelpCanvas>();
-        charHelpCanvas.Lauch(turningSelectors[indexTuringSelector], controllerIndexs[indexTuringSelector], indexTuringSelector, OnCloseHelpCanvas);
+        charHelpCanvas.Launch(turningSelectors[indexTuringSelector], controllerIndexs[indexTuringSelector], indexTuringSelector, OnCloseHelpCanvas);
     }
 
     private void OnCloseHelpCanvas(int indexHelpCanvas)

@@ -88,8 +88,11 @@ public class BouncingBallAttack : StrongAttack
         nbBalls = Math.Min(maxNbBalls, nbBalls + 1);
     }
 
-    private void OnValidate()
+#if UNITY_EDITOR
+
+    protected override void OnValidate()
     {
+        base.OnValidate();
         nbBounce = Math.Max(0, nbBounce);
         speed = Mathf.Max(0f, speed);
         shootTime = Mathf.Max(0f, shootTime);
@@ -107,4 +110,6 @@ public class BouncingBallAttack : StrongAttack
         Gizmos.color = Color.red;
         Circle.GizmosDraw(transform.position, shootDistanceFromChar);
     }
+
+#endif
 }

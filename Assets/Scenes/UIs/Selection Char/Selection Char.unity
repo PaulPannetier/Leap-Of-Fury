@@ -407,6 +407,58 @@ PrefabInstance:
       propertyPath: RecalculatePositionAndScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2356729332937568911, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
+    - target: {fileID: 2356729333222305990, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+    - target: {fileID: 2356729333349022568, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
+    - target: {fileID: 2356729333714023464, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
+    - target: {fileID: 2356729333731063557, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
+    - target: {fileID: 2356729334008293166, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
+    - target: {fileID: 2356729334074240484, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
+    - target: {fileID: 2356729334425775817, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
+    - target: {fileID: 2356729334494045187, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
+    - target: {fileID: 2356729334649186855, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+    - target: {fileID: 2356729334791037321, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
+    - target: {fileID: 2356729335009747904, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+    - target: {fileID: 2503747462143397043, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
     - target: {fileID: 2503747462559950868, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: m_Name
       value: CharSelectorCanvas
@@ -511,6 +563,18 @@ PrefabInstance:
       propertyPath: m_PixelPerfect
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2503747462906568188, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+    - target: {fileID: 2503747463218059538, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
+    - target: {fileID: 2503747463469980223, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
     - target: {fileID: 4169894382128917433, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: escapeButton.controllerType
       value: 0
@@ -660,25 +724,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
-    - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: musicSourcePrefab
-      value: 
-      objectReference: {fileID: 160324979959570180, guid: 0a7f32685a478654e8d8a72a1a7434f2, type: 3}
-    - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: soundEffectSourcePrefab
-      value: 
-      objectReference: {fileID: 837524125875579688, guid: bedb528f517e4a2459d8d3e2162723ad, type: 3}
-    - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: audioClips.Array.data[2].audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: acd3a8e1a71829942bc33e2375d87e76, type: 3}
-    - target: {fileID: 299310299462171991, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: audioClips.Array.data[3].audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 44f7e4bb45127ba44ab8df8cdc130d7d, type: 3}
-    - target: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: m_RootOrder
+    - target: {fileID: 6842532504228175351, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: dsqfkljhsdklhf
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: refresh
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: loadStats
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: writeCurrentStats
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: gameStat.statDatas.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: gameStat.statDatas.Array.data[0].id
+      value: char1WeakAttackDuration
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: gameStat.statDatas.Array.data[0].value
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -718,10 +790,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8970924279353906114, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: enableListenKeyCode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906143, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}

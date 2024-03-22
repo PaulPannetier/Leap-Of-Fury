@@ -761,7 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   castDuration: 0
   cooldown:
-    duration: 0
+    duration: 3
   drawGizmos: 1
   castRadius: 0.5
   minRange: 0.38

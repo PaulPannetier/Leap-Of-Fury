@@ -108,6 +108,38 @@
 		{
             "textID": "soundFXVolume",
             "content": "SoundFX"
-        }
+        },
+		{
+            "textID": "helpMenuChar1StrongAttackDescription",
+            "content": "Dash in 8 possible directions, creating an explosion if touching a wall. Repeatable 3 times."
+        },
+		{
+            "textID": "helpMenuChar1WeakAttackDescription",
+            "content": "A clone always follow the player, when this attack is activated, all past attack made by the clone will be effective for $char1WeakAttackDuration$ sec."
+        },
+		{
+            "textID": "helpMenuChar2StrongAttackDescription",
+            "content": ""
+        },
+		{
+            "textID": "helpMenuChar2WeakAttackDescription",
+            "content": ""
+        },
+				{
+            "textID": "helpMenuChar3StrongAttackDescription",
+            "content": ""
+        },
+		{
+            "textID": "helpMenuChar3WeakAttackDescription",
+            "content": ""
+        },
+		{
+            "textID": "helpMenuChar4StrongAttackDescription",
+            "content": ""
+        },
+		{
+            "textID": "helpMenuChar4WeakAttackDescription",
+            "content": ""
+        },
     ]
 }

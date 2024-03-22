@@ -7,9 +7,10 @@ public class LanguageManager : MonoBehaviour
 {
     public static LanguageManager instance;
 
-    private LanguageData languageData;
-    private LanguageData defaultLanguageData;
+    private Dictionary<string, string> languageData;
+    private Dictionary<string, string> defaultLanguageData;
 
+    public string defaultLanguage => availableLanguage[0];
     public string[] availableLanguage { get; private set; } = new string[2]
     {
         "English", "Francais"
@@ -23,14 +24,15 @@ public class LanguageManager : MonoBehaviour
         {
             if(availableLanguage.Contains(value))
             {
-                _currentlanguage = value;
-                if (languageData.language != value)
+                if (_currentlanguage != value)
                 {
                     LoadTextLanguage();
                 }
+                _currentlanguage = value;
             }
             else
             {
+                LogManager.instance.WriteLog("The language : " + value + " doesn't exist", value);
                 Debug.LogWarning("The language : " +  value + " doesn't exist");
             }
         }
@@ -48,50 +50,95 @@ public class LanguageManager : MonoBehaviour
 
     private void LoadTextLanguage()
     {
-        Save.ReadJSONData(@"/Save/Language/English/text" + SettingsManager.saveFileExtension, out defaultLanguageData);
-        if (Save.ReadJSONData(@"/Save/Language/" + currentlanguage + @"/text" + SettingsManager.saveFileExtension, out languageData))
+        void LoadLanguage(string language, string path, ref Dictionary<string, string> dico)
         {
-            List<LanguageData.ItemData> itemData = new List<LanguageData.ItemData>();
-
-            for (int i = 0; i < defaultLanguageData.data.Length; i++)
+            if (!Save.ReadJSONData(path, out LanguageData languageData))
             {
-                if (!languageData.data.Contains(defaultLanguageData.data[i]))
+                string warningText = $"Can't load the language : {language} in the path : {path}.";
+                Debug.LogWarning(warningText);
+                LogManager.instance.WriteLog(warningText, language, path);
+                return;
+            }
+
+            dico = new Dictionary<string, string>();
+            foreach(LanguageData.ItemData itemData in languageData.data)
+            {
+                dico.Add(itemData.textID, itemData.content);
+            }
+        }
+
+        LoadLanguage(defaultLanguage, @"/Save/Language/English/text" + SettingsManager.saveFileExtension, ref defaultLanguageData);
+        LoadLanguage(defaultLanguage, @"/Save/Language/" + currentlanguage + @"/text" + SettingsManager.saveFileExtension, ref languageData);
+    }
+
+    private string ApplyGameStatsInText(string content)
+    {
+        List<Vector2Int> dollarsIndices = new List<Vector2Int>();
+
+        bool firstDollardFound = false;
+        int firstDollardIndex = -1;
+        for (int i = 0; i < content.Length; i++)
+        {
+            if (content[i] == '$')
+            {
+                if(firstDollardFound)
                 {
-                    itemData.Add(defaultLanguageData.data[i].Clone());
+                    dollarsIndices.Add(new Vector2Int(firstDollardIndex, i));
+                    firstDollardFound = false;
+                    firstDollardIndex = -1;
+                }
+                else
+                {
+                    firstDollardFound = true;
+                    firstDollardIndex = i;
                 }
             }
-            defaultLanguageData.data = itemData.ToArray();
+            else if(content[i] == ' ')
+            {
+                firstDollardFound = false;
+                firstDollardIndex = -1;
+            }
         }
-        else
+
+        int Comparer(Vector2Int a, Vector2Int b)
         {
-            languageData = defaultLanguageData.Clone();
-            defaultLanguageData = default(LanguageData);
+            if (a.x == b.x)
+                return 0;
+            return a.x < b.x ? 1 : -1; 
         }
+
+        dollarsIndices.Sort(Comparer);
+
+        for (int i = 0; i < dollarsIndices.Count; i++)
+        {
+            Vector2Int indices = dollarsIndices[i];
+            string statsID = content.Substring(indices.x + 1, indices.y - indices.x - 2);
+            string stat = GameStatisticManager.instance.GetStat(statsID);
+            string start = content.Substring(0, indices.x - 1);
+            string end = content.Substring(indices.y + 1, content.Length - indices.y - 1);
+            content = start + stat + end;
+        }
+
+        return content;
     }
 
     public string GetText(string textID)
     {
-        foreach (LanguageData.ItemData itemData in languageData.data)
-        {
-            if (itemData.textID == textID)
-                return itemData.content;
-        }
+        string content;
+        if(languageData.TryGetValue(textID, out content))
+            return ApplyGameStatsInText(content);
         Debug.LogWarning("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
-        if(Application.isPlaying)
-        {
-            LogManager.instance.WriteLog("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
-        }
+        LogManager.instance.WriteLog("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
 
-        foreach (LanguageData.ItemData itemData in defaultLanguageData.data)
-        {
-            if (itemData.textID == textID)
-                return itemData.content;
-        }
+        if (defaultLanguageData.TryGetValue(textID, out content))
+            return ApplyGameStatsInText(content);
+        Debug.LogWarning("The text with id : " + textID + " with the default language doesn't exist");
+        LogManager.instance.WriteLog("The text with id : " + textID + " with the default language doesn't exist");
         return string.Empty;
     }
 
     [Serializable]
-    private struct LanguageData : ICloneable<LanguageData>
+    private struct LanguageData
     {
         public string language;
         public ItemData[] data;
@@ -102,38 +149,8 @@ public class LanguageManager : MonoBehaviour
             this.language = language;
         }
 
-        public LanguageData Clone()
-        {
-            ItemData[] dataClone = new ItemData[data.Length];
-            for (int i = 0; i < dataClone.Length; i++)
-            {
-                dataClone[i] = data[i].Clone();
-            }
-            return new LanguageData(dataClone, language);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if(!(obj is LanguageData))
-                return false;
-            LanguageData other = (LanguageData)obj;
-            if (other.language != language || other.data.Length != data.Length)
-                return false;
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (data[i] != other.data[i])
-                    return false;
-            }
-            return true;
-        }
-
-        public override int GetHashCode() => HashCode.Combine(data, language);
-        public static bool operator ==(LanguageData i1, LanguageData i2) => i1.Equals(i2);
-        public static bool operator !=(LanguageData i1, LanguageData i2) => !i1.Equals(i2);
-
         [Serializable]
-        public struct ItemData : ICloneable<ItemData>
+        public struct ItemData
         {
             public string textID, content;
 
@@ -142,21 +159,6 @@ public class LanguageManager : MonoBehaviour
                 this.textID = textID;
                 this.content = content;
             }
-
-            public ItemData Clone() => new ItemData(textID, content);
-
-            public override bool Equals(object other)
-            {
-                if(!(other is ItemData))
-                    return false;
-
-                ItemData obj = (ItemData)other;
-                return obj.textID == textID;
-            }
-
-            public override int GetHashCode() => HashCode.Combine(textID, content);
-            public static bool operator ==(ItemData i1, ItemData i2) => i1.Equals(i2);
-            public static bool operator !=(ItemData i1, ItemData i2) => !i1.Equals(i2);
         }
     }
 }

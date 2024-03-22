@@ -21,6 +21,7 @@ public class FiolePassif : PassifAttack
             _isSpawning = value;
         }
     }
+
     private List<Fiole> fioles;
 
     [SerializeField] private bool drawGizmos = true;
@@ -84,6 +85,8 @@ public class FiolePassif : PassifAttack
         }
     }
 
+#if UNITY_EDITOR
+
     private void OnDrawGizmosSelected()
     {
         if(!drawGizmos)
@@ -95,4 +98,6 @@ public class FiolePassif : PassifAttack
             Gizmos.DrawWireSphere(pos, 0.4f);
         }
     }
+
+#endif
 }
