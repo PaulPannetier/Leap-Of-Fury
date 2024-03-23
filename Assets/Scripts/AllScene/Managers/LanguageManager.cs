@@ -26,9 +26,9 @@ public class LanguageManager : MonoBehaviour
             {
                 if (_currentlanguage != value)
                 {
+                    _currentlanguage = value;
                     LoadTextLanguage();
                 }
-                _currentlanguage = value;
             }
             else
             {
@@ -67,8 +67,10 @@ public class LanguageManager : MonoBehaviour
             }
         }
 
+        defaultLanguageData = new Dictionary<string, string>();
         LoadLanguage(defaultLanguage, @"/Save/Language/English/text" + SettingsManager.saveFileExtension, ref defaultLanguageData);
-        LoadLanguage(defaultLanguage, @"/Save/Language/" + currentlanguage + @"/text" + SettingsManager.saveFileExtension, ref languageData);
+        languageData = new Dictionary<string, string>();
+        LoadLanguage(currentlanguage, @"/Save/Language/" + currentlanguage + "/text" + SettingsManager.saveFileExtension, ref languageData);
     }
 
     private string ApplyGameStatsInText(string content)
@@ -112,9 +114,9 @@ public class LanguageManager : MonoBehaviour
         for (int i = 0; i < dollarsIndices.Count; i++)
         {
             Vector2Int indices = dollarsIndices[i];
-            string statsID = content.Substring(indices.x + 1, indices.y - indices.x - 2);
+            string statsID = content.Substring(indices.x + 1, indices.y - indices.x - 1);
             string stat = GameStatisticManager.instance.GetStat(statsID);
-            string start = content.Substring(0, indices.x - 1);
+            string start = content.Substring(0, indices.x);
             string end = content.Substring(indices.y + 1, content.Length - indices.y - 1);
             content = start + stat + end;
         }

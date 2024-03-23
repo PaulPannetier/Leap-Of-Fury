@@ -3,14 +3,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Video;
 using Collision2D;
-using Collider2D = UnityEngine.Collider2D;
 
 public class CharHelpCanvas : MonoBehaviour
 {
     private int id;
     private Action<int> callbackCloseHelpCanvas;
     private VideoPlayer videoPlayer;
-    private TextMeshProUGUI explicationText;
     private int selectedHelpIndex;
     private AttackVideoData selectedData => helpData[selectedHelpIndex];
 
@@ -24,13 +22,12 @@ public class CharHelpCanvas : MonoBehaviour
     private void Awake()
     {
         videoPlayer = GetComponentInChildren<VideoPlayer>();
-        explicationText = GetComponentInChildren<TextMeshProUGUI>();
         selectedHelpIndex = 0;
     }
 
     private void Start()
     {
-        OnUpdateUI();
+        UpdateUI(selectedHelpIndex);
     }
 
     public void Launch(TurningSelector turningSelector, ControllerType controllerType, int id, Action<int> callbackCloseHelpCanvas)
@@ -47,30 +44,34 @@ public class CharHelpCanvas : MonoBehaviour
     {
         if(closeHelpCanvasInput.IsPressedDown())
         {
-            callbackCloseHelpCanvas.Invoke(id);
             Destroy(gameObject);
+            callbackCloseHelpCanvas.Invoke(id);
+            return;
         }
 
         if(nextHelpInput.IsPressedDown())
         {
-            selectedHelpIndex = (selectedHelpIndex + 1) % helpData.Length;
-            OnUpdateUI();
+            int newIndex = (selectedHelpIndex + 1) % helpData.Length;
+            UpdateUI(newIndex);
         }
 
         if (previousHelpInput.IsPressedDown())
         {
-            selectedHelpIndex = (selectedHelpIndex - 1);
-            if (selectedHelpIndex < 0)
-                selectedHelpIndex = helpData.Length - 1;
-            OnUpdateUI();
+            int newIndex = (selectedHelpIndex - 1);
+            if (newIndex < 0)
+                newIndex = helpData.Length - 1;
+            UpdateUI(newIndex);
         }
     }
 
-    private void OnUpdateUI()
+    private void UpdateUI(int newIndex)
     {
+        selectedData.descriptionText.gameObject.SetActive(false);
+        selectedHelpIndex = newIndex;
         videoPlayer.clip = selectedData.video;
         videoPlayer.Play();
-        explicationText.text = LanguageManager.instance.GetText(selectedData.descriptionKey);
+        selectedData.descriptionText.gameObject.SetActive(true);
+        selectedData.descriptionText.text = LanguageManager.instance.GetText(selectedData.descriptionKey);
     }
 
     #region Gizmos/OnValidate

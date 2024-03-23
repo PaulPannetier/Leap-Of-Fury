@@ -138,11 +138,11 @@ MonoBehaviour:
   - keys: 64000000
   - keys: 66000000
   inputsKeyForGamepad:
-  - keys: bbffffffc4ffffff
-  - keys: baffffffc2ffffff
-  - keys: bdffffffc5ffffff
-  - keys: bcffffffc3ffffff
-  - keys: c7ffffff
+  - keys: b7ffffffc0ffffff
+  - keys: b6ffffffbeffffff
+  - keys: b9ffffffc1ffffff
+  - keys: b8ffffffbfffffff
+  - keys: c3ffffff
   - keys: 4f010000
   - keys: 4a010000
   - keys: 4c010000
@@ -283,3 +283,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71f217e4856b42e479fbe766f4d45d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  refresh: 0
+  gameStat:
+    statDatas: []
+  writeCurrentStats: 0
+  loadStats: 0

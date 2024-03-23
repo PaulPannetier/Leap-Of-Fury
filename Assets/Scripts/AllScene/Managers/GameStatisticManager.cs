@@ -4,13 +4,22 @@ using System.Collections.Generic;
 
 public class GameStatisticManager : MonoBehaviour
 {
+#if UNITY_EDITOR
+
+    public static void SetStat(string id, string value)
+    {
+        GameStatisticManager instance = FindObjectOfType<GameStatisticManager>();
+        instance.SetStatInternal(id, value);
+    }
+
+#endif
+
     public static GameStatisticManager instance;
 
     private Dictionary<string, string> currentStat;
 
 #if UNITY_EDITOR
 
-    [SerializeField] private bool refresh;
     [SerializeField] private GameStatData gameStat;
     [SerializeField] private bool writeCurrentStats;
     [SerializeField] private bool loadStats;
@@ -44,8 +53,21 @@ public class GameStatisticManager : MonoBehaviour
         currentStat = new Dictionary<string, string>();
         foreach (StatData statData in gameStatData.statDatas)
         {
-            currentStat.Add(statData.id, statData.value);
+            if(currentStat.ContainsKey(statData.id))
+            {
+                currentStat[statData.id] = statData.value;
+            }
+            else
+            {
+                currentStat.Add(statData.id, statData.value);
+            }
         }
+
+#if UNITY_EDITOR
+
+        gameStat = new GameStatData(gameStatData.statDatas);
+
+#endif
     }
 
     public string GetStat(string id)
@@ -67,7 +89,7 @@ public class GameStatisticManager : MonoBehaviour
         }
     }
 
-    public void SetStat(string id, string value)
+    private void SetStatInternal(string id, string value)
     {
         LoadStat();
 
@@ -82,7 +104,7 @@ public class GameStatisticManager : MonoBehaviour
             }
         }
 
-        if(!found)
+        if (!found)
         {
             gameStat.statDatas.Add(new StatData(id, value));
         }
@@ -92,11 +114,6 @@ public class GameStatisticManager : MonoBehaviour
 
     private void OnValidate()
     {
-        if(refresh)
-            refresh = false;
-
-        instance = this;
-
         if (writeCurrentStats)
         {
             writeCurrentStats = false;

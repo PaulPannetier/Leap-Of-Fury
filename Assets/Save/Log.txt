@@ -3840,3 +3840,160 @@ CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput
 
     }
 }
+LogMessage : 
+{
+    Error : Can't load the language : English in the path : /Save/Language//text.partyGame.,
+    Params : 2
+    {
+        Type : String,
+        Value : English
+
+        Type : String,
+        Value : /Save/Language//text.partyGame
+    }
+}
+LogMessage : 
+{
+    Error : Can't load the language : English in the path : /Save/Language//text.partyGame.,
+    Params : 2
+    {
+        Type : String,
+        Value : English
+
+        Type : String,
+        Value : /Save/Language//text.partyGame
+    }
+}
+LogMessage : 
+{
+    Error : Can't load the language : English in the path : /Save/Language//text.partyGame.,
+    Params : 2
+    {
+        Type : String,
+        Value : English
+
+        Type : String,
+        Value : /Save/Language//text.partyGame
+    }
+}
+LogMessage : 
+{
+    Error : Can't load the language : English in the path : /Save/Language//text.partyGame.,
+    Params : 2
+    {
+        Type : String,
+        Value : English
+
+        Type : String,
+        Value : /Save/Language//text.partyGame
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LanguageManager.GetText (System.String textID) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:129)
+CharHelpCanvas.UpdateUI () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:71)
+CharHelpCanvas.Start () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:30)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : GameStatisticManager.GetStat (System.String id) (at Assets/Scripts/AllScene/Managers/GameStatisticManager.cs:53)
+LanguageManager.ApplyGameStatsInText (System.String content) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:118)
+LanguageManager.GetText (System.String textID) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:131)
+CharHelpCanvas.UpdateUI () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:71)
+CharHelpCanvas.Start () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:30)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : GameStatisticManager.GetStat (System.String id) (at Assets/Scripts/AllScene/Managers/GameStatisticManager.cs:67)
+LanguageManager.ApplyGameStatsInText (System.String content) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:118)
+LanguageManager.GetText (System.String textID) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:131)
+CharHelpCanvas.UpdateUI () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:71)
+CharHelpCanvas.Start () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:30)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Destroy
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+CharHelpCanvas:Update () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:48)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Destroy
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+CharHelpCanvas:Update () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:48)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Log
+
+        Type : String,
+        Value : Destroy
+
+        Type : String,
+        Value : UnityEngine.MonoBehaviour:print (object)
+CharHelpCanvas:Update () (at Assets/Scripts/UI/Selection Char/CharHelpCanvas.cs:48)
+
+    }
+}

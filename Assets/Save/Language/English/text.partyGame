@@ -111,35 +111,35 @@
         },
 		{
             "textID": "helpMenuChar1StrongAttackDescription",
-            "content": "Dash in 8 possible directions, creating an explosion if touching a wall. Repeatable 3 times."
-        },
-		{
-            "textID": "helpMenuChar1WeakAttackDescription",
             "content": "A clone always follow the player, when this attack is activated, all past attack made by the clone will be effective for $char1WeakAttackDuration$ sec."
         },
 		{
+            "textID": "helpMenuChar1WeakAttackDescription",
+            "content": "Dash in 8 possible directions, creating an explosion if touching a wall. Repeatable 3 times."
+        },
+		{
             "textID": "helpMenuChar2StrongAttackDescription",
-            "content": ""
+            "content": "The player reach the wall/player in the selected direction."
         },
 		{
             "textID": "helpMenuChar2WeakAttackDescription",
-            "content": ""
+            "content": "The player fall into the ground, creating an explosion and 2 shockwaves."
         },
-				{
+		{
             "textID": "helpMenuChar3StrongAttackDescription",
-            "content": ""
+            "content": "The player is teleported in the selected direction, creating an explosion at the end."
         },
 		{
             "textID": "helpMenuChar3WeakAttackDescription",
-            "content": ""
+            "content": "Throw a guided arrow in the selected direction, reactivate the attack duplicate the arrow. Pick up the arrow the reuse the attack."
         },
 		{
             "textID": "helpMenuChar4StrongAttackDescription",
-            "content": ""
+            "content": "Throw 3 projectiles on the back of the player. A propulsion force is apply to the player."
         },
 		{
             "textID": "helpMenuChar4WeakAttackDescription",
-            "content": ""
-        },
+            "content": "Throw an projectile that return to the player after touching a wall."
+        }
     ]
 }

@@ -295,7 +295,7 @@ public class CloneAttack : StrongAttack
     protected override void SaveAttackStats()
     {
         base.SaveAttackStats();
-        GameStatisticManager.instance.SetStat("char1WeakAttackDuration", duration.Round(2).ToString());
+        GameStatisticManager.SetStat("char1WeakAttackDuration", duration.Round(2).ToString());
     }
 
     #region CloneData struct

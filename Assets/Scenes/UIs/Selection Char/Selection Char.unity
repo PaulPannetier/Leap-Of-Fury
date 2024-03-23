@@ -410,15 +410,15 @@ PrefabInstance:
     - target: {fileID: 2356729332937568911, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
     - target: {fileID: 2356729333222305990, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
     - target: {fileID: 2356729333349022568, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
     - target: {fileID: 2356729333714023464, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
@@ -426,7 +426,7 @@ PrefabInstance:
     - target: {fileID: 2356729333731063557, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 2356729334008293166, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
@@ -434,7 +434,7 @@ PrefabInstance:
     - target: {fileID: 2356729334074240484, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 2356729334425775817, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
@@ -442,23 +442,23 @@ PrefabInstance:
     - target: {fileID: 2356729334494045187, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 2356729334649186855, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
     - target: {fileID: 2356729334791037321, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
     - target: {fileID: 2356729335009747904, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
     - target: {fileID: 2503747462143397043, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 080cbe3a26d12b64cb7b5f54c5d89f11, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
     - target: {fileID: 2503747462559950868, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: m_Name
       value: CharSelectorCanvas
@@ -566,7 +566,7 @@ PrefabInstance:
     - target: {fileID: 2503747462906568188, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 0d264061752fd9b4bb002a70194fa38d, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
     - target: {fileID: 2503747463218059538, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
@@ -574,7 +574,7 @@ PrefabInstance:
     - target: {fileID: 2503747463469980223, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: helpCanvasPrefab
       value: 
-      objectReference: {fileID: 530312879522531200, guid: 98ef81ae7862d294babea53dbe026058, type: 3}
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 4169894382128917433, guid: b7f2a0fc018dfb644828357fc740ff12, type: 3}
       propertyPath: escapeButton.controllerType
       value: 0
@@ -750,7 +750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: gameStat.statDatas.Array.data[0].value
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_LocalPosition.x
