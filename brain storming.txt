@@ -130,6 +130,4 @@ Name : Chaos
 
 TODO :
 Trad all text
-menu de fin de niveau
-char helper in charselection scene
 netoyer tout les fichiers du projet
