@@ -1314,7 +1314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
-  grabable: 1
+  grabable: 0
   frictionCoefficient: 0
   rb: {fileID: 0}
 --- !u!61 &7374820873243658505
@@ -16551,7 +16551,7 @@ GameObject:
   - component: {fileID: 2033046108200749824}
   m_Layer: 14
   m_Name: WallProjectile
-  m_TagString: WallProjectile
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17120,7 +17120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 343155c9bac18b746b8b6558ed1ae3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalLights: []
   lights: []
 --- !u!1001 &3789571926847886489
 PrefabInstance:

@@ -776,7 +776,7 @@ public class Movement : MonoBehaviour
             }
             else
             {
-                rb.velocity = new Vector2(rb.velocity.x * 0.985f * (Time.fixedDeltaTime / 0.02f) , rb.velocity.y);
+                rb.velocity = new Vector2(rb.velocity.x * GroundData.instance.iceFrictionSpeedFactor * (Time.fixedDeltaTime / 0.02f) , rb.velocity.y);
             }
         }
 
