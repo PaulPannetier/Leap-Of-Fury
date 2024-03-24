@@ -62,24 +62,25 @@ public class LineCounter : Editor
     private void CountLineOfCodes()
     {
         int nbLines = 0;
+        int nbFiles = 0;
         foreach (string p in lineCounterConfig.subfolderToCount)
         {
             string path = Application.dataPath + "/" + p;
             if(Directory.Exists(path))
             {
-                CountLineRecur(path, ref nbLines, lineCounterConfig.fileExtensionsAccepted);
+                CountLineRecur(path, ref nbLines, ref nbFiles, lineCounterConfig.fileExtensionsAccepted);
             }
         }
         if(nbLines > 0)
-            Debug.Log("There are " + nbLines + " lines of code in your directories!");
+            Debug.Log($"There are {nbFiles} files and {nbLines} lines of code in your directories!");
     }
 
-    private void CountLineRecur(string path, ref int nbLines, List<string> extensions)
+    private void CountLineRecur(string path, ref int nbLines, ref int nbFiles, List<string> extensions)
     {
         string[] directories = Directory.GetDirectories(path);
         foreach (string directory in directories)
         {
-            CountLineRecur(directory, ref nbLines, extensions);
+            CountLineRecur(directory, ref nbLines, ref nbFiles, extensions);
             string[] files = Directory.GetFiles(directory);
             foreach (string file in files)
             {
@@ -95,6 +96,7 @@ public class LineCounter : Editor
                 if(endWith)
                 {
                     nbLines += File.ReadAllLines(file).Length;
+                    nbFiles++;
                 }
             }
         }
