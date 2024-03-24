@@ -10,6 +10,32 @@ public class Lampe : MonoBehaviour
     [SerializeField] private float intensityFrequency = 1f;
     [SerializeField] private float avgWindForce = 1000f;
     [SerializeField] private float windFrequency = 1f;
+
+#if UNITY_EDITOR
+
+    [SerializeField] private float _innerRadius;
+    [SerializeField] private float _radius;
+    [SerializeField, Range(0f, 1f)] private float _fallofStrength;
+    [SerializeField] private Color _color;
+
+#endif
+
+    public float fallofStrength
+    {
+        get => lamp.falloffIntensity;
+        set
+        {
+            lamp.falloffIntensity = value;
+        }
+    }
+    public Color color
+    {
+        get => lamp.color;
+        set
+        {
+            lamp.color = value;
+        }
+    }
     public float innerRadius
     {
         get => lamp.pointLightInnerRadius;
@@ -107,8 +133,12 @@ public class Lampe : MonoBehaviour
         windFrequency = Mathf.Max(0f, windFrequency);
         lamp = GetComponentInChildren<UnityEngine.Rendering.Universal.Light2D>();
         lamp.intensity = avgIntensity;
-        lamp.pointLightInnerRadius = innerRadius;
-        lamp.pointLightOuterRadius = radius;
+        _radius = Mathf.Max(0f, _radius);
+        _innerRadius = Mathf.Clamp(_innerRadius, 0f, _radius);
+        innerRadius = _innerRadius;
+        radius = _radius;
+        color = _color;
+        fallofStrength = _fallofStrength;
     }
 
 #endif

@@ -661,8 +661,7 @@ public class Movement : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-
-        //DebugText.instance.text += "Bump : " + isBumping;
+        //DebugText.instance.text += "SpeedX : " + rb.velocity.x.Round(2);
     }
 
     #endregion
@@ -1262,7 +1261,7 @@ public class Movement : MonoBehaviour
 
     private void HandleFall()
     {
-        if (!canMove && !isFalling || isJumping  || isWallJumping || isJumpingAlongWall || isSliding || wallGrab || isBumping || !enableBehaviour)
+        if (!isFalling || isJumping  || isWallJumping || isJumpingAlongWall || isSliding || wallGrab || isBumping || !enableBehaviour)
             return;
 
         //phase montante en l'air

@@ -3,7 +3,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections.Generic;
-using Collision2D;
 
 public class MapColliderCreator : MonoBehaviour
 {

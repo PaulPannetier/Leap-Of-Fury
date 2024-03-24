@@ -224,8 +224,7 @@ public class ToricObject : MonoBehaviour
                 {
                     if(clone.boundsIndex == i)
                     {
-                        Destroy(clone.go);
-                        clones.Remove(clone);
+                        RemoveClone(clone);
                         break;
                     }
                 }
@@ -302,23 +301,6 @@ public class ToricObject : MonoBehaviour
                     print("Debug pls");
                 }
             }
-
-            /*
-            if (collideWithCamBounds[i] && cameraBounds[i].Contain(bounds))
-            {
-                //On devient le iéme clone et on le détruit
-                foreach (ObjectClone clone in lstClones)
-                {
-                    if (clone.boundsIndex == i)
-                    {
-                        transform.SetPositionAndRotation(transform.position + clone.offset, transform.rotation);
-                        transform.localScale = clone.go.transform.localScale;
-                        RemoveClone(clone);
-                        break;
-                    }
-                }
-            }
-            */
         }
 
         oldCollideCamBounds = collideWithCamBounds;
@@ -327,6 +309,17 @@ public class ToricObject : MonoBehaviour
     #endregion
 
     #region RemoveClone
+
+    private void RemoveClone(ToricObject toClone)
+    {
+        for (int i = clones.Count - 1; i >= 0; i--)
+        {
+            if (clones[i].toricObject == toClone)
+            {
+                RemoveClone(clones[i]);
+            }
+        }
+    }
 
     private void RemoveClone(ObjectClone clone)
     {
@@ -348,7 +341,11 @@ public class ToricObject : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
 
-        if(!isAClone)
+        if(isAClone)
+        {
+            cloner.GetComponent<ToricObject>().RemoveClone(this);
+        }
+        else
             RemoveClones();
     }
 
