@@ -1,0 +1,113 @@
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Debug pls!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+AmericanFistAttack:CollideWithGround (UnityEngine.Vector2&) (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/AmericanFistAttack.cs:381)
+AmericanFistAttack:UpdateOriginal () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/AmericanFistAttack.cs:182)
+AmericanFistAttack:Update () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/AmericanFistAttack.cs:98)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+
+        Type : String,
+        Value : System.Collections.Generic.List`1[T].get_Item (System.Int32 index) (at <27124aa0e30a41659b903b822b959bc7>:0)
+Useful.GetRandom[T] (System.Collections.Generic.List`1[T] lst) (at Assets/Scripts/AllScene/Custom/Useful.cs:2098)
+LevelManager.RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:189)
+LevelManager.OnEndDisplayEndMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:177)
+EndLevelMenu.EndMenu () (at Assets/Scripts/Gameplay/UI/EndLevelMenu.cs:44)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)
+LevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1687)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1687)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : Useful.GetRandom[T] (System.Collections.Generic.List`1[T] lst) (at Assets/Scripts/AllScene/Custom/Useful.cs:2098)
+LevelManager.RestartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:189)
+LevelManager.OnEndDisplayEndMenu () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:177)
+EndLevelMenu.EndMenu () (at Assets/Scripts/Gameplay/UI/EndLevelMenu.cs:44)
+
+    }
+}

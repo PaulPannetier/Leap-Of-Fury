@@ -9114,9 +9114,7 @@ MonoBehaviour:
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
-  spawnConfig:
-  - {x: -0.02, y: 0}
-  - {x: 0, y: 0}
+  spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map0SpawnPoints
   collidersGameObject:
   - {fileID: 537159171919158614}
@@ -21811,7 +21809,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 343155c9bac18b746b8b6558ed1ae3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalLights: []
+  globalLightColor: {r: 1, g: 1, b: 1, a: 1}
+  globalLightIntensity: 0.9
   lights: []
 --- !u!1001 &537159171919848145
 PrefabInstance:

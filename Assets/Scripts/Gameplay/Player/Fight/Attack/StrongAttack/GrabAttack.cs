@@ -276,7 +276,7 @@ public class GrabAttack : StrongAttack
 
             movement.UnFreeze();
 
-            OnTouchEnemy(charTouch);
+            OnTouchEnemy(charTouch.GetComponent<ToricObject>().original);
 
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();

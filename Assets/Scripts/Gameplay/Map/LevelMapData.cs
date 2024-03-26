@@ -28,7 +28,6 @@ public class LevelMapData : MonoBehaviour
             _currentMap = value;
         }
     }
-    //public static Action<LevelMapData> onMapChange = default(Action<LevelMapData>);
 
     private SpawnConfigsData spawnConfigs;
     private Grid grid;
@@ -36,6 +35,7 @@ public class LevelMapData : MonoBehaviour
 
 #if UNITY_EDITOR
 
+    [SerializeField] private bool drawGizmos = true;
     [Header("Save spawn Point")]
     [SerializeField] private bool addSpawnConfig;
     [SerializeField] private bool loadSpawnConfig;
@@ -245,6 +245,9 @@ public class LevelMapData : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if(!drawGizmos)
+            return;
+
         Gizmos.color = Color.green;
         foreach (Vector2 v in spawnConfig)
         {
@@ -253,14 +256,14 @@ public class LevelMapData : MonoBehaviour
 
         if (spawnConfigs != null)
         {
-            Color[] colors = new Color[] { Color.red, Color.yellow, Color.blue, Color.cyan, Color.magenta, Color.grey, Color.white };
-            int colorIndex = 0;
+            Color[] colors = new Color[] { Color.red, Color.yellow, Color.blue, Color.cyan, Color.magenta, Color.grey, Color.white, Color.black, new Color(1f, 0.5f, 0f, 1f), new Color(52f/255, 131f/255f, 178f/255f, 1f), new Color(0f, 68f/255f, 16f/255f), new Color(180f/255f, 3f/255f, 39f/255f) };
 
             List<SpawnConfigsData.SpawnConfigPoints>[] spawnConfigsPerChars = new List<SpawnConfigsData.SpawnConfigPoints>[3]
             {
                 spawnConfigs.spawnConfigPoints2Char, spawnConfigs.spawnConfigPoints3Char, spawnConfigs.spawnConfigPoints4Char
             };
 
+            int colorIndex = 0;
             foreach (List<SpawnConfigsData.SpawnConfigPoints> configPerChar in spawnConfigsPerChars)
             {
                 foreach (SpawnConfigsData.SpawnConfigPoints points in configPerChar)
@@ -353,7 +356,7 @@ public class SpawnConfigsData
     }
 
     [Serializable]
-    public struct SpawnConfigPoints : IEnumerable,IEnumerable<Vector2>
+    public struct SpawnConfigPoints : IEnumerable, IEnumerable<Vector2>
     {
         public Vector2[] points;
 

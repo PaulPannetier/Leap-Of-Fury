@@ -60,18 +60,18 @@ public class ToricObject : MonoBehaviour
     {
         camOffsets = new Vector2[4]
         {
-            new Vector2(0f, -mapData.mapSize.y),
-            new Vector2(0f, mapData.mapSize.y),
-            new Vector2(-mapData.mapSize.x, 0f),
-            new Vector2(mapData.mapSize.x, 0f)
+            new Vector2(0f, -mapData.mapSize.y * mapData.cellSize.y),
+            new Vector2(0f, mapData.mapSize.y * mapData.cellSize.y),
+            new Vector2(-mapData.mapSize.x * mapData.cellSize.x, 0f),
+            new Vector2(mapData.mapSize.x * mapData.cellSize.x, 0f)
         };
 
         mapBounds = new Bounds[4]
         {
-            new Bounds(new Vector3(0f, mapData.mapSize.y), mapData.mapSize.ToVector3()),//haut
-            new Bounds(new Vector3(0f, -mapData.mapSize.y), mapData.mapSize.ToVector3()),//bas
-            new Bounds(new Vector3(mapData.mapSize.x, 0f), mapData.mapSize.ToVector3()),//droite
-            new Bounds(new Vector3(-mapData.mapSize.x, 0f), mapData.mapSize.ToVector3()) //gauche
+            new Bounds(new Vector3(0f, mapData.mapSize.y * mapData.cellSize.y), mapData.mapSize * mapData.cellSize),
+            new Bounds(new Vector3(0f, -mapData.mapSize.y * mapData.cellSize.y), mapData.mapSize* mapData.cellSize),
+            new Bounds(new Vector3(mapData.mapSize.x * mapData.cellSize.x, 0f), mapData.mapSize* mapData.cellSize),
+            new Bounds(new Vector3(-mapData.mapSize.x * mapData.cellSize.x, 0f), mapData.mapSize* mapData.cellSize)
         };
     }
 

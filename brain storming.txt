@@ -109,7 +109,7 @@ name : Maxwell house
 /Pas a mettre pour l'instant
 Carte 6 : *** := plus j'y pense plus je trouve l'idée éclaté
 Méca : Un clown transparent effraye (immobilise) les joueurs.
-+ des ascenseurs verticaux et/ou horizontaux.
++ des ascenseurs verticaux et/ou horizontaux + des plateforme traversable dans un sens et pas dans l'autre.
 DA : Une fete foraine
 Name : La fete foraine
 
@@ -131,3 +131,4 @@ Name : Chaos
 TODO :
 Trad all text
 netoyer tout les fichiers du projet
+redo Toric object

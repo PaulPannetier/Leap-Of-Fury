@@ -305,8 +305,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
       propertyPath: enableBehaviour
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: mapsPrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: playFirstMapAtLevelStart
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: mapsPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 635306758543450081, guid: 77f96886e5b97bc41b9c0d903aebe800, type: 3}
     - target: {fileID: 7320278589001595780, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
       propertyPath: m_Name
       value: LevelManager
