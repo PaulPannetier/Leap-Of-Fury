@@ -17120,6 +17120,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 343155c9bac18b746b8b6558ed1ae3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalLightColor: {r: 1, g: 1, b: 1, a: 1}
+  globalLightIntensity: 0.9
   lights: []
 --- !u!1001 &3789571926847886489
 PrefabInstance:
@@ -17204,8 +17206,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 7852929130565642747}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _radius
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.g
+      value: 0.9920401
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.r
+      value: 0.8726415
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _innerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgIntensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityVariation
@@ -17241,15 +17263,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.g
-      value: 0.8901961
+      value: 0.9920401
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.r
-      value: 0.627451
+      value: 0.8726415
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Intensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Vertices.Array.size
@@ -17260,8 +17282,12 @@ PrefabInstance:
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 4
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_LocalBounds.m_Center.y
@@ -17622,8 +17648,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 7852929130565642747}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _radius
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.g
+      value: 0.9920401
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.r
+      value: 0.8726415
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _innerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgIntensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityVariation
@@ -17659,15 +17705,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.g
-      value: 0.89045584
+      value: 0.9920401
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.r
-      value: 0.6273585
+      value: 0.8726415
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Intensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Vertices.Array.size
@@ -17678,8 +17724,12 @@ PrefabInstance:
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 4
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_LocalBounds.m_Center.y
@@ -18040,8 +18090,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 7852929130565642747}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _radius
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.g
+      value: 0.9920401
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.r
+      value: 0.8726415
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _innerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgIntensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityVariation
@@ -18077,15 +18147,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.g
-      value: 0.8901961
+      value: 0.9920401
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.r
-      value: 0.627451
+      value: 0.8726415
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Intensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Vertices.Array.size
@@ -18096,8 +18166,12 @@ PrefabInstance:
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 4
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_LocalBounds.m_Center.y
@@ -18532,8 +18606,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 7852929130565642747}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _radius
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.g
+      value: 0.9920401
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.r
+      value: 0.8726415
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _innerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgIntensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityVariation
@@ -18569,15 +18663,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.g
-      value: 0.8901961
+      value: 0.9920401
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.r
-      value: 0.627451
+      value: 0.8726415
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Intensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Vertices.Array.size
@@ -18588,8 +18682,12 @@ PrefabInstance:
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 4
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_LocalBounds.m_Center.y
@@ -18950,8 +19048,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 7852929130565642747}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _radius
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.g
+      value: 0.9920401
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.r
+      value: 0.8726415
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _innerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgIntensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityVariation
@@ -18987,15 +19105,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.g
-      value: 0.8901961
+      value: 0.9920401
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Color.r
-      value: 0.627451
+      value: 0.8726415
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Intensity
-      value: 0.4
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Vertices.Array.size
@@ -19006,8 +19124,12 @@ PrefabInstance:
       value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 4
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_LocalBounds.m_Center.y

@@ -15,7 +15,12 @@ public class TurningSelector : MonoBehaviour
     private float angle = 0f;
     private new Transform transform;
 
+#if UNITY_EDITOR
+
     [SerializeField] private bool RecalculatePositionAndScale = false;
+
+#endif
+
     public bool enableBehaviour = true;
     [SerializeField] private float radius;
     [SerializeField] private float minTimeBetweenMove = 0.2f;

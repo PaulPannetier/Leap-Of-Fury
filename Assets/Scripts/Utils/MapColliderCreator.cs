@@ -9,6 +9,11 @@ public class MapColliderCreator : MonoBehaviour
     [SerializeField] private bool createColliders;
     [SerializeField] private LevelMapData levelMapData;
 
+    private void Awake()
+    {
+        Destroy(this);
+    }
+
     private void CreateColliders()
     {
         Tilemap tilemap = GetComponent<Tilemap>();

@@ -343,7 +343,14 @@ public class ToricObject : MonoBehaviour
 
         if(isAClone)
         {
-            cloner.GetComponent<ToricObject>().RemoveClone(this);
+            if(cloner != null)
+            {
+                ToricObject to = cloner.GetComponent<ToricObject>();
+                if(to != null)
+                {
+                    to.RemoveClone(this);
+                }
+            }
         }
         else
             RemoveClones();

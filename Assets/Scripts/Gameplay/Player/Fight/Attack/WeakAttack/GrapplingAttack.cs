@@ -27,7 +27,12 @@ public class GrapplingAttack : WeakAttack
     private bool endAttack;
     private LayerMask groundMask;
 
+#if UNITY_EDITOR
+
     public bool drawGizmos = true;
+
+#endif
+
     [SerializeField] private float grapRange, circleCastRadius = 0.5f;
     [SerializeField] private float maxRopeLength;
     [SerializeField] private float minRopeLength;
@@ -160,7 +165,7 @@ public class GrapplingAttack : WeakAttack
 
             if (playerInput.upPressed)
             {
-                grapLength = Mathf.Max(grapLength - grapClimbDownSpeed * Time.deltaTime, minRopeLength);
+                grapLength = Mathf.Max(grapLength - grapClimbUpSpeed * Time.deltaTime, minRopeLength);
                 springJoint.distance = grapLength;
             }
 

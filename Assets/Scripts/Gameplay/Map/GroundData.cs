@@ -1,4 +1,5 @@
 using UnityEngine;
+using Collision2D;
 
 public class GroundData : MonoBehaviour
 {
@@ -17,4 +18,12 @@ public class GroundData : MonoBehaviour
         instance = this;
     }
 
+#if UNITY_EDITOR
+
+    private void OnDrawGizmosSelected()
+    {
+        Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
+    }
+
+#endif
 }

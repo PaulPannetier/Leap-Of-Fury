@@ -276,7 +276,7 @@ public class LevelMapData : MonoBehaviour
         }
 
         Gizmos.color = Color.white;
-        Hitbox.GizmosDraw(Vector2.zero, mapSize);
+        Hitbox.GizmosDraw(Vector2.zero, mapSize * cellSize);
     }
 
     private void OnValidate()

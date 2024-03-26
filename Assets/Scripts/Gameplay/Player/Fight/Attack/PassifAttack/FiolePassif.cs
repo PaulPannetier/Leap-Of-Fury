@@ -24,7 +24,12 @@ public class FiolePassif : PassifAttack
 
     private List<Fiole> fioles;
 
+#if UNITY_EDITOR
+
     [SerializeField] private bool drawGizmos = true;
+
+#endif
+
     [SerializeField] private float spawnDuration = 15f, spawnWait = 10f;
     [SerializeField] private GameObject fiolePrefabs;
     [SerializeField] private Vector2[] spawnPoints;

@@ -1,3 +1,4 @@
+using Collision2D;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -23,6 +24,8 @@ public class MapColliderData : MonoBehaviour
     public bool isGripping => frictionCoefficient > 1e-6f;
     [HideInInspector] public Rigidbody2D rb;
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         if(groundType == GroundType.convoyerBelt)
@@ -31,4 +34,11 @@ public class MapColliderData : MonoBehaviour
             grabable = false;
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
+    }
+
+#endif
 }

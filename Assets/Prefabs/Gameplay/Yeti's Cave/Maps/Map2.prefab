@@ -21106,6 +21106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 343155c9bac18b746b8b6558ed1ae3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  globalLightColor: {r: 1, g: 1, b: 1, a: 1}
+  globalLightIntensity: 0.8
   lights: []
 --- !u!1001 &34507666326810647
 PrefabInstance:
@@ -21116,8 +21118,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 6595626707601269879}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _radius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.r
+      value: 0.7216981
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _innerRadius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgIntensity
-      value: 0.75
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgWindForce
@@ -21128,16 +21146,32 @@ PrefabInstance:
       value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _fallofStrength
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityFrequency
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityVariation
-      value: 1
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7216981
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Intensity
-      value: 0.75
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightInnerRadius
@@ -21145,7 +21179,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1313888849041900545, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21210,20 +21244,56 @@ PrefabInstance:
     m_TransformParent: {fileID: 6595626707601269879}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _radius
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.r
+      value: 0.7216981
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _innerRadius
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: avgIntensity
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _fallofStrength
+      value: 0.605
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: intensityVariation
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7216981
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_Intensity
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.605
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.8
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 3
+      value: 2.75
       objectReference: {fileID: 0}
     - target: {fileID: 1313888849041900545, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21288,20 +21358,56 @@ PrefabInstance:
     m_TransformParent: {fileID: 6595626707601269879}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _radius
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.r
+      value: 0.7216981
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _innerRadius
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: avgIntensity
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _fallofStrength
+      value: 0.605
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: intensityVariation
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7216981
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_Intensity
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.605
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.8
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 3
+      value: 2.75
       objectReference: {fileID: 0}
     - target: {fileID: 1313888849041900545, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21366,8 +21472,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 6595626707601269879}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _radius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _color.r
+      value: 0.7216981
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _innerRadius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgIntensity
-      value: 0.75
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: avgWindForce
@@ -21378,16 +21500,32 @@ PrefabInstance:
       value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: _fallofStrength
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityFrequency
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 371947512395725038, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: intensityVariation
-      value: 1
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7216981
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_Intensity
-      value: 0.75
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightInnerRadius
@@ -21395,7 +21533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1313888849041900545, guid: 2005cac2bd8f627479acd74a622a20bc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21460,12 +21598,48 @@ PrefabInstance:
     m_TransformParent: {fileID: 6595626707601269879}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _radius
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.r
+      value: 0.7216981
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _innerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: avgIntensity
-      value: 1
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _fallofStrength
+      value: 0.628
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: intensityVariation
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7216981
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_Intensity
-      value: 1
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.628
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightInnerRadius
@@ -21473,7 +21647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 3
+      value: 2.75
       objectReference: {fileID: 0}
     - target: {fileID: 1313888849041900545, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21538,12 +21712,48 @@ PrefabInstance:
     m_TransformParent: {fileID: 6595626707601269879}
     m_Modifications:
     - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _radius
+      value: 2.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _color.r
+      value: 0.7216981
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _innerRadius
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: avgIntensity
-      value: 1
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: _fallofStrength
+      value: 0.628
+      objectReference: {fileID: 0}
+    - target: {fileID: 371947512395725038, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: intensityVariation
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9945497
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7216981
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_Intensity
-      value: 1
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.628
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightInnerRadius
@@ -21551,7 +21761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1313888847822549858, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 3
+      value: 2.75
       objectReference: {fileID: 0}
     - target: {fileID: 1313888849041900545, guid: 506d8067b4ee2e3488ca2310e34ceaf7, type: 3}
       propertyPath: m_LocalPosition.x

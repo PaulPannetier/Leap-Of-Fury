@@ -873,22 +873,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: enableBehaviour
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: mapsPrefabs.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: durationToWaitAtBegining
       value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: playFirstMapAtLevelStart
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: mapsPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8197646591658090050, guid: a81ab4fcdb2620144b7fbca8765151e8, type: 3}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: mapsPrefabs.Array.data[3]
       value: 
       objectReference: {fileID: 5353102196708721684, guid: fcdfafaa44c04014999a3f995ea8031c, type: 3}
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
-      propertyPath: mapsPrefabs.Array.data[3]
+      propertyPath: mapsPrefabs.Array.data[4]
       value: 
       objectReference: {fileID: 8668091516508441569, guid: cac52ae7b317fb44c949f17e73ee3b81, type: 3}
     - target: {fileID: 7320278589001595780, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}

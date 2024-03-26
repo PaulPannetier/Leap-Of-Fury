@@ -6,7 +6,7 @@ public class LightVariator : MonoBehaviour
 {
     public bool enableBehaviour = true;
 
-    private new Light2D light;
+    private Light2D currentLight;
     private float noiseIndexIntensity, yNoise;
 
     public float avgIntensity;
@@ -15,7 +15,7 @@ public class LightVariator : MonoBehaviour
 
     private void Awake()
     {
-        light = GetComponent<Light2D>();
+        currentLight = GetComponent<Light2D>();
         yNoise = Random.Rand();
     }
 
@@ -30,7 +30,7 @@ public class LightVariator : MonoBehaviour
         if (!enableBehaviour)
             return;
         float noiseValue = Random.PerlinNoise(noiseIndexIntensity, yNoise) * intensityAmplitude;
-        light.intensity = avgIntensity + noiseValue;
+        currentLight.intensity = avgIntensity + noiseValue;
         noiseIndexIntensity += Time.deltaTime * intensityFrequency;
     }
 
@@ -54,8 +54,8 @@ public class LightVariator : MonoBehaviour
 
     private void OnValidate()
     {
-        light = GetComponent<Light2D>();
-        light.intensity = avgIntensity;
+        currentLight = GetComponent<Light2D>();
+        currentLight.intensity = avgIntensity;
     }
 
 #endif

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Experimental.Rendering.Universal;
 using System.IO;
 
@@ -52,11 +51,11 @@ public class GameManager : MonoBehaviour
 
         foreach (string dir in dirs)
         {
-            FileUtil.DeleteFileOrDirectory(Path.Combine(path, dir));
+            Directory.Delete(Path.Combine(path, dir), true);
         }
         foreach (string file in files)
         {
-            FileUtil.DeleteFileOrDirectory(Path.Combine(path, file));
+            File.Delete(Path.Combine(path, file));
         }
     }
 

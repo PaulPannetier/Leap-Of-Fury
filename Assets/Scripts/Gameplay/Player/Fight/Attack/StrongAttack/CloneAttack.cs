@@ -292,11 +292,15 @@ public class CloneAttack : StrongAttack
         isCloneAttackEnable = false;
     }
 
+#if UNITY_EDITOR
+
     protected override void SaveAttackStats()
     {
         base.SaveAttackStats();
         GameStatisticManager.SetStat("char1WeakAttackDuration", duration.Round(2).ToString());
     }
+
+#endif
 
     #region CloneData struct
 
