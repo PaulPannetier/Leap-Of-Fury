@@ -10,6 +10,8 @@ using UnityEditor.SceneManagement;
 using UnityEditor.Build.Reporting;
 using static SettingsManager;
 using static StatisticsManager;
+using System.Threading.Tasks;
+using UnityEditor.Rendering;
 
 [CustomEditor(typeof(BuildCreatorConfig))]
 public class BuildCreator : Editor
@@ -63,12 +65,14 @@ public class BuildCreator : Editor
 
     private void CreateBuild()
     {
-        if(buildCreatorConfig.modifyGameplayScene)
+        if (buildCreatorConfig.modifyGameplayScene)
         {
-            ModidyGameplayScenes();
+            ModifyGameplayScenes();
         }
 
-        if(buildCreatorConfig.performBuild)
+        ModifyScreenTitleScene();
+
+        if (buildCreatorConfig.performBuild)
         {
             List<string> scenesPath = new List<string>();
             foreach (Object sceneNoCast in buildCreatorConfig.otherSceneTobuild)
@@ -175,7 +179,70 @@ public class BuildCreator : Editor
         }
     }
 
-    private void ModidyGameplayScenes()
+    private void ModifyScreenTitleScene()
+    {
+        string currentScenePath = SceneManager.GetActiveScene().path;
+        SceneAsset screenTitleAsset = null;
+        foreach (Object scene in buildCreatorConfig.otherSceneTobuild)
+        {
+            if(scene == null || scene.name != "Screen Title")
+                continue;
+            screenTitleAsset = scene as SceneAsset;
+            break;
+        }
+
+        if (screenTitleAsset == null)
+            return;
+
+        string screenTitlePath = AssetDatabase.GetAssetPath(screenTitleAsset);
+        Scene screenTitle = EditorSceneManager.OpenScene(screenTitlePath, OpenSceneMode.Single);
+
+        GameObject gamemanager = null;
+        foreach (GameObject go in screenTitle.GetRootGameObjects())
+        {
+            if (go.name == "Singleton")
+            {
+                foreach (Transform t in go.transform)
+                {
+                    if (t.name == "GameManager")
+                    {
+                        gamemanager = t.gameObject;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (gamemanager != null)
+        {
+            SecutityManager secutityManager = gamemanager.GetComponent<SecutityManager>();
+            if (secutityManager != null)
+            {
+                SecutityManager secutityManager2 = secutityManager.gameObject.AddComponent<SecutityManager>();
+                secutityManager2.folderToVerify = new string[secutityManager.folderToVerify.Length];
+                for (int i = 0; i < secutityManager.folderToVerify.Length; i++)
+                {
+                    secutityManager2.folderToVerify[i] = secutityManager.folderToVerify[i];
+                }
+                DestroyImmediate(secutityManager);
+
+                if (buildCreatorConfig.enableFilesSecurity)
+                {
+                    secutityManager2.SaveHashes();
+                    secutityManager2.enableBehaviour = true;
+                }
+                else
+                {
+                    secutityManager2.enableBehaviour = false;
+                }
+            }
+        }
+
+        EditorSceneManager.SaveScene(screenTitle, screenTitlePath);
+        EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
+    }
+
+    private void ModifyGameplayScenes()
     {
         string currentScenePath = SceneManager.GetActiveScene().path;
         foreach (Object sceneNoCast in buildCreatorConfig.gameplayScenes)

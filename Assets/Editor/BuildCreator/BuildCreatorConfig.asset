@@ -26,6 +26,7 @@ MonoBehaviour:
   modifyGameplayScene: 1
   performBuild: 1
   developpementBuild: 1
+  enableFilesSecurity: 1
   advancedDebug: 1
   copySaveDirectory: 1
   setDefaultSettingAndInput: 1

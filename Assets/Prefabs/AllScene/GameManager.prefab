@@ -51,6 +51,7 @@ GameObject:
   - component: {fileID: 6842532504228175351}
   - component: {fileID: 3639208383533933286}
   - component: {fileID: 8101875005452331617}
+  - component: {fileID: 7950456835390513230}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -283,8 +284,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71f217e4856b42e479fbe766f4d45d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  refresh: 0
   gameStat:
     statDatas: []
   writeCurrentStats: 0
   loadStats: 0
+--- !u!114 &7950456835390513230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8970924279353906143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae6aadd52bace942a2248a06e1e4390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableBehaviour: 1
+  saveHash: 0
+  hashes:
+  - 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+  folderToVerify:
+  - Save/Language
+  - Save/Levels

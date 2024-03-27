@@ -137,7 +137,10 @@ public class LogManager : MonoBehaviour
                         sb2.Append(arr.GetValue(l).ToString());
                         sb2.Append(", ");
                     }
-                    sb2.Remove(sb2.Length - 2, 2);
+                    if(arr.Length > 0)
+                    {
+                        sb2.Remove(sb2.Length - 2, 2);
+                    }
                     sb2.Append(" ]");
                     sb.Append(sb2.ToString());
                 }

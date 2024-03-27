@@ -20,6 +20,7 @@ TagManager:
   - Canvas
   - CharsParent
   - Map
+  - TEST
   layers:
   - Default
   - TransparentFX
