@@ -75,10 +75,10 @@ public class SecutityManager : MonoBehaviour
 
         for (int i = 0; i < contents.Length; i++)
         {
-            SHA256 shaw = SHA256.Create();
-            hashes[i] = new Hash(shaw.ComputeHash(StringToByte(contents[i])));
-            shaw.Clear();
-            shaw.Dispose();
+            SHA256 shaaaaaw = SHA256.Create();
+            hashes[i] = new Hash(shaaaaaw.ComputeHash(StringToByte(contents[i])));
+            shaaaaaw.Clear();
+            shaaaaaw.Dispose();
         }
 
         return hashes;

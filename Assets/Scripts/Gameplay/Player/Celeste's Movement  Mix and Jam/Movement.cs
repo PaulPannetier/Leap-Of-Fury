@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     private CustomPlayerInput playerInput;
     private Collider2D hitbox;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
-    private MapColliderData groundColliderData, leftWallColliderData, rightWallColliderData;
+    private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData;
     private FightController fightController;
     private int disableMovementCounter = 0;
     private new Transform transform;
@@ -352,6 +352,7 @@ public class Movement : MonoBehaviour
         if(groundCollider != null && oldGroundCollider != groundCollider)
         {
             groundColliderData = groundCollider.GetComponent<MapColliderData>();
+            lastGroundColliderData = groundColliderData;
         }
 
 
@@ -661,7 +662,10 @@ public class Movement : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        //DebugText.instance.text += "SpeedX : " + rb.velocity.x.Round(2);
+        DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
+        DebugText.instance.text += $"Jump : {isJumping}\n";
+        DebugText.instance.text += $"Fall : {isFalling}\n";
+        DebugText.instance.text += $"Ground : {isGrounded}\n";
     }
 
     #endregion
@@ -727,17 +731,17 @@ public class Movement : MonoBehaviour
         {
             if(groundTouch)
             {
-                localVelocityOnGrippingGround = rb.velocity;
+                localVelocityOnGrippingGround = new Vector2(rb.velocity.x, 0f);
             }
 
             //Clamp, on est dans le mauvais sens
             if ((playerInput.x >= 0f && localVelocityOnGrippingGround.x <= 0f) || (playerInput.x <= 0f && localVelocityOnGrippingGround.x >= 0f))
             {
                 if (playerInput.rawX != 0)
-                    localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), rb.velocity.y);
+                    localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), localVelocityOnGrippingGround.y);
                 else
                 {
-                    localVelocityOnGrippingGround = new Vector2(0f, rb.velocity.y);
+                    localVelocityOnGrippingGround = new Vector2(0f, localVelocityOnGrippingGround.y);
                 }
             }
 
@@ -754,7 +758,7 @@ public class Movement : MonoBehaviour
             //friction du to ground
             if (groundColliderData != null && groundColliderData.isGripping)
             {
-                rb.velocity = localVelocityOnGrippingGround + groundColliderData.frictionCoefficient * groundColliderData.rb.velocity;
+                rb.velocity = localVelocityOnGrippingGround + new Vector2(groundColliderData.frictionCoefficient * groundColliderData.rb.velocity.x, groundColliderData.rb.velocity.y);
             }
             else
             {
@@ -887,6 +891,7 @@ public class Movement : MonoBehaviour
         }
 
         #endregion
+
     }
 
     #endregion
@@ -1144,11 +1149,22 @@ public class Movement : MonoBehaviour
             slideParticle.transform.parent.localScale = new Vector3(ParticleSide(), 1, 1);
 
         Vector2 newVelocity;
-        if(groundColliderData != null && groundColliderData.groundType == MapColliderData.GroundType.trampoline)
+        if(groundColliderData != null)
         {
-            Jumper t = groundColliderData.GetComponent<Jumper>();
-            Vector2 newDir = new Vector2(Mathf.Cos(t.angleDir * Mathf.Deg2Rad), Mathf.Sin(t.angleDir * Mathf.Deg2Rad));
-            newVelocity = new Vector2(rb.velocity.x + newDir.x * t.force, newDir.y * t.force);
+            if(groundColliderData.groundType == MapColliderData.GroundType.trampoline)
+            {
+                Jumper t = groundColliderData.GetComponent<Jumper>();
+                Vector2 newDir = new Vector2(Mathf.Cos(t.angleDir * Mathf.Deg2Rad), Mathf.Sin(t.angleDir * Mathf.Deg2Rad));
+                newVelocity = new Vector2(rb.velocity.x + newDir.x * t.force, newDir.y * t.force);
+            }
+            else
+            {
+                newVelocity = new Vector2(rb.velocity.x + dir.x * jumpInitForce, dir.y * jumpInitForce) + groundColliderData.rb.velocity;
+            }
+        }
+        else if (lastGroundColliderData != null)
+        {
+            newVelocity = new Vector2(rb.velocity.x + dir.x * jumpInitForce, dir.y * jumpInitForce) + lastGroundColliderData.rb.velocity;
         }
         else
         {
@@ -1478,6 +1494,7 @@ public class Movement : MonoBehaviour
     private void GroundTouch()
     {
         groundColliderData = groundCollider.GetComponent<MapColliderData>();
+        lastGroundColliderData = groundColliderData;
 
         hasDashed = false;
         hasDoubleJump = false;

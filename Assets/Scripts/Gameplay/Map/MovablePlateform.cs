@@ -35,13 +35,12 @@ public class MovablePlateform : PathFindingBlocker
 
     public bool enableBehaviour = true;
     [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
-    [SerializeField, Tooltip("The width or height on the detection hitbox when moving")] private float collisionOverlapSize = 1f;
     [SerializeField, Range(0f, 1f)] private float groundCollisionHitboxSafeZone = 1f;
     [SerializeField, Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushPadding = 1.05f;
     [SerializeField, Range(0f, 1f), Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushZone = 0.95f;
-    [SerializeField] private float nbDetectionPerCellForCrushDetection = 2;
     [SerializeField, Tooltip("The dash detection hitbox size")] private float dashHitboxSize = 1f;
     [SerializeField, Tooltip("The dash detection hitbox size"), Range(0f, 1f)] private float dashHitboxSafeZone = 0.9f;
+    [SerializeField] private bool enableActivationWhenMoving;
     [SerializeField] private float activationCooldown = 0.3f;
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age of maxSpeed")] private AnimationCurve accelerationCurve;
@@ -72,8 +71,8 @@ public class MovablePlateform : PathFindingBlocker
     protected override void Awake()
     {
         base.Awake();
-        hitbox = GetComponent<BoxCollider2D>();
         transform = base.transform;
+        hitbox = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         convertHitboxSideToBumbDir = new Vector2[5]
         {
@@ -83,6 +82,7 @@ public class MovablePlateform : PathFindingBlocker
             Useful.Vector2FromAngle(returnBumpSpeedAngleOnSide * Mathf.Deg2Rad),
             Vector2.zero
         };
+
         charAlreadyCrush = new List<uint>();
         toricObject = GetComponent<ToricObject>();
     }
@@ -110,8 +110,6 @@ public class MovablePlateform : PathFindingBlocker
             pauseWasEnableLastFrame = false;
         }
         
-        GetComponentInChildren<SpriteRenderer>().color = isTargetingPosition ? Color.red : Color.green;
-
         if(isMoving)
         {
             HandleMoving();
@@ -136,16 +134,16 @@ public class MovablePlateform : PathFindingBlocker
                 switch (hitboxSide)
                 {
                     case HitboxSide.up:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + LevelMapData.currentMap.cellSize.y) * 0.5f), new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, LevelMapData.currentMap.cellSize.y), 0, groundMask);
                         break;
                     case HitboxSide.down:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f), new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + LevelMapData.currentMap.cellSize.y) * 0.5f), new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, LevelMapData.currentMap.cellSize.y), 0, groundMask);
                         break;
                     case HitboxSide.left:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x - (hitbox.size.x + LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y), new Vector2(LevelMapData.currentMap.cellSize.x, hitbox.size.y * groundCollisionHitboxSafeZone), 0, groundMask);
                         break;
                     case HitboxSide.right:
-                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y), new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone), 0, groundMask);
+                        groundCols = PhysicsToric.OverlapBoxAll(new Vector2(transform.position.x + (hitbox.size.x + LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y), new Vector2(LevelMapData.currentMap.cellSize.x, hitbox.size.y * groundCollisionHitboxSafeZone), 0, groundMask);
                         break;
                     default:
                         groundCol = null;
@@ -186,7 +184,7 @@ public class MovablePlateform : PathFindingBlocker
             }
 
             //char dash detecttion
-            if(!isTargetingPosition)
+            if(enableActivationWhenMoving && !isTargetingPosition)
             {
                 Collider2D[] cols;
                 bool dashAlreadyCollide = false;
@@ -299,25 +297,25 @@ public class MovablePlateform : PathFindingBlocker
                 switch (hitboxSide)
                 {
                     case HitboxSide.up:
-                        nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
+                        nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
                         size = new Vector2(hitbox.size.x * crushZone / nbStep, PlayerCommon.charSize.y * crushPadding);
                         begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y + hitbox.size.y * 0.5f + size.y * 0.5f);
                         step = new Vector2(size.x, 0f);
                         break;
                     case HitboxSide.down:
-                        nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
+                        nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
                         size = new Vector2(hitbox.size.x * crushZone / nbStep, PlayerCommon.charSize.y * crushPadding);
                         begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y - hitbox.size.y * 0.5f - size.y * 0.5f);
                         step = new Vector2(size.x, 0f);
                         break;
                     case HitboxSide.left:
-                        nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
+                        nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
                         size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                         begPoint = new Vector2(transform.position.x - hitbox.size.x * 0.5f - size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                         step = new Vector2(0f, -size.y);
                         break;
                     case HitboxSide.right:
-                        nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
+                        nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
                         size = new Vector2(PlayerCommon.charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                         begPoint = new Vector2(transform.position.x + hitbox.size.x * 0.5f + size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                         step = new Vector2(0f, -size.y);
@@ -554,15 +552,12 @@ public class MovablePlateform : PathFindingBlocker
     {
         hitbox = GetComponent<BoxCollider2D>();
         this.transform = base.transform;
-
-        collisionOverlapSize = Mathf.Max(collisionOverlapSize, 0f);
         crushPadding = Mathf.Max(crushPadding, 1f);
         dashHitboxSize = Mathf.Max(dashHitboxSize, 0f);
         activationCooldown = Mathf.Max(activationCooldown, 0f);
         accelerationDuration = Mathf.Max(accelerationDuration, 0f);
         maxSpeed = Mathf.Max(0f, maxSpeed);
         returnBumpSpeedOnChar = Mathf.Max(0f, returnBumpSpeedOnChar);
-        nbDetectionPerCellForCrushDetection = Mathf.Max(nbDetectionPerCellForCrushDetection, 0);
     }
 
     private void OnDrawGizmosSelected()
@@ -576,20 +571,20 @@ public class MovablePlateform : PathFindingBlocker
         if (drawGroundDetectionHitoxGizmos)
         {
             Gizmos.color = colorGroundDetectionHitbox;
-            Vector2 center = new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + collisionOverlapSize) * 0.5f);
-            Vector2 size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize);
+            Vector2 center = new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + LevelMapData.currentMap.cellSize.y) * 0.5f);
+            Vector2 size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, LevelMapData.currentMap.cellSize.y);
             Hitbox.GizmosDraw(center, size);
 
-            center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + collisionOverlapSize) * 0.5f);
-            size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, collisionOverlapSize);
+            center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + LevelMapData.currentMap.cellSize.y) * 0.5f);
+            size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, LevelMapData.currentMap.cellSize.y);
             Hitbox.GizmosDraw(center, size);
 
-            center = new Vector2(transform.position.x - (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y);
-            size = new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone);
+            center = new Vector2(transform.position.x - (hitbox.size.x + LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y);
+            size = new Vector2(LevelMapData.currentMap.cellSize.x, hitbox.size.y * groundCollisionHitboxSafeZone);
             Hitbox.GizmosDraw(center, size);
 
-            center = new Vector2(transform.position.x + (hitbox.size.x + collisionOverlapSize) * 0.5f, transform.position.y);
-            size = new Vector2(collisionOverlapSize, hitbox.size.y * groundCollisionHitboxSafeZone);
+            center = new Vector2(transform.position.x + (hitbox.size.x + LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y);
+            size = new Vector2(LevelMapData.currentMap.cellSize.x, hitbox.size.y * groundCollisionHitboxSafeZone);
             Hitbox.GizmosDraw(center, size);
         }
 
@@ -631,27 +626,27 @@ public class MovablePlateform : PathFindingBlocker
                 Vector2 charSize = player.GetComponent<BoxCollider2D>().size;
                 Gizmos.color = colorCrushDetectionHitbox;
 
-                int nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
+                int nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
                 Vector2 size = new Vector2(hitbox.size.x * crushZone / nbStep, charSize.y * crushPadding);
                 Vector2 begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y + hitbox.size.y * 0.5f + size.y * 0.5f);
                 Vector2 step = new Vector2(size.x, 0f);
                 DrawGizmos(begPoint, size, step, nbStep);
 
-                nbStep = ((hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x) * nbDetectionPerCellForCrushDetection).Ceil();
+                nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
                 size = new Vector2(hitbox.size.x * crushZone / nbStep, charSize.y * crushPadding);
                 begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y - hitbox.size.y * 0.5f - size.y * 0.5f);
                 step = new Vector2(size.x, 0f);
                 DrawGizmos(begPoint, size, step, nbStep);
 
 
-                nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
+                nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                 begPoint = new Vector2(transform.position.x - hitbox.size.x * 0.5f - size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                 step = new Vector2(0f, -size.y);
                 DrawGizmos(begPoint, size, step, nbStep);
 
 
-                nbStep = ((hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y) * nbDetectionPerCellForCrushDetection).Ceil();
+                nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                 begPoint = new Vector2(transform.position.x + hitbox.size.x * 0.5f + size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                 step = new Vector2(0f, -size.y);

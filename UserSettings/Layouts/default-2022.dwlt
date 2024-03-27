@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2560
     height: 1349
   m_ShowMode: 4
-  m_Title: Inspector
+  m_Title: Game
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 371}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 129
+  controlID: 150
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 0
-  controlID: 92
+  controlID: 102
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 20
+  controlID: 45
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 93
+  controlID: 103
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -321,8 +321,8 @@ MonoBehaviour:
     y: 0
     width: 642
     height: 1299
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 21}
   m_Panes:
   - {fileID: 21}
@@ -639,7 +639,7 @@ MonoBehaviour:
       containerId: overlay-toolbar__top
       floating: 0
       collapsed: 0
-      displayed: 0
+      displayed: 1
       snapOffset: {x: 0, y: 25}
       snapOffsetDelta: {x: 0, y: 0}
       snapCorner: 0
@@ -724,9 +724,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.13889737, y: -0.086097285, z: -24.215883}
+    m_Target: {x: -0.11219227, y: -0.07329905, z: -24.205627}
     speed: 2
-    m_Value: {x: -0.13889737, y: -0.086097285, z: -24.215883}
+    m_Value: {x: -0.11219227, y: -0.07329905, z: -24.205627}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -776,9 +776,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 10.392308
+    m_Target: 9.366849
     speed: 2
-    m_Value: 10.392308
+    m_Value: 9.366849
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -840,9 +840,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 40730100
-      m_LastClickedID: 95040
-      m_ExpandedIDs: 226cfdffd06cfdff4a70fdff2871fdff0472fdffe272fdffca73fdff8c74fdff0476fdff3e7bfdff9680fdff8885fdff6a8afdff588bfdff408cfdff268dfdff0e8efdfffe8efdff2e9efdffdc9efdff56a2fdff34a3fdff10a4fdffeea4fdffd6a5fdff98a6fdff10a8fdff4aadfdffa2b2fdff94b7fdff76bcfdff64bdfdff4cbefdff32bffdff1ac0fdff0ac1fdff68ccfdff16cdfdff90d0fdff6ed1fdff4ad2fdff28d3fdff10d4fdffd2d4fdff4ad6fdff84dbfdffdce0fdffd0e5fdffb4eafdffa2ebfdff8aecfdff70edfdff58eefdff3eeffdff6401feff1202feff8c05feff6a06feff4607feff2408feff0c09feffce09feff460bfeff8210feffdc15feffce1afeffb21ffeffa020feff8821feff6e22feff5623feff3c24feffac2dfeff5a2efeffd431feffb232feff8e33feff6c34feff5435feff1636feff8e37feffca3cfeff2442feff1647fefffa4bfeffe84cfeffd04dfeffb64efeff9e4ffeff8450feffc058feffd65afeff5861feff0662feff6065feff3e66feff1a67fefff867feffe068feffa269feff1a6bfeff5670feffb075feffa27afeff867ffeff7480feff5c81feff4282feff2a83feff1084feffb089feff0c8cfeffc492feff7293feffec96feffca97feffa698feff8499feff6c9afeff2e9bfeffa69cfeffe2a1feff3ca7feff2eacfeff12b1feff00b2feffe8b2feffceb3feffb6b4feff9cb5feffb8c3feff66c4feffe0c7feffbec8feff9ac9feff78cafeff60cbfeff22ccfeff9acdfeffd6d2feff30d8feff22ddfeff06e2fefff4e2feffdce3feffc2e4feffaae5feff90e6feffd6f0feffc8f5feffacfafeff9afbfeff82fcfeff68fdfeff50fefeff40fffefff805ffffa606ffff200afffffe0affffda0bffffb80cffffa00dffff620effffdc0fffff1815ffff721affff641fffff4824ffff3625ffff1e26ffff0427ffffec27ffffd228ffff5238ffff0039ffff7a3cffff583dffff343effff123ffffffa3fffffbc40ffff3442ffff7047ffff364fffff2854ffff0c59fffffa59ffffe25affffc85bffffb05cffff965dffffce68ffff666afffffe6dfffff072ffff6074ffff4e75ffff3676ffffb47affff9c7bffff827cffffb27effffb285ffff848bffff4c91ffff3e96ffffae97ffff9c98ffff8499ffff6a9affff529bffff429cffff729effff3ca4ffff64a6ffff42b0ffff26b5ffff14b6fffffcb6ffffe2b7ffffcab8ffffb0b9ffffbcc1ffffa0c6ffff8ec7ffff76c8ffff5cc9ffff44caffff34cbffff10d5fffff4d9ffffe2daffffcadbffffb0dcffff98ddffff7edeffff1cfbffff1099000070a50000c8b1000078ba0000cac3000000c4000076cc000006e4000046f20000cafe0000ea0c01002e1b0100601d0100d42b01003c2c0100283801001c460100ac540100bc6201001c710100
+      m_SelectedIDs: a891ffff
+      m_LastClickedID: -28248
+      m_ExpandedIDs: ac91ffff0892ffff0e92ffff6896ffff6c9dffff1a9effff94a1ffff72a2ffff4ea3ffff2ca4ffff14a5ffffd6a5ffff4ea7ffff88acffffe0b1ffffd4b6ffffb8bbffffa6bcffff8ebdffff74beffff5cbfffff42c0ffffc8d0ffff76d1fffff0d4ffffced5ffffaad6ffff88d7ffff70d8ffff32d9ffffacdaffffe6dfffff42e5ffff36eaffff1aefffff08f0fffff0f0ffffd6f1ffffbef2ffffa4f3ffff1cfbffff5269000004af00003ac00000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -911,7 +911,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Editor/BuildCreator
+    - Assets/Prefabs/Gameplay/Maya's Temple/Object
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -927,7 +927,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 36dc0000
     m_LastClickedID: 56374
-    m_ExpandedIDs: 00000000827100008471000086710000887100008a7100008c7100008e71000090710000927100009471000096710000987100009a7100009c7100009e710000a0710000a2710000a4710000a6710000a8710000aa710000ac710000ae710000b0710000b2710000b4710000b6710000b8710000ba710000bc710000be710000c0710000c2710000c4710000c6710000c8710000ca710000cc710000ce710000d0710000d2710000d4710000d6710000d8710000da710000dc710000
+    m_ExpandedIDs: 0000000086710000887100008a7100008c7100008e71000090710000927100009471000096710000987100009a7100009c7100009e710000a0710000a2710000a4710000a6710000a8710000aa710000ac710000ae710000b0710000b2710000b4710000b6710000b8710000ba710000bc710000be710000c0710000c2710000c4710000c6710000c8710000ca710000cc710000ce710000d0710000d2710000d4710000d6710000d8710000da710000dc710000de710000e0710000e2710000e4710000e6710000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -952,10 +952,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_AssetTreeState:
-    scrollPos: {x: 0, y: 0}
+    scrollPos: {x: 0, y: 1079}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: ffffffff00000000827100008471000086710000887100008a7100008c7100008e71000090710000927100009471000096710000987100009a7100009c7100009e710000a0710000a2710000a4710000a6710000a8710000aa710000ac710000ae710000b0710000b2710000b4710000b6710000b8710000ba710000bc710000be710000c0710000c2710000c4710000c6710000c8710000ca710000cc710000ce710000d0710000d2710000d4710000dc710000b07800000a7900001c790000207900002a79000096c40000
+    m_ExpandedIDs: ffffffff0000000086710000887100008a7100008c7100008e71000090710000927100009471000096710000987100009a7100009c7100009e710000a0710000a2710000a4710000a6710000a8710000aa710000ac710000ae710000b0710000b2710000b4710000b6710000b8710000ba710000bc710000be710000c0710000c2710000c4710000c6710000c8710000ca710000cc710000ce710000d2710000d4710000d6710000d8710000da710000e2710000e4710000e6710000cc780000d6780000fe7800001e790000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1048,7 +1048,7 @@ MonoBehaviour:
   m_SerializedViewNames: []
   m_SerializedViewValues: []
   m_PlayModeViewName: GameView
-  m_ShowGizmos: 0
+  m_ShowGizmos: 1
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
   m_TargetSize: {x: 1920, y: 1080}
@@ -1058,7 +1058,7 @@ MonoBehaviour:
   m_EnterPlayModeBehavior: 0
   m_UseMipMap: 0
   m_VSyncEnabled: 0
-  m_Gizmos: 0
+  m_Gizmos: 1
   m_Stats: 0
   m_SelectedSizes: 03000000000000000000000000000000000000000000000000000000000000000000000000000000
   m_ZoomArea:
@@ -1368,7 +1368,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 91360
+  m_LastSelectedObjectID: -28268
 --- !u!114 &21
 MonoBehaviour:
   m_ObjectHideFlags: 52

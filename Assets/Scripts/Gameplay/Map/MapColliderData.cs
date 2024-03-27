@@ -9,7 +9,7 @@ public class MapColliderData : MonoBehaviour
         normal,
         ice,
         trampoline,
-        convoyerBelt
+        convoyerBelt,
     }
 
     private void Awake()

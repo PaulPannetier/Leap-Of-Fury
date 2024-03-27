@@ -71419,8 +71419,16 @@ PrefabInstance:
       value: MovablePlateform (2)
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: crushZone
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: dashHitboxSize
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawDashHiboxGizmos
@@ -71432,11 +71440,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHitboxAccurate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHiboxSimpleGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: groundCollisionHitboxSafeZone
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
@@ -71444,11 +71456,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.x
-      value: 3.95
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.y
-      value: 1.95
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -71537,8 +71549,16 @@ PrefabInstance:
       value: MovablePlateform
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: crushZone
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: dashHitboxSize
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawDashHiboxGizmos
@@ -71550,19 +71570,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHitboxAccurate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHiboxSimpleGizmos
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: groundCollisionHitboxSafeZone
-      value: 1
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: m_Size.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: m_Size.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Enabled
@@ -71643,8 +71671,16 @@ PrefabInstance:
       value: MovablePlateform (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: crushZone
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: dashHitboxSize
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawDashHiboxGizmos
@@ -71656,11 +71692,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHitboxAccurate
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHiboxSimpleGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: groundCollisionHitboxSafeZone
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
@@ -71668,11 +71708,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.x
-      value: 3.95
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.y
-      value: 1.95
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.x
