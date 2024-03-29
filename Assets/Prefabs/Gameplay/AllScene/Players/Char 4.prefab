@@ -405,7 +405,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.282}
+  m_Offset: {x: 0, y: -0.28}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -841,6 +841,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 0.5
+  saveAttackStats: 0
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
   distanceToInstantiate: 0.5
   speedCurvePhase1:
@@ -959,6 +960,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 2
+  saveAttackStats: 0
   bumpVelocity: 15
   nbFireworkLaunch: 3
   fireworkDiffusionAngle: 90
@@ -980,6 +982,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 0
+  saveAttackStats: 0
   enableBehaviour: 1
   minTransparency: 0.3
   transitionTime: 0.2

@@ -120,7 +120,7 @@ Méca : Plusieurs levier sont activable par ls joueurs :
 - Un pendule pique peut etre déverrouiler
 - certaint sol desuus de la lave peuvent etre enlever
 DA : Un chateau fort
-Name : The queen Castle
+Name : The queen Castle 
 
 /Pas a mettre pour l'instant
 Dernière carte (carte n):***
@@ -134,3 +134,5 @@ netoyer tout les fichiers du projet
 redo Toric object
 voir si on peut passer le rb des char en kinematic
 Rename MovementScript into CharacterController
+review code pour alouer moins de mémoire (use short ect)
+verify ToricPhysic with map cellSize != 1

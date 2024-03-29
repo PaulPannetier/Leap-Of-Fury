@@ -180,7 +180,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.282}
+  m_Offset: {x: 0, y: -0.28}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -588,6 +588,7 @@ MonoBehaviour:
   castDuration: 0.2
   cooldown:
     duration: 4
+  saveAttackStats: 0
   originalCloneAttack: {fileID: 0}
   drawGizmos: 0
   isAClone: 0
@@ -662,6 +663,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 5
+  saveAttackStats: 0
   isCloneAttackEnable: 0
   clonePrefabs: {fileID: 1266130988093312155, guid: f24f5fb0fc04f7c438b6ee7620e65224, type: 3}
   latenessTime: 3
@@ -685,6 +687,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 0
+  saveAttackStats: 0
   enableBehaviour: 0
   fireDecreasement: 0
   drawFireGizmos: 1

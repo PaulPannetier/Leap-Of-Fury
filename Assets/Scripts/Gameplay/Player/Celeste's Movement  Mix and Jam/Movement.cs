@@ -10,7 +10,7 @@ public class Movement : MonoBehaviour
     private AnimationScript anim;
     private Camera mainCam;
     private CustomPlayerInput playerInput;
-    private Collider2D hitbox;
+    private BoxCollider2D hitbox;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData;
     private FightController fightController;
@@ -47,6 +47,7 @@ public class Movement : MonoBehaviour
     public float sideCollisionRadius = 0.28f;
     public Vector2 groundOffset, sideOffset = new Vector2(0.15f, 0f);
     [Tooltip("La longueur de détection de la plateforme lors d'une monté en grab")][SerializeField] private float grabRayLength = 1f;
+    [SerializeField] private float gapBetweenHitboxAndGround = 0.1f;
     private LayerMask groundLayer;
 
     [Header("Walk")]
@@ -346,7 +347,7 @@ public class Movement : MonoBehaviour
     {
         // I-Collision/detection
         oldGroundCollider = groundCollider;
-        groundCollider = Physics2D.OverlapCircle((Vector2)transform.position + groundOffset, groundCollisionRadius, groundLayer);
+        groundCollider = PhysicsToric.OverlapCircle((Vector2)transform.position + groundOffset, groundCollisionRadius, groundLayer);
         isGrounded = groundCollider != null;
 
         if(groundCollider != null && oldGroundCollider != groundCollider)
@@ -355,10 +356,9 @@ public class Movement : MonoBehaviour
             lastGroundColliderData = groundColliderData;
         }
 
-
-        rightWallCollider = Physics2D.OverlapCircle((Vector2)transform.position + sideOffset, sideCollisionRadius, groundLayer);
+        rightWallCollider = PhysicsToric.OverlapCircle((Vector2)transform.position + sideOffset, sideCollisionRadius, groundLayer);
         onRightWall = rightWallCollider != null;
-        leftWallCollider = Physics2D.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer);
+        leftWallCollider = PhysicsToric.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer);
         onLeftWall = leftWallCollider != null;
         onWall = onRightWall || onLeftWall;
         rightWallColliderData = onRightWall ? rightWallCollider.GetComponent<MapColliderData>() : null;
@@ -381,6 +381,20 @@ public class Movement : MonoBehaviour
         if(isQuittingConvoyerBelt && Time.time - lastTimeQuittingConvoyerBelt > inertiaDurationWhenQuittingConvoyerBelt)
         {
             isQuittingConvoyerBelt = isQuittingConvoyerBeltLeft = isQuittingConvoyerBelt = false;
+        }
+
+        //Avoid clip on platefom
+        if(groundCollider != null)
+        {
+            Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
+            RaycastHit2D antiClipRaycast = PhysicsToric.Raycast(hitboxCenter, Vector2.down, hitbox.size.y + groundCollisionRadius, groundLayer);
+            if(antiClipRaycast.collider != null)
+            {
+                if(rb.velocity.y <= 0f || hitbox.OverlapPoint(antiClipRaycast.point))
+                {
+                    rb.position = new Vector2(rb.position.x, antiClipRaycast.point.y + hitbox.size.y * 0.5f - hitbox.offset.y + gapBetweenHitboxAndGround);
+                }
+            }
         }
 
         //Slope detecttion
@@ -1633,6 +1647,7 @@ public class Movement : MonoBehaviour
         minBumpDuration = Mathf.Min(minBumpDuration, maxBumpDuration);
         maxPreciseGrabValue = Mathf.Max(maxPreciseGrabValue, 0f);
         inertiaDurationWhenQuittingGround = Mathf.Max(inertiaDurationWhenQuittingGround, 0f);
+        gapBetweenHitboxAndGround = Mathf.Max(gapBetweenHitboxAndGround, 0f);
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 

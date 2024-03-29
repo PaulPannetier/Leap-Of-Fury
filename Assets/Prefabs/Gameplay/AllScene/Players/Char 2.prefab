@@ -355,7 +355,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.282}
+  m_Offset: {x: 0, y: -0.28}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -762,6 +762,7 @@ MonoBehaviour:
   castDuration: 0
   cooldown:
     duration: 3
+  saveAttackStats: 0
   drawGizmos: 1
   castRadius: 0.5
   minRange: 0.38
@@ -888,6 +889,7 @@ MonoBehaviour:
   castDuration: 0.8
   cooldown:
     duration: 3
+  saveAttackStats: 0
   drawGizmos: 0
   explosionRadius: 1.5
   minDistanceFromGround: 1.2
