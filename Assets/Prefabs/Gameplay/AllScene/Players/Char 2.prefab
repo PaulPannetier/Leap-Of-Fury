@@ -422,6 +422,7 @@ MonoBehaviour:
   wallJumpSpeed: {x: 5, y: 20}
   wallJumpGravityMultiplier: 1.2
   wallJumpMaxDuration: 0.15
+  enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
     serializedVersion: 2

@@ -95,10 +95,12 @@ public class CharacterController : MonoBehaviour
     [Tooltip("L'accélération continue du au saut depuis le mur.")] [SerializeField] private float wallJumpForce = 20f;
     [Tooltip("La vitesse maximal de saut depuis le mur (VMAX en l'air).")] [SerializeField] private Vector2 wallJumpSpeed = new Vector2(4f, 20f);
     [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")] [SerializeField] private float wallJumpGravityMultiplier = 1f;
+    [Tooltip("La durée minimale ou le joueur peut avoir la touche de saut effective")] [SerializeField] private float wallJumpMinDuration = 0.1f;
     [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")] [SerializeField] private float wallJumpMaxDuration = 1f;
     private float lastTimeBeginWallJump = -10f;
 
     [Header("Wall Jump Along Wall")]
+    [SerializeField] private bool enableJumpAlongWall = true;
     [Tooltip("la vitesse de début de saut de mur face au mur")] [SerializeField] private float wallJumpAlongSpeed = 20f;
     [Tooltip("la courbe de vitesse saut de mur face au mur")] [SerializeField] private AnimationCurve wallJumpAlongCurveSpeed;
     [Tooltip("La durée d'un saut face au mur")] [SerializeField] private float jumpAlongWallDuration = 0.3f;
@@ -1089,7 +1091,7 @@ public class CharacterController : MonoBehaviour
             HandleHorizontalMovement(speed);
         }
 
-        if(isJumpingAlongWall)
+        if(enableJumpAlongWall && isJumpingAlongWall)
         {
             //detect changing direction
             if((playerInput.rawX == -1 && onRightWall) || (playerInput.rawX == 1 && onLeftWall))
@@ -1132,17 +1134,24 @@ public class CharacterController : MonoBehaviour
             if (!enableInput)
                 return;
             //Movement horizontal
-            //Clamp, on est dans le mauvais sens
-            if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
-                rb.velocity = new Vector2(jumpInitHorizontaSpeed * jumpSpeed.x * playerInput.x.Sign(), rb.velocity.y);
 
-            if (Mathf.Abs(rb.velocity.x) < jumpInitHorizontaSpeed * speed.x * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+
+            if(Time.time - lastTimeBeginWallJump >= wallJumpMinDuration)
+            {
+                //Clamp, on est dans le mauvais sens
+                if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+                {
+                    rb.velocity = new Vector2(jumpInitHorizontaSpeed * jumpSpeed.x * playerInput.x.Sign(), rb.velocity.y);
+                }
+            }
+
+            if (Mathf.Abs(rb.velocity.x) < jumpInitHorizontaSpeed * speed.x * 0.95f && playerInput.rawX != 0)
             {
                 rb.velocity = new Vector2(jumpInitHorizontaSpeed * speed.x * playerInput.x.Sign(), rb.velocity.y);
             }
             else
             {
-                float targetSpeed = playerInput.x * speed.x;
+                float targetSpeed = (Time.time - lastTimeBeginWallJump >= wallJumpMinDuration) ? playerInput.x * speed.x : speed.x;
                 rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, jumpSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
             }
         }
@@ -1168,9 +1177,9 @@ public class CharacterController : MonoBehaviour
         {
             if(groundColliderData.groundType == MapColliderData.GroundType.trampoline)
             {
-                Jumper t = groundColliderData.GetComponent<Jumper>();
-                Vector2 newDir = new Vector2(Mathf.Cos(t.angleDir * Mathf.Deg2Rad), Mathf.Sin(t.angleDir * Mathf.Deg2Rad));
-                newVelocity = new Vector2(rb.velocity.x + newDir.x * t.force, newDir.y * t.force);
+                Jumper jumper = groundColliderData.GetComponent<Jumper>();
+                Vector2 newDir = new Vector2(Mathf.Cos(jumper.angleDir * Mathf.Deg2Rad), Mathf.Sin(jumper.angleDir * Mathf.Deg2Rad));
+                newVelocity = new Vector2(rb.velocity.x + newDir.x * jumper.force, newDir.y * jumper.force);
             }
             else
             {
@@ -1224,21 +1233,28 @@ public class CharacterController : MonoBehaviour
 
     private void WallJump(bool right)
     {
-        //first case : jump along the wall
-        if((right && playerInput.rawX >= 0) || (!right && playerInput.rawX <= 0) && wallGrab)
+        if(enableJumpAlongWall)
         {
-            if(Time.time - lastTimeBeginWallJumpAlongWall > wallJumpAlongCooldown)
+            //first case : jump along the wall
+            if ((right && playerInput.rawX >= 0) || (!right && playerInput.rawX <= 0) && wallGrab)
             {
-                WallJumpAlongWall(right);
+                if (Time.time - lastTimeBeginWallJumpAlongWall > wallJumpAlongCooldown)
+                {
+                    WallJumpAlongWall(right);
+                }
             }
-        }
-        else if((right && playerInput.rawX == -1) || (!right && playerInput.rawX == 1)) //2nd case : jump on the oposite of the wall
-        {
-            WallJumpOppositeSide(right);
+            else if ((right && playerInput.rawX == -1) || (!right && playerInput.rawX == 1)) //2nd case : jump on the oposite of the wall
+            {
+                WallJumpOppositeSide(right);
+            }
+            else
+            {
+                return;
+            }
         }
         else
         {
-            return;
+            WallJumpOppositeSide(right);
         }
 
         StopCoroutine(nameof(DisableMovementCorout));
@@ -1640,6 +1656,8 @@ public class CharacterController : MonoBehaviour
         airHorizontalSpeed = Mathf.Max(0f, airHorizontalSpeed);
         jumpSpeed = new Vector2(Mathf.Max(0f, jumpSpeed.x), Mathf.Max(0f, jumpSpeed.y));
         doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);
+        wallJumpMaxDuration = Mathf.Max(wallJumpMaxDuration, 0f);
+        wallJumpMinDuration = Mathf.Clamp(wallJumpMinDuration, 0f, wallJumpMaxDuration);
         grabApexSpeed = new Vector2(Mathf.Max(0f, grabApexSpeed.x), Mathf.Max(0f, grabApexSpeed.y));
         grabApexSpeed2 = new Vector2(Mathf.Max(0f, grabApexSpeed2.x), Mathf.Max(0f, grabApexSpeed2.y));
         slideSpeed = Mathf.Max(0f, slideSpeed);
