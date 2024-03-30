@@ -412,7 +412,7 @@ public class MovablePlateform : PathFindingBlocker
 
         bool IsPlayerDash(GameObject player)
         {
-            return player.GetComponent<Movement>().isDashing;
+            return player.GetComponent<CharacterController>().isDashing;
         }
 
         Collider2D[] GetCharColliders(HitboxSide hitboxSide)
@@ -501,7 +501,7 @@ public class MovablePlateform : PathFindingBlocker
         lastCharIdActivate = player.GetComponent<PlayerCommon>().id;
         lastTimeActivated = Time.time;
         lastSideActiavated = hitboxSide;
-        Movement movement = player.GetComponent<Movement>();
+        CharacterController movement = player.GetComponent<CharacterController>();
         movement.ApplyBump(returnBumpSpeedOnChar * convertHitboxSideToBumbDir[(int)hitboxSide]);
         isMoving = true;
     }

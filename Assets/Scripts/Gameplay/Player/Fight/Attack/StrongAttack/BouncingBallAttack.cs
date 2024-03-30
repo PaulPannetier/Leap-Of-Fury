@@ -6,7 +6,7 @@ using Collider2D = UnityEngine.Collider2D;
 
 public class BouncingBallAttack : StrongAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     private float speed;
     private int nbBalls;
 
@@ -26,7 +26,7 @@ public class BouncingBallAttack : StrongAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
     }
 
     protected override void Start()

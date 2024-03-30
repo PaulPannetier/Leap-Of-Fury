@@ -11,7 +11,7 @@ public class FightController : MonoBehaviour
     private EventController eventController;
     private PlayerCommon playerCommon;
     private CustomPlayerInput playerInput;
-    private Movement movement;
+    private CharacterController movement;
 
     private float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack;
     private bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
@@ -56,7 +56,7 @@ public class FightController : MonoBehaviour
         playerCommon = GetComponent<PlayerCommon>();
         toricObject = GetComponent<ToricObject>();
         playerInput = GetComponent<CustomPlayerInput>();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         canKillDashingCounter = 0;
     }
 

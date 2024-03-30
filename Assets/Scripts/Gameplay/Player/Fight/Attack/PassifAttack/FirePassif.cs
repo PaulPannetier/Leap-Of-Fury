@@ -3,7 +3,7 @@ using UnityEngine;
 public class FirePassif : PassifAttack
 {
     private BoxCollider2D hitbox;
-    private Movement movement;
+    private CharacterController movement;
     [HideInInspector] public float fireDecreasement;
 
     public bool drawFireGizmos = true;
@@ -22,7 +22,7 @@ public class FirePassif : PassifAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         hitbox = GetComponent<BoxCollider2D>();
     }
 

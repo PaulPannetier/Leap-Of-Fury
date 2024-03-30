@@ -8,7 +8,7 @@ public class GrapplingAttack : WeakAttack
 {
     private LineRenderer lineRendererPrefabs;
     private List<LineRenderer> lstlineRenderers;
-    private Movement movement;
+    private CharacterController movement;
     private Rigidbody2D rb;
     private SpringJoint2D springJoint;
     private CustomPlayerInput playerInput;
@@ -52,7 +52,7 @@ public class GrapplingAttack : WeakAttack
         base.Awake();
 
         lineRendererPrefabs = transform.GetChild(1).GetChild(0).GetComponent<LineRenderer>();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
         springJoint = GetComponent<SpringJoint2D>();
         lstlineRenderers = new List<LineRenderer>()

@@ -37,7 +37,7 @@ public abstract class BumpsZone : PathFindingBlocker
                 {
                     charAlreadyTouch.Add(id);
                     Vector2 dir = GetColliderNormal(col);
-                    player.GetComponent<Movement>().ApplyBump(dir * bumpSpeed);
+                    player.GetComponent<CharacterController>().ApplyBump(dir * bumpSpeed);
                     this.Invoke(ClearCharAlreadyTouch, id, minDurationBetween2Bumps);
                 }
             }

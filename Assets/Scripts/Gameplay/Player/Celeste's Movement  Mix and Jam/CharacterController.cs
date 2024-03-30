@@ -2,7 +2,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class Movement : MonoBehaviour
+public class CharacterController : MonoBehaviour
 {
     #region Fields
 

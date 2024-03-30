@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TeemoPassif : PassifAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     private float timerGroundedWithoutMoving;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -26,7 +26,7 @@ public class TeemoPassif : PassifAttack
     protected override void Start()
     {
         base.Start();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }

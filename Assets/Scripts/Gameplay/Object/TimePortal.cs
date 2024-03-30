@@ -164,7 +164,7 @@ public class TimePortal : MonoBehaviour
         if(Time.time - lastTimeCreated > sleepTimeafterTP)
         {
             EnablePlayerStatus();
-            charToTP.GetComponent<Movement>().Teleport((Vector2)transform.position);
+            charToTP.GetComponent<CharacterController>().Teleport((Vector2)transform.position);
             charToTP.GetComponent<FightController>().EnableInvicibility(invicibilityDuration);
             charToTP.GetComponent<EventController>().OnExitTimePortal(this);
             TimePortalManager.instance.isLastPortalActivated = false;
@@ -177,13 +177,13 @@ public class TimePortal : MonoBehaviour
     private void DisablePlayerStatus()
     {
         playerInPortal.GetComponent<SpriteRenderer>().color = Color.clear;
-        playerInPortal.GetComponent<Movement>().enableBehaviour = false;
+        playerInPortal.GetComponent<CharacterController>().enableBehaviour = false;
     }
 
     private void EnablePlayerStatus()
     {
         charToTP.GetComponent<SpriteRenderer>().color = charToTP.GetComponent<PlayerCommon>().color;
-        Movement movement = charToTP.GetComponent<Movement>();
+        CharacterController movement = charToTP.GetComponent<CharacterController>();
         movement.enableBehaviour = movement.enableInput = true;
     }
 

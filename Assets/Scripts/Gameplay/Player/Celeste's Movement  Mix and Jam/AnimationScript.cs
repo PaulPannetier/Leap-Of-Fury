@@ -4,7 +4,7 @@ public class AnimationScript : MonoBehaviour
 {
     private Animator anim;
     private Rigidbody2D rb;
-    private Movement move;
+    private CharacterController move;
     private EventController eventController;
     [HideInInspector] public SpriteRenderer sr;
 
@@ -13,7 +13,7 @@ public class AnimationScript : MonoBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        move = GetComponentInParent<Movement>();
+        move = GetComponentInParent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         eventController = GetComponent<EventController>();

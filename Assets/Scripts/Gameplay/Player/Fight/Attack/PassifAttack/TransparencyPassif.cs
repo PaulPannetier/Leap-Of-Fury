@@ -1,9 +1,9 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Movement), typeof(SpriteRenderer))]
+[RequireComponent(typeof(CharacterController), typeof(SpriteRenderer))]
 public class TransparencyPassif : PassifAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     private SpriteRenderer spriteRenderer;
 
     [SerializeField, Range(0f, 1f)] private float minTransparency = 0.3f;
@@ -12,7 +12,7 @@ public class TransparencyPassif : PassifAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 

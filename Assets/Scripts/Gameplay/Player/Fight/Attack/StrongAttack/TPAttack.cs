@@ -4,7 +4,7 @@ using Collision2D;
 
 public class TPAttack : StrongAttack
 {
-    private Movement playerMovement;
+    private CharacterController playerMovement;
     private LayerMask groundMask, charMask;
     private Explosion explosion;
 
@@ -20,7 +20,7 @@ public class TPAttack : StrongAttack
     protected override void Awake()
     {
         base.Awake();
-        playerMovement = GetComponent<Movement>();
+        playerMovement = GetComponent<CharacterController>();
     }
 
     protected override void Start()

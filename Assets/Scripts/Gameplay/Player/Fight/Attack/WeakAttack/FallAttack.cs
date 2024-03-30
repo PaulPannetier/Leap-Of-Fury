@@ -7,7 +7,7 @@ public class FallAttack : WeakAttack
 {
     private Rigidbody2D rb;
     private BoxCollider2D hitbox;
-    private Movement movement;
+    private CharacterController movement;
     private LayerMask charMask, groundMask;
 
 #if UNITY_EDITOR
@@ -29,7 +29,7 @@ public class FallAttack : WeakAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
         hitbox = GetComponent<BoxCollider2D>();
     }
@@ -197,7 +197,7 @@ public class FallAttack : WeakAttack
             return;
 
         if(movement == null)
-            movement = GetComponent<Movement>();
+            movement = GetComponent<CharacterController>();
 
         Gizmos.color = Color.black;
         Circle.GizmosDraw((Vector2)transform.position + movement.groundOffset, explosionRadius);

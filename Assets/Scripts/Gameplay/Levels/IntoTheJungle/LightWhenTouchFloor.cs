@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LightWhenTouchFloor : MonoBehaviour
 {
-    private Movement movement;
+    private CharacterController movement;
     private float groundLightMaxIntensity, rightLightMaxIntensity, leftLightMaxIntensity;
 
     [SerializeField] private Light2D lightGround;
@@ -13,7 +13,7 @@ public class LightWhenTouchFloor : MonoBehaviour
 
     private void Start()
     {
-        movement = transform.parent.GetComponent<ToricObject>().original.GetComponent<Movement>();
+        movement = transform.parent.GetComponent<ToricObject>().original.GetComponent<CharacterController>();
         groundLightMaxIntensity = lightGround.intensity;
         rightLightMaxIntensity = lightRight.intensity;
         leftLightMaxIntensity = lightLeft.intensity;

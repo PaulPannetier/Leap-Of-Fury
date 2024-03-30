@@ -8,7 +8,7 @@ using Collider2D = UnityEngine.Collider2D;
 public class FireworkAttack : StrongAttack
 {
     private Rigidbody2D rb;
-    private Movement movement;
+    private CharacterController movement;
 
     [SerializeField] private float bumpVelocity = 2f;
     [SerializeField] private int nbFireworkLaunch = 3;
@@ -26,7 +26,7 @@ public class FireworkAttack : StrongAttack
     {
         base.Awake();
         rb = GetComponent<Rigidbody2D>();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)

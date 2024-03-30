@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ArrowAttack : WeakAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     [SerializeField] private int nbArrow;
     private bool arrowIsFlying = false;
     private Arrow arrowWhoFly;
@@ -20,7 +20,7 @@ public class ArrowAttack : WeakAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         nbArrow = initArrow;
     }
 

@@ -202,18 +202,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 9211636111085214947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e0d76f8d3b90d247baaef021a60ae27, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ca7a74e760ec764085ddef1877135a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
-  drawGizmos: 0
+  drawGizmos: 1
   timeUntilCommandIsInvalid: 0.1
   groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
   groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
   grabRayLength: 0.5
-  gapBetweenHitboxAndGround: 0.015
+  gapBetweenHitboxAndGround: 0.0115
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
@@ -292,17 +292,17 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
-  grabSpeed: 4
+  grabSpeed: 5
   grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
   grabSpeedMultiplierWhenPreciseGrab: 0.75
-  grabApexSpeed: {x: 2, y: 4}
-  grabApexSpeed2: {x: 8, y: 1}
+  grabApexSpeed: {x: 4, y: 4}
+  grabApexSpeed2: {x: 12, y: 0}
   grabSpeedLerp: 25
   grabApexSpeedLerp: 600
   grabApexSpeedLerp2: 50
   grabApexDuration: 0.081
-  grabApexDuration2: 0.101
+  grabApexDuration2: 0.12
   grabInitSpeedOnApexStay: 0.4
   dashSpeed: 20
   dashDuration: 0.2
@@ -349,7 +349,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  antiKnockHead: 0.35
+  antiKnockHead: 0.4
   slideSpeed: 6
   slideSpeedLerp: 30
   slideSpeedLerpDeceleration: 100
@@ -406,7 +406,7 @@ MonoBehaviour:
     randomness: 90
     snapping: 0
     fadeOut: 1
-  side: -1
+  side: 1
 --- !u!114 &2773945953036524592
 MonoBehaviour:
   m_ObjectHideFlags: 0

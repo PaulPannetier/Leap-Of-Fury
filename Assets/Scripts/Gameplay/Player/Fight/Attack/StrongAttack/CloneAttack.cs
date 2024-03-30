@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CloneAttack : StrongAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     private List<CloneData> lstCloneDatas;
     private Action actionLastFrame;
     private GameObject clone;
@@ -31,7 +31,7 @@ public class CloneAttack : StrongAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         fightController = GetComponent<FightController>();
         charAlreadyToucheByDash = new List<uint>();
     }

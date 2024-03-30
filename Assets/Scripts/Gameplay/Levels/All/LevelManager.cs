@@ -238,7 +238,7 @@ public abstract class LevelManager : MonoBehaviour
                 }
             }
 
-            tmpGO.GetComponent<Movement>().Teleport(spawnPoint);
+            tmpGO.GetComponent<CharacterController>().Teleport(spawnPoint);
         }
     }
 
@@ -297,7 +297,7 @@ public abstract class LevelManager : MonoBehaviour
     {
         foreach (Transform t in charParent)
         {
-            t.GetComponent<Movement>().DisableMovement(durationToWaitAtBegining);
+            t.GetComponent<CharacterController>().DisableMovement(durationToWaitAtBegining);
         }
     }
 

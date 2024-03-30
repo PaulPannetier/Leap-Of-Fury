@@ -6,7 +6,7 @@ using Collision2D;
 
 public class BounceShotAttack : StrongAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     private GameObject goLineRendererToDuplicate;
     private BounceShotMagicAttackData data;
     private int maxBounce;
@@ -27,7 +27,7 @@ public class BounceShotAttack : StrongAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         goLineRendererToDuplicate = goLinesRendererParent.transform.GetChild(0).gameObject;
     }
 

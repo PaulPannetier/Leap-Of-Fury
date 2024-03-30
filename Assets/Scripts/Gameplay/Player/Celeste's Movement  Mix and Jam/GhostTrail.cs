@@ -3,7 +3,7 @@ using DG.Tweening;
 
 public class GhostTrail : MonoBehaviour
 {
-    private Movement move;
+    private CharacterController move;
     private AnimationScript anim;
     private SpriteRenderer sr;
     public Transform ghostsParent;
@@ -15,7 +15,7 @@ public class GhostTrail : MonoBehaviour
     private void Awake()
     {
         anim = FindObjectOfType<AnimationScript>();
-        move = FindObjectOfType<Movement>();
+        move = FindObjectOfType<CharacterController>();
         sr = GetComponent<SpriteRenderer>();
     }
 

@@ -5,7 +5,7 @@ using static Boomerang;
 
 public class BoomerangAttack : WeakAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     private Boomerang currentBoomerang;
 
     [SerializeField] private GameObject boomerangPrefab;
@@ -28,7 +28,7 @@ public class BoomerangAttack : WeakAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)

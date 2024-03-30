@@ -10,7 +10,7 @@ public class GrabAttack : StrongAttack
 {
     private GameObject charTouch, walltouch;
     private Rigidbody2D rb;
-    private Movement movement;
+    private CharacterController movement;
     private LayerMask charAndGroundMask, charMask;
     private Vector2 collisionPoint;
     private new Transform transform;
@@ -57,7 +57,7 @@ public class GrabAttack : StrongAttack
     protected override void Start()
     {
         base.Start();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
 
         charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");

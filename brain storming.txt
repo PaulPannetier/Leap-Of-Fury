@@ -132,8 +132,8 @@ TODO :
 Trad all text
 netoyer tout les fichiers du projet
 redo Toric object
-voir si on peut passer le rb des char en kinematic
+opti charCOntroller et remove jumpAlongWall
 Rename MovementScript into CharacterController
 review code pour alouer moins de mémoire (use short ect)
-verify ToricPhysic with map cellSize != 1
 optimiser inputManager
+rm charCanvas

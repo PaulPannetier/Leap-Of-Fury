@@ -6,7 +6,7 @@ using Collision2D;
 
 public class AmericanFistAttack : WeakAttack
 {
-    private Movement movement;
+    private CharacterController movement;
     private CustomPlayerInput playerInput;
     private Rigidbody2D rb;
     private CloneAttack cloneAttack;//null if isAClone == true
@@ -61,7 +61,7 @@ public class AmericanFistAttack : WeakAttack
         base.Awake();
 
         playerInput = GetComponent<CustomPlayerInput>();
-        movement = GetComponent<Movement>();
+        movement = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
         cloneAttack = GetComponent<CloneAttack>();
         originalCloneAttack = cloneAttack;

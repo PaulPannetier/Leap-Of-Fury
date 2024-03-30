@@ -124,7 +124,7 @@ public class Interruptor : MonoBehaviour
         float duration = activate ? durationItTakesToActivate : durationItTakesToDesactivate;
         float time = Time.time;
         bool cancel = false;
-        Movement charMvt = pressedInfo.charWhoPressed.GetComponent<Movement>();
+        CharacterController charMvt = pressedInfo.charWhoPressed.GetComponent<CharacterController>();
         charMvt.Freeze();
         while(Time.time - time < duration)
         {
@@ -233,7 +233,7 @@ public class Interruptor : MonoBehaviour
                     CustomPlayerInput charInput = charGO.GetComponent<CustomPlayerInput>();
                     if (charInput.interactPressedDown)
                     {
-                        Movement charMvt = charGO.GetComponent<Movement>();
+                        CharacterController charMvt = charGO.GetComponent<CharacterController>();
                         if (charMvt.isGrounded)
                         {
                             charWhoPressed = charGO;
