@@ -213,6 +213,7 @@ MonoBehaviour:
   groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
   grabRayLength: 0.5
+  gapBetweenHitboxAndGround: 0.015
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285

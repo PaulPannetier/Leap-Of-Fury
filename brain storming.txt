@@ -136,3 +136,4 @@ voir si on peut passer le rb des char en kinematic
 Rename MovementScript into CharacterController
 review code pour alouer moins de mémoire (use short ect)
 verify ToricPhysic with map cellSize != 1
+optimiser inputManager

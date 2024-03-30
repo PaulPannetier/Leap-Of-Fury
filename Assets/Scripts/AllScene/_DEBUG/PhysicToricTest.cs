@@ -13,16 +13,10 @@ public class PhysicToricTest : MonoBehaviour
 
     private Vector2 GetMousePos() => Useful.mainCamera.ScreenToWorldPoint(InputManager.mousePosition);
 
-
     private void Update()
     {
         Vector2 mousePos = GetMousePos();
         UnityEngine.Collider2D collider = null;
-
-        if (InputManager.GetKeyDown(KeyCode.G))
-        {
-            int a = 12;
-        }
 
         if (useCircle)
         {
@@ -42,6 +36,9 @@ public class PhysicToricTest : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!Application.isPlaying)
+            return;
+
         Vector2 mousePos = PhysicsToric.GetPointInsideBounds(GetMousePos());
         Gizmos.color = color;
         if (useCircle)
@@ -52,6 +49,8 @@ public class PhysicToricTest : MonoBehaviour
         {
             Hitbox.GizmosDraw(mousePos, size);
         }
+
+        PhysicsToric.GizmosDrawHitboxes();
     }
 }
 

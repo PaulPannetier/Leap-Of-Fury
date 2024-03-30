@@ -420,6 +420,9 @@ public class ToricObject : MonoBehaviour
             this.offset = offset;
             this.boundsIndex = boundsIndex;
             toricObject = clone.GetComponent<ToricObject>();
+#if UNITY_EDITOR
+            toricObject.drawGizmos = false;
+#endif
             toricObject.isAClone = true;
             toricObject.cloner = cloner;
             animator = clone.GetComponent<Animator>();

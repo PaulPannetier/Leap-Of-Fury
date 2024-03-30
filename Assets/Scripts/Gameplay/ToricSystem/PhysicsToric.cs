@@ -138,7 +138,7 @@ public static class PhysicsToric
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
 
-        UnityEngine.Collider2D res = Physics2D.OverlapCircle(center, radius, layerMask);
+        UnityEngine.Collider2D res = Physics2D.OverlapCircle(circle.center, radius, layerMask);
         if (res != null)
             return res;
 
@@ -157,7 +157,7 @@ public static class PhysicsToric
             if (collideWithCamHitbox[i])
             {
                 circle.MoveAt(circle.center - mapHitboxArounds[i].center);
-                res = Physics2D.OverlapCircle(center, radius, layerMask);
+                res = Physics2D.OverlapCircle(circle.center, radius, layerMask);
                 if (res != null)
                     return res;
                 circle.MoveAt(circle.center + mapHitboxArounds[i].center);
@@ -167,12 +167,12 @@ public static class PhysicsToric
         return null;
     }
 
-    public static UnityEngine.Collider2D[] OverlapCircleAll(Circle circle,  LayerMask layerMask) => OverlapCircleAll(circle.center, circle.radius, layerMask);
+    public static UnityEngine.Collider2D[] OverlapCircleAll(Circle circle, LayerMask layerMask) => OverlapCircleAll(circle.center, circle.radius, layerMask);
 
-    public static UnityEngine.Collider2D[] OverlapCircleAll(in Vector2 center, float radius,  LayerMask layerMask)
+    public static UnityEngine.Collider2D[] OverlapCircleAll(in Vector2 center, float radius, LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
-        UnityEngine.Collider2D[] res = Physics2D.OverlapCircleAll(center, radius, layerMask);
+        UnityEngine.Collider2D[] res = Physics2D.OverlapCircleAll(circle.center, radius, layerMask);
 
         bool[] collideWithCamHitbox = new bool[4];
         for (int i = 0; i < 4; i++)
@@ -189,7 +189,7 @@ public static class PhysicsToric
             if (collideWithCamHitbox[i])
             {
                 circle.MoveAt(circle.center - mapHitboxArounds[i].center);
-                UnityEngine.Collider2D[] res2 = Physics2D.OverlapCircleAll(center, radius, layerMask);
+                UnityEngine.Collider2D[] res2 = Physics2D.OverlapCircleAll(circle.center, radius, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
                 circle.MoveAt(circle.center + mapHitboxArounds[i].center);
@@ -199,9 +199,9 @@ public static class PhysicsToric
         return res.Length <= 0 ? res : res.Distinct().ToArray();
     }
 
-    public static UnityEngine.Collider2D OverlapBox(Hitbox hitbox,  LayerMask layerMask) => OverlapBox(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
+    public static UnityEngine.Collider2D OverlapBox(Hitbox hitbox, LayerMask layerMask) => OverlapBox(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
 
-    public static UnityEngine.Collider2D OverlapBox(in Vector2 point, in Vector2 size, float angle,  LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapBox(in Vector2 point, in Vector2 size, float angle, LayerMask layerMask)
     {
         Hitbox hitbox = new Hitbox(GetPointInsideBounds(point), size);
         hitbox.Rotate(angle);
@@ -351,7 +351,7 @@ public static class PhysicsToric
         return raycast;
     }
 
-    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, int layerMask, out Vector2[] toricHitboxIntersectionsPoints)//ok
+    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, int layerMask, out Vector2[] toricHitboxIntersectionsPoints)
     {
         List<Vector2> points = new List<Vector2>();
         float reachDistance = 0f;
@@ -661,6 +661,19 @@ public static class PhysicsToric
             }
             Gizmos.DrawLine(beg, beg + distance * direction);
         }
+    }
+
+    public static void GizmosDrawHitboxes()
+    {
+        Gizmos.color = Color.green;
+        for (int i = 0; i < 4; i++)
+        {
+            Hitbox.GizmosDraw(mapHitboxArounds[i]);
+        }
+
+        Gizmos.color = Color.blue;
+        Hitbox.GizmosDraw(mapHitbox);
+
     }
 
 #endif

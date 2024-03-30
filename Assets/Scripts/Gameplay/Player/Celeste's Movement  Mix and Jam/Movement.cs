@@ -383,20 +383,6 @@ public class Movement : MonoBehaviour
             isQuittingConvoyerBelt = isQuittingConvoyerBeltLeft = isQuittingConvoyerBelt = false;
         }
 
-        //Avoid clip on platefom
-        if(groundCollider != null)
-        {
-            Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-            RaycastHit2D antiClipRaycast = PhysicsToric.Raycast(hitboxCenter, Vector2.down, hitbox.size.y + groundCollisionRadius, groundLayer);
-            if(antiClipRaycast.collider != null)
-            {
-                if(rb.velocity.y <= 0f || hitbox.OverlapPoint(antiClipRaycast.point))
-                {
-                    rb.position = new Vector2(rb.position.x, antiClipRaycast.point.y + hitbox.size.y * 0.5f - hitbox.offset.y + gapBetweenHitboxAndGround);
-                }
-            }
-        }
-
         //Slope detecttion
         RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + slopeRaycastOffset, Vector2.down, slopeRaycastLength, groundLayer);
         if (rightSlopeRay.collider != null)
@@ -676,10 +662,10 @@ public class Movement : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
-        DebugText.instance.text += $"Jump : {isJumping}\n";
-        DebugText.instance.text += $"Fall : {isFalling}\n";
-        DebugText.instance.text += $"Ground : {isGrounded}\n";
+        //DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
+        //DebugText.instance.text += $"Jump : {isJumping}\n";
+        //DebugText.instance.text += $"Fall : {isFalling}\n";
+        //DebugText.instance.text += $"Ground : {isGrounded}\n";
     }
 
     #endregion
@@ -714,7 +700,22 @@ public class Movement : MonoBehaviour
         if (!enableInput || (!isGrounded && !isSloping) || !canMove || wallGrab || reachGrabApex || grabStayAtApex || isDashing || isJumping || isFalling || isSliding || isBumping)
             return;
 
-        if(isSloping && !onWall)
+        //Avoid clip on platefom
+        if (groundCollider != null)
+        {
+            Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
+            RaycastHit2D antiClipRaycast = PhysicsToric.Raycast(hitboxCenter, Vector2.down, hitbox.size.y + groundCollisionRadius, groundLayer);
+            if (antiClipRaycast.collider != null)
+            {
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+                if (rb.velocity.y <= 0f || extendedHitbox.Contains(antiClipRaycast.point))
+                {
+                    rb.position = new Vector2(rb.position.x, antiClipRaycast.point.y + hitbox.size.y * 0.5f - hitbox.offset.y + gapBetweenHitboxAndGround);
+                }
+            }
+        }
+
+        if (isSloping && !onWall)
         {
             HandleSlope();
         }
@@ -1605,6 +1606,9 @@ public class Movement : MonoBehaviour
         if(!drawGizmos)
             return;
 
+        hitbox = GetComponent<BoxCollider2D>();
+        this.transform = base.transform;
+
         Gizmos.color = Color.red;
 
         Gizmos.DrawWireSphere((Vector2)transform.position + groundOffset, groundCollisionRadius);
@@ -1617,6 +1621,12 @@ public class Movement : MonoBehaviour
         //Slope
         Gizmos.DrawLine((Vector2)transform.position + slopeRaycastOffset, (Vector2)transform.position + slopeRaycastOffset + Vector2.down * slopeRaycastLength);
         Gizmos.DrawLine((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), (Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y) + Vector2.down * slopeRaycastLength);
+
+        //visual Hitbox
+        Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
+        Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+        Gizmos.color = Color.blue;
+        Collision2D.Hitbox.GizmosDraw(extendedHitbox);
     }
 
     private void OnValidate()
