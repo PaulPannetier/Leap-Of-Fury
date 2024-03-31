@@ -2837,6 +2837,10 @@ PrefabInstance:
       propertyPath: saveInput
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8970924279353906114, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: enableListenKeyCode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906143, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_Name
       value: GameManager

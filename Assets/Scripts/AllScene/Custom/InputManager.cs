@@ -3816,7 +3816,9 @@ public static class InputManager
         {
             sb.Append(KeyToString((InputKey)key) + ",");
         }
-        sb.Remove(sb.Length - 1, 1);
+
+        if(keys.keys.Count >= 1)
+            sb.Remove(sb.Length - 1, 1);
         return sb.ToString();
     }
 
@@ -3879,7 +3881,7 @@ public static class InputManager
         switch (controller)
         {
             case ControllerType.Keyboard:
-                end = keyCodeInt.GetIndexOf(329);
+                end = keyCodeInt.GetIndexOf(329, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -3891,8 +3893,8 @@ public static class InputManager
                 key = 0;
                 return false;
             case ControllerType.Gamepad1:
-                beg = keyCodeInt.GetIndexOf(350);
-                end = keyCodeInt.GetIndexOf(369);
+                beg = keyCodeInt.GetIndexOf(350, true);
+                end = keyCodeInt.GetIndexOf(369, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -3913,8 +3915,8 @@ public static class InputManager
                 key = 0;
                 return false;
             case ControllerType.Gamepad2:
-                beg = keyCodeInt.GetIndexOf(370);
-                end = keyCodeInt.GetIndexOf(389);
+                beg = keyCodeInt.GetIndexOf(370, true);
+                end = keyCodeInt.GetIndexOf(389, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -3934,8 +3936,8 @@ public static class InputManager
                 key = 0;
                 return false;
             case ControllerType.Gamepad3:
-                beg = keyCodeInt.GetIndexOf(390);
-                end = keyCodeInt.GetIndexOf(409);
+                beg = keyCodeInt.GetIndexOf(390, true);
+                end = keyCodeInt.GetIndexOf(409, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -3955,8 +3957,8 @@ public static class InputManager
                 key = 0;
                 return false;
             case ControllerType.Gamepad4:
-                beg = keyCodeInt.GetIndexOf(410);
-                end = keyCodeInt.GetIndexOf(429);
+                beg = keyCodeInt.GetIndexOf(410, true);
+                end = keyCodeInt.GetIndexOf(429, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -3977,8 +3979,8 @@ public static class InputManager
                 key = 0;
                 return false;
             case ControllerType.GamepadAll:
-                beg = keyCodeInt.GetIndexOf(330);
-                end = keyCodeInt.GetIndexOf(349);
+                beg = keyCodeInt.GetIndexOf(330, true);
+                end = keyCodeInt.GetIndexOf(349, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -4042,7 +4044,7 @@ public static class InputManager
         switch (controller)
         {
             case ControllerType.Keyboard:
-                end = keyCodeInt.GetIndexOf(329);
+                end = keyCodeInt.GetIndexOf(329, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -4052,8 +4054,8 @@ public static class InputManager
                 }
                 break;
             case ControllerType.Gamepad1:
-                beg = keyCodeInt.GetIndexOf(350);
-                end = keyCodeInt.GetIndexOf(369);
+                beg = keyCodeInt.GetIndexOf(350, true);
+                end = keyCodeInt.GetIndexOf(369, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -4070,8 +4072,8 @@ public static class InputManager
                 }
                 break;
             case ControllerType.Gamepad2:
-                beg = keyCodeInt.GetIndexOf(370);
-                end = keyCodeInt.GetIndexOf(389);
+                beg = keyCodeInt.GetIndexOf(370, true);
+                end = keyCodeInt.GetIndexOf(389, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -4088,8 +4090,8 @@ public static class InputManager
                 }
                 break;
             case ControllerType.Gamepad3:
-                beg = keyCodeInt.GetIndexOf(390);
-                end = keyCodeInt.GetIndexOf(409);
+                beg = keyCodeInt.GetIndexOf(390, true);
+                end = keyCodeInt.GetIndexOf(409, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -4106,8 +4108,8 @@ public static class InputManager
                 }
                 break;
             case ControllerType.Gamepad4:
-                beg = keyCodeInt.GetIndexOf(410);
-                end = keyCodeInt.GetIndexOf(429);
+                beg = keyCodeInt.GetIndexOf(410, true);
+                end = keyCodeInt.GetIndexOf(429, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))
@@ -4124,8 +4126,8 @@ public static class InputManager
                 }
                 break;
             case ControllerType.GamepadAll:
-                beg = keyCodeInt.GetIndexOf(330);
-                end = keyCodeInt.GetIndexOf(349);
+                beg = keyCodeInt.GetIndexOf(330, true);
+                end = keyCodeInt.GetIndexOf(349, true);
                 for (int i = beg; i <= end; i++)
                 {
                     if (Input.GetKeyDown((KeyCode)keyCodeInt[i]))

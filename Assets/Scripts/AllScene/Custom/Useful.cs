@@ -1736,8 +1736,30 @@ public static class Useful
         return a;
     }
 
-    public static int GetIndexOf<T>(this T[] arr, T value) where T : IComparable
+    public static int GetIndexOf<T>(this T[] arr, T value, bool sortArray = false) where T : IComparable
     {
+        if(sortArray)
+        {
+            int GetIndexOfRecur(T[] arr, int min, int max, in T value)
+            {
+                if(max - min <= 1)
+                {
+                    if(max == min)
+                        return arr[min].CompareTo(value) == 0 ? min : -1;
+                    return arr[min].CompareTo(value) == 0 ? min : (arr[max].CompareTo(value) == 0 ? max : -1);
+                }
+                int mid = (min + max) / 2;
+
+                if (arr[mid].CompareTo(value) >= 1)
+                {
+                    return GetIndexOfRecur(arr, min, mid, value);
+                }
+                return GetIndexOfRecur(arr, mid, max, value);
+            }
+
+            return GetIndexOfRecur(arr, 0, arr.Length - 1, value);
+        }
+
         for (int i = 0; i < arr.Length; i++)
         {
             if (arr[i].CompareTo(value) == 0)

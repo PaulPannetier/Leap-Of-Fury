@@ -134,5 +134,4 @@ netoyer tout les fichiers du projet
 redo Toric object
 opti charController (réglage hyperparam)
 review code pour alouer moins de mémoire (use short ect)
-optimiser inputManager
 rm charCanvas
