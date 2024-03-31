@@ -54,12 +54,14 @@ public class InputEditor : MonoBehaviour
     {
         if (saveInput)
         {
+            saveInput = false;
             InputManager.ClearAll();
             if (inputsKeyForKeyboard != null && inputsActions != null && inputsKeyForKeyboard.Length == inputsActions.Length)
             {
                 for (int i = 0; i < inputsActions.Length; i++)
                 {
                     InputManager.AddInputsAction(inputsActions[i], inputsKeyForKeyboard[i].keys, BaseController.Keyboard, true);
+                    InputManager.AddInputsAction(inputsActions[i], inputsKeyForKeyboard[i].keys, BaseController.Keyboard, false);
                 }
             }
 
@@ -68,10 +70,10 @@ public class InputEditor : MonoBehaviour
                 for (int i = 0; i < inputsActions.Length; i++)
                 {
                     InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, true);
+                    InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, false);
                 }
             }
             InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
-            saveInput = false;
         }
     }
 
