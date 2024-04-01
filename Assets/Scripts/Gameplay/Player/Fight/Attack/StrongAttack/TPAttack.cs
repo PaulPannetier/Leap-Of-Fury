@@ -8,6 +8,12 @@ public class TPAttack : StrongAttack
     private LayerMask groundMask, charMask;
     private Explosion explosion;
 
+#if UNITY_EDITOR
+
+    [SerializeField] private bool drawGizmos;
+
+#endif
+
     [SerializeField] private float tpRange = 1f;
     [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private float detectionStep = 0.05f;
@@ -201,6 +207,9 @@ public class TPAttack : StrongAttack
 
     private void OnDrawGizmosSelected()
     {
+        if (!drawGizmos)
+            return;
+
         Gizmos.color = Color.green;
         Circle.GizmosDraw(transform.position, tpRange);
         Gizmos.DrawWireCube((Vector2)transform.position + collisionOffset, collisionSize);

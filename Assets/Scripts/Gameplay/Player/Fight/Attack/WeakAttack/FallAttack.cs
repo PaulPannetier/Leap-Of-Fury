@@ -7,8 +7,9 @@ public class FallAttack : WeakAttack
 {
     private Rigidbody2D rb;
     private BoxCollider2D hitbox;
-    private CharacterController movement;
+    private CharacterController charController;
     private LayerMask charMask, groundMask;
+    private new Transform transform;
 
 #if UNITY_EDITOR
 
@@ -29,7 +30,8 @@ public class FallAttack : WeakAttack
     protected override void Awake()
     {
         base.Awake();
-        movement = GetComponent<CharacterController>();
+        this.transform = base.transform;
+        charController = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody2D>();
         hitbox = GetComponent<BoxCollider2D>();
     }
@@ -43,7 +45,7 @@ public class FallAttack : WeakAttack
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        if(!cooldown.isActive || movement.isGrounded)
+        if(!cooldown.isActive || charController.isGrounded)
         {
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();
@@ -65,13 +67,13 @@ public class FallAttack : WeakAttack
 
     private bool IsEnoughtHight()
     {
-        RaycastHit2D raycast = PhysicsToric.Raycast((Vector2)transform.position + movement.groundOffset, Vector2.down, minDistanceFromGround, groundMask);
+        RaycastHit2D raycast = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), Vector2.down, minDistanceFromGround, groundMask);
         return raycast.collider == null;
     }
 
     private IEnumerator ApplyFallAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        movement.Freeze();
+        charController.Freeze();
 
         float timeCounter = 0f;
         while(timeCounter < castDuration)
@@ -83,8 +85,8 @@ public class FallAttack : WeakAttack
             }
         }
 
-        movement.UnFreeze();
-        movement.enableBehaviour = false;
+        charController.UnFreeze();
+        charController.enableBehaviour = false;
 
         //phase tombante
         UnityEngine.Collider2D[] cols;
@@ -97,20 +99,20 @@ public class FallAttack : WeakAttack
         {
             if(PauseManager.instance.isPauseEnable)
             {
-                movement.Freeze();
+                charController.Freeze();
 
                 while(PauseManager.instance.isPauseEnable)
                 {
                     yield return null;
                 }
-                movement.UnFreeze();
+                charController.UnFreeze();
             }
 
             //collision avec le sol
             rb.velocity = fallSpeed;
-            hitGround = Physics2D.OverlapCircle((Vector2)transform.position + movement.groundOffset, movement.groundCollisionRadius, groundMask) != null;
+            hitGround = PhysicsToric.OverlapCircle(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), charController.groundRaycastLength, groundMask) != null;
             //Collision avec les autre personnages
-            cols = Physics2D.OverlapBoxAll((Vector2)transform.position, hitbox.size, transform.rotation.eulerAngles.z, charMask);
+            cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position, hitbox.size, transform.rotation.eulerAngles.z, charMask);
             foreach (UnityEngine.Collider2D col in cols)
             {
                 if(col.CompareTag("Char"))
@@ -134,7 +136,7 @@ public class FallAttack : WeakAttack
         }
 
         //EXPLOSION
-        cols = Physics2D.OverlapCircleAll((Vector2)transform.position + movement.groundOffset, explosionRadius, charMask);
+        cols = PhysicsToric.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), explosionRadius, charMask);
 
         foreach (UnityEngine.Collider2D col in cols)
         {
@@ -153,7 +155,7 @@ public class FallAttack : WeakAttack
         if (fallStopByOvertime)
         {
             rb.velocity = Vector2.zero;
-            movement.AddForce(Vector2.up * upForceWhenCancelFalling);
+            charController.AddForce(Vector2.up * upForceWhenCancelFalling);
         }
         else
         {
@@ -170,7 +172,7 @@ public class FallAttack : WeakAttack
             shockWave = shockWaveGO.GetComponent<FloorShockWave>();
             shockWave.Launch(transform.position, false, shockWaveSpeed, this);
         }
-        movement.UnFreeze();
+        charController.UnFreeze();
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
     }
@@ -187,6 +189,7 @@ public class FallAttack : WeakAttack
     protected override void OnValidate()
     {
         base.OnValidate();
+        this.transform = base.transform;
         minDistanceFromGround = Mathf.Max(0f, minDistanceFromGround);
         explosionRadius = Mathf.Max(0f, explosionRadius);
     }
@@ -196,15 +199,11 @@ public class FallAttack : WeakAttack
         if (!drawGizmos)
             return;
 
-        if(movement == null)
-            movement = GetComponent<CharacterController>();
+        if(charController == null)
+            charController = GetComponent<CharacterController>();
 
         Gizmos.color = Color.black;
-        Circle.GizmosDraw((Vector2)transform.position + movement.groundOffset, explosionRadius);
-        Gizmos.color = Color.red;
-        Circle.GizmosDraw((Vector2)transform.position + movement.groundOffset, movement.groundCollisionRadius);
-        Gizmos.color = Color.black;
-        Gizmos.DrawLine((Vector2)transform.position + movement.groundOffset, (Vector2)transform.position + movement.groundOffset + Vector2.down * minDistanceFromGround);
+        Circle.GizmosDraw(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), explosionRadius);
     }
 
 #endif

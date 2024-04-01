@@ -166,90 +166,6 @@ Transform:
   - {fileID: 574613486}
   m_Father: {fileID: 6001260818544699278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2149335396649861904
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 156897911488080710}
-  - component: {fileID: 7587935652067126587}
-  m_Layer: 8
-  m_Name: Shield GFX
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &156897911488080710
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2149335396649861904}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6001260818544699278}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7587935652067126587
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2149335396649861904}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d98fdac243ecc42429381331efd247dc, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 5
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1 &8090791378756873177
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,11 +208,10 @@ Transform:
   m_GameObject: {fileID: 8090791378756873177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.12, y: -6.13, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 156897911488080710}
   - {fileID: 749809688}
   - {fileID: 431539562}
   m_Father: {fileID: 0}
@@ -461,11 +376,12 @@ MonoBehaviour:
   enableInput: 1
   drawGizmos: 1
   timeUntilCommandIsInvalid: 0.1
-  groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
-  groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
-  grabRayLength: 0.5
+  grabRayOffset: -0.6
+  grabRayLength: 0.6
+  groundRaycastOffset: {x: 0.2, y: -0.5}
+  groundRaycastLength: 0.45
   gapBetweenHitboxAndGround: 0.0115
   walkSpeed: 8.5
   speedLerp: 30
@@ -501,7 +417,7 @@ MonoBehaviour:
   wallJumpGravityMultiplier: 1.2
   wallJumpMinDuration: 0.1
   wallJumpMaxDuration: 0.15
-  enableJumpAlongWall: 1
+  enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
     serializedVersion: 2
@@ -637,8 +553,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   slopeSpeedLerp: 2.5
-  slopeRaycastOffset: {x: 0.2, y: -0.7}
-  slopeRaycastLength: 0.2
   isSlopingRight: 0
   isSlopingLeft: 0
   minBumpSpeedX: 1
@@ -674,6 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clones: []
   boundsOffset: {x: 0, y: 0}
   boundsSize: {x: 2.75, y: 2}
   enableHorizontal: 1
@@ -842,6 +757,7 @@ MonoBehaviour:
   cooldown:
     duration: 0.5
   saveAttackStats: 0
+  drawGizmos: 0
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
   distanceToInstantiate: 0.5
   speedCurvePhase1:
@@ -944,7 +860,6 @@ MonoBehaviour:
   recuperationRange: 0.9
   pathFindingAccuracy: 1
   minDelayBetweenPathfinfindSearch: 0.5
-  drawGizmos: 1
 --- !u!114 &4277522715158860269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -961,12 +876,12 @@ MonoBehaviour:
   cooldown:
     duration: 2
   saveAttackStats: 0
+  drawGizmos: 0
   bumpVelocity: 15
   nbFireworkLaunch: 3
   fireworkDiffusionAngle: 90
   distanceFromCharWhenLauch: 0.2
   fireworkPrefaps: {fileID: 8656721268289568354, guid: 0ff773371c0e3e44ebd9b5531232c400, type: 3}
-  drawGizmos: 0
 --- !u!114 &1455914444206811459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1011,13 +926,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.2
-  groundCollisionRadius: 0.28
   sideCollisionRadius: 0.28
-  groundOffset: {x: 0, y: 0}
   sideOffset: {x: 0.15, y: 0}
+  grabRayOffset: 1
   grabRayLength: 1
+  groundRaycastOffset: {x: 0, y: 0}
+  groundRaycastLength: 0.5
   gapBetweenHitboxAndGround: 0.1
   walkSpeed: 10
   speedLerp: 50
@@ -1099,8 +1015,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   slopeSpeedLerp: 1
-  slopeRaycastOffset: {x: 0, y: 0}
-  slopeRaycastLength: 0.5
   isSlopingRight: 0
   isSlopingLeft: 0
   minBumpSpeedX: 1

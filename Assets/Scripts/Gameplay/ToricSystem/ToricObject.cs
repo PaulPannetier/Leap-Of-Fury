@@ -4,7 +4,6 @@ using UnityEngine;
 using Collision2D;
 using System.Collections;
 using System.Reflection;
-using UnityEngine.XR;
 
 public class ToricObject : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class ToricObject : MonoBehaviour
 
     private bool[] oldCollideCamBounds = new bool[4];
     private new Transform transform;
-    private List<ObjectClone> clones;
+    public List<ObjectClone> clones;//change to private
     private Hitbox currentHitbox;
 
     [SerializeField] private Vector2 boundsOffset;
@@ -34,7 +33,6 @@ public class ToricObject : MonoBehaviour
 #if UNITY_EDITOR
 
     [SerializeField] private bool drawGizmos = true;
-    public bool freeze;
 
 #endif
 

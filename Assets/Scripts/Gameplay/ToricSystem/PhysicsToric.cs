@@ -132,9 +132,9 @@ public static class PhysicsToric
 
     public static UnityEngine.Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
 
-    public static UnityEngine.Collider2D OverlapCircle(Circle circle,  LayerMask layerMask) => OverlapCircle(circle.center, circle.radius, layerMask);
+    public static UnityEngine.Collider2D OverlapCircle(Circle circle, LayerMask layerMask) => OverlapCircle(circle.center, circle.radius, layerMask);
     
-    public static UnityEngine.Collider2D OverlapCircle(in Vector2 center, float radius,  LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapCircle(in Vector2 center, float radius, LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
 

@@ -131,7 +131,7 @@ Name : Chaos
 TODO :
 Trad all text
 netoyer tout les fichiers du projet
-redo Toric object
+fix Toric object bug (animation dont fit when grab)
 opti charController (réglage hyperparam)
 review code pour alouer moins de mémoire (use short ect)
 rm charCanvas

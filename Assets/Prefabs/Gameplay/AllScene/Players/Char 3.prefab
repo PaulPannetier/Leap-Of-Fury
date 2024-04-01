@@ -206,13 +206,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
-  groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
-  groundOffset: {x: 0, y: -0.65}
   sideOffset: {x: 0.15, y: -0.1}
-  grabRayLength: 0.5
+  grabRayOffset: -0.6
+  grabRayLength: 0.6
+  groundRaycastOffset: {x: 0.2, y: -0.5}
+  groundRaycastLength: 0.45
   gapBetweenHitboxAndGround: 0.0115
   walkSpeed: 8.5
   speedLerp: 30
@@ -248,7 +249,7 @@ MonoBehaviour:
   wallJumpGravityMultiplier: 1.2
   wallJumpMinDuration: 0.1
   wallJumpMaxDuration: 0.15
-  enableJumpAlongWall: 1
+  enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
     serializedVersion: 2
@@ -384,8 +385,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   slopeSpeedLerp: 2.5
-  slopeRaycastOffset: {x: 0.2, y: -0.7}
-  slopeRaycastLength: 0.2
   isSlopingRight: 0
   isSlopingLeft: 0
   minBumpSpeedX: 1
@@ -421,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clones: []
   boundsOffset: {x: 0, y: 0}
   boundsSize: {x: 2.75, y: 2}
   enableHorizontal: 1
@@ -610,6 +610,7 @@ MonoBehaviour:
   cooldown:
     duration: 2
   saveAttackStats: 0
+  drawGizmos: 0
   tpRange: 4.5
   explosionRadius: 1.25
   detectionStep: 0.01

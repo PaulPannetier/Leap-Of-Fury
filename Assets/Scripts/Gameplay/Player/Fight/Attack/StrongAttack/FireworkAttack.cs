@@ -10,17 +10,17 @@ public class FireworkAttack : StrongAttack
     private Rigidbody2D rb;
     private CharacterController movement;
 
-    [SerializeField] private float bumpVelocity = 2f;
-    [SerializeField] private int nbFireworkLaunch = 3;
-    [SerializeField, Range(0f, 360f)] private float fireworkDiffusionAngle = 90f;
-    [SerializeField] private float distanceFromCharWhenLauch = 0.2f;
-    [SerializeField] private Firework fireworkPrefaps;
-
 #if UNITY_EDITOR
 
     [SerializeField] private bool drawGizmos = true;
 
 #endif
+
+    [SerializeField] private float bumpVelocity = 2f;
+    [SerializeField] private int nbFireworkLaunch = 3;
+    [SerializeField, Range(0f, 360f)] private float fireworkDiffusionAngle = 90f;
+    [SerializeField] private float distanceFromCharWhenLauch = 0.2f;
+    [SerializeField] private Firework fireworkPrefaps;
 
     protected override void Awake()
     {

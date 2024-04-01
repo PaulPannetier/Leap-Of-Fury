@@ -8,6 +8,12 @@ public class BoomerangAttack : WeakAttack
     private CharacterController movement;
     private Boomerang currentBoomerang;
 
+#if UNITY_EDITOR
+
+    [SerializeField] private bool drawGizmos = true;
+
+#endif
+
     [SerializeField] private GameObject boomerangPrefab;
     [SerializeField] private float distanceToInstantiate = 0.4f;
     [SerializeField] private AnimationCurve speedCurvePhase1, speedCurvePhase2;
@@ -17,13 +23,6 @@ public class BoomerangAttack : WeakAttack
     [Header("PathFinding")]
     [SerializeField, Range(1, 3)] private int pathFindingAccuracy = 1;
     [SerializeField] private float minDelayBetweenPathfinfindSearch = 0.5f;
-
-
-#if UNITY_EDITOR
-
-    [SerializeField] private bool drawGizmos = true;
-
-#endif
 
     protected override void Awake()
     {

@@ -40,13 +40,15 @@ public class CharacterController : MonoBehaviour
     #endif
 
     [Header("General")]
-    [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré.")] [SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
+    [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré."), SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
 
     [Header("Collision")]
-    public float groundCollisionRadius = 0.28f;
     public float sideCollisionRadius = 0.28f;
-    public Vector2 groundOffset, sideOffset = new Vector2(0.15f, 0f);
-    [Tooltip("La longueur de détection de la plateforme lors d'une monté en grab")][SerializeField] private float grabRayLength = 1f;
+    public Vector2 sideOffset = new Vector2(0.15f, 0f);
+    [Tooltip("The offset on the vertical axis of the detection grab ray."),SerializeField] private float grabRayOffset = 1f;
+    [Tooltip("Length of the detection for the grab"), SerializeField] private float grabRayLength = 1f;
+    [Tooltip("Offset for the side ground raycast, also use to compute slopes")] public Vector2 groundRaycastOffset = Vector2.zero;
+    [Tooltip("Length for the side and mid ground raycast, also use to compute slopes raycast"), SerializeField] public float groundRaycastLength = 0.5f;
     [SerializeField] private float gapBetweenHitboxAndGround = 0.1f;
     private LayerMask groundLayer;
 
@@ -146,8 +148,6 @@ public class CharacterController : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float initSlopeSpeed = 0.3f;
     [SerializeField, Tooltip("La vitesse de monter selon l'angle de la pente : 0 => pente nulle, 1 => pente max en %ageVMAX")] private AnimationCurve slopeSpeedCurve;
     [SerializeField, Tooltip("acceleration during slope in %ageVMAX/sec ")] private float slopeSpeedLerp = 1f;
-    [SerializeField] private Vector2 slopeRaycastOffset = Vector2.zero;
-    [SerializeField] private float slopeRaycastLength = 0.5f;
     [HideInInspector] public bool isSlopingRight, isSlopingLeft;
     private float slopeAngleLeft, slopeAngleRight;
     private bool isToSteepSlopeRight, isToSteepSlopeLeft;
@@ -349,7 +349,32 @@ public class CharacterController : MonoBehaviour
     {
         // I-Collision/detection
         oldGroundCollider = groundCollider;
-        groundCollider = PhysicsToric.OverlapCircle((Vector2)transform.position + groundOffset, groundCollisionRadius, groundLayer);
+        RaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+        RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
+        RaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+
+        groundCollider = null;
+        if(groundRay.collider != null)
+        {
+            groundCollider = groundRay.collider;
+            groundColliderData = groundCollider.GetComponent<MapColliderData>();
+        }
+        else if(rightSlopeRay.collider != null || leftSlopeRay.collider != null)
+        {
+            if(rightSlopeRay.collider == null || leftSlopeRay.collider == null)
+            {
+                groundCollider = rightSlopeRay.collider == null ? leftSlopeRay.collider : rightSlopeRay.collider;
+                groundColliderData = groundCollider.GetComponent<MapColliderData>();
+            }
+            else
+            {
+                print("Debug pls");
+                LogManager.instance.WriteLog("Groundray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay);
+                groundCollider = rightSlopeRay.collider;
+                groundColliderData = groundCollider.GetComponent<MapColliderData>();
+            }
+        }
+
         isGrounded = groundCollider != null;
 
         if(groundCollider != null && oldGroundCollider != groundCollider)
@@ -386,7 +411,6 @@ public class CharacterController : MonoBehaviour
         }
 
         //Slope detecttion
-        RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + slopeRaycastOffset, Vector2.down, slopeRaycastLength, groundLayer);
         if (rightSlopeRay.collider != null)
         {
             groundCollider = groundCollider == null ? rightSlopeRay.collider : groundCollider;
@@ -408,7 +432,6 @@ public class CharacterController : MonoBehaviour
             isSlopingRight = false;
         }
 
-        RaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), Vector2.down, slopeRaycastLength, groundLayer);
         if (leftSlopeRay.collider != null)
         {
             groundCollider = groundCollider == null ? leftSlopeRay.collider : groundCollider;
@@ -706,16 +729,39 @@ public class CharacterController : MonoBehaviour
         if (groundCollider != null)
         {
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-            //don't use toric physic here!
-            RaycastHit2D antiClipRaycast = PhysicsToric.Raycast(hitboxCenter, Vector2.down, hitbox.size.y + groundCollisionRadius, groundLayer, out Vector2[] toricInter);
-            if (antiClipRaycast.collider != null)
+            RaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+
+            if (groundRay.collider != null)
+            {
+                MoveOnThePlateform(hitboxCenter, groundRay.point);
+            }
+            else
+            {
+                RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
+                RaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+                if (rightSlopeRay.collider != null || leftSlopeRay.collider != null)
+                {
+                    if (rightSlopeRay.collider == null || leftSlopeRay.collider == null)
+                    {
+                        MoveOnThePlateform(hitboxCenter, (rightSlopeRay.collider == null ? leftSlopeRay : rightSlopeRay).point);
+                    }
+                    else
+                    {
+                        print("Debug pls");
+                        LogManager.instance.WriteLog("In fixed update, Groundray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay);
+                        MoveOnThePlateform(hitboxCenter, rightSlopeRay.point);
+                    }
+                }
+            }
+
+            void MoveOnThePlateform(in Vector2 hitboxCenter, Vector2 raycastPoint)
             {
                 Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
-                if ((rb.velocity.y <= 0f && groundColliderData.rb.velocity.y >= 0f) || extendedHitbox.Contains(antiClipRaycast.point))
+                if ((rb.velocity.y <= 0f && groundColliderData.rb.velocity.y >= 0f) || extendedHitbox.Contains(raycastPoint))
                 {
-                    if (antiClipRaycast.point.y > hitboxCenter.y)
-                        antiClipRaycast.point -= new Vector2(0f, LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y);
-                    rb.position = new Vector2(rb.position.x, antiClipRaycast.point.y + hitbox.size.y * 0.5f - hitbox.offset.y + gapBetweenHitboxAndGround);
+                    if (raycastPoint.y > hitboxCenter.y)
+                        raycastPoint -= new Vector2(0f, LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y);
+                    rb.position = new Vector2(rb.position.x, raycastPoint.y + hitbox.size.y * 0.5f - hitbox.offset.y + gapBetweenHitboxAndGround);
                 }
             }
         }
@@ -1550,10 +1596,12 @@ public class CharacterController : MonoBehaviour
     private void FloorOnSide(out bool onRight, out bool onLeft)
     {
         onRight = onLeft = false;
-        RaycastHit2D raycast = Physics2D.Raycast((Vector2)transform.position + groundOffset, Vector2.right, grabRayLength, groundLayer);
+
+        Vector2 start = new Vector2(transform.position.x, transform.position.y + grabRayOffset);
+        RaycastHit2D raycast = PhysicsToric.Raycast(start, Vector2.right, grabRayLength, groundLayer);
         if (raycast.collider != null)
             onRight = true;
-        raycast = Physics2D.Raycast((Vector2)transform.position + groundOffset, Vector2.left, grabRayLength, groundLayer);
+        raycast = PhysicsToric.Raycast(start, Vector2.left, grabRayLength, groundLayer);
         if (raycast.collider != null)
             onLeft = true;
     }
@@ -1636,21 +1684,23 @@ public class CharacterController : MonoBehaviour
 
         Gizmos.color = Color.red;
 
-        Gizmos.DrawWireSphere((Vector2)transform.position + groundOffset, groundCollisionRadius);
+        //Ground and slope
+        Gizmos.DrawLine((Vector2)transform.position + groundRaycastOffset, (Vector2)transform.position + groundRaycastOffset + Vector2.down * groundRaycastLength);
+        Gizmos.DrawLine((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), (Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y) + Vector2.down * groundRaycastLength);
+        Gizmos.DrawLine(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y) + Vector2.down * groundRaycastLength);
+
+        //Side detection
         Gizmos.DrawWireSphere((Vector2)transform.position + sideOffset, sideCollisionRadius);
         Gizmos.DrawWireSphere((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius);
 
+        //Grab
         Gizmos.color = Color.green;
-        Gizmos.DrawLine((Vector2)transform.position + groundOffset + (grabRayLength * Vector2.left), (Vector2)transform.position + groundOffset + (grabRayLength * Vector2.right));
-
-        //Slope
-        Gizmos.DrawLine((Vector2)transform.position + slopeRaycastOffset, (Vector2)transform.position + slopeRaycastOffset + Vector2.down * slopeRaycastLength);
-        Gizmos.DrawLine((Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y), (Vector2)transform.position + new Vector2(-slopeRaycastOffset.x, slopeRaycastOffset.y) + Vector2.down * slopeRaycastLength);
+        Gizmos.DrawLine(new Vector2(transform.position.x, transform.position.y + grabRayOffset) + (grabRayLength * Vector2.left), new Vector2(transform.position.x, transform.position.y + grabRayOffset) + (grabRayLength * Vector2.right));
 
         //visual Hitbox
+        Gizmos.color = Color.blue;
         Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
         Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
-        Gizmos.color = Color.blue;
         Collision2D.Hitbox.GizmosDraw(extendedHitbox);
     }
 
@@ -1676,7 +1726,7 @@ public class CharacterController : MonoBehaviour
         grabRayLength = Mathf.Max(0f, grabRayLength);
         airSpeedLerp = Mathf.Max(0f, airSpeedLerp);
         jumpInitForce = Mathf.Max(0f, jumpInitForce);
-        slopeRaycastLength = Mathf.Max(0f, slopeRaycastLength);
+        groundRaycastLength = Mathf.Max(0f, groundRaycastLength);
         minBumpSpeedX = Mathf.Max(0f, minBumpSpeedX);
         bumpFrictionLerp = Mathf.Max(0f, bumpFrictionLerp);
         bumpGravityScale = Mathf.Max(0f, bumpGravityScale);
