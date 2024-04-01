@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   groundCollisionRadius: 0.23
   sideCollisionRadius: 0.23
@@ -421,6 +421,7 @@ MonoBehaviour:
   wallJumpForce: 6
   wallJumpSpeed: {x: 5, y: 20}
   wallJumpGravityMultiplier: 1.2
+  wallJumpMinDuration: 0.1
   wallJumpMaxDuration: 0.15
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
@@ -595,12 +596,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsOffset: {x: 0, y: -0.17}
+  boundsOffset: {x: 0, y: 0}
+  boundsSize: {x: 2.75, y: 2}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  clones: []
-  cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 8955200401280636815}
   - {fileID: 3274420078070027857}
@@ -613,9 +613,6 @@ MonoBehaviour:
   componentsToSynchroniseInClone:
   - {fileID: 1261712740702541876}
   chidrenToRemoveInClone: []
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.1, y: 0.66, z: 0}
   drawGizmos: 0
 --- !u!114 &2851360491922592125
 MonoBehaviour:

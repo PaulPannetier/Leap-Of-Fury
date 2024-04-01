@@ -120,17 +120,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.5, y: 1.5, z: 0}
   boundsOffset: {x: 0, y: 0}
+  boundsSize: {x: 3, y: 3}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  lstClones: []
-  cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 3711943665631869996}
+  componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   drawGizmos: 1
 --- !u!114 &3711943665631869996
@@ -149,4 +146,4 @@ MonoBehaviour:
   groundCircleRadius: 0.54
   charCircleOffset: {x: 0.18, y: 0}
   charCircleRadius: 0.79
-  pathFindingMapAccuracy: 1
+  pathFindingAccuracy: 1

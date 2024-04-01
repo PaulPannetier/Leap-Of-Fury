@@ -50,7 +50,7 @@ public class Explosion : MonoBehaviour
 
     private void StartExplode()
     {
-        toricObject.bounds = new Bounds(Vector3.zero, new Vector3(explosionData.radius, explosionData.radius, 0.01f));
+        toricObject.boundsSize = new Vector2(explosionData.radius, explosionData.radius);
         lastTimeLauch = Time.time;
         isExploding = true;
         ExplosionManager.instance.CreateExplosion((Vector2)transform.position + explosionData.offset, explosionData.force);

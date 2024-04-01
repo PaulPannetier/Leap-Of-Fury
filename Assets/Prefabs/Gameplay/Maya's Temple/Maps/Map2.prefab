@@ -71404,7 +71404,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: boundsSize.x
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: bounds.m_Extent.x
@@ -71424,7 +71428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: dashHitboxSize
@@ -71534,7 +71538,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: boundsSize.x
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: bounds.m_Extent.x
@@ -71554,7 +71562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: dashHitboxSize
@@ -71656,7 +71664,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: boundsSize.x
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: bounds.m_Extent.x
@@ -71676,7 +71688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: dashHitboxSize

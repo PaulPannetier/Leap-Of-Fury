@@ -664,10 +664,10 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        //DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
+        DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
         //DebugText.instance.text += $"Jump : {isJumping}\n";
-        //DebugText.instance.text += $"Fall : {isFalling}\n";
-        //DebugText.instance.text += $"Ground : {isGrounded}\n";
+        DebugText.instance.text += $"Fall : {isFalling}\n";
+        DebugText.instance.text += $"Ground : {isGrounded}\n";
     }
 
     #endregion
@@ -706,12 +706,15 @@ public class CharacterController : MonoBehaviour
         if (groundCollider != null)
         {
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-            RaycastHit2D antiClipRaycast = PhysicsToric.Raycast(hitboxCenter, Vector2.down, hitbox.size.y + groundCollisionRadius, groundLayer);
+            //don't use toric physic here!
+            RaycastHit2D antiClipRaycast = PhysicsToric.Raycast(hitboxCenter, Vector2.down, hitbox.size.y + groundCollisionRadius, groundLayer, out Vector2[] toricInter);
             if (antiClipRaycast.collider != null)
             {
                 Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
-                if (rb.velocity.y <= 0f || extendedHitbox.Contains(antiClipRaycast.point))
+                if ((rb.velocity.y <= 0f && groundColliderData.rb.velocity.y >= 0f) || extendedHitbox.Contains(antiClipRaycast.point))
                 {
+                    if (antiClipRaycast.point.y > hitboxCenter.y)
+                        antiClipRaycast.point -= new Vector2(0f, LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y);
                     rb.position = new Vector2(rb.position.x, antiClipRaycast.point.y + hitbox.size.y * 0.5f - hitbox.offset.y + gapBetweenHitboxAndGround);
                 }
             }
@@ -772,14 +775,20 @@ public class CharacterController : MonoBehaviour
             float xMax = isToSteepSlopeRight ? 0f : float.MaxValue;
             localVelocityOnGrippingGround = new Vector2(Mathf.Clamp(localVelocityOnGrippingGround.x, xMin, xMax), localVelocityOnGrippingGround.y);
 
-            //friction du to ground
+            //friction du to ground horizontal axis
             if (groundColliderData != null && groundColliderData.isGripping)
             {
-                rb.velocity = localVelocityOnGrippingGround + new Vector2(groundColliderData.frictionCoefficient * groundColliderData.rb.velocity.x, groundColliderData.rb.velocity.y);
+                rb.velocity = localVelocityOnGrippingGround + new Vector2(groundColliderData.frictionCoefficient * groundColliderData.rb.velocity.x, 0f);
             }
             else
             {
                 rb.velocity = localVelocityOnGrippingGround;
+            }
+
+            //friction du to ground vertical axis
+            if (groundColliderData != null)
+            {
+                rb.velocity += new Vector2(0f, groundColliderData.rb.velocity.y);
             }
         }
 

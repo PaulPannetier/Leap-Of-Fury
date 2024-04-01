@@ -174,15 +174,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0, y: 0, z: 0}
   boundsOffset: {x: 0, y: 0}
+  boundsSize: {x: 2, y: 2}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  lstClones: []
-  cloner: {fileID: 0}
   componentsToDisableInClone: []
+  componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   drawGizmos: 1

@@ -246,7 +246,9 @@ MonoBehaviour:
   wallJumpForce: 6
   wallJumpSpeed: {x: 5, y: 20}
   wallJumpGravityMultiplier: 1.2
+  wallJumpMinDuration: 0.1
   wallJumpMaxDuration: 0.15
+  enableJumpAlongWall: 1
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
     serializedVersion: 2
@@ -419,12 +421,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsOffset: {x: 0, y: -0.17}
+  boundsOffset: {x: 0, y: 0}
+  boundsSize: {x: 2.75, y: 2}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  clones: []
-  cloner: {fileID: 0}
   componentsToDisableInClone:
   - {fileID: 7867381648852789479}
   - {fileID: 4330454076875467065}
@@ -438,9 +439,6 @@ MonoBehaviour:
   componentsToSynchroniseInClone:
   - {fileID: 66234244654983004}
   chidrenToRemoveInClone: []
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 1.1, y: 0.66, z: 0}
   drawGizmos: 1
 --- !u!114 &3962006582592122389
 MonoBehaviour:

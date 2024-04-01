@@ -1971,26 +1971,14 @@ namespace Collision2D
 
         #region Contain
 
-        private static int count = 0;
-
         public override bool Contains(in Vector2 P)
         {
             if (vertices == null || vertices.Length < 3)
                 return false;
 
-            Polygone.count++;
-
-            if (Polygone.count > 5)
-            {
-                Polygone.count = count + 1;
-                Polygone.count = count - 1;
-            }
-
-
-            int i;
             Vector2 I = ExternalPoint();
             int nbintersections = 0;
-            for (i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < vertices.Length; i++)
             {
                 Vector2 A = vertices[i];
                 Vector2 B = vertices[(i + 1) % vertices.Length];
@@ -2000,7 +1988,6 @@ namespace Collision2D
                 nbintersections += iseg;
             }
 
-            Polygone.count = 0;
             return Useful.IsOdd(nbintersections);
 
             Vector2 ExternalPoint()

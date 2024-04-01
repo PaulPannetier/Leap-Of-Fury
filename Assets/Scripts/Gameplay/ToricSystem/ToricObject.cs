@@ -4,33 +4,37 @@ using UnityEngine;
 using Collision2D;
 using System.Collections;
 using System.Reflection;
+using UnityEngine.XR;
 
 public class ToricObject : MonoBehaviour
 {
-    private static Bounds[] mapBounds;
+    private static Hitbox[] mapsHitboxesAround;
     private static Vector2[] camOffsets;
-    private static int[] invertCamOffsetIndex = new int[4] { 1, 0, 3, 2 };
+    private static short[] invertCamOffsetIndex = new short[4] { 1, 0, 3, 2 };
 
     private bool[] oldCollideCamBounds = new bool[4];
     private new Transform transform;
+    private List<ObjectClone> clones;
+    private Hitbox currentHitbox;
 
     [SerializeField] private Vector2 boundsOffset;
+    public Vector2 boundsSize;
     [SerializeField] private bool enableHorizontal = true, enableVertical = true;
 
     [HideInInspector] public bool isAClone;
-    [HideInInspector] public List<ObjectClone> clones;
-    [HideInInspector] public GameObject cloner;
-    [HideInInspector] public Action<Vector2, Vector2> onTeleportCallback;
+    [HideInInspector] public GameObject cloner {  get; private set; }
 
-    public List<Component> componentsToDisableInClone;
-    public List<Component> componentsToSynchroniseInClone;
+    [SerializeField] private List<Component> componentsToDisableInClone;
+    [SerializeField] private List<Component> componentsToSynchroniseInClone;
     public List<GameObject> chidrenToRemoveInClone;
+
     public GameObject original => isAClone ? cloner : gameObject;
-    public Bounds bounds;
+    public Action<Vector2, Vector2> onTeleportCallback;
 
 #if UNITY_EDITOR
 
     [SerializeField] private bool drawGizmos = true;
+    public bool freeze;
 
 #endif
 
@@ -38,16 +42,14 @@ public class ToricObject : MonoBehaviour
 
     private void Awake()
     {
-        onTeleportCallback = (Vector2 newPos, Vector2 oldPos) => { };
+        onTeleportCallback = (Vector2 pos, Vector2 oldPos) => { };
         EventManager.instance.callbackOnMapChanged += OnMapChange;
+        clones = new List<ObjectClone>();
         this.transform = base.transform;
     }
 
     private void Start()
     {
-        if(clones == null)
-            clones = new List<ObjectClone>();
-
         PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
@@ -58,20 +60,24 @@ public class ToricObject : MonoBehaviour
 
     private void OnMapChange(LevelMapData mapData)
     {
+        if (isAClone)
+            return;
+
+        Vector2 mapSize = mapData.mapSize * mapData.cellSize;
         camOffsets = new Vector2[4]
         {
-            new Vector2(0f, -mapData.mapSize.y * mapData.cellSize.y),
-            new Vector2(0f, mapData.mapSize.y * mapData.cellSize.y),
-            new Vector2(-mapData.mapSize.x * mapData.cellSize.x, 0f),
-            new Vector2(mapData.mapSize.x * mapData.cellSize.x, 0f)
+            new Vector2(0f, -mapSize.y),
+            new Vector2(0f, mapSize.y),
+            new Vector2(-mapSize.x, 0f),
+            new Vector2(mapSize.x, 0f)
         };
 
-        mapBounds = new Bounds[4]
+        mapsHitboxesAround = new Hitbox[4]
         {
-            new Bounds(new Vector3(0f, mapData.mapSize.y * mapData.cellSize.y), mapData.mapSize * mapData.cellSize),
-            new Bounds(new Vector3(0f, -mapData.mapSize.y * mapData.cellSize.y), mapData.mapSize* mapData.cellSize),
-            new Bounds(new Vector3(mapData.mapSize.x * mapData.cellSize.x, 0f), mapData.mapSize* mapData.cellSize),
-            new Bounds(new Vector3(-mapData.mapSize.x * mapData.cellSize.x, 0f), mapData.mapSize* mapData.cellSize)
+            new Hitbox(new Vector3(0f, mapSize.y), mapSize),
+            new Hitbox(new Vector3(0f, -mapSize.y), mapSize),
+            new Hitbox(new Vector3(mapSize.x, 0f), mapSize),
+            new Hitbox(new Vector3(-mapSize.x, 0f), mapSize)
         };
     }
 
@@ -151,17 +157,6 @@ public class ToricObject : MonoBehaviour
 
     #endregion
 
-    private bool CollideWithCamBounds(int index, out Vector2 offset)
-    {
-        if(bounds.Intersects(mapBounds[index]))
-        {
-            offset = camOffsets[index];
-            return true;
-        }
-        offset = Vector2.zero;
-        return false;
-    }
-
     #region Update
 
     private void Update()
@@ -172,7 +167,7 @@ public class ToricObject : MonoBehaviour
         if (PauseManager.instance.isPauseEnable)
             return;
 
-        bounds.center = transform.position + boundsOffset.ToVector3();
+        currentHitbox = new Hitbox((Vector2)transform.position + boundsOffset, boundsSize);
 
         bool[] collideWithCamBounds = new bool[4];
 
@@ -181,11 +176,48 @@ public class ToricObject : MonoBehaviour
 
         for (int i = beg; i < end; i++)
         {
-            collideWithCamBounds[i] = CollideWithCamBounds(i, out Vector2 offset);
+            if (oldCollideCamBounds[i] && mapsHitboxesAround[i].Contains(currentHitbox.center))
+            {
+                //On switch le clone est l'original
+                foreach (ObjectClone clone in clones)
+                {
+                    if (clone.boundsIndex == i)
+                    {
+                        Vector3 oldPos = transform.position, tmpScale = transform.localScale;
+                        Quaternion tmpRot = transform.rotation;
+                        Vector2 newPos = (Vector2)transform.position + clone.offset;
+                        transform.SetPositionAndRotation(newPos, clone.go.transform.rotation);
+                        transform.localScale = clone.go.transform.localScale;
+                        currentHitbox.MoveAt(newPos + boundsOffset);
+
+                        onTeleportCallback.Invoke(newPos, oldPos);
+
+                        clone.go.transform.position = oldPos;
+                        clone.go.transform.rotation = tmpRot;
+                        clone.go.transform.SetPositionAndRotation(oldPos, tmpRot);
+                        clone.go.transform.localScale = tmpScale;
+                        clone.offset *= -1f;
+                        clone.boundsIndex = invertCamOffsetIndex[clone.boundsIndex];
+
+                        bool[] tmp = (bool[])oldCollideCamBounds.Clone();
+                        for (int j = 0; j < 4; j++)
+                        {
+                            oldCollideCamBounds[j] = tmp[invertCamOffsetIndex[j]];
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+
+        for (int i = beg; i < end; i++)
+        {
+            collideWithCamBounds[i] = mapsHitboxesAround[i].Collide(currentHitbox);
             if(collideWithCamBounds[i] && !oldCollideCamBounds[i])
             {
                 GameObject tmpGO = Instantiate(gameObject, CloneParent.cloneParent);
-                ObjectClone clone = new ObjectClone(tmpGO, gameObject, offset, i);
+                ObjectClone clone = new ObjectClone(tmpGO, gameObject, camOffsets[i], i);
                 foreach(Component component in clone.toricObject.componentsToDisableInClone)
                 {
                     if (component is MonoBehaviour m)
@@ -202,65 +234,39 @@ public class ToricObject : MonoBehaviour
             }
         }
 
-        //Update clones
-        foreach (ObjectClone clone in clones)
-        {
-            clone.go.transform.SetPositionAndRotation(transform.position + clone.offset, transform.rotation);
-            clone.go.transform.localScale = transform.localScale;
-
-            foreach(Component comp in componentsToSynchroniseInClone)
-            {
-                SynchComponent(comp);
-            }
-        }
-
-        //Update qui est le GO originel
         for (int i = beg; i < end; i++)
         {
             if (oldCollideCamBounds[i] && !collideWithCamBounds[i])
             {
-                //On suppr le iéme clone
+                //Remove ieme clone
                 foreach (ObjectClone clone in clones)
                 {
-                    if(clone.boundsIndex == i)
+                    if (clone.boundsIndex == i)
                     {
                         RemoveClone(clone);
                         break;
                     }
                 }
             }
+        }
 
-            if(collideWithCamBounds[i] && mapBounds[i].Contains(bounds.center))
+        //Update clones
+        foreach (ObjectClone clone in clones)
+        {
+            clone.go.transform.SetPositionAndRotation((Vector2)transform.position + clone.offset, transform.rotation);
+            clone.go.transform.localScale = transform.localScale;
+
+            foreach (Component comp in componentsToSynchroniseInClone)
             {
-                //On switch le clone est l'original
-                foreach (ObjectClone clone in clones)
-                {
-                    if (clone.boundsIndex == i)
-                    {
-                        Vector3 tmpPos = transform.position, tmpScale = transform.localScale;
-                        Quaternion tmpRot = transform.rotation;
-                        Vector2 newPos = transform.position + clone.offset;
-                        transform.SetPositionAndRotation(newPos, clone.go.transform.rotation);
-                        transform.localScale = clone.go.transform.localScale;
-
-                        onTeleportCallback.Invoke(newPos, tmpPos);
-
-                        clone.go.transform.position = tmpPos;
-                        clone.go.transform.rotation = tmpRot;
-                        clone.go.transform.localScale = tmpScale;
-                        clone.offset *= -1f;
-                        clone.boundsIndex = invertCamOffsetIndex[clone.boundsIndex];
-
-                        bool[] tmp = (bool[])collideWithCamBounds.Clone();
-                        for (int j = 0; j < 4; j++)
-                            collideWithCamBounds[j] = tmp[invertCamOffsetIndex[j]];
-
-                        break;
-                    }
-                }
+                SynchComponent(comp);
             }
+        }
 
-            //Anti bug
+        oldCollideCamBounds = collideWithCamBounds;
+
+        //Anti bug
+        for (int i = beg; i < end; i++)
+        {
             int maxClone = enableHorizontal ? (enableVertical ? 3 : 1) : 0;
             if(clones.Count > maxClone)
             {
@@ -302,8 +308,6 @@ public class ToricObject : MonoBehaviour
                 }
             }
         }
-
-        oldCollideCamBounds = collideWithCamBounds;
     }
 
     #endregion
@@ -341,19 +345,21 @@ public class ToricObject : MonoBehaviour
         PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
 
-        if(isAClone)
+        if(!isAClone)
         {
-            if(cloner != null)
-            {
-                ToricObject to = cloner.GetComponent<ToricObject>();
-                if(to != null)
-                {
-                    to.RemoveClone(this);
-                }
-            }
-        }
-        else
             RemoveClones();
+        }
+        //else
+        //{
+        //    if (cloner != null)
+        //    {
+        //        ToricObject to = cloner.GetComponent<ToricObject>();
+        //        if (to != null)
+        //        {
+        //            to.RemoveClone(this);
+        //        }
+        //    }
+        //}
     }
 
     #endregion
@@ -390,8 +396,8 @@ public class ToricObject : MonoBehaviour
             return;
 
         Gizmos.color = Color.red;
-        Hitbox.GizmosDraw((Vector2)transform.position + boundsOffset, bounds.size);
-        Hitbox.GizmosDraw(Vector3.zero, LevelMapData.currentMap.mapSize);
+        Hitbox.GizmosDraw((Vector2)transform.position + boundsOffset, boundsSize);
+        Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
     }
 
     private void OnValidate()
@@ -409,12 +415,12 @@ public class ToricObject : MonoBehaviour
     public class ObjectClone
     {
         public GameObject go;
-        public Vector3 offset;
+        public Vector2 offset;
         public int boundsIndex;
         public ToricObject toricObject;
         public Animator animator;
 
-        public ObjectClone(GameObject clone, GameObject cloner, in Vector3 offset, in int boundsIndex)
+        public ObjectClone(GameObject clone, GameObject cloner, in Vector2 offset, int boundsIndex)
         {
             this.go = clone;
             this.offset = offset;

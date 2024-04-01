@@ -160,16 +160,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.98, y: 0.36, z: 0}
   boundsOffset: {x: 0, y: -0.03}
+  boundsSize: {x: 1, y: 0.5}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  lstClones: []
-  cloner: {fileID: 0}
   componentsToDisableInClone: []
+  componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   drawGizmos: 1
 --- !u!114 &1100820566868757872
@@ -190,12 +187,6 @@ MonoBehaviour:
   charDetectionAngle: 40
   rotationDetectionSpeed: 270
   gravityScale: 1.3
-  wallProjectileMask:
-    serializedVersion: 2
-    m_Bits: 16384
-  charMask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!1 &4710699973019899772
 GameObject:
   m_ObjectHideFlags: 0

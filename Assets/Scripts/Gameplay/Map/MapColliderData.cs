@@ -12,9 +12,17 @@ public class MapColliderData : MonoBehaviour
         convoyerBelt,
     }
 
-    private void Awake()
+    private ToricObject toricObject;
+    private Rigidbody2D _rb;
+
+    public Rigidbody2D rb
     {
-        rb = GetComponent<Rigidbody2D>();
+        get
+        {
+            if(toricObject == null)
+                return _rb;
+            return toricObject.original.GetComponent<Rigidbody2D>();
+        }
     }
 
     public GroundType groundType;
@@ -22,7 +30,12 @@ public class MapColliderData : MonoBehaviour
     public bool grabable = true;
     [Range(0f, 1f), Tooltip("Le coeff de friction quand le sol se déplace")] public float frictionCoefficient = 0f;
     public bool isGripping => frictionCoefficient > 1e-6f;
-    [HideInInspector] public Rigidbody2D rb;
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        toricObject = GetComponent<ToricObject>();
+    }
 
 #if UNITY_EDITOR
 
