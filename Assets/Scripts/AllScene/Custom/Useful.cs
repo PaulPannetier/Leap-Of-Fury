@@ -15,6 +15,7 @@ using System.Threading;
 using DG.Tweening;
 using System.Threading.Tasks;
 using Collision2D;
+using System.Runtime.CompilerServices;
 
 #endregion
 
@@ -1351,16 +1352,24 @@ public static class Useful
     #region Vector and Maths
 
     //Vector2
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float SqrDistance(in this Vector2 v, in Vector2 a) => (a.x - v.x) * (a.x - v.x) + (a.y - v.y) * (a.y - v.y);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Distance(in this Vector2 v, in Vector2 a) => Mathf.Sqrt(v.SqrDistance(a));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsCollinear(this Vector2 a, in Vector2 v) => Mathf.Abs((v.x / a.x) - (v.y / a.y)) < 1e-3f;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 Cross(in this Vector2 v1, in Vector2 v) => new Vector3(0f, 0f, v1.x * v.y - v1.y * v.x);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Dot(in this Vector2 v1, in Vector2 v) => v1.x * v.x + v1.y * v.y;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 Vector2FromAngle(float angle) => new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 Vector2FromAngle(float angle, float length) => new Vector2(length * Mathf.Cos(angle), length * Mathf.Sin(angle));
 
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 ToVector3(in this Vector2 v) => new Vector3(v.x, v.y);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector4 ToVector4(in this Vector2 v) => new Vector4(v.x, v.y);
     /// <returns>the orthogonal normalised vector of v</returns>
     public static Vector2 NormalVector(in this Vector2 v)
@@ -1380,28 +1389,37 @@ public static class Useful
             return Vector2.right;//tout les vecteurs de norme 1 marche
         }
     }
+
     //Vector3
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float SqrDistance(in this Vector3 v, in Vector3 a) => (a.x - v.x) * (a.x - v.x) + (a.y - v.y) * (a.y - v.y) + (a.z - v.z) * (a.z - v.z);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Distance(in this Vector3 v, in Vector3 a) => Mathf.Sqrt(v.SqrDistance(a));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsCollinear(this Vector3 a, in Vector3 b) => Mathf.Abs(b.x / a.x - b.y / a.y) < 0.007f * Mathf.Abs(b.y / a.y) &&
                                                                         Mathf.Abs(b.x / a.x - b.z / a.z) < 0.007f * Mathf.Abs(b.z / a.z) &&
                                                                         Mathf.Abs(b.y / a.y - b.z / a.z) < 0.007f * Mathf.Abs(b.z / a.z);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 Cross(in this Vector3 v1, in Vector3 v) => new Vector3(v1.y * v.z - v1.z * v.y, v1.z * v.x - v1.x * v.z, v1.x * v.y - v1.y * v.x);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Dot(in this Vector3 v1, in Vector3 v) => v1.x * v.x + v1.y * v.y + v1.z * v.z;
-
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 NormalVector(in this Vector3 v1, in Vector3 v) => v1.Cross(v).normalized;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 ToVector2(in this Vector3 v) => new Vector2(v.x, v.y);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector4 ToVector4(in this Vector3 v) => new Vector4(v.x, v.y);
+
     //Vector4
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float SqrDistance(in this Vector4 v, in Vector4 a) => (a.x - v.x) * (a.x - v.x) + (a.y - v.y) * (a.y - v.y) + (a.z - v.z) * (a.z - v.z) + (a.w - v.w) * (a.w - v.w);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Distance(in this Vector4 v, in Vector4 a) => Mathf.Sqrt(v.SqrDistance(a));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector2 ToVector2(in this Vector4 v) => new Vector2(v.x, v.y);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector3 ToVector3(in this Vector4 v) => new Vector3(v.x, v.y, v.z);
-
-
-    public static float ToRad(in float angle) => (angle * Mathf.Deg2Rad) % (2f * Mathf.PI);
-    public static float ToDegrees(in float angle) => (angle * Mathf.Rad2Deg) % 360f;
 
     /// <summary>
     /// 
@@ -1409,9 +1427,13 @@ public static class Useful
     /// <param name="a">le point de début du vecteur</param>
     /// <param name="b">le point de fin du vecteur</param>
     /// <returns>l'angle en rad entre 0 et 2pi entre le vecteur (1,0) et (b-a) </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float AngleHori(this in Vector2 a, in Vector2 b) => Mathf.Atan2(a.y - b.y, a.x - b.x) + Mathf.PI;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Angle(this in Vector2 a, in Vector2 b) => ClampModulo(-Mathf.PI, Mathf.PI, AngleHori(Vector2.zero, a) + AngleHori(Vector2.zero, b));
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Sign(this float a) => Mathf.Approximately(a, 0f) ? 0f : (a > 0f ? 1f : -1f);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Sign(this int a) => a == 0 ? 0 : (a > 0 ? 1 : -1);
 
     /// <summary>
@@ -1425,6 +1447,7 @@ public static class Useful
         return Mathf.Min(diff, 2f * Mathf.PI - diff);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float WrapAngle(float angle) => ClampModulo(0f, 2f * Mathf.PI, angle);
 
     public static float AngleDist(float a1, float a2)
@@ -1516,7 +1539,9 @@ public static class Useful
         return Math.Abs(b - a) < 1e-11d * Math.Max(Math.Pow(10d, Math.Ceiling(Math.Log10(Math.Max(a, b)))), 1d);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Max(int a, int b) => a >= b  ? a : b;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Max(int a, int b, int c) => Max(c, Max(a, b));
     public static int Max(params int[] args)
     {
@@ -1527,7 +1552,9 @@ public static class Useful
         }
         return max;
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Min(int a, int b) => a <= b ? a : b;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Min(int a, int b, int c) => Min(c, Min(a, b));
     public static int Min(params int[] args)
     {
@@ -1542,10 +1569,14 @@ public static class Useful
     /// <summary>
     /// t € [0, 1]
     /// </summary>
+    ///     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Lerp(in int a, in int b, float t) => (int)(a + (b - a) * t);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Lerp(in float a, in float b, float t) => a + (b - a) * t;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOdd(this int number) => (number & 1) != 0;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsEven(this int number) => (number & 1) == 0;
 
     public static Vector3[] GetVertices(in this Bounds bounds)
@@ -1591,6 +1622,7 @@ public static class Useful
 
     public enum Side { Up, Down, Right, Left }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsPointInRectangle(in Vector2 center, in Vector2 size, in Vector2 point)
     {
         return point.x >= center.x - size.x * 0.5f && point.x <= center.x + size.x * 0.5f && point.y >= center.y - size.y * 0.5f && point.y <= center.y + size.y * 0.5f;
@@ -1644,7 +1676,9 @@ public static class Useful
         return Side.Up;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float NearestFromZero(in float a, in float b) => Mathf.Abs(a) < Mathf.Abs(b) ? a : b;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float FarestFromZero(in float a, in float b) => Mathf.Abs(a) > Mathf.Abs(b) ? a : b;
 
     public static decimal Sqrt(in decimal x)
@@ -1662,6 +1696,7 @@ public static class Useful
         return current;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static decimal Abs(in decimal x) => x >= 0m ? x : -x;
 
     public static bool FindARoot(Func<float, float> f, Func<float, float> fPrime, out float root, int maxIter = 50, float accuracy = 1e-5f)
@@ -1691,6 +1726,7 @@ public static class Useful
 
     #region Array
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T GetRandom<T>(this T[] array) => array[Random.RandExclude(0, array.Length)];
 
     public static T[] Clone<T>(this T[] array) where T : ICloneable<T>
@@ -1768,6 +1804,7 @@ public static class Useful
         return -1;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool Exist<T>(this T[,] tab, int l, int c) => l >= 0 && c >= 0 && l < tab.GetLength(0) && c < tab.GetLength(1);
 
     public static T[] Merge<T>(this T[] arr, T[] other)
@@ -2117,12 +2154,16 @@ public static class Useful
 
     #region List
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T GetRandom<T>(this List<T> lst) => lst[Random.RandExclude(0, lst.Count)];
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T Last<T>(this List<T> lst) => lst[lst.Count - 1];
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void RemoveLast<T>(this List<T> lst) => lst.RemoveAt(lst.Count - 1);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void RemoveBeg<T>(this List<T> lst) => lst.RemoveAt(0);
 
     public static List<T> Distinct<T>(this List<T> lst)
@@ -2593,7 +2634,9 @@ public static class Useful
 
     #region Unity
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Dictionary<TKey, TValue> Clone<TKey, TValue>(this Dictionary<TKey, TValue> dict) => new Dictionary<TKey, TValue>(dict);
+
     public static Dictionary<TKey, TValue> DeepClone<TKey, TValue>(this Dictionary<TKey, TValue> dict) where TValue : ICloneable<TValue>
     {
         Dictionary<TKey, TValue> res = new Dictionary<TKey, TValue>();
@@ -2604,6 +2647,7 @@ public static class Useful
         return res;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static List<T> Clone<T>(this List<T> lst) => new List<T>(lst);
 
     [Obsolete]
@@ -2626,22 +2670,25 @@ public static class Useful
         UnityEngine.Object.DontDestroyOnLoad(obj.gameObject);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void RemoveFromDontDestroyOnLoad(this GameObject obj)
     {
         SceneManager.MoveGameObjectToScene(obj, SceneManager.GetActiveScene());
     }
 
-    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir) => GizmoDrawVector(origin, dir, 1f, 0.39269908169f); // 0.39269908169f = 22.5° = pi/8 rad
-    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length) => GizmoDrawVector(origin, dir, length, 0.39269908169f);
-    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length, in float arrowAngle)
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir) => GizmoDrawVector(origin, dir, 1f, 0.39269908169f, Gizmos.DrawLine); // 0.39269908169f = 22.5° = pi/8 rad
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, Action<Vector3, Vector3> drawLineFunction) => GizmoDrawVector(origin, dir, 1f, 0.39269908169f, drawLineFunction);
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length) => GizmoDrawVector(origin, dir, length, 0.39269908169f, Gizmos.DrawLine);
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length, Action<Vector3, Vector3> drawLineFunction) => GizmoDrawVector(origin, dir, length, 0.39269908169f, drawLineFunction);
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length, in float arrowAngle, Action<Vector3, Vector3> drawLineFunction)
     {
         Vector2 end = origin + dir * length;
-        Gizmos.DrawLine(origin, end);
+        drawLineFunction(origin, end);
         float teta = AngleHori(origin, end);
         float a = Mathf.PI + teta + arrowAngle;
-        Gizmos.DrawLine(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
+        drawLineFunction(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
         a = 2f * Mathf.PI - (Mathf.PI - teta) - arrowAngle;
-        Gizmos.DrawLine(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
+        drawLineFunction(end, end + new Vector2(length * 0.33f * Mathf.Cos(a), length * 0.33f * Mathf.Sin(a)));
     }
 
     public static AnimationClip[] GetAnimationsClips(this Animator animator) => animator.runtimeAnimatorController.animationClips;
@@ -2682,6 +2729,11 @@ public static class Useful
         t.DOShakePosition(shakeSetting.duration, shakeSetting.strengh, shakeSetting.vibrato, shakeSetting.randomness,
             shakeSetting.snapping, shakeSetting.fadeOut);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool Contain(this LayerMask layerMask, LayerMask layer) => layerMask.Contain((int)layer);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool Contain(this LayerMask layerMask, int layer) => (layerMask & (1 << layer)) != 0;
 
     #endregion
 }

@@ -131,7 +131,7 @@ Name : Chaos
 TODO :
 Trad all text
 netoyer tout les fichiers du projet
-fix Toric object bug (animation dont fit when grab)
+verify Collision2D and PhysicsToric (huge test) + replace CollideCircleLine avec Line.Distance(circle.center) + use and test Mathf.IntersegmentLine
 opti charController (réglage hyperparam)
 review code pour alouer moins de mémoire (use short ect)
 rm charCanvas

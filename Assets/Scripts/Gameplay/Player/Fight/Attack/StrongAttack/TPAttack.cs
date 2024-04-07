@@ -67,8 +67,8 @@ public class TPAttack : StrongAttack
         else
         {
             //on se bouffe un mur
-            RaycastHit2D raycasts1 = PhysicsToric.Raycast(transform.position, dir, 2f * tpRange, groundMask);
-            RaycastHit2D raycasts2;
+            ToricRaycastHit2D raycasts1 = PhysicsToric.Raycast(transform.position, dir, 2f * tpRange, groundMask);
+            ToricRaycastHit2D raycasts2;
             Hitbox mapHitbox = new Hitbox(Vector2.zero, LevelMapData.currentMap.mapSize);
             if (Collision2D.Collider2D.CollideHitboxLine(mapHitbox, transform.position, (Vector2)transform.position + (2f * tpRange) * dir, out Vector2 colP))
             {
@@ -86,7 +86,7 @@ public class TPAttack : StrongAttack
                 raycasts2 = PhysicsToric.Raycast((Vector2)transform.position + (2f * tpRange) * dir, -dir, 2f * tpRange, groundMask);
             }
 
-            RaycastHit2D[] raycasts = new RaycastHit2D[2] { raycasts1, raycasts2 };
+            ToricRaycastHit2D[] raycasts = new ToricRaycastHit2D[2] { raycasts1, raycasts2 };
 
             if(raycasts[0].collider == null && raycasts[1].collider == null)
             {

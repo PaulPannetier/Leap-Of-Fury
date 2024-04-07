@@ -90,7 +90,7 @@ public class BounceShotAttack : StrongAttack
                     else
                     {
                         //Version générale bugger
-                        Vector2 sim = Collision2D.Ray2D.Symetric(oldPoint, new Collision2D.Ray2D(raycast.point, raycast.point + raycast.normal));
+                        Vector2 sim = Collision2D.StraightLine2D.Symetric(oldPoint, raycast.point, raycast.point + raycast.normal);
                         data.lastDirection = (sim - raycast.point).normalized;
                     }
 

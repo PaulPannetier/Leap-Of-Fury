@@ -89,6 +89,7 @@ public class MovablePlateform : PathFindingBlocker
 
     private void Start()
     {
+        PhysicsToric.AddPriorityCollider(hitbox);
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
         charMask = LayerMask.GetMask("Char");
@@ -101,7 +102,7 @@ public class MovablePlateform : PathFindingBlocker
 
     private void FixedUpdate()
     {
-        if(!enableBehaviour)
+        if(!enableBehaviour || toricObject.isAClone)
             return;
 
         if(pauseWasEnableLastFrame)
@@ -525,7 +526,7 @@ public class MovablePlateform : PathFindingBlocker
 
     #endregion
 
-    #region Gizmos/OnValidate
+    #region Gizmos/OnValidate/Destroy
 
     private void Disable()
     {
@@ -544,6 +545,7 @@ public class MovablePlateform : PathFindingBlocker
         base.OnDestroy();
         PauseManager.instance.callBackOnPauseEnable -= Disable;
         PauseManager.instance.callBackOnPauseDisable -= Enable;
+        PhysicsToric.RemovePriorityCollider(hitbox);
     }
 
 #if UNITY_EDITOR

@@ -39,8 +39,8 @@ public class FirePassif : PassifAttack
         base.Update();
         if(movement.isGrounded)
         {
-            RaycastHit2D raycast1 = PhysicsToric.Raycast((Vector2)transform.position + Vector2.right * (hitbox.size * 0.45f), Vector2.down, 1f, groundMask);
-            RaycastHit2D raycast2 = PhysicsToric.Raycast((Vector2)transform.position + Vector2.left  * (hitbox.size * 0.45f), Vector2.down, 1f, groundMask);
+            ToricRaycastHit2D raycast1 = PhysicsToric.Raycast((Vector2)transform.position + Vector2.right * (hitbox.size * 0.45f), Vector2.down, 1f, groundMask);
+            ToricRaycastHit2D raycast2 = PhysicsToric.Raycast((Vector2)transform.position + Vector2.left  * (hitbox.size * 0.45f), Vector2.down, 1f, groundMask);
             Vector2 pos;
             bool createFire = true;
             if(raycast1.collider == null || raycast2.collider == null)

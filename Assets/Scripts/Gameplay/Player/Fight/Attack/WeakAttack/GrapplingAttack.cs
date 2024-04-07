@@ -294,7 +294,7 @@ public class GrapplingAttack : WeakAttack
         }
 
         grapDir = Useful.Vector2FromAngle(grapAngle);
-        RaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask, out lineRendererPoints);
+        ToricRaycastHit2D raycast = PhysicsToric.CircleCast(transform.position, grapDir, circleCastRadius, grapRange, groundMask, out lineRendererPoints);
         if(raycast.collider == null)
         {
             return false;
@@ -311,7 +311,7 @@ public class GrapplingAttack : WeakAttack
     {
         Vector2 pos = transform.position;
         grapDir = (attachPoint - pos).normalized;
-        RaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out lineRendererPoints);
+        ToricRaycastHit2D raycast = PhysicsToric.Raycast(pos, grapDir, grapLength * (1f + grapElasticity), groundMask, out lineRendererPoints);
         if (raycast.collider != null && raycast.collider != colliderWhereGrapIsAttach)
         {
             return false;

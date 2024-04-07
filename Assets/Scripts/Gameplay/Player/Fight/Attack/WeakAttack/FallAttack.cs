@@ -67,7 +67,7 @@ public class FallAttack : WeakAttack
 
     private bool IsEnoughtHight()
     {
-        RaycastHit2D raycast = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), Vector2.down, minDistanceFromGround, groundMask);
+        ToricRaycastHit2D raycast = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), Vector2.down, minDistanceFromGround, groundMask);
         return raycast.collider == null;
     }
 

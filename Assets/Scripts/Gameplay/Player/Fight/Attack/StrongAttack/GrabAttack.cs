@@ -139,9 +139,9 @@ public class GrabAttack : StrongAttack
             }
         }
 
-        RaycastHit2D[] raycastAll = PhysicsToric.CircleCastAll(transform.position, dir, castRadius, range, charAndGroundMask);
+        ToricRaycastHit2D[] raycastAll = PhysicsToric.CircleCastAll(transform.position, dir, castRadius, range, charAndGroundMask);
 
-        int RaycastComparer(RaycastHit2D r1, RaycastHit2D r2)
+        int RaycastComparer(ToricRaycastHit2D r1, ToricRaycastHit2D r2)
         {
             if (r1.distance < r2.distance)
                 return -1;
@@ -151,7 +151,7 @@ public class GrabAttack : StrongAttack
         }
 
         Array.Sort(raycastAll, RaycastComparer);
-        RaycastHit2D raycast = default(RaycastHit2D);
+        ToricRaycastHit2D raycast = default(ToricRaycastHit2D);
         bool isCharCollision = false;
 
         for (int i = 0; i < raycastAll.Length; i++)
@@ -195,14 +195,14 @@ public class GrabAttack : StrongAttack
 
         return true;
 
-        void SetCharData(in RaycastHit2D raycastChar)
+        void SetCharData(in ToricRaycastHit2D raycastChar)
         {
             charTouch = raycastChar.collider.gameObject;
             walltouch = null;
             collisionPoint = raycastChar.point;
         }
 
-        void SetWallData(in RaycastHit2D raycastGround)
+        void SetWallData(in ToricRaycastHit2D raycastGround)
         {
             walltouch = raycastGround.collider.gameObject;
             charTouch = null;

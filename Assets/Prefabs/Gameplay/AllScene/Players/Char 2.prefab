@@ -612,6 +612,7 @@ MonoBehaviour:
   - {fileID: 6848550487051244944}
   componentsToSynchroniseInClone:
   - {fileID: 1261712740702541876}
+  - {fileID: 2136925604514613036}
   chidrenToRemoveInClone: []
   drawGizmos: 0
 --- !u!114 &2851360491922592125

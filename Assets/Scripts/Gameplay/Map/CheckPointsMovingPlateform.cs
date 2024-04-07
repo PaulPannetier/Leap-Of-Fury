@@ -119,7 +119,7 @@ public class CheckPointsMovingPlateform : MonoBehaviour
                         if(!charAlreadyTouch.Contains(pc.id))
                         {
                             BoxCollider2D charHitbox = pc.GetComponent<BoxCollider2D>();
-                            RaycastHit2D raycast = PhysicsToric.Raycast((Vector2)transform.position + offset, dir, charHitbox.size.x * 1.1f, groundMask);
+                            ToricRaycastHit2D raycast = PhysicsToric.Raycast((Vector2)transform.position + offset, dir, charHitbox.size.x * 1.1f, groundMask);
 
                             if (raycast.collider != null)
                             {

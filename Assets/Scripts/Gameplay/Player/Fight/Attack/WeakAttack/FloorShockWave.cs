@@ -76,7 +76,7 @@ public class FloorShockWave : MonoBehaviour
             return;
 
         Vector2 beg = (Vector2)transform.position + (right ? offsetVertiRaycast : new Vector2(-offsetVertiRaycast.x, offsetVertiRaycast.y));
-        RaycastHit2D raycast = PhysicsToric.Raycast(beg, Vector2.down, rayLengthVerti, groundMask);//en bas
+        ToricRaycastHit2D raycast = PhysicsToric.Raycast(beg, Vector2.down, rayLengthVerti, groundMask);//en bas
         if(raycast.collider == null)
         {
             //on arréte la shockWave ici

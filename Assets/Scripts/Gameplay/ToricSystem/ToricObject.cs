@@ -13,7 +13,7 @@ public class ToricObject : MonoBehaviour
 
     private bool[] oldCollideCamBounds = new bool[4];
     private new Transform transform;
-    public List<ObjectClone> clones;//change to private
+    private List<ObjectClone> clones;
     private Hitbox currentHitbox;
 
     [SerializeField] private Vector2 boundsOffset;
@@ -125,6 +125,12 @@ public class ToricObject : MonoBehaviour
 
     private void SynchComponent<T>(T comp) where T : Component
     {
+        if(comp is Animator animator)
+        {
+            SynchAnimator(animator);
+            return;
+        }
+
         foreach (ObjectClone clone in clones)
         {
             T cloneComp = (T)clone.go.GetComponent(comp.GetType());
@@ -133,12 +139,12 @@ public class ToricObject : MonoBehaviour
             FieldInfo[] fields = type.GetFields();
             PropertyInfo[] properties = type.GetProperties();
 
-            foreach (FieldInfo fieldInfo in fields)
+            foreach (FieldInfo field in fields)
             {
-                if(fieldInfo.IsPublic || fieldInfo.GetCustomAttribute<SerializeField>() != null)
+                if (field.IsPublic || field.GetCustomAttribute<SerializeField>() != null)
                 {
-                    object value = fieldInfo.GetValue(comp);
-                    fieldInfo.SetValue(cloneComp, value);
+                    object value = field.GetValue(comp);
+                    field.SetValue(cloneComp, value);
                 }
             }
 
@@ -148,6 +154,33 @@ public class ToricObject : MonoBehaviour
                 {
                     object value = propertyInfo.GetValue(comp);
                     propertyInfo.SetValue(cloneComp, value);
+                }
+            }
+        }
+    }
+
+    private void SynchAnimator(Animator animator)
+    {
+        foreach (ObjectClone clone in clones)
+        {
+            if(clone.animator != null)
+            {
+                foreach (AnimatorControllerParameter animParam in animator.parameters)
+                {
+                    switch (animParam.type)
+                    {
+                        case AnimatorControllerParameterType.Float:
+                            clone.animator.SetFloat(animParam.nameHash, animator.GetFloat(animParam.nameHash));
+                            break;
+                        case AnimatorControllerParameterType.Int:
+                            clone.animator.SetInteger(animParam.nameHash, animator.GetInteger(animParam.nameHash));
+                            break;
+                        case AnimatorControllerParameterType.Bool:
+                            clone.animator.SetBool(animParam.nameHash, animator.GetBool(animParam.nameHash));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }

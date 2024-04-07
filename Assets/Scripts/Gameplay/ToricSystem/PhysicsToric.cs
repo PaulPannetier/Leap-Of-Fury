@@ -3,14 +3,62 @@ using System.Linq;
 using UnityEngine;
 using Collision2D;
 using Collider2D = Collision2D.Collider2D;
+using Ray2D = Collision2D.Ray2D;
+using System;
+
+#region Struct
+
+public struct ToricRaycastHit2D
+{
+    public Vector2 point;
+    public Vector2 centroid;
+    public UnityEngine.Collider2D collider;
+    public Vector2 normal;
+    public Rigidbody2D rigidbody;
+    public float distance;
+    public Transform transform => rigidbody != null ? rigidbody.transform : (collider != null ? collider.transform : null);
+
+    public ToricRaycastHit2D(Vector2 point, Vector2 centroid, UnityEngine.Collider2D collider, Vector2 normal, Rigidbody2D rb, float distance)
+    {
+        this.point = point;
+        this.centroid = centroid;
+        this.collider = collider;
+        this.normal = normal;
+        this.rigidbody = rb;
+        this.distance = distance;
+    }
+
+    public ToricRaycastHit2D(RaycastHit2D raycast)
+    {
+        this.point = raycast.point;
+        this.centroid = raycast.centroid;
+        this.collider = raycast.collider;
+        this.normal = raycast.normal;
+        this.rigidbody = raycast.rigidbody;
+        this.distance = raycast.distance;
+    }
+}
+
+#endregion
 
 public static class PhysicsToric
 {
     #region Camera and general things
 
-    private static Vector2 mapSize;
-    private static Hitbox[] mapHitboxArounds;
     private static Hitbox mapHitbox;
+    private static List<UnityEngine.Collider2D> priorityColliders = new List<UnityEngine.Collider2D>();
+    private static Line2D[] mapSides;
+    private static Vector2[] mapOffset;
+
+    public static void AddPriorityCollider(UnityEngine.Collider2D collider)
+    {
+        priorityColliders.Add(collider);
+    }
+
+    public static void RemovePriorityCollider(UnityEngine.Collider2D collider)
+    {
+        priorityColliders.Remove(collider);
+    }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Start()
@@ -20,39 +68,44 @@ public static class PhysicsToric
 
     private static void OnMapChange(LevelMapData mapData)
     {
-        mapSize = mapData.mapSize * mapData.cellSize;
-        mapHitboxArounds = new Hitbox[4]
+        Vector2 size = mapData.mapSize * mapData.cellSize;
+        Vector2 halfSize = size * 0.5f;
+        mapHitbox = new Hitbox(Vector2.zero, size);
+        mapSides = new Line2D[4]
         {
-            new Hitbox(new Vector2(0f, mapSize.y), mapSize),//haut
-            new Hitbox(new Vector2(0f, -mapSize.y), mapSize),//bas
-            new Hitbox(new Vector3(mapSize.x, 0f), mapSize),//droite
-            new Hitbox(new Vector2(-mapSize.x, 0f), mapSize) //gauche
+            new Line2D(new Vector2(-halfSize.x, halfSize.y), halfSize),
+            new Line2D(-halfSize, new Vector2(halfSize.x, -halfSize.y)),
+            new Line2D(new Vector2(-halfSize.x, halfSize.y), -halfSize),
+            new Line2D(halfSize, new Vector2(halfSize.x, -halfSize.y))
         };
-        mapHitbox = new Hitbox(Vector2.zero, mapSize);
+        mapOffset = new Vector2[4]
+        {
+            new Vector2(0f, size.y),
+            new Vector2(0f, -size.y),
+            new Vector2(-size.x, 0f),
+            new Vector2(size.x, 0f)
+        };
     }
 
-    public static bool IsPointInsideBound(in Vector2 point) => -mapSize.x * 0.5f <= point.x && mapSize.x * 0.5f >= point.x && -mapSize.y * 0.5f <= point.y && mapSize.y * 0.5f >= point.y;
+    public static bool IsPointInsideBound(in Vector2 point) => -mapHitbox.size.x * 0.5f <= point.x && mapHitbox.size.x * 0.5f >= point.x && -mapHitbox.size.y * 0.5f <= point.y && mapHitbox.size.y * 0.5f >= point.y;
 
     /// <param name="point"></param>
     /// <returns>Le point visible au coor donnée en param dans l'espace torique</returns>
     public static Vector2 GetPointInsideBounds(in Vector2 point)
     {
-        return new Vector2(Useful.ClampModulo(-mapSize.x * 0.5f, mapSize.x * 0.5f, point.x),
-            Useful.ClampModulo(-mapSize.y * 0.5f, mapSize.y * 0.5f, point.y));
+        return new Vector2(Useful.ClampModulo(-mapHitbox.size.x * 0.5f, mapHitbox.size.x * 0.5f, point.x),
+            Useful.ClampModulo(-mapHitbox.size.y * 0.5f, mapHitbox.size.y * 0.5f, point.y));
     }
 
     public static Vector2 GetComplementaryPoint(Vector2 point)
     {
-        Vector2 step = new Vector2(point.x - mapHitbox.center.x > 0f ? 0.01f : -0.01f, point.y - mapHitbox.center.y > 0f ? 0.01f : -0.01f);
-        int i = 0;
+        Vector2 step = new Vector2(point.x - mapHitbox.center.x > 0f ? 0.001f : -0.001f, point.y - mapHitbox.center.y > 0f ? 0.001f : -0.001f);
         while (mapHitbox.Contains(point))
         {
             point += step;
-            i++;
         }
         point += step;
-        i++;
-        return GetPointInsideBounds(point) + i * step;
+        return GetPointInsideBounds(point);
     }
 
     public static float Distance(Vector2 p1, Vector2 p2)
@@ -60,9 +113,9 @@ public static class PhysicsToric
         p1 = GetPointInsideBounds(p1);
         p2 = GetPointInsideBounds(p2);
 
-        float toricX = p1.x + (p2.x - p1.x).Sign() * mapSize.x;
+        float toricX = p1.x + (p2.x - p1.x).Sign() * mapHitbox.size.x;
         float x = Mathf.Abs(p1.x - p2.x) < Mathf.Abs(toricX - p2.x) ? p1.x : toricX;
-        float toricY = p1.y + (p2.y - p1.y).Sign() * mapSize.y;
+        float toricY = p1.y + (p2.y - p1.y).Sign() * mapHitbox.size.y;
         float y = Mathf.Abs(p1.y - p2.y) < Mathf.Abs(toricY - p2.y) ? p1.y : toricY;
 
         return p2.Distance(new Vector2(x, y));
@@ -73,19 +126,19 @@ public static class PhysicsToric
         Vector2[] possibleA = new Vector2[5]
         {
             a,
-            new Vector2(a.x + mapSize.x , a.y),
-            new Vector2(a.x - mapSize.x, a.y),
-            new Vector2(a.x, a.y + mapSize.y),
-            new Vector2(a.x, a.y - mapSize.y)
+            new Vector2(a.x + mapHitbox.size.x , a.y),
+            new Vector2(a.x - mapHitbox.size.x, a.y),
+            new Vector2(a.x, a.y + mapHitbox.size.y),
+            new Vector2(a.x, a.y - mapHitbox.size.y)
         };
 
         Vector2[] possibleB = new Vector2[5]
         {
             b,
-            new Vector2(b.x + mapSize.x , b.y),
-            new Vector2(b.x - mapSize.x, b.y),
-            new Vector2(b.x, b.y + mapSize.y),
-            new Vector2(b.x, b.y - mapSize.y)
+            new Vector2(b.x + mapHitbox.size.x , b.y),
+            new Vector2(b.x - mapHitbox.size.x, b.y),
+            new Vector2(b.x, b.y + mapHitbox.size.y),
+            new Vector2(b.x, b.y - mapHitbox.size.y)
         };
 
         Vector2 aKeep = possibleA[0], bKeep = possibleB[0];
@@ -104,23 +157,20 @@ public static class PhysicsToric
                 }
             }
         }
-        return (bKeep - aKeep) *  (1f / Mathf.Sqrt(minSqrMag));
+        return (bKeep - aKeep) * (1f / Mathf.Sqrt(minSqrMag));
     }
 
-    public static bool GetToricIntersection(in Vector2 a, in Vector2 b, out Vector2 toricInter)
+    public static bool GetToricIntersection(in Vector2 from, in Vector2 end, out Vector2 inter)
     {
-        float dist = Distance(a, b);
-        Vector2 dir = Direction(a, b);
-        Line2D line = new Line2D(a, a + dir * dist);
-
-        for (int i = 0; i < 4; i++)
+        Line2D line = new Line2D(from, end);
+        for (short i = 0; i < mapHitbox.vertices.Length; i++)
         {
-            if (Collider2D.CollideHitboxLine(mapHitboxArounds[i], line, out toricInter))
+            if (Collider2D.CollideLines(line, new Line2D(mapHitbox.vertices[i], mapHitbox.vertices[(i + 1) % mapHitbox.vertices.Length]), out inter))
             {
                 return true;
             }
         }
-        toricInter = Vector2.zero;
+        inter = Vector2.zero;
         return false;
     }
 
@@ -128,12 +178,57 @@ public static class PhysicsToric
 
     #region Overlap
 
-    public static UnityEngine.Collider2D OverlapPoint(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPoint(GetPointInsideBounds(point), layerMask);
+    public static UnityEngine.Collider2D OverlapPoint(Vector2 point, LayerMask layerMask)
+    {
+        point = GetPointInsideBounds(point);
+        UnityEngine.Collider2D collider = Physics2D.OverlapPoint(point, layerMask);
+        if (collider != null)
+            return collider;
 
-    public static UnityEngine.Collider2D[] OverlapPointAll(in Vector2 point, LayerMask layerMask) => Physics2D.OverlapPointAll(GetPointInsideBounds(point), layerMask);
+        Collider2D col;
+        foreach (UnityEngine.Collider2D tmpcol in priorityColliders)
+        {
+            if (layerMask.Contain(tmpcol.gameObject.layer))
+            {
+                col = Collider2D.FromUnityCollider2D(tmpcol);
+                if (col.Contains(point))
+                {
+                    return tmpcol;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static UnityEngine.Collider2D[] OverlapPointAll(Vector2 point, LayerMask layerMask)
+    {
+        point = GetPointInsideBounds(point);
+        UnityEngine.Collider2D[] colliders = Physics2D.OverlapPointAll(point, layerMask);
+
+        Collider2D col;
+        List<UnityEngine.Collider2D> resToAdd = new List<UnityEngine.Collider2D>();
+        foreach (UnityEngine.Collider2D tmpcol in priorityColliders)
+        {
+            if (layerMask.Contain(tmpcol.gameObject.layer))
+            {
+                if (!colliders.Contains(tmpcol))
+                {
+                    col = Collider2D.FromUnityCollider2D(tmpcol);
+                    if (col.Contains(point))
+                    {
+                        resToAdd.Add(tmpcol);
+                    }
+                }
+            }
+        }
+
+        if (resToAdd.Count > 0)
+            return colliders.Merge(resToAdd.ToArray());
+        return colliders;
+    }
 
     public static UnityEngine.Collider2D OverlapCircle(Circle circle, LayerMask layerMask) => OverlapCircle(circle.center, circle.radius, layerMask);
-    
+
     public static UnityEngine.Collider2D OverlapCircle(in Vector2 center, float radius, LayerMask layerMask)
     {
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
@@ -142,25 +237,43 @@ public static class PhysicsToric
         if (res != null)
             return res;
 
-        bool[] collideWithCamHitbox = new bool[4];
-        for(int i = 0; i < 4; i++)
-        {
-            Hitbox h = mapHitboxArounds[i];
-            if(Collider2D.Collide(h, circle))
-            {
-                collideWithCamHitbox[i] = true;
-            }
-        }
-
+        bool[] collideWithCamSide = new bool[4];
         for (int i = 0; i < 4; i++)
         {
-            if (collideWithCamHitbox[i])
+            if(Collider2D.CollideCircleLine(circle, mapSides[i]))
             {
-                circle.MoveAt(circle.center - mapHitboxArounds[i].center);
+                circle.MoveAt(circle.center - mapOffset[i]);
                 res = Physics2D.OverlapCircle(circle.center, radius, layerMask);
                 if (res != null)
                     return res;
-                circle.MoveAt(circle.center + mapHitboxArounds[i].center);
+                circle.MoveAt(circle.center + mapOffset[i]);
+                collideWithCamSide[i] = true;
+            }
+        }
+
+        Collider2D col;
+        foreach (UnityEngine.Collider2D tmpcol in priorityColliders)
+        {
+            if (layerMask.Contain(tmpcol.gameObject.layer))
+            {
+                col = Collider2D.FromUnityCollider2D(tmpcol);
+                if (Collider2D.Collide(col, circle))
+                {
+                    return tmpcol;
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (collideWithCamSide[i])
+                    {
+                        circle.MoveAt(circle.center - mapOffset[i]);
+                        if (Collider2D.Collide(col, circle))
+                        {
+                            return tmpcol;
+                        }
+                        circle.MoveAt(circle.center + mapOffset[i]);
+                    }
+                }
             }
         }
 
@@ -174,28 +287,49 @@ public static class PhysicsToric
         Circle circle = new Circle(GetPointInsideBounds(center), radius);
         UnityEngine.Collider2D[] res = Physics2D.OverlapCircleAll(circle.center, radius, layerMask);
 
-        bool[] collideWithCamHitbox = new bool[4];
+        bool[] collideWithCamSide = new bool[4];
         for (int i = 0; i < 4; i++)
         {
-            Hitbox h = mapHitboxArounds[i];
-            if (Collider2D.Collide(h, circle))
+            if (Collider2D.CollideCircleLine(circle, mapSides[i]))
             {
-                collideWithCamHitbox[i] = true;
-            }
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (collideWithCamHitbox[i])
-            {
-                circle.MoveAt(circle.center - mapHitboxArounds[i].center);
+                circle.MoveAt(circle.center - mapOffset[i]);
                 UnityEngine.Collider2D[] res2 = Physics2D.OverlapCircleAll(circle.center, radius, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
-                circle.MoveAt(circle.center + mapHitboxArounds[i].center);
+                circle.MoveAt(circle.center + mapOffset[i]);
+                collideWithCamSide[i] = true;
             }
         }
 
+        Collider2D col;
+        List<UnityEngine.Collider2D> resToAdd = new List<UnityEngine.Collider2D>();
+        foreach (UnityEngine.Collider2D tmpcol in priorityColliders)
+        {
+            if (layerMask.Contain(tmpcol.gameObject.layer))
+            {
+                col = Collider2D.FromUnityCollider2D(tmpcol);
+                if (Collider2D.Collide(col, circle))
+                {
+                    resToAdd.Add(tmpcol);
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (collideWithCamSide[i])
+                    {
+                        circle.MoveAt(circle.center - mapOffset[i]);
+                        if (Collider2D.Collide(col, circle))
+                        {
+                            resToAdd.Add(tmpcol);
+                        }
+                        circle.MoveAt(circle.center + mapOffset[i]);
+                    }
+                }
+            }
+        }
+
+        if (resToAdd.Count > 0)
+            return res.Merge(resToAdd.ToArray()).Distinct().ToArray();
         return res.Length <= 0 ? res : res.Distinct().ToArray();
     }
 
@@ -210,28 +344,46 @@ public static class PhysicsToric
         if (res != null)
             return res;
 
-        bool[] contains = new bool[4];
-        foreach (Vector2 p in hitbox.vertices)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                if (!contains[i] && mapHitboxArounds[i].Contains(p))
-                    contains[i] = true;
-            }
-        }
-
+        bool[] collideWithCamSide = new bool[4];
         for (int i = 0; i < 4; i++)
         {
-            if (contains[i])
+            if (Collider2D.CollideHitboxLine(hitbox, mapSides[i]))
             {
-                hitbox.MoveAt(hitbox.center - mapHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center - mapOffset[i]);
                 res = Physics2D.OverlapBox(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
                 if (res != null)
                     return res;
-                hitbox.MoveAt(hitbox.center + mapHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center + mapOffset[i]);
+                collideWithCamSide[i] = true;
             }
         }
-        return res;
+
+        Collider2D col;
+        foreach (UnityEngine.Collider2D tmpcol in priorityColliders)
+        {
+            if (layerMask.Contain(tmpcol.gameObject.layer))
+            {
+                col = Collider2D.FromUnityCollider2D(tmpcol);
+                if (Collider2D.Collide(col, hitbox))
+                {
+                    return tmpcol;
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (collideWithCamSide[i])
+                    {
+                        hitbox.MoveAt(hitbox.center - mapOffset[i]);
+                        if (Collider2D.Collide(col, hitbox))
+                            return tmpcol;
+
+                        hitbox.MoveAt(hitbox.center + mapOffset[i]);
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public static UnityEngine.Collider2D[] OverlapBoxAll(Hitbox hitbox, LayerMask layerMask) => OverlapBoxAll(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
@@ -242,67 +394,53 @@ public static class PhysicsToric
         hitbox.Rotate(angle);
 
         UnityEngine.Collider2D[] res = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
-        bool[] contains = new bool[4];
-        foreach (Vector2 p in hitbox.vertices)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                if (mapHitboxArounds[i].Contains(p))
-                    contains[i] = true;
-            }
-        }
-
+        bool[] collideWithCamSide = new bool[4];
         for (int i = 0; i < 4; i++)
         {
-            if (contains[i])
+            if (Collider2D.CollideHitboxLine(hitbox, mapSides[i]))
             {
-                hitbox.MoveAt(hitbox.center - mapHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center - mapOffset[i]);
                 UnityEngine.Collider2D[] res2 = Physics2D.OverlapBoxAll(hitbox.center, size, angle * Mathf.Rad2Deg, layerMask);
                 if (res2 != null && res2.Length > 0)
                     res = res.Merge(res2);
-                hitbox.MoveAt(hitbox.center + mapHitboxArounds[i].center);
+                hitbox.MoveAt(hitbox.center + mapOffset[i]);
+                collideWithCamSide[i] = true;
             }
         }
-        return res == null ? null : res.Distinct().ToArray();
+
+        Collider2D col;
+        List<UnityEngine.Collider2D> resToAdd = new List<UnityEngine.Collider2D>();
+        foreach (UnityEngine.Collider2D tmpcol in priorityColliders)
+        {
+            if (layerMask.Contain(tmpcol.gameObject.layer))
+            {
+                col = Collider2D.FromUnityCollider2D(tmpcol);
+                if (Collider2D.Collide(col, hitbox))
+                {
+                    resToAdd.Add(tmpcol);
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (collideWithCamSide[i])
+                    {
+                        hitbox.MoveAt(hitbox.center - mapOffset[i]);
+                        if (Collider2D.Collide(col, hitbox))
+                        {
+                            resToAdd.Add(tmpcol);
+                        }
+                        hitbox.MoveAt(hitbox.center - mapOffset[i]);
+                    }
+                }
+            }
+        }
+
+        if (resToAdd.Count > 0)
+            return res.Merge(resToAdd.ToArray()).Distinct().ToArray();
+        return res.Length <= 0 ? res : res.Distinct().ToArray();
     }
 
-    public static UnityEngine.Collider2D Physics2DOverlapCapsule(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
-    {
-        Capsule c = new Capsule(center, size, dir);
-        if(Mathf.Abs(angle) > 1e-5f)
-            c.Rotate(angle);
-        return Physics2DOverlapCapsule(c, layerMask);
-    }
-
-    public static UnityEngine.Collider2D Physics2DOverlapCapsule(Capsule capsule, LayerMask layerMask)
-    {
-        UnityEngine.Collider2D res = Physics2D.OverlapBox(capsule.hitbox.center, capsule.hitbox.size, capsule.AngleHori() * Mathf.Rad2Deg, layerMask);
-        if (res != null)
-            return res;
-        res = Physics2D.OverlapCircle(capsule.circle1.center, capsule.circle1.radius, layerMask);
-        if (res != null)
-            return res;
-        res = Physics2D.OverlapCircle(capsule.circle2.center, capsule.circle2.radius, layerMask);
-        return res;
-    }
-
-    public static UnityEngine.Collider2D[] Physics2DOverlapCapsuleAll(in Vector2 center, in Vector2 size, CapsuleDirection2D dir, float angle, LayerMask layerMask)
-    {
-        Capsule c = new Capsule(center, size, dir);
-        if(Mathf.Abs(angle) > 1e-5)
-            c.Rotate(angle);
-        return Physics2DOverlapCapsuleAll(c, layerMask);
-    }
-
-    public static UnityEngine.Collider2D[] Physics2DOverlapCapsuleAll(Capsule capsule, LayerMask layerMask)
-    {
-        UnityEngine.Collider2D[] res = Physics2D.OverlapBoxAll(capsule.hitbox.center, capsule.hitbox.size, capsule.AngleHori() * Mathf.Rad2Deg, layerMask);
-        res = res.Merge(Physics2D.OverlapCircleAll(capsule.circle1.center, capsule.circle1.radius, layerMask));
-        res = res.Merge(Physics2D.OverlapCircleAll(capsule.circle2.center, capsule.circle2.radius, layerMask));
-        return res.Distinct().ToArray();
-    }
-
-    public static UnityEngine.Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle,  LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
@@ -310,18 +448,18 @@ public static class PhysicsToric
         return OverlapCapsule(c, layerMask);
     }
 
-    public static UnityEngine.Collider2D OverlapCapsule(Capsule capsule,  LayerMask layerMask)
+    public static UnityEngine.Collider2D OverlapCapsule(Capsule capsule, LayerMask layerMask)
     {
-        UnityEngine.Collider2D res = OverlapBox(capsule.hitbox, layerMask);
-        if(res != null)
-            return res;
-        res = OverlapCircle(capsule.circle1, layerMask);
+        UnityEngine.Collider2D res = PhysicsToric.OverlapBox(capsule.hitbox, layerMask);
         if (res != null)
             return res;
-        return OverlapCircle(capsule.circle2, layerMask);
+        res = PhysicsToric.OverlapCircle(capsule.circle1, layerMask);
+        if (res != null)
+            return res;
+        return PhysicsToric.OverlapCircle(capsule.circle2, layerMask);
     }
 
-    public static UnityEngine.Collider2D[] OverlapCapsuleAll(in Vector2 center, in Vector2 size, float angle,  LayerMask layerMask)
+    public static UnityEngine.Collider2D[] OverlapCapsuleAll(in Vector2 center, in Vector2 size, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size);
         if (Mathf.Abs(angle) > 1e-5f)
@@ -329,11 +467,11 @@ public static class PhysicsToric
         return OverlapCapsuleAll(c, layerMask);
     }
 
-    public static UnityEngine.Collider2D[] OverlapCapsuleAll(Capsule capsule,  LayerMask layerMask)
+    public static UnityEngine.Collider2D[] OverlapCapsuleAll(Capsule capsule, LayerMask layerMask)
     {
         UnityEngine.Collider2D[] res = OverlapBoxAll(capsule.hitbox, layerMask);
         res = res.Merge(OverlapCircleAll(capsule.circle1, layerMask));
-        return res.Merge(OverlapCircleAll(capsule.circle2, layerMask));
+        return res.Merge(OverlapCircleAll(capsule.circle2, layerMask)).Distinct().ToArray();
     }
 
     #endregion
@@ -342,111 +480,166 @@ public static class PhysicsToric
 
     #region Raycast
 
-    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, int layerMask)//OK
+    private static bool ContainRaycast(RaycastHit2D[] raycasts, UnityEngine.Collider2D collider)
+    {
+        foreach (RaycastHit2D raycast in raycasts)
+        {
+            if (raycast.collider == collider)
+                return true;
+        }
+        return false;
+    }
+
+    private static bool ContainRaycast(ToricRaycastHit2D[] raycasts, UnityEngine.Collider2D collider)
+    {
+        foreach (ToricRaycastHit2D raycast in raycasts)
+        {
+            if (raycast.collider == collider)
+                return true;
+        }
+        return false;
+    }
+
+    public static ToricRaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, LayerMask layerMask)
     {
         List<Vector2> _ = new List<Vector2>();
-        float reachDistance = 0f;
-        RaycastHit2D raycast = RaycastRecur(GetPointInsideBounds(from), direction.normalized, distance, layerMask, ref reachDistance, ref _);
-        raycast.distance = raycast.collider != null ? reachDistance : 0f;
+        ToricRaycastHit2D raycast = RaycastRecur(GetPointInsideBounds(from), direction.normalized, distance, layerMask, 0f, ref _);
         return raycast;
     }
 
-    public static RaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, int layerMask, out Vector2[] toricHitboxIntersectionsPoints)
+    public static ToricRaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, LayerMask layerMask, out Vector2[] toricHitboxIntersectionsPoints)
     {
         List<Vector2> points = new List<Vector2>();
-        float reachDistance = 0f;
-        RaycastHit2D raycast = RaycastRecur(GetPointInsideBounds(from), direction.normalized, distance, layerMask, ref reachDistance, ref points);
-        raycast.distance = raycast.collider != null ? reachDistance : 0f;
+        ToricRaycastHit2D raycast = RaycastRecur(GetPointInsideBounds(from), direction.normalized, distance, layerMask, 0f, ref points);
         toricHitboxIntersectionsPoints = points.ToArray();
         return raycast;
     }
 
-    private static RaycastHit2D RaycastRecur(in Vector2 from, in Vector2 direction, float distance, int layerMask, ref float reachDistance, ref List<Vector2> points)
+    private static ToricRaycastHit2D Physics2DRaycastPriority(in Vector2 from, in Vector2 end, LayerMask layerMask)
     {
-        RaycastHit2D raycast = Physics2D.Raycast(from, direction, distance, layerMask);
-        Line2D ray;
+        float minSqrDist = float.MaxValue;
+        Vector2 minCp = Vector2.zero;
+        Vector2 minN = Vector2.zero;
+        UnityEngine.Collider2D res = null;
 
-        if (raycast.collider == null)
+        Collider2D col;
+        Ray2D ray = new Ray2D(from, end);
+        foreach (UnityEngine.Collider2D tmpCol in priorityColliders)
         {
-            Vector2 B = from + direction * distance;
-            if (mapHitbox.Contains(B))
+            if (layerMask.Contain(tmpCol.gameObject.layer))
             {
-                reachDistance += distance;
-                return raycast;
-            }
-            else
-            {
-                ray = new Line2D(from, B);
-                if (Collider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp))
+                col = Collider2D.FromUnityCollider2D(tmpCol);
+                if (Collider2D.CollideRay(col, ray, out Vector2 cp, out Vector2 n))
                 {
-                    float tmpDist = from.Distance(cp);
-                    reachDistance += tmpDist;
-                    Vector2 step = new Vector2(cp.x - mapHitbox.center.x > 0f ? 0.01f : -0.01f, cp.y - mapHitbox.center.y > 0f ? 0.01f : -0.01f);
-                    while (mapHitbox.Contains(cp))
+                    float sqrDist = from.SqrDistance(cp);
+                    if (sqrDist < minSqrDist)
                     {
-                        cp += step;
+                        minSqrDist = sqrDist;
+                        minCp = cp;
+                        res = tmpCol;
+                        minN = n;
                     }
-                    points.Add(cp);
-                    cp += step;
-                    cp = GetPointInsideBounds(cp);
-                    cp += step;
-                    return RaycastRecur(cp, direction, distance - tmpDist, layerMask, ref reachDistance, ref points);
+                }
+            }
+        }
+
+        return new ToricRaycastHit2D(minCp, minCp, res, minN, res != null ? res.attachedRigidbody : null, res == null ? -1f : Mathf.Sqrt(minSqrDist));
+    }
+
+    private static List<ToricRaycastHit2D> Physics2DRaycastPriorityAll(in Vector2 from, in Vector2 end, LayerMask layerMask)
+    {
+        List<ToricRaycastHit2D> res = new List<ToricRaycastHit2D>();
+        Collider2D col;
+        Ray2D ray = new Ray2D(from, end);
+        foreach (UnityEngine.Collider2D tmpCol in priorityColliders)
+        {
+            if (layerMask.Contain(tmpCol.gameObject.layer))
+            {
+                col = Collider2D.FromUnityCollider2D(tmpCol);
+                if (Collider2D.CollideRay(col, ray, out Vector2 cp, out Vector2 n))
+                {
+                    res.Add(new ToricRaycastHit2D(cp, cp, tmpCol, n, tmpCol.attachedRigidbody, from.Distance(cp)));
+                }
+            }
+        }
+        return res;
+    }
+
+    private static ToricRaycastHit2D RaycastRecur(in Vector2 from, in Vector2 direction, float distance, LayerMask layerMask, float reachDistance, ref List<Vector2> points)
+    {
+        RaycastHit2D raycast;
+        Vector2 end = from + direction * distance;
+
+        if (GetToricIntersection(from, end, out Vector2 inter))
+        {
+            float currentDistance = from.Distance(inter);
+            raycast = Physics2D.Raycast(from, direction, currentDistance, layerMask);
+            ToricRaycastHit2D res = Physics2DRaycastPriority(from, end, layerMask);
+
+            if (raycast.collider == null)
+            {
+                if (res.collider == null)
+                {
+                    reachDistance += currentDistance;
+                    points.Add(inter);
+                    inter = GetComplementaryPoint(inter);
+                    return RaycastRecur(inter, direction, distance - currentDistance, layerMask, reachDistance, ref points);
                 }
                 else
                 {
-                    reachDistance += raycast.distance;
-                    raycast.point = GetPointInsideBounds(B);
-                    return raycast;
+                    res.distance += reachDistance;
+                    return res;
                 }
             }
-        }
-        //raycast.collider != null
-        if (mapHitbox.Contains(raycast.point))
-        {
-            reachDistance += raycast.distance;
-            return raycast;
-        }
-        ray = new Line2D(from, from + direction * distance);
-        if (Collider2D.CollideHitboxLine(mapHitbox, ray, out Vector2 cp2))
-        {
-            float tmpDist = from.Distance(cp2);
-            reachDistance += tmpDist;
-            Vector2 step = new Vector2(cp2.x - mapHitbox.center.x > 0f ? 0.01f : -0.01f, cp2.y - mapHitbox.center.y > 0f ? 0.01f : -0.01f);
-            while (mapHitbox.Contains(cp2))
+            else
             {
-                cp2 += step;
+                if (res.collider == null || res.distance + 1e5f > raycast.distance)
+                {
+                    res = new ToricRaycastHit2D(raycast);
+                    res.distance += reachDistance;
+                    return res;
+                }
+
+                res.distance += reachDistance;
+                return res;
             }
-            points.Add(cp2);
-            cp2 += step;
-            cp2 = GetPointInsideBounds(cp2);
-            cp2 += step;
-            return RaycastRecur(cp2, direction, distance - tmpDist, layerMask, ref reachDistance, ref points);
         }
-        else
+        else //ez case
         {
-            Debug.LogWarning("Debug pls");
-            reachDistance += raycast.distance;
-            raycast.point = GetPointInsideBounds(raycast.point);
-            return raycast;
+            raycast = Physics2D.Raycast(from, direction, distance, layerMask);
+            ToricRaycastHit2D res = Physics2DRaycastPriority(from, end, layerMask);
+
+            if (raycast.collider == null)
+            {
+                res.distance += reachDistance;
+                return res;
+            }
+            else
+            {
+                if (res.collider == null || res.distance + 1e5f > raycast.distance)
+                {
+                    res = new ToricRaycastHit2D(raycast);
+                    res.distance += reachDistance;
+                    return res;
+                }
+
+                res.distance += reachDistance;
+                return res;
+            }
         }
     }
 
-    public static RaycastHit2D[] RaycastAll(Vector2 from, in Vector2 dir, float distance, LayerMask layerMask)
+    public static ToricRaycastHit2D[] RaycastAll(Vector2 from, in Vector2 dir, float distance, LayerMask layerMask)
     {
-        from = GetPointInsideBounds(from);
-        List<List<Vector2>> interPoints = new List<List<Vector2>>();
-        List<Vector2> globalInterPoints = new List<Vector2>();
-        RaycastHit2D[] raycasts = RaycastAllRecur(from, dir.normalized, distance, layerMask, 0f, 0, ref globalInterPoints, ref interPoints);
-
-        return raycasts;
+        return RaycastAllRecur(GetPointInsideBounds(from), dir.normalized, distance, layerMask, 0f);
     }
 
-    public static RaycastHit2D[] RaycastAll(Vector2 from, in Vector2 dir, float distance, LayerMask layerMask, out Vector2[][] toricHitboxIntersectionsPoints)
+    public static ToricRaycastHit2D[] RaycastAll(Vector2 from, in Vector2 dir, float distance, LayerMask layerMask, out Vector2[][] toricHitboxIntersectionsPoints)
     {
         from = GetPointInsideBounds(from);
         List<List<Vector2>> interPoints = new List<List<Vector2>>();
         List<Vector2> globalInterPoints = new List<Vector2>();
-        RaycastHit2D[] raycasts = RaycastAllRecur(from, dir.normalized, distance, layerMask, 0f, 0, ref globalInterPoints, ref interPoints);
+        ToricRaycastHit2D[] raycasts = RaycastAllRecur(from, dir.normalized, distance, layerMask, 0f, ref globalInterPoints, ref interPoints);
 
         toricHitboxIntersectionsPoints = new Vector2[interPoints.Count][];
         for (int i = 0; i < toricHitboxIntersectionsPoints.Length; i++)
@@ -461,51 +654,132 @@ public static class PhysicsToric
         return raycasts;
     }
 
-    private static RaycastHit2D[] RaycastAllRecur(in Vector2 from, in Vector2 direction, float distance, int layerMask, float reachDistance, int raycastIndex,ref List<Vector2> globalInterPoints, ref List<List<Vector2>> interPoints)
+    private static ToricRaycastHit2D[] RaycastAllRecur(in Vector2 from, in Vector2 direction, float distance, LayerMask layerMask, float reachDistance)
     {
-        Line2D line = new Line2D(from, from + direction * distance);
-        bool collide = false;
-        Vector2 inter = Vector2.zero;
-        float minInterSqrDist = float.MaxValue;
-
-        for (int i = 0; i < 4; i++)
+        Vector2 end = from + (distance * direction);
+        if (GetToricIntersection(from, end, out Vector2 inter))
         {
-            if (Collider2D.CollideHitboxLine(mapHitboxArounds[i], line, out Vector2 tmpInter))
+            float currentDist = from.Distance(end);
+            RaycastHit2D[] raycasts = Physics2D.RaycastAll(from, direction, currentDist, layerMask);
+            List<ToricRaycastHit2D> priorityRaycasts = Physics2DRaycastPriorityAll(from, end, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
+            for (int i = 0; i < raycasts.Length; i++)
             {
-                collide = true;
-                float sqrDist = from.SqrDistance(tmpInter);
-                if(sqrDist < minInterSqrDist)
+                resList.Add(new ToricRaycastHit2D(raycasts[i]));
+            }
+
+            for (int i = 0; i < priorityRaycasts.Count; i++)
+            {
+                if (!ContainRaycast(raycasts, priorityRaycasts[i].collider))
                 {
-                    minInterSqrDist = sqrDist;
-                    inter = tmpInter;
+                    resList.Add(priorityRaycasts[i]);
                 }
             }
-        }
 
-        if(collide)
-        {
-            float lineDist = Mathf.Sqrt(minInterSqrDist);
-            RaycastHit2D[] raycasts = Physics2D.RaycastAll(from, direction, lineDist, layerMask);
-            globalInterPoints.Add(inter);
-
-            for (int i = 0; i < raycasts.Length; i++)
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
             {
-                interPoints.Add(globalInterPoints.Clone());
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
             }
-            raycastIndex += raycasts.Length;
-            reachDistance += lineDist;
 
-            inter = GetComplementaryPoint(inter);
-            return raycasts.Merge(RaycastAllRecur(inter, direction, distance - lineDist, layerMask, reachDistance, raycastIndex, ref globalInterPoints, ref interPoints));
+            reachDistance += currentDist;
+            return res.Merge(RaycastAllRecur(GetComplementaryPoint(inter), direction, distance - currentDist, layerMask, reachDistance));
+
         }
-        else //ez case
+        else
         {
             RaycastHit2D[] raycasts = Physics2D.RaycastAll(from, direction, distance, layerMask);
+            List<ToricRaycastHit2D> priorityRaycasts = Physics2DRaycastPriorityAll(from, end, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
             for (int i = 0; i < raycasts.Length; i++)
             {
-                interPoints.Add(new List<Vector2>());
+                resList.Add(new ToricRaycastHit2D(raycasts[i]));
             }
-            return raycasts;
+
+            for (int i = 0; i < priorityRaycasts.Count; i++)
+            {
+                if (!ContainRaycast(raycasts, priorityRaycasts[i].collider))
+                {
+                    resList.Add(priorityRaycasts[i]);
+                }
+            }
+
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
+            {
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
+            }
+            return res;
+        }
+    }
+
+    private static ToricRaycastHit2D[] RaycastAllRecur(in Vector2 from, in Vector2 direction, float distance, LayerMask layerMask, float reachDistance, ref List<Vector2> globalInterPoints, ref List<List<Vector2>> interPoints)
+    {
+        Vector2 end = from + (distance * direction);
+        if (GetToricIntersection(from, end, out Vector2 inter))
+        {
+            float currentDist = from.Distance(end);
+            RaycastHit2D[] raycasts = Physics2D.RaycastAll(from, direction, currentDist, layerMask);
+            List<ToricRaycastHit2D> priorityRaycasts = Physics2DRaycastPriorityAll(from, end, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
+            for (int i = 0; i < raycasts.Length; i++)
+            {
+                resList.Add(new ToricRaycastHit2D(raycasts[i]));
+            }
+
+            for (int i = 0; i < priorityRaycasts.Count; i++)
+            {
+                if (!ContainRaycast(raycasts, priorityRaycasts[i].collider))
+                {
+                    resList.Add(priorityRaycasts[i]);
+                }
+            }
+
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
+            {
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
+                interPoints.Add(globalInterPoints.Clone());
+            }
+
+            reachDistance += currentDist;
+            globalInterPoints.Add(inter);
+            return res.Merge(RaycastAllRecur(GetComplementaryPoint(inter), direction, distance - currentDist, layerMask, reachDistance, ref globalInterPoints, ref interPoints));
+        }
+        else
+        {
+            RaycastHit2D[] raycasts = Physics2D.RaycastAll(from, direction, distance, layerMask);
+            List<ToricRaycastHit2D> priorityRaycasts = Physics2DRaycastPriorityAll(from, end, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
+            for (int i = 0; i < raycasts.Length; i++)
+            {
+                resList.Add(new ToricRaycastHit2D(raycasts[i]));
+            }
+
+            for (int i = 0; i < priorityRaycasts.Count; i++)
+            {
+                if (!ContainRaycast(raycasts, priorityRaycasts[i].collider))
+                {
+                    resList.Add(priorityRaycasts[i]);
+                }
+            }
+
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
+            {
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
+                interPoints.Add(globalInterPoints.Clone());
+            }
+
+            return res;
         }
     }
 
@@ -513,38 +787,298 @@ public static class PhysicsToric
 
     #region CircleCast
 
-    public static RaycastHit2D CircleCast(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
+    #region Physics2D
+
+    private static readonly Dictionary<Type, Func<Vector2, Vector2, float, float, Collider2D, ToricRaycastHit2D>> circleCastFunction = new Dictionary<Type, Func<Vector2, Vector2, float, float, Collider2D, ToricRaycastHit2D>>()
     {
-        List<Vector2> inter = new List<Vector2>();
-        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, true).ToArray();
-        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
-        return raycasts.Length >= 1 ? raycasts[0] : default;
+        { typeof(Circle), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D circle) => Physics2DCircleCastCircle(start, dir, radius, distance, (Circle)circle) },
+        { typeof(Hitbox), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D hitbox) => Physics2DCircleCastHitbox(start, dir, radius, distance, (Hitbox)hitbox) },
+        { typeof(Polygone), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D poly) => Physics2DCircleCastPolygone(start, dir, radius, distance, (Polygone)poly) },
+        { typeof(Capsule), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D capsule) => Physics2DCircleCastCapsule(start, dir, radius, distance, (Capsule)capsule) }
+    };
+
+    private static ToricRaycastHit2D Physics2DCircleCastPriority(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
+    {
+        Collider2D col;
+        ToricRaycastHit2D raycast;
+        ToricRaycastHit2D res = new ToricRaycastHit2D();
+        foreach (UnityEngine.Collider2D unityCol in priorityColliders)
+        {
+            if(!layerMask.Contain(unityCol.gameObject.layer))
+                continue;
+
+            col = Collider2D.FromUnityCollider2D(unityCol);
+            raycast = circleCastFunction[col.GetType()](start, dir, radius, distance, col);
+
+            if(raycast.distance >= 0f && (res.distance < 0f || raycast.distance < res.distance))
+            {
+                res = raycast;
+                res.collider = unityCol;
+                res.rigidbody = unityCol.attachedRigidbody;
+            }
+        }
+
+        return res;
     }
 
-    public static RaycastHit2D CircleCast(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, out Vector2[] torIntersections)
+    private static ToricRaycastHit2D Physics2DCircleCastCircle(in Vector2 start, in Vector2 dir, float radius, float distance, Circle circle)
     {
-        List<Vector2> inter = new List<Vector2>();
-        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, true).ToArray();
-        torIntersections= inter.ToArray();
-        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
-        return raycasts.Length >= 1 ? raycasts[0] : default;
+        Line2D line = new Line2D(start, start + dir * distance);
+        if(line.Distance(circle.center) > circle.radius)
+            return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+
+        StraightLine2D straightLine = new StraightLine2D(line.A, line.B);
+        Vector2 maxCenter = straightLine.OrthogonalProjection(circle.center);
+        maxCenter = maxCenter.SqrDistance(start) > line.B.SqrDistance(start) ? line.B : maxCenter;
+
+        void FindCenterRecur(Circle circle, in Vector2 minCenter, in Vector2 maxCenter, float sumRadiusSqr, ref Vector2 lastCollideCenter)
+        {
+            if (minCenter.SqrDistance(maxCenter) < 1e-5f)
+                return;
+
+            Vector2 avgCenter = (minCenter + maxCenter) * 0.5f;
+            if (avgCenter.SqrDistance(circle.center) <= sumRadiusSqr)
+            {
+                FindCenterRecur(circle, minCenter, avgCenter, sumRadiusSqr, ref avgCenter);
+                return;
+            }
+            FindCenterRecur(circle, avgCenter, minCenter, sumRadiusSqr, ref lastCollideCenter);
+        }
+
+        Vector2 bestCenter = Vector2.zero;
+        FindCenterRecur(circle, start, maxCenter, (radius + circle.radius) * (radius + circle.radius), ref bestCenter);
+
+        if(Collider2D.CollideCircles(circle, new Circle(bestCenter, radius), out Vector2 point))
+            return new ToricRaycastHit2D(point, bestCenter, null, (bestCenter - point).normalized, null, start.Distance(point));
+
+        return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
     }
 
-    public static RaycastHit2D[] CircleCastAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
+    private static ToricRaycastHit2D Physics2DCircleCastPolygone(in Vector2 start, in Vector2 dir, float radius, float distance, Polygone polygone)
     {
-        List<Vector2> inter = new List<Vector2>();
-        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, false).ToArray();
-        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
-        return raycasts;
+        if (polygone.inclusiveCircle.center.SqrDistance(start) > (radius + distance + polygone.inclusiveCircle.radius) * (radius + distance + polygone.inclusiveCircle.radius))
+            return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+
+        List<Line2D> sides = new List<Line2D>();
+        float cache = (distance + radius) * (distance + radius);
+        Vector2 offset = dir.NormalVector() * radius;
+        StraightLine2D diameterStraightLine = new StraightLine2D(start + offset, start - offset);
+        Line2D diameterLine = new Line2D(diameterStraightLine.A, diameterStraightLine.B);
+        Line2D side;
+        Vector2 point1, point2;
+        for (int i = 0; i < polygone.vertices.Length; i++)
+        {
+            side = new Line2D(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length]);
+            point1 = diameterStraightLine.OrthogonalProjection(side.A);
+            point2 = diameterStraightLine.OrthogonalProjection(side.B);
+
+            if(point1.SqrDistance(side.A) > cache && point2.SqrDistance(side.B) > cache)
+                continue;
+
+            bool isCircleCastPossible = diameterLine.Contain(point1) || diameterLine.Contain(point2);
+            isCircleCastPossible = isCircleCastPossible || (offset.Dot(point1 - start).Sign() != offset.Dot(point2 - start).Sign());
+            if (isCircleCastPossible)
+            {
+                sides.Add(side);
+            }
+        }
+
+        if (sides.Count <= 0)
+            return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+
+        StraightLine2D straightLine1 = new StraightLine2D(diameterLine.A, diameterLine.A + dir);
+        StraightLine2D straightLine2 = new StraightLine2D(diameterLine.B, diameterLine.B + dir);
+        List<Line2D> sides2 = new List<Line2D>();
+        StraightLine2D sideStraightLine;
+        Vector2 a, b, c;
+        for (int i = 0; i < sides.Count; i++)
+        {
+            side = sides[i];
+            sideStraightLine = new StraightLine2D(side.A, side.B);
+            if(!Collider2D.CollideStraightLines(straightLine1, sideStraightLine, out point1))
+                point1 = side.A;
+            if (!Collider2D.CollideStraightLines(straightLine2, sideStraightLine, out point2))
+                point2 = side.A;
+
+            if (Mathf.Approximately(side.A.x, point1.x) && Mathf.Approximately(side.B.x, point2.x) && Mathf.Approximately(side.A.x, side.B.x))
+            {
+                (a, b, c) = RemoveMin(side.A, side.B, point1, point2, false);
+                (point1, point2) = RemoveMax(a, b, c, false);
+            }
+            else
+            {
+                (a, b, c) = RemoveMin(side.A, side.B, point1, point2, true);
+                (point1, point2) = RemoveMax(a, b, c, true);
+            }
+            (Vector2, Vector2, Vector2) RemoveMin(in Vector2 a, in Vector2 b, in Vector2 c, in Vector2 d, bool x)
+            {
+                if(x)
+                {
+                    if (a.x < b.x && a.x < c.x && a.x < d.x)
+                        return (b, c, d);
+                    if (b.x < c.x && b.x < d.x)
+                        return (a, c, d);
+                    return c.x < d.x ? (a, b, d) : (a, b, c);
+                }
+                else
+                {
+                    if (a.y < b.y && a.y < c.y && a.y < d.y)
+                        return (b, c, d);
+                    if (b.y < c.y && b.y < d.y)
+                        return (a, c, d);
+                    return c.y < d.y ? (a, b, d) : (a, b, c);
+                }
+            }
+            (Vector2, Vector2) RemoveMax(in Vector2 a, in Vector2 b, in Vector2 c, bool x)
+            {
+                if (x)
+                {
+                    if (a.x < b.x && a.x < c.x)
+                        return (b, c);
+                    return b.x < c.x ? (a, c) : (a, b);
+                }
+                else
+                {
+                    if (a.y < b.y && a.y < c.y)
+                        return (b, c);
+                    return b.y < c.y ? (a, c) : (a, b);
+                }
+            }
+
+            sides2.Add(new Line2D(point1, point2));
+        }
+        sides.Clear();
+
+        Vector2 minCenter, maxCenter;
+        List<ToricRaycastHit2D> raycasts = new List<ToricRaycastHit2D>();
+        for (int i = 0; i < sides2.Count; i++)
+        {
+            side = sides2[i];
+            point1 = diameterStraightLine.OrthogonalProjection(side.A);
+            point2 = diameterStraightLine.OrthogonalProjection(side.B);
+            if(point1.SqrDistance(side.A) <= point2.SqrDistance(side.B))
+            {
+                minCenter = side.A - dir * radius + start - point1;
+                maxCenter = side.B + start - point2;
+            }
+            else
+            {
+                minCenter = side.B - dir * radius + start - point2;
+                maxCenter = side.A + start - point1;
+            }
+
+            void FindCenterRecur(in Vector2 start, Line2D line, in Vector2 minCenter, in Vector2 maxCenter, float radius, float maxDistanceSqr, ref Vector2? lastCollideCenter)
+            {
+                if (minCenter.SqrDistance(maxCenter) < 1e-5f || minCenter.SqrDistance(start) > maxDistanceSqr)
+                    return;
+
+                Vector2? avgCenter = (minCenter + maxCenter) * 0.5f;
+                if(Collider2D.CollideCircleLine(new Circle(avgCenter.Value, radius), line))
+                {
+                    FindCenterRecur(start, line, minCenter, avgCenter.Value, radius, maxDistanceSqr, ref avgCenter);
+                    return;
+                }
+                FindCenterRecur(start, line, avgCenter.Value, maxCenter, radius, maxDistanceSqr, ref lastCollideCenter);
+            }
+
+            Vector2? bestCenter = null;
+            FindCenterRecur(start, side, minCenter, maxCenter, radius, cache, ref bestCenter);
+            if(bestCenter.HasValue)
+            {
+                if(Collider2D.CollideCircleLine(new Circle(bestCenter.Value, radius), side, out Vector2 point, out Vector2 normal))
+                {
+                    raycasts.Add(new ToricRaycastHit2D(point, bestCenter.Value, null, -normal, null, start.SqrDistance(point)));
+                }
+                else
+                {
+                    Debug.Log("Debug pls");
+                    LogManager.instance.WriteLog("Must be collision here!", bestCenter.Value, radius, side);
+                }
+            }
+        }
+
+        if (raycasts.Count <= 0)
+            return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+
+        int minDistIndex = 0;
+        float minSqrDist = raycasts[0].distance;
+
+        for (int i = 1; i < raycasts.Count; i++)
+        {
+            if (raycasts[i].distance < minSqrDist)
+            {
+                minSqrDist = raycasts[i].distance;
+                minDistIndex = i;
+            }
+        }
+
+        ToricRaycastHit2D res = raycasts[minDistIndex];
+        res.distance = Mathf.Sqrt(res.distance);
+        return res;
     }
 
-    public static RaycastHit2D[] CircleCastAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, out Vector2[] torIntersections)
+    private static ToricRaycastHit2D Physics2DCircleCastHitbox(in Vector2 start, in Vector2 dir, float radius, float distance, Hitbox hitbox)
     {
-        List<Vector2> inter = new List<Vector2>();
-        RaycastHit2D[] raycasts = CircleCastRecur(start, dir.normalized, radius, distance, layerMask, ref inter, false).ToArray();
-        torIntersections = inter.ToArray();
-        FixCircleCastRaycastPoints(start, radius, ref raycasts, ref inter);
-        return raycasts;
+        return Physics2DCircleCastPolygone(start, dir, radius, distance, hitbox.ToPolygone());
+    }
+
+    private static ToricRaycastHit2D Physics2DCircleCastCapsule(in Vector2 start, in Vector2 dir, float radius, float distance, Capsule capsule)
+    {
+        if(capsule.inclusiveCircle.center.SqrDistance(start) > (radius + distance + capsule.inclusiveCircle.radius) * (radius + distance + capsule.inclusiveCircle.radius))
+            return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+
+        ToricRaycastHit2D rayC1 = Physics2DCircleCastCircle(start, dir, radius, distance, capsule.circle1);
+        ToricRaycastHit2D rayC2 = Physics2DCircleCastCircle(start, dir, radius, distance, capsule.circle2);
+        ToricRaycastHit2D rayHitbox = Physics2DCircleCastHitbox(start, dir, radius, distance, capsule.hitbox);
+
+        if(rayC1.distance >= 0f || rayC2.distance >= 0f || rayHitbox.distance >= 0f)
+        {
+            if(rayC1.distance >= 0f && (rayC1.distance <= rayC2.distance || rayC2.distance < 0f) && (rayC1.distance <= rayHitbox.distance || rayHitbox.distance < 0f))
+                return rayC1;
+
+            if (rayC2.distance >= 0f && (rayC2.distance <= rayHitbox.distance || rayHitbox.distance < 0f))
+                return rayC2;
+            return rayHitbox;
+        }
+
+        return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+    }
+
+    private static ToricRaycastHit2D[] Physics2DCircleCastPriorityAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
+    {
+        Collider2D col;
+        ToricRaycastHit2D raycast;
+        List<ToricRaycastHit2D> res = new List<ToricRaycastHit2D>();
+        foreach (UnityEngine.Collider2D unityCol in priorityColliders)
+        {
+            if (!layerMask.Contain(unityCol.gameObject.layer))
+                continue;
+
+            col = Collider2D.FromUnityCollider2D(unityCol);
+            raycast = circleCastFunction[col.GetType()](start, dir, radius, distance, col);
+
+            if (raycast.distance >= 0f)
+            {
+                raycast.collider = unityCol;
+                raycast.rigidbody = unityCol.attachedRigidbody;
+                res.Add(raycast);
+            }
+        }
+
+        return res.ToArray();
+    }
+
+    #endregion
+
+    private static void RemoveUnvaillableRaycastHit(ref List<RaycastHit2D> raycasts)
+    {
+        for (int i = raycasts.Count - 1; i >= 0; i--)
+        {
+            if (raycasts[i].collider == null || !mapHitbox.Contains(raycasts[i].point))
+            {
+                raycasts.RemoveAt(i);
+            }
+        }
     }
 
     private static void FixCircleCastRaycastPoints(in Vector2 start, float radius, ref RaycastHit2D[] raycasts, ref List<Vector2> inter)
@@ -566,64 +1100,286 @@ public static class PhysicsToric
         }
     }
 
-    private static List<RaycastHit2D> CircleCastRecur(Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask, ref List<Vector2> inters, bool onlyOne)
+    public static ToricRaycastHit2D CircleCast(in Vector2 from, in Vector2 dir, float radius, float distance, LayerMask layerMask)
     {
-        start = GetPointInsideBounds(start);
-        List<RaycastHit2D> raycasts = Physics2D.CircleCastAll(start, radius, dir, distance, layerMask).ToList();
+        List<Vector2> _ = new List<Vector2>();
+        ToricRaycastHit2D raycasts = CircleCastRecur(GetPointInsideBounds(from), dir.normalized, radius, distance, layerMask, 0f, ref _);
+        //FixCircleCastRaycastPoints(from, radius, ref raycasts, ref inter);
+        return raycasts;
+    }
 
-        RemoveUnvaillableRaycastHit(ref raycasts);
+    public static ToricRaycastHit2D CircleCast(in Vector2 from, in Vector2 dir, float radius, float distance, LayerMask layerMask, out Vector2[] toricIntersections)
+    {
+        List<Vector2> inter = new List<Vector2>();
+        ToricRaycastHit2D raycasts = CircleCastRecur(GetPointInsideBounds(from), dir.normalized, radius, distance, layerMask, 0f, ref inter);
+        toricIntersections = inter.ToArray();
+        //FixCircleCastRaycastPoints(from, radius, ref raycasts, ref inter);
+        return raycasts;
+    }
 
-        if (onlyOne && raycasts.Count > 0)
-            return raycasts;
-
-        Vector2 end = start + dir * distance;
-        if (mapHitbox.Contains(end))
+    private static ToricRaycastHit2D CircleCastRecur(Vector2 from, in Vector2 direction, float radius, float distance, LayerMask layerMask, float reachDistance, ref List<Vector2> points)
+    {
+        RaycastHit2D circleCast;
+        ToricRaycastHit2D circleCastPriority;
+        Vector2 end = from + direction * distance;
+        if (GetToricIntersection(from, end, out Vector2 inter))
         {
-            Circle c = new Circle(end, radius);
-            bool calculateEdge = false;
-            if(Collider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)) ||
-                Collider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)))
-            {
-                end += Vector2.right * (end.x >= 0f ? -mapSize.x : mapSize.x);
-                calculateEdge = true;
-            }
+            float currentDistance = from.Distance(inter);
+            circleCast = Physics2D.CircleCast(from, radius, direction, currentDistance, layerMask);
+            circleCastPriority = Physics2DCircleCastPriority(from, direction, radius, currentDistance, layerMask);
 
-            if (Collider2D.CollideCircleLine(c, mapHitbox.size * 0.5f, 0.5f * new Vector2(-mapHitbox.size.x, mapHitbox.size.y)) ||
-                Collider2D.CollideCircleLine(c, mapHitbox.size * (-0.5f), 0.5f * new Vector2(mapHitbox.size.x, -mapHitbox.size.y)))
+            if (circleCast.collider == null)
             {
-                end += Vector2.up * (end.y >= 0f ? -mapSize.y : mapSize.y);
-                calculateEdge = true;
-            }
-            if (calculateEdge)
-                return raycasts.Merge(Physics2D.CircleCastAll(end, radius, dir, 0.01f, layerMask).ToList());
-            return raycasts;
-        }
-        else
-        {
-            if (Collider2D.CollideHitboxLine(mapHitbox, start, end, out Vector2 col))
-            {
-                inters.Add(col);
-                float newDist = distance - start.Distance(col);
-                col = GetComplementaryPoint(col);
-                return raycasts.Merge(CircleCastRecur(col, dir, radius, newDist, layerMask, ref inters, onlyOne));
+                if (circleCastPriority.collider == null)
+                {
+                    reachDistance += currentDistance;
+                    points.Add(inter);
+                    inter = GetComplementaryPoint(inter);
+                    return RaycastRecur(inter, direction, distance - currentDistance, layerMask, reachDistance, ref points);
+                }
+                else
+                {
+                    if(!mapHitbox.Contains(circleCastPriority.point))
+                    {
+                        reachDistance += currentDistance;
+                        points.Add(inter);
+                        inter = GetComplementaryPoint(inter);
+                        return RaycastRecur(inter, direction, distance - currentDistance, layerMask, reachDistance, ref points);
+                    }
+
+                    circleCastPriority.distance += reachDistance;
+                    return circleCastPriority;
+                }
             }
             else
             {
-                Debug.LogWarning("must be collision");
-                LogManager.instance.WriteLog("must be collision between cameraHitbox and the line in PhysicToric.CircleCastRecur()", mapHitbox, new Line2D(start, end));
-                return raycasts;
+                if (circleCastPriority.collider == null || circleCastPriority.distance + 1e5f > circleCast.distance)
+                {
+                    if (!mapHitbox.Contains(circleCast.point))
+                    {
+                        reachDistance += currentDistance;
+                        points.Add(inter);
+                        inter = GetComplementaryPoint(inter);
+                        return RaycastRecur(inter, direction, distance - currentDistance, layerMask, reachDistance, ref points);
+                    }
+
+                    circleCastPriority = new ToricRaycastHit2D(circleCast);
+                    circleCastPriority.distance += reachDistance;
+                    return circleCastPriority;
+                }
+
+                if (!mapHitbox.Contains(circleCastPriority.point))
+                {
+                    reachDistance += currentDistance;
+                    points.Add(inter);
+                    inter = GetComplementaryPoint(inter);
+                    return RaycastRecur(inter, direction, distance - currentDistance, layerMask, reachDistance, ref points);
+                }
+
+                circleCastPriority.distance += reachDistance;
+                return circleCastPriority;
             }
         }
-
-        void RemoveUnvaillableRaycastHit(ref List<RaycastHit2D> raycasts)
+        else //ez case
         {
-            for (int i = raycasts.Count - 1; i >= 0; i--)
+            circleCast = Physics2D.CircleCast(from, radius, direction, distance, layerMask);
+            circleCastPriority = Physics2DCircleCastPriority(from, direction, radius, distance, layerMask);
+
+            if (circleCast.collider == null)
             {
-                if (raycasts[i].collider == null || !mapHitbox.Contains(raycasts[i].point))
+                if(circleCastPriority.collider != null)
                 {
-                    raycasts.RemoveAt(i);
+                    if(!mapHitbox.Contains(circleCastPriority.point))
+                        return default(ToricRaycastHit2D);
+
+                    circleCastPriority.distance += reachDistance;
+                }
+                return circleCastPriority;
+            }
+            else
+            {
+                if (circleCastPriority.collider == null || circleCastPriority.distance + 1e5f > circleCast.distance)
+                {
+                    if (!mapHitbox.Contains(circleCast.point))
+                        return default(ToricRaycastHit2D);
+
+                    circleCastPriority = new ToricRaycastHit2D(circleCast);
+                    circleCastPriority.distance += reachDistance;
+                    return circleCastPriority;
+                }
+
+                if (!mapHitbox.Contains(circleCastPriority.point))
+                    return default(ToricRaycastHit2D);
+
+                circleCastPriority.distance += reachDistance;
+                return circleCastPriority;
+            }
+        }
+    }
+
+    public static ToricRaycastHit2D[] CircleCastAll(in Vector2 from, in Vector2 dir, float radius, float distance, LayerMask layerMask)
+    {
+        ToricRaycastHit2D[] raycasts = CircleCastRecurAll(GetPointInsideBounds(from), dir.normalized, radius, distance, layerMask, 0f);
+        //FixCircleCastRaycastPoints(from, radius, ref raycasts, ref inter);
+        return raycasts;
+    }
+
+    public static ToricRaycastHit2D[] CircleCastAll(in Vector2 from, in Vector2 dir, float radius, float distance, LayerMask layerMask, out Vector2[][] toricIntersections)
+    {
+        List<List<Vector2>> interPoints = new List<List<Vector2>>();
+        List<Vector2> globalInterPoints = new List<Vector2>();
+        ToricRaycastHit2D[] raycasts = CircleCastRecurAll(GetPointInsideBounds(from), dir.normalized, radius, distance, layerMask, 0f, ref globalInterPoints, ref interPoints);
+
+        toricIntersections = new Vector2[interPoints.Count][];
+        for (int i = 0; i < toricIntersections.Length; i++)
+        {
+            toricIntersections[i] = new Vector2[interPoints[i].Count];
+            for (int j = 0; j < toricIntersections[i].Length; j++)
+            {
+                toricIntersections[i][j] = interPoints[i][j];
+            }
+        }
+        //FixCircleCastRaycastPoints(from, radius, ref raycasts, ref inter);
+        return raycasts;
+    }
+
+    private static ToricRaycastHit2D[] CircleCastRecurAll(Vector2 from, in Vector2 direction, float radius, float distance, LayerMask layerMask, float reachDistance)
+    {
+        Vector2 end = from + (distance * direction);
+        if (GetToricIntersection(from, end, out Vector2 inter))
+        {
+            float currentDist = from.Distance(end);
+            RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
+            ToricRaycastHit2D[] priorityCirclesCasts = Physics2DCircleCastPriorityAll(from, direction, radius, currentDist, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
+            for (int i = 0; i < circleCasts.Length; i++)
+            {
+                if (mapHitbox.Contains(circleCasts[i].point))
+                {
+                    resList.Add(new ToricRaycastHit2D(circleCasts[i]));
                 }
             }
+
+            for (int i = 0; i < priorityCirclesCasts.Length; i++)
+            {
+                if (!ContainRaycast(circleCasts, priorityCirclesCasts[i].collider) && mapHitbox.Contains(priorityCirclesCasts[i].point))
+                {
+                    resList.Add(priorityCirclesCasts[i]);
+                }
+            }
+
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
+            {
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
+            }
+
+            reachDistance += currentDist;
+            return res.Merge(CircleCastRecurAll(GetComplementaryPoint(inter), direction, radius, distance - currentDist, layerMask, reachDistance));
+        }
+        else
+        {
+            RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
+            ToricRaycastHit2D[] priorityCirclesCasts = Physics2DCircleCastPriorityAll(from, direction, radius, distance, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
+            for (int i = 0; i < circleCasts.Length; i++)
+            {
+                if (mapHitbox.Contains(circleCasts[i].point))
+                {
+                    resList.Add(new ToricRaycastHit2D(circleCasts[i]));
+                }
+            }
+
+            for (int i = 0; i < priorityCirclesCasts.Length; i++)
+            {
+                if (!ContainRaycast(circleCasts, priorityCirclesCasts[i].collider) && mapHitbox.Contains(priorityCirclesCasts[i].point))
+                {
+                    resList.Add(priorityCirclesCasts[i]);
+                }
+            }
+
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
+            {
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
+            }
+            return res;
+        }
+    }
+
+    private static ToricRaycastHit2D[] CircleCastRecurAll(Vector2 from, in Vector2 direction, float radius, float distance, LayerMask layerMask, float reachDistance, ref List<Vector2> globalInterPoints, ref List<List<Vector2>> interPoints)
+    {
+        Vector2 end = from + (distance * direction);
+        if (GetToricIntersection(from, end, out Vector2 inter))
+        {
+            float currentDist = from.Distance(end);
+            RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
+            ToricRaycastHit2D[] priorityCirclesCasts = Physics2DCircleCastPriorityAll(from, direction, radius, currentDist, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
+            for (int i = 0; i < circleCasts.Length; i++)
+            {
+                if (mapHitbox.Contains(circleCasts[i].point))
+                {
+                    resList.Add(new ToricRaycastHit2D(circleCasts[i]));
+                }
+            }
+
+            for (int i = 0; i < priorityCirclesCasts.Length; i++)
+            {
+                if (!ContainRaycast(circleCasts, priorityCirclesCasts[i].collider) && mapHitbox.Contains(priorityCirclesCasts[i].point))
+                {
+                    resList.Add(priorityCirclesCasts[i]);
+                }
+            }
+
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
+            {
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
+                interPoints.Add(globalInterPoints.Clone());
+            }
+
+            reachDistance += currentDist;
+            globalInterPoints.Add(inter);
+            return res.Merge(CircleCastRecurAll(GetComplementaryPoint(inter), direction, radius, distance - currentDist, layerMask, reachDistance, ref globalInterPoints, ref interPoints));
+        }
+        else
+        {
+            RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
+            ToricRaycastHit2D[] priorityCirclesCasts = Physics2DCircleCastPriorityAll(from, direction, radius, distance, layerMask);
+
+            List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
+            for (int i = 0; i < circleCasts.Length; i++)
+            {
+                if (mapHitbox.Contains(circleCasts[i].point))
+                {
+                    resList.Add(new ToricRaycastHit2D(circleCasts[i]));
+                }
+            }
+
+            for (int i = 0; i < priorityCirclesCasts.Length; i++)
+            {
+                if (!ContainRaycast(circleCasts, priorityCirclesCasts[i].collider) && mapHitbox.Contains(priorityCirclesCasts[i].point))
+                {
+                    resList.Add(priorityCirclesCasts[i]);
+                }
+            }
+
+            ToricRaycastHit2D[] res = new ToricRaycastHit2D[resList.Count];
+            for (int i = 0; i < resList.Count; i++)
+            {
+                res[i] = resList[i];
+                res[i].distance += reachDistance;
+                interPoints.Add(globalInterPoints.Clone());
+            }
+
+            return res;
         }
     }
 
@@ -645,7 +1401,7 @@ public static class PhysicsToric
     public static void GizmosDrawRaycast(Vector2 from, in Vector2 direction, float distance)
     {
         from = GetPointInsideBounds(from);
-        RaycastHit2D _ = Raycast(GetPointInsideBounds(from), direction, distance, 0, out Vector2[] inters);
+        ToricRaycastHit2D _ = Raycast(GetPointInsideBounds(from), direction, distance, 0, out Vector2[] inters);
         if(inters.Length <= 0)
         {
             Gizmos.DrawLine(from, from + direction * distance);
@@ -665,15 +1421,8 @@ public static class PhysicsToric
 
     public static void GizmosDrawHitboxes()
     {
-        Gizmos.color = Color.green;
-        for (int i = 0; i < 4; i++)
-        {
-            Hitbox.GizmosDraw(mapHitboxArounds[i]);
-        }
-
         Gizmos.color = Color.blue;
         Hitbox.GizmosDraw(mapHitbox);
-
     }
 
 #endif

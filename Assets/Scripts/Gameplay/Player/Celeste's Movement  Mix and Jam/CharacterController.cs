@@ -349,9 +349,9 @@ public class CharacterController : MonoBehaviour
     {
         // I-Collision/detection
         oldGroundCollider = groundCollider;
-        RaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
-        RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
-        RaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+        ToricRaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+        ToricRaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
+        ToricRaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
 
         groundCollider = null;
         if(groundRay.collider != null)
@@ -729,7 +729,7 @@ public class CharacterController : MonoBehaviour
         if (groundCollider != null)
         {
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-            RaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+            ToricRaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
 
             if (groundRay.collider != null)
             {
@@ -737,8 +737,8 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                RaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
-                RaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+                ToricRaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
+                ToricRaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
                 if (rightSlopeRay.collider != null || leftSlopeRay.collider != null)
                 {
                     if (rightSlopeRay.collider == null || leftSlopeRay.collider == null)
@@ -1598,7 +1598,7 @@ public class CharacterController : MonoBehaviour
         onRight = onLeft = false;
 
         Vector2 start = new Vector2(transform.position.x, transform.position.y + grabRayOffset);
-        RaycastHit2D raycast = PhysicsToric.Raycast(start, Vector2.right, grabRayLength, groundLayer);
+        ToricRaycastHit2D raycast = PhysicsToric.Raycast(start, Vector2.right, grabRayLength, groundLayer);
         if (raycast.collider != null)
             onRight = true;
         raycast = PhysicsToric.Raycast(start, Vector2.left, grabRayLength, groundLayer);

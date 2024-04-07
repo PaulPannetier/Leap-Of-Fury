@@ -84,7 +84,7 @@ public class BouncingBall : MonoBehaviour
                 */
 
                 //sebastian lague version
-                speed = Collision2D.Ray2D.Reflection(raycast.normal, raycast.point, speed / v) * v;
+                speed = Collision2D.StraightLine2D.Reflection(raycast.normal, raycast.point, speed / v) * v;
             }
         }
 

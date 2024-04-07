@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Collision2D
 {
-    #region Line/Ray
+    #region Line/StraightLine/Ray
 
     public class Line2D
     {
@@ -25,13 +25,14 @@ namespace Collision2D
             B = new Vector2(A.x + lenght * Mathf.Cos(angle), A.y + lenght * Mathf.Sin(angle));
         }
 
+        public bool Contain(in Vector2 point) => Contain(A, B, point);
         /// <summary>
         /// 
         /// </summary>
         /// <returns>true if point € [A,B], false otherwise</returns>
         public static bool Contain(in Vector2 A, in Vector2 B, in Vector2 point)
         {
-            if (Mathf.Approximately(A.x, B.x))
+            if (Mathf.Abs(A.x - B.x) < 1e-3f)
             {
                 return Mathf.Approximately(((A.x + B.x) * 0.5f), point.x) && Mathf.Min(A.y, B.y) <= point.y && Mathf.Max(A.y, B.y) >= point.y;
             }
@@ -39,12 +40,13 @@ namespace Collision2D
             {
                 return false;
             }
-            //equetion de la droite (A,B)
+            //equation de la droite (A,B)
             float a = (B.y - A.y) / (B.x - A.x);
             float b = A.y - a * A.x;
-            return Mathf.Approximately(a * point.x + b, point.y);
+            return Mathf.Abs(a * point.x + b - point.y) < 1e-3f;
         }
 
+        public float Distance(in Vector2 point) => Distance(A, B, point);
         public static float Distance(in Vector2 A, in Vector2 B, in Vector2 point)
         {
             float r = (((point.x - A.x) * (B.x - A.x)) + ((point.y - A.y) * (B.y - A.y))) / A.SqrDistance(B);
@@ -52,6 +54,7 @@ namespace Collision2D
             return (0f <= r && r <= 1f) ? P.Distance(point) : (r < 0f ? A.Distance(point) : B.Distance(point));
         }
 
+        public Vector2 Normal() => Normal(A, B);
         /// <summary>
         /// 
         /// </summary>
@@ -67,16 +70,16 @@ namespace Collision2D
         }
     }
 
-    public class Ray2D
+    public class StraightLine2D
     {
         public Vector2 A, B;
-        public Ray2D(in Vector2 A, in Vector2 B)
+        public StraightLine2D(in Vector2 A, in Vector2 B)
         {
             this.A = A;
             this.B = B;
         }
 
-        public static void GizmosDraw(Ray2D d) => GizmosDraw(d.A, d.B);
+        public static void GizmosDraw(StraightLine2D d) => GizmosDraw(d.A, d.B);
         public static void GizmosDraw(in Vector2 A, in Vector2 B)
         {
             float a = Useful.AngleHori(A, B);
@@ -85,21 +88,22 @@ namespace Collision2D
             Gizmos.DrawLine(s + dir * 100000f, s + dir * -100000f);
         }
 
+        public Vector2 Symetric(in Vector2 M) => Symetric(M, A, B);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="M"></param>
         /// <param name="D"></param>
         /// <param name="h"></param>
-        /// <returns>Le symétrique du point M par rapport à la droite D</returns>
-        public static Vector2 Symetric(in Vector2 M, Ray2D D)
+        /// <returns>Le symétrique du point M par rapport à la droite (A,B)</returns>
+        public static Vector2 Symetric(in Vector2 M, in Vector2 A, in Vector2 B)
         {
             //custom version
-            if (Mathf.Approximately(D.A.x, D.B.x))
+            if (Mathf.Approximately(A.x, B.x))
             {
-                return new Vector2(M.x >= (D.A.x - D.B.x) * 0.5f ? M.x - 2f * Distance(D.A, D.B, M) : M.x + 2f * Distance(D.A, D.B, M), M.y);
+                return new Vector2(M.x >= (A.x - B.x) * 0.5f ? M.x - 2f * Distance(A, B, M) : M.x + 2f * Distance(A, B, M), M.y);
             }
-            return 2f * OrthogonalProjection(M, D) - M;
+            return 2f * OrthogonalProjection(M, A, B) - M;
         }
 
         public static Vector2 Reflection(in Vector2 normal, in Vector2 interPointInDroite, in Vector2 initDir)
@@ -107,24 +111,26 @@ namespace Collision2D
             return initDir - 2f * Vector2.Dot(initDir, normal) * normal;
         }
 
+        public Vector2 OrthogonalProjection(in Vector2 M) => OrthogonalProjection(M, A, B);
         /// <summary>
         /// 
         /// </summary>
         /// <param name="M"></param>
         /// <param name="D"></param>
-        /// <returns>le projeté orthogonal du point M sur la droite D</returns>
-        public static Vector2 OrthogonalProjection(in Vector2 M, in Ray2D D)
+        /// <returns>The orthogonal projection of the point M on the straight line (A,B)</returns>
+        public static Vector2 OrthogonalProjection(in Vector2 M, in Vector2 A, in Vector2 B)
         {
-            if (Mathf.Approximately(D.A.x, D.B.x))
+            if (Mathf.Approximately(A.x, B.x))
             {
-                return new Vector2((D.A.x - D.B.x) * 0.5f, M.y);
+                return new Vector2((A.x - B.x) * 0.5f, M.y);
             }
 
-            float r = (((M.x - D.A.x) * (D.B.x - D.A.x)) + ((M.y - D.A.y) * (D.B.y - D.A.y))) / D.A.SqrDistance(D.B);
-            Vector2 P = D.A + r * (D.B - D.A);
+            float r = (((M.x - A.x) * (B.x - A.x)) + ((M.y - A.y) * (B.y - A.y))) / A.SqrDistance(B);
+            Vector2 P = A + r * (B - A);
             return P;
         }
 
+        public bool Contain(in Vector2 point) => Contain(A, B, point);
         /// <summary>
         /// 
         /// </summary>
@@ -141,6 +147,7 @@ namespace Collision2D
             return Mathf.Approximately(a * point.x + b, point.y);
         }
 
+        public float Distance(in Vector2 point) => Distance(A, B, point);
         /// <summary>
         /// Vérif ok
         /// </summary>
@@ -156,6 +163,7 @@ namespace Collision2D
             return Mathf.Abs(a * point.x - point.y + b) / Mathf.Sqrt(a * a + 1f);
         }
 
+        public Vector2 Normal() => Normal(A, B);
         /// <summary>
         /// 
         /// </summary>
@@ -167,6 +175,20 @@ namespace Collision2D
                 return Vector2.right;
             }
             return new Vector2((B.y - A.y) / (B.x - A.x), -1f).normalized;
+        }
+    }
+
+    /// <summary>
+    /// Describe a directional line2D
+    /// </summary>
+    public class Ray2D
+    {
+        public Vector2 start, end;
+
+        public Ray2D(in Vector2 start, in Vector2 end)
+        {
+            this.start = start;
+            this.end = end;
         }
     }
 
@@ -187,12 +209,13 @@ namespace Collision2D
             else if (collider is PolygonCollider2D poly)
                 return new Polygone(poly);
             Debug.LogWarning($"Cant convert a unity collider2D of type {collider.GetType()}!");
+            LogManager.instance.WriteLog($"Cant convert a unity collider2D of type {collider.GetType()}!", collider);
             return null;
         }
 
         #region Collision Functions
 
-        private static readonly List<Vector2> cache = new List<Vector2>(), cache2 = new List<Vector2>(), cache3 = new List<Vector2>();
+        private static readonly List<Vector2> cache0 = new List<Vector2>(), cache1 = new List<Vector2>(), cache2 = new List<Vector2>();
 
         #region General Collissions
 
@@ -355,7 +378,31 @@ namespace Collision2D
             { typeof(Capsule), (Collider2D c, Vector2 A, Vector2 B) => (CollideCapsuleLine((Capsule)c, A, B, out Vector2 v, out Vector2 v2), v, v2) },
         };
 
-        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>> collisionDroite1 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>>()
+        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>> collisionStraightLine1 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>>()
+        {
+            { typeof(Circle), (Collider2D c, Vector2 A, Vector2 B) => CollideCircleStraightLine((Circle)c, A, B) },
+            { typeof(Polygone), (Collider2D c, Vector2 A, Vector2 B) => CollidePolygoneStaightLine((Polygone)c, A, B) },
+            { typeof(Hitbox), (Collider2D c, Vector2 A, Vector2 B) => CollideHitboxStraigthLine((Hitbox)c, A, B) },
+            { typeof(Capsule), (Collider2D c, Vector2 A, Vector2 B) => CollideCapsuleStraightLine((Capsule)c, A, B) },
+        };
+
+        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2)>> collisionStraightLine2 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2)>>()
+        {
+            { typeof(Circle), (Collider2D c, Vector2 A, Vector2 B) => (CollideCircleStraightLine((Circle)c, A, B, out Vector2 v), v) },
+            { typeof(Polygone), (Collider2D c, Vector2 A, Vector2 B) => (CollidePolygoneStaightLine((Polygone)c, A, B, out Vector2 v), v) },
+            { typeof(Hitbox), (Collider2D c, Vector2 A, Vector2 B) => (CollideHitboxStraigthLine((Hitbox)c, A, B, out Vector2 v), v) },
+            { typeof(Capsule), (Collider2D c, Vector2 A, Vector2 B) => (CollideCapsuleStraightLine((Capsule)c, A, B, out Vector2 v), v) },
+        };
+
+        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2, Vector2)>> collisionStraightLine3 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2, Vector2)>>()
+        {
+            { typeof(Circle), (Collider2D c, Vector2 A, Vector2 B) => (CollideCircleStraightLine((Circle)c, A, B, out Vector2 v, out Vector2 v2), v, v2) },
+            { typeof(Polygone), (Collider2D c, Vector2 A, Vector2 B) => (CollidePolygoneStaightLine((Polygone)c, A, B, out Vector2 v, out Vector2 v2), v, v2) },
+            { typeof(Hitbox), (Collider2D c, Vector2 A, Vector2 B) => (CollideHitboxStraigthLine((Hitbox)c, A, B, out Vector2 v, out Vector2 v2), v, v2) },
+            { typeof(Capsule), (Collider2D c, Vector2 A, Vector2 B) => (CollideCapsuleStraightLine((Capsule)c, A, B, out Vector2 v, out Vector2 v2), v, v2) },
+        };
+
+        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>> collisionRay1 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>>()
         {
             { typeof(Circle), (Collider2D c, Vector2 A, Vector2 B) => CollideCircleRay((Circle)c, A, B) },
             { typeof(Polygone), (Collider2D c, Vector2 A, Vector2 B) => CollidePolygoneRay((Polygone)c, A, B) },
@@ -363,7 +410,7 @@ namespace Collision2D
             { typeof(Capsule), (Collider2D c, Vector2 A, Vector2 B) => CollideCapsuleRay((Capsule)c, A, B) },
         };
 
-        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2)>> collisionDroite2 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2)>>()
+        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2)>> collisionRay2 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2)>>()
         {
             { typeof(Circle), (Collider2D c, Vector2 A, Vector2 B) => (CollideCircleRay((Circle)c, A, B, out Vector2 v), v) },
             { typeof(Polygone), (Collider2D c, Vector2 A, Vector2 B) => (CollidePolygoneRay((Polygone)c, A, B, out Vector2 v), v) },
@@ -371,7 +418,7 @@ namespace Collision2D
             { typeof(Capsule), (Collider2D c, Vector2 A, Vector2 B) => (CollideCapsuleRay((Capsule)c, A, B, out Vector2 v), v) },
         };
 
-        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2, Vector2)>> collisionDroite3 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2, Vector2)>>()
+        private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2, Vector2)>> collisionRay3 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, (bool, Vector2, Vector2)>>()
         {
             { typeof(Circle), (Collider2D c, Vector2 A, Vector2 B) => (CollideCircleRay((Circle)c, A, B, out Vector2 v, out Vector2 v2), v, v2) },
             { typeof(Polygone), (Collider2D c, Vector2 A, Vector2 B) => (CollidePolygoneRay((Polygone)c, A, B, out Vector2 v, out Vector2 v2), v, v2) },
@@ -444,93 +491,156 @@ namespace Collision2D
         public static bool CollideLine(Collider2D collider, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollideLine(collider, line.A, line.B, out collisionPoint, out normal);
 
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B) => collisionDroite1[collider.GetType()](collider, A, B);
+        public static bool CollideStraightLine(Collider2D collider, in Vector2 A, in Vector2 B) => collisionStraightLine1[collider.GetType()](collider, A, B);
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D ollider, Ray2D d) => CollideRay(ollider, d.A, d.B);
+        public static bool CollideStraightLine(Collider2D ollider, StraightLine2D straightLine) => CollideStraightLine(ollider, straightLine.A, straightLine.B);
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
+        public static bool CollideStraightLine(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
             bool b;
-            (b, collisionPoint) = collisionDroite2[collider.GetType()](collider, A, B);
+            (b, collisionPoint) = collisionStraightLine2[collider.GetType()](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint) => CollideRay(collider, ray.A, ray.B, out collisionPoint);
+        public static bool CollideStraightLine(Collider2D collider, StraightLine2D straightLine, out Vector2 collisionPoint) => CollideStraightLine(collider, straightLine.A, straightLine.B, out collisionPoint);
+        /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
+        /// <param name="normal">The vector normal tothe collider's surface wehere the collision happend</param>
+        /// <returns>true if the collider collide together width the droite, false otherwise</returns>
+        public static bool CollideStraightLine(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
+        {
+            bool b;
+            (b, collisionPoint, normal) = collisionStraightLine3[collider.GetType()](collider, A, B);
+            return b;
+        }
+        /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
+        /// <param name="normal">The vector normal tothe collider's surface wehere the collision happend</param>
+        /// <returns>true if the collider collide together width the droite, false otherwise</returns>
+        public static bool CollideStraightLine(Collider2D collider, StraightLine2D straightLine, out Vector2 collisionPoint, out Vector2 normal) => CollideStraightLine(collider, straightLine.A, straightLine.B, out collisionPoint, out normal);
+        /// <returns>true if the collider collide together width the droite, false otherwise</returns>
+        public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B) => collisionRay1[collider.GetType()](collider, A, B);
+        /// <returns>true if the collider collide together width the droite, false otherwise</returns>
+        public static bool CollideRay(Collider2D ollider, Ray2D ray) => CollideStraightLine(ollider, ray.start, ray.end);
+        /// <param name="collisionPoint">The first point at the surface of the collider where the collission happend</param>
+        /// <returns>true if the collider collide together width the droite, false otherwise</returns>
+        public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
+        {
+            bool b;
+            (b, collisionPoint) = collisionRay2[collider.GetType()](collider, A, B);
+            return b;
+        }
+        /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
+        /// <returns>true if the collider collide together width the droite, false otherwise</returns>
+        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint) => CollideStraightLine(collider, ray.start, ray.end, out collisionPoint);
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <param name="normal">The vector normal tothe collider's surface wehere the collision happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
         public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
         {
             bool b;
-            (b, collisionPoint, normal) = collisionDroite3[collider.GetType()](collider, A, B);
+            (b, collisionPoint, normal) = collisionRay3[collider.GetType()](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <param name="normal">The vector normal tothe collider's surface wehere the collision happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollideRay(collider, ray.A, ray.B, out collisionPoint, out normal);
+        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollideStraightLine(collider, ray.start, ray.end, out collisionPoint, out normal);
 
         #endregion
 
         #region Collide(Circle, other)
 
-        public static bool CollideCircles(Circle circle1, Circle circle2) => circle1.center.SqrDistance(circle2.center) <= (circle1.radius + circle2.radius) * (circle1.radius + circle2.radius);//OK
-        public static bool CollideCircles(Circle circle1, Circle circle2, out Vector2 collisionPoint)//ok
+        public static bool CollideCircles(Circle circle1, Circle circle2) => circle1.center.SqrDistance(circle2.center) <= (circle1.radius + circle2.radius) * (circle1.radius + circle2.radius);
+        private static bool ComputeCirclesIntersections(Circle circle1, Circle circle2, out Vector2 intersection1, out Vector2 intersection2)
         {
             float sqrDist = circle1.center.SqrDistance(circle2.center);
             float rr = (circle1.radius + circle2.radius) * (circle1.radius + circle2.radius);
-            if (sqrDist <= rr)// il y a collision
+            if (sqrDist <= rr && sqrDist > (circle1.radius - circle2.radius) * (circle1.radius - circle2.radius))//collision!
             {
-                if (sqrDist < (circle1.radius - circle2.radius) * (circle1.radius - circle2.radius))//un cercle inclus dans l'autre
+                if (Mathf.Abs(circle1.center.y - circle2.center.y) < 1e-3f)
                 {
-                    if (circle1.radius <= circle2.radius)
-                    {
-                        float angle = Useful.AngleHori(circle2.center, circle1.center);
-                        Vector2 collisionPoint2 = new Vector2(circle2.center.x + circle2.radius * Mathf.Cos(angle), circle2.center.y + circle2.radius * Mathf.Sin(angle));
-                        Vector2 collisionPoint1 = new Vector2(circle1.center.x + circle1.radius * Mathf.Cos(angle + Mathf.PI), circle1.center.y + circle1.radius * Mathf.Sin(angle + Mathf.PI));
-                        collisionPoint = (collisionPoint1 + collisionPoint2) * 0.5f;
-                    }
-                    else
-                    {
-                        float angle = Useful.AngleHori(circle1.center, circle2.center);
-                        Vector2 collisionPoint2 = new Vector2(circle1.center.x + circle1.radius * Mathf.Cos(angle), circle1.center.y + circle1.radius * Mathf.Sin(angle));
-                        Vector2 collisionPoint1 = new Vector2(circle2.center.x + circle2.radius * Mathf.Cos(angle + Mathf.PI), circle2.center.y + circle2.radius * Mathf.Sin(angle + Mathf.PI));
-                        collisionPoint = (collisionPoint1 + collisionPoint2) * 0.5f;
-                    }
+                    float x = ((circle2.radius * circle2.radius) - (circle1.radius * circle1.radius) - (circle2.center.x * circle2.center.x) + (circle1.center.x * circle1.center.x)) / (2f * (circle1.center.x - circle2.center.x));
+                    float b = -2f * circle2.center.y;
+                    float c = (circle2.center.x * circle2.center.x) + (x * x) - (2f * circle2.center.x * x) + (circle2.center.y * circle2.center.y) - (circle2.radius * circle2.radius);
+                    float sqrtDelta = Mathf.Sqrt((b * b) - (4f * c));
+                    intersection1 = new Vector2(x, (-b - sqrtDelta) * 0.5f);
+                    intersection2 = new Vector2(x, (-b + sqrtDelta) * 0.5f);
                     return true;
                 }
-                else//cas d'intersection normale
+                else
                 {
-                    if (Mathf.Approximately(circle1.center.y, circle2.center.y))
-                    {
-                        float x = ((circle2.radius * circle2.radius) - (circle1.radius * circle1.radius) - (circle2.center.x * circle2.center.x) + (circle1.center.x * circle1.center.x)) / (2f * (circle1.center.x - circle2.center.x));
-                        float b = -2f * circle2.center.y;
-                        float c = (circle2.center.x * circle2.center.x) + (x * x) - (2f * circle2.center.x * x) + (circle2.center.y * circle2.center.y) - (circle2.radius * circle2.radius);
-                        float sqrtDelta = Mathf.Sqrt((b * b) - (4f * c));
-                        Vector2 i1 = new Vector2(x, (-b - sqrtDelta) * 0.5f);
-                        Vector2 i2 = new Vector2(x, (-b + sqrtDelta) * 0.5f);
-                        collisionPoint = (i1 + i2) * 0.5f;
-                        return true;
-                    }
-                    else
-                    {
-                        float N = ((circle2.radius * circle2.radius) - (circle1.radius * circle1.radius) - (circle2.center.x * circle2.center.x) + (circle1.center.x * circle1.center.x) - (circle2.center.y * circle2.center.y) + (circle1.center.y * circle1.center.y)) / (2f * (circle1.center.y - circle2.center.y));
-                        float temps = ((circle1.center.x - circle2.center.x) / (circle1.center.y - circle2.center.y));
-                        float a = (temps * temps) + 1;
-                        float b = (2f * circle1.center.y * temps) - (2f * N * temps) - (2f * circle1.center.x);
-                        float c = (circle1.center.x * circle1.center.x) + (circle1.center.y * circle1.center.y) + (N * N) - (circle1.radius * circle1.radius) - (2f * circle1.center.y * N);
-                        float sqrtDelta = Mathf.Sqrt((b * b) - (4f * a * c));
-                        float x1 = (-b - sqrtDelta) / (2f * a);
-                        float x2 = (-b + sqrtDelta) / (2f * a);
-                        Vector2 i1 = new Vector2(x1, N - (x1 * temps));
-                        Vector2 i2 = new Vector2(x2, N - (x2 * temps));
-                        collisionPoint = (i1 + i2) * 0.5f;
-                        return true;
-                    }
+                    float N = ((circle2.radius * circle2.radius) - (circle1.radius * circle1.radius) - (circle2.center.x * circle2.center.x) + (circle1.center.x * circle1.center.x) - (circle2.center.y * circle2.center.y) + (circle1.center.y * circle1.center.y)) / (2f * (circle1.center.y - circle2.center.y));
+                    float temps = ((circle1.center.x - circle2.center.x) / (circle1.center.y - circle2.center.y));
+                    float a = (temps * temps) + 1;
+                    float b = (2f * circle1.center.y * temps) - (2f * N * temps) - (2f * circle1.center.x);
+                    float c = (circle1.center.x * circle1.center.x) + (circle1.center.y * circle1.center.y) + (N * N) - (circle1.radius * circle1.radius) - (2f * circle1.center.y * N);
+                    float sqrtDelta = Mathf.Sqrt((b * b) - (4f * a * c));
+                    float x1 = (-b - sqrtDelta) / (2f * a);
+                    float x2 = (-b + sqrtDelta) / (2f * a);
+                    intersection1 = new Vector2(x1, N - (x1 * temps));
+                    intersection2 = new Vector2(x2, N - (x2 * temps));
+                    return true;
                 }
             }
+
+            intersection1 = intersection2 = Vector2.zero;
+            return false;
+        }
+        private static bool ComputeCircleStraightLineIntersections(Circle circle, in Vector2 A, in Vector2 B, out Vector2 intersection1, out Vector2 intersection2)
+        {
+            if (!CollideCircleStraightLine(circle, A, B))
+            {
+                intersection1 = intersection2 = Vector2.zero;
+                return false;
+            }
+
+            //if vertical line
+            if (Mathf.Abs(A.x - B.x) < 1e-3f)
+            {
+                float srqtDelta = Mathf.Sqrt((circle.radius * circle.radius) - (((A.x + B.x) * 0.5f) - circle.center.x) * (((A.x + B.x) * 0.5f) - circle.center.x));
+                intersection1 = new Vector2((A.x + B.x) * 0.5f, -srqtDelta + circle.center.y);
+                intersection2 = new Vector2((A.x + B.x) * 0.5f, srqtDelta + circle.center.y);
+            }
+            else
+            {
+                float m = (B.y - A.y) / (B.x - A.x);
+                float p = A.y - m * A.x;
+                float a = 1f + (m * m);
+                float b = 2f * ((m * p) - circle.center.x - (m * circle.center.y));
+                float C = ((circle.center.x * circle.center.x) + (p * p) - (2f * p * circle.center.y) + (circle.center.y * circle.center.y) - (circle.radius * circle.radius));
+                float sqrtDelta = Mathf.Sqrt((b * b) - (4f * a * C));
+                intersection1 = new Vector2((-b - sqrtDelta) / (2f * a), m * ((-b - sqrtDelta) / (2f * a)) + p);
+                intersection2 = new Vector2((-b + sqrtDelta) / (2f * a), m * ((-b + sqrtDelta) / (2f * a)) + p);
+            }
+            return true;
+        }
+        public static bool CollideCircles(Circle circle1, Circle circle2, out Vector2 collisionPoint)//ok
+        {
+            if(ComputeCirclesIntersections(circle1, circle2, out Vector2 intersection1, out Vector2 intersection2))
+            {
+                collisionPoint = (intersection1 + intersection2) * 0.5f;
+                return true;
+            }
+
+            if (circle1.center.SqrDistance(circle2.center) < (circle1.radius - circle2.radius) * (circle1.radius - circle2.radius))//un cercle inclus dans l'autre
+            {
+                if (circle1.radius <= circle2.radius)
+                {
+                    float angle = Useful.AngleHori(circle2.center, circle1.center);
+                    intersection2 = new Vector2(circle2.center.x + circle2.radius * Mathf.Cos(angle), circle2.center.y + circle2.radius * Mathf.Sin(angle));
+                    intersection1 = new Vector2(circle1.center.x + circle1.radius * Mathf.Cos(angle + Mathf.PI), circle1.center.y + circle1.radius * Mathf.Sin(angle + Mathf.PI));
+                }
+                else
+                {
+                    float angle = Useful.AngleHori(circle1.center, circle2.center);
+                    intersection2 = new Vector2(circle1.center.x + circle1.radius * Mathf.Cos(angle), circle1.center.y + circle1.radius * Mathf.Sin(angle));
+                    intersection1 = new Vector2(circle2.center.x + circle2.radius * Mathf.Cos(angle + Mathf.PI), circle2.center.y + circle2.radius * Mathf.Sin(angle + Mathf.PI));
+                }
+                collisionPoint = (intersection1 + intersection2) * 0.5f;
+                return true;
+            }
+
             collisionPoint = Vector2.zero;
             return false;
         }
@@ -538,16 +648,13 @@ namespace Collision2D
         {
             if (CollideCircles(circle1, circle2, out collisionPoint))
             {
-                normal1 = (collisionPoint - circle1.center);
-                normal1.Normalize();
-                normal2 = (collisionPoint - circle2.center);
-                normal2.Normalize();
+                normal1 = (collisionPoint - circle1.center).normalized;
+                normal2 = (collisionPoint - circle2.center).normalized;
                 return true;
             }
             normal1 = normal2 = Vector2.zero;
             return false;
         }
-
         public static bool CollideCirclePolygone(Circle circle, Polygone polygone)//OK
         {
             for (int i = 0; i < polygone.vertices.Length; i++)
@@ -560,21 +667,43 @@ namespace Collision2D
         public static bool CollideCirclePolygone(Circle circle, Polygone polygone, out Vector2 collisionPoint)//OK
         {
             collisionPoint = Vector2.zero;
+            Vector2 i1, i2;
+            Vector2 A, B;
             for (int i = 0; i < polygone.vertices.Length; i++)
             {
-                if (CollideCircleLineBothCol(circle, polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], out Vector2 inter))
-                    cache.Add(inter);
-                if (circle.Contains(polygone.vertices[i]))
-                    cache.Add(polygone.vertices[i]);
+                A = polygone.vertices[i];
+                B = polygone.vertices[(i + 1) % polygone.vertices.Length];
+                if (ComputeCircleStraightLineIntersections(circle, A, B, out i1, out i2))
+                {
+                    bool containI1 = Line2D.Contain(A, B, i1);
+                    bool containI2 = Line2D.Contain(A, B, i2);
+                    if(containI1 || containI2)
+                    {
+                        if(containI1 && containI2)
+                        {
+                            Vector2 tmp = (i1 + i2) * 0.5f;
+                            float dist = circle.radius - ((circle.radius - circle.center.Distance(tmp)) * 0.5f);
+                            cache0.Add(circle.center + ((tmp - circle.center).normalized * dist));
+                        }
+                        else if(containI1)
+                        {
+                            cache0.Add(i1);
+                        }
+                        else
+                        {
+                            cache0.Add(i2);
+                        }
+                    }
+                }
             }
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
             if (polygone.Contains(circle.center))
@@ -583,103 +712,6 @@ namespace Collision2D
                 return true;
             }
             return false;
-
-            bool CollideCircleLineBothCol(Circle c, in Vector2 A, in Vector2 B, out Vector2 collision)
-            {
-                if (!CollideCircleLine(c, A, B))
-                {
-                    collision = Vector2.zero;
-                    return false;
-                }
-                //on regarde si la droite est verticale
-                if (Mathf.Approximately(A.x, B.x))
-                {
-                    float srqtDelta = Mathf.Sqrt((c.radius * c.radius) - (((A.x + B.x) * 0.5f) - c.center.x) * (((A.x + B.x) * 0.5f) - c.center.x));
-                    Vector2 i1 = new Vector2((A.x + B.x) * 0.5f, -srqtDelta + c.center.y);
-                    Vector2 i2 = new Vector2((A.x + B.x) * 0.5f, srqtDelta + c.center.y);
-                    //on verif que i1 et i2 appartienne au seg
-                    if (Mathf.Min(A.y, B.y) <= i1.y && Mathf.Max(A.y, B.y) >= i1.y && Mathf.Min(A.y, B.y) <= i2.y && Mathf.Max(A.y, B.y) >= i2.y)
-                    {
-                        collision = (i1 + i2) * 0.5f;
-                        Vector2 dir = collision - c.center;
-                        if (Mathf.Approximately(dir.sqrMagnitude, 0f))
-                            return true;
-
-                        if (CollideCircleLine(c, collision, collision + c.radius * dir.normalized, out Vector2 col2))
-                        {
-                            collision = (collision + col2) * 0.5f;
-                        }
-                        return true;
-                    }
-                    if (Mathf.Min(A.y, B.y) <= i1.y && Mathf.Max(A.y, B.y) >= i1.y)
-                    {
-                        collision = i1;
-                        return true;
-                    }
-                    if (Mathf.Min(A.y, B.y) <= i2.y && Mathf.Max(A.y, B.y) >= i2.y)
-                    {
-                        collision = i2;
-                        return true;
-                    }
-                    collision = (i1 + i2) * 0.5f;
-                    Vector2 dir2 = collision - c.center;
-                    if (Mathf.Approximately(dir2.sqrMagnitude, 0f))
-                        return true;
-
-                    if (CollideCircleLine(c, collision, collision + c.radius * dir2.normalized, out Vector2 col3))
-                    {
-                        collision = (collision + col3) * 0.5f;
-                    }
-                    return true;
-                }
-                else
-                {
-                    float m = (B.y - A.y) / (B.x - A.x);
-                    float p = A.y - m * A.x;
-                    float a = 1f + (m * m);
-                    float b = 2f * ((m * p) - c.center.x - (m * c.center.y));
-                    float C = ((c.center.x * c.center.x) + (p * p) - (2f * p * c.center.y) + (c.center.y * c.center.y) - (c.radius * c.radius));
-                    float sqrtDelta = Mathf.Sqrt((b * b) - (4f * a * C));
-                    Vector2 i1 = new Vector2((-b - sqrtDelta) / (2f * a), m * ((-b - sqrtDelta) / (2f * a)) + p);
-                    Vector2 i2 = new Vector2((-b + sqrtDelta) / (2f * a), m * ((-b + sqrtDelta) / (2f * a)) + p);
-
-                    //on verif que i1 et i2 appartienne au seg
-                    if (Mathf.Min(A.y, B.y) <= i1.y && Mathf.Max(A.y, B.y) >= i1.y && Mathf.Min(A.x, B.x) <= i1.x && Mathf.Max(A.x, B.x) >= i1.x &&
-                        Mathf.Min(A.y, B.y) <= i2.y && Mathf.Max(A.y, B.y) >= i2.y && Mathf.Min(A.x, B.x) <= i2.x && Mathf.Max(A.x, B.x) >= i2.x)
-                    {
-                        collision = (i1 + i2) * 0.5f;
-                        Vector2 dir = collision - c.center;
-                        if (Mathf.Approximately(dir.sqrMagnitude, 0f))
-                            return true;
-
-                        if (CollideCircleLine(c, collision, collision + c.radius * dir.normalized, out Vector2 col2))
-                        {
-                            collision = (collision + col2) * 0.5f;
-                        }
-                        return true;
-                    }
-                    if (Mathf.Min(A.y, B.y) <= i1.y && Mathf.Max(A.y, B.y) >= i1.y && Mathf.Min(A.x, B.x) <= i1.x && Mathf.Max(A.x, B.x) >= i1.x)
-                    {
-                        collision = i1;
-                        return true;
-                    }
-                    if (Mathf.Min(A.y, B.y) <= i2.y && Mathf.Max(A.y, B.y) >= i2.y && Mathf.Min(A.x, B.x) <= i2.x && Mathf.Max(A.x, B.x) >= i2.x)
-                    {
-                        collision = i2;
-                        return true;
-                    }
-                    collision = (i1 + i2) * 0.5f;
-                    Vector2 dir2 = collision - c.center;
-                    if (Mathf.Approximately(dir2.sqrMagnitude, 0f))
-                        return true;
-
-                    if (CollideCircleLine(c, collision, collision + c.radius * dir2.normalized, out Vector2 col3))
-                    {
-                        collision = (collision + col3) * 0.5f;
-                    }
-                    return true;
-                }
-            }
         }
         public static bool CollideCirclePolygone(Circle circle, Polygone polygone, out Vector2 collisionPoint, out Vector2 normal1, out Vector2 normal2)
         {
@@ -706,7 +738,7 @@ namespace Collision2D
                 return false;
             }
             //on regarde si la droite est verticale
-            if (Mathf.Approximately(A.x, B.x))
+            if (Mathf.Abs(A.x - B.x) < 1e-2f)
             {
                 float srqtDelta = Mathf.Sqrt((circle.radius * circle.radius) - (((A.x + B.x) * 0.5f) - circle.center.x) * (((A.x + B.x) * 0.5f) - circle.center.x));
                 Vector2 i1 = new Vector2((A.x + B.x) * 0.5f, -srqtDelta + circle.center.y);
@@ -791,12 +823,12 @@ namespace Collision2D
             return false;
         }
         public static bool CollideCircleLine(Circle cicle, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollideCircleLine(cicle, line.A, line.B, out collisionPoint, out normal);
-        public static bool CollideCircleRay(Circle circle, Ray2D ray) => circle.CollideRay(ray);//ok
-        public static bool CollideCircleRay(Circle circle, in Vector2 A, in Vector2 B) => circle.CollideRay(new Ray2D(A, B));//ok
-        public static bool CollideCircleRay(Circle circle, Ray2D ray, out Vector2 collisionPoint) => CollideCircleRay(circle, ray, out collisionPoint);//OK
-        public static bool CollideCircleRay(Circle circle, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)//ok
+        public static bool CollideCircleStraightLine(Circle circle, StraightLine2D straightLine) => circle.CollideStraightLine(straightLine);//ok
+        public static bool CollideCircleStraightLine(Circle circle, in Vector2 A, in Vector2 B) => circle.CollideStraightLine(new StraightLine2D(A, B));//ok
+        public static bool CollideCircleStraightLine(Circle circle, StraightLine2D straightLine, out Vector2 collisionPoint) => CollideCircleStraightLine(circle, straightLine, out collisionPoint);//OK
+        public static bool CollideCircleStraightLine(Circle circle, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)//ok
         {
-            if (!CollideCircleRay(circle, A, B))
+            if (!CollideCircleStraightLine(circle, A, B))
             {
                 collisionPoint = Vector2.zero;
                 return false;
@@ -810,9 +842,9 @@ namespace Collision2D
 
             return CollideCircleLine(circle, collisionPoint, collisionPoint + circle.radius * (collisionPoint - circle.center).normalized, out collisionPoint);
         }
-        public static bool CollideCircleRay(Circle circle, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
+        public static bool CollideCircleStraightLine(Circle circle, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
         {
-            if (CollideCircleRay(circle, A, B, out collisionPoint))
+            if (CollideCircleStraightLine(circle, A, B, out collisionPoint))
             {
                 normal = (collisionPoint - circle.center);
                 normal.Normalize();
@@ -821,37 +853,180 @@ namespace Collision2D
             normal = Vector2.zero;
             return false;
         }
-        public static bool CollideCircleRay(Circle circle, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollideCircleRay(circle, ray.A, ray.B, out collisionPoint, out normal);
-        public static bool CollideCircleCapsule(Circle circle, Capsule capsule)//ok
+        public static bool CollideCircleStraightLine(Circle circle, StraightLine2D straightLine, out Vector2 collisionPoint, out Vector2 normal) => CollideCircleStraightLine(circle, straightLine.A, straightLine.B, out collisionPoint, out normal);
+        public static bool CollideCircleRay(Circle circle, Ray2D ray) => CollideCircleLine(circle, ray.start, ray.end);
+        public static bool CollideCircleRay(Circle circle, in Vector2 start, in Vector2 end) => CollideCircleLine(circle, start, end);
+        public static bool CollideCircleRay(Circle circle, Ray2D ray, out Vector2 collisionPoint) => CollideCircleRay(circle, ray.start, ray.end, out collisionPoint);
+        public static bool CollideCircleRay(Circle circle, in Vector2 start, in Vector2 end, out Vector2 collisionPoint)
         {
-            return CollideCircleHitbox(circle, capsule.hitbox) || CollideCircles(circle, capsule.circle1) || CollideCircles(circle, capsule.circle2);
+            if (!CollideCircleRay(circle, start, end))
+            {
+                collisionPoint = Vector2.zero;
+                return false;
+            }
+
+            if (Mathf.Approximately(start.x, end.x))
+            {
+                float srqtDelta = Mathf.Sqrt((circle.radius * circle.radius) - (((start.x + end.x) * 0.5f) - circle.center.x) * (((start.x + end.x) * 0.5f) - circle.center.x));
+                Vector2 i1 = new Vector2((start.x + end.x) * 0.5f, -srqtDelta + circle.center.y);
+                Vector2 i2 = new Vector2((start.x + end.x) * 0.5f, +srqtDelta + circle.center.y);
+                collisionPoint = start.SqrDistance(i1) <= start.SqrDistance(i2) ? i1 : i2;
+                return true;
+            }
+            else
+            {
+                float m = (end.y - start.y) / (end.x - start.x);
+                float p = start.y - m * start.x;
+                float a = 1f + (m * m);
+                float b = 2f * ((m * p) - circle.center.x - (m * circle.center.y));
+                float C = ((circle.center.x * circle.center.x) + (p * p) - (2f * p * circle.center.y) + (circle.center.y * circle.center.y) - (circle.radius * circle.radius));
+                float sqrtDelta = Mathf.Sqrt((b * b) - (4f * a * C));
+                Vector2 i1 = new Vector2((-b - sqrtDelta) / (2f * a), m * ((-b - sqrtDelta) / (2f * a)) + p);
+                Vector2 i2 = new Vector2((-b + sqrtDelta) / (2f * a), m * ((-b + sqrtDelta) / (2f * a)) + p);
+                collisionPoint = start.SqrDistance(i1) <= start.SqrDistance(i2) ? i1 : i2;
+                return true;
+            }
+        }
+        public static bool CollideCircleRay(Circle circle, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollideCircleRay(circle, ray.start, ray.end, out collisionPoint, out normal);
+        public static bool CollideCircleRay(Circle circle, in Vector2 start, in Vector2 end, out Vector2 collisionPoint, out Vector2 normal)
+        {
+            if (!CollideCircleRay(circle, start, end))
+            {
+                collisionPoint = normal = Vector2.zero;
+                return false;
+            }
+
+            if (Mathf.Approximately(start.x, end.x))
+            {
+                float srqtDelta = Mathf.Sqrt((circle.radius * circle.radius) - (((start.x + end.x) * 0.5f) - circle.center.x) * (((start.x + end.x) * 0.5f) - circle.center.x));
+                Vector2 i1 = new Vector2((start.x + end.x) * 0.5f, -srqtDelta + circle.center.y);
+                Vector2 i2 = new Vector2((start.x + end.x) * 0.5f, +srqtDelta + circle.center.y);
+                collisionPoint = start.SqrDistance(i1) <= start.SqrDistance(i2) ? i1 : i2;
+                normal = (collisionPoint - circle.center).normalized;
+                return true;
+            }
+            else
+            {
+                float m = (end.y - start.y) / (end.x - start.x);
+                float p = start.y - m * start.x;
+                float a = 1f + (m * m);
+                float b = 2f * ((m * p) - circle.center.x - (m * circle.center.y));
+                float C = ((circle.center.x * circle.center.x) + (p * p) - (2f * p * circle.center.y) + (circle.center.y * circle.center.y) - (circle.radius * circle.radius));
+                float sqrtDelta = Mathf.Sqrt((b * b) - (4f * a * C));
+                Vector2 i1 = new Vector2((-b - sqrtDelta) / (2f * a), m * ((-b - sqrtDelta) / (2f * a)) + p);
+                Vector2 i2 = new Vector2((-b + sqrtDelta) / (2f * a), m * ((-b + sqrtDelta) / (2f * a)) + p);
+                collisionPoint = start.SqrDistance(i1) <= start.SqrDistance(i2) ? i1 : i2;
+                normal = (collisionPoint - circle.center).normalized;
+                return true;
+            }
+        }
+        public static bool CollideCircleCapsule(Circle circle, Capsule capsule)
+        {
+            float rr = (capsule.circle1.radius + circle.radius) * (capsule.circle1.radius + circle.radius); ;
+            if (capsule.circle1.center.SqrDistance(circle.center) <= rr || capsule.circle2.center.SqrDistance(circle.center) <= rr)
+                return true;
+
+            float distance = capsule.circle1.center.Distance(capsule.circle2.center);
+            if (distance >= 1e-5f)
+            {
+                Vector2 dirHori = (capsule.circle1.center - capsule.circle2.center) / distance;
+                Vector2 dirVerti = dirHori.NormalVector();
+                distance *= 0.5f;
+                Line2D line1 = new Line2D(capsule.hitbox.center + (dirVerti * capsule.circle1.radius) - (dirHori * distance), capsule.hitbox.center + (dirVerti * capsule.circle1.radius) + (dirHori * distance));
+                Line2D line2 = new Line2D(capsule.hitbox.center - (dirVerti * capsule.circle1.radius) - (dirHori * distance), capsule.hitbox.center - (dirVerti * capsule.circle1.radius) + (dirHori * distance));
+                return CollideCircleLine(circle, line1) || CollideCircleLine(circle, line2);
+            }
+            return false;
         }
         public static bool CollideCircleCapsule(Circle circle, Capsule capsule, out Vector2 collisionPoint)//OK
         {
-            if (CollideCircleHitbox(circle, capsule.hitbox, out collisionPoint))
+            float distance = capsule.circle1.center.Distance(capsule.circle2.center);
+            Vector2 i1, i2;
+            if (distance >= 1e-3f)
             {
-                cache.Add(collisionPoint);
+                Vector2 dirHori = (capsule.circle1.center - capsule.circle2.center) / distance;
+                Vector2 dirVerti = dirHori.NormalVector();
+                distance *= 0.5f;
+                Line2D line1 = new Line2D(capsule.hitbox.center + (dirVerti * capsule.circle1.radius) - (dirHori * distance) , capsule.hitbox.center + (dirVerti * capsule.circle1.radius) + (dirHori * distance));
+                Line2D line2 = new Line2D(capsule.hitbox.center - (dirVerti * capsule.circle1.radius) - (dirHori * distance), capsule.hitbox.center - (dirVerti * capsule.circle1.radius) + (dirHori * distance));
+
+                PerformLine(line1);
+                PerformLine(line2);
+
+                void PerformLine(Line2D line)
+                {
+                    if (ComputeCircleStraightLineIntersections(circle, line.A, line.B, out i1, out i2))
+                    {
+                        bool containI1 = Line2D.Contain(line.A, line.B, i1);
+                        bool containI2 = Line2D.Contain(line.A, line.B, i2);
+                        if (containI1 || containI2)
+                        {
+                            if (containI1 && containI2)
+                            {
+                                Vector2 tmp = (i1 + i2) * 0.5f;
+                                float dist = circle.radius - ((circle.radius - circle.center.Distance(tmp)) * 0.5f);
+                                cache0.Add(circle.center + ((tmp - circle.center).normalized * dist));
+                            }
+                            else if (containI1)
+                            {
+                                cache0.Add(i1);
+                            }
+                            else
+                            {
+                                cache0.Add(i2);
+                            }
+                        }
+                    }
+                }
             }
-            if (CollideCircles(circle, capsule.circle2, out collisionPoint))
+
+            if (ComputeCirclesIntersections(circle, capsule.circle1, out i1, out i2))
             {
-                cache.Add(collisionPoint);
+                if ((capsule.circle1.center - capsule.hitbox.center).Dot(i1 - capsule.circle1.center) >= 0f)
+                {
+                    cache0.Add(i1);
+                }
+                if ((capsule.circle1.center - capsule.hitbox.center).Dot(i2 - capsule.circle1.center) >= 0f)
+                {
+                    cache0.Add(i2);
+                }
             }
-            if (CollideCircles(circle, capsule.circle1, out collisionPoint))
+            if (ComputeCirclesIntersections(circle, capsule.circle2, out i1, out i2))
             {
-                cache.Add(collisionPoint);
+                if ((capsule.circle2.center - capsule.hitbox.center).Dot(i1 - capsule.circle2.center) >= 0f)
+                {
+                    cache0.Add(i1);
+                }
+                if ((capsule.circle2.center - capsule.hitbox.center).Dot(i2 - capsule.circle2.center) >= 0f)
+                {
+                    cache0.Add(i2);
+                }
             }
 
             collisionPoint = Vector2.zero;
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
+
+            if(circle.Contains(capsule.center))
+            {
+                collisionPoint = (circle.center + capsule.center) * 0.5f;
+                return true;
+            }
+
+            if (capsule.Contains(circle.center))
+            {
+                collisionPoint = (circle.center + capsule.center) * 0.5f;
+                return true;
+            }
+
             return false;
         }
         public static bool CollideCircleCapsule(Circle circle, Capsule capsule, out Vector2 collisionPoint, out Vector2 normal1, out Vector2 normal2)
@@ -894,18 +1069,18 @@ namespace Collision2D
                 {
                     if (CollideLines(polygone1.vertices[i], polygone1.vertices[(i + 1) % polygone1.vertices.Length], polygone2.vertices[j], polygone2.vertices[(j + 1) % polygone2.vertices.Length], out Vector2 intersec))
                     {
-                        cache.Add(intersec);
+                        cache0.Add(intersec);
                     }
                 }
             }
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
             return false;
@@ -918,7 +1093,7 @@ namespace Collision2D
                 {
                     if (CollideLines(polygone1.vertices[i], polygone1.vertices[(i + 1) % polygone1.vertices.Length], polygone2.vertices[j], polygone2.vertices[(j + 1) % polygone2.vertices.Length], out Vector2 intersec))
                     {
-                        cache.Add(intersec);
+                        cache0.Add(intersec);
                         Vector2 n1 = (polygone1.vertices[(i + 1) % polygone1.vertices.Length] - polygone1.vertices[i]).NormalVector();
                         //on regarde si on est dans le bon sens
                         Vector2 middle = (polygone1.vertices[i] + polygone1.vertices[(i + 1) % polygone1.vertices.Length]) * 0.5f;
@@ -926,7 +1101,7 @@ namespace Collision2D
                         {
                             n1 *= -1f;
                         }
-                        cache2.Add(n1);//Stocker le vecteur normal au coté de p1
+                        cache1.Add(n1);//Stocker le vecteur normal au coté de p1
 
                         Vector2 n2 = (polygone2.vertices[(j + 1) % polygone2.vertices.Length] - polygone2.vertices[j]).NormalVector();
                         n2.Normalize();
@@ -935,29 +1110,29 @@ namespace Collision2D
                         {
                             n2 *= -1f;
                         }
-                        cache3.Add(n2);//Stocker le vecteur normal au coté de p2
+                        cache2.Add(n2);//Stocker le vecteur normal au coté de p2
                     }
                 }
             }
             collisionPoint = normal1 = normal2 = Vector2.zero;
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
 
                 float averageAngle = 0f, averageAngle2;
-                foreach (Vector2 n in cache2)
+                foreach (Vector2 n in cache1)
                 {
                     averageAngle += Useful.Angle(Vector2.zero, n);
                 }
-                averageAngle /= cache2.Count;
+                averageAngle /= cache1.Count;
                 averageAngle2 = Useful.WrapAngle(averageAngle + Mathf.PI);
                 float dist1 = 0f, dist2 = 0f;
-                foreach (Vector2 n in cache2)
+                foreach (Vector2 n in cache1)
                 {
                     float angle = Useful.Angle(Vector2.zero, n);
                     dist1 += Mathf.Abs(angle - averageAngle) % Mathf.PI;
@@ -967,14 +1142,14 @@ namespace Collision2D
                 normal1 = new Vector2(Mathf.Cos(averageAngle), Mathf.Sin(averageAngle));
 
                 averageAngle = 0f;
-                foreach (Vector2 n in cache3)
+                foreach (Vector2 n in cache2)
                 {
                     averageAngle += Useful.Angle(Vector2.zero, n);
                 }
-                averageAngle /= cache3.Count;
+                averageAngle /= cache2.Count;
                 averageAngle2 = Useful.WrapAngle(averageAngle + Mathf.PI);
                 dist1 = dist2 = 0f;
-                foreach (Vector2 n in cache3)
+                foreach (Vector2 n in cache2)
                 {
                     float angle = Useful.Angle(Vector2.zero, n);
                     dist1 += Mathf.Abs(angle - averageAngle) % Mathf.PI;
@@ -983,8 +1158,8 @@ namespace Collision2D
                 averageAngle = dist1 <= dist2 ? averageAngle : averageAngle2;
                 normal2 = new Vector2(Mathf.Cos(averageAngle), Mathf.Sin(averageAngle));
 
+                cache1.Clear();
                 cache2.Clear();
-                cache3.Clear();
                 return true;
             }
             return false;
@@ -1001,19 +1176,29 @@ namespace Collision2D
             {
                 if (CollideLines(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
                 {
-                    cache.Add(intersec);
+                    cache0.Add(intersec);
                 }
             }
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                collisionPoint = polygone.ClosestPoint(collisionPoint);
+                cache0.Clear();
                 return true;
             }
+
+            if(polygone.Contains(A) || polygone.Contains(B))
+            {
+                Vector2 cp1 = polygone.ClosestPoint(A);
+                Vector2 cp2 = polygone.ClosestPoint(B);
+                collisionPoint = cp1.SqrDistance(A) <= cp2.SqrDistance(B) ? cp1 : cp2;
+                return true;
+            }
+
             return false;
         }
         public static bool CollidePolygoneLine(Polygone polygone, Line2D line, out Vector2 collisionPoint) => CollidePolygoneLine(polygone, line.A, line.B, out collisionPoint);
@@ -1024,7 +1209,7 @@ namespace Collision2D
             {
                 if (CollideLines(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
                 {
-                    cache.Add(intersec);
+                    cache0.Add(intersec);
                     Vector2 n = (polygone.vertices[(i + 1) % polygone.vertices.Length] - polygone.vertices[i]).NormalVector();
                     n.Normalize();
                     //on regarde si on est dans le bon sens
@@ -1033,35 +1218,36 @@ namespace Collision2D
                     {
                         n *= -1f;
                     }
-                    cache2.Add(n);//Stocker le vecteur normal au coté de p1
+                    cache1.Add(n);//Stocker le vecteur normal au coté de p1
                 }
             }
 
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                collisionPoint = polygone.ClosestPoint(collisionPoint);
+                cache0.Clear();
 
-                if (cache2.Count == 1)
+                if (cache1.Count == 1)
                 {
-                    normal = cache2[0];
-                    cache2.Clear();
+                    normal = cache1[0];
+                    cache1.Clear();
                     return true;
                 }
                 //on vérif le sens
                 float averageAngle = 0f, averageAngle2;
-                foreach (Vector2 n in cache2)
+                foreach (Vector2 n in cache1)
                 {
                     averageAngle += Useful.Angle(Vector2.zero, n);
                 }
-                averageAngle /= cache2.Count;
+                averageAngle /= cache1.Count;
                 averageAngle2 = Useful.WrapAngle(averageAngle + Mathf.PI);
                 float dist1 = 0f, dist2 = 0f;
-                foreach (Vector2 n in cache2)
+                foreach (Vector2 n in cache1)
                 {
                     float angle = Useful.Angle(Vector2.zero, n);
                     dist1 += Mathf.Abs(angle - averageAngle) % Mathf.PI;
@@ -1070,46 +1256,46 @@ namespace Collision2D
                 averageAngle = dist1 <= dist2 ? averageAngle : averageAngle2;
                 normal = new Vector2(Mathf.Cos(averageAngle), Mathf.Sin(averageAngle));
 
-                cache2.Clear();
+                cache1.Clear();
                 return true;
             }
             normal = Vector2.zero;
             return false;
         }
         public static bool CollidePolygoneLine(Polygone polygone, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneLine(polygone, line.A, line.B, out collisionPoint, out normal);
-        public static bool CollidePolygoneRay(Polygone polygone, in Vector2 A, in Vector2 B) => polygone.CollideRay(new Ray2D(A, B));//OK
-        public static bool CollidePolygoneRay(Polygone polygone, Ray2D ray) => polygone.CollideRay(ray);//OK
-        public static bool CollidePolygoneRay(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
+        public static bool CollidePolygoneStaightLine(Polygone polygone, in Vector2 A, in Vector2 B) => polygone.CollideStraightLine(new StraightLine2D(A, B));//OK
+        public static bool CollidePolygoneStaightLine(Polygone polygone, StraightLine2D straightLine) => polygone.CollideStraightLine(straightLine);//OK
+        public static bool CollidePolygoneStaightLine(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
             collisionPoint = Vector2.zero;
             for (int i = 0; i < polygone.vertices.Length; i++)
             {
-                if (CollideLineRay(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
+                if (CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
                 {
-                    cache.Add(intersec);
+                    cache0.Add(intersec);
                 }
             }
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
             return false;
         }
-        public static bool CollidePolygoneRay(Polygone polygone, Ray2D ray, out Vector2 collisionPoint) => CollidePolygoneRay(polygone, ray.A, ray.B, out collisionPoint);
-        public static bool CollidePolygoneRay(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
+        public static bool CollidePolygoneStaightLine(Polygone polygone, StraightLine2D straightLine, out Vector2 collisionPoint) => CollidePolygoneStaightLine(polygone, straightLine.A, straightLine.B, out collisionPoint);
+        public static bool CollidePolygoneStaightLine(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
         {
             collisionPoint = Vector2.zero;
             for (int i = 0; i < polygone.vertices.Length; i++)
             {
-                if (CollideLineRay(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
+                if (CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
                 {
-                    cache.Add(intersec);
+                    cache0.Add(intersec);
                     Vector2 n = (polygone.vertices[(i + 1) % polygone.vertices.Length] - polygone.vertices[i]).NormalVector();
                     n.Normalize();
                     //on regarde si on est dans le bon sens
@@ -1118,35 +1304,35 @@ namespace Collision2D
                     {
                         n *= -1f;
                     }
-                    cache2.Add(n);//Stocker le vecteur normal au coté de p1
+                    cache1.Add(n);//Stocker le vecteur normal au coté de p1
                 }
             }
 
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
 
-                if (cache2.Count == 1)
+                if (cache1.Count == 1)
                 {
-                    normal = cache2[0];
-                    cache2.Clear();
+                    normal = cache1[0];
+                    cache1.Clear();
                     return true;
                 }
                 //on vérif le sens
                 float averageAngle = 0f, averageAngle2;
-                foreach (Vector2 n in cache2)
+                foreach (Vector2 n in cache1)
                 {
                     averageAngle += Useful.Angle(Vector2.zero, n);
                 }
-                averageAngle /= cache2.Count;
+                averageAngle /= cache1.Count;
                 averageAngle2 = Useful.WrapAngle(averageAngle + Mathf.PI);
                 float dist1 = 0f, dist2 = 0f;
-                foreach (Vector2 n in cache2)
+                foreach (Vector2 n in cache1)
                 {
                     float angle = Useful.Angle(Vector2.zero, n);
                     dist1 += Mathf.Abs(angle - averageAngle) % Mathf.PI;
@@ -1154,37 +1340,139 @@ namespace Collision2D
                 }
                 averageAngle = dist1 <= dist2 ? averageAngle : averageAngle2;
                 normal = new Vector2(Mathf.Cos(averageAngle), Mathf.Sin(averageAngle));
-                cache2.Clear();
+                cache1.Clear();
                 return true;
             }
             normal = Vector2.zero;
             return false;
         }
-        public static bool CollidePolygoneRay(Polygone polygone, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneRay(polygone, ray.A, ray.B, out collisionPoint, out normal);
+        public static bool CollidePolygoneStaightLine(Polygone polygone, StraightLine2D straightLine, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneStaightLine(polygone, straightLine.A, straightLine.B, out collisionPoint, out normal);
+        public static bool CollidePolygoneRay(Polygone polygone, Ray2D ray) => polygone.CollideLine(new Line2D(ray.start, ray.end));
+        public static bool CollidePolygoneRay(Polygone polygone, in Vector2 start, in Vector2 end) => polygone.CollideLine(new Line2D(start, end));
+        public static bool CollidePolygoneRay(Polygone polygone, Ray2D ray, out Vector2 collisionPoint) => CollidePolygoneRay(polygone, ray.start, ray.end, out collisionPoint);
+        public static bool CollidePolygoneRay(Polygone polygone, in Vector2 start, in Vector2 end, out Vector2 collisionPoint)
+        {
+            StraightLine2D straightLine = new StraightLine2D(start, end);
+            bool alreadyCollide = false;
+            Line2D line;
+            for (int i = 0; i < polygone.vertices.Length; i++)
+            {
+                line = new Line2D(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length]);
+                if (!alreadyCollide)
+                {
+                    if(CollideLines(line.A, line.B, start, end))
+                    {
+                        alreadyCollide = true;
+                    }
+                }
+
+                if(CollideLineStraightLine(line, straightLine, out collisionPoint))
+                {
+                    cache0.Add(collisionPoint);
+                }
+            }
+
+            if(!alreadyCollide || cache0.Count <= 0)
+            {
+                collisionPoint = Vector2.zero;
+                return false;
+            }
+
+            collisionPoint = cache0[0];
+            Vector2 beg = start + ((start - end).normalized * (2f * polygone.inclusiveCircle.radius));
+            float minSqrDist = beg.SqrDistance(collisionPoint);
+            float currentSqrDist;
+
+            for (int i = 1; i < cache0.Count; i++)
+            {
+                currentSqrDist = beg.SqrDistance(cache0[i]);
+                if(minSqrDist > currentSqrDist)
+                {
+                    minSqrDist = currentSqrDist;
+                    collisionPoint = cache0[i];
+                }
+            }
+
+            cache0.Clear();
+            return true;
+        }
+        public static bool CollidePolygoneRay(Polygone polygone, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneRay(polygone, ray.start, ray.end, out collisionPoint, out normal);
+        public static bool CollidePolygoneRay(Polygone polygone, in Vector2 start, in Vector2 end, out Vector2 collisionPoint, out Vector2 normal)
+        {
+            StraightLine2D straightLine = new StraightLine2D(start, end);
+            bool alreadyCollide = false;
+            Line2D line;
+            for (int i = 0; i < polygone.vertices.Length; i++)
+            {
+                line = new Line2D(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length]);
+                if (!alreadyCollide)
+                {
+                    if (CollideLines(line.A, line.B, start, end))
+                    {
+                        alreadyCollide = true;
+                    }
+                }
+
+                if (CollideLineStraightLine(line, straightLine, out collisionPoint))
+                {
+                    cache0.Add(collisionPoint);
+                    Vector2 n = (line.B - line.A).NormalVector();
+                    if (n.Dot(collisionPoint - polygone.center) < 0f)
+                        n *= -1f;
+                    cache1.Add(n);
+                }
+            }
+
+            if (!alreadyCollide || cache0.Count <= 0)
+            {
+                collisionPoint = normal = Vector2.zero;
+                return false;
+            }
+
+            collisionPoint = cache0[0];
+            normal = cache1[0];
+            Vector2 beg = start + ((start - end).normalized * (2f * polygone.inclusiveCircle.radius));
+            float minSqrDist = beg.SqrDistance(collisionPoint);
+            float currentSqrDist;
+
+            for (int i = 1; i < cache0.Count; i++)
+            {
+                currentSqrDist = beg.SqrDistance(cache0[i]);
+                if (minSqrDist > currentSqrDist)
+                {
+                    minSqrDist = currentSqrDist;
+                    collisionPoint = cache0[i];
+                    normal = cache1[i];
+                }
+            }
+
+            cache0.Clear();
+            return true;
+        }
         public static bool CollidePolygoneCapsule(Polygone polygone, Capsule capsule) => CollidePolygoneHitbox(polygone, capsule.hitbox) || CollideCirclePolygone(capsule.circle1, polygone) || CollideCirclePolygone(capsule.circle2, polygone);//OK
         public static bool CollidePolygoneCapsule(Polygone polygone, Capsule capsule, out Vector2 collisionPoint)
         {
             if (CollidePolygoneHitbox(polygone, capsule.hitbox, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCirclePolygone(capsule.circle1, polygone, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCirclePolygone(capsule.circle2, polygone, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             collisionPoint = Vector2.zero;
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
             return false;
@@ -1194,48 +1482,48 @@ namespace Collision2D
             collisionPoint = normal1 = normal2 = Vector2.zero;
             if (CollideCirclePolygone(capsule.circle1, polygone, out Vector2 col, out Vector2 n1, out Vector2 n2))
             {
-                cache.Add(col);
-                cache2.Add(n1);
-                cache3.Add(n2);
+                cache0.Add(col);
+                cache1.Add(n1);
+                cache2.Add(n2);
             }
             if (CollideCirclePolygone(capsule.circle2, polygone, out col, out n1, out n2))
             {
-                cache.Add(col);
-                cache2.Add(n1);
-                cache3.Add(n2);
+                cache0.Add(col);
+                cache1.Add(n1);
+                cache2.Add(n2);
             }
             if (CollidePolygoneHitbox(polygone, capsule.hitbox, out col, out n1, out n2))
             {
-                cache.Add(col);
+                cache0.Add(col);
                 //cache2.Add(n1);
                 //cache3.Add(n2);
                 normal1 = n1;
                 normal2 = n2;
             }
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
 
                 if (normal1 == Vector2.zero)
                 {
-                    foreach (Vector2 n in cache2)
+                    foreach (Vector2 n in cache1)
                     {
                         normal1 += n;
                     }
-                    normal1 /= cache2.Count;
-                    foreach (Vector2 n in cache3)
+                    normal1 /= cache1.Count;
+                    foreach (Vector2 n in cache2)
                     {
                         normal2 += n;
                     }
-                    normal2 /= cache3.Count;
+                    normal2 /= cache2.Count;
                 }
+                cache1.Clear();
                 cache2.Clear();
-                cache3.Clear();
                 return true;
             }
             return false;
@@ -1254,12 +1542,18 @@ namespace Collision2D
         public static bool CollideHitboxLine(Hitbox hitbox, Line2D line, out Vector2 collisionPoint) => CollidePolygoneLine(hitbox.ToPolygone(), line.A, line.B, out collisionPoint);
         public static bool CollideHitboxLine(Hitbox hitbox, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneLine(hitbox.ToPolygone(), A, B, out collisionPoint, out normal);
         public static bool CollideHitboxLine(Hitbox hitbox, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneLine(hitbox.ToPolygone(), line.A, line.B, out collisionPoint, out normal);
-        public static bool CollideHitboxRay(Hitbox hitbox, Ray2D ray) => hitbox.ToPolygone().CollideRay(ray);
-        public static bool CollideHitboxRay(Hitbox hitbox, in Vector2 A, in Vector2 B) => hitbox.ToPolygone().CollideRay(new Ray2D(A, B));
-        public static bool CollideHitboxRay(Hitbox hitbox, in Vector2 A, in Vector2 B, out Vector2 collisionPoint) => CollidePolygoneRay(hitbox.ToPolygone(), A, B, out collisionPoint);
-        public static bool CollideHitboxRay(Hitbox hitbox, Line2D line, out Vector2 collisionPoint) => CollidePolygoneRay(hitbox.ToPolygone(), line.A, line.B, out collisionPoint);
-        public static bool CollideHitboxRay(Hitbox hitbox, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneRay(hitbox.ToPolygone(), A, B, out collisionPoint, out normal);
-        public static bool CollideHitboxRay(Hitbox hitbox, Line2D lie, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneRay(hitbox.ToPolygone(), lie.A, lie.B, out collisionPoint, out normal);
+        public static bool CollideHitboxStraigthLine(Hitbox hitbox, StraightLine2D straigthLine) => hitbox.ToPolygone().CollideStraightLine(straigthLine);
+        public static bool CollideHitboxStraigthLine(Hitbox hitbox, in Vector2 A, in Vector2 B) => hitbox.ToPolygone().CollideStraightLine(new StraightLine2D(A, B));
+        public static bool CollideHitboxStraigthLine(Hitbox hitbox, in Vector2 A, in Vector2 B, out Vector2 collisionPoint) => CollidePolygoneStaightLine(hitbox.ToPolygone(), A, B, out collisionPoint);
+        public static bool CollideHitboxStraigthLine(Hitbox hitbox, StraightLine2D straigthLine, out Vector2 collisionPoint) => CollidePolygoneStaightLine(hitbox.ToPolygone(), straigthLine.A, straigthLine.B, out collisionPoint);
+        public static bool CollideHitboxStraigthLine(Hitbox hitbox, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneStaightLine(hitbox.ToPolygone(), A, B, out collisionPoint, out normal);
+        public static bool CollideHitboxStraigthLine(Hitbox hitbox, StraightLine2D straigthLine, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneStaightLine(hitbox.ToPolygone(), straigthLine.A, straigthLine.B, out collisionPoint, out normal);
+        public static bool CollideHitboxRay(Hitbox hitbox, Ray2D ray) => CollidePolygoneRay(hitbox.ToPolygone(), ray);
+        public static bool CollideHitboxRay(Hitbox hitbox, in Vector2 start, in Vector2 end) => CollidePolygoneRay(hitbox.ToPolygone(), start, end);
+        public static bool CollideHitboxRay(Hitbox hitbox, Ray2D ray, out Vector2 collisionPoint) => CollidePolygoneRay(hitbox.ToPolygone(), ray, out collisionPoint);
+        public static bool CollideHitboxRay(Hitbox hitbox, in Vector2 start, in Vector2 end, out Vector2 collisionPoint) => CollidePolygoneRay(hitbox.ToPolygone(), start, end, out collisionPoint);
+        public static bool CollideHitboxRay(Hitbox hitbox, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneRay(hitbox.ToPolygone(), ray, out collisionPoint, out normal);
+        public static bool CollideHitboxRay(Hitbox hitbox, in Vector2 start, in Vector2 end, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneRay(hitbox.ToPolygone(), start, end, out collisionPoint, out normal);
         public static bool CollideHitboxCapsule(Hitbox hitbox, Capsule capule) => CollideHitboxs(hitbox, capule.hitbox) || CollideCircleHitbox(capule.circle1, hitbox) || CollideCircleHitbox(capule.circle2, hitbox);
         public static bool CollideHitboxCapsule(Hitbox hitbox, Capsule capsule, out Vector2 collisionPoint) => CollidePolygoneCapsule(hitbox.ToPolygone(), capsule, out collisionPoint);
         public static bool CollideHitboxCapsule(Hitbox hitbox, Capsule capsule, out Vector2 collisionPoint, out Vector2 normal1, out Vector2 normal2) => CollidePolygoneCapsule(hitbox.ToPolygone(), capsule, out collisionPoint, out normal1, out normal2);
@@ -1273,49 +1567,49 @@ namespace Collision2D
         {
             if (CollideHitboxs(capsule1.hitbox, capsule2.hitbox, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircleHitbox(capsule2.circle1, capsule1.hitbox, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircleHitbox(capsule2.circle2, capsule1.hitbox, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircleHitbox(capsule1.circle1, capsule2.hitbox, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircles(capsule1.circle1, capsule2.circle1, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircles(capsule1.circle1, capsule2.circle2, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircleHitbox(capsule1.circle2, capsule2.hitbox, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircles(capsule1.circle2, capsule2.circle1, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircles(capsule1.circle2, capsule2.circle2, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             collisionPoint = Vector2.zero;
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
             return false;
@@ -1339,25 +1633,25 @@ namespace Collision2D
         {
             if (CollideCircleLine(capsule.circle1, A, B, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideCircleLine(capsule.circle2, A, B, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             if (CollideHitboxLine(capsule.hitbox, A, B, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             collisionPoint = Vector2.zero;
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
             return false;
@@ -1375,39 +1669,39 @@ namespace Collision2D
             return false;
         }
         public static bool CollideCapsuleLine(Capsule capsule, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollideCapsuleLine(capsule, line.A, line.B, out collisionPoint, out normal);
-        public static bool CollideCapsuleRay(Capsule capsule, Ray2D ray) => capsule.CollideRay(ray);
-        public static bool CollideCapsuleRay(Capsule capsule, in Vector2 A, in Vector2 B) => capsule.CollideRay(new Ray2D(A, B));
-        public static bool CollideCapsuleRay(Capsule capsule, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
+        public static bool CollideCapsuleStraightLine(Capsule capsule, StraightLine2D straightLine) => capsule.CollideStraightLine(straightLine);
+        public static bool CollideCapsuleStraightLine(Capsule capsule, in Vector2 A, in Vector2 B) => capsule.CollideStraightLine(new StraightLine2D(A, B));
+        public static bool CollideCapsuleStraightLine(Capsule capsule, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
-            if (CollideCircleRay(capsule.circle1, A, B, out collisionPoint))
+            if (CollideCircleStraightLine(capsule.circle1, A, B, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
-            if (CollideCircleRay(capsule.circle2, A, B, out collisionPoint))
+            if (CollideCircleStraightLine(capsule.circle2, A, B, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
-            if (CollideHitboxRay(capsule.hitbox, A, B, out collisionPoint))
+            if (CollideHitboxStraigthLine(capsule.hitbox, A, B, out collisionPoint))
             {
-                cache.Add(collisionPoint);
+                cache0.Add(collisionPoint);
             }
             collisionPoint = Vector2.zero;
-            if (cache.Count > 0)
+            if (cache0.Count > 0)
             {
-                foreach (Vector2 pos in cache)
+                foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
                 }
-                collisionPoint /= cache.Count;
-                cache.Clear();
+                collisionPoint /= cache0.Count;
+                cache0.Clear();
                 return true;
             }
             return false;
         }
-        public static bool CollideCapsuleRay(Capsule capsule, Line2D line, out Vector2 collisionPoint) => CollideCapsuleRay(capsule, line.A, line.B, out collisionPoint);
-        public static bool CollideCapsuleRay(Capsule capsule, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
+        public static bool CollideCapsuleStraightLine(Capsule capsule, StraightLine2D straightLine, out Vector2 collisionPoint) => CollideCapsuleStraightLine(capsule, straightLine.A, straightLine.B, out collisionPoint);
+        public static bool CollideCapsuleStraightLine(Capsule capsule, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
         {
-            if (CollideCapsuleRay(capsule, A, B, out collisionPoint))
+            if (CollideCapsuleStraightLine(capsule, A, B, out collisionPoint))
             {
                 normal = collisionPoint - capsule.center;
                 normal.Normalize();
@@ -1416,113 +1710,224 @@ namespace Collision2D
             normal = Vector2.zero;
             return false;
         }
-        public static bool CollideCapsuleRay(Capsule capsule, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollideCapsuleRay(capsule, line.A, line.B, out collisionPoint, out normal);
-
-
-        #endregion
-
-        #region Collide(Lines, Ray)
-
-        public static bool CollideRays(Ray2D ray1, Ray2D ray2) => CollideRays(ray1.A, ray1.B, ray2.A, ray2.B);//OK
-        public static bool CollideRays(Ray2D ray1, Ray2D ray2, out Vector2 collisionPoint) => CollideRays(ray1.A, ray1.B, ray2.A, ray2.B, out collisionPoint);//OK
-        private static bool CollideRays(in Vector2 A, in Vector2 B, in Vector2 O, in Vector2 P)
+        public static bool CollideCapsuleStraightLine(Capsule capsule, StraightLine2D straightLine, out Vector2 collisionPoint, out Vector2 normal) => CollideCapsuleStraightLine(capsule, straightLine.A, straightLine.B, out collisionPoint, out normal);
+        public static bool CollideCapsuleRay(Capsule capsule, Ray2D ray) => CollideCapsuleRay(capsule, ray.start, ray.end);
+        public static bool CollideCapsuleRay(Capsule capsule, in Vector2 start, in Vector2 end) => CollideCapsuleLine(capsule, start, end);
+        public static bool CollideCapsuleRay(Capsule capsule, Ray2D ray, out Vector2 collisionPoint) => CollideCapsuleRay(capsule, ray.start, ray.end, out collisionPoint);
+        public static bool CollideCapsuleRay(Capsule capsule, in Vector2 start, in Vector2 end, out Vector2 collisionPoint)
         {
-            return !(B - A).IsCollinear(P - O);
-        }//OK
-        private static bool CollideRays(in Vector2 A, in Vector2 B, in Vector2 O, in Vector2 P, out Vector2 collisionPoint)
-        {
-            //on regarde si une des droites est verticale
-            if (Mathf.Approximately(B.x, A.x) || Mathf.Approximately(P.x, O.x))
+            Vector2 beg = start + (start - end).normalized * (2f * capsule.inclusiveCircle.radius);
+            Vector2 cp1, cp2;
+            if(CollideCircleRay(capsule.circle1, start, end, out Vector2 cp0))
             {
-                //si les 2 sont verticales
-                if (Mathf.Approximately(B.x, A.x) && Mathf.Approximately(P.x, O.x))
+                if (CollideCircleRay(capsule.circle2, start, end, out cp1))
                 {
-                    if (!Mathf.Approximately(((A.x + B.x) * 0.5f), ((O.x + P.x) * 0.5f)))
+                    float d0 = beg.SqrDistance(cp0);
+                    float d1 = beg.SqrDistance(cp1);
+                    if (CollideHitboxRay(capsule.hitbox, start, end, out cp2))
                     {
-                        collisionPoint = Vector2.zero;
-                        return false;
-                    }
-                    collisionPoint = new Vector2((O.x + P.x + A.x + B.x) * 0.25f, (O.y + P.y + A.y + B.y) * 0.25f);
-                    return true;
-                }
-                float a, b, ySol;
-                if (Mathf.Approximately(B.x, A.x))//(AB) verticale mais pas (OP)
-                {
-                    a = (P.y - O.y) / (P.x - O.x);
-                    b = O.y - a * O.x;
-                    ySol = a * ((A.x + B.x) * 0.5f) + b;
-                    collisionPoint = new Vector2((A.x + B.x) * 0.5f, ySol);
-                    return true;
-                }
-                // on sait que (OP) verticale mais pas (AB)
-                a = (B.y - A.y) / (B.x - A.x);
-                b = A.y - a * A.x;
-                ySol = a * ((O.x + P.x) * 0.5f) + b;
-                collisionPoint = new Vector2((O.x + P.x) * 0.5f, ySol);
-                return true;
-            }
-
-            //on regarde si une des droites est horizontale
-            if (Mathf.Approximately(A.y, B.y) || Mathf.Approximately(O.y, P.y))
-            {
-                if (Mathf.Approximately(A.y, B.y) && Mathf.Approximately(O.y, P.y))//les 2 droites sont horizontales
-                {
-                    if (Mathf.Approximately(((A.y + B.y) * 0.5f), ((O.y + P.y) * 0.5f)))
-                    {
-                        collisionPoint = new Vector2((A.x + B.x + O.x + P.x) * 0.25f, (A.y + B.y + O.y + P.y) * 0.25f);
+                        float d2 = beg.SqrDistance(cp2);
+                        collisionPoint = d0 <= d1 ? (d0 <= d2 ? cp0 : cp2) : (d1 <= d2 ? cp1 : cp2);
                         return true;
                     }
-                    collisionPoint = Vector2.zero;
-                    return false;
-                }
-                float a, b, xSol;
-                if (Mathf.Approximately(A.y, B.y))//droite AB horizontal, seg OP non horizontal
-                {
-                    a = (P.y - O.y) / (P.x - O.x);
-                    b = O.y - a * O.x;
-                    xSol = (((A.y + B.y) * 0.5f) - b) / a;
-                    collisionPoint = new Vector2(xSol, (A.y + B.y) * 0.5f);
+
+                    collisionPoint = d0 <= d1 ? cp0 : cp1;
                     return true;
                 }
-                //OP horizontale
-                a = (B.y - A.y) / (B.x - A.x);
-                b = A.y - a * A.x;
-                xSol = (((O.y + P.y) * 0.5f) - b) / a;
-                collisionPoint = new Vector2(xSol, (O.y + P.y) * 0.5f);
+
+                if (CollideHitboxRay(capsule.hitbox, start, end, out cp2))
+                {
+                    float d0 = beg.SqrDistance(cp0);
+                    float d2 = beg.SqrDistance(cp2);
+                    collisionPoint = d0 <= d2 ? cp0 : cp2;
+                    return true;
+                }
+
+                collisionPoint = cp0;
                 return true;
             }
 
-            //les 2 droites sont quelconques (pas horizontales ni verticales)
-            float a1, b1, a2, b2;
-            //equetion de la droite (A,B)
-            a1 = (B.y - A.y) / (B.x - A.x);
-            b1 = A.y - a1 * A.x;
-            //equation du droite (O,P)
-            a2 = (P.y - O.y) / (P.x - O.x);
-            b2 = O.y - a2 * O.x;
-            //On regarde si les 2 sont !//
-            if (Mathf.Abs(a1 - a2) >= 0.0025f)
+            if (CollideCircleRay(capsule.circle2, start, end, out cp1))
             {
-                float xSol = (b2 - b1) / (a1 - a2);
-                float ySol = ((a1 * xSol) + b1 + (a2 * xSol) + b2) * 0.5f;
-                collisionPoint = new Vector2(xSol, ySol);
+                if (CollideHitboxRay(capsule.hitbox, start, end, out cp2))
+                {
+                    float d1 = beg.SqrDistance(cp1);
+                    float d2 = beg.SqrDistance(cp2);
+                    collisionPoint = d1 <= d2 ? cp1 : cp2;  
+                    return true;
+                }
+
+                collisionPoint = cp1;
                 return true;
             }
-            else if (Mathf.Approximately(b2, b1))
+
+            if (CollideHitboxRay(capsule.hitbox, start, end, out cp2))
             {
-                collisionPoint = new Vector2((A.x + B.x + O.x + P.x) / 4f, ((a1 + a2) * 0.5f) * ((A.x + B.x + O.x + P.x) / 4f) + ((b1 + b2) * 0.5f));
+                collisionPoint = cp2;
                 return true;
             }
+
             collisionPoint = Vector2.zero;
             return false;
         }
-        public static bool CollideLines(Line2D line1, Line2D line2) => CollideLines(line1.A, line1.B, line2.A, line2.B);//OK
-        private static bool CollideLines(in Vector2 A, in Vector2 B, in Vector2 O, in Vector2 P)//OK
+        public static bool CollideCapsuleRay(Capsule capsule, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollideCapsuleRay(capsule, ray.start, ray.end, out collisionPoint, out normal);
+        public static bool CollideCapsuleRay(Capsule capsule, in Vector2 start, in Vector2 end, out Vector2 collisionPoint, out Vector2 normal)
         {
-            return CollideLineRay(A, B, O, P) && CollideLineRay(O, P, A, B);
+            Vector2 beg = start + (start - end).normalized * (2f * capsule.inclusiveCircle.radius);
+            Vector2 cp1, cp2;
+            Vector2 n1, n2;
+            if (CollideCircleRay(capsule.circle1, start, end, out Vector2 cp0, out Vector2 n0))
+            {
+                if (CollideCircleRay(capsule.circle2, start, end, out cp1, out n1))
+                {
+                    float d0 = beg.SqrDistance(cp0);
+                    float d1 = beg.SqrDistance(cp1);
+                    if (CollideHitboxRay(capsule.hitbox, start, end, out cp2, out n2))
+                    {
+                        float d2 = beg.SqrDistance(cp2);
+                        if(d0 <= d1)
+                        {
+                            if(d0 <= d2)
+                            {
+                                collisionPoint = cp0;
+                                normal = n0;
+                            }
+                            else
+                            {
+                                collisionPoint = cp2;
+                                normal = n2;
+                            }
+                        }
+                        else
+                        {
+                            if(d1 <= d2)
+                            {
+                                collisionPoint = cp1;
+                                normal = n1;
+                            }
+                            else
+                            {
+                                collisionPoint = cp2;
+                                normal = n2;
+                            }
+                        }
+                        return true;
+                    }
+
+                    if(d0 <= d1)
+                    {
+                        collisionPoint = cp0;
+                        normal = n0;
+                    }
+                    else
+                    {
+                        collisionPoint = cp1;
+                        normal = n1;
+                    }
+
+                    return true;
+                }
+
+                if (CollideHitboxRay(capsule.hitbox, start, end, out cp2, out n2))
+                {
+                    float d0 = beg.SqrDistance(cp0);
+                    float d2 = beg.SqrDistance(cp2);
+
+                    if(d0 <= d2)
+                    {
+                        collisionPoint = cp0;
+                        normal = n0;
+                    }
+                    else
+                    {
+                        collisionPoint = cp2;
+                        normal = n2;
+                    }
+                    return true;
+                }
+
+                collisionPoint = cp0;
+                normal = n0;
+                return true;
+            }
+
+            if (CollideCircleRay(capsule.circle2, start, end, out cp1, out n1))
+            {
+                if (CollideHitboxRay(capsule.hitbox, start, end, out cp2, out n2))
+                {
+                    float d1 = beg.SqrDistance(cp1);
+                    float d2 = beg.SqrDistance(cp2);
+
+                    if(d1 <= d2)
+                    {
+                        collisionPoint = cp1;
+                        normal = n1;
+                    }
+                    else
+                    {
+                        collisionPoint = cp2;
+                        normal = n2;
+                    }
+                    return true;
+                }
+
+                collisionPoint = cp1;
+                normal = n1;
+                return true;
+            }
+
+            if (CollideHitboxRay(capsule.hitbox, start, end, out cp2, out n2))
+            {
+                collisionPoint = cp2;
+                normal = n2;
+                return true;
+            }
+
+            collisionPoint = normal = Vector2.zero;
+            return false;
         }
-        public static bool CollideLines(Line2D line1, Line2D line2, out Vector2 collisionPoint) => CollideLines(line1.A, line1.B, line2.A, line2.B, out collisionPoint);//OK
-        private static bool CollideLines(in Vector2 A, in Vector2 B, in Vector2 O, in Vector2 P, out Vector2 collisionPoint)//OK
+
+        #endregion
+
+        #region Collide(Lines, StraightLine, Ray)
+
+        public static bool CollideStraightLines(StraightLine2D straightLine1, StraightLine2D straightLine2)
+        {
+            float num = straightLine1.B.x - straightLine1.A.x;
+            float num2 = straightLine1.B.y - straightLine1.A.y;
+            float num3 = straightLine2.A.x - straightLine2.B.x;
+            float num4 = straightLine2.A.y - straightLine2.B.y;
+            float num5 = num * num4 - num2 * num3;
+            return Mathf.Abs(num5) > 1e-3f;
+        }
+        public static bool CollideStraightLines(StraightLine2D straightLine1, StraightLine2D straightLine2, out Vector2 collisionPoint)
+        {
+            float num = straightLine1.B.x - straightLine1.A.x;
+            float num2 = straightLine1.B.y - straightLine1.A.y;
+            float num3 = straightLine2.A.x - straightLine2.B.x;
+            float num4 = straightLine2.A.y - straightLine2.B.y;
+            float num5 = num * num4 - num2 * num3;
+
+            if (Mathf.Abs(num5) <= 1e-3f)
+            {
+                collisionPoint = Vector2.zero;
+                return false;
+            }      
+
+            float num6 = straightLine2.A.x - straightLine1.A.x;
+            float num7 = straightLine2.A.y - straightLine1.A.y;
+            float num8 = (num6 * num4 - num7 * num3) / num5;
+            collisionPoint.x = straightLine1.A.x + num8 * num;
+            collisionPoint.y = straightLine1.A.y + num8 * num2;
+            return true;
+        }
+        public static bool CollideLines(Line2D line1, Line2D line2) => CollideLines(line1.A, line1.B, line2.A, line2.B);
+        public static bool CollideLines(in Vector2 A, in Vector2 B, in Vector2 O, in Vector2 P)
+        {
+            return CollideLineStraightLine(A, B, O, P) && CollideLineStraightLine(O, P, A, B);
+        }
+        public static bool CollideLines(Line2D line1, Line2D line2, out Vector2 collisionPoint) => CollideLines(line1.A, line1.B, line2.A, line2.B, out collisionPoint);
+        public static bool CollideLines(in Vector2 A, in Vector2 B, in Vector2 O, in Vector2 P, out Vector2 collisionPoint)
         {
             //on regarde si un des 2 segments est vertical
             if (Mathf.Approximately(B.x, A.x) || Mathf.Approximately(P.x, O.x))
@@ -1656,15 +2061,15 @@ namespace Collision2D
             collisionPoint = Vector2.zero;
             return false;
         }
-        public static bool CollideLineRay(Line2D line, Ray2D ray) => CollideLineRay(line.A, line.B, ray.A, ray.B);//OK
-        private static bool CollideLineRay(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B)
+        public static bool CollideLineStraightLine(Line2D line, StraightLine2D straightLine) => CollideLineStraightLine(line.A, line.B, straightLine.A, straightLine.B);
+        private static bool CollideLineStraightLine(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B)
         {
             Vector2 AB = B - A;
             Vector2 AP = P - A;
             Vector2 AO = O - A;
             return (AB.x * AP.y - AB.y * AP.x) * (AB.x * AO.y - AB.y * AO.x) < 0f;
-        }//OK
-        private static bool CollideLineRay(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)//OK
+        }
+        private static bool CollideLineStraightLine(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
             //on regarde si le segment ou la droite est vertical
             if (Mathf.Approximately(B.x, A.x) || Mathf.Approximately(P.x, O.x))
@@ -1778,7 +2183,15 @@ namespace Collision2D
             collisionPoint = Vector2.zero;
             return false;
         }
-        public static bool CollideLineDroite(Line2D line, Ray2D ray, out Vector2 collisionPoint) => CollideLineRay(line.A, line.B, ray.A, ray.B, out collisionPoint);//OK
+        public static bool CollideLineStraightLine(Line2D line, StraightLine2D straightLine, out Vector2 collisionPoint) => CollideLineStraightLine(line.A, line.B, straightLine.A, straightLine.B, out collisionPoint);
+        public static bool CollideLineRay(Line2D line, Ray2D ray) => CollideLines(line.A, line.B, ray.start, ray.end);
+        public static bool CollideLineRay(Line2D line, Ray2D ray, out Vector2 collisionPoint) => CollideLines(line.A, line.B, ray.start, ray.end, out collisionPoint);
+        public static bool CollideStraightLineRay(StraightLine2D straightLine, Ray2D ray) => CollideLineStraightLine(ray.start, ray.end,straightLine.A, straightLine.B);
+        public static bool CollideStraightLineRay(StraightLine2D straightLine, Ray2D ray, out Vector2 collisionPoint) => CollideLineStraightLine(ray.start, ray.end, straightLine.A, straightLine.B, out collisionPoint);
+        public static bool CollideRays(Ray2D ray1, Ray2D ray2) => CollideLines(ray1.start, ray1.end, ray2.start, ray2.end);
+        public static bool CollideRays(in Vector2 start1, in Vector2 end1, in Vector2 start2, in Vector2 end2) => CollideLines(start1, end1, start2, end2);
+        public static bool CollideRays(Ray2D ray1, Ray2D ray2, out Vector2 collisionPoint) => CollideLines(ray1.start, ray1.end, ray2.start, ray2.end, out collisionPoint);
+        public static bool CollideRays(in Vector2 start1, in Vector2 end1, in Vector2 start2, in Vector2 end2, out Vector2 collisionPoint) => CollideLines(start1, end1, start2, end2, out collisionPoint);
 
         #endregion
 
@@ -1797,27 +2210,26 @@ namespace Collision2D
             protected set { _inclusiveCircle = value; }
         }
 
-        protected Vector2 scale;
-
         protected Collider2D()
         {
-            scale = Vector2.one;
+            
         }
+
         protected Collider2D(UnityEngine.Collider2D collider)
         {
-            scale = Vector2.one;
+            
         }
 
         public virtual Collider2D Clone() => null;
         public virtual bool Collide(Collider2D collider) => false;
         public virtual bool CollideLine(Line2D line) => false;
-        public virtual bool CollideRay(Ray2D d) => false;
+        public virtual bool CollideStraightLine(StraightLine2D d) => false;
         public virtual bool Contains(in Vector2 p) => false;
         public virtual Vector2 ClosestPoint(in Vector2 point) => default;
         public virtual void MoveAt(in Vector2 position) { }
         public virtual void Rotate(float angle) { }
         public virtual Hitbox ToHitbox() => null;
-        public virtual void SetScale(in Vector2 scale) { }
+        public virtual void Scale(in Vector2 scale) { }
         public virtual bool Normal(in Vector2 point, out Vector2 normal) { normal = Vector2.zero; return false; }
     }
 
@@ -1827,15 +2239,17 @@ namespace Collision2D
 
     public class Polygone : Collider2D
     {
-        public static void GizmosDraw(Vector2[] points)
+        public static void GizmosDraw(Vector2[] points) => GizmosDraw(points, Gizmos.DrawLine);
+        public static void GizmosDraw(Vector2[] points, Action<Vector3, Vector3> drawLineFunction)
         {
             for (int i = 0; i < points.Length; i++)
             {
-                Gizmos.DrawLine(points[i], points[(i + 1) % points.Length]);
+                drawLineFunction(points[i], points[(i + 1) % points.Length]);
             }
         }
 
         public static void GizmosDraw(Polygone p) => GizmosDraw(p.vertices);
+        public static void GizmosDraw(Polygone p, Action<Vector3, Vector3> drawLineFunction) => GizmosDraw(p.vertices, drawLineFunction);
 
         public Vector2[] vertices { get; private set; }
         private Vector2 _center;
@@ -1894,10 +2308,14 @@ namespace Collision2D
             List<Vector2> vertices = new List<Vector2>();
             poly.GetPath(0, vertices);
             this.vertices = new Vector2[vertices.Count];
+            center = (Vector2)poly.transform.position;
             for (int i = 0; i < vertices.Count; i++)
             {
-                this.vertices[i] = vertices[i] + (Vector2)poly.transform.position;
+                this.vertices[i] = vertices[i] + center + poly.offset;
             }
+
+            Scale(poly.transform.lossyScale);
+            Rotate(poly.transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
 
             center = Vector2.zero;
             foreach (Vector2 pos in this.vertices)
@@ -1942,7 +2360,7 @@ namespace Collision2D
                     res = B;
                 }
 
-                projectOrto = Ray2D.OrthogonalProjection(point, new Ray2D(A, B));
+                projectOrto = StraightLine2D.OrthogonalProjection(point, A, B);
                 if (Line2D.Contain(A, B, projectOrto))
                 {
                     d = projectOrto.SqrDistance(point);
@@ -1956,7 +2374,7 @@ namespace Collision2D
 
             A = vertices[0];
             B = vertices.Last();
-            projectOrto = Ray2D.OrthogonalProjection(point, new Ray2D(A, B));
+            projectOrto = StraightLine2D.OrthogonalProjection(point, A, B);
             if (Line2D.Contain(A, B, projectOrto))
             {
                 d = projectOrto.SqrDistance(point);
@@ -1977,11 +2395,12 @@ namespace Collision2D
                 return false;
 
             Vector2 I = ExternalPoint();
+            Vector2 A, B;
             int nbintersections = 0;
             for (int i = 0; i < vertices.Length; i++)
             {
-                Vector2 A = vertices[i];
-                Vector2 B = vertices[(i + 1) % vertices.Length];
+                A = vertices[i];
+                B = vertices[(i + 1) % vertices.Length];
                 int iseg = Intersectsegment(A, B, I, P);
                 if (iseg == -1)
                     return Contains(P);  // cas limite, on relance la fonction.
@@ -1990,15 +2409,7 @@ namespace Collision2D
 
             return Useful.IsOdd(nbintersections);
 
-            Vector2 ExternalPoint()
-            {
-                float maxDist = 0;
-                for (int i = 0; i < vertices.Length; i++)
-                {
-                    maxDist = Mathf.Max(center.SqrDistance(vertices[i]), maxDist);
-                }
-                return center + Random.Vector2(maxDist);
-            }
+            Vector2 ExternalPoint() => center + Random.Vector2(inclusiveCircle.radius * 2f);
 
             int Intersectsegment(Vector2 A, Vector2 B, Vector2 I, Vector2 P)
             {
@@ -2034,14 +2445,14 @@ namespace Collision2D
             return Contains(l.A) || Contains(l.B);
         }
 
-        public override bool CollideRay(Ray2D ray)
+        public override bool CollideStraightLine(StraightLine2D ray)
         {
-            if (!CollideCircleRay(inclusiveCircle, ray.A, ray.B))
+            if (!CollideCircleStraightLine(inclusiveCircle, ray.A, ray.B))
                 return false;
 
             for (int i = 0; i < vertices.Length; i++)
             {
-                if (CollideLineRay(new Line2D(vertices[i], vertices[(i + 1) % vertices.Length]), ray))
+                if (CollideLineStraightLine(new Line2D(vertices[i], vertices[(i + 1) % vertices.Length]), ray))
                 {
                     return true;
                 }
@@ -2070,15 +2481,13 @@ namespace Collision2D
             return new Circle(center, maxDist);
         }
 
-        public override void SetScale(in Vector2 scale)
+        public override void Scale(in Vector2 scale)
         {
-            Vector2 ratio = scale / this.scale;
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i] = center - (center - vertices[i]) * ratio;
+                vertices[i] = center - (center - vertices[i]) * scale;
             }
-            inclusiveCircle.SetScale(scale);
-            this.scale = scale;
+            inclusiveCircle?.Scale(scale);
         }
 
         public override void Rotate(float angle)
@@ -2148,16 +2557,18 @@ namespace Collision2D
     public class Hitbox : Collider2D
     {
         public static void GizmosDraw(Hitbox hitbox) => Polygone.GizmosDraw(hitbox.rec);
-        public static void GizmosDraw(in Vector2 center, in Vector2 size, float angle)
+        public static void GizmosDraw(Hitbox hitbox, Action<Vector3, Vector3> drawLineFunction) => Polygone.GizmosDraw(hitbox.rec, drawLineFunction);
+
+        public static void GizmosDraw(in Vector2 center, in Vector2 size, float angle) => GizmosDraw(center, size, angle, Gizmos.DrawLine);
+        public static void GizmosDraw(in Vector2 center, in Vector2 size, float angle, Action<Vector3, Vector3> drawLineFunction)
         {
             Hitbox h = new Hitbox(center, size);
             h.Rotate(angle);
-            GizmosDraw(h);
+            GizmosDraw(h, drawLineFunction);
         }
-        public static void GizmosDraw(in Vector2 center, in Vector2 size)
-        {
-            GizmosDraw(new Hitbox(center, size));
-        }
+
+        public static void GizmosDraw(in Vector2 center, in Vector2 size) => GizmosDraw(new Hitbox(center, size));
+        public static void GizmosDraw(in Vector2 center, in Vector2 size, Action<Vector3, Vector3> drawLineFunction) => GizmosDraw(new Hitbox(center, size), drawLineFunction);
 
         protected Polygone rec;
         public Vector2 size;
@@ -2176,6 +2587,7 @@ namespace Collision2D
         public Hitbox(BoxCollider2D hitbox) : base(hitbox)
         {
             Builder((Vector2)hitbox.transform.position + hitbox.offset, hitbox.size);
+            Scale(hitbox.transform.lossyScale);
             Rotate(hitbox.transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
         }
 
@@ -2213,7 +2625,7 @@ namespace Collision2D
         }
 
         public override bool Collide(Collider2D c) => Collider2D.Collide(c, this);
-        public override bool CollideRay(Ray2D d) => CollideHitboxRay(this, d);
+        public override bool CollideStraightLine(StraightLine2D d) => CollideHitboxStraigthLine(this, d);
         public override bool CollideLine(Line2D l) => CollideHitboxLine(this, l);
 
         public override Vector2 ClosestPoint(in Vector2 point)
@@ -2221,11 +2633,10 @@ namespace Collision2D
             return rec.ClosestPoint(point);
         }
 
-        public override void SetScale(in Vector2 scale)
+        public override void Scale(in Vector2 scale)
         {
-            rec.SetScale(scale);
-            size *= scale / this.scale;
-            this.scale = scale;
+            rec.Scale(scale);
+            size *= scale;
         }
 
         public override Vector2 center
@@ -2246,7 +2657,7 @@ namespace Collision2D
             return res;
         }
 
-        public override string ToString() => rec.ToString();
+        public override string ToString() => $"Center:{center}, Size:{size}, rotation:{AngleHori()}";
         public override bool Normal(in Vector2 point, out Vector2 normal) => rec.Normal(point, out normal);
     }
 
@@ -2256,7 +2667,11 @@ namespace Collision2D
 
     public class Circle : Collider2D
     {
-        public static void GizmosDraw(in Vector2 center, float radius)
+        public static void GizmosDraw(in Vector2 center, float radius) => GizmosDraw(center, radius, Gizmos.DrawLine);
+
+        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle) => GizmosDraw(center, radius, begAngle, endAngle, Gizmos.DrawLine);
+
+        public static void GizmosDraw(in Vector2 center, float radius, Action<Vector3, Vector3> drawLineFunction)
         {
             int sides = ((radius + 10f) * 7f).Round();
             float angleStep = (2f * Mathf.PI) / sides;
@@ -2266,12 +2681,12 @@ namespace Collision2D
             {
                 float ang = i * angleStep;
                 p = center + new Vector2(radius * Mathf.Cos(ang), radius * Mathf.Sin(ang));
-                Gizmos.DrawLine(lastPoint, p);
+                drawLineFunction(lastPoint, p);
                 lastPoint = p;
             }
         }
 
-        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle)
+        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, Action<Vector3, Vector3> drawLineFunction)
         {
             int sides = Math.Max(((radius + 10f) * 7f * Mathf.Abs((endAngle - begAngle) / (2f * Mathf.PI))).Round(), 4);
             float angleStep = Mathf.Abs(endAngle - begAngle) / sides;
@@ -2281,12 +2696,13 @@ namespace Collision2D
             {
                 float ang = begAngle + i * angleStep;
                 p = center + Useful.Vector2FromAngle(ang, radius);
-                Gizmos.DrawLine(lastPoint, p);
+                drawLineFunction(lastPoint, p);
                 lastPoint = p;
             }
         }
 
         public static void GizmosDraw(Circle circle) => GizmosDraw(circle.center, circle.radius);
+        public static void GizmosDraw(Circle circle, Action<Vector3, Vector3> drawLineFunction) => GizmosDraw(circle.center, circle.radius, drawLineFunction);
 
         protected Vector2 _center;
         public override Vector2 center
@@ -2310,6 +2726,7 @@ namespace Collision2D
         {
             radius = circle.radius;
             center = (Vector2)circle.transform.position + circle.offset;
+            Scale(circle.transform.lossyScale);
         }
 
         #region CollideLine
@@ -2326,15 +2743,16 @@ namespace Collision2D
                 Vector2 AB = new Vector2(line.B.x - line.A.x, line.B.y - line.A.y);
                 AC = new Vector2(center.x - line.A.x, center.y - line.A.y);
                 Vector2 BC = new Vector2(center.x - line.B.x, center.y - line.B.y);
-                float pscal1 = AB.x * AC.x + AB.y * AC.y;  // produit scalaire
-                float pscal2 = (-AB.x) * BC.x + (-AB.y) * BC.y;  // produit scalaire
+                float pscal1 = AB.x * AC.x + AB.y * AC.y;
+                float pscal2 = (-AB.x) * BC.x + (-AB.y) * BC.y;
                 if (pscal1 >= 0 && pscal2 >= 0)
-                    return true;   // I entre A et B, ok.
-                                   // dernière possibilité, A ou B dans le cercle
+                    return true;   // I between A and B, ok.
+                //last case, A or B in the circle
                 return center.SqrDistance(line.A) < radius * radius || center.SqrDistance(line.B) < radius * radius;
             }
         }
-        public override bool CollideRay(Ray2D ray)
+
+        public override bool CollideStraightLine(StraightLine2D ray)
         {
             Vector2 u = new Vector2(ray.B.x - ray.A.x, ray.B.y - ray.A.y);
             Vector2 AC = new Vector2(center.x - ray.A.x, center.y - ray.A.y);
@@ -2360,10 +2778,9 @@ namespace Collision2D
 
         public override void Rotate(float angle) { }
 
-        public override void SetScale(in Vector2 scale)
+        public override void Scale(in Vector2 scale)
         {
-            radius *= (((scale.x + this.scale.y) * 0.5f) / ((scale.x + this.scale.y) * 0.5f));
-            this.scale = scale;
+            radius *= Mathf.Max(scale.x, scale.y);
         }
 
         public override bool Contains(in Vector2 p) => center.SqrDistance(p) <= radius * radius;
@@ -2398,15 +2815,18 @@ namespace Collision2D
 
     public class Capsule : Collider2D
     {
-        public static void GizmosDraw(Capsule capsule)
+        public static void GizmosDraw(Capsule capsule) => GizmosDraw(capsule, Gizmos.DrawLine);
+
+        public static void GizmosDraw(Capsule capsule, Action<Vector3, Vector3> drawLineFunction)
         {
-            Circle.GizmosDraw(capsule.circle1);
-            Circle.GizmosDraw(capsule.circle2);
-            Hitbox.GizmosDraw(capsule.hitbox);
+            Circle.GizmosDraw(capsule.circle1, drawLineFunction);
+            Circle.GizmosDraw(capsule.circle2, drawLineFunction);
+            Hitbox.GizmosDraw(capsule.hitbox, drawLineFunction);
         }
 
-        public Circle circle1, circle2;
-        public Hitbox hitbox;
+        public Circle circle1 { get; private set; }
+        public Circle circle2 { get; private set; }
+        public Hitbox hitbox { get; private set; }
 
         public override Vector2 center
         {
@@ -2414,47 +2834,61 @@ namespace Collision2D
             protected set { MoveAt(value); }
         }
 
-        public CapsuleDirection2D direction;
+        private Capsule() : base() { } 
 
         public Capsule(in Vector2 center, in Vector2 size) : base()
         {
-            direction = size.x >= size.y ? CapsuleDirection2D.Horizontal : CapsuleDirection2D.Vertical;
-            Builder(center, size, direction);
+            CapsuleDirection2D direction = size.x >= size.y ? CapsuleDirection2D.Horizontal : CapsuleDirection2D.Vertical;
+            Builder(center, size, direction, 0f);
+        }
+
+        public Capsule(in Vector2 center, in Vector2 size, float angle) : base()
+        {
+            CapsuleDirection2D direction = size.x >= size.y ? CapsuleDirection2D.Horizontal : CapsuleDirection2D.Vertical;
+            Builder(center, size, direction, angle);
         }
 
         public Capsule(in Vector2 center, in Vector2 size, CapsuleDirection2D direction) : base()
         {
-            Builder(center, size, direction);
+            Builder(center, size, direction, 0f);
+        }
+
+        public Capsule(in Vector2 center, in Vector2 size, CapsuleDirection2D direction, float angle) : base()
+        {
+            Builder(center, size, direction, angle);
         }
 
         public Capsule(CapsuleCollider2D capsule) : base(capsule)
         {
-            Builder((Vector2)capsule.transform.position + capsule.offset, capsule.size, capsule.direction);
+            Builder((Vector2)capsule.transform.position + capsule.offset, capsule.size * capsule.transform.localScale, capsule.direction, capsule.transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
         }
 
-        private void Builder(in Vector2 center, in Vector2 size, CapsuleDirection2D direction)
+        private void Builder(in Vector2 center, in Vector2 size, CapsuleDirection2D direction, float rotation)
         {
-            hitbox = new Hitbox(center, size);
-            this.direction = direction;
-            if (direction == CapsuleDirection2D.Horizontal)
+            if(direction == CapsuleDirection2D.Horizontal)
             {
-                circle1 = new Circle(new Vector2(center.x - size.x * 0.5f, center.y), size.y * 0.5f);
-                circle2 = new Circle(new Vector2(center.x + size.x * 0.5f, center.y), size.y * 0.5f);
+                hitbox = new Hitbox(center, new Vector2(Mathf.Max(size.x - size.y, 0f), size.y));
+                circle1 = new Circle(new Vector2(center.x - (hitbox.size.x * 0.5f), center.y), size.y * 0.5f);
+                circle2 = new Circle(new Vector2(center.x + (hitbox.size.x * 0.5f), center.y), size.y * 0.5f);
             }
             else
             {
-                circle1 = new Circle(new Vector2(center.x, center.y - size.y * 0.5f), size.x * 0.5f);
-                circle2 = new Circle(new Vector2(center.x, center.y + size.y * 0.5f), size.x * 0.5f);
+                hitbox = new Hitbox(center, new Vector2(size.x, Mathf.Max(size.y - size.x, 0f)));
+                circle1 = new Circle(new Vector2(center.x, center.y - (hitbox.size.y * 0.5f)), size.x * 0.5f);
+                circle2 = new Circle(new Vector2(center.x, center.y + (hitbox.size.y * 0.5f)), size.x * 0.5f);
             }
+
             inclusiveCircle = GetInclusiveCircle();
+            Rotate(rotation);
         }
 
         public override Collider2D Clone()
         {
-            Capsule clone = new Capsule(center, hitbox.size, direction);
+            Capsule clone = new Capsule();
             clone.hitbox = (Hitbox)hitbox.Clone();
             clone.circle1 = (Circle)circle1.Clone();
             clone.circle2 = (Circle)circle2.Clone();
+            clone.inclusiveCircle = (Circle)inclusiveCircle.Clone();
             return clone;
         }
 
@@ -2464,9 +2898,9 @@ namespace Collision2D
         {
             return CollideHitboxLine(hitbox, line.A, line.B) || CollideCircleLine(circle1, line.A, line.B) || CollideCircleLine(circle2, line.A, line.B);
         }
-        public override bool CollideRay(Ray2D ray)
+        public override bool CollideStraightLine(StraightLine2D ray)
         {
-            return CollideHitboxRay(hitbox, ray.A, ray.B) || CollideCircleRay(circle1, ray.A, ray.B) || CollideCircleRay(circle2, ray.A, ray.B);
+            return CollideHitboxStraigthLine(hitbox, ray.A, ray.B) || CollideCircleStraightLine(circle1, ray.A, ray.B) || CollideCircleStraightLine(circle2, ray.A, ray.B);
         }
 
         public override bool Collide(Collider2D c) => Collider2D.Collide(c, this);
@@ -2515,29 +2949,24 @@ namespace Collision2D
             hitbox.Rotate(angle);
         }
 
-        public override bool Contains(in Vector2 p) => hitbox.Contains(p) || circle1.Contains(p) || circle2.Contains(p);
+        public override bool Contains(in Vector2 p) => circle1.Contains(p) || circle2.Contains(p) || hitbox.Contains(p);
         public override Hitbox ToHitbox() => hitbox;
 
         protected Circle GetInclusiveCircle()
         {
-            if (direction == CapsuleDirection2D.Horizontal)
-                return new Circle(center, Mathf.Max(hitbox.size.x + circle1.radius + circle2.radius, hitbox.size.y) * 0.5f);
-            else
-                return new Circle(center, Mathf.Max(hitbox.size.x + circle1.radius + circle2.radius, hitbox.size.y) * 0.5f);
+            return new Circle(hitbox.center, (circle1.center.Distance(circle2.center) + circle1.radius + circle2.radius) * 0.5f);
         }
 
-        public override void SetScale(in Vector2 scale)
+        public override void Scale(in Vector2 scale)
         {
-            circle1.SetScale(scale);
-            circle2.SetScale(scale);
-            hitbox.SetScale(scale);
+            circle1.Scale(scale);
+            circle2.Scale(scale);
+            hitbox.Scale(scale);
 
-            Vector2 ratio = scale / this.scale;
-            circle1.MoveAt(center + (circle1.center - center) * ratio);
-            circle2.MoveAt(center + (circle2.center - center) * ratio);
+            circle1.MoveAt(center + (circle1.center - center) * scale);
+            circle2.MoveAt(center + (circle2.center - center) * scale);
 
-            inclusiveCircle.SetScale(scale);
-            this.scale = scale;
+            inclusiveCircle.Scale(scale);
         }
 
         public override bool Normal(in Vector2 point, out Vector2 normal)
@@ -2550,6 +2979,8 @@ namespace Collision2D
                 return true;
             return base.Normal(point, out normal);
         }
+
+        public override string ToString() => $"Center:{center}, size:{hitbox.size}";
     }
 
     #endregion

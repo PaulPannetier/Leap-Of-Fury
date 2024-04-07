@@ -81,9 +81,9 @@ public class Electrode : MonoBehaviour
         {
             Vector2 dir = PhysicsToric.Direction(electrode1.position, electrode2.position);
             float distance = PhysicsToric.Distance(electrode1.position, electrode2.position);
-            RaycastHit2D[] raycasts = PhysicsToric.RaycastAll(electrode1.position, dir, distance, charMask, out toricInterPoints);
+            ToricRaycastHit2D[] raycasts = PhysicsToric.RaycastAll(electrode1.position, dir, distance, charMask, out toricInterPoints);
 
-            foreach (RaycastHit2D raycast in raycasts)
+            foreach (ToricRaycastHit2D raycast in raycasts)
             {
                 if(raycast.collider != null)
                 {

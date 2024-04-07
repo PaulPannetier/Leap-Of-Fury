@@ -121,13 +121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clones: []
   boundsOffset: {x: 0, y: 0}
   boundsSize: {x: 3.5, y: 2.5}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  componentsToDisableInClone:
-  - {fileID: 4909847896574820866}
+  componentsToDisableInClone: []
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   drawGizmos: 1
@@ -147,7 +147,6 @@ MonoBehaviour:
   disableAntiKnockHead: 1
   grabable: 1
   frictionCoefficient: 1
-  rb: {fileID: 0}
 --- !u!114 &4909847896574820866
 MonoBehaviour:
   m_ObjectHideFlags: 0
