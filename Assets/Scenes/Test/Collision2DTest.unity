@@ -208,12 +208,12 @@ MonoBehaviour:
   turnLeft: 113
   turnRight: 101
   rotationSpeed: 120
-  enableColliderCollision: 1
+  enableColliderCollision: 0
   enableStraightLineCollision: 0
   enableRayCollision: 0
   enableLineCollision: 0
-  enableFollowColliderCollision: 1
-  testClosestPointAndContain: 0
+  enableFollowColliderCollision: 0
+  testClosestPointContainNormalAndDistance: 1
   closestPointCollider: {fileID: 896612994}
 --- !u!4 &45416754
 Transform:

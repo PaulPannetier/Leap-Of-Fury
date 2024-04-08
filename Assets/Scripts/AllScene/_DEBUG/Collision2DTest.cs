@@ -37,12 +37,12 @@ public class Collision2DTest : MonoBehaviour
     [SerializeField] private bool enableFollowColliderCollision = true;
 
     [Header("Closest Point")]
-    [SerializeField] private bool testClosestPointAndContain = false;
+    [SerializeField] private bool testClosestPointContainNormalAndDistance = false;
     [SerializeField] UnityEngine.Collider2D closestPointCollider;
 
     private void Update()
     {
-        if(testClosestPointAndContain)
+        if(testClosestPointContainNormalAndDistance)
         {
             Collider2D collider = Collider2D.FromUnityCollider2D(closestPointCollider);
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(InputManager.mousePosition);
@@ -51,6 +51,11 @@ public class Collision2DTest : MonoBehaviour
             DrawCollider(collider, color);
             Circle.GizmosDraw(closestPoint, 0.08f, DrawLine);
             Circle.GizmosDraw(mousePos, 0.08f, DrawLine);
+            Debug.Log("Distance from mouse psition : " + collider.Distance(mousePos));
+            if(collider.Normal(closestPoint, out Vector2 n))
+            {
+                DrawVector(closestPoint, n, colorNormal1);
+            }
 
             void DrawLine(Vector3 star, Vector3 end)
             {

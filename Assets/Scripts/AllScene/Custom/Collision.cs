@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,6 +55,14 @@ namespace Collision2D
             return (0f <= r && r <= 1f) ? P.Distance(point) : (r < 0f ? A.Distance(point) : B.Distance(point));
         }
 
+        public float SqrDistance(in Vector2 point) => SqrDistance(A, B, point);
+        public static float SqrDistance(in Vector2 A, in Vector2 B, in Vector2 point)
+        {
+            float r = (((point.x - A.x) * (B.x - A.x)) + ((point.y - A.y) * (B.y - A.y))) / A.SqrDistance(B);
+            Vector2 P = A + r * (B - A);
+            return (0f <= r && r <= 1f) ? P.SqrDistance(point) : (r < 0f ? A.SqrDistance(point) : B.SqrDistance(point));
+        }
+
         public Vector2 Normal() => Normal(A, B);
         /// <summary>
         /// 
@@ -61,7 +70,7 @@ namespace Collision2D
         /// <returns>A vector normal of the line</returns>
         public static Vector2 Normal(in Vector2 A, in Vector2 B)
         {
-            if (Mathf.Approximately(A.x, B.x))
+            if (Mathf.Abs(A.x - B.x) < 1e-5f)
             {
                 return Vector2.right;
             }
@@ -444,20 +453,38 @@ namespace Collision2D
         #endregion
 
         private static bool FirstTestBeforeCollision(Collider2D c1, Collider2D c2) => CollideCircles(c1.inclusiveCircle, c2.inclusiveCircle);
+        private static bool FirstTestBeforeLineCollision(Collider2D c, in Vector2 A, in Vector2 B) => CollideCircleLine(c.inclusiveCircle, A, B);
+        private static bool FirstTestBeforeStraightLineCollision(Collider2D c, in Vector2 A, in Vector2 B) => CollideCircleStraightLine(c.inclusiveCircle, A, B);
+        private static bool FirstTestBeforeRayCollision(Collider2D c, in Vector2 A, in Vector2 B) => CollideCircleLine(c.inclusiveCircle, A, B);
 
         /// <returns>true if the both collider collide together, false otherwise</returns>
-        public static bool Collide(Collider2D collider1, Collider2D collider2) => FirstTestBeforeCollision(collider1, collider2) && collisionFunc1[collider1.GetType()][collider2.GetType()](collider1, collider2);
+        public static bool Collide(Collider2D collider1, Collider2D collider2)
+        {
+            Type type1 = collider1.GetType();
+            Type type2 = collider2.GetType();
+            if(type1 == typeof(Circle) && type2 == typeof(Circle))
+                return collisionFunc1[type1][type2](collider1, collider2);
+            return FirstTestBeforeCollision(collider1, collider2) && collisionFunc1[type1][type2](collider1, collider2);
+        }
         /// <param name="collisionPoint">The average point of collision of the two collider if true is return, (0,0) oterwise</param>
         /// <returns>true if the both collider collide together, false otherwise</returns>
         public static bool Collide(Collider2D collider1, Collider2D collider2, out Vector2 collisionPoint)
         {
+            Type type1 = collider1.GetType();
+            Type type2 = collider2.GetType();
+            bool b;
+            if (type1 == typeof(Circle) && type2 == typeof(Circle))
+            {
+                (b, collisionPoint) = collisionFunc2[type1][type2](collider1, collider2);
+                return b;
+            }
+
             if (!FirstTestBeforeCollision(collider1, collider2))
             {
                 collisionPoint = Vector2.zero;
                 return false;
             }
-            bool b;
-            (b, collisionPoint) = collisionFunc2[collider1.GetType()][collider2.GetType()](collider1, collider2);
+            (b, collisionPoint) = collisionFunc2[type1][type2](collider1, collider2);
             return b;
         }
         /// <param name="collisionPoint">The average point of collision of the two collider if true is return, (0,0) oterwise</param>
@@ -466,26 +493,54 @@ namespace Collision2D
         /// <returns>true if the both collider collide together, false otherwise</returns>
         public static bool Collide(Collider2D collider1, Collider2D collider2, out Vector2 collisionPoint, out Vector2 normal1, out Vector2 normal2)
         {
+            Type type1 = collider1.GetType();
+            Type type2 = collider2.GetType();
+            bool b;
+            if (type1 == typeof(Circle) && type2 == typeof(Circle))
+            {
+                (b, collisionPoint, normal1, normal2) = collisionFunc3[type1][type2](collider1, collider2);
+                return b;
+            }
+
             if (!FirstTestBeforeCollision(collider1, collider2))
             {
                 collisionPoint = normal1 = normal2 = Vector2.zero;
                 return false;
             }
-            bool b;
-            (b, collisionPoint, normal1, normal2) = collisionFunc3[collider1.GetType()][collider2.GetType()](collider1, collider2);
+            (b, collisionPoint, normal1, normal2) = collisionFunc3[type1][type2](collider1, collider2);
             return b;
         }
 
         /// <returns>true if the collider collide together width the line, false otherwise</returns>
-        public static bool CollideLine(Collider2D collider, in Vector2 A, in Vector2 B) => collisionLine1[collider.GetType()](collider, A, B);
+        public static bool CollideLine(Collider2D collider, in Vector2 A, in Vector2 B)
+        {
+            Type type = collider.GetType();
+            if (type == typeof(Circle))
+                return collisionLine1[type](collider, A, B);
+            return FirstTestBeforeLineCollision(collider, A, B) && collisionLine1[type](collider, A, B);
+
+        }
         /// <returns>true if the collider collide together width the line, false otherwise</returns>
-        public static bool CollideLine(Collider2D collider, Line2D l) => CollideLine(collider, l.A, l.B);
+        public static bool CollideLine(Collider2D collider, Line2D line) => CollideLine(collider, line.A, line.B);
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <returns>true if the collider collide together width the line, false otherwise</returns>
         public static bool CollideLine(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
+            Type type = collider.GetType();
             bool b;
-            (b, collisionPoint) = collisionLine2[collider.GetType()](collider, A, B);
+            if (type == typeof(Circle))
+            {
+                (b, collisionPoint) = collisionLine2[type](collider, A, B);
+                return b;
+            }
+
+            if(!FirstTestBeforeLineCollision(collider, A, B))
+            {
+                collisionPoint = Vector2.zero;
+                return false;
+            }
+
+            (b, collisionPoint) = collisionLine2[type](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
@@ -496,8 +551,20 @@ namespace Collision2D
         /// <returns>true if the collider collide together width the line, false otherwise</returns>
         public static bool CollideLine(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
         {
+            Type type = collider.GetType();
             bool b;
-            (b, collisionPoint, normal) = collisionLine3[collider.GetType()](collider, A, B);
+            if (type == typeof(Circle))
+            {
+                (b, collisionPoint, normal) = collisionLine3[type](collider, A, B);
+                return b;
+            }
+
+            if (!FirstTestBeforeLineCollision(collider, A, B))
+            {
+                collisionPoint = normal = Vector2.zero;
+                return false;
+            }
+            (b, collisionPoint, normal) = collisionLine3[type](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
@@ -506,15 +573,37 @@ namespace Collision2D
         public static bool CollideLine(Collider2D collider, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollideLine(collider, line.A, line.B, out collisionPoint, out normal);
 
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideStraightLine(Collider2D collider, in Vector2 A, in Vector2 B) => collisionStraightLine1[collider.GetType()](collider, A, B);
+        public static bool CollideStraightLine(Collider2D collider, in Vector2 A, in Vector2 B)
+        {
+            Type type = collider.GetType();
+            if(type == typeof(Circle))
+            {
+                return collisionStraightLine1[type](collider, A, B);
+            }
+
+            return FirstTestBeforeStraightLineCollision(collider, A, B) && collisionStraightLine1[type](collider, A, B);
+        }
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
         public static bool CollideStraightLine(Collider2D ollider, StraightLine2D straightLine) => CollideStraightLine(ollider, straightLine.A, straightLine.B);
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
         public static bool CollideStraightLine(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
+            Type type = collider.GetType();
             bool b;
-            (b, collisionPoint) = collisionStraightLine2[collider.GetType()](collider, A, B);
+            if (type == typeof(Circle))
+            {
+                (b, collisionPoint) = collisionStraightLine2[type](collider, A, B);
+                return b;
+            }
+
+            if (!FirstTestBeforeStraightLineCollision(collider, A, B))
+            {
+                collisionPoint = Vector2.zero;
+                return false;
+            }
+
+            (b, collisionPoint) = collisionStraightLine2[type](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
@@ -525,24 +614,58 @@ namespace Collision2D
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
         public static bool CollideStraightLine(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
         {
+            Type type = collider.GetType();
             bool b;
-            (b, collisionPoint, normal) = collisionStraightLine3[collider.GetType()](collider, A, B);
+            if (type == typeof(Circle))
+            {
+                (b, collisionPoint, normal) = collisionStraightLine3[type](collider, A, B);
+                return b;
+            }
+
+            if (!FirstTestBeforeStraightLineCollision(collider, A, B))
+            {
+                collisionPoint = normal = Vector2.zero;
+                return false;
+            }
+
+            (b, collisionPoint, normal) = collisionStraightLine3[type](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <param name="normal">The vector normal tothe collider's surface wehere the collision happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
         public static bool CollideStraightLine(Collider2D collider, StraightLine2D straightLine, out Vector2 collisionPoint, out Vector2 normal) => CollideStraightLine(collider, straightLine.A, straightLine.B, out collisionPoint, out normal);
+
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B) => collisionRay1[collider.GetType()](collider, A, B);
+        public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B)
+        {
+            Type type = collider.GetType();
+            if(type == typeof(Circle))
+                return collisionRay1[type](collider, A, B);
+
+            return FirstTestBeforeRayCollision(collider, A, B) && collisionRay1[type](collider, A, B);
+        }
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D ollider, Ray2D ray) => CollideStraightLine(ollider, ray.start, ray.end);
+        public static bool CollideRay(Collider2D ollider, Ray2D ray) => CollideRay(ollider, ray.start, ray.end);
         /// <param name="collisionPoint">The first point at the surface of the collider where the collission happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
         public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
+            Type type = collider.GetType();
             bool b;
-            (b, collisionPoint) = collisionRay2[collider.GetType()](collider, A, B);
+            if (type == typeof(Circle))
+            {
+                (b, collisionPoint) = collisionRay2[type](collider, A, B);
+                return b;
+            }
+
+            if (!FirstTestBeforeRayCollision(collider, A, B))
+            {
+                collisionPoint = Vector2.zero;
+                return false;
+            }
+
+            (b, collisionPoint) = collisionRay2[type](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
@@ -553,8 +676,21 @@ namespace Collision2D
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
         public static bool CollideRay(Collider2D collider, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
         {
+            Type type = collider.GetType();
             bool b;
-            (b, collisionPoint, normal) = collisionRay3[collider.GetType()](collider, A, B);
+            if (type == typeof(Circle))
+            {
+                (b, collisionPoint, normal) = collisionRay3[type](collider, A, B);
+                return b;
+            }
+
+            if (!FirstTestBeforeRayCollision(collider, A, B))
+            {
+                collisionPoint = normal = Vector2.zero;
+                return false;
+            }
+
+            (b, collisionPoint, normal) = collisionRay3[type](collider, A, B);
             return b;
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
@@ -1071,7 +1207,6 @@ namespace Collision2D
         }
         public static bool CollidePolygones(Polygone polygone1, Polygone polygone2, out Vector2 collisionPoint)
         {
-            collisionPoint = Vector2.zero;
             for (int i = 0; i < polygone1.vertices.Length; i++)
             {
                 for (int j = 0; j < polygone2.vertices.Length; j++)
@@ -1084,6 +1219,7 @@ namespace Collision2D
             }
             if (cache0.Count > 0)
             {
+                collisionPoint = Vector2.zero;
                 foreach (Vector2 pos in cache0)
                 {
                     collisionPoint += pos;
@@ -1092,6 +1228,14 @@ namespace Collision2D
                 cache0.Clear();
                 return true;
             }
+
+            if(polygone1.Contains(polygone2.center) || polygone2.Contains(polygone1.center))
+            {
+                collisionPoint = (polygone1.center + polygone2.center) * 0.5f;
+                return true;
+            }
+
+            collisionPoint = Vector2.zero;
             return false;
         }
         private static bool VerifyNormalDirection(Polygone polygone, in Vector2 inter, in Vector2 n, int lineIndex)
@@ -1159,103 +1303,206 @@ namespace Collision2D
         public static bool CollidePolygoneHitbox(Polygone polygone, Hitbox hitbox) => CollidePolygones(hitbox.ToPolygone(), polygone);//OK
         public static bool CollidePolygoneHitbox(Polygone polygone, Hitbox hitbox, out Vector2 collisionPoint) => CollidePolygones(polygone, hitbox.ToPolygone(), out collisionPoint);
         public static bool CollidePolygoneHitbox(Polygone polygone, Hitbox hitbox, out Vector2 collisionPoint, out Vector2 normal1, out Vector2 normal2) => CollidePolygones(polygone, hitbox.ToPolygone(), out collisionPoint, out normal1, out normal2);
-        public static bool CollidePolygoneLine(Polygone polygone, in Vector2 A, in Vector2 B) => polygone.CollideLine(new Line2D(A, B));//OK
+        public static bool CollidePolygoneLine(Polygone polygone, in Vector2 A, in Vector2 B)
+        {
+            for (int i = 0; i < polygone.vertices.Length; i++)
+            {
+                if (CollideLines(A, B, polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length]))
+                {
+                    return true;
+                }
+            }
+            return polygone.Contains(A) || polygone.Contains(B);
+        }
         public static bool CollidePolygoneLine(Polygone polygone, Line2D line) => polygone.CollideLine(line);//OK
         public static bool CollidePolygoneLine(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
-            collisionPoint = Vector2.zero;
+            List<Vector2Int> sideIntersec = new List<Vector2Int>();
+
+            int ip1;
             for (int i = 0; i < polygone.vertices.Length; i++)
             {
-                if (CollideLines(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
+                ip1 = (i + 1) % polygone.vertices.Length;
+                if (CollideLines(polygone.vertices[i], polygone.vertices[ip1], A, B, out Vector2 intersec))
                 {
                     cache0.Add(intersec);
+                    sideIntersec.Add(new Vector2Int(i, ip1));
                 }
             }
-            if (cache0.Count > 0)
-            {
-                foreach (Vector2 pos in cache0)
-                {
-                    collisionPoint += pos;
-                }
-                collisionPoint /= cache0.Count;
-                collisionPoint = polygone.ClosestPoint(collisionPoint);
-                cache0.Clear();
-                return true;
-            }
 
-            if(polygone.Contains(A) || polygone.Contains(B))
-            {
-                Vector2 cp1 = polygone.ClosestPoint(A);
-                Vector2 cp2 = polygone.ClosestPoint(B);
-                collisionPoint = cp1.SqrDistance(A) <= cp2.SqrDistance(B) ? cp1 : cp2;
-                return true;
-            }
-
-            return false;
-        }
-        public static bool CollidePolygoneLine(Polygone polygone, Line2D line, out Vector2 collisionPoint) => CollidePolygoneLine(polygone, line.A, line.B, out collisionPoint);
-        public static bool CollidePolygoneLine(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
-        {
             collisionPoint = Vector2.zero;
-            for (int i = 0; i < polygone.vertices.Length; i++)
+            StraightLine2D straightLine;
+            float minSqrDist, d;
+
+            if (cache0.Count <= 0)
             {
-                if (CollideLines(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B, out Vector2 intersec))
+                if (polygone.Contains(A))
                 {
-                    cache0.Add(intersec);
-                    Vector2 n = (polygone.vertices[(i + 1) % polygone.vertices.Length] - polygone.vertices[i]).NormalVector();
-                    n.Normalize();
-                    //on regarde si on est dans le bon sens
-                    Vector2 middle = (polygone.vertices[i] + polygone.vertices[(i + 1) % polygone.vertices.Length]) * 0.5f;
-                    if (polygone.Contains(middle + n))//tromper de sens
+                    Vector2 cp = Line2D.ClosestPoint(A, B, polygone.center);
+                    straightLine = new StraightLine2D(cp, cp + (A - B).NormalVector());
+                    minSqrDist = float.MaxValue;
+
+                    for (int i = 0; i < polygone.vertices.Length; i++)
                     {
-                        n *= -1f;
+                        if (CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], straightLine.A, straightLine.B, out Vector2 intersec))
+                        {
+                            d = intersec.SqrDistance(cp);
+                            if (d < minSqrDist)
+                            {
+                                minSqrDist = d;
+                                collisionPoint = intersec;
+                            }
+                        }
                     }
-                    cache1.Add(n);//Stocker le vecteur normal au coté de p1
-                }
-            }
-
-            if (cache0.Count > 0)
-            {
-                foreach (Vector2 pos in cache0)
-                {
-                    collisionPoint += pos;
-                }
-                collisionPoint /= cache0.Count;
-                collisionPoint = polygone.ClosestPoint(collisionPoint);
-                cache0.Clear();
-
-                if (cache1.Count == 1)
-                {
-                    normal = cache1[0];
-                    cache1.Clear();
                     return true;
                 }
-                //on vérif le sens
-                float averageAngle = 0f, averageAngle2;
-                foreach (Vector2 n in cache1)
-                {
-                    averageAngle += Useful.Angle(Vector2.zero, n);
-                }
-                averageAngle /= cache1.Count;
-                averageAngle2 = Useful.WrapAngle(averageAngle + Mathf.PI);
-                float dist1 = 0f, dist2 = 0f;
-                foreach (Vector2 n in cache1)
-                {
-                    float angle = Useful.Angle(Vector2.zero, n);
-                    dist1 += Mathf.Abs(angle - averageAngle) % Mathf.PI;
-                    dist2 += Mathf.Abs(angle - averageAngle2) % Mathf.PI;
-                }
-                averageAngle = dist1 <= dist2 ? averageAngle : averageAngle2;
-                normal = new Vector2(Mathf.Cos(averageAngle), Mathf.Sin(averageAngle));
+                return false;
+            }
 
-                cache1.Clear();
+            if(cache0.Count == 1)
+            {
+                collisionPoint = cache0[0];
+                cache0.Clear();
                 return true;
             }
-            normal = Vector2.zero;
+
+            for (int i = 0; i < cache0.Count; i++)
+            {
+                collisionPoint += cache0[i];
+            }
+            Vector2 avgInter = collisionPoint / cache0.Count;
+
+            straightLine = new StraightLine2D(avgInter, avgInter + (B - A).NormalVector());
+            minSqrDist = float.MaxValue;
+
+            for (int i = 0; i < polygone.vertices.Length; i++)
+            {
+                if (CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], straightLine.A, straightLine.B, out Vector2 intersec))
+                {
+                    d = intersec.SqrDistance(avgInter);
+                    if (d < minSqrDist)
+                    {
+                        minSqrDist = d;
+                        collisionPoint = intersec;
+                    }
+                }
+            }
+
+            cache0.Clear();
+            return true;
+        }
+        public static bool CollidePolygoneLine(Polygone polygone, Line2D line, out Vector2 collisionPoint) => CollidePolygoneLine(polygone, line.A, line.B, out collisionPoint);
+        public static bool CollidePolygoneLine(Polygone polygone, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneLine(polygone, line.A, line.B, out collisionPoint, out normal);
+        public static bool CollidePolygoneLine(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint, out Vector2 normal)
+        {
+            List<Vector2Int> sideIntersec = new List<Vector2Int>();
+
+            int ip1;
+            int indexFirstInter = -1;
+            for (int i = 0; i < polygone.vertices.Length; i++)
+            {
+                ip1 = (i + 1) % polygone.vertices.Length;
+                if (CollideLines(polygone.vertices[i], polygone.vertices[ip1], A, B, out Vector2 intersec))
+                {
+                    if(indexFirstInter == -1)
+                    {
+                        indexFirstInter = i;
+                    }
+                    cache0.Add(intersec);
+                    sideIntersec.Add(new Vector2Int(i, ip1));
+                }
+            }
+
+            collisionPoint = Vector2.zero;
+            Line2D line;
+            float minSqrDist, d;
+
+            if (cache0.Count <= 0)
+            {
+                if (polygone.Contains(A))
+                {
+                    Vector2 cp = Line2D.ClosestPoint(A, B, polygone.center);
+                    normal = (A - B).NormalVector();
+                    line = new Line2D(cp, cp + normal * (polygone.inclusiveCircle.radius * 2f));
+                    minSqrDist = float.MaxValue;
+                    int minIndex = -1;
+
+                    for (int i = 0; i < polygone.vertices.Length; i++)
+                    {
+                        if (CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], line.A, line.B, out Vector2 intersec))
+                        {
+                            d = intersec.SqrDistance(cp);
+                            if (d < minSqrDist)
+                            {
+                                minSqrDist = d;
+                                collisionPoint = intersec;
+                                minIndex = i;
+                            }
+                        }
+                    }
+
+                    normal = (polygone.vertices[(minIndex + 1) % polygone.vertices.Length] - polygone.vertices[minIndex]).NormalVector();
+                    if (!polygone.IsNormalOnRightDirection(collisionPoint, normal, minIndex))
+                        normal *= -1f;
+    
+                    return true;
+                }
+
+                normal = Vector2.zero;
+                return false;
+            }
+
+            if (cache0.Count == 1)
+            {
+                collisionPoint = cache0[0];
+                normal = (polygone.vertices[(indexFirstInter + 1) % polygone.vertices.Length] - polygone.vertices[indexFirstInter]).NormalVector();
+
+                if(!polygone.IsNormalOnRightDirection(collisionPoint, normal, indexFirstInter))
+                    normal *= -1f;
+
+                cache0.Clear();
+                return true;
+            }
+
+            for (int i = 0; i < cache0.Count; i++)
+            {
+                collisionPoint += cache0[i];
+            }
+
+            Vector2 avgInter = collisionPoint / cache0.Count;
+            normal = (B - A).NormalVector();
+            Vector2 linePoint = avgInter + normal;
+            minSqrDist = float.MaxValue;
+            int minSideIndex = -1;
+            for (int i = 0; i < polygone.vertices.Length; i++)
+            {
+                if (CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], avgInter, linePoint, out Vector2 intersec))
+                {
+                    d = intersec.SqrDistance(avgInter);
+                    if (d < minSqrDist)
+                    {
+                        minSqrDist = d;
+                        collisionPoint = intersec;
+                        minSideIndex = i;
+                    }
+                }
+            }
+
+            polygone.Normal(collisionPoint, out normal);
+            cache0.Clear();
+            return true;
+        }
+        public static bool CollidePolygoneStaightLine(Polygone polygone, in Vector2 A, in Vector2 B)
+        {
+            for (int i = 0; i < polygone.vertices.Length; i++)
+            {
+                if (CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], A, B))
+                {
+                    return true;
+                }
+            }
             return false;
         }
-        public static bool CollidePolygoneLine(Polygone polygone, Line2D line, out Vector2 collisionPoint, out Vector2 normal) => CollidePolygoneLine(polygone, line.A, line.B, out collisionPoint, out normal);
-        public static bool CollidePolygoneStaightLine(Polygone polygone, in Vector2 A, in Vector2 B) => polygone.CollideStraightLine(new StraightLine2D(A, B));//OK
         public static bool CollidePolygoneStaightLine(Polygone polygone, StraightLine2D straightLine) => polygone.CollideStraightLine(straightLine);//OK
         public static bool CollidePolygoneStaightLine(Polygone polygone, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
@@ -2204,14 +2451,14 @@ namespace Collision2D
             return false;
         }
         public static bool CollideLineStraightLine(Line2D line, StraightLine2D straightLine) => CollideLineStraightLine(line.A, line.B, straightLine.A, straightLine.B);
-        private static bool CollideLineStraightLine(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B)
+        internal static bool CollideLineStraightLine(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B)
         {
             Vector2 AB = B - A;
             Vector2 AP = P - A;
             Vector2 AO = O - A;
             return (AB.x * AP.y - AB.y * AP.x) * (AB.x * AO.y - AB.y * AO.x) < 0f;
         }
-        private static bool CollideLineStraightLine(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
+        internal static bool CollideLineStraightLine(in Vector2 O, in Vector2 P, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
             //on regarde si le segment ou la droite est vertical
             if (Mathf.Approximately(B.x, A.x) || Mathf.Approximately(P.x, O.x))
@@ -2339,6 +2586,8 @@ namespace Collision2D
 
         #endregion
 
+        #region Collider Fields/Methods
+
         public virtual Vector2 center
         {
             get => new Vector2();
@@ -2367,12 +2616,15 @@ namespace Collision2D
         public virtual bool CollideLine(Line2D line) => false;
         public virtual bool CollideStraightLine(StraightLine2D d) => false;
         public virtual bool Contains(in Vector2 p) => false;
+        public virtual float Distance(in Vector2 point) => 0f;
         public virtual Vector2 ClosestPoint(in Vector2 point) => default;
         public virtual void MoveAt(in Vector2 position) { }
         public virtual void Rotate(float angle) { }
         public virtual Hitbox ToHitbox() => null;
         public virtual void Scale(in Vector2 scale) { }
         public virtual bool Normal(in Vector2 point, out Vector2 normal) { normal = Vector2.zero; return false; }
+
+        #endregion
     }
 
     #endregion
@@ -2556,35 +2808,11 @@ namespace Collision2D
 
         #endregion
 
-        public override bool CollideLine(Line2D l)
-        {
-            if (!CollideCircleLine(inclusiveCircle, l.A, l.B))
-                return false;
+        public override float Distance(in Vector2 point) => Contains(point) ? 0f : ClosestPoint(point).Distance(point);
 
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                if (CollideLines(l, new Line2D(vertices[i], vertices[(i + 1) % vertices.Length])))
-                {
-                    return true;
-                }
-            }
-            return Contains(l.A) || Contains(l.B);
-        }
+        public override bool CollideLine(Line2D line) => CollidePolygoneLine(this, line.A, line.B);
 
-        public override bool CollideStraightLine(StraightLine2D ray)
-        {
-            if (!CollideCircleStraightLine(inclusiveCircle, ray.A, ray.B))
-                return false;
-
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                if (CollideLineStraightLine(new Line2D(vertices[i], vertices[(i + 1) % vertices.Length]), ray))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        public override bool CollideStraightLine(StraightLine2D straightLine) => CollidePolygoneStaightLine(this, straightLine.A, straightLine.B);
 
         public override void MoveAt(in Vector2 position)
         {
@@ -2628,34 +2856,55 @@ namespace Collision2D
             base.Rotate(angle);
         }
 
+        internal bool IsNormalOnRightDirection(in Vector2 point, in Vector2 n, int indexSide)
+        {
+            Vector2 A = point;
+            Vector2 B = point + (2f * inclusiveCircle.radius) * n;
+            int nbInter = 0;
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                if (i == indexSide)
+                {
+                    continue;
+                }
+
+                if (CollideLines(vertices[i], vertices[(i + 1) % vertices.Length], A, B))
+                {
+                    nbInter++;
+                }
+            }
+
+            return nbInter.IsEven();
+        }
+
         public override bool Normal(in Vector2 point, out Vector2 normal)
         {
             int minIndex = 0;
-            float minDist = Line2D.Distance(vertices[0], vertices[1], point);
-            float tmpDist;
+            float minSqrDist = Line2D.SqrDistance(vertices[0], vertices[1], point);
+            float currentSqrDistance;
             for (int i = 1; i < vertices.Length; i++)
             {
-                tmpDist = Line2D.Distance(vertices[i], vertices[(i + 1) % vertices.Length], point);
-                if (tmpDist < minDist)
+                currentSqrDistance = Line2D.SqrDistance(vertices[i], vertices[(i + 1) % vertices.Length], point);
+                if (currentSqrDistance < minSqrDist)
                 {
-                    minDist = tmpDist;
+                    minSqrDist = currentSqrDistance;
                     minIndex = i;
                 }
             }
 
-            Vector2 A = vertices[minIndex]; Vector2 B = vertices[(minIndex + 1) % vertices.Length];
-            float sqrDist = A.SqrDistance(B);
-            if (Mathf.Approximately(sqrDist, 0f))
+            if(minSqrDist > 1e-2f)
             {
-                return base.Normal(point, out normal);
+                normal = Vector2.zero;
+                return false;
             }
+
+            Vector2 A = vertices[minIndex];
+            Vector2 B = vertices[(minIndex + 1) % vertices.Length];
             normal = Line2D.Normal(A, B);
-            float r = (((point.x - A.x) * (B.x - A.x)) + ((point.y - A.y) * (B.y - A.y))) / sqrDist;
-            Vector2 P = A + r * (B - A);
-            if (normal.Dot(center - P) > 0f)
-            {
+
+            if (!IsNormalOnRightDirection(point, normal, minIndex))
                 normal *= -1f;
-            }
+
             return true;
         }
 
@@ -2754,10 +3003,8 @@ namespace Collision2D
         public override bool CollideStraightLine(StraightLine2D d) => CollideHitboxStraigthLine(this, d);
         public override bool CollideLine(Line2D l) => CollideHitboxLine(this, l);
 
-        public override Vector2 ClosestPoint(in Vector2 point)
-        {
-            return rec.ClosestPoint(point);
-        }
+        public override Vector2 ClosestPoint(in Vector2 point) => rec.ClosestPoint(point);
+        public override float Distance(in Vector2 point) => rec.Distance(point);
 
         public override void Scale(in Vector2 scale)
         {
@@ -2859,18 +3106,16 @@ namespace Collision2D
 
         public override bool CollideLine(Line2D line)
         {
-            Vector2 u = new Vector2(line.B.x - line.A.x, line.B.y - line.A.y);
+            Vector2 u = line.B - line.A;
             Vector2 AC = new Vector2(center.x - line.A.x, center.y - line.A.y);
             float CI = Mathf.Abs(u.x * AC.y - u.y * AC.x) / u.magnitude;
             if (CI > radius)
                 return false;
             else
             {
-                Vector2 AB = new Vector2(line.B.x - line.A.x, line.B.y - line.A.y);
-                AC = new Vector2(center.x - line.A.x, center.y - line.A.y);
                 Vector2 BC = new Vector2(center.x - line.B.x, center.y - line.B.y);
-                float pscal1 = AB.x * AC.x + AB.y * AC.y;
-                float pscal2 = (-AB.x) * BC.x + (-AB.y) * BC.y;
+                float pscal1 = u.x * AC.x + u.y * AC.y;
+                float pscal2 = (-u.x) * BC.x + (-u.y) * BC.y;
                 if (pscal1 >= 0 && pscal2 >= 0)
                     return true;   // I between A and B, ok.
                 //last case, A or B in the circle
@@ -2894,6 +3139,8 @@ namespace Collision2D
         {
             return center + (point - center).normalized * radius;
         }
+
+        public override float Distance(in Vector2 point) => Mathf.Max(0f, point.Distance(center) - radius);
 
         public override Hitbox ToHitbox() => new Hitbox(center, new Vector2(radius, radius));
 
@@ -3079,6 +3326,8 @@ namespace Collision2D
             return res;
         }
 
+        public override float Distance(in Vector2 point) => Contains(point) ? 0f : ClosestPoint(point).Distance(point);
+
         public override void MoveAt(in Vector2 pos)
         {
             Vector2 distC1 = circle1.center - center;
@@ -3143,6 +3392,8 @@ namespace Collision2D
 }
 
 #endregion
+
+#if UNITY_EDITOR
 
 #region 3D Collisions
 
@@ -3741,3 +3992,5 @@ namespace Collission3D
 }
 
 #endregion
+
+#endif
