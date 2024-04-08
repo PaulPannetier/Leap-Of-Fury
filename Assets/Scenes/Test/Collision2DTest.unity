@@ -199,10 +199,10 @@ MonoBehaviour:
     B: {x: -10.8, y: -6.001}
   - A: {x: -5, y: 7.25}
     B: {x: -5.001, y: -4.72}
-  colorTouch: {r: 0.8018868, g: 0, b: 0, a: 1}
+  colorTouch: {r: 1, g: 0.048927706, b: 0, a: 1}
   colorUntouch: {r: 0.06191041, g: 0.5188679, b: 0, a: 1}
   colorInter: {r: 0.3983631, g: 1, b: 0, a: 1}
-  colorNormal1: {r: 0, g: 0.694149, b: 1, a: 1}
+  colorNormal1: {r: 0, g: 0.04225111, b: 1, a: 1}
   colorNormal2: {r: 1, g: 0, b: 0.93483543, a: 1}
   collisionType: 1
   turnLeft: 113
@@ -213,6 +213,8 @@ MonoBehaviour:
   enableRayCollision: 0
   enableLineCollision: 0
   enableFollowColliderCollision: 1
+  testClosestPointAndContain: 0
+  closestPointCollider: {fileID: 896612994}
 --- !u!4 &45416754
 Transform:
   m_ObjectHideFlags: 0

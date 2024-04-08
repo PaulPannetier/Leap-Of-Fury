@@ -1569,7 +1569,7 @@ public static class Useful
     /// <summary>
     /// t € [0, 1]
     /// </summary>
-    ///     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Lerp(in int a, in int b, float t) => (int)(a + (b - a) * t);
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Lerp(in float a, in float b, float t) => a + (b - a) * t;

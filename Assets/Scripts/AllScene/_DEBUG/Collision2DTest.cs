@@ -36,8 +36,31 @@ public class Collision2DTest : MonoBehaviour
     [SerializeField] private bool enableLineCollision = true;
     [SerializeField] private bool enableFollowColliderCollision = true;
 
+    [Header("Closest Point")]
+    [SerializeField] private bool testClosestPointAndContain = false;
+    [SerializeField] UnityEngine.Collider2D closestPointCollider;
+
     private void Update()
     {
+        if(testClosestPointAndContain)
+        {
+            Collider2D collider = Collider2D.FromUnityCollider2D(closestPointCollider);
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(InputManager.mousePosition);
+            Vector2 closestPoint = collider.ClosestPoint(mousePos);
+            Color color = collider.Contains(mousePos) ? colorTouch : colorUntouch;
+            DrawCollider(collider, color);
+            Circle.GizmosDraw(closestPoint, 0.08f, DrawLine);
+            Circle.GizmosDraw(mousePos, 0.08f, DrawLine);
+
+            void DrawLine(Vector3 star, Vector3 end)
+            {
+                Debug.DrawLine(star, end, color);
+            }
+
+            return;
+        }
+
+
         if(InputManager.GetKey(turnLeft))
         {
             followCollider.transform.Rotate(new Vector3(0f, 0f, -rotationSpeed * Time.deltaTime));

@@ -131,7 +131,8 @@ Name : Chaos
 TODO :
 Trad all text
 netoyer tout les fichiers du projet
-verify Collision2D and PhysicsToric (huge test) + replace CollideCircleLine avec Line.Distance(circle.center) + use and test Mathf.IntersegmentLine
+verify Collision2D and PhysicsToric (huge test) + replace CollideCircleLine avec Line.Distance(circle.center) + use and test Mathf.IntersegmentLine + verify normal order
+opti CollideLines(in Vector2 A, in Vector2 B, in Vector2 O, in Vector2 P, out Vector2 collisionPoint) + test projOrtho, distance ect and closest point
 opti charController (réglage hyperparam)
 review code pour alouer moins de mémoire (use short ect)
 rm charCanvas
