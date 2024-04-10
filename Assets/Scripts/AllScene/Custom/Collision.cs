@@ -3000,10 +3000,10 @@ namespace Collision2D
         }
 
         protected Circle _inclusiveCircle;
-        public virtual Circle inclusiveCircle
+        internal virtual Circle inclusiveCircle
         {
             get => _inclusiveCircle;
-            protected set { _inclusiveCircle = value; }
+            set { _inclusiveCircle = value; }
         }
 
         protected Collider2D()
@@ -3354,7 +3354,7 @@ namespace Collision2D
         public Vector2 size;
         public Vector2[] vertices => rec.vertices;
 
-        public override Circle inclusiveCircle
+        internal override Circle inclusiveCircle
         {
             get => rec.inclusiveCircle;
         }
@@ -3493,7 +3493,7 @@ namespace Collision2D
             }
         }
         public float radius;
-        public override Circle inclusiveCircle => this;
+        internal override Circle inclusiveCircle => this;
 
         public Circle(in Vector2 center, float radius) : base()
         {
