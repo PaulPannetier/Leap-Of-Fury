@@ -1386,7 +1386,7 @@ public static class Useful
         }
         else
         {
-            return Vector2.right;//tout les vecteurs de norme 1 marche
+            return v;
         }
     }
 

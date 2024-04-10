@@ -165,7 +165,7 @@ MonoBehaviour:
   - {fileID: 1755839565}
   - {fileID: 891981805}
   - {fileID: 1027170282}
-  followCollider: {fileID: 803406132}
+  followCollider: {fileID: 1662399622}
   lines:
   - A: {x: 14, y: 5.61}
     B: {x: 9.86, y: 1.35}
@@ -177,6 +177,14 @@ MonoBehaviour:
     B: {x: 3.98, y: -2.001}
   - A: {x: -11, y: 4.52}
     B: {x: -11.001, y: -5.24}
+  - A: {x: -8, y: -0.26}
+    B: {x: -8.001, y: -1}
+  - A: {x: -6, y: 5.97}
+    B: {x: -6, y: 6.92}
+  - A: {x: -5.39, y: -5}
+    B: {x: -6, y: -5}
+  - A: {x: 3.4, y: -5}
+    B: {x: 4.24, y: -5.001}
   rays:
   - A: {x: 5.19, y: 0}
     B: {x: 0, y: 0}
@@ -188,6 +196,14 @@ MonoBehaviour:
     B: {x: 4.1001, y: 1.68}
   - A: {x: -1.1, y: -6}
     B: {x: 11.4, y: -6.001}
+  - A: {x: -6.97, y: -6}
+    B: {x: -6.1, y: -6.001}
+  - A: {x: -6.97, y: -4}
+    B: {x: -6.1, y: -4}
+  - A: {x: -6, y: 1.48}
+    B: {x: -6, y: 0.66}
+  - A: {x: -12, y: 3.4}
+    B: {x: -12.001, y: 4.06}
   straightLines:
   - A: {x: 5.99, y: -2.96}
     B: {x: -13.28, y: 2.03}
@@ -207,14 +223,14 @@ MonoBehaviour:
   collisionType: 1
   turnLeft: 113
   turnRight: 101
-  rotationSpeed: 120
+  rotationSpeed: 240
   enableColliderCollision: 0
-  enableStraightLineCollision: 0
+  enableStraightLineCollision: 1
   enableRayCollision: 0
   enableLineCollision: 0
-  enableFollowColliderCollision: 0
-  testClosestPointContainNormalAndDistance: 1
-  closestPointCollider: {fileID: 896612994}
+  enableFollowColliderCollision: 1
+  testClosestPointContainNormalAndDistance: 0
+  closestPointCollider: {fileID: 1326191377}
 --- !u!4 &45416754
 Transform:
   m_ObjectHideFlags: 0
@@ -1066,7 +1082,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 5.6, y: 1.18}
+  m_Size: {x: 3.53, y: 1.18}
   m_Direction: 1
 --- !u!1 &1670182599
 GameObject:
