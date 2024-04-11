@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 using System.Collections.Generic;
 using Collision2D;
@@ -540,3 +542,5 @@ public class Collision2DTest : MonoBehaviour
         }
     }
 }
+
+#endif

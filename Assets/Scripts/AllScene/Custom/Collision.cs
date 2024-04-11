@@ -664,7 +664,7 @@ namespace Collision2D
         }
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint) => CollideStraightLine(collider, ray.start, ray.end, out collisionPoint);
+        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint) => CollideRay(collider, ray.start, ray.end, out collisionPoint);
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <param name="normal">The vector normal tothe collider's surface wehere the collision happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
@@ -690,7 +690,7 @@ namespace Collision2D
         /// <param name="collisionPoint">The point at the surface of the collider where the collission happend</param>
         /// <param name="normal">The vector normal tothe collider's surface wehere the collision happend</param>
         /// <returns>true if the collider collide together width the droite, false otherwise</returns>
-        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollideStraightLine(collider, ray.start, ray.end, out collisionPoint, out normal);
+        public static bool CollideRay(Collider2D collider, Ray2D ray, out Vector2 collisionPoint, out Vector2 normal) => CollideRay(collider, ray.start, ray.end, out collisionPoint, out normal);
 
         #endregion
 
