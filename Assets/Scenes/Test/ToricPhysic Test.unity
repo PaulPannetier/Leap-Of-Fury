@@ -195,7 +195,7 @@ MonoBehaviour:
   moveSpeed: 5
   setStartKey: 323
   start: {x: 2.66, y: 0.25}
-  toricIntersection: 0
+  toricIntersection: 1
   useCastDistance: 0
   castDistance: 2.76
   castRadius: 0.75

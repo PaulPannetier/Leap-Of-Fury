@@ -787,35 +787,35 @@ public static class PhysicsToric
 
     #region Physics2D
 
-    private static readonly Dictionary<Type, Func<Vector2, Vector2, float, float, Collider2D, ToricRaycastHit2D>> circleCastFunction = new Dictionary<Type, Func<Vector2, Vector2, float, float, Collider2D, ToricRaycastHit2D>>()
+    #region Dico
+
+    private static readonly Dictionary<Type, Func<Vector2, Vector2, float, float, float, Collider2D, ToricRaycastHit2D>> circleCastFunction = new Dictionary<Type, Func<Vector2, Vector2, float, float, float, Collider2D, ToricRaycastHit2D>>()
     {
-        { typeof(Circle), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D circle) => Physics2DCircleCastCircle(start, dir, radius, distance, (Circle)circle) },
-        { typeof(Hitbox), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D hitbox) => Physics2DCircleCastHitbox(start, dir, radius, distance, (Hitbox)hitbox) },
-        { typeof(Polygone), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D poly) => Physics2DCircleCastPolygone(start, dir, radius, distance, (Polygone)poly) },
-        { typeof(Capsule), (Vector2 start, Vector2 dir, float radius, float distance, Collider2D capsule) => Physics2DCircleCastCapsule(start, dir, radius, distance, (Capsule)capsule) }
+        { typeof(Circle), (Vector2 start, Vector2 dir, float radius, float distance, float bestDistanceFound, Collider2D circle) => Physics2DCircleCastCircle(start, dir, radius, distance, bestDistanceFound, (Circle)circle) },
+        { typeof(Hitbox), (Vector2 start, Vector2 dir, float radius, float distance, float bestDistanceFound, Collider2D hitbox) => Physics2DCircleCastHitbox(start, dir, radius, distance, bestDistanceFound, (Hitbox)hitbox) },
+        { typeof(Polygone), (Vector2 start, Vector2 dir, float radius, float distance, float bestDistanceFound, Collider2D poly) => Physics2DCircleCastPolygone(start, dir, radius, distance, bestDistanceFound, (Polygone)poly) },
+        { typeof(Capsule), (Vector2 start, Vector2 dir, float radius, float distance, float bestDistanceFound, Collider2D capsule) => Physics2DCircleCastCapsule(start, dir, radius, distance, bestDistanceFound, (Capsule)capsule) }
     };
+
+    #endregion
 
     #region Circle Cast Single
 
     private static ToricRaycastHit2D Physics2DCircleCastPriority(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
     {
-        Debug.DrawLine(start, start + dir * distance);
-
         Collider2D col;
         ToricRaycastHit2D raycast;
         ToricRaycastHit2D res = new ToricRaycastHit2D();
         bool collide = false;
+        float bestDistanceFound = -1f;
 
         foreach (UnityEngine.Collider2D unityCol in priorityColliders)
         {
             if(!layerMask.Contain(unityCol.gameObject.layer))
                 continue;
 
-            if (!(unityCol is UnityEngine.PolygonCollider2D))
-                continue;
-
             col = Collider2D.FromUnityCollider2D(unityCol);
-            raycast = circleCastFunction[col.GetType()](start, dir, radius, distance, col);
+            raycast = circleCastFunction[col.GetType()](start, dir, radius, distance, bestDistanceFound, col);
 
             if(raycast.distance >= 0f && (!collide || raycast.distance < res.distance))
             {
@@ -823,6 +823,7 @@ public static class PhysicsToric
                 res = raycast;
                 res.collider = unityCol;
                 res.rigidbody = unityCol.attachedRigidbody;
+                bestDistanceFound = res.distance;
             }
         }
 
@@ -831,11 +832,14 @@ public static class PhysicsToric
 
     #region CircleCast Circle
 
-    private static ToricRaycastHit2D Physics2DCircleCastCircle(in Vector2 start, in Vector2 dir, float radius, float distance, Circle circle)
+    private static ToricRaycastHit2D Physics2DCircleCastCircle(in Vector2 start, in Vector2 dir, float radius, float distance, float bestDistanceFound, Circle circle)
     {
         Vector2 end = start + dir * distance;
-        if (Line2D.Distance(start, end, circle.center) > circle.radius + radius)
+        if ((bestDistanceFound >= 0f && start.SqrDistance(circle.center) > (bestDistanceFound + circle.radius + radius) * (bestDistanceFound + circle.radius + radius)) ||
+            Line2D.Distance(start, end, circle.center) > circle.radius + radius)
+        {
             return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+        }
 
         Vector2 maxCenter = StraightLine2D.OrthogonalProjection(circle.center, start, end);
         maxCenter = maxCenter.SqrDistance(start) > distance * distance ? end : maxCenter;
@@ -872,13 +876,22 @@ public static class PhysicsToric
 
     #region CircleCast Polygone
 
-    private static ToricRaycastHit2D Physics2DCircleCastPolygone(in Vector2 start, in Vector2 dir, float radius, float distance, Polygone polygone)
+    private static ToricRaycastHit2D Physics2DCircleCastPolygone(in Vector2 start, in Vector2 dir, float radius, float distance, float bestDistanceFound, Polygone polygone)
     {
-        if (polygone.center.SqrDistance(start) > (radius + distance + polygone.inclusiveCircle.radius) * (radius + distance + polygone.inclusiveCircle.radius))
+        float cache = polygone.center.SqrDistance(start);
+        if ((bestDistanceFound >= 0f && Mathf.Sqrt(cache) - polygone.inclusiveCircle.radius > bestDistanceFound) ||
+            cache > (radius + distance + polygone.inclusiveCircle.radius) * (radius + distance + polygone.inclusiveCircle.radius))
+        {
             return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+        }
+
+        if(Collider2D.CollideCirclePolygone(new Circle(start, radius), polygone, out Vector2 point, out Vector2 _, out Vector2 n))
+        {
+            return new ToricRaycastHit2D(point, start, null, n, null, 0f);
+        }
 
         List<Line2D> sides = new List<Line2D>();
-        float cache = (distance + radius) * (distance + radius);
+        cache = (distance + radius) * (distance + radius);
         Vector2 offset = dir.NormalVector() * radius;
         StraightLine2D diameterStraightLine = new StraightLine2D(start + offset, start - offset);
 
@@ -923,8 +936,6 @@ public static class PhysicsToric
             if (isCircleCastPossible)
             {
                 sides.Add(side);
-                Circle.GizmosDraw(side.A, 0.1f, Debug.DrawLine);
-                Circle.GizmosDraw(side.B, 0.1f, Debug.DrawLine);
             }
         }
 
@@ -933,9 +944,6 @@ public static class PhysicsToric
 
         StraightLine2D straightLine1 = new StraightLine2D(diameterStraightLine.A, diameterStraightLine.A + dir);
         StraightLine2D straightLine2 = new StraightLine2D(diameterStraightLine.B, diameterStraightLine.B + dir);
-
-        Debug.DrawLine(diameterStraightLine.A + dir * 100, diameterStraightLine.A - dir * 100, Color.black);
-        Debug.DrawLine(diameterStraightLine.B + dir * 100, diameterStraightLine.B - dir * 100, Color.black);
 
         List<Line2D> sides2 = new List<Line2D>();
         StraightLine2D sideStraightLine;
@@ -997,8 +1005,6 @@ public static class PhysicsToric
             if (dir.Dot(point1 - start) > 0f || dir.Dot(point2 - start) > 0f)
             {
                 sides2.Add(new Line2D(point1, point2));
-                //Circle.GizmosDraw(point1, 0.1f, Debug.DrawLine);
-                //Circle.GizmosDraw(point2, 0.1f, Debug.DrawLine);
             }
         }
         sides.Clear();
@@ -1016,9 +1022,9 @@ public static class PhysicsToric
                     return;
 
                 Vector2 avgCenter = (minCenter + maxCenter) * 0.5f;
-                if(Collider2D.CollideCircleLine(new Circle(avgCenter, radius), line, out Vector2 inter, out Vector2 n))
+                if (Collider2D.CollideCircleLine(new Circle(avgCenter, radius), line, out Vector2 inter, out Vector2 n))
                 {
-                    lastCollideHit = new ToricRaycastHit2D(inter, avgCenter, null, -n, null, start.Distance(avgCenter));
+                    lastCollideHit = new ToricRaycastHit2D(inter, avgCenter, null, -n, null, start.SqrDistance(avgCenter));
                     FindCenterRecur(start, line, minCenter, avgCenter, radius, maxDistanceSqr, ref lastCollideHit);
                     return;
                 }
@@ -1037,14 +1043,11 @@ public static class PhysicsToric
             }
 
             minCenter -= radius * dir;
-
-            if(res.HasValue && start.SqrDistance(minCenter) > res.Value.distance)
+            float d = start.SqrDistance(minCenter);
+            if ((res.HasValue && d > res.Value.distance) || (bestDistanceFound >= 0f && d > bestDistanceFound * bestDistanceFound))
             {
                 continue;
             }
-
-            //Circle.GizmosDraw(minCenter, radius, Debug.DrawLine);
-            //Circle.GizmosDraw(maxCenter, radius, Debug.DrawLine);
 
             ToricRaycastHit2D? bestHit = null;
             FindCenterRecur(start, side, minCenter, maxCenter, radius, cache, ref bestHit);
@@ -1069,23 +1072,27 @@ public static class PhysicsToric
 
     #region CircleCast Hitbox
 
-    private static ToricRaycastHit2D Physics2DCircleCastHitbox(in Vector2 start, in Vector2 dir, float radius, float distance, Hitbox hitbox)
+    private static ToricRaycastHit2D Physics2DCircleCastHitbox(in Vector2 start, in Vector2 dir, float radius, float distance, float bestDistanceFound, Hitbox hitbox)
     {
-        return Physics2DCircleCastPolygone(start, dir, radius, distance, hitbox.ToPolygone());
+        return Physics2DCircleCastPolygone(start, dir, radius, distance, bestDistanceFound, hitbox.ToPolygone());
     }
 
     #endregion
 
     #region CircleCast Capsule
 
-    private static ToricRaycastHit2D Physics2DCircleCastCapsule(in Vector2 start, in Vector2 dir, float radius, float distance, Capsule capsule)
+    private static ToricRaycastHit2D Physics2DCircleCastCapsule(in Vector2 start, in Vector2 dir, float radius, float distance, float bestDistanceFound, Capsule capsule)
     {
-        if(capsule.inclusiveCircle.center.SqrDistance(start) > (radius + distance + capsule.inclusiveCircle.radius) * (radius + distance + capsule.inclusiveCircle.radius))
+        float cache = capsule.center.SqrDistance(start);
+        if(cache > (radius + distance + capsule.inclusiveCircle.radius) * (radius + distance + capsule.inclusiveCircle.radius) ||
+            (bestDistanceFound >= 0f && cache > (bestDistanceFound + capsule.inclusiveCircle.radius + radius) * (bestDistanceFound + capsule.inclusiveCircle.radius + radius)))
+        {
             return new ToricRaycastHit2D(Vector2.zero, Vector2.zero, null, Vector2.zero, null, -1f);
+        }
 
-        ToricRaycastHit2D rayC1 = Physics2DCircleCastCircle(start, dir, radius, distance, capsule.circle1);
-        ToricRaycastHit2D rayC2 = Physics2DCircleCastCircle(start, dir, radius, distance, capsule.circle2);
-        ToricRaycastHit2D rayHitbox = Physics2DCircleCastHitbox(start, dir, radius, distance, capsule.hitbox);
+        ToricRaycastHit2D rayC1 = Physics2DCircleCastCircle(start, dir, radius, distance, bestDistanceFound, capsule.circle1);
+        ToricRaycastHit2D rayC2 = Physics2DCircleCastCircle(start, dir, radius, distance, bestDistanceFound, capsule.circle2);
+        ToricRaycastHit2D rayHitbox = Physics2DCircleCastHitbox(start, dir, radius, distance, bestDistanceFound, capsule.hitbox);
 
         if(rayC1.distance >= 0f || rayC2.distance >= 0f || rayHitbox.distance >= 0f)
         {
@@ -1108,8 +1115,6 @@ public static class PhysicsToric
 
     private static ToricRaycastHit2D[] Physics2DCircleCastPriorityAll(in Vector2 start, in Vector2 dir, float radius, float distance, LayerMask layerMask)
     {
-        Debug.DrawLine(start, start + dir * distance);
-
         Collider2D col;
         ToricRaycastHit2D raycast;
         List<ToricRaycastHit2D> res = new List<ToricRaycastHit2D>();
@@ -1119,7 +1124,7 @@ public static class PhysicsToric
                 continue;
 
             col = Collider2D.FromUnityCollider2D(unityCol);
-            raycast = circleCastFunction[col.GetType()](start, dir, radius, distance, col);
+            raycast = circleCastFunction[col.GetType()](start, dir, radius, distance, -1f, col);
 
             if (raycast.distance >= 0f)
             {
@@ -1193,13 +1198,13 @@ public static class PhysicsToric
 
     private static ToricRaycastHit2D CircleCastRecur(Vector2 from, in Vector2 direction, float radius, float distance, LayerMask layerMask, float reachDistance, ref List<Vector2> points)
     {
-        RaycastHit2D circleCast = default;
+        RaycastHit2D circleCast = default(RaycastHit2D);
         ToricRaycastHit2D circleCastPriority;
         Vector2 end = from + direction * distance;
         if (GetToricIntersection(from, end, out Vector2 inter))
         {
             float currentDistance = from.Distance(inter);
-            //circleCast = Physics2D.CircleCast(from, radius, direction, currentDistance, layerMask);
+            circleCast = Physics2D.CircleCast(from, radius, direction, currentDistance, layerMask);
             circleCastPriority = Physics2DCircleCastPriority(from, direction, radius, currentDistance, layerMask);
 
             if (circleCast.collider == null)
@@ -1256,7 +1261,7 @@ public static class PhysicsToric
         }
         else //ez case
         {
-            //circleCast = Physics2D.CircleCast(from, radius, direction, distance, layerMask);
+            circleCast = Physics2D.CircleCast(from, radius, direction, distance, layerMask);
             circleCastPriority = Physics2DCircleCastPriority(from, direction, radius, distance, layerMask);
 
             if (circleCast.collider == null)
@@ -1327,8 +1332,7 @@ public static class PhysicsToric
         if (GetToricIntersection(from, end, out Vector2 inter))
         {
             float currentDist = from.Distance(inter);
-            //RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
-            RaycastHit2D[] circleCasts = Array.Empty<RaycastHit2D>();
+            RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
             ToricRaycastHit2D[] priorityCirclesCasts = Physics2DCircleCastPriorityAll(from, direction, radius, currentDist, layerMask);
 
             List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
@@ -1360,9 +1364,7 @@ public static class PhysicsToric
         }
         else
         {
-            //RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
-            RaycastHit2D[] circleCasts = Array.Empty<RaycastHit2D>();
-
+            RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
             ToricRaycastHit2D[] priorityCirclesCasts = Physics2DCircleCastPriorityAll(from, direction, radius, distance, layerMask);
 
             List<ToricRaycastHit2D> resList = new List<ToricRaycastHit2D>();
@@ -1397,7 +1399,7 @@ public static class PhysicsToric
         Vector2 end = from + (distance * direction);
         if (GetToricIntersection(from, end, out Vector2 inter))
         {
-            float currentDist = from.Distance(end);
+            float currentDist = from.Distance(inter);
             RaycastHit2D[] circleCasts = Physics2D.CircleCastAll(from, radius, direction, distance, layerMask);
             ToricRaycastHit2D[] priorityCirclesCasts = Physics2DCircleCastPriorityAll(from, direction, radius, currentDist, layerMask);
 
