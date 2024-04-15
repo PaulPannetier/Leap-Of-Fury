@@ -1,0 +1,54 @@
+LogMessage : 
+{
+    Error : Inconsistent array size, the two array must have the same size.,
+    Params : 4
+    {
+        Type : Int32,
+        Value : 1
+
+        Type : Int32,
+        Value : 2
+
+        Type : String[],
+        Value : [ 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D ]
+
+        Type : String[],
+        Value : [ Save/Language, Save/Levels ]
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
