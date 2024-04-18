@@ -1,7 +1,6 @@
 using Collision2D;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class MapColliderData : MonoBehaviour
 {
     public enum GroundType

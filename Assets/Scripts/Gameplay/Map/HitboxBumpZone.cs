@@ -10,6 +10,10 @@ public class HitboxBumpZone : BumpsZone
 {
     protected BoxCollider2D hitbox;
 
+#if UNITY_EDITOR
+    [SerializeField] private bool drawGizmos;
+#endif
+
     [SerializeField] private bool enableUpBump = true, enableDownBump = true, enableRightBump = true, enableLeftBump = true;
 
     protected override void Awake()
@@ -79,6 +83,9 @@ public class HitboxBumpZone : BumpsZone
 
     protected override void OnDrawGizmosSelected()
     {
+        if(!drawGizmos)
+            return;
+
         base.OnDrawGizmosSelected();
         hitbox = GetComponent<BoxCollider2D>();
         Gizmos.color = Color.green;

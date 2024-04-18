@@ -45,11 +45,12 @@ public class CharacterController : MonoBehaviour
     [Header("Collision")]
     public float sideCollisionRadius = 0.28f;
     public Vector2 sideOffset = new Vector2(0.15f, 0f);
-    [Tooltip("The offset on the vertical axis of the detection grab ray."),SerializeField] private float grabRayOffset = 1f;
+    [Tooltip("The offset on the vertical axis of the detection grab ray."), SerializeField] private float grabRayOffset = 1f;
     [Tooltip("Length of the detection for the grab"), SerializeField] private float grabRayLength = 1f;
     [Tooltip("Offset for the side ground raycast, also use to compute slopes")] public Vector2 groundRaycastOffset = Vector2.zero;
     [Tooltip("Length for the side and mid ground raycast, also use to compute slopes raycast"), SerializeField] public float groundRaycastLength = 0.5f;
     [SerializeField] private float gapBetweenHitboxAndGround = 0.1f;
+    [SerializeField] private float gapBetweenHitboxAndWall = 0.1f;
     private LayerMask groundLayer;
 
     [Header("Walk")]
@@ -687,10 +688,10 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
+        //DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
         //DebugText.instance.text += $"Jump : {isJumping}\n";
-        DebugText.instance.text += $"Fall : {isFalling}\n";
-        DebugText.instance.text += $"Ground : {isGrounded}\n";
+        //DebugText.instance.text += $"Fall : {isFalling}\n";
+        //DebugText.instance.text += $"Ground : {isGrounded}\n";
     }
 
     #endregion
@@ -748,7 +749,7 @@ public class CharacterController : MonoBehaviour
                     else
                     {
                         print("Debug pls");
-                        LogManager.instance.WriteLog("In fixed update, Groundray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay);
+                        LogManager.instance.WriteLog("In fixed update, Groundray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay, "CharacterController.HandleWalk");
                         MoveOnThePlateform(hitboxCenter, rightSlopeRay.point);
                     }
                 }

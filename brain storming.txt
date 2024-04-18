@@ -131,7 +131,6 @@ Name : Chaos
 TODO :
 Trad all text
 netoyer tout les fichiers du projet
-verify Collision2D and PhysicsToric (huge test) + verify normal order
 opti charController (réglage hyperparam)
-review code pour alouer moins de mémoire (use short ect)
-rm charCanvas
+
+

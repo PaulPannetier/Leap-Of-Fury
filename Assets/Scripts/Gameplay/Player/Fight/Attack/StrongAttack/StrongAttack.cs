@@ -1,21 +1,5 @@
 
 public class StrongAttack : Attack
 {
-    protected SliderAttackHandler sliderAttackHandler;
 
-    protected override void Start()
-    {
-        base.Start();
-        sliderAttackHandler = GetComponentInChildren<SliderAttackHandler>();
-        if(cooldown.duration <= 0f)
-        {
-            sliderAttackHandler.enableStrongAttack = false;
-        }
-    }
-
-    protected override void Update()
-    {
-        base.Update();
-        sliderAttackHandler.SetStrongAttackSliderValue(cooldown.percentage);
-    }
 }

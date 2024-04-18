@@ -271,7 +271,6 @@ namespace Test
             {
                 if (hit.collider != null)
                 {
-                    Debug.DrawLine(start, hit.point, hit.collider != null ? colorTouch : colorUntouch);
                     collideColliders[GetColliderIndex(hit.collider)] = true;
                     DrawVector(hit.point, hit.normal, colorNormal, false);
                     DrawCircle(hit.point, 0.1f, hit.collider != null ? colorTouch : colorUntouch, false);
@@ -337,7 +336,6 @@ namespace Test
 
             foreach (ToricRaycastHit2D hit in hits)
             {
-                Debug.DrawLine(start, hit.centroid, hit.collider != null ? colorTouch : colorUntouch);
                 if (hit.collider != null)
                 {
                     collideColliders[GetColliderIndex(hit.collider)] = true;

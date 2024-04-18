@@ -24,7 +24,7 @@ public class SecutityManager : MonoBehaviour
     {
         if (hashes == null || folderToVerify == null || hashes.Length != folderToVerify.Length)
         {
-            LogManager.instance.WriteLog("Inconsistent array size, the two array must have the same size.", hashes.Length, folderToVerify.Length, hashes, folderToVerify);
+            LogManager.instance.WriteLog("Inconsistent array size, the two array must have the same size.", hashes.Length, folderToVerify.Length, hashes, folderToVerify, "SecutityManager.Start");
             Destroy(this);
             return;
         }
@@ -32,7 +32,7 @@ public class SecutityManager : MonoBehaviour
         Hash[] runtimeHashes = ComputeHashes();
         if(hashes.Length != runtimeHashes.Length)
         {
-            LogManager.instance.WriteLog("Runtime hash and save hash have not the same size.", runtimeHashes.Length, hashes.Length, runtimeHashes, hashes);
+            LogManager.instance.WriteLog("Runtime hash and save hash have not the same size.", runtimeHashes.Length, hashes.Length, runtimeHashes, hashes, "SecutityManager.Start");
             Destroy(this);
             return;
         }
@@ -43,13 +43,13 @@ public class SecutityManager : MonoBehaviour
             if (hashes[i] != runtimeHashes[i].ToString())
             {
                 error = true;
-                LogManager.instance.WriteLog($"The secure folder {folderToVerify[i]} was modified", folderToVerify[i], hashes[i], runtimeHashes[i]);
+                LogManager.instance.WriteLog($"The secure folder {folderToVerify[i]} was modified", folderToVerify[i], hashes[i], runtimeHashes[i], "SecutityManager.Start");
             }
         }
 
         if(error)
         {
-            LogManager.instance.WriteLog("File corrupted found, close the application");
+            LogManager.instance.WriteLog("File corrupted found, close the application", "SecutityManager.Start");
 #if !UNITY_EDITOR
             Application.Quit();
 #endif

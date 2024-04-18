@@ -186,7 +186,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   castType: 2
-  collisionType: 0
+  collisionType: 1
   colorTouch: {r: 1, g: 0, b: 0, a: 1}
   colorUntouch: {r: 0.061320774, g: 0.6132076, b: 0, a: 1}
   colorNormal: {r: 0.06978607, g: 0, b: 1, a: 1}
@@ -195,7 +195,7 @@ MonoBehaviour:
   moveSpeed: 5
   setStartKey: 323
   start: {x: 2.66, y: 0.25}
-  toricIntersection: 1
+  toricIntersection: 0
   useCastDistance: 0
   castDistance: 2.76
   castRadius: 0.75

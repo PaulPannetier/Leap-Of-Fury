@@ -16,10 +16,7 @@ public class LevelMapData : MonoBehaviour
         get
         {
 #if UNITY_EDITOR
-            if(_currentMap == null)
-            {
-                _currentMap = GameObject.FindGameObjectWithTag("Map").GetComponent<LevelMapData>();
-            }
+            _currentMap = GameObject.FindGameObjectWithTag("Map").GetComponent<LevelMapData>();
 #endif
             return _currentMap;
         }
@@ -236,7 +233,7 @@ public class LevelMapData : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private static Dictionary<int, float> convertNbCharToRadius = new Dictionary<int, float>
+    private static readonly Dictionary<int, float> convertNbCharToRadius = new Dictionary<int, float>
     {
         { 2, 0.2f },
         { 3, 0.3f },

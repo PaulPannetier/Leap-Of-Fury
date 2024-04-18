@@ -45,6 +45,7 @@ public class MovablePlateform : PathFindingBlocker
     [SerializeField] private float accelerationDuration = 1f;
     [SerializeField, Tooltip("In %age of maxSpeed")] private AnimationCurve accelerationCurve;
     [SerializeField] private float maxSpeed;
+    [SerializeField] private float sideReturnBumpSpeedOnChar = 5f;
     [SerializeField] private float returnBumpSpeedOnChar = 5f;
     [SerializeField, Range(0f, 90f)] private float returnBumpSpeedAngleOnSide = 45f;
 
@@ -503,7 +504,8 @@ public class MovablePlateform : PathFindingBlocker
         lastTimeActivated = Time.time;
         lastSideActiavated = hitboxSide;
         CharacterController movement = player.GetComponent<CharacterController>();
-        movement.ApplyBump(returnBumpSpeedOnChar * convertHitboxSideToBumbDir[(int)hitboxSide]);
+        float bumpSpeed = hitboxSide == HitboxSide.right || hitboxSide == HitboxSide.left ? sideReturnBumpSpeedOnChar : returnBumpSpeedOnChar;
+        movement.ApplyBump(bumpSpeed * convertHitboxSideToBumbDir[(int)hitboxSide]);
         isMoving = true;
     }
 
