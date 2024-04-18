@@ -11,6 +11,7 @@ public class CharacterController : MonoBehaviour
     private Camera mainCam;
     private CustomPlayerInput playerInput;
     private BoxCollider2D hitbox;
+    private ToricRaycastHit2D raycastRight, raycastLeft, groundRay, rightSlopeRay, leftSlopeRay;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData;
     private FightController fightController;
@@ -43,8 +44,8 @@ public class CharacterController : MonoBehaviour
     [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré."), SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
 
     [Header("Collision")]
-    public float sideCollisionRadius = 0.28f;
-    public Vector2 sideOffset = new Vector2(0.15f, 0f);
+    [Tooltip("Length of the raycast to detect wall on sides."), SerializeField] private float sideRayLength = 0.2f;
+    [Tooltip("Vertical offset of the raycast to detect wall on sides."), SerializeField] private float sideRayOffset;
     [Tooltip("The offset on the vertical axis of the detection grab ray."), SerializeField] private float grabRayOffset = 1f;
     [Tooltip("Length of the detection for the grab"), SerializeField] private float grabRayLength = 1f;
     [Tooltip("Offset for the side ground raycast, also use to compute slopes")] public Vector2 groundRaycastOffset = Vector2.zero;
@@ -350,9 +351,9 @@ public class CharacterController : MonoBehaviour
     {
         // I-Collision/detection
         oldGroundCollider = groundCollider;
-        ToricRaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
-        ToricRaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
-        ToricRaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+        groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
+        rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
+        leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
 
         groundCollider = null;
         if(groundRay.collider != null)
@@ -384,9 +385,12 @@ public class CharacterController : MonoBehaviour
             lastGroundColliderData = groundColliderData;
         }
 
-        rightWallCollider = PhysicsToric.OverlapCircle((Vector2)transform.position + sideOffset, sideCollisionRadius, groundLayer);
+        Vector2 from = (Vector2)transform.position + Vector2.up * sideRayOffset;
+        raycastRight = PhysicsToric.Raycast(from, Vector2.right, sideRayLength, groundLayer);
+        rightWallCollider = raycastRight.collider;
         onRightWall = rightWallCollider != null;
-        leftWallCollider = PhysicsToric.OverlapCircle((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius, groundLayer);
+        raycastLeft = PhysicsToric.Raycast(from, Vector2.left, sideRayLength, groundLayer);
+        leftWallCollider = raycastLeft.collider;
         onLeftWall = leftWallCollider != null;
         onWall = onRightWall || onLeftWall;
         rightWallColliderData = onRightWall ? rightWallCollider.GetComponent<MapColliderData>() : null;
@@ -688,8 +692,9 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        //DebugText.instance.text += $"vel : {rb.velocity.y.Round(2)}\n";
-        //DebugText.instance.text += $"Jump : {isJumping}\n";
+        DebugText.instance.text += $"RightWall : {onRightWall}\n";
+        DebugText.instance.text += $"LeftWall : {onLeftWall}\n";
+        DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"Fall : {isFalling}\n";
         //DebugText.instance.text += $"Ground : {isGrounded}\n";
     }
@@ -730,16 +735,12 @@ public class CharacterController : MonoBehaviour
         if (groundCollider != null)
         {
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-            ToricRaycastHit2D groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
-
             if (groundRay.collider != null)
             {
                 MoveOnThePlateform(hitboxCenter, groundRay.point);
             }
             else
             {
-                ToricRaycastHit2D rightSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + groundRaycastOffset, Vector2.down, groundRaycastLength, groundLayer);
-                ToricRaycastHit2D leftSlopeRay = PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-groundRaycastOffset.x, groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
                 if (rightSlopeRay.collider != null || leftSlopeRay.collider != null)
                 {
                     if (rightSlopeRay.collider == null || leftSlopeRay.collider == null)
@@ -763,6 +764,29 @@ public class CharacterController : MonoBehaviour
                     if (raycastPoint.y > hitboxCenter.y)
                         raycastPoint -= new Vector2(0f, LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y);
                     rb.position = new Vector2(rb.position.x, raycastPoint.y + hitbox.size.y * 0.5f - hitbox.offset.y + gapBetweenHitboxAndGround);
+                }
+            }
+
+            //Handle wall touch
+            if (onWall)
+            {
+                if(onRightWall && rb.velocity.x >= 0f)
+                {
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    if(extendedHitbox.Contains(raycastRight.point))
+                    {
+                        rb.position = new Vector2(raycastRight.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
+                        rb.velocity = new Vector2(0f, rb.velocity.y);
+                    }
+                }
+                else if(onLeftWall && rb.velocity.x <= 0f)
+                {
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    if (extendedHitbox.Contains(raycastLeft.point))
+                    {
+                        rb.position = new Vector2(raycastLeft.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
+                        rb.velocity = new Vector2(0f, rb.velocity.y);
+                    }
                 }
             }
         }
@@ -801,11 +825,19 @@ public class CharacterController : MonoBehaviour
                 localVelocityOnGrippingGround = new Vector2(rb.velocity.x, 0f);
             }
 
+            if(onWall)
+            {
+                localVelocityOnGrippingGround = new Vector2(0f, localVelocityOnGrippingGround.y);
+            }
+
             //Clamp, on est dans le mauvais sens
             if ((playerInput.x >= 0f && localVelocityOnGrippingGround.x <= 0f) || (playerInput.x <= 0f && localVelocityOnGrippingGround.x >= 0f))
             {
                 if (playerInput.rawX != 0)
-                    localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), localVelocityOnGrippingGround.y);
+                {
+                    if(!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
+                        localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), localVelocityOnGrippingGround.y);
+                }
                 else
                 {
                     localVelocityOnGrippingGround = new Vector2(0f, localVelocityOnGrippingGround.y);
@@ -813,11 +845,18 @@ public class CharacterController : MonoBehaviour
             }
 
             if (Mathf.Abs(rb.velocity.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0)
-                localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), localVelocityOnGrippingGround.y);
+            {
+                if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
+                {
+                    localVelocityOnGrippingGround = new Vector2(initSpeed * walkSpeed * playerInput.x.Sign(), localVelocityOnGrippingGround.y);
+                }
+            }
             else
+            {
                 localVelocityOnGrippingGround = new Vector2(Mathf.MoveTowards(localVelocityOnGrippingGround.x, playerInput.x * walkSpeed, speedLerp * Time.fixedDeltaTime), localVelocityOnGrippingGround.y);
+            }
 
-            //Clamp is to steep slope
+            //Clamp if too steep slope
             float xMin = isToSteepSlopeLeft ? 0f : float.MinValue;
             float xMax = isToSteepSlopeRight ? 0f : float.MaxValue;
             localVelocityOnGrippingGround = new Vector2(Mathf.Clamp(localVelocityOnGrippingGround.x, xMin, xMax), localVelocityOnGrippingGround.y);
@@ -835,7 +874,7 @@ public class CharacterController : MonoBehaviour
             //friction du to ground vertical axis
             if (groundColliderData != null)
             {
-                rb.velocity += new Vector2(0f, groundColliderData.rb.velocity.y);
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y + groundColliderData.rb.velocity.y);
             }
         }
 
@@ -847,8 +886,10 @@ public class CharacterController : MonoBehaviour
         {
             if (playerInput.rawX != 0f)
             {
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed,
-                    GroundData.instance.iceSpeedLerpFactor * speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
+                {
+                    rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, playerInput.x * walkSpeed, GroundData.instance.iceSpeedLerpFactor * speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                }
             }
             else
             {
@@ -865,52 +906,55 @@ public class CharacterController : MonoBehaviour
             if((isSlopingRight && isSlopingLeft) || (!isSlopingRight && !isSlopingLeft))
             {
                 Debug.LogWarning("isSlopingRight == isSlopingLeft == " + isSlopingRight);
-                LogManager.instance.WriteLog("Function HandleSlope in Movement script, paradox between sloping right and left", isSloping, isSlopingRight, isSlopingLeft, slopeAngleRight, slopeAngleLeft);
+                LogManager.instance.WriteLog("Function HandleSlope in Movement script, paradox between sloping right and left", isSloping, isSlopingRight, isSlopingLeft, slopeAngleRight, slopeAngleLeft, "CharacterController.HandleSlope");
             }
 
             if(playerInput.rawX != 0)
             {
-                float slopeAngle = isSlopingRight ? slopeAngleRight : slopeAngleLeft;
-                float negativeSlopeAngle = Useful.WrapAngle(slopeAngle + Mathf.PI);
-                float maxSlopeSpeed = slopeSpeed * slopeSpeedCurve.Evaluate(slopeAngle / (maxSlopeAngle * Mathf.Deg2Rad));
+                if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
+                {
+                    float slopeAngle = isSlopingRight ? slopeAngleRight : slopeAngleLeft;
+                    float negativeSlopeAngle = Useful.WrapAngle(slopeAngle + Mathf.PI);
+                    float maxSlopeSpeed = slopeSpeed * slopeSpeedCurve.Evaluate(slopeAngle / (maxSlopeAngle * Mathf.Deg2Rad));
 
-                //Clamp, on est dans le mauvais sens
-                if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
-                {
-                    ApplyMinSpeed(isSlopingRight, playerInput, rb);
-                }
+                    //Clamp, on est dans le mauvais sens
+                    if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+                    {
+                        ApplyMinSpeed(isSlopingRight, playerInput, rb);
+                    }
 
-                if (rb.velocity.sqrMagnitude < (initSlopeSpeed * maxSlopeSpeed * initSlopeSpeed * maxSlopeSpeed * 0.95f * 0.95f))
-                {
-                    ApplyMinSpeed(isSlopingRight, playerInput, rb);
-                }
-                else
-                {
-                    float angle = GetAngle(isSlopingRight, playerInput);
-                    float mag = Mathf.MoveTowards(rb.velocity.magnitude, maxSlopeSpeed, slopeSpeedLerp * maxSlopeSpeed * Time.fixedDeltaTime);
-                    rb.velocity = new Vector2(mag * Mathf.Cos(angle), mag * Mathf.Sin(angle));
-                }
+                    if (rb.velocity.sqrMagnitude < (initSlopeSpeed * maxSlopeSpeed * initSlopeSpeed * maxSlopeSpeed * 0.95f * 0.95f))
+                    {
+                        ApplyMinSpeed(isSlopingRight, playerInput, rb);
+                    }
+                    else
+                    {
+                        float angle = GetAngle(isSlopingRight, playerInput);
+                        float mag = Mathf.MoveTowards(rb.velocity.magnitude, maxSlopeSpeed, slopeSpeedLerp * maxSlopeSpeed * Time.fixedDeltaTime);
+                        rb.velocity = new Vector2(mag * Mathf.Cos(angle), mag * Mathf.Sin(angle));
+                    }
 
-                if (rb.velocity.sqrMagnitude >= maxSlopeSpeed * maxSlopeSpeed)
-                {
-                    rb.velocity = rb.velocity.normalized * maxSlopeSpeed;
-                }
+                    if (rb.velocity.sqrMagnitude >= maxSlopeSpeed * maxSlopeSpeed)
+                    {
+                        rb.velocity = rb.velocity.normalized * maxSlopeSpeed;
+                    }
 
-                void ApplyMinSpeed(bool isSlopingRight, CustomPlayerInput playerInput, Rigidbody2D rb)
-                {
-                    float mag = initSlopeSpeed * maxSlopeSpeed;
-                    float angle = GetAngle(isSlopingRight, playerInput);
-                    rb.velocity = new Vector2(mag * Mathf.Cos(angle), mag * Mathf.Sin(angle));
-                }
+                    void ApplyMinSpeed(bool isSlopingRight, CustomPlayerInput playerInput, Rigidbody2D rb)
+                    {
+                        float mag = initSlopeSpeed * maxSlopeSpeed;
+                        float angle = GetAngle(isSlopingRight, playerInput);
+                        rb.velocity = new Vector2(mag * Mathf.Cos(angle), mag * Mathf.Sin(angle));
+                    }
 
-                float GetAngle(bool isSlopingRight, CustomPlayerInput playerInput)
-                {
-                    float angle;
-                    if (isSlopingRight)
-                        angle = playerInput.rawX == 1 ? slopeAngle : negativeSlopeAngle;
-                    else//isSlopingLeft
-                        angle = playerInput.rawX == -1 ? slopeAngle : negativeSlopeAngle;
-                    return angle;
+                    float GetAngle(bool isSlopingRight, CustomPlayerInput playerInput)
+                    {
+                        float angle;
+                        if (isSlopingRight)
+                            angle = playerInput.rawX == 1 ? slopeAngle : negativeSlopeAngle;
+                        else//isSlopingLeft
+                            angle = playerInput.rawX == -1 ? slopeAngle : negativeSlopeAngle;
+                        return angle;
+                    }
                 }
             }
             else
@@ -948,18 +992,28 @@ public class CharacterController : MonoBehaviour
 
             if(playerInput.rawX == 0 || !enableInput)
             {
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, convoyer.maxSpeed, convoyer.speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                if (!onWall || (convoyer.maxSpeed >= 0f && !onRightWall) || (convoyer.maxSpeed <= 0f && !onLeftWall))
+                {
+                    rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, convoyer.maxSpeed, convoyer.speedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                }
             }
             else if (playerInput.rawX == convoyer.maxSpeed.Sign())
             {
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, walkSpeed * playerInput.x + convoyer.maxSpeed, (convoyer.speedLerp + speedLerp) * Time.fixedDeltaTime), rb.velocity.y);
+                if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
+                {
+                    rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, walkSpeed * playerInput.x + convoyer.maxSpeed, (convoyer.speedLerp + speedLerp) * Time.fixedDeltaTime), rb.velocity.y);
+                }
             }
             else //playerInput.rawX != convoyer.maxSpeed.Sign()
             {
                 float currentSpeedLerp = speedLerp - convoyer.speedLerp;
                 float targetedSpeed = Mathf.Abs(Mathf.Abs(walkSpeed * playerInput.x) - Mathf.Abs(convoyer.maxSpeed));
                 float sign = currentSpeedLerp > 0 ? playerInput.rawX : convoyer.maxSpeed.Sign();
-                rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetedSpeed * sign, currentSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
+
+                if (!onWall || (sign == 1 && !onRightWall) || (sign == -1 && !onLeftWall))
+                {
+                    rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetedSpeed * sign, currentSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
+                }
             }
         }
 
@@ -1007,6 +1061,7 @@ public class CharacterController : MonoBehaviour
                     if(reachGrabApexRight && reachGrabApexLeft)
                     {
                         print("Debug reach grab apex left and right pls");
+                        LogManager.instance.WriteLog("Debug reach grab apex left and right pls", "CharacterController.HandleGrab");
                     }
                     reachGrabApex = reachGrabApexLeft = reachGrabApexRight = isGrabApexRightEnable = isGrabApexLeftEnable = false;
                     rb.MovePosition((Vector2)transform.position + Vector2.down * (grabSpeed * Time.fixedDeltaTime));
@@ -1691,8 +1746,8 @@ public class CharacterController : MonoBehaviour
         Gizmos.DrawLine(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y) + Vector2.down * groundRaycastLength);
 
         //Side detection
-        Gizmos.DrawWireSphere((Vector2)transform.position + sideOffset, sideCollisionRadius);
-        Gizmos.DrawWireSphere((Vector2)transform.position + new Vector2(-sideOffset.x, sideOffset.y), sideCollisionRadius);
+        Gizmos.DrawLine((Vector2)transform.position + Vector2.up * sideRayOffset, (Vector2)transform.position + Vector2.up * sideRayOffset + Vector2.right * sideRayLength);
+        Gizmos.DrawLine((Vector2)transform.position + Vector2.up * sideRayOffset, (Vector2)transform.position + Vector2.up * sideRayOffset + Vector2.left * sideRayLength);
 
         //Grab
         Gizmos.color = Color.green;
@@ -1701,7 +1756,7 @@ public class CharacterController : MonoBehaviour
         //visual Hitbox
         Gizmos.color = Color.blue;
         Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-        Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+        Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + 2f * gapBetweenHitboxAndWall, hitbox.size.y + 2f * gapBetweenHitboxAndGround));
         Collision2D.Hitbox.GizmosDraw(extendedHitbox);
     }
 
@@ -1736,6 +1791,8 @@ public class CharacterController : MonoBehaviour
         maxPreciseGrabValue = Mathf.Max(maxPreciseGrabValue, 0f);
         inertiaDurationWhenQuittingGround = Mathf.Max(inertiaDurationWhenQuittingGround, 0f);
         gapBetweenHitboxAndGround = Mathf.Max(gapBetweenHitboxAndGround, 0f);
+        gapBetweenHitboxAndWall = Mathf.Max(gapBetweenHitboxAndWall, 0f);
+        sideRayLength = Mathf.Max(sideRayLength, 0f);
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 

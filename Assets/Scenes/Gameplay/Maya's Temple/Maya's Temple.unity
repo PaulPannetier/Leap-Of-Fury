@@ -851,8 +851,8 @@ MonoBehaviour:
   enableInput: 1
   drawGizmos: 1
   timeUntilCommandIsInvalid: 0.1
-  sideCollisionRadius: 0.23
-  sideOffset: {x: 0.15, y: 0}
+  sideRayLength: 0.42
+  sideRayOffset: 0
   grabRayOffset: -0.59
   grabRayLength: 0.5
   groundRaycastOffset: {x: 0.2, y: -0.7}
