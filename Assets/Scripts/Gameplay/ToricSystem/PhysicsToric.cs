@@ -41,6 +41,11 @@ public struct ToricRaycastHit2D
         this.rigidbody = raycast.rigidbody;
         this.distance = raycast.distance;
     }
+
+    public static implicit operator bool(ToricRaycastHit2D hit)
+    {
+        return hit.collider != null;
+    }
 }
 
 #endregion

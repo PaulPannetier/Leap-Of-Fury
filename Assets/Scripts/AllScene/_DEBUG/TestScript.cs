@@ -5,34 +5,15 @@ using System;
 
 public class TestScript : MonoBehaviour
 {
-    [SerializeField] private bool test;
-
-    private void Test()
+    private void Start()
     {
-        Polynome p0 = new Polynome(new float[] { 0.5f, -4, 2, 1 });
-        Polynome p1 = new Polynome(new float[] { 1f, -4, 2, -3 });
-
-        SubTest(p0);
-        SubTest(p1);
-
-        void SubTest(Polynome p)
-        {
-            print(p);
-            float[] roots = p.Roots();
-            foreach (float root in roots)
-            {
-                print(root + " accuracy : " + p.Evaluate(root));
-            }
-        }
+        EventManager.instance.callbackPreUpdate += PreUpdate;
     }
 
-    private void OnValidate()
+    private void PreUpdate()
     {
-        if(test)
-        {
-            test = false;
-            Test();
-        }
+        GetComponent<CustomPlayerInput>().x = 1f;
+        GetComponent<CustomPlayerInput>().rawX = 1;
     }
 }
 

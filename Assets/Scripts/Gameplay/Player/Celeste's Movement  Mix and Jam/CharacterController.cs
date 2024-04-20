@@ -698,10 +698,9 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        DebugText.instance.text += $"isJumping : {isJumping}\n";
-        DebugText.instance.text += $"Fall : {isFalling}\n";
-        DebugText.instance.text += $"isSliding : {isSliding}\n";
         DebugText.instance.text += $"Grab : {wallGrab}\n";
+        DebugText.instance.text += $"Apex : {reachGrabApex}\n";
+        DebugText.instance.text += $"StayAtApex : {grabStayAtApex}\n";
         DebugText.instance.text += $"vel : {rb.velocity}\n";
     }
 
@@ -764,7 +763,8 @@ public class CharacterController : MonoBehaviour
 
             void MoveOnThePlateform(in Vector2 hitboxCenter, Vector2 raycastPoint)
             {
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+                float deltaY = rb.velocity.y * Time.fixedDeltaTime;
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
                 if ((rb.velocity.y <= 0f && groundColliderData.rb.velocity.y >= 0f) || extendedHitbox.Contains(raycastPoint))
                 {
                     if (raycastPoint.y > hitboxCenter.y)
@@ -778,7 +778,8 @@ public class CharacterController : MonoBehaviour
             {
                 if(onRightWall && rb.velocity.x >= 0f)
                 {
-                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                     if(extendedHitbox.Contains(raycastRight.point))
                     {
                         rb.position = new Vector2(raycastRight.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
@@ -787,7 +788,8 @@ public class CharacterController : MonoBehaviour
                 }
                 else if(onLeftWall && rb.velocity.x <= 0f)
                 {
-                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                     if (extendedHitbox.Contains(raycastLeft.point))
                     {
                         rb.position = new Vector2(raycastLeft.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
@@ -1146,6 +1148,34 @@ public class CharacterController : MonoBehaviour
                 timeReachGrabApex = Time.time;
             }
         }
+
+        //Handle wall touch
+        if (onWall || rightFootRay.collider != null || leftFootRay.collider != null)
+        {
+            Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
+            if ((onRightWall || rightFootRay.collider != null) && rb.velocity.x >= 0f)
+            {
+                Vector2 point = onRightWall ? raycastRight.point : rightFootRay.point;
+                float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(point))
+                {
+                    rb.position = new Vector2(point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
+            }
+            else if ((onLeftWall || leftFootRay.collider != null) && rb.velocity.x <= 0f)
+            {
+                Vector2 point = onLeftWall ? raycastLeft.point : leftFootRay.point;
+                float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(point))
+                {
+                    rb.position = new Vector2(point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
+            }
+        }
     }
 
     #endregion
@@ -1275,7 +1305,8 @@ public class CharacterController : MonoBehaviour
                 if ((onRightWall || rightFootRay.collider != null) && rb.velocity.x >= 0f)
                 {
                     Vector2 point = onRightWall ? raycastRight.point : rightFootRay.point;
-                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                     if (extendedHitbox.Contains(point))
                     {
                         rb.position = new Vector2(point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
@@ -1285,7 +1316,8 @@ public class CharacterController : MonoBehaviour
                 else if ((onLeftWall || leftFootRay.collider != null) && rb.velocity.x <= 0f)
                 {
                     Vector2 point = onLeftWall ? raycastLeft.point : leftFootRay.point;
-                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                     if (extendedHitbox.Contains(point))
                     {
                         rb.position = new Vector2(point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
@@ -1527,7 +1559,8 @@ public class CharacterController : MonoBehaviour
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
             if (onRightWall && rb.velocity.x >= 0f)
             {
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (extendedHitbox.Contains(rightFootRay.point))
                 {
                     rb.position = new Vector2(rightFootRay.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
@@ -1536,7 +1569,8 @@ public class CharacterController : MonoBehaviour
             }
             else if (onLeftWall && rb.velocity.x <= 0f)
             {
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                float deltaX = rb.velocity.x * Time.fixedDeltaTime;
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x - deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (extendedHitbox.Contains(leftFootRay.point))
                 {
                     rb.position = new Vector2(leftFootRay.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
@@ -1663,21 +1697,25 @@ public class CharacterController : MonoBehaviour
         if (onWall)
         {
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-            if (onRightWall && rb.velocity.x >= 0f)
+            if ((onRightWall || rightFootRay.collider != null) && rb.velocity.x >= 0f)
             {
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
-                if (extendedHitbox.Contains(rightFootRay.point))
+                Vector2 point = onRightWall ? raycastRight.point : rightFootRay.point;
+                float deltaX = rb.velocity.x * Time.deltaTime;
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(point))
                 {
-                    rb.position = new Vector2(rightFootRay.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
+                    rb.position = new Vector2(point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
                     rb.velocity = new Vector2(0f, rb.velocity.y);
                 }
             }
-            else if (onLeftWall && rb.velocity.x <= 0f)
+            else if ((onLeftWall || leftFootRay.collider != null) && rb.velocity.x <= 0f)
             {
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
-                if (extendedHitbox.Contains(leftFootRay.point))
+                Vector2 point = onLeftWall ? raycastLeft.point : leftFootRay.point;
+                float deltaX = rb.velocity.x * Time.deltaTime;
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(point))
                 {
-                    rb.position = new Vector2(leftFootRay.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
+                    rb.position = new Vector2(point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
                     rb.velocity = new Vector2(0f, rb.velocity.y);
                 }
             }
@@ -1838,8 +1876,8 @@ public class CharacterController : MonoBehaviour
         doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);
         wallJumpMaxDuration = Mathf.Max(wallJumpMaxDuration, 0f);
         wallJumpMinDuration = Mathf.Clamp(wallJumpMinDuration, 0f, wallJumpMaxDuration);
-        grabApexSpeed = new Vector2(Mathf.Max(0f, grabApexSpeed.x), Mathf.Max(0f, grabApexSpeed.y));
-        grabApexSpeed2 = new Vector2(Mathf.Max(0f, grabApexSpeed2.x), Mathf.Max(0f, grabApexSpeed2.y));
+        grabApexSpeed = new Vector2(Mathf.Max(0f, grabApexSpeed.x), grabApexSpeed.y);
+        grabApexSpeed2 = new Vector2(Mathf.Max(0f, grabApexSpeed2.x), grabApexSpeed2.y);
         slideSpeed = Mathf.Max(0f, slideSpeed);
         grabApexSpeedLerp = Mathf.Max(0f, grabApexSpeedLerp);
         grabSpeedLerp = Mathf.Max(0f, grabSpeedLerp);
