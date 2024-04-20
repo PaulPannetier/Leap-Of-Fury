@@ -11,7 +11,7 @@ public class CharacterController : MonoBehaviour
     private Camera mainCam;
     private CustomPlayerInput playerInput;
     private BoxCollider2D hitbox;
-    private ToricRaycastHit2D raycastRight, raycastLeft, groundRay, rightSlopeRay, leftSlopeRay;
+    private ToricRaycastHit2D raycastRight, raycastLeft, groundRay, rightSlopeRay, leftSlopeRay, rightFootRay, leftFootRay;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData;
     private FightController fightController;
@@ -55,9 +55,9 @@ public class CharacterController : MonoBehaviour
     private LayerMask groundLayer;
 
     [Header("Walk")]
-    [Tooltip("La vitesse de marche")] [SerializeField] private float walkSpeed = 10f;
-    [Tooltip("La vitesse d'interpolation de marche")] [SerializeField] private float speedLerp = 50f;
-    [Tooltip("La propor de vitesse initiale de marche")] [SerializeField] [Range(0f, 1f)] private float initSpeed = 0.2f;
+    [Tooltip("La vitesse de marche"), SerializeField] private float walkSpeed = 10f;
+    [Tooltip("La vitesse d'interpolation de marche"), SerializeField] private float speedLerp = 50f;
+    [Tooltip("La propor de vitesse initiale de marche"), SerializeField, Range(0f, 1f)] private float initSpeed = 0.2f;
     [Tooltip("La durée de conservation de la vitesse de marche apres avoir quitté une plateforme"), SerializeField] private float inertiaDurationWhenQuittingGround = 0.1f;
     private Vector2 localVelocityOnGrippingGround;
     private float lastTimeQuitGround = -10f;
@@ -488,6 +488,10 @@ public class CharacterController : MonoBehaviour
 
         // II-Grab
 
+        from = new Vector2(transform.position.x, transform.position.y + grabRayOffset);
+        rightFootRay = PhysicsToric.Raycast(from, Vector2.right, grabRayLength, groundLayer);
+        leftFootRay = PhysicsToric.Raycast(from, Vector2.left, grabRayLength, groundLayer);
+
         //Trigger wallGrab
         if (!wallGrab && onWall && (playerInput.grabPressed && enableInput) && (!isSliding || (playerInput.rawY >= 0 && enableInput)) && !isDashing && !isJumpingAlongWall && !isBumping && canMove)
         {
@@ -495,7 +499,7 @@ public class CharacterController : MonoBehaviour
             {
                 if (side != wallSide)
                 {
-                    anim.Flip(side * -1);
+                    anim.Flip(-side);
                 }
                 wallGrab = true;
                 isFalling = isJumping = isSliding = false;
@@ -507,12 +511,14 @@ public class CharacterController : MonoBehaviour
         {
             reachGrabApex = true;
             timeReachGrabApex = Time.time;
-            FloorOnSide(out reachGrabApexRight, out reachGrabApexLeft);
+            reachGrabApexRight = rightFootRay.collider != null;
+            reachGrabApexLeft = leftFootRay.collider != null;
         }
         oldOnWall = onWall;
 
         //Release wallGrab
-        if (((wallGrab || grabStayAtApex) && playerInput.grabPressedUp) || (!onWall && !grabStayAtApex && !reachGrabApex && !isGrabApexEnable) || dash  || jump || wallJump || wallJumpAlongWall || !canMove)
+        if (((wallGrab || grabStayAtApex) && playerInput.grabPressedUp) || (!onWall && !grabStayAtApex && !reachGrabApex && !isGrabApexEnable) || (!onRightWall && rightFootRay.collider == null && !onLeftWall && leftFootRay.collider == null) ||
+            dash  || jump || wallJump || wallJumpAlongWall || !canMove)
         {
             wallGrab = grabStayAtApex = grabStayAtApexLeft = grabStayAtApexRight = false;
         }
@@ -692,11 +698,11 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        DebugText.instance.text += $"RightWall : {onRightWall}\n";
-        DebugText.instance.text += $"LeftWall : {onLeftWall}\n";
-        DebugText.instance.text += $"OnWall : {onWall}\n";
-        //DebugText.instance.text += $"Fall : {isFalling}\n";
-        //DebugText.instance.text += $"Ground : {isGrounded}\n";
+        DebugText.instance.text += $"isJumping : {isJumping}\n";
+        DebugText.instance.text += $"Fall : {isFalling}\n";
+        DebugText.instance.text += $"isSliding : {isSliding}\n";
+        DebugText.instance.text += $"Grab : {wallGrab}\n";
+        DebugText.instance.text += $"vel : {rb.velocity}\n";
     }
 
     #endregion
@@ -709,7 +715,7 @@ public class CharacterController : MonoBehaviour
 
         HandleGrab();
 
-        HandleWallSlide();
+        HandleSlide();
 
         HandleJump();
 
@@ -1233,21 +1239,11 @@ public class CharacterController : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, speed.y);
             }
-            //clamp en x
-            if (Mathf.Abs(rb.velocity.x) > speed.x)
-            {
-                rb.velocity = new Vector2(speed.x * rb.velocity.x.Sign(), rb.velocity.y);
-            }
         }
 
         void HandleHorizontalMovement(in Vector2 speed)
         {
-            if (!enableInput)
-                return;
-            //Movement horizontal
-
-
-            if(Time.time - lastTimeBeginWallJump >= wallJumpMinDuration)
+            if (Time.time - lastTimeBeginWallJump >= wallJumpMinDuration && enableInput)
             {
                 //Clamp, on est dans le mauvais sens
                 if ((playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
@@ -1262,8 +1258,40 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                float targetSpeed = (Time.time - lastTimeBeginWallJump >= wallJumpMinDuration) ? playerInput.x * speed.x : speed.x;
+                float targetSpeed = enableInput ? ((Time.time - lastTimeBeginWallJump >= wallJumpMinDuration) ? playerInput.x * speed.x : speed.x) : 0f;
                 rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, jumpSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
+            }
+
+            //clamp en x
+            if (Mathf.Abs(rb.velocity.x) > speed.x)
+            {
+                rb.velocity = new Vector2(speed.x * rb.velocity.x.Sign(), rb.velocity.y);
+            }
+
+            //Handle wall touch
+            if (onWall || rightFootRay.collider != null || leftFootRay.collider != null)
+            {
+                Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
+                if ((onRightWall || rightFootRay.collider != null) && rb.velocity.x >= 0f)
+                {
+                    Vector2 point = onRightWall ? raycastRight.point : rightFootRay.point;
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    if (extendedHitbox.Contains(point))
+                    {
+                        rb.position = new Vector2(point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
+                        rb.velocity = new Vector2(0f, rb.velocity.y);
+                    }
+                }
+                else if ((onLeftWall || leftFootRay.collider != null) && rb.velocity.x <= 0f)
+                {
+                    Vector2 point = onLeftWall ? raycastLeft.point : leftFootRay.point;
+                    Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                    if (extendedHitbox.Contains(point))
+                    {
+                        rb.position = new Vector2(point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
+                        rb.velocity = new Vector2(0f, rb.velocity.y);
+                    }
+                }
             }
         }
 
@@ -1326,9 +1354,11 @@ public class CharacterController : MonoBehaviour
                 return;
             }
         }
-        else //ApexJump ou on est accrocher tout en bas d'un mur
+        else //ApexJump ou on est accrocher tout en haut d'un mur
         {
-            FloorOnSide(out right, out bool left);
+            right = rightFootRay.collider != null;
+            bool left = leftFootRay.collider != null;
+
             if (right == left)//!bug
             {
                 print("Debug pls2 right : " + right);
@@ -1490,6 +1520,30 @@ public class CharacterController : MonoBehaviour
                 }
             }
         }
+
+        //Handle wall touch
+        if (onWall)
+        {
+            Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
+            if (onRightWall && rb.velocity.x >= 0f)
+            {
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(rightFootRay.point))
+                {
+                    rb.position = new Vector2(rightFootRay.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
+            }
+            else if (onLeftWall && rb.velocity.x <= 0f)
+            {
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(leftFootRay.point))
+                {
+                    rb.position = new Vector2(leftFootRay.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
+            }
+        }
     }
 
     #endregion
@@ -1579,9 +1633,9 @@ public class CharacterController : MonoBehaviour
 
     #endregion
 
-    #region Handle Wall Slide
+    #region Handle Slide
 
-    private void HandleWallSlide()
+    private void HandleSlide()
     {
         if (!isSliding || isBumping)
             return;
@@ -1603,6 +1657,30 @@ public class CharacterController : MonoBehaviour
         else
         {
             rb.velocity = new Vector2(0f, Mathf.MoveTowards(rb.velocity.y, -slideSpeed, slideSpeedLerp * Time.fixedDeltaTime));
+        }
+
+        //Handle wall touch
+        if (onWall)
+        {
+            Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
+            if (onRightWall && rb.velocity.x >= 0f)
+            {
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(rightFootRay.point))
+                {
+                    rb.position = new Vector2(rightFootRay.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, rb.position.y);
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
+            }
+            else if (onLeftWall && rb.velocity.x <= 0f)
+            {
+                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(hitboxCenter, new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                if (extendedHitbox.Contains(leftFootRay.point))
+                {
+                    rb.position = new Vector2(leftFootRay.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, rb.position.y);
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
+            }
         }
     }
 
@@ -1647,19 +1725,6 @@ public class CharacterController : MonoBehaviour
         lastTimeLeavePlateform = -10f;
         if (jumpParticle != null)
             jumpParticle.Play();
-    }
-
-    private void FloorOnSide(out bool onRight, out bool onLeft)
-    {
-        onRight = onLeft = false;
-
-        Vector2 start = new Vector2(transform.position.x, transform.position.y + grabRayOffset);
-        ToricRaycastHit2D raycast = PhysicsToric.Raycast(start, Vector2.right, grabRayLength, groundLayer);
-        if (raycast.collider != null)
-            onRight = true;
-        raycast = PhysicsToric.Raycast(start, Vector2.left, grabRayLength, groundLayer);
-        if (raycast.collider != null)
-            onLeft = true;
     }
 
     #endregion

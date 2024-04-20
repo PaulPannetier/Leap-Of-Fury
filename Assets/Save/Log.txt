@@ -479,3 +479,381 @@ CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput
 
     }
 }
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
