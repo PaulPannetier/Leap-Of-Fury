@@ -653,6 +653,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1393366166806807247, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393366166806807247, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393366166806807247, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1393366166806807247, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -296.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -943,14 +959,15 @@ MonoBehaviour:
   grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
   grabSpeedMultiplierWhenPreciseGrab: 0.75
-  grabApexSpeed: {x: 4, y: 4}
-  grabApexSpeed2: {x: 12, y: 0}
+  apexJumpSpeed: {x: 3, y: 12}
+  apexJumpSpeed2: {x: 4, y: 0}
   grabSpeedLerp: 25
-  grabApexSpeedLerp: 600
-  grabApexSpeedLerp2: 50
-  grabApexDuration: 0.081
-  grabApexDuration2: 0.12
-  grabInitSpeedOnApexStay: 0.4
+  apexJumpSpeedLerp: 400
+  apexJumpSpeedLerp2: 50
+  apexJumpDuration: 0.125
+  apexJumpDuration2: 0.1
+  apexJumpInitSpeed: 0.4
+  apexJumpInitSpeed2: 0.4
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 0.15

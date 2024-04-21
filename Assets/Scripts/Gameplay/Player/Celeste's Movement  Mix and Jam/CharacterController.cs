@@ -116,17 +116,20 @@ public class CharacterController : MonoBehaviour
     [Tooltip("La vitesse initial de monter (%age de la vitesse max)")] [SerializeField] [Range(0f, 1f)] private float grabInitSpeed = 0.25f;
     [Tooltip("La valeur de l'input en y max ou l'on est en precise grab"), SerializeField, Range(0f, 1f)] private float maxPreciseGrabValue = 0.3f;
     [Tooltip("Réduit la vitesse de monter lorsque l'input est faible pour plus de précisions.")] [SerializeField] [Range(0f, 1f)] private float grabSpeedMultiplierWhenPreciseGrab = 6f;
-    [Tooltip("La vitesse en sortie du wall grab.")] [SerializeField] private Vector2 grabApexSpeed = new Vector2(3f, 12f);
-    [Tooltip("La deuxième vitesse en sortie du wall grab.")] [SerializeField] private Vector2 grabApexSpeed2 = new Vector2(4f, 0f);
+    [Tooltip("La vitesse en sortie du wall grab.")] [SerializeField] private Vector2 apexJumpSpeed = new Vector2(3f, 12f);
+    [Tooltip("La deuxième vitesse en sortie du wall grab.")] [SerializeField] private Vector2 apexJumpSpeed2 = new Vector2(4f, 0f);
     [Tooltip("La vitesse d'interpolation en entrée du wall grab.")] [SerializeField] private float grabSpeedLerp = 2f;
-    [Tooltip("La vitesse d'interpolation en sortie du wall grab.")] [SerializeField] private float grabApexSpeedLerp = 400f;
-    [Tooltip("La deuxième vitesse d'interpolation en sortie du wall grab.")] [SerializeField] private float grabApexSpeedLerp2 = 50f;
-    [Tooltip("La durée du l'aide à la monté")] [SerializeField] private float grabApexDuration = 0.125f;
-    [Tooltip("La deuxième durée du l'aide à la monté")] [SerializeField] private float grabApexDuration2 = 0.1f;
-    [Tooltip("La vitesse initiale lors d'un grab apex a vitesse initiale nul")] [Range(0f, 1f)] [SerializeField] private float grabInitSpeedOnApexStay = 0.4f;
-    private bool reachGrabApex = false, reachGrabApexRight = false, reachGrabApexLeft = false, isGrabApexEnable = false, isGrabApexRightEnable = false, isGrabApexLeftEnable = false, grabStayAtApex = false, grabStayAtApexRight = false, grabStayAtApexLeft = false;
-    private bool finishGrabSpeed1 = false;
-    private float timeReachGrabApex = 0f;
+    [Tooltip("La vitesse d'interpolation en sortie du wall grab.")] [SerializeField] private float apexJumpSpeedLerp = 400f;
+    [Tooltip("La deuxième vitesse d'interpolation en sortie du wall grab.")] [SerializeField] private float apexJumpSpeedLerp2 = 50f;
+    [Tooltip("La durée du l'aide à la monté")] [SerializeField] private float apexJumpDuration = 0.125f;
+    [Tooltip("La deuxième durée du l'aide à la monté")] [SerializeField] private float apexJumpDuration2 = 0.1f;
+    [Tooltip("La vitesse initiale lors d'un saut depuis le sommet de la plateforme")] [Range(0f, 1f)] [SerializeField] private float apexJumpInitSpeed = 0.4f;
+    [Tooltip("La vitesse initiale en phase 2 lors d'un saut depuis le sommet de la plateforme")] [Range(0f, 1f)] [SerializeField] private float apexJumpInitSpeed2 = 0.4f;
+    private bool grabApexRight = false, grabApexLeft = false;
+    private bool isGrabApex => grabApexRight || grabApexLeft;
+    private bool reachGrabApex => reachGrabApexRight || reachGrabApexLeft;
+    private bool reachGrabApexRight = false, reachGrabApexLeft = false, isApexJump1 = false, isApexJump2 = false, isApexJumpRight = false, isApexJumpLeft = false;
+    private float lastTimeApexJump = -10;
 
     [Header("Dash")]
     [Tooltip("La vitesse maximal du dash")] [SerializeField] private float dashSpeed = 20f;
@@ -182,7 +185,6 @@ public class CharacterController : MonoBehaviour
     public bool onRightWall { get; private set; } // touche le mur droit
     public bool onLeftWall { get; private set; }//touche le mur gauche
     public bool wallGrab { get; private set; } //accroche ou monte le mur droit/gauche, monte au dessus d'une plateforme
-    public bool canMove { get; set; } = true; 
     public bool isDashing { get; private set; } 
     public bool isSliding { get; private set; }//grab vers le bas ou chute contre un mur en appuyant la direction vers le mur
     public bool isJumping { get; private set; }//dans la phase montante apres un saut
@@ -191,6 +193,7 @@ public class CharacterController : MonoBehaviour
     public bool isFalling { get; private set; } //est en l'air sans saut ni grab ni rien d'autre.
     public bool isSloping { get; private set; } //on est en pente.
     public bool isBumping { get; private set; } //on est en train d'être bump.
+    public bool isApexJumping => isApexJump1 || isApexJump2;
 
     public int wallSide { get; private set; }
 
@@ -349,6 +352,9 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
+        if (!enableBehaviour)
+            return;
+
         // I-Collision/detection
         oldGroundCollider = groundCollider;
         groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
@@ -487,13 +493,12 @@ public class CharacterController : MonoBehaviour
         oldOnGround = isGrounded;
 
         // II-Grab
-
         from = new Vector2(transform.position.x, transform.position.y + grabRayOffset);
         rightFootRay = PhysicsToric.Raycast(from, Vector2.right, grabRayLength, groundLayer);
         leftFootRay = PhysicsToric.Raycast(from, Vector2.left, grabRayLength, groundLayer);
 
         //Trigger wallGrab
-        if (!wallGrab && onWall && (playerInput.grabPressed && enableInput) && (!isSliding || (playerInput.rawY >= 0 && enableInput)) && !isDashing && !isJumpingAlongWall && !isBumping && canMove)
+        if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isJumpingAlongWall && !isBumping)
         {
             if((onRightWall && rightWallColliderData.grabable) || (onLeftWall && leftWallColliderData.grabable))
             {
@@ -507,31 +512,78 @@ public class CharacterController : MonoBehaviour
         }
 
         //Trigger reach grab Apex
-        if (oldOnWall && !onWall && wallGrab && !reachGrabApex && !isDashing && !isJumping && !isSliding && !isBumping)
+        if (oldOnWall && !onWall && wallGrab && !reachGrabApex && !isDashing && !isJumping && !isSliding && !isBumping && !isApexJumping)
         {
-            reachGrabApex = true;
-            timeReachGrabApex = Time.time;
             reachGrabApexRight = rightFootRay.collider != null;
             reachGrabApexLeft = leftFootRay.collider != null;
+            grabApexRight = reachGrabApexRight;
+            grabApexLeft = reachGrabApexLeft;
         }
+
         oldOnWall = onWall;
 
         //Release wallGrab
-        if (((wallGrab || grabStayAtApex) && playerInput.grabPressedUp) || (!onWall && !grabStayAtApex && !reachGrabApex && !isGrabApexEnable) || (!onRightWall && rightFootRay.collider == null && !onLeftWall && leftFootRay.collider == null) ||
-            dash  || jump || wallJump || wallJumpAlongWall || !canMove)
+        if(wallGrab && (dash || jump || wallJump || wallJumpAlongWall || !enableInput))
         {
-            wallGrab = grabStayAtApex = grabStayAtApexLeft = grabStayAtApexRight = false;
+            wallGrab = reachGrabApexLeft = reachGrabApexRight = grabApexRight = grabApexLeft = false;
+        }
+
+        if (isGrabApex)
+        {
+            if (playerInput.rawY == 1 && ((grabApexRight && playerInput.rawX == 1) || (grabApexLeft && playerInput.rawX == -1)))
+            {
+                isApexJump1 = true;
+                isApexJump2 = false;
+                isApexJumpRight = grabApexRight;
+                isApexJumpLeft = grabApexLeft;
+                grabApexRight = grabApexLeft = wallGrab = false;
+                lastTimeApexJump = Time.time;
+            }
+
+            if(onWall || !wallGrab || isJumping || isWallJumping || isDashing || isBumping || !enableInput)
+            {
+                grabApexRight = grabApexLeft = false;
+            }
+        }
+
+        if(isApexJumping)
+        {
+            if(isApexJump1)
+            {
+                if (Time.time - lastTimeApexJump > apexJumpDuration)
+                {
+                    isApexJump1 = false;
+                    isApexJump2 = true;
+                    lastTimeApexJump = Time.time;
+                }
+            }
+            else
+            {
+                if (Time.time - lastTimeApexJump > apexJumpDuration2)
+                {
+                    isApexJump1 = isApexJump2 = false;
+                }
+            }
+        }
+
+        if (wallGrab && playerInput.grabPressedUp)
+        {
+            wallGrab = reachGrabApexLeft = reachGrabApexRight = grabApexRight = grabApexLeft = false;
+        }
+
+        if ((!onRightWall && rightFootRay.collider == null && !onLeftWall && leftFootRay.collider == null) || dash || jump || wallJump || wallJumpAlongWall)
+        {
+            wallGrab = reachGrabApexLeft = reachGrabApexRight = grabApexRight = grabApexLeft = false;
         }
 
         // III-Fall and Jump
-
         //release walljumpingAlongWall in case of cancelled jump
         if(isJumpingAlongWall && isWallJumping)
         {
             isJumpingAlongWall = false;
         }
         //Trigger falling
-        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isSliding && !isDashing && !isGrounded && !isBumping)
+        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && !isGrounded && !isBumping)
         {
             isFalling = true;
         }
@@ -541,7 +593,7 @@ public class CharacterController : MonoBehaviour
             isJumping = isWallJumping = isJumpingAlongWall = isFalling = false;
         }
         //Release Falling
-        if(jump || wallJump || doubleJump)
+        if(jump || wallJump || doubleJump || isApexJumping)
         {
             isFalling = false;
         }
@@ -551,7 +603,7 @@ public class CharacterController : MonoBehaviour
         {
             isJumping = false;
             //cond  || rb.v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
-            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !isDashing && !isSliding && !isBumping)
+            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -560,17 +612,17 @@ public class CharacterController : MonoBehaviour
         if (isWallJumping && (rb.velocity.y <= 0f || !playerInput.jumpPressed || (Time.time - lastTimeBeginWallJump > wallJumpMaxDuration)))
         {
             isWallJumping = false;
-            //cond  || rb.v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
-            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !isDashing && !isSliding && !isBumping)
+            //cond  || rb.v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement court que isGrounded est tj vrai
+            if ((!isGrounded || rb.velocity.y > 0f) && !wallGrab && !!isApexJumping && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
         }
-        //release Wall jumping allog and trigger falling
+        //release Wall jumping along wall and trigger falling
         if (isJumpingAlongWall && (isDashing || (Time.time - lastTimeBeginWallJumpAlongWall > jumpAlongWallDuration)))
         {
             isJumpingAlongWall = false;
-            if (!isGrounded && !wallGrab && !isDashing && !isSliding && !isBumping)
+            if (!isGrounded && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -588,13 +640,13 @@ public class CharacterController : MonoBehaviour
 
         //Trigger sliding
         //1case, wallGrab => isSliding
-        if (!isSliding && wallGrab && playerInput.rawY == -1 && enableInput && !reachGrabApex && !isDashing && !isJumping && !isFalling && !isGrounded && !isBumping)
+        if (!isSliding && wallGrab && !isApexJumping && playerInput.rawY == -1 && enableInput && !reachGrabApex && !isDashing && !isJumping && !isFalling && !isGrounded && !isBumping)
         {
             isSliding = true;
-            wallGrab = grabStayAtApex = grabStayAtApexRight = grabStayAtApexLeft = reachGrabApex = isGrabApexEnable = isGrabApexLeftEnable = isGrabApexRightEnable =  false;
+            wallGrab = reachGrabApexRight = reachGrabApexLeft =  false;
         }
         //2case, isFalling => isSliding
-        if (!isSliding && onWall && isFalling && rb.velocity.y < 0f && !isDashing && !isJumping && !wallGrab && !isBumping)
+        if (!isSliding && onWall && !isApexJumping && isFalling && rb.velocity.y < 0f && !isDashing && !isJumping && !wallGrab && !isBumping)
         {
             if (enableInput && (playerInput.rawX == 1 && onRightWall) || (playerInput.rawX == -1 && onLeftWall))
             {
@@ -652,13 +704,13 @@ public class CharacterController : MonoBehaviour
         }
 
         // VII-Inputs
-        doJump = doJump ? true : playerInput.jumpPressedDown && enableInput;
+        doJump = doJump ? enableInput : playerInput.jumpPressedDown && enableInput;
         if (playerInput.jumpPressedDown && enableInput)
         {
             lastTimeJumpCommand = Time.time;
         }
 
-        doDash = doDash ? true : playerInput.dashPressedDown && enableInput;
+        doDash = doDash ? enableInput : playerInput.dashPressedDown && enableInput;
         if (playerInput.dashPressedDown && enableInput)
         {
             lastTimeDashCommand = Time.time;
@@ -698,9 +750,15 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        DebugText.instance.text += $"Grab : {wallGrab}\n";
-        DebugText.instance.text += $"Apex : {reachGrabApex}\n";
-        DebugText.instance.text += $"StayAtApex : {grabStayAtApex}\n";
+        DebugText.instance.text += $"OnWall : {onWall}\n";
+        DebugText.instance.text += $"wallGrab : {wallGrab}\n";
+        DebugText.instance.text += $"Apex : {isGrabApex}\n";
+        DebugText.instance.text += $"ApexSpeed1 : {isApexJump1}\n";
+        DebugText.instance.text += $"ApexSpeed2 : {isApexJump2}\n";
+        DebugText.instance.text += $"Jump : {isJumping}\n";
+        DebugText.instance.text += $"Fall : {isFalling}\n";
+        DebugText.instance.text += $"Slide : {isSliding}\n";
+        DebugText.instance.text += $"Gounded : {isGrounded}\n";
         DebugText.instance.text += $"vel : {rb.velocity}\n";
     }
 
@@ -710,6 +768,9 @@ public class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!enableBehaviour)
+            return;
+
         HandleWalk();
 
         HandleGrab();
@@ -733,7 +794,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleWalk()
     {
-        if (!enableInput || (!isGrounded && !isSloping) || !canMove || wallGrab || reachGrabApex || grabStayAtApex || isDashing || isJumping || isFalling || isSliding || isBumping)
+        if (isGrounded)
             return;
 
         //Avoid clip on platefom
@@ -1035,86 +1096,22 @@ public class CharacterController : MonoBehaviour
 
     private void HandleGrab()
     {
-        if (isBumping || !canMove)
+        if (!wallGrab && !isApexJumping && !isGrabApex)
             return;
 
-        if (reachGrabApex)
+        if(reachGrabApex)
         {
-            if(!wallGrab || !enableInput || !canMove)
-            {
-                reachGrabApex = reachGrabApexLeft = reachGrabApexRight = isGrabApexEnable = isGrabApexRightEnable = isGrabApexLeftEnable = false;
-            }
-            else if (!isGrabApexEnable)
-            {
-                // si on donne un coup de pouce pour monter sur la plateforme
-                if (playerInput.rawY == 1 && ((reachGrabApexRight && playerInput.rawX == 1) || (reachGrabApexLeft && playerInput.rawX == -1)))
-                {
-                    if (reachGrabApexRight && playerInput.rawX == 1)
-                    {
-                        isGrabApexRightEnable = true;
-                        isGrabApexLeftEnable = false;
-                    }
-                    else //reachGrabApexLeft
-                    {
-                        isGrabApexRightEnable = false;
-                        isGrabApexLeftEnable = true;
-                    }
-                    isGrabApexEnable = true;
-                }
-                else
-                {
-                    grabStayAtApex = true;
-                    grabStayAtApexRight = reachGrabApexRight;
-                    grabStayAtApexLeft = reachGrabApexLeft;
-                    if(reachGrabApexRight && reachGrabApexLeft)
-                    {
-                        print("Debug reach grab apex left and right pls");
-                        LogManager.instance.WriteLog("Debug reach grab apex left and right pls", "CharacterController.HandleGrab");
-                    }
-                    reachGrabApex = reachGrabApexLeft = reachGrabApexRight = isGrabApexRightEnable = isGrabApexLeftEnable = false;
-                    rb.MovePosition((Vector2)transform.position + Vector2.down * (grabSpeed * Time.fixedDeltaTime));
-                    rb.velocity = Vector2.zero;
-                }
-            }
-            else
-            {
-                //on donne le coup de pouce
-                Vector2 speedTarget = finishGrabSpeed1 ? grabApexSpeed2 : grabApexSpeed;
-                float lerp = finishGrabSpeed1 ? grabApexSpeedLerp2 : grabApexSpeedLerp;
-                if (isGrabApexRightEnable)
-                {
-                    rb.velocity = Vector2.MoveTowards(rb.velocity, speedTarget, lerp * Time.fixedDeltaTime);
-                }
-                else //isGrabApexLeftEnable
-                {
-                    rb.velocity = Vector2.MoveTowards(rb.velocity, new Vector2(-speedTarget.x, speedTarget.y), lerp * Time.fixedDeltaTime);
-                }
-
-                float duration = finishGrabSpeed1 ? grabApexDuration2 : grabApexDuration;
-                if (Time.time - timeReachGrabApex >= duration)
-                {
-                    if (finishGrabSpeed1)
-                    {
-                        reachGrabApex = reachGrabApexLeft = reachGrabApexRight = isGrabApexEnable = isGrabApexRightEnable = isGrabApexLeftEnable = false;
-                        finishGrabSpeed1 = false;
-                    }
-                    else
-                    {
-                        finishGrabSpeed1 = true;
-                        timeReachGrabApex = Time.time;
-                    }
-                }
-            }
+            rb.velocity = Vector2.zero;
         }
 
-        //Si on est dans le cas normal de grab
-        if (wallGrab && onWall && !grabStayAtApex && !reachGrabApex && !isGrabApexEnable && !isSliding)
+        //Normal case
+        if (wallGrab && !isGrabApex)
         {
             //On veut monter
             if(playerInput.rawY == 1)
             {
                 //clamp, on va dans le mauvais sens
-                if (rb.velocity.y < grabInitSpeed * grabSpeed * 0.98f)
+                if (rb.velocity.y < grabInitSpeed * grabSpeed * 0.95f)
                 {
                     rb.velocity = new Vector2(0f, grabInitSpeed * grabSpeed);
                 }
@@ -1129,24 +1126,48 @@ public class CharacterController : MonoBehaviour
                 rb.velocity = Vector2.zero;
             }
         }
-        //on est au sommet du mur
-        else if (wallGrab && onWall && grabStayAtApex && !reachGrabApex && !isGrabApexEnable && !isSliding)
+        //Grab Apex
+        else if (wallGrab && isGrabApex)
         {
-            int xVal = grabStayAtApexRight ? 1 : -1;
-            //On attend en haut du mur voulant monter au dessus
-            if (playerInput.rawY == 1 && playerInput.rawX == xVal)
-            {
-                rb.velocity = new Vector2(0f, grabInitSpeedOnApexStay * grabSpeed);
+            rb.velocity = Vector2.zero;
+        }
 
-                reachGrabApex = true;
-                isGrabApexEnable = true;
-                reachGrabApexRight = grabStayAtApexRight;
-                reachGrabApexLeft = grabStayAtApexLeft;
-                isGrabApexRightEnable = grabStayAtApexRight;
-                isGrabApexLeftEnable = grabStayAtApexLeft;
-                grabStayAtApex = grabStayAtApexRight = grabStayAtApexLeft = finishGrabSpeed1 = false;
-                timeReachGrabApex = Time.time;
+        if(isApexJumping)
+        {
+            if(isApexJump1)
+            {
+                if(Mathf.Abs(rb.velocity.x) <= apexJumpSpeed.x * 0.95f * apexJumpInitSpeed)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x.Sign() * apexJumpSpeed.x * apexJumpInitSpeed, rb.velocity.y);
+                }
+                if (Mathf.Abs(rb.velocity.y) <= apexJumpSpeed.y * 0.95f * apexJumpInitSpeed)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y.Sign() * apexJumpSpeed.y * apexJumpInitSpeed);
+                }
+
+                Vector2 targetSpped = new Vector2(isApexJumpRight ? apexJumpSpeed.x : -apexJumpSpeed.x, apexJumpSpeed.y);
+                rb.velocity = Vector2.MoveTowards(rb.velocity, targetSpped, apexJumpSpeedLerp);
             }
+            else
+            //isApexJump2
+            {
+                if (Mathf.Abs(rb.velocity.x) <= apexJumpSpeed2.x * 0.95f * apexJumpInitSpeed2)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x.Sign() * apexJumpSpeed2.x * apexJumpInitSpeed2, rb.velocity.y);
+                }
+                if (Mathf.Abs(rb.velocity.y) <= apexJumpSpeed2.y * 0.95f * apexJumpInitSpeed2)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y.Sign() * apexJumpSpeed2.y * apexJumpInitSpeed2);
+                }
+
+                Vector2 targetSpped = new Vector2(isApexJumpRight ? apexJumpSpeed2.x : -apexJumpSpeed2.x, apexJumpSpeed2.y);
+                rb.velocity = Vector2.MoveTowards(rb.velocity, targetSpped, apexJumpSpeedLerp2);
+            }
+        }
+
+        if(reachGrabApex)
+        {
+            reachGrabApexRight = reachGrabApexLeft = false;
         }
 
         //Handle wall touch
@@ -1186,22 +1207,22 @@ public class CharacterController : MonoBehaviour
     {
         if (doJump)
         {
-            if (isGrounded && canMove && !isBumping)
+            if (isGrounded && !isBumping)
             {
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && !isBumping && canMove)
+            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && !isBumping)
             {
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if ((grabStayAtApex || reachGrabApex || wallGrab || onWall || isSliding) && !isGrounded && !isBumping && canMove)
+            else if ((wallGrab || onWall || isSliding) && !isGrounded && !isApexJumping && !isBumping)
             {
                 WallJump();
                 doJump = false;
             }
-            else if (!isGrounded && !(grabStayAtApex || reachGrabApex || wallGrab) && isPressingJumpButtonDownForFixedUpdate && !hasDoubleJump && enableDoubleJump && !isBumping && canMove)
+            else if (!isGrounded && !wallGrab && isPressingJumpButtonDownForFixedUpdate && !hasDoubleJump && !isApexJumping && enableDoubleJump && !isBumping)
             {
                 HandleDoubleJump();
                 doJump = false;
@@ -1456,7 +1477,7 @@ public class CharacterController : MonoBehaviour
     private IEnumerator DisableMovementCorout(float duration)
     {
         disableMovementCounter++;
-        canMove = false;
+        enableInput = false;
 
         float timer = 0f;
         while (timer < duration)
@@ -1470,7 +1491,7 @@ public class CharacterController : MonoBehaviour
         }
 
         disableMovementCounter--;
-        canMove = disableMovementCounter <= 0;
+        enableInput = disableMovementCounter <= 0;
     }
 
     #endregion
@@ -1481,21 +1502,21 @@ public class CharacterController : MonoBehaviour
 
     private void HandleFall()
     {
-        if (!isFalling || isJumping  || isWallJumping || isJumpingAlongWall || isSliding || wallGrab || isBumping || !enableBehaviour)
+        if (!isFalling)
             return;
 
         //phase montante en l'air
         if (rb.velocity.y > 0f)
         {
             //Gravity
-            float coeff = playerInput.rawY == -1 && (enableInput && canMove) ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
+            float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
             rb.velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.fixedDeltaTime);
 
             //Movement horizontal
             //Clamp, on est dans le mauvais sens
-            if (enableInput && canMove && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+            if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
                 rb.velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
-            if (enableInput && canMove && Mathf.Abs(rb.velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+            if (enableInput && Mathf.Abs(rb.velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
             {
                 rb.velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), rb.velocity.y);
             }
@@ -1510,7 +1531,7 @@ public class CharacterController : MonoBehaviour
         {
             //Clamp the fall speed
             float targetedSpeed;
-            if(playerInput.rawY == -1 && enableInput && canMove)
+            if(playerInput.rawY == -1 && enableInput)
             {
                 targetedSpeed = -fallSpeed.y * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f);
             }
@@ -1539,15 +1560,15 @@ public class CharacterController : MonoBehaviour
             }
             else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)//else just keep our velocity
             {
-                if (canMove && enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
+                if (enableInput && (playerInput.x >= 0f && rb.velocity.x <= 0f) || (playerInput.x <= 0f && rb.velocity.x >= 0f))
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
-                if (canMove && enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0)
+                if (enableInput && Mathf.Abs(rb.velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0)
                 {
                     rb.velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), rb.velocity.y);
                 }
                 else
                 {
-                    float targetSpeed = !enableInput || !canMove ? 0f : playerInput.x * fallSpeed.x;
+                    float targetSpeed = !enableInput ? 0f : playerInput.x * fallSpeed.x;
                     rb.velocity = new Vector2(Mathf.MoveTowards(rb.velocity.x, targetSpeed, fallSpeedLerp * Time.fixedDeltaTime), rb.velocity.y);
                 }
             }
@@ -1589,7 +1610,7 @@ public class CharacterController : MonoBehaviour
         //Dashing
         if (doDash && !isDashing)
         {
-            if (!hasDashed && canMove && Time.time - lastTimeDashFinish >= dashCooldown)
+            if (!hasDashed && Time.time - lastTimeDashFinish >= dashCooldown)
             {
                 Vector2 dir = GetCurrentDirection(true);
                 isLastDashUp = dir.SqrDistance(Vector2.up) <= 1e-6f;
@@ -1606,45 +1627,45 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        if(isDashing)
+        if (!isDashing)
+            return;
+
+        //anti knockhead
+        if(isLastDashUp)
         {
-            //anti knockhead
-            if(isLastDashUp)
+            Vector2 detectSize = new Vector2(hitbox.bounds.size.x * antiKnockHead, hitbox.bounds.size.y);
+            Vector2 nonDetectSize = new Vector2(hitbox.bounds.size.x * (0.5f - antiKnockHead), hitbox.bounds.size.y);
+            Vector2 detectOffset = new Vector2(0.5f * (detectSize.x - hitbox.bounds.size.x), detectSize.y * 0.1f);//left
+            Vector2 nonDetectOffset = new Vector2(-nonDetectSize.x * 0.5f, nonDetectSize.y * 0.1f);
+
+            Collider2D detectCol = PhysicsToric.OverlapBox((Vector2)transform.position + detectOffset, detectSize, 0f, groundLayer);
+            Collider2D nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
+            if (detectCol != null && nonDetectCol == null)
             {
-                Vector2 detectSize = new Vector2(hitbox.bounds.size.x * antiKnockHead, hitbox.bounds.size.y);
-                Vector2 nonDetectSize = new Vector2(hitbox.bounds.size.x * (0.5f - antiKnockHead), hitbox.bounds.size.y);
-                Vector2 detectOffset = new Vector2(0.5f * (detectSize.x - hitbox.bounds.size.x), detectSize.y * 0.1f);//left
-                Vector2 nonDetectOffset = new Vector2(-nonDetectSize.x * 0.5f, nonDetectSize.y * 0.1f);
-
-                Collider2D detectCol = PhysicsToric.OverlapBox((Vector2)transform.position + detectOffset, detectSize, 0f, groundLayer);
-                Collider2D nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
-                if (detectCol != null && nonDetectCol == null)
+                MapColliderData colliderData = detectCol.GetComponent<MapColliderData>();
+                if(colliderData == null || !colliderData.disableAntiKnockHead)
                 {
-                    MapColliderData colliderData = detectCol.GetComponent<MapColliderData>();
-                    if(colliderData == null || !colliderData.disableAntiKnockHead)
-                    {
-                        Teleport((Vector2)transform.position + Vector2.right * detectSize.x);
-                    }
-                }
-
-                detectOffset = new Vector2(0.5f * (hitbox.bounds.size.x - detectSize.x), detectSize.y * 0.1f);//right
-                nonDetectOffset = new Vector2(nonDetectSize.x * 0.5f, nonDetectSize.y * 0.1f);
-                detectCol = PhysicsToric.OverlapBox((Vector2)transform.position + detectOffset, detectSize, 0f, groundLayer);
-                nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
-                if (detectCol != null && nonDetectCol == null)
-                {
-                    MapColliderData colliderData = detectCol.GetComponent<MapColliderData>();
-                    if (colliderData == null || !colliderData.disableAntiKnockHead)
-                    {
-                        Teleport((Vector2)transform.position + Vector2.left * detectSize.x);
-                    }
+                    Teleport((Vector2)transform.position + Vector2.right * detectSize.x);
                 }
             }
 
-            lastTimeDashFinish = Time.time;
-            float per100 = (Time.time - lastTimeDashBegin) / dashDuration;
-            rb.velocity = lastDashDir * (dashSpeedCurve.Evaluate(per100) * dashSpeed);
+            detectOffset = new Vector2(0.5f * (hitbox.bounds.size.x - detectSize.x), detectSize.y * 0.1f);//right
+            nonDetectOffset = new Vector2(nonDetectSize.x * 0.5f, nonDetectSize.y * 0.1f);
+            detectCol = PhysicsToric.OverlapBox((Vector2)transform.position + detectOffset, detectSize, 0f, groundLayer);
+            nonDetectCol = PhysicsToric.OverlapBox((Vector2)transform.position + nonDetectOffset, nonDetectSize, 0f, groundLayer);
+            if (detectCol != null && nonDetectCol == null)
+            {
+                MapColliderData colliderData = detectCol.GetComponent<MapColliderData>();
+                if (colliderData == null || !colliderData.disableAntiKnockHead)
+                {
+                    Teleport((Vector2)transform.position + Vector2.left * detectSize.x);
+                }
+            }
         }
+
+        lastTimeDashFinish = Time.time;
+        float per100 = (Time.time - lastTimeDashBegin) / dashDuration;
+        rb.velocity = lastDashDir * (dashSpeedCurve.Evaluate(per100) * dashSpeed);
     }
 
     private void Dash(in Vector2 dir)
@@ -1671,7 +1692,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleSlide()
     {
-        if (!isSliding || isBumping)
+        if (!isSliding)
             return;
 
         if (wallSide != side)
@@ -1728,7 +1749,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleBump()
     {
-        if (!isBumping || !enableBehaviour)
+        if (!isBumping)
             return;
 
         //friction
@@ -1876,10 +1897,10 @@ public class CharacterController : MonoBehaviour
         doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);
         wallJumpMaxDuration = Mathf.Max(wallJumpMaxDuration, 0f);
         wallJumpMinDuration = Mathf.Clamp(wallJumpMinDuration, 0f, wallJumpMaxDuration);
-        grabApexSpeed = new Vector2(Mathf.Max(0f, grabApexSpeed.x), grabApexSpeed.y);
-        grabApexSpeed2 = new Vector2(Mathf.Max(0f, grabApexSpeed2.x), grabApexSpeed2.y);
+        apexJumpSpeed = new Vector2(Mathf.Max(0f, apexJumpSpeed.x), apexJumpSpeed.y);
+        apexJumpSpeed2 = new Vector2(Mathf.Max(0f, apexJumpSpeed2.x), apexJumpSpeed2.y);
         slideSpeed = Mathf.Max(0f, slideSpeed);
-        grabApexSpeedLerp = Mathf.Max(0f, grabApexSpeedLerp);
+        apexJumpSpeedLerp = Mathf.Max(0f, apexJumpSpeedLerp);
         grabSpeedLerp = Mathf.Max(0f, grabSpeedLerp);
         speedLerp = Mathf.Max(0f, speedLerp);
         grabRayLength = Mathf.Max(0f, grabRayLength);
