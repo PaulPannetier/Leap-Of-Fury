@@ -794,7 +794,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleWalk()
     {
-        if (isGrounded)
+        if (!isGrounded || isJumping || isDashing || isSliding || wallGrab || isApexJumping || isBumping)
             return;
 
         //Avoid clip on platefom
@@ -1096,7 +1096,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleGrab()
     {
-        if (!wallGrab && !isApexJumping && !isGrabApex)
+        if ((!wallGrab && !isApexJumping && !isGrabApex) || isDashing || isBumping)
             return;
 
         Rigidbody2D wallRb = onRightWall ? raycastRight.rigidbody : (onLeftWall ? raycastLeft.rigidbody : (rightFootRay.collider != null ? rightFootRay.rigidbody : (leftFootRay.rigidbody)));
@@ -1109,7 +1109,6 @@ public class CharacterController : MonoBehaviour
         //Normal case
         if (wallGrab && !isGrabApex)
         {
-
             //On veut monter
             if(playerInput.rawY == 1)
             {
