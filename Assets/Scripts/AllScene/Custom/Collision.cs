@@ -3038,17 +3038,27 @@ namespace Collision2D
 
     public class Polygone : Collider2D
     {
-        public static void GizmosDraw(Vector2[] points) => GizmosDraw(points, Gizmos.DrawLine);
-        public static void GizmosDraw(Vector2[] points, Action<Vector3, Vector3> drawLineFunction)
+        public static void GizmosDraw(Polygone p, bool gizmos = true) => GizmosDraw(p.vertices, Color.white, gizmos);
+        public static void GizmosDraw(Polygone p, Color color, bool gizmos = true) => GizmosDraw(p.vertices, color, gizmos);
+        public static void GizmosDraw(Vector2[] points, bool gizmos = true) => GizmosDraw(points,  Color.white, gizmos);
+        public static void GizmosDraw(Vector2[] points, Color color, bool gizmos = true)
+        {
+            if(gizmos)
+            {
+                GizmosDraw(points, color, (a, b, c) => { Gizmos.color = c; Gizmos.DrawLine(a, b); });
+            }
+            else
+            {
+                GizmosDraw(points, color, Debug.DrawLine);
+            }
+        }
+        public static void GizmosDraw(Vector2[] points, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
         {
             for (int i = 0; i < points.Length; i++)
             {
-                drawLineFunction(points[i], points[(i + 1) % points.Length]);
+                drawLineFunction(points[i], points[(i + 1) % points.Length], color);
             }
         }
-
-        public static void GizmosDraw(Polygone p) => GizmosDraw(p.vertices);
-        public static void GizmosDraw(Polygone p, Action<Vector3, Vector3> drawLineFunction) => GizmosDraw(p.vertices, drawLineFunction);
 
         public Vector2[] vertices { get; private set; }
         private Vector2 _center;
@@ -3336,19 +3346,11 @@ namespace Collision2D
 
     public class Hitbox : Collider2D
     {
-        public static void GizmosDraw(Hitbox hitbox) => Polygone.GizmosDraw(hitbox.rec);
-        public static void GizmosDraw(Hitbox hitbox, Action<Vector3, Vector3> drawLineFunction) => Polygone.GizmosDraw(hitbox.rec, drawLineFunction);
-
-        public static void GizmosDraw(in Vector2 center, in Vector2 size, float angle) => GizmosDraw(center, size, angle, Gizmos.DrawLine);
-        public static void GizmosDraw(in Vector2 center, in Vector2 size, float angle, Action<Vector3, Vector3> drawLineFunction)
-        {
-            Hitbox h = new Hitbox(center, size);
-            h.Rotate(angle);
-            GizmosDraw(h, drawLineFunction);
-        }
-
-        public static void GizmosDraw(in Vector2 center, in Vector2 size) => GizmosDraw(new Hitbox(center, size));
-        public static void GizmosDraw(in Vector2 center, in Vector2 size, Action<Vector3, Vector3> drawLineFunction) => GizmosDraw(new Hitbox(center, size), drawLineFunction);
+        public static void GizmosDraw(Hitbox hitbox, bool gizmos = true) => Polygone.GizmosDraw(hitbox.rec, gizmos);
+        public static void GizmosDraw(Hitbox hitbox, Color color, bool gizmos = true) => Polygone.GizmosDraw(hitbox.rec, color, gizmos);
+        public static void GizmosDraw(in Vector2 center, in Vector2 size, bool gizmos = true) => Polygone.GizmosDraw(new Hitbox(center, size).rec, gizmos);
+        public static void GizmosDraw(in Vector2 center, in Vector2 size, Color color, bool gizmos = true) => Polygone.GizmosDraw(new Hitbox(center, size).rec, color, gizmos);
+        public static void GizmosDraw(Hitbox hitbox, Color color, Action<Vector3, Vector3, Color> drawLineFunction) => Polygone.GizmosDraw(hitbox.rec.vertices, color, drawLineFunction);
 
         protected Polygone rec;
         public Vector2 size;
@@ -3446,11 +3448,47 @@ namespace Collision2D
 
     public class Circle : Collider2D
     {
-        public static void GizmosDraw(in Vector2 center, float radius) => GizmosDraw(center, radius, Gizmos.DrawLine);
+        public static void GizmosDraw(in Vector2 center, float radius, bool gizmos = true) => GizmosDraw(center, radius, Color.white, gizmos);
+        public static void GizmosDraw(Circle circle, bool gizmos = true) => GizmosDraw(circle.center, circle.radius, Color.white, gizmos);
+        public static void GizmosDraw(Circle circle, Color color, bool gizmos = true) => GizmosDraw(circle.center, circle.radius, color, gizmos);
+        public static void GizmosDraw(in Vector2 center, float radius, Color color, bool gizmos = true)
+        {
+            void DrawLine(Vector3 a, Vector3 b, Color c)
+            {
+                Gizmos.color = c;
+                Gizmos.DrawLine(a, b);
+            }
 
-        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle) => GizmosDraw(center, radius, begAngle, endAngle, Gizmos.DrawLine);
+            if (gizmos)
+            {
+                GizmosDraw(center, radius, color, DrawLine);
+            }
+            else
+            {
+                GizmosDraw(center, radius, color, Debug.DrawLine);
+            }
+        }
 
-        public static void GizmosDraw(in Vector2 center, float radius, Action<Vector3, Vector3> drawLineFunction)
+        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, bool gizmos = true) => GizmosDraw(center, radius, begAngle, endAngle, Color.white, gizmos);
+        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, Color color, bool gizmos = true)
+        {
+            void DrawLine(Vector3 a, Vector3 b, Color c)
+            {
+                Gizmos.color = c;
+                Gizmos.DrawLine(a, b);
+            }
+
+            if (gizmos)
+            {
+                GizmosDraw(center, radius, begAngle, endAngle, color, DrawLine);
+            }
+            else
+            {
+                GizmosDraw(center, radius, begAngle, endAngle, color, Debug.DrawLine);
+            }
+        }
+
+        public static void GizmosDraw(in Vector2 center, float radius, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
         {
             int sides = ((radius + 10f) * 7f).Round();
             float angleStep = (2f * Mathf.PI) / sides;
@@ -3460,12 +3498,12 @@ namespace Collision2D
             {
                 float ang = i * angleStep;
                 p = center + new Vector2(radius * Mathf.Cos(ang), radius * Mathf.Sin(ang));
-                drawLineFunction(lastPoint, p);
+                drawLineFunction(lastPoint, p, color);
                 lastPoint = p;
             }
         }
 
-        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, Action<Vector3, Vector3> drawLineFunction)
+        public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
         {
             int sides = Math.Max(((radius + 10f) * 7f * Mathf.Abs((endAngle - begAngle) / (2f * Mathf.PI))).Round(), 4);
             float angleStep = Mathf.Abs(endAngle - begAngle) / sides;
@@ -3475,13 +3513,10 @@ namespace Collision2D
             {
                 float ang = begAngle + i * angleStep;
                 p = center + Useful.Vector2FromAngle(ang, radius);
-                drawLineFunction(lastPoint, p);
+                drawLineFunction(lastPoint, p, color);
                 lastPoint = p;
             }
         }
-
-        public static void GizmosDraw(Circle circle) => GizmosDraw(circle.center, circle.radius);
-        public static void GizmosDraw(Circle circle, Action<Vector3, Vector3> drawLineFunction) => GizmosDraw(circle.center, circle.radius, drawLineFunction);
 
         protected Vector2 _center;
         public override Vector2 center
@@ -3571,13 +3606,24 @@ namespace Collision2D
 
     public class Capsule : Collider2D
     {
-        public static void GizmosDraw(Capsule capsule) => GizmosDraw(capsule, Gizmos.DrawLine);
-
-        public static void GizmosDraw(Capsule capsule, Action<Vector3, Vector3> drawLineFunction)
+        public static void GizmosDraw(Capsule capsule, bool gizmos = true) => GizmosDraw(capsule, Color.white, gizmos);
+        public static void GizmosDraw(Capsule capsule, Color color, bool gizmos = true)
         {
-            Circle.GizmosDraw(capsule.circle1, drawLineFunction);
-            Circle.GizmosDraw(capsule.circle2, drawLineFunction);
-            Hitbox.GizmosDraw(capsule.hitbox, drawLineFunction);
+            if(gizmos)
+            {
+                GizmosDraw(capsule, color, (a,b,c) => { Gizmos.color = c; Gizmos.DrawLine(a, b); });
+            }
+            else
+            {
+                GizmosDraw(capsule, color, Debug.DrawLine);
+            }
+        }
+
+        public static void GizmosDraw(Capsule capsule, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
+        {
+            Circle.GizmosDraw(capsule.circle1.center, capsule.circle1.radius, color, drawLineFunction);
+            Circle.GizmosDraw(capsule.circle2.center, capsule.circle2.radius, color, drawLineFunction);
+            Hitbox.GizmosDraw(capsule.hitbox, color, drawLineFunction);
         }
 
         public Circle circle1 { get; private set; }
@@ -3778,7 +3824,7 @@ namespace Collision2D
 
 #region 3D Collisions
 
-namespace Collission3D
+namespace Collision3D
 {
     #region CustomCollider3
 

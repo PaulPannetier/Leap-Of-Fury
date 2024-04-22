@@ -81,7 +81,7 @@ namespace Test
                 DrawCollider(Collider2D.FromUnityCollider2D(colliders[i]), collideColliders[i] ? colorTouch : colorUntouch, false);
             }
 
-            Circle.GizmosDraw(start, 0.1f, Debug.DrawLine);
+            Circle.GizmosDraw(start, 0.1f);
         }
 
         private int GetColliderIndex(UnityEngine.Collider2D collider)
@@ -383,22 +383,20 @@ namespace Test
             Gizmos.color = color;
             if (collider is Hitbox hitbox)
             {
-                Hitbox.GizmosDraw(hitbox, gizmos ? Gizmos.DrawLine : DrawLine);
+                Hitbox.GizmosDraw(hitbox, color, gizmos);
             }
             else if (collider is Circle circle)
             {
-                Circle.GizmosDraw(circle, gizmos ? Gizmos.DrawLine : DrawLine);
+                Circle.GizmosDraw(circle, color, gizmos);
             }
             else if (collider is Capsule capsule)
             {
-                Capsule.GizmosDraw(capsule, gizmos ? Gizmos.DrawLine : DrawLine);
+                Capsule.GizmosDraw(capsule, color, gizmos);
             }
             else if (collider is Polygone poly)
             {
-                Polygone.GizmosDraw(poly, gizmos ? Gizmos.DrawLine : DrawLine);
+                Polygone.GizmosDraw(poly, color, gizmos);
             }
-
-            void DrawLine(Vector3 start, Vector3 end) => Debug.DrawLine(start, end, color);
         }
 
         private void DrawVector(in Vector2 from, in Vector2 dir, Color color, bool gizmo = false)
@@ -415,19 +413,16 @@ namespace Test
             void DrawLine(Vector3 start, Vector3 end) => Debug.DrawLine(start, end, color);
         }
 
-        private void DrawCircle(in Vector2 center, float radius, Color color, bool gizmo)
+        private void DrawCircle(in Vector2 center, float radius, Color color, bool gizmos)
         {
-            if (gizmo)
+            if (gizmos)
             {
-                Gizmos.color = color;
-                Circle.GizmosDraw(center, radius);
+                Circle.GizmosDraw(center, radius, color, gizmos);
             }
             else
             {
-                Circle.GizmosDraw(center, radius, DrawLine);
+                Circle.GizmosDraw(center, radius, gizmos);
             }
-
-            void DrawLine(Vector3 start, Vector3 end) => Debug.DrawLine(start, end, color);
         }
     }
 }

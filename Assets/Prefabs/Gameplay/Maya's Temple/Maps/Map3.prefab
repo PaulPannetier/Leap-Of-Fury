@@ -67406,6 +67406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68f9fd9e7fd8c2468da7307aaebad4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0}
   groundType: 0
   disableAntiKnockHead: 0
   grabable: 1
@@ -68146,7 +68147,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: boundsSize.x

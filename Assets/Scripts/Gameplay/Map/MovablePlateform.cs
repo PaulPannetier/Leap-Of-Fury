@@ -32,6 +32,7 @@ public class MovablePlateform : PathFindingBlocker
     private PauseData pauseData;
     private bool pauseWasEnableLastFrame;
     private ToricObject toricObject;
+    private MapColliderData mapColliderData;
 
     public bool enableBehaviour = true;
     [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
@@ -86,6 +87,7 @@ public class MovablePlateform : PathFindingBlocker
 
         charAlreadyCrush = new List<uint>();
         toricObject = GetComponent<ToricObject>();
+        mapColliderData = GetComponent<MapColliderData>();
     }
 
     private void Start()
@@ -98,6 +100,11 @@ public class MovablePlateform : PathFindingBlocker
     }
 
     #endregion
+
+    private void Update()
+    {
+        transform.position += (Vector3)(mapColliderData.velocity * Time.deltaTime);
+    }
 
     #region FixedUpdate
 

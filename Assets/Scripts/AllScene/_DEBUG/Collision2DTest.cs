@@ -53,17 +53,12 @@ namespace Test
                 Vector2 closestPoint = collider.ClosestPoint(mousePos);
                 Color color = collider.Contains(mousePos) ? colorTouch : colorUntouch;
                 DrawCollider(collider, color);
-                Circle.GizmosDraw(closestPoint, 0.08f, DrawLine);
-                Circle.GizmosDraw(mousePos, 0.08f, DrawLine);
+                Circle.GizmosDraw(closestPoint, 0.08f);
+                Circle.GizmosDraw(mousePos, 0.08f);
                 Debug.Log("Distance from mouse psition : " + collider.Distance(mousePos));
                 if (collider.Normal(closestPoint, out Vector2 n))
                 {
                     DrawVector(closestPoint, n, colorNormal1);
-                }
-
-                void DrawLine(Vector3 star, Vector3 end)
-                {
-                    Debug.DrawLine(star, end, color);
                 }
 
                 return;
@@ -478,22 +473,20 @@ namespace Test
             Gizmos.color = color;
             if (collider is Hitbox hitbox)
             {
-                Hitbox.GizmosDraw(hitbox, gizmos ? Gizmos.DrawLine : DrawLine);
+                Hitbox.GizmosDraw(hitbox, color, gizmos);
             }
             else if (collider is Circle circle)
             {
-                Circle.GizmosDraw(circle, gizmos ? Gizmos.DrawLine : DrawLine);
+                Circle.GizmosDraw(circle, gizmos);
             }
             else if (collider is Capsule capsule)
             {
-                Capsule.GizmosDraw(capsule, gizmos ? Gizmos.DrawLine : DrawLine);
+                Capsule.GizmosDraw(capsule, color, gizmos);
             }
             else if (collider is Polygone poly)
             {
-                Polygone.GizmosDraw(poly, gizmos ? Gizmos.DrawLine : DrawLine);
+                Polygone.GizmosDraw(poly, color, gizmos);
             }
-
-            void DrawLine(Vector3 start, Vector3 end) => Debug.DrawLine(start, end, color);
         }
 
         [Serializable]

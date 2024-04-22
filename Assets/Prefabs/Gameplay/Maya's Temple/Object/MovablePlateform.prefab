@@ -128,8 +128,6 @@ MonoBehaviour:
   isAClone: 0
   componentsToDisableInClone:
   - {fileID: 4909847896574820866}
-  - {fileID: 4909847896574820867}
-  - {fileID: 2621172564464478623}
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   drawGizmos: 1
@@ -206,6 +204,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   maxSpeed: 10
+  sideReturnBumpSpeedOnChar: 5
   returnBumpSpeedOnChar: 5
   returnBumpSpeedAngleOnSide: 45
   drawGizmos: 0
