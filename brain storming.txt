@@ -133,4 +133,3 @@ Trad all text
 netoyer tout les fichiers du projet
 opti charController (réglage hyperparam)
 fix garb on moveable plateform and dash clipping + verif spell using Freeze method
-

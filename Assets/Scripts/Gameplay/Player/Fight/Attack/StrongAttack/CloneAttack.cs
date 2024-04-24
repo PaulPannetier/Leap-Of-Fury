@@ -109,7 +109,7 @@ public class CloneAttack : StrongAttack
             attack = true;
         }
 
-        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.side == -1, fightController.canKillDashing);
+        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.flip, fightController.canKillDashing);
         lstCloneDatas.Add(data);
         originalDashThisFrame = originalCreateExplosionThisFrame = false;
 
