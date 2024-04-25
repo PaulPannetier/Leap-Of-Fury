@@ -133,3 +133,5 @@ Trad all text
 netoyer tout les fichiers du projet
 opti charController (réglage hyperparam)
 fix garb on moveable plateform and dash clipping + verif spell using Freeze method
+add interact input on setting menu
+polish convyor belt visual (make separate script from convyior belt to handle visual updates)

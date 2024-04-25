@@ -47,14 +47,11 @@ public class ConvoyerBelt : MonoBehaviour
 
     private void Update()
     {
-        GetComponentInChildren<SpriteRenderer>().color = isActive ? Color.red : Color.green;
-
         if(useByInterruptor)
         {
             if(isActive)
             {
                 if(!(interruptor.isActivated ^ invertInterruptor))
-                //if(!interruptor.isActivated)
                 {
                     isActive = false;
                 }
@@ -69,6 +66,8 @@ public class ConvoyerBelt : MonoBehaviour
         }
     }
 
+    #region OnValidate
+
 #if UNITY_EDITOR
 
     private void OnValidate()
@@ -77,4 +76,6 @@ public class ConvoyerBelt : MonoBehaviour
     }
 
 #endif
+
+    #endregion
 }

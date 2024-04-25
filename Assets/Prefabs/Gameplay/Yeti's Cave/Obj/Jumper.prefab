@@ -93,7 +93,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7318460111358879653}
-  - component: {fileID: 1740741692399642010}
   - component: {fileID: 7318460111358879654}
   - component: {fileID: 7318460111358879652}
   - component: {fileID: 7318460111358879655}
@@ -120,33 +119,6 @@ Transform:
   - {fileID: 7318460110881742225}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1740741692399642010
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7318460111358879648}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 0
-  m_CollisionDetection: 0
-  m_Constraints: 7
 --- !u!61 &7318460111358879654
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -208,7 +180,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!114 &7318460111358879655
 MonoBehaviour:
   m_ObjectHideFlags: 0
