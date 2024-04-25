@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 380787851878124317}
   - component: {fileID: 7952447901356322828}
-  - component: {fileID: 3104477222986399372}
   - component: {fileID: 3824414359404330971}
   - component: {fileID: 380787851878124315}
   m_Layer: 3
@@ -81,33 +80,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 3}
   m_EdgeRadius: 0
---- !u!50 &3104477222986399372
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 380787851878124312}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!114 &3824414359404330971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,7 +96,6 @@ MonoBehaviour:
   disableAntiKnockHead: 1
   grabable: 0
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!114 &380787851878124315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,13 +109,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableBehaviour: 1
-  collisionDetectionScale: {x: 1.2, y: 1.05}
+  collisionDetectionScale: {x: 1.75, y: 1}
   bumpSpeed: 20
   minDurationBetween2Bumps: 0.1
-  enableUpBump: 1
-  enableDownBump: 1
+  drawGizmos: 1
+  enableUpBump: 0
+  enableDownBump: 0
   enableRightBump: 1
-  enableLeftBump: 1
+  enableLeftBump: 0
 --- !u!1 &6631601753472238103
 GameObject:
   m_ObjectHideFlags: 0

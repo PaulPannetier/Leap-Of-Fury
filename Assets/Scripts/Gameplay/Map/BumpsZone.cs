@@ -27,6 +27,7 @@ public abstract class BumpsZone : PathFindingBlocker
             return;
 
         Collider2D[] cols = GetTouchingChar();
+
         foreach (Collider2D col in cols)
         {
             if(col.CompareTag("Char"))

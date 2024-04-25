@@ -213,11 +213,29 @@ public class MapColliderCreator : MonoBehaviour
         AddHitbox(rec);
     }
 
+    private void FindLevelMapData()
+    {
+        Transform current = transform;
+        while(current != null)
+        {
+            levelMapData = current.GetComponent<LevelMapData>();
+            if(levelMapData != null)
+            {
+                return;
+            }
+            current = current.parent;
+        }
+    }
+
     private void OnValidate()
     {
         if (createColliders)
         {
             createColliders = false;
+
+            if(levelMapData == null)
+                FindLevelMapData();
+
             CreateColliders();
             Debug.ClearDeveloperConsole();
         }

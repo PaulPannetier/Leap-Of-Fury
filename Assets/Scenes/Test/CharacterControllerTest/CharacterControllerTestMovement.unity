@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 52262598}
   - component: {fileID: 52262597}
   - component: {fileID: 52262593}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Sliding Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2011,7 +2011,7 @@ GameObject:
   - component: {fileID: 867714290}
   - component: {fileID: 867714289}
   - component: {fileID: 867714287}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: NotGrabable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2720,33 +2720,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2932364848357717713, guid: 8b6b01f698697d941aa4d57aa6659aa9, type: 3}
   m_PrefabInstance: {fileID: 1642227905286589010}
   m_PrefabAsset: {fileID: 0}
---- !u!50 &35661930597032133
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6852030217002198373}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!1 &125906906170723727
 GameObject:
   m_ObjectHideFlags: 0
@@ -3162,6 +3135,8 @@ MonoBehaviour:
   grabRayLength: 0.5
   groundRaycastOffset: {x: 0.2, y: -0.7}
   groundRaycastLength: 0.2
+  topRaycastOffset: {x: 0.2, y: 0}
+  topRaycastLength: 0.4
   gapBetweenHitboxAndGround: 0.0115
   gapBetweenHitboxAndWall: 0.1
   walkSpeed: 8.5
@@ -3191,7 +3166,7 @@ MonoBehaviour:
   maxBeginFallSpeed: 0.4
   fallClampSpeedMultiplierWhenDownPressed: 1.6
   fallGravityMultiplierWhenDownPressed: 2
-  wallJumpInitForce: 7
+  wallJumpInitSpeed: 10
   wallJumpAngle: 25
   wallJumpForce: 6
   wallJumpSpeed: {x: 5, y: 20}
@@ -3357,7 +3332,6 @@ MonoBehaviour:
     randomness: 90
     snapping: 0
     fadeOut: 1
-  side: 1
 --- !u!114 &2945118482593612852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70585,7 +70559,6 @@ GameObject:
   - component: {fileID: 2957252182395362843}
   - component: {fileID: 6188318539027477706}
   - component: {fileID: 5367197714520042626}
-  - component: {fileID: 35661930597032133}
   - component: {fileID: 5265450890627039489}
   - component: {fileID: 6852030217002198380}
   - component: {fileID: 6852030217002198379}
