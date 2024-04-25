@@ -21,7 +21,6 @@ public class MovablePlateform : PathFindingBlocker
     private new Transform transform;
     private LayerMask charMask, groundMask;
     private bool isMoving, isTargetingPosition;
-    private Rigidbody2D rb;
     private GameObject lastCharActivatePlateform;
     private uint lastCharIdActivate;
     private Vector2[] convertHitboxSideToBumbDir;
@@ -33,6 +32,7 @@ public class MovablePlateform : PathFindingBlocker
     private bool pauseWasEnableLastFrame;
     private ToricObject toricObject;
     private MapColliderData mapColliderData;
+    private Vector2 velocity;
 
     public bool enableBehaviour = true;
     [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
@@ -75,7 +75,6 @@ public class MovablePlateform : PathFindingBlocker
         base.Awake();
         transform = base.transform;
         hitbox = GetComponent<BoxCollider2D>();
-        rb = GetComponent<Rigidbody2D>();
         convertHitboxSideToBumbDir = new Vector2[5]
         {
             Vector2.up,
@@ -101,14 +100,9 @@ public class MovablePlateform : PathFindingBlocker
 
     #endregion
 
+    #region Update
+
     private void Update()
-    {
-        transform.position += (Vector3)(mapColliderData.velocity * Time.deltaTime);
-    }
-
-    #region FixedUpdate
-
-    private void FixedUpdate()
     {
         if(!enableBehaviour || toricObject.isAClone)
             return;
@@ -178,8 +172,8 @@ public class MovablePlateform : PathFindingBlocker
             //speed
             if (isTargetingPosition)
             {
-                rb.velocity = Vector2.zero;
-                rb.position = Vector2.MoveTowards(rb.position, targetPosition, maxSpeed * Time.fixedDeltaTime);
+                velocity = Vector2.zero;
+                transform.position = Vector2.MoveTowards(transform.position, targetPosition, maxSpeed * Time.fixedDeltaTime);
 
                 if(((Vector2)transform.position).SqrDistance(targetPosition) < 4f * Time.fixedDeltaTime * Time.fixedDeltaTime * maxSpeed * maxSpeed)
                 {
@@ -189,7 +183,7 @@ public class MovablePlateform : PathFindingBlocker
             else
             {
                 float speed = Time.time - lastTimeActivated > accelerationDuration ? maxSpeed : maxSpeed * accelerationCurve.Evaluate((Time.time - lastTimeActivated) / accelerationDuration);
-                rb.velocity = speed * convertHitboxSideToDir[(int)lastSideActiavated];
+                velocity = speed * convertHitboxSideToDir[(int)lastSideActiavated];
             }
 
             //char dash detecttion
@@ -240,7 +234,7 @@ public class MovablePlateform : PathFindingBlocker
                             {
                                 if (Time.time - lastTimeActivated > activationCooldown)
                                 {
-                                    rb.velocity = Vector2.zero;
+                                    velocity = Vector2.zero;
                                     OnActivated(player, hitboxSide);
                                     return true;
                                 }
@@ -450,7 +444,9 @@ public class MovablePlateform : PathFindingBlocker
             }
             return PhysicsToric.OverlapBoxAll(center, size, 0, charMask);
         }
-    }    
+
+        transform.position += (Vector3)(velocity * Time.deltaTime);
+    }
 
     #endregion
 
@@ -518,8 +514,8 @@ public class MovablePlateform : PathFindingBlocker
 
     private void OnStopOnGround()
     {
-        rb.position = targetPosition;
-        rb.velocity = Vector2.zero;
+        transform.position = targetPosition;
+        velocity = Vector2.zero;
         targetPosition = Vector2.zero;
         isTargetingPosition = isMoving = false;
         charAlreadyCrush.Clear();
