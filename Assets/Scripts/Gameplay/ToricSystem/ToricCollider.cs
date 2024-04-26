@@ -3,7 +3,7 @@ using Collider2D = Collision2D.Collider2D;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace ToricCllider2D
+namespace ToricCollider2D
 {
     public class ToricCollider
     {
