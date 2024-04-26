@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
 
@@ -873,7 +874,8 @@ public class CharacterController : MonoBehaviour
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
                 float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;  
                 //use toricCollider instead
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                //Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (extendedHitbox.Contains(hit.point))
                 {
                     transform.position = new Vector2(hit.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, transform.position.y);
@@ -885,7 +887,8 @@ public class CharacterController : MonoBehaviour
                 ToricRaycastHit2D hit = onLeftWall ? raycastLeft : leftFootRay;
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
                 float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
+                //Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (extendedHitbox.Contains(hit.point))
                 {
                     transform.position = new Vector2(hit.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, transform.position.y);
@@ -906,7 +909,8 @@ public class CharacterController : MonoBehaviour
                 ToricRaycastHit2D hit = rightSlopeRay.collider != null ? ref rightSlopeRay : ref leftSlopeRay;
                 Vector2 groundVelocity = groundColliderData.velocity;
                 float deltaY = (velocity.y - groundVelocity.y) * Time.deltaTime;
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+                //Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+                ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
                 if (extendedHitbox.Contains(hit.point))
                 {
                     transform.position = new Vector2(transform.position.x, hit.point.y + gapBetweenHitboxAndGround + hitbox.size.y * 0.5f - hitbox.offset.y);
@@ -918,7 +922,8 @@ public class CharacterController : MonoBehaviour
                 ToricRaycastHit2D hit = topRightRay.collider != null ? ref topRightRay : ref topLeftRay;
                 Vector2 groundVelocity = hit.collider.GetComponent<MapColliderData>().velocity;
                 float deltaY = (velocity.y - groundVelocity.y) * Time.deltaTime;
-                Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+                //Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
+                ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
                 if (extendedHitbox.Contains(hit.point))
                 {
                     transform.position = new Vector2(transform.position.x, hit.point.y - gapBetweenHitboxAndGround - hitbox.size.y * 0.5f - hitbox.offset.y);

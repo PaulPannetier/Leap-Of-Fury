@@ -7,7 +7,7 @@ namespace ToricCollider2D
 {
     public class ToricCollider
     {
-        #region Tore Params
+        #region Toric Params
 
         internal static Hitbox mapHitbox;
         internal static Line2D[] mapSides;
