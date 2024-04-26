@@ -171,6 +171,12 @@ public static class PhysicsToric
                 }
             }
         }
+
+        if(minSqrMag <= 1e-5f)
+        {
+            return Vector2.zero;
+        }
+
         return (bKeep - aKeep) * (1f / Mathf.Sqrt(minSqrMag));
     }
 

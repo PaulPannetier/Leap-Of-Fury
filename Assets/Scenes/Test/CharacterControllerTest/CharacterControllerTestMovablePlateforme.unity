@@ -490,6 +490,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovablePlateform
       objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820865, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: crushZone
+      value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: drawGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: dashHitboxSafeZone
+      value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: groundCollisionHitboxSafeZone
+      value: 0.95
+      objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.x
       value: 9
@@ -500,7 +520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8
+      value: 4.3
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -576,6 +596,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: drawGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: dashHitboxSize
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: enableUpAndDownDash
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: enableLeftAndRightDash
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: drawCrushHitboxAccurate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: drawCrushHiboxSimpleGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: drawGroundDetectionHitoxGizmos
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
@@ -592,7 +640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.z

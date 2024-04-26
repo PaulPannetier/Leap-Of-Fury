@@ -28,20 +28,12 @@ public class MapColliderData : MonoBehaviour
         oldPosition = transform.position;
     }
 
-    private void Start()
+    private void Update()
     {
-        EventManager.instance.callbackPreUpdate += PreUpdate;
-    }
-
-    private void PreUpdate()
-    {
-        velocity = new Vector2((transform.position.x - oldPosition.x) / Time.deltaTime, (transform.position.y - oldPosition.y) / Time.deltaTime);
+        Vector2 dir = PhysicsToric.Direction(oldPosition, transform.position);
+        float dist = PhysicsToric.Distance(oldPosition, transform.position);
+        velocity = dir * (dist / Time.deltaTime);
         oldPosition = transform.position;
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.instance.callbackPreUpdate -= PreUpdate;
     }
 
     #region Gizmos/OnValidate

@@ -580,19 +580,19 @@ public class MovablePlateform : PathFindingBlocker
             Gizmos.color = colorGroundDetectionHitbox;
             Vector2 center = new Vector2(transform.position.x, transform.position.y + (hitbox.size.y + LevelMapData.currentMap.cellSize.y) * 0.5f);
             Vector2 size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, LevelMapData.currentMap.cellSize.y);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorGroundDetectionHitbox);
 
             center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + LevelMapData.currentMap.cellSize.y) * 0.5f);
             size = new Vector2(hitbox.size.x * groundCollisionHitboxSafeZone, LevelMapData.currentMap.cellSize.y);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorGroundDetectionHitbox);
 
             center = new Vector2(transform.position.x - (hitbox.size.x + LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y);
             size = new Vector2(LevelMapData.currentMap.cellSize.x, hitbox.size.y * groundCollisionHitboxSafeZone);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorGroundDetectionHitbox);
 
             center = new Vector2(transform.position.x + (hitbox.size.x + LevelMapData.currentMap.cellSize.x) * 0.5f, transform.position.y);
             size = new Vector2(LevelMapData.currentMap.cellSize.x, hitbox.size.y * groundCollisionHitboxSafeZone);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorGroundDetectionHitbox);
         }
 
         if (drawCrushHiboxSimpleGizmos)
@@ -605,19 +605,19 @@ public class MovablePlateform : PathFindingBlocker
 
                 Vector2 center = new Vector2(transform.position.x, transform.position.y + hitbox.size.y * 0.5f + charSize.y * crushPadding * 0.5f);
                 Vector2 size = new Vector2(hitbox.size.x * crushZone, charSize.y * crushPadding);
-                Hitbox.GizmosDraw(center, size);
+                Hitbox.GizmosDraw(center, size, colorCrushDetectionHitbox);
 
                 center = new Vector2(transform.position.x, transform.position.y - hitbox.size.y * 0.5f - charSize.y * crushPadding * 0.5f);
                 size = new Vector2(hitbox.size.x * crushZone, charSize.y * crushPadding);
-                Hitbox.GizmosDraw(center, size);
+                Hitbox.GizmosDraw(center, size, colorCrushDetectionHitbox);
 
                 center = new Vector2(transform.position.x - hitbox.size.x * 0.5f - charSize.x * crushPadding * 0.5f, transform.position.y);
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone);
-                Hitbox.GizmosDraw(center, size);
+                Hitbox.GizmosDraw(center, size, colorCrushDetectionHitbox);
 
                 center = new Vector2(transform.position.x + hitbox.size.x * 0.5f + charSize.x * crushPadding * 0.5f, transform.position.y);
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone);
-                Hitbox.GizmosDraw(center, size);
+                Hitbox.GizmosDraw(center, size, colorCrushDetectionHitbox);
             }
             else
             {
@@ -637,33 +637,33 @@ public class MovablePlateform : PathFindingBlocker
                 Vector2 size = new Vector2(hitbox.size.x * crushZone / nbStep, charSize.y * crushPadding);
                 Vector2 begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y + hitbox.size.y * 0.5f + size.y * 0.5f);
                 Vector2 step = new Vector2(size.x, 0f);
-                DrawGizmos(begPoint, size, step, nbStep);
+                DrawGizmos(begPoint, size, step, nbStep, colorCrushDetectionHitbox);
 
                 nbStep = (hitbox.size.x * crushZone / LevelMapData.currentMap.cellSize.x).Ceil();
                 size = new Vector2(hitbox.size.x * crushZone / nbStep, charSize.y * crushPadding);
                 begPoint = new Vector2(transform.position.x - (nbStep * 0.5f - 0.5f) * size.x, transform.position.y - hitbox.size.y * 0.5f - size.y * 0.5f);
                 step = new Vector2(size.x, 0f);
-                DrawGizmos(begPoint, size, step, nbStep);
+                DrawGizmos(begPoint, size, step, nbStep, colorCrushDetectionHitbox);
 
 
                 nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                 begPoint = new Vector2(transform.position.x - hitbox.size.x * 0.5f - size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                 step = new Vector2(0f, -size.y);
-                DrawGizmos(begPoint, size, step, nbStep);
+                DrawGizmos(begPoint, size, step, nbStep, colorCrushDetectionHitbox);
 
 
                 nbStep = (hitbox.size.y * crushZone / LevelMapData.currentMap.cellSize.y).Ceil();
                 size = new Vector2(charSize.x * crushPadding, hitbox.size.y * crushZone / nbStep);
                 begPoint = new Vector2(transform.position.x + hitbox.size.x * 0.5f + size.x * 0.5f, transform.position.y + (nbStep * 0.5f - 0.5f) * size.y);
                 step = new Vector2(0f, -size.y);
-                DrawGizmos(begPoint, size, step, nbStep);
+                DrawGizmos(begPoint, size, step, nbStep, colorCrushDetectionHitbox);
 
-                void DrawGizmos(Vector2 begPoint, Vector2 size, Vector2 step, int nbStep)
+                void DrawGizmos(Vector2 begPoint, Vector2 size, Vector2 step, int nbStep, Color color)
                 {
                     for (int i = 0; i < nbStep; i++)
                     {
-                        Hitbox.GizmosDraw(begPoint, size);
+                        Hitbox.GizmosDraw(begPoint, size, color);
                         begPoint += step;
                     }
                 }
@@ -680,19 +680,19 @@ public class MovablePlateform : PathFindingBlocker
 
             Vector2 center = new Vector2(transform.position.x , transform.position.y + (hitbox.size.y + dashHitboxSize) * 0.5f);
             Vector2 size = new Vector2(hitbox.size.x * dashHitboxSafeZone, dashHitboxSize);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorDashDetectionHitbox);
 
             center = new Vector2(transform.position.x, transform.position.y - (hitbox.size.y + dashHitboxSize) * 0.5f);
             size = new Vector2(hitbox.size.x * dashHitboxSafeZone, dashHitboxSize);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorDashDetectionHitbox);
 
             center = new Vector2(transform.position.x - (hitbox.size.x + dashHitboxSize) * 0.5f, transform.position.y);
             size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorDashDetectionHitbox);
 
             center = new Vector2(transform.position.x + (hitbox.size.x + dashHitboxSize) * 0.5f, transform.position.y);
             size = new Vector2(dashHitboxSize, hitbox.size.y * dashHitboxSafeZone);
-            Hitbox.GizmosDraw(center, size);
+            Hitbox.GizmosDraw(center, size, colorDashDetectionHitbox);
         }
     }
 

@@ -365,13 +365,14 @@ public class CharacterController : MonoBehaviour
         PauseManager.instance.callBackOnPauseEnable += Disable;
         oldDeltaTime = Time.deltaTime;
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
+        EventManager.instance.callbackPreUpdate += PreUpdate;
     }
 
     #endregion
 
     #region Update
 
-    private void Update()
+    private void PreUpdate()
     {
         if (!enableBehaviour)
             return;
@@ -870,7 +871,8 @@ public class CharacterController : MonoBehaviour
             {
                 ToricRaycastHit2D hit = onRightWall ? raycastRight : rightFootRay;
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
-                float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;    
+                float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;  
+                //use toricCollider instead
                 Collision2D.Hitbox extendedHitbox = new Collision2D.Hitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (extendedHitbox.Contains(hit.point))
                 {
@@ -1804,9 +1806,10 @@ public class CharacterController : MonoBehaviour
     {
         PauseManager.instance.callBackOnPauseEnable -= Disable;
         PauseManager.instance.callBackOnPauseDisable -= Enable;
+        EventManager.instance.callbackPreUpdate -= PreUpdate;
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
 
     private void OnDrawGizmosSelected()
     {
