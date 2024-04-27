@@ -1,5 +1,8 @@
 using UnityEngine;
 using Collision2D;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 public class GroundData : MonoBehaviour
 {
@@ -22,7 +25,10 @@ public class GroundData : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
+        if (PrefabStageUtility.GetCurrentPrefabStage() == null)
+        {
+            Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
+        }
     }
 
 #endif

@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a35611479efcf4dabb99163071ff46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawGizmos: 1
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
@@ -205,9 +206,7 @@ GameObject:
   - component: {fileID: 4204753877997959958}
   - component: {fileID: 3053130823239957683}
   - component: {fileID: 4997326288762961132}
-  - component: {fileID: 6598587988480109164}
   - component: {fileID: 8962504217130715941}
-  - component: {fileID: 503752335715205265}
   - component: {fileID: 4480857788098666265}
   - component: {fileID: 6114752134572577267}
   - component: {fileID: 4552664953568737790}
@@ -7948,33 +7947,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &6598587988480109164
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7258701859230764497}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &8962504217130715941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7991,31 +7963,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
---- !u!114 &503752335715205265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7258701859230764497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a9e53f7138024045a685befaca90857, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableBehaviour: 0
-  AddCreatedBoxCollider2D: 0
-  removeAllHitbox: 0
-  clearSavedCollider: 0
-  drawGrid: 0
-  goToAddBoxCollider2D: {fileID: 7258701859230764497}
-  caseSize: {x: 1, y: 1}
-  gridSize: {x: 32, y: 18}
-  gridCenter: {x: 0, y: 0}
-  inputToStartDrawing: 97
-  inputToUndo: 122
-  inputToSaveCollider: 115
 --- !u!61 &4480857788098666265
 BoxCollider2D:
   m_ObjectHideFlags: 0

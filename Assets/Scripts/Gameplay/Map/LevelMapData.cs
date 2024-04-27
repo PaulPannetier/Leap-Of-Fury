@@ -44,7 +44,7 @@ public class LevelMapData : MonoBehaviour
     [SerializeField] private string relatifSpawnConfigsPath;
     [SerializeField] private Transform[] collidersGameObject; 
 
-    public Vector2 mapSize = new Vector2(32f, 18f);
+    [Tooltip("Number of cells in the horizontal and vertical axis")] public Vector2 mapSize = new Vector2(32f, 18f);
 
     public Vector2 cellSize
     {
@@ -265,18 +265,16 @@ public class LevelMapData : MonoBehaviour
             {
                 foreach (SpawnConfigsData.SpawnConfigPoints points in configPerChar)
                 {
-                    Gizmos.color = colors[colorIndex];
                     foreach (Vector2 point in points)
                     {
-                        Circle.GizmosDraw(point, convertNbCharToRadius[points.points.Length]);
+                        Circle.GizmosDraw(point, convertNbCharToRadius[points.points.Length], colors[colorIndex]);
                     }
                     colorIndex = (colorIndex + 1) % colors.Length;
                 }
             }
         }
 
-        Gizmos.color = Color.white;
-        Hitbox.GizmosDraw(Vector2.zero, mapSize * cellSize);
+        Hitbox.GizmosDraw(Vector2.zero, mapSize * cellSize, Color.white);
     }
 
     private void OnValidate()

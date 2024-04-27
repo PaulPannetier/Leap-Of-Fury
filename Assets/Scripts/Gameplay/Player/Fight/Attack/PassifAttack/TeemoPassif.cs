@@ -3,9 +3,8 @@ using System.Collections;
 
 public class TeemoPassif : PassifAttack
 {
-    private CharacterController movement;
+    private CharacterController charController;
     private float timerGroundedWithoutMoving;
-    private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Coroutine currentChangeColor;
     private bool isTransparent;
@@ -26,8 +25,7 @@ public class TeemoPassif : PassifAttack
     protected override void Start()
     {
         base.Start();
-        movement = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody2D>();
+        charController = GetComponent<CharacterController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -40,7 +38,7 @@ public class TeemoPassif : PassifAttack
         if (PauseManager.instance.isPauseEnable)
             return;
 
-        if (movement.isGrounded && rb.velocity.sqrMagnitude < maxSpeedWhenNotMove * maxSpeedWhenNotMove)
+        if (charController.isGrounded && charController.velocity.sqrMagnitude < maxSpeedWhenNotMove * maxSpeedWhenNotMove)
         {
             timerGroundedWithoutMoving += Time.deltaTime;
         }

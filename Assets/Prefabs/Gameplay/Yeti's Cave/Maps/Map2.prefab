@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7586809454967959184}
   - component: {fileID: 6330383330034389707}
   - component: {fileID: 7581680027395898952}
-  - component: {fileID: 5050345667764382691}
   - component: {fileID: 6137011264403670697}
   - component: {fileID: 4056638031798414933}
   - component: {fileID: 1031473580134807532}
@@ -3514,33 +3513,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &5050345667764382691
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639038179512928425}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &6137011264403670697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3557,7 +3529,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 0
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!61 &4056638031798414933
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18427,7 +18398,6 @@ GameObject:
   - component: {fileID: 8789072248586365770}
   - component: {fileID: 2834172966715789465}
   - component: {fileID: 2351354201706950357}
-  - component: {fileID: 3606634822998688067}
   - component: {fileID: 7955917909469198833}
   - component: {fileID: 6952316471795445162}
   - component: {fileID: 2733733946074333748}
@@ -20731,33 +20701,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &3606634822998688067
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8089231532363727445}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &7955917909469198833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20774,7 +20717,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!61 &6952316471795445162
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21047,6 +20989,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a35611479efcf4dabb99163071ff46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawGizmos: 1
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0

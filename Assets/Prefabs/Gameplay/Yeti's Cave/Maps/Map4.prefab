@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5495723851714764141}
   - component: {fileID: 721217204408243802}
   - component: {fileID: 240838972347299382}
-  - component: {fileID: 7671632216009638472}
   - component: {fileID: 348269602983591665}
   - component: {fileID: 118353197636655909}
   - component: {fileID: 124750653363950206}
@@ -4421,33 +4420,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &7671632216009638472
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559460526837921254}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &348269602983591665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4464,7 +4436,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!61 &118353197636655909
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20053,6 +20024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a35611479efcf4dabb99163071ff46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawGizmos: 1
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0

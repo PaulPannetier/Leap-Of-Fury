@@ -815,17 +815,17 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        DebugText.instance.text += $"OnWall : {onWall}\n";
-        DebugText.instance.text += $"wallGrab : {wallGrab}\n";
-        DebugText.instance.text += $"Apex : {isGrabApex}\n";
-        DebugText.instance.text += $"ApexSpeed1 : {isApexJump1}\n";
-        DebugText.instance.text += $"ApexSpeed2 : {isApexJump2}\n";
-        DebugText.instance.text += $"Jump : {isJumping}\n";
-        DebugText.instance.text += $"Fall : {isFalling}\n";
-        DebugText.instance.text += $"Slide : {isSliding}\n";
-        DebugText.instance.text += $"Gounded : {isGrounded}\n";
-        DebugText.instance.text += $"Bump : {isBumping}\n";
-        DebugText.instance.text += $"vel : {velocity}\n";
+        //DebugText.instance.text += $"OnWall : {onWall}\n";
+        //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
+        //DebugText.instance.text += $"Apex : {isGrabApex}\n";
+        //DebugText.instance.text += $"ApexSpeed1 : {isApexJump1}\n";
+        //DebugText.instance.text += $"ApexSpeed2 : {isApexJump2}\n";
+        //DebugText.instance.text += $"Jump : {isJumping}\n";
+        //DebugText.instance.text += $"Fall : {isFalling}\n";
+        //DebugText.instance.text += $"Slide : {isSliding}\n";
+        //DebugText.instance.text += $"Gounded : {isGrounded}\n";
+        //DebugText.instance.text += $"Bump : {isBumping}\n";
+        //DebugText.instance.text += $"vel : {velocity}\n";
     }
 
     #endregion

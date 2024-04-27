@@ -70,7 +70,7 @@ DA : jsp
 Name : The Plain
 
 Carte 1 :
-Méca : Certain sol glisse, il y a des jumper.//ok
+Méca : Certain sol glisse, il y a des jumper et des mur laissant passer les porjectiles.//ok
 DA : la grotte du yéti, glace neige.
 Name : Yeti's Cave
 
@@ -131,7 +131,7 @@ Name : Chaos
 TODO :
 Trad all text
 netoyer tout les fichiers du projet
-opti charController (réglage hyperparam)
-fix garb on moveable plateform and dash clipping + verif spell using Freeze method
+verif spell using Freeze method
 add interact input on setting menu
+test wall projectile and prohectile collision and retest all attack/char
 polish convyor belt visual (make separate script from convyior belt to handle visual updates)

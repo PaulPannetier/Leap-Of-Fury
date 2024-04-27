@@ -47426,6 +47426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a35611479efcf4dabb99163071ff46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawGizmos: 1
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
@@ -47433,7 +47434,7 @@ MonoBehaviour:
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map1SpawnPoints
   collidersGameObject:
   - {fileID: 4149277646251537709}
-  mapSize: {x: 32, y: 18}
+  mapSize: {x: 64, y: 36}
 --- !u!1 &4607286660551963609
 GameObject:
   m_ObjectHideFlags: 0
@@ -47539,7 +47540,6 @@ GameObject:
   - component: {fileID: 4149277646251537709}
   - component: {fileID: 4431269442530514340}
   - component: {fileID: 2255197188245662149}
-  - component: {fileID: 987784243298839667}
   - component: {fileID: 7432343751434073271}
   - component: {fileID: 6926764301142499388}
   - component: {fileID: 8707289784375599188}
@@ -68550,33 +68550,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &987784243298839667
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9091130434144025604}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &7432343751434073271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68593,7 +68566,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!61 &6926764301142499388
 BoxCollider2D:
   m_ObjectHideFlags: 0

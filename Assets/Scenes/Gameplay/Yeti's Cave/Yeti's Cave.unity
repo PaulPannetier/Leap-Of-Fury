@@ -888,6 +888,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: mapsPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: mapsPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 8337431031046181025, guid: fdbe641ec70069e4b8d54d21105946d5, type: 3}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: mapsPrefabs.Array.data[2]
       value: 
       objectReference: {fileID: 8197646591658090050, guid: a81ab4fcdb2620144b7fbca8765151e8, type: 3}

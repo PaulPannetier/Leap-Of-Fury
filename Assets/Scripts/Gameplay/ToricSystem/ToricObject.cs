@@ -4,6 +4,9 @@ using UnityEngine;
 using Collision2D;
 using System.Collections;
 using System.Reflection;
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 public class ToricObject : MonoBehaviour
 {
@@ -426,9 +429,12 @@ public class ToricObject : MonoBehaviour
         if(!drawGizmos)
             return;
 
-        Gizmos.color = Color.red;
-        Hitbox.GizmosDraw((Vector2)transform.position + boundsOffset, boundsSize);
-        Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
+        Hitbox.GizmosDraw((Vector2)transform.position + boundsOffset, boundsSize, Color.red);
+
+        if(PrefabStageUtility.GetCurrentPrefabStage() == null)
+        {
+            Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize, Color.red);
+        }
     }
 
     private void OnValidate()

@@ -47399,7 +47399,6 @@ GameObject:
   - component: {fileID: 5527294876546768217}
   - component: {fileID: 3485771518430345096}
   - component: {fileID: 3441521648921341888}
-  - component: {fileID: 7331879987097183111}
   - component: {fileID: 3218952202342253123}
   - component: {fileID: 5121968428067714331}
   - component: {fileID: 5938922277140179584}
@@ -67367,33 +67366,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &7331879987097183111
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4227170838155896359}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &3218952202342253123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67406,7 +67378,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a68f9fd9e7fd8c2468da7307aaebad4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: {x: 0, y: 0}
   groundType: 0
   disableAntiKnockHead: 0
   grabable: 1

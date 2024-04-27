@@ -78,6 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a35611479efcf4dabb99163071ff46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawGizmos: 1
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
@@ -97,9 +98,7 @@ GameObject:
   - component: {fileID: 6134076493532901476}
   - component: {fileID: 3671156472484468416}
   - component: {fileID: 2328861243385797512}
-  - component: {fileID: 7057521322274240168}
   - component: {fileID: 4516728019601083250}
-  - component: {fileID: 7505303773072235103}
   - component: {fileID: 475719940861655230}
   - component: {fileID: 3328532157227645351}
   - component: {fileID: 4723941462330026556}
@@ -1862,33 +1861,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &7057521322274240168
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770620969648943266}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &4516728019601083250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1905,21 +1877,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
---- !u!114 &7505303773072235103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770620969648943266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 592615210cc7e7e43adeaff38d1ecc5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  createColliders: 0
-  levelMapData: {fileID: 6137109349086128121}
 --- !u!61 &475719940861655230
 BoxCollider2D:
   m_ObjectHideFlags: 0

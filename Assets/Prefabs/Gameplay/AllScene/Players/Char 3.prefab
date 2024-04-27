@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 238728056774250366}
   - component: {fileID: 1113869503384375398}
   - component: {fileID: 4099738504158456230}
-  - component: {fileID: 6107391628265283455}
   - component: {fileID: 7111324779284635613}
   - component: {fileID: 3017698710242093834}
   - component: {fileID: 4135942895386761519}
@@ -152,7 +151,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.28}
+  m_Offset: {x: 0, y: -0.22}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -165,33 +164,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
---- !u!50 &6107391628265283455
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8090791378756873177}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!114 &7111324779284635613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -205,21 +177,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
-  drawGizmos: 0
+  drawGizmos: 1
   timeUntilCommandIsInvalid: 0.1
-  sideCollisionRadius: 0.23
-  sideOffset: {x: 0.15, y: -0.1}
+  sideRayLength: 0.4
+  sideRayOffset: 0
   grabRayOffset: -0.6
-  grabRayLength: 0.6
-  groundRaycastOffset: {x: 0.2, y: -0.5}
-  groundRaycastLength: 0.45
-  gapBetweenHitboxAndGround: 0.0169
+  grabRayLength: 0.45
+  groundRaycastOffset: {x: 0.2, y: -0.35}
+  groundRaycastLength: 0.55
+  topRaycastOffset: {x: 0.2, y: 0}
+  topRaycastLength: 0.5
+  gapBetweenHitboxAndGround: 0.077
+  gapBetweenHitboxAndWall: 0.13
   walkSpeed: 8.5
   speedLerp: 30
   initSpeed: 0.285
   inertiaDurationWhenQuittingGround: 0.1
   jumpInitForce: 6
-  jumpForce: 8
+  jumpForce: 9
   jumpGravityMultiplier: 1
   jumpMaxDuration: 0.3
   jumpSpeed: {x: 8, y: 20}
@@ -229,7 +204,7 @@ MonoBehaviour:
   doubleJumpSpeed: 11
   jumpCoyoteTime: 0.1
   airGravityMultiplier: 3
-  airHorizontalSpeed: 4.5
+  airHorizontalSpeed: 5.5
   airInitHorizontalSpeed: 0.4
   airSpeedLerp: 20
   fallGravityMultiplier: 1.5
@@ -241,13 +216,13 @@ MonoBehaviour:
   maxBeginFallSpeed: 0.4
   fallClampSpeedMultiplierWhenDownPressed: 1.6
   fallGravityMultiplierWhenDownPressed: 2
-  wallJumpInitForce: 7
-  wallJumpAngle: 25
-  wallJumpForce: 6
-  wallJumpSpeed: {x: 5, y: 20}
-  wallJumpGravityMultiplier: 1.2
+  wallJumpInitSpeed: 10
+  wallJumpAngle: 53.9
+  wallJumpForce: 5
+  wallJumpSpeed: {x: 5.5, y: 20}
+  wallJumpGravityMultiplier: 1
   wallJumpMinDuration: 0.1
-  wallJumpMaxDuration: 0.15
+  wallJumpMaxDuration: 0.3
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -298,14 +273,15 @@ MonoBehaviour:
   grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
   grabSpeedMultiplierWhenPreciseGrab: 0.75
-  grabApexSpeed: {x: 4, y: 4}
-  grabApexSpeed2: {x: 12, y: 0}
+  apexJumpSpeed: {x: 3, y: 8}
+  apexJumpSpeed2: {x: 4, y: -2}
   grabSpeedLerp: 25
-  grabApexSpeedLerp: 600
-  grabApexSpeedLerp2: 50
-  grabApexDuration: 0.081
-  grabApexDuration2: 0.12
-  grabInitSpeedOnApexStay: 0.4
+  apexJumpSpeedLerp: 400
+  apexJumpSpeedLerp2: 50
+  apexJumpDuration: 0.125
+  apexJumpDuration2: 0.1
+  apexJumpInitSpeed: 0.4
+  apexJumpInitSpeed2: 0.4
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 0.15
@@ -406,7 +382,6 @@ MonoBehaviour:
     randomness: 90
     snapping: 0
     fadeOut: 1
-  side: 1
 --- !u!114 &3017698710242093834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,8 +394,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsOffset: {x: 0, y: 0}
-  boundsSize: {x: 2.75, y: 2}
+  boundsOffset: {x: 0, y: -0.1}
+  boundsSize: {x: 2.5, y: 1.5}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
