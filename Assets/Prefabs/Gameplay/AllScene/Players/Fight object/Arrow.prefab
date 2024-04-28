@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6727315800442885462}
   - component: {fileID: 1620354659519942559}
   - component: {fileID: 4986810269582604234}
-  - component: {fileID: 7114925469712600544}
   - component: {fileID: 8873185988097965668}
   - component: {fileID: 1100820566868757872}
+  - component: {fileID: 512350222781952806}
   m_Layer: 13
   m_Name: Arrow
   m_TagString: Untagged
@@ -135,19 +135,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.013}
   m_Size: {x: 0.58, y: 0.16}
   m_Direction: 1
---- !u!114 &7114925469712600544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2636146267762325801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb2839a974e9ace41acd03dffdfe59b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moverForceCoeff: 100
 --- !u!114 &8873185988097965668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +174,19 @@ MonoBehaviour:
   charDetectionAngle: 40
   rotationDetectionSpeed: 270
   gravityScale: 1.3
+--- !u!114 &512350222781952806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636146267762325801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d821f1cb45d5e34a9b87eefc29255bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moverForceCoeff: 200
 --- !u!1 &4710699973019899772
 GameObject:
   m_ObjectHideFlags: 0

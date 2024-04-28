@@ -6,15 +6,14 @@ using Collision2D;
 
 public class AmericanFistAttack : WeakAttack
 {
-    private CharacterController movement;
+    private CharacterController charController;
     private CustomPlayerInput playerInput;
-    private Rigidbody2D rb;
     private CloneAttack cloneAttack;//null if isAClone == true
     [HideInInspector] public CloneAttack originalCloneAttack;
     private AmericanFistAttack originalAmericanFistAttack;
     private bool isAttackEnable = false, onLaunchAttack = false, isDashing = false, wantDash = false;
     private int indexDash = 0;
-    private Vector2 lastDir, initSpeed, lastVelocityForPause;
+    private Vector2 lastDir, currentSpeed, lastVelocityForPause;
     private float lastTimeDash = -10;
     private LayerMask groundMask, charMask;
     private bool alreadyCreateExplosionWinthThisDash;
@@ -42,7 +41,6 @@ public class AmericanFistAttack : WeakAttack
     [HideInInspector] public Vector2 cloneExplosionPosition;
 
     private GameObject _original;
-
     [HideInInspector] public GameObject original
     {
         get => _original;
@@ -54,6 +52,8 @@ public class AmericanFistAttack : WeakAttack
         }
     }
 
+    #region Awake/Start
+
     protected override void Awake()
     {
         if (isAClone)
@@ -61,8 +61,7 @@ public class AmericanFistAttack : WeakAttack
         base.Awake();
 
         playerInput = GetComponent<CustomPlayerInput>();
-        movement = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody2D>();
+        charController = GetComponent<CharacterController>();
         cloneAttack = GetComponent<CloneAttack>();
         originalCloneAttack = cloneAttack;
     }
@@ -78,6 +77,8 @@ public class AmericanFistAttack : WeakAttack
         PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
+
+    #endregion
 
     #region Update
 
@@ -148,43 +149,36 @@ public class AmericanFistAttack : WeakAttack
                 onLaunchAttack = false;
                 alreadyCreateExplosionWinthThisDash = false;
                 indexDash = 0;
-                initSpeed = rb.velocity;
-                movement.enableBehaviour = false;
+                charController.Freeze();
             }
 
             if (isDashing)
             {
                 if (Time.time - lastTimeDash > dashDuration)
                 {
-                    isDashing = false;
-                    lastTimeDash = Time.time;
-                    indexDash++;
-                    movement.enableBehaviour = movement.enableInput = true;
-                    rb.velocity = initSpeed;
-
-                    if (indexDash >= nbDash)
-                    {
-                        indexDash = 0;
-                        isAttackEnable = false;
-                    }
+                    EndCurrentDash();
                 }
-
-                rb.velocity = lastDir * (dashSpeedCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeDash) / dashDuration)) * dashSpeed);
-
-                if (CollideWithEnemy(out GameObject[] enemies))
+                else
                 {
-                    foreach (GameObject enemy in enemies)
+                    currentSpeed = lastDir * dashSpeed * dashSpeedCurve.Evaluate(Mathf.Clamp01((Time.time - lastTimeDash) / dashDuration));
+                    transform.position += (Vector3)(Time.deltaTime * currentSpeed);
+
+                    if (CollideWithEnemy(out GameObject[] enemies))
                     {
-                        OnTouchEnemy(enemy);
+                        foreach (GameObject enemy in enemies)
+                        {
+                            OnTouchEnemy(enemy);
+                        }
                     }
-                }
 
-                if(!alreadyCreateExplosionWinthThisDash && CollideWithGround(out Vector2 collisionPoint))
-                {
-                    alreadyCreateExplosionWinthThisDash = true;
-                    cloneAttack.originalCreateExplosionThisFrame = true;
-                    cloneAttack.originalExplosionPosition = collisionPoint;
-                    CreateExplosion(collisionPoint);
+                    if (!alreadyCreateExplosionWinthThisDash && CollideWithGround(out Vector2 collisionPoint))
+                    {
+                        alreadyCreateExplosionWinthThisDash = true;
+                        cloneAttack.originalCreateExplosionThisFrame = true;
+                        cloneAttack.originalExplosionPosition = collisionPoint;
+                        CreateExplosion(collisionPoint);
+                        EndCurrentDash();
+                    }
                 }
             }
             else if (playerInput.attackWeakPressedDown || wantDash)
@@ -194,11 +188,10 @@ public class AmericanFistAttack : WeakAttack
                     cloneAttack.originalDashThisFrame = true;
                     isDashing = true;
                     wantDash = false;
-                    lastDir = movement.GetCurrentDirection(true);
+                    lastDir = charController.GetCurrentDirection(true);
                     alreadyCreateExplosionWinthThisDash = false;
                     lastTimeDash = Time.time;
-                    initSpeed = rb.velocity;
-                    movement.enableBehaviour = false;
+                    charController.Freeze();
                 }
                 else if (Time.time - lastTimeDash <= dashBufferTime)
                 {
@@ -213,8 +206,24 @@ public class AmericanFistAttack : WeakAttack
             {
                 indexDash = 0;
                 isAttackEnable = false;
-                movement.enableBehaviour = movement.enableInput = true;
+                charController.UnFreeze();
             }
+        }
+    }
+
+    private void EndCurrentDash()
+    {
+        isDashing = false;
+        lastTimeDash = Time.time;
+        indexDash++;
+        charController.UnFreeze();
+        charController.ForceApplyVelocity(currentSpeed);
+        currentSpeed = Vector2.zero;
+
+        if (indexDash >= nbDash)
+        {
+            indexDash = 0;
+            isAttackEnable = false;
         }
     }
 
@@ -233,7 +242,7 @@ public class AmericanFistAttack : WeakAttack
         base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
 
         cooldown.Reset();
-        StartCoroutine(ApplyAttackCorout(movement.GetCurrentDirection(true), callbackEnableOtherAttack, callbackEnableThisAttack));
+        StartCoroutine(ApplyAttackCorout(charController.GetCurrentDirection(true), callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
     }
 
@@ -242,8 +251,7 @@ public class AmericanFistAttack : WeakAttack
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
 
-        initSpeed = rb.velocity;
-        movement.Freeze();
+        charController.Freeze();
 
         float timeCounter = 0f;
         while (timeCounter < castDuration)
@@ -255,7 +263,6 @@ public class AmericanFistAttack : WeakAttack
             }
         }
 
-        movement.UnFreeze();
         lastDir = dir;
         isAttackEnable = onLaunchAttack = true;
     }
@@ -282,14 +289,14 @@ public class AmericanFistAttack : WeakAttack
 
     private void OnPauseEnable()
     {
-        lastVelocityForPause = rb.velocity;
-        movement.Freeze();
+        lastVelocityForPause = charController.velocity;
+        charController.Freeze();
     }
 
     private void OnPauseDisable()
     {
-        movement.UnFreeze();
-        rb.velocity = lastVelocityForPause;
+        charController.UnFreeze();
+        charController.ForceApplyVelocity(lastVelocityForPause);
     }
 
     protected override void OnDestroy()
@@ -429,13 +436,13 @@ public class AmericanFistAttack : WeakAttack
     {
         if (!drawGizmos)
             return;
-        Gizmos.color = Color.green;
-        Hitbox.GizmosDraw((Vector2)transform.position + colliderOffset, colliderSize);
+
+        Hitbox.GizmosDraw((Vector2)transform.position + colliderOffset, colliderSize, Color.red);
 
         Vector2 center = (Vector2)transform.position + colliderOffset + new Vector2(colliderSize.x * 0.5f, 0f);
-        Circle.GizmosDraw(center, groundDetectionRadius);
+        Circle.GizmosDraw(center, groundDetectionRadius, Color.red);
         center = (Vector2)transform.position + colliderOffset + new Vector2(0f, colliderSize.y * 0.5f);
-        Circle.GizmosDraw(center, groundDetectionRadius);
+        Circle.GizmosDraw(center, groundDetectionRadius, Color.red);
     }
 
     protected override void OnValidate()

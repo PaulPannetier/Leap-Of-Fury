@@ -34,7 +34,8 @@ public class CharacterController : MonoBehaviour
                 _enableBehaviour = true;
         }
     }
-    public Vector2 velocity { get; private set; }
+
+    [field:SerializeField, ShowOnly] public Vector2 velocity { get; private set; }
 
 #if UNITY_EDITOR
 
@@ -64,6 +65,7 @@ public class CharacterController : MonoBehaviour
     [Tooltip("La propor de vitesse initiale de marche"), SerializeField, Range(0f, 1f)] private float initSpeed = 0.2f;
     [Tooltip("La durée de conservation de la vitesse de marche apres avoir quitté une plateforme"), SerializeField] private float inertiaDurationWhenQuittingGround = 0.1f;
     private float lastTimeQuitGround = -10f;
+    private bool forceHorizontalStick = false, forceDownStick = false;
 
     [Header("Jumping")]
     [Tooltip("La hauteur min du saut.")] [SerializeField] private float jumpInitForce = 20f;
@@ -343,6 +345,11 @@ public class CharacterController : MonoBehaviour
         isDashing = isSliding = wallGrab = isJumping = isApexJump1 = isApexJump2  = grabApexRight = grabApexLeft = isFalling = wallJump = false;
         doubleJump = false;
         lastTimeBump = Time.time;
+    }
+
+    public void ForceApplyVelocity(in Vector2 velocity)
+    {
+        this.velocity = velocity;
     }
 
     #endregion
@@ -750,9 +757,8 @@ public class CharacterController : MonoBehaviour
             lastTimeDashCommand = Time.time;
         }
 
-        //VIII compute Side
-
-        if(wallGrab)
+        //IX compute Side
+        if (wallGrab)
         {
             flip = onLeftWall || leftFootRay.collider != null;
         }
@@ -815,6 +821,7 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
+        DebugText.instance.text += $"fds : {forceDownStick}\n";
         //DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
         //DebugText.instance.text += $"Apex : {isGrabApex}\n";
@@ -848,6 +855,9 @@ public class CharacterController : MonoBehaviour
 
         HandleBump();
 
+        forceHorizontalStick = isSliding || wallGrab;
+        forceDownStick = !isJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping && !wallJump;
+
         HandleHorizontalCollision();
 
         HandleVerticalCollision();
@@ -875,7 +885,7 @@ public class CharacterController : MonoBehaviour
                 float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;  
                 //use toricCollider instead
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
-                if (extendedHitbox.Contains(hit.point))
+                if (forceHorizontalStick || extendedHitbox.Contains(hit.point))
                 {
                     transform.position = new Vector2(hit.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, transform.position.y);
                     velocity = new Vector2(wallSpeed.x, velocity.y);
@@ -887,7 +897,7 @@ public class CharacterController : MonoBehaviour
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
                 float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
-                if (extendedHitbox.Contains(hit.point))
+                if (forceHorizontalStick || extendedHitbox.Contains(hit.point))
                 {
                     transform.position = new Vector2(hit.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, transform.position.y);
                     velocity = new Vector2(wallSpeed.x, velocity.y);
@@ -908,7 +918,7 @@ public class CharacterController : MonoBehaviour
                 Vector2 groundVelocity = groundColliderData.velocity;
                 float deltaY = (velocity.y - groundVelocity.y) * Time.deltaTime;
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
-                if (extendedHitbox.Contains(hit.point))
+                if (forceDownStick || extendedHitbox.Contains(hit.point))
                 {
                     transform.position = new Vector2(transform.position.x, hit.point.y + gapBetweenHitboxAndGround + hitbox.size.y * 0.5f - hitbox.offset.y);
                     velocity = new Vector2(velocity.x, groundVelocity.y);
@@ -971,7 +981,7 @@ public class CharacterController : MonoBehaviour
             Vector2 localVel = velocity - groundVel;
 
             //Clamp, on est dans le mauvais sens
-            if ((playerInput.x >= 0f && localVel.x <= 0f) || (playerInput.x <= 0f && localVel.x >= 0f))
+            if (enableInput && ((playerInput.x >= 0f && localVel.x <= 0f) || (playerInput.x <= 0f && localVel.x >= 0f)))
             {
                 if (playerInput.rawX != 0)
                 {
@@ -984,7 +994,7 @@ public class CharacterController : MonoBehaviour
                 }
             }
 
-            if (Mathf.Abs(localVel.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0)
+            if (Mathf.Abs(localVel.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0 && enableInput)
             {
                 if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
                 {
@@ -993,7 +1003,7 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                localVel = new Vector2(Mathf.MoveTowards(localVel.x, playerInput.x * walkSpeed, speedLerp * Time.deltaTime), localVel.y);
+                localVel = new Vector2(Mathf.MoveTowards(localVel.x, (enableInput ? playerInput.x : 0f) * walkSpeed, speedLerp * Time.deltaTime), localVel.y);
             }
 
             //Clamp if too steep slope
@@ -1027,7 +1037,7 @@ public class CharacterController : MonoBehaviour
             Vector2 groundVel = groundColliderData.velocity;
             Vector2 localVel = velocity - groundVel;
 
-            if(playerInput.rawX != 0f)
+            if(playerInput.rawX != 0f & enableInput)
             {
                 localVel = new Vector2(Mathf.MoveTowards(localVel.x, playerInput.x * walkSpeed, GroundData.instance.iceSpeedLerpFactor * speedLerp * Time.deltaTime), localVel.y);
             }

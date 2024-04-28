@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 922723625538123844}
   - component: {fileID: 66234244654983004}
   - component: {fileID: 3997859093726797468}
+  - component: {fileID: 7780594661384666814}
   - component: {fileID: 7867381648852789479}
   - component: {fileID: 2773945953036524592}
-  - component: {fileID: 3962006582592122389}
   - component: {fileID: 4330454076875467065}
   - component: {fileID: 6598177761008341971}
   - component: {fileID: 6801819870953356622}
@@ -164,6 +164,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7780594661384666814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9211636111085214947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74d42ebc8423d940b04de9dcff94f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moverForceCoeff: 400
 --- !u!114 &7867381648852789479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
-  drawGizmos: 1
+  <velocity>k__BackingField: {x: 0, y: 0}
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   sideRayLength: 0.4
   sideRayOffset: 0
@@ -413,20 +427,7 @@ MonoBehaviour:
   - {fileID: 66234244654983004}
   - {fileID: 922723625538123844}
   chidrenToRemoveInClone: []
-  drawGizmos: 1
---- !u!114 &3962006582592122389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9211636111085214947}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb2839a974e9ace41acd03dffdfe59b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moverForceCoeff: 400
+  drawGizmos: 0
 --- !u!114 &4330454076875467065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -563,7 +564,7 @@ MonoBehaviour:
     duration: 4
   saveAttackStats: 0
   originalCloneAttack: {fileID: 0}
-  drawGizmos: 0
+  drawGizmos: 1
   isAClone: 0
   dashSpeed: 20
   dashDuration: 0.25
@@ -615,8 +616,8 @@ MonoBehaviour:
   nbDash: 3
   explosionForce: 1.1
   explosionPrefabs: {fileID: 8565674110299712414, guid: 860caee9a72fd1344a67a5ee19dba4b6, type: 3}
-  colliderOffset: {x: 0, y: -0.21}
-  colliderSize: {x: 0.5, y: 1.14}
+  colliderOffset: {x: 0, y: -0.22}
+  colliderSize: {x: 0.6, y: 1.15}
   groundDetectionRadius: 0.25
   activateCloneDash: 0
   activateWallExplosion: 0
@@ -635,7 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   castDuration: 0
   cooldown:
-    duration: 5
+    duration: 10
   saveAttackStats: 0
   isCloneAttackEnable: 0
   clonePrefabs: {fileID: 1266130988093312155, guid: f24f5fb0fc04f7c438b6ee7620e65224, type: 3}

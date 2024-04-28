@@ -5,11 +5,11 @@ using Collision2D;
 
 public class FallAttack : WeakAttack
 {
-    private Rigidbody2D rb;
     private BoxCollider2D hitbox;
     private CharacterController charController;
     private LayerMask charMask, groundMask;
     private new Transform transform;
+    private bool isFalling;
 
 #if UNITY_EDITOR
 
@@ -27,13 +27,15 @@ public class FallAttack : WeakAttack
     [SerializeField] private float shockWaveHoriOffset = 0.2f;
     [SerializeField] private float shockWaveSpeed = 10f;
 
+    #region Awake/Start
+
     protected override void Awake()
     {
         base.Awake();
         this.transform = base.transform;
         charController = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody2D>();
         hitbox = GetComponent<BoxCollider2D>();
+        isFalling = false;
     }
 
     protected override void Start()
@@ -41,6 +43,18 @@ public class FallAttack : WeakAttack
         base.Start();
         charMask = LayerMask.GetMask("Char");
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
+    }
+
+    #endregion
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if(isFalling)
+        {
+            transform.position += speedFall * Time.deltaTime * Vector3.down;
+        }
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -85,31 +99,21 @@ public class FallAttack : WeakAttack
             }
         }
 
-        charController.UnFreeze();
-        charController.enableBehaviour = false;
-
         //phase tombante
         UnityEngine.Collider2D[] cols;
         bool hitGround = false;
-        Vector2 fallSpeed = Vector2.down * speedFall;
         float timeFallCounter = 0f;
         bool fallStopByOvertime = false;
+        isFalling = true;
 
         while(!hitGround)
         {
-            if(PauseManager.instance.isPauseEnable)
+            while (PauseManager.instance.isPauseEnable)
             {
-                charController.Freeze();
-
-                while(PauseManager.instance.isPauseEnable)
-                {
-                    yield return null;
-                }
-                charController.UnFreeze();
+                yield return null;
             }
 
             //collision avec le sol
-            rb.velocity = fallSpeed;
             hitGround = PhysicsToric.OverlapCircle(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), charController.groundRaycastLength, groundMask) != null;
             //Collision avec les autre personnages
             cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position, hitbox.size, transform.rotation.eulerAngles.z, charMask);
@@ -135,30 +139,29 @@ public class FallAttack : WeakAttack
             yield return null;
         }
 
-        //EXPLOSION
-        cols = PhysicsToric.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), explosionRadius, charMask);
-
-        foreach (UnityEngine.Collider2D col in cols)
-        {
-            if (col.gameObject.CompareTag("Char"))
-            {
-                GameObject player = col.GetComponent<ToricObject>().original;
-                if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
-                {
-                    OnTouchEnemy(player);
-                }
-            }
-        }
-
-        ExplosionManager.instance.CreateExplosion(transform.position, explosionForce);
-
         if (fallStopByOvertime)
         {
-            rb.velocity = Vector2.zero;
             charController.AddForce(Vector2.up * upForceWhenCancelFalling);
         }
         else
         {
+            //EXPLOSION
+            cols = PhysicsToric.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), explosionRadius, charMask);
+
+            foreach (UnityEngine.Collider2D col in cols)
+            {
+                if (col.gameObject.CompareTag("Char"))
+                {
+                    GameObject player = col.GetComponent<ToricObject>().original;
+                    if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
+                    {
+                        OnTouchEnemy(player);
+                    }
+                }
+            }
+
+            ExplosionManager.instance.CreateExplosion(transform.position, explosionForce);
+
             //Instantiate wave attack
             //right
             Vector2 shockWavePos = (Vector2)transform.position + Vector2.right * shockWaveHoriOffset;
@@ -172,6 +175,8 @@ public class FallAttack : WeakAttack
             shockWave = shockWaveGO.GetComponent<FloorShockWave>();
             shockWave.Launch(transform.position, false, shockWaveSpeed, this);
         }
+
+        isFalling = false;
         charController.UnFreeze();
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();

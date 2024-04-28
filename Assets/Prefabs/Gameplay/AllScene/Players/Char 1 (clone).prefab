@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 7100577302219647036}
   - component: {fileID: 7975649410831873828}
   - component: {fileID: 5204881842461756488}
-  - component: {fileID: 6395008868260658797}
   - component: {fileID: 4122206886715545145}
   - component: {fileID: 7945613426209977072}
   - component: {fileID: 3574144944466291032}
+  - component: {fileID: 6351519299945200209}
   m_Layer: 0
   m_Name: Char 1 (clone)
   m_TagString: Untagged
@@ -66,7 +66,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1266130988093312155}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundsOffset: {x: 0, y: -0.17}
-  boundsSize: {x: 0, y: 0}
+  boundsSize: {x: 2.5, y: 1.5}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
@@ -134,19 +134,6 @@ MonoBehaviour:
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   drawGizmos: 1
---- !u!114 &6395008868260658797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1266130988093312155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb2839a974e9ace41acd03dffdfe59b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moverForceCoeff: 400
 --- !u!114 &4122206886715545145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,3 +253,16 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 16392
+--- !u!114 &6351519299945200209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1266130988093312155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74d42ebc8423d940b04de9dcff94f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moverForceCoeff: 400

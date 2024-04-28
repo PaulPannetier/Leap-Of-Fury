@@ -14,7 +14,7 @@ Duel local (2 a 4 joueurs)
 
 Duel local :
 - le but est d'être le premier a atteigne 9 kills
-- 1er tour, tout less joueurs apparaisent un un endroit aléatoire de la carte choisi, s'entre tue, des qu'il n'y a qu'un survivant le niveau recommence tant qu'aucun joueur n'a 9 kill.
+- 1er tour, tout less joueurs apparaisent un un endroit aléatoire de la carte choisi, s'entre tue, des qu'il n'y a qu'un survivant le niveau recommence tant qu'aucun joueur n'a atteint n kills.
 
 
 Plusieurs perso jouable (objectif 4 pour l'instant)
@@ -135,3 +135,5 @@ verif spell using Freeze method
 add interact input on setting menu
 test wall projectile and prohectile collision and retest all attack/char
 polish convyor belt visual (make separate script from convyior belt to handle visual updates)
+Complete Maxwell house and Into the jungle maps and méca
+Huge test of ALL before V0.1

@@ -1,26 +1,30 @@
 #if UNITY_EDITOR
 
 using UnityEngine;
+using System.Collections;
 
 public class TestScript : MonoBehaviour
 {
-    [SerializeField] private bool enableUp;
-    [SerializeField] private float speed;
-
-    private void Start()
+    private void Update()
     {
-        EventManager.instance.callbackPreUpdate += PreUpdate;
+        if(InputManager.GetKeyDown(KeyCode.H))
+        {
+            StartCoroutine(TestCorout());
+        }
     }
 
-    private void PreUpdate()
+    private IEnumerator TestCorout()
     {
-        Vector2 velocity = (enableUp ? Vector2.up : Vector2.right) * speed;
-        transform.position += (Vector3)(velocity * Time.deltaTime);
-    }
+        GetComponent<CharacterController>().Freeze();
 
-    private void OnDestroy()
-    {
-        EventManager.instance.callbackPreUpdate -= PreUpdate;
+        float beg = Time.time;
+        while(Time.time - beg < 5f)
+        {
+            yield return null;
+            transform.position += Vector3.up * 5f * Time.deltaTime;
+        }
+
+        GetComponent<CharacterController>().UnFreeze();
     }
 }
 

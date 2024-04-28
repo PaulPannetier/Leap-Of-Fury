@@ -29,8 +29,7 @@ public class MoveWhenMoverPassThrough : MonoBehaviour
         Mover mover = other.GetComponent<Mover>();
         if(mover != null)
         {
-            Rigidbody2D rbOther = other.GetComponent<Rigidbody2D>();
-            Vector2 force = rbOther.velocity * (mover.moverForceCoeff * forceMultiplier);
+            Vector2 force = mover.Velocity() * (mover.moverForceCoeff * forceMultiplier);
 
             force.x = Mathf.Abs(force.x) > maxForce.x ? maxForce.x * force.x.Sign() : force.x;
             force.y = Mathf.Abs(force.y) > maxForce.y ? maxForce.y * force.y.Sign() : force.y;
