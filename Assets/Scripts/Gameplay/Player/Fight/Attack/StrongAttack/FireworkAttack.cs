@@ -2,13 +2,11 @@ using System;
 using UnityEngine;
 #if UNITY_EDITOR
 using Collision2D;
-using Collider2D = UnityEngine.Collider2D;
 #endif
 
 public class FireworkAttack : StrongAttack
 {
-    private Rigidbody2D rb;
-    private CharacterController movement;
+    private CharacterController charControler;
 
 #if UNITY_EDITOR
 
@@ -25,8 +23,7 @@ public class FireworkAttack : StrongAttack
     protected override void Awake()
     {
         base.Awake();
-        rb = GetComponent<Rigidbody2D>();
-        movement = GetComponent<CharacterController>();
+        charControler = GetComponent<CharacterController>();
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -50,7 +47,7 @@ public class FireworkAttack : StrongAttack
 
     private void LaunchFirework()
     {
-        Vector2 dir = -movement.GetCurrentDirection(true);
+        Vector2 dir = -charControler.GetCurrentDirection(true);
         float angle = Useful.AngleHori(Vector2.zero, dir);
         float angleStep = nbFireworkLaunch <= 1 ? 0f : (fireworkDiffusionAngle / (nbFireworkLaunch - 1)) * Mathf.Deg2Rad;
         float begAngle = nbFireworkLaunch <= 1 ? angle : angle - fireworkDiffusionAngle * 0.5f * Mathf.Deg2Rad;
@@ -63,7 +60,7 @@ public class FireworkAttack : StrongAttack
             firework.Launch(fireworkAngle, playerCommon, this);
         }
 
-        rb.velocity = -bumpVelocity * dir;
+        charControler.ForceApplyVelocity(-bumpVelocity * dir);
     }
 
     public void OnFireworkTouchEnnemy(Firework firework, GameObject ennemy)
@@ -91,7 +88,7 @@ public class FireworkAttack : StrongAttack
         float a2 = (270f - fireworkDiffusionAngle * 0.5f) * Mathf.Deg2Rad;
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(a1));
         Gizmos.DrawLine(transform.position, (Vector2)transform.position + Useful.Vector2FromAngle(a2));
-        Circle.GizmosDraw(transform.position, 1f, a2, a1);
+        Circle.GizmosDraw(transform.position, 1f, a2, a1, Color.green);
     }
 
 #endif

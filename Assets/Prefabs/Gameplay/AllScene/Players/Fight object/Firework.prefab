@@ -117,19 +117,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   capsuleOffset: {x: 0, y: 0}
-  capsuleSize: {x: 0.5, y: 0.5}
+  capsuleSize: {x: 1, y: 0.5}
   capsuleDirection: 1
   maxDuration: 5
   explosionDuration: 1
   explosionRadius: 1
   explosionAnimName: Explode
   explosionForce: 1
-  charMask:
-    serializedVersion: 2
-    m_Bits: 256
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!1 &8656721268309246495
 GameObject:
   m_ObjectHideFlags: 0

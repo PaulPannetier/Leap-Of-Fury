@@ -18,6 +18,8 @@ public class Firework : MonoBehaviour
     private Animator animator;
     private bool isExploding = false;
     private float explosionAnimationLength;
+    private LayerMask charMask;
+    private LayerMask groundMask;
 
     [Header("first phase")]
     [SerializeField] private float maxSpeed = 2f;
@@ -35,15 +37,14 @@ public class Firework : MonoBehaviour
     [SerializeField] private string explosionAnimName = "Explode";
     [SerializeField] private float explosionForce = 10f;
 
-    [Header("Collision")]
-    [SerializeField] private LayerMask charMask;
-    [SerializeField] private LayerMask groundMask;
 
     private void Awake()
     {
         toricObject = GetComponent<ToricObject>();
         animator = GetComponent<Animator>();
         capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
+        charMask = LayerMask.GetMask("Char");
+        groundMask = LayerMask.GetMask("Floor");
     }
 
     private void Start()
@@ -103,7 +104,7 @@ public class Firework : MonoBehaviour
                 speed = maxSpeed * speedCurve.Evaluate(1);
             }
 
-            Vector2 shiftToAdd = Mathf.Abs(dir.y) < 1e-6 ? Time.deltaTime * gravityMultiplierForHorizontalMovement * Physics2D.gravity : Vector2.zero;
+            Vector2 shiftToAdd = Mathf.Abs(dir.y) < 1e-5f ? Time.deltaTime * gravityMultiplierForHorizontalMovement * Physics2D.gravity : Vector2.zero;
             transform.Translate(dir * (speed * Time.deltaTime) + shiftToAdd, Space.World);
             capsuleCollider = new Capsule((Vector2)transform.position + capsuleOffset, capsuleSize, capsuleDirection);
             capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
@@ -205,8 +206,8 @@ public class Firework : MonoBehaviour
             capsuleCollider.Rotate(transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
         }
 
-        Capsule.GizmosDraw(capsuleCollider);
-        Circle.GizmosDraw(transform.position, explosionRadius);
+        Capsule.GizmosDraw(capsuleCollider, Color.green);
+        Circle.GizmosDraw(transform.position, explosionRadius, Color.green);
     }
 
 #endif
