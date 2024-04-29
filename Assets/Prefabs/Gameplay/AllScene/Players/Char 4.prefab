@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 4277522715158860269}
   - component: {fileID: 1455914444206811459}
   - component: {fileID: -9218597178057366274}
-  - component: {fileID: 5376248993583122071}
   - component: {fileID: 9133659135209447674}
   m_Layer: 8
   m_Name: Char 4
@@ -178,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
+  <velocity>k__BackingField: {x: 0, y: 0}
   drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   sideRayLength: 0.4
@@ -413,8 +413,7 @@ MonoBehaviour:
   componentsToSynchroniseInClone:
   - {fileID: 1113869503384375398}
   - {fileID: 238728056774250366}
-  chidrenToRemoveInClone:
-  - {fileID: 0}
+  chidrenToRemoveInClone: []
   drawGizmos: 0
 --- !u!114 &3712884546189942275
 MonoBehaviour:
@@ -707,134 +706,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3908af4cbc1045b4a95f41c0d09565e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5376248993583122071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8090791378756873177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca7a74e760ec764085ddef1877135a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableInput: 1
-  drawGizmos: 0
-  timeUntilCommandIsInvalid: 0.2
-  sideRayLength: 0.2
-  sideRayOffset: 0
-  grabRayOffset: 1
-  grabRayLength: 1
-  groundRaycastOffset: {x: 0, y: 0}
-  groundRaycastLength: 0.5
-  topRaycastOffset: {x: 0, y: 0}
-  topRaycastLength: 0.5
-  gapBetweenHitboxAndGround: 0.1
-  gapBetweenHitboxAndWall: 0.1
-  walkSpeed: 10
-  speedLerp: 50
-  initSpeed: 0.2
-  inertiaDurationWhenQuittingGround: 0.1
-  jumpInitForce: 20
-  jumpForce: 20
-  jumpGravityMultiplier: 1
-  jumpMaxDuration: 1
-  jumpSpeed: {x: 4, y: 20}
-  jumpInitHorizontaSpeed: 0.4
-  jumpSpeedLerp: 20
-  enableDoubleJump: 1
-  doubleJumpSpeed: 6
-  jumpCoyoteTime: 0.1
-  airGravityMultiplier: 1
-  airHorizontalSpeed: 4
-  airInitHorizontalSpeed: 0.4
-  airSpeedLerp: 20
-  fallGravityMultiplier: 1.5
-  fallInitHorizontalSpeed: 0.35
-  fallSpeed: {x: 4, y: 20}
-  fallSpeedLerp: 10
-  fallDecelerationSpeedLerp: 10
-  beginFallExtraGravity: 2
-  maxBeginFallSpeed: 0.3
-  fallClampSpeedMultiplierWhenDownPressed: 1.2
-  fallGravityMultiplierWhenDownPressed: 2
-  wallJumpInitSpeed: 10
-  wallJumpAngle: 45
-  wallJumpForce: 20
-  wallJumpSpeed: {x: 4, y: 20}
-  wallJumpGravityMultiplier: 1
-  wallJumpMinDuration: 0.1
-  wallJumpMaxDuration: 1
-  enableJumpAlongWall: 1
-  wallJumpAlongSpeed: 20
-  wallJumpAlongCurveSpeed:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  jumpAlongWallDuration: 0.3
-  wallJumpAlongCooldown: 0.1
-  grabSpeed: 6
-  grabInitSpeed: 0.25
-  maxPreciseGrabValue: 0.3
-  grabSpeedMultiplierWhenPreciseGrab: 1
-  apexJumpSpeed: {x: 3, y: 12}
-  apexJumpSpeed2: {x: 4, y: 0}
-  grabSpeedLerp: 2
-  apexJumpSpeedLerp: 400
-  apexJumpSpeedLerp2: 50
-  apexJumpDuration: 0.125
-  apexJumpDuration2: 0.1
-  apexJumpInitSpeed: 0.4
-  apexJumpInitSpeed2: 0.4
-  dashSpeed: 20
-  dashDuration: 0.4
-  dashCooldown: 0.15
-  dashSpeedCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  antiKnockHead: 0
-  slideSpeed: 5
-  slideSpeedLerp: 10
-  slideSpeedLerpDeceleration: 55
-  initSlideSpeed: 0.1
-  maxSlopeAngle: 22.5
-  slopeSpeed: 0
-  initSlopeSpeed: 0.3
-  slopeSpeedCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  slopeSpeedLerp: 1
-  isSlopingRight: 0
-  isSlopingLeft: 0
-  minBumpSpeedX: 1
-  maxFallBumpSpeed: 30
-  bumpFrictionLerp: 2
-  bumpGravityScale: 1
-  maxBumpDuration: 1.5
-  minBumpDuration: 0.3
-  inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  speedWhenQuittingConvoyerBelt: 1
-  dashParticle: {fileID: 0}
-  jumpParticle: {fileID: 0}
-  wallJumpParticle: {fileID: 0}
-  slideParticle: {fileID: 0}
-  enableCameraShaking: 1
-  cameraShakeSetting:
-    duration: 0.15
-    strengh: {x: 0.2, y: 0.2, z: 0.2}
-    vibrato: 14
-    randomness: 90
-    snapping: 0
-    fadeOut: 1
 --- !u!114 &9133659135209447674
 MonoBehaviour:
   m_ObjectHideFlags: 0
