@@ -816,3 +816,178 @@ LevelManager:StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.c
 
     }
 }
+LogMessage : 
+{
+    Error : Inconsistent array size, the two array must have the same size.,
+    Params : 5
+    {
+        Type : Int32,
+        Value : 1
+
+        Type : Int32,
+        Value : 2
+
+        Type : String[],
+        Value : [ 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D ]
+
+        Type : String[],
+        Value : [ Save/Language, Save/Levels ]
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : Inconsistent array size, the two array must have the same size.,
+    Params : 5
+    {
+        Type : Int32,
+        Value : 1
+
+        Type : Int32,
+        Value : 2
+
+        Type : String[],
+        Value : [ 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D ]
+
+        Type : String[],
+        Value : [ Save/Language, Save/Levels ]
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : Inconsistent array size, the two array must have the same size.,
+    Params : 5
+    {
+        Type : Int32,
+        Value : 1
+
+        Type : Int32,
+        Value : 2
+
+        Type : String[],
+        Value : [ 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D ]
+
+        Type : String[],
+        Value : [ Save/Language, Save/Levels ]
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'Rigidbody2D' attached to the "Char 2(Clone)" game object, but a script is trying to access it.
+You probably need to add a Rigidbody2D to the game object "Char 2(Clone)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.Rigidbody2D.set_velocity (UnityEngine.Vector2 value) (at <39c25c7743074133aa8a65861b64bb60>:0)
+GrabAttack+<<PerformAttack>g__PerformWallTouch|35_2>d.MoveNext () (at Assets/Scripts/Gameplay/Player/Fight/Attack/StrongAttack/GrabAttack.cs:319)
+UnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <c5ed782439084ef1bc2ad85eec89e9fe>:0)
+
+    }
+}
+LogMessage : 
+{
+    Error : Inconsistent array size, the two array must have the same size.,
+    Params : 5
+    {
+        Type : Int32,
+        Value : 1
+
+        Type : Int32,
+        Value : 2
+
+        Type : String[],
+        Value : [ 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D ]
+
+        Type : String[],
+        Value : [ Save/Language, Save/Levels ]
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}

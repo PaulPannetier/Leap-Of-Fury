@@ -9,14 +9,12 @@ using System.Linq;
 public class GrabAttack : StrongAttack
 {
     private GameObject charTouch, walltouch;
-    private Rigidbody2D rb;
-    private CharacterController movement;
+    private CharacterController charController;
     private LayerMask charAndGroundMask, charMask;
     private Vector2 collisionPoint;
     private new Transform transform;
     private List<uint> charAlreadyTouch;
     private float currentWallGap;
-
     private bool isCharTouch => charTouch != null;
 
 #if UNITY_EDITOR
@@ -57,8 +55,7 @@ public class GrabAttack : StrongAttack
     protected override void Start()
     {
         base.Start();
-        movement = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody2D>();
+        charController = GetComponent<CharacterController>();
 
         charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
         charMask = LayerMask.GetMask("Char");
@@ -89,7 +86,7 @@ public class GrabAttack : StrongAttack
     {
         charTouch = walltouch = null;
 
-        Vector2 dir = movement.GetCurrentDirection(true);
+        Vector2 dir = charController.GetCurrentDirection(true);
 
         if (dir.x > Mathf.Epsilon)
         {
@@ -221,6 +218,10 @@ public class GrabAttack : StrongAttack
         else
             yield return PerformWallTouch(callbackEnableOtherAttack, callbackEnableThisAttack);
 
+        charController.UnFreeze();
+        callbackEnableOtherAttack.Invoke();
+        callbackEnableThisAttack.Invoke();
+
         IEnumerator Wait(float duration)
         {
             float counter = 0f;
@@ -238,9 +239,10 @@ public class GrabAttack : StrongAttack
         {
             FightController charFc = charTouch.GetComponent<FightController>();
             charFc.RequestStun(-1);
-            movement.Freeze();
+            charController.Freeze();
 
             yield return Wait(waitingTimeWhenCharGrab);
+
             Vector2 begPos = transform.position;
             Vector2 oldPos = begPos;
             Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);
@@ -260,7 +262,7 @@ public class GrabAttack : StrongAttack
                 Vector2 newPos = begPos + (totalDistance * charPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
                 newPos = PhysicsToric.GetPointInsideBounds(newPos);
                 oldPos = transform.position;
-                movement.Teleport(newPos);
+                charController.Teleport(newPos);
 
                 while (PauseManager.instance.isPauseEnable)
                 {
@@ -270,21 +272,15 @@ public class GrabAttack : StrongAttack
 
             if(keepSpeedAtEnd)
             {
-                Vector2 currentVelocity = ((Vector2)transform.position - oldPos) / Time.deltaTime;
-                rb.velocity = currentVelocity;
+                charController.ForceApplyVelocity(((Vector2)transform.position - oldPos) / Time.deltaTime);
             }
 
-            movement.UnFreeze();
-
             OnTouchEnemy(charTouch.GetComponent<ToricObject>().original);
-
-            callbackEnableOtherAttack.Invoke();
-            callbackEnableThisAttack.Invoke();
         }
 
         IEnumerator PerformWallTouch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
         {
-            movement.Freeze();
+            charController.Freeze();
             yield return Wait(waitingTimeWhenWallGrab);
 
             Vector2 begPos = transform.position;
@@ -305,7 +301,7 @@ public class GrabAttack : StrongAttack
                 Vector2 newPos = begPos + (totalDistance * wallPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
                 newPos = PhysicsToric.GetPointInsideBounds(newPos);
                 oldPos = transform.position;
-                movement.Teleport(newPos);
+                charController.Teleport(newPos);
 
                 while (PauseManager.instance.isPauseEnable)
                 {
@@ -315,14 +311,8 @@ public class GrabAttack : StrongAttack
 
             if (keepSpeedAtEnd)
             {
-                Vector2 currentVelocity = ((Vector2)transform.position - oldPos) / Time.deltaTime;
-                rb.velocity = currentVelocity;
+                charController.ForceApplyVelocity(((Vector2)transform.position - oldPos) / Time.deltaTime);
             }
-
-            movement.UnFreeze();
-
-            callbackEnableOtherAttack.Invoke();
-            callbackEnableThisAttack.Invoke();
         }
     }
 

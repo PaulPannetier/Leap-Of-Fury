@@ -821,7 +821,6 @@ public class CharacterController : MonoBehaviour
         oldWallJumpAlongWall = wallJumpAlongWall;
 
         // VIII-Debug
-        DebugText.instance.text += $"fds : {forceDownStick}\n";
         //DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
         //DebugText.instance.text += $"Apex : {isGrabApex}\n";
