@@ -69409,6 +69409,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableLeftBump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: enableRightBump
       value: 0
       objectReference: {fileID: 0}

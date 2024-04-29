@@ -68109,3 +68109,462 @@ LogMessage :
         Value : SecutityManager.Start
     }
 }
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : NullReferenceException: Object reference not set to an instance of an object
+
+        Type : String,
+        Value : LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)
+LevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)
+LevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)
+
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Warning
+
+        Type : String,
+        Value : Gamepad1 is not connected!
+
+        Type : String,
+        Value : UnityEngine.Debug:LogWarning (object)
+InputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)
+CustomPlayerInput:Update () (at Assets/Scripts/Gameplay/Player/CustomPlayerInput.cs:65)
+
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Levels was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Levels
+
+        Type : String,
+        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
+
+        Type : Hash,
+        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
