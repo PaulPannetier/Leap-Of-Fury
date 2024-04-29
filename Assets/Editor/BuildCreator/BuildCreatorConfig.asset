@@ -23,7 +23,7 @@ MonoBehaviour:
   - {fileID: 102900000, guid: e3f090a10911b754087beff83b20acc2, type: 3}
   - {fileID: 102900000, guid: 61461d4bc41af1348ab49cc35c3deed7, type: 3}
   firstSceneToPlay: {fileID: 102900000, guid: 95ca349782007214fb012e85db33a963, type: 3}
-  modifyGameplayScene: 0
+  modifyGameplayScene: 1
   performBuild: 1
   developpementBuild: 1
   enableFilesSecurity: 1

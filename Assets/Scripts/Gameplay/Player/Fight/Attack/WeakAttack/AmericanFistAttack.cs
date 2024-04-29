@@ -383,11 +383,10 @@ public class AmericanFistAttack : WeakAttack
                     {
                         return true;
                     }
-#if UNITY_EDITOT || ADVANCE_DEBUG
+#if UNITY_EDITOR || ADVANCE_DEBUG
                     else
                     {
-                        Debug.LogWarning("Debug pls!");
-                        LogManager.instance.WriteLog("Unity trigger a collision but Collion2D no.", customCol, col);
+                        LogManager.instance.WriteLog("Unity trigger a collision but Collision2D no", customCol, col);
                     }
 #endif
                 }
