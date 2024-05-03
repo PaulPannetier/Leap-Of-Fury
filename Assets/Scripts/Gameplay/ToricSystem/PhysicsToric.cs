@@ -602,7 +602,7 @@ public static class PhysicsToric
             }
             else
             {
-                if (res.collider == null || res.distance + 1e5f > raycast.distance)
+                if (res.collider == null || res.distance + 1e-5f > raycast.distance)
                 {
                     res = new ToricRaycastHit2D(raycast);
                     res.distance += reachDistance;
@@ -625,7 +625,7 @@ public static class PhysicsToric
             }
             else
             {
-                if (res.collider == null || res.distance + 1e5f > raycast.distance)
+                if (res.collider == null || res.distance + 1e-5f > raycast.distance)
                 {
                     res = new ToricRaycastHit2D(raycast);
                     res.distance += reachDistance;
@@ -1211,7 +1211,7 @@ public static class PhysicsToric
             }
             else
             {
-                if (circleCastPriority.collider == null || circleCastPriority.distance + 1e5f > circleCast.distance)
+                if (circleCastPriority.collider == null || circleCastPriority.distance + 1e-5f > circleCast.distance)
                 {
                     if (!mapHitbox.Contains(circleCast.point))
                     {
@@ -1256,7 +1256,7 @@ public static class PhysicsToric
             }
             else
             {
-                if (circleCastPriority.collider == null || circleCastPriority.distance + 1e5f > circleCast.distance)
+                if (circleCastPriority.collider == null || circleCastPriority.distance + 1e-5f > circleCast.distance)
                 {
                     if (!mapHitbox.Contains(circleCast.point))
                         return default(ToricRaycastHit2D);

@@ -45,7 +45,7 @@ public class ToricObject : MonoBehaviour
     {
         onTeleportCallback = (Vector2 pos, Vector2 oldPos) => { };
         EventManager.instance.callbackOnMapChanged += OnMapChange;
-        clones = new List<ObjectClone>();
+        clones = new List<ObjectClone>(4);
         this.transform = base.transform;
     }
 

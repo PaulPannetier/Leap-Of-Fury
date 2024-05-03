@@ -373,14 +373,13 @@ public class CharacterController : MonoBehaviour
         PauseManager.instance.callBackOnPauseEnable += Disable;
         oldDeltaTime = Time.deltaTime;
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
-        EventManager.instance.callbackPreUpdate += PreUpdate;
     }
 
     #endregion
 
     #region Update
 
-    private void PreUpdate()
+    private void LateUpdate()
     {
         if (!enableBehaviour)
             return;
@@ -857,6 +856,9 @@ public class CharacterController : MonoBehaviour
         forceHorizontalStick = isSliding || wallGrab;
         forceDownStick = !isJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping && !wallJump;
 
+        //DebugText.instance.text += $"forceHorizontalStick : {forceHorizontalStick}\n";
+        //DebugText.instance.text += $"forceDownStick : {forceDownStick}\n";
+
         HandleHorizontalCollision();
 
         HandleVerticalCollision();
@@ -879,10 +881,9 @@ public class CharacterController : MonoBehaviour
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
             if (onRightWall || rightFootRay.collider != null)
             {
-                ToricRaycastHit2D hit = onRightWall ? raycastRight : rightFootRay;
+                ToricRaycastHit2D hit = onRightWall ? ref raycastRight : ref rightFootRay;
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
                 float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;  
-                //use toricCollider instead
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (forceHorizontalStick || extendedHitbox.Contains(hit.point))
                 {
@@ -892,7 +893,7 @@ public class CharacterController : MonoBehaviour
             }
             else if (onLeftWall || leftFootRay.collider != null)
             {
-                ToricRaycastHit2D hit = onLeftWall ? raycastLeft : leftFootRay;
+                ToricRaycastHit2D hit = onLeftWall ? ref raycastLeft : ref leftFootRay;
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
                 float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
@@ -1816,7 +1817,6 @@ public class CharacterController : MonoBehaviour
     {
         PauseManager.instance.callBackOnPauseEnable -= Disable;
         PauseManager.instance.callBackOnPauseDisable -= Enable;
-        EventManager.instance.callbackPreUpdate -= PreUpdate;
     }
 
 #if UNITY_EDITOR

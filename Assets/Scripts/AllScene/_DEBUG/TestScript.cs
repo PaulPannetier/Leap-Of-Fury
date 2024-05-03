@@ -1,30 +1,26 @@
 #if UNITY_EDITOR
 
 using UnityEngine;
-using System.Collections;
 
 public class TestScript : MonoBehaviour
 {
-    private void Update()
+    private MapColliderData mapColliderData;
+
+    public float speed = 5f;
+
+    private void Awake()
     {
-        if(InputManager.GetKeyDown(KeyCode.H))
-        {
-            StartCoroutine(TestCorout());
-        }
+        mapColliderData = GetComponent<MapColliderData>();
     }
 
-    private IEnumerator TestCorout()
+    private void Start()
     {
-        GetComponent<CharacterController>().Freeze();
+        PhysicsToric.AddPriorityCollider(GetComponent<BoxCollider2D>());
+    }
 
-        float beg = Time.time;
-        while(Time.time - beg < 5f)
-        {
-            yield return null;
-            transform.position += Vector3.up * 5f * Time.deltaTime;
-        }
-
-        GetComponent<CharacterController>().UnFreeze();
+    private void Update()
+    {
+        transform.position += Vector3.up * speed * Time.deltaTime;
     }
 }
 

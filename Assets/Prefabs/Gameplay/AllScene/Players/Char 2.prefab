@@ -176,12 +176,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
-  drawGizmos: 0
+  <velocity>k__BackingField: {x: 0, y: 0}
+  drawGizmos: 1
   timeUntilCommandIsInvalid: 0.1
-  sideRayLength: 0.4
+  sideRayLength: 0.5
   sideRayOffset: 0
   grabRayOffset: -0.6
-  grabRayLength: 0.45
+  grabRayLength: 0.5
   groundRaycastOffset: {x: 0.2, y: -0.35}
   groundRaycastLength: 0.55
   topRaycastOffset: {x: 0.2, y: 0}

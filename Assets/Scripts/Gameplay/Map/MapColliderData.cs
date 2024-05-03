@@ -15,9 +15,15 @@ public class MapColliderData : MonoBehaviour
     }
 
     private Vector2 oldPosition;
+    private ToricObject toricObject;
     private new Transform transform;
 
-    public Vector2 velocity { get; private set; }
+    private Vector2 _velocity;
+    public Vector2 velocity
+    {
+        get => toricObject != null ? (toricObject.isAClone ? toricObject.original.GetComponent<MapColliderData>()._velocity : _velocity) : _velocity;
+        private set { _velocity = value; }
+    }
 
     public GroundType groundType;
     public bool disableAntiKnockHead = false;
@@ -28,6 +34,7 @@ public class MapColliderData : MonoBehaviour
     private void Awake()
     {
         this.transform = base.transform;
+        toricObject = GetComponent<ToricObject>();
         oldPosition = transform.position;
     }
 
