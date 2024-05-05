@@ -595,6 +595,10 @@ PrefabInstance:
       value: MovablePlateform (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: maxSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -1663,6 +1667,7 @@ MonoBehaviour:
   - {fileID: 2976550940345048791}
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &2976550940345048791
 MonoBehaviour:
@@ -1671,12 +1676,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2976550940345048784}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e240486d8fd34e4b91c10d995dc5084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 10
 --- !u!114 &2997985937244574656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65668,6 +65673,7 @@ MonoBehaviour:
   - {fileID: 4994796704815129786}
   - {fileID: 5292985950780210082}
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 0
 --- !u!1 &7368594723148410421
 GameObject:

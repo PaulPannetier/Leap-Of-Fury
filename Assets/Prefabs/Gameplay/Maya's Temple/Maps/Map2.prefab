@@ -71377,6 +71377,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovablePlateform (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820867, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: grabable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820869, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10
@@ -71494,6 +71498,10 @@ PrefabInstance:
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820867, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: grabable
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.x
@@ -71624,6 +71632,10 @@ PrefabInstance:
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820867, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: grabable
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820868, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: m_Size.x

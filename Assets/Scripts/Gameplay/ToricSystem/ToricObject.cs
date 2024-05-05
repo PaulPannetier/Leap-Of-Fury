@@ -30,8 +30,12 @@ public class ToricObject : MonoBehaviour
     [SerializeField] private List<Component> componentsToSynchroniseInClone;
     public List<GameObject> chidrenToRemoveInClone;
 
+    public bool useCustomUpdate = false;
+
     public GameObject original => isAClone ? cloner : gameObject;
     public Action<Vector2, Vector2> onTeleportCallback;
+    public Action<GameObject> onCloneCreatedCallback;
+    public Action<GameObject> onCloneDestroyCallback;
 
 #if UNITY_EDITOR
 
@@ -44,6 +48,8 @@ public class ToricObject : MonoBehaviour
     private void Awake()
     {
         onTeleportCallback = (Vector2 pos, Vector2 oldPos) => { };
+        onCloneCreatedCallback = (GameObject clone) => { };
+        onCloneDestroyCallback = (GameObject clone) => { };
         EventManager.instance.callbackOnMapChanged += OnMapChange;
         clones = new List<ObjectClone>(4);
         this.transform = base.transform;
@@ -193,11 +199,21 @@ public class ToricObject : MonoBehaviour
 
     #region Update
 
+    public void CustomUpdate()
+    {
+        UpdateInternal();
+    }
+
     private void Update()
     {
-        if (isAClone)
+        if (isAClone || useCustomUpdate)
             return;
 
+        UpdateInternal();
+    }
+
+    private void UpdateInternal()
+    {
         if (PauseManager.instance.isPauseEnable)
             return;
 
@@ -265,6 +281,7 @@ public class ToricObject : MonoBehaviour
                     Destroy(go);
                 }
                 clones.Add(clone);
+                onCloneCreatedCallback.Invoke(clone.go);
             }
         }
 
@@ -308,14 +325,14 @@ public class ToricObject : MonoBehaviour
                 LogManager.instance.WriteLog($"The number of clones of the GO cannot exceed {maxClone} but reach {clones.Count}", clones, maxClone, transform.position, gameObject);
 #endif
                 RemoveClones();
-                transform.position = PhysicsToric.GetPointInsideBounds(transform.position);
+                transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
                 print("Debug pls");
             }
 
             //Anti bug 2
-            if (clones.Count <= 0 && !PhysicsToric.IsPointInsideBound(transform.position))
+            if (clones.Count <= 0 && !PhysicsToric.IsPointInsideBound((Vector2)transform.position + boundsOffset))
             {
-                transform.position = PhysicsToric.GetPointInsideBounds(transform.position);
+                transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
                 print("Debug pls");
             }
 
@@ -325,17 +342,17 @@ public class ToricObject : MonoBehaviour
                 bool allClonesIsOutBounded = true;
                 foreach (ObjectClone clone in clones)
                 {
-                    if(PhysicsToric.IsPointInsideBound(clone.go.transform.position))
+                    if(PhysicsToric.IsPointInsideBound((Vector2)clone.go.transform.position + boundsOffset))
                     {
                         allClonesIsOutBounded = false;
                         break;
                     }
                 }
 
-                if(allClonesIsOutBounded && !PhysicsToric.IsPointInsideBound(transform.position))
+                if(allClonesIsOutBounded && !PhysicsToric.IsPointInsideBound((Vector2)transform.position + boundsOffset))
                 {
                     RemoveClones();
-                    transform.position = PhysicsToric.GetPointInsideBounds(transform.position);
+                    transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
                     print("Debug pls");
                 }
             }
@@ -360,6 +377,7 @@ public class ToricObject : MonoBehaviour
     private void RemoveClone(ObjectClone clone)
     {
         clones.Remove(clone);
+        onCloneDestroyCallback.Invoke(clone.go);
         Destroy(clone.go);
     }
 

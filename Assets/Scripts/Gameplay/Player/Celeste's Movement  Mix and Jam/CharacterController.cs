@@ -15,6 +15,7 @@ public class CharacterController : MonoBehaviour
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData;
     private FightController fightController;
+    private ToricObject toricObject;
     private int disableMovementCounter = 0;
     private new Transform transform;
     private float oldDeltaTime;
@@ -65,7 +66,8 @@ public class CharacterController : MonoBehaviour
     [Tooltip("La propor de vitesse initiale de marche"), SerializeField, Range(0f, 1f)] private float initSpeed = 0.2f;
     [Tooltip("La durée de conservation de la vitesse de marche apres avoir quitté une plateforme"), SerializeField] private float inertiaDurationWhenQuittingGround = 0.1f;
     private float lastTimeQuitGround = -10f;
-    private bool forceHorizontalStick = false, forceDownStick = false;
+    private bool forceHorizontalStick = false, forceDownStick = false, overwriteSpeedOnHorizontalTeleportation = true, overwriteSpeedOnVerticalTeleportation = true;
+    private Vector2 teleportationShift;
 
     [Header("Jumping")]
     [Tooltip("La hauteur min du saut.")] [SerializeField] private float jumpInitForce = 20f;
@@ -368,6 +370,8 @@ public class CharacterController : MonoBehaviour
 
     private void Start()
     {
+        toricObject = GetComponent<ToricObject>();
+        toricObject.useCustomUpdate = true;
         oldGroundCollider = null;
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
@@ -388,9 +392,47 @@ public class CharacterController : MonoBehaviour
 
         UpdateVelocity();
 
-        transform.position += (Vector3)(velocity * Time.deltaTime);
+        Vector2 shift = velocity * Time.deltaTime;
+        int tpSign = (int)teleportationShift.x.Sign();
+        int velSign = (int)shift.x.Sign();
+        if (tpSign != 0 && velSign != 0)
+        {
+            if(tpSign == velSign)
+            {
+                shift.x = Mathf.Abs(shift.x) <= Mathf.Abs(teleportationShift.x) ? 0f : Mathf.Abs(shift.x - teleportationShift.x) * velSign;
+            }
+        }
+        tpSign = (int)teleportationShift.y.Sign();
+        velSign = (int)shift.y.Sign();
+        if (tpSign != 0 && velSign != 0)
+        {
+            if (tpSign == velSign)
+            {
+                shift.y = Mathf.Abs(shift.y) <= Mathf.Abs(teleportationShift.y) ? 0f : Mathf.Abs(shift.y - teleportationShift.y) * velSign;
+            }
+        }
+
+        transform.position += (Vector3)shift;
+
+        teleportationShift = Vector2.zero;
 
         oldDeltaTime = Time.deltaTime;
+
+        toricObject.CustomUpdate();
+
+        // VIII-Debug
+        //DebugText.instance.text += $"OnWall : {onWall}\n";
+        //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
+        //DebugText.instance.text += $"Apex : {isGrabApex}\n";
+        //DebugText.instance.text += $"ApexSpeed1 : {isApexJump1}\n";
+        //DebugText.instance.text += $"ApexSpeed2 : {isApexJump2}\n";
+        //DebugText.instance.text += $"Jump : {isJumping}\n";
+        //DebugText.instance.text += $"Fall : {isFalling}\n";
+        //DebugText.instance.text += $"Slide : {isSliding}\n";
+        //DebugText.instance.text += $"Gounded : {isGrounded}\n";
+        //DebugText.instance.text += $"Bump : {isBumping}\n";
+        //DebugText.instance.text += $"vel : {velocity}\n";
+        //DebugText.instance.text += $"shi : {shift/Time.deltaTime}\n";
     }
 
     #region UpdateState
@@ -422,7 +464,7 @@ public class CharacterController : MonoBehaviour
             else
             {
                 print("Debug pls");
-                LogManager.instance.WriteLog("Groundray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay);
+                LogManager.instance.WriteLog("Ground ray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay);
                 groundCollider = rightSlopeRay.collider;
                 groundColliderData = groundCollider.GetComponent<MapColliderData>();
             }
@@ -628,7 +670,7 @@ public class CharacterController : MonoBehaviour
             isFalling = true;
         }
         //release jumping and falling
-        if ((isGrounded && velocity.y <= Mathf.Epsilon) || wallGrab || dash || isSliding)
+        if ((isGrounded && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || isSliding)
         {
             isJumping = isWallJumping = isJumpingAlongWall = isFalling = false;
         }
@@ -818,19 +860,6 @@ public class CharacterController : MonoBehaviour
         oldWallJump = wallJump;
         oldSecondJump = doubleJump;
         oldWallJumpAlongWall = wallJumpAlongWall;
-
-        // VIII-Debug
-        //DebugText.instance.text += $"OnWall : {onWall}\n";
-        //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
-        //DebugText.instance.text += $"Apex : {isGrabApex}\n";
-        //DebugText.instance.text += $"ApexSpeed1 : {isApexJump1}\n";
-        //DebugText.instance.text += $"ApexSpeed2 : {isApexJump2}\n";
-        //DebugText.instance.text += $"Jump : {isJumping}\n";
-        //DebugText.instance.text += $"Fall : {isFalling}\n";
-        //DebugText.instance.text += $"Slide : {isSliding}\n";
-        //DebugText.instance.text += $"Gounded : {isGrounded}\n";
-        //DebugText.instance.text += $"Bump : {isBumping}\n";
-        //DebugText.instance.text += $"vel : {velocity}\n";
     }
 
     #endregion
@@ -855,9 +884,11 @@ public class CharacterController : MonoBehaviour
 
         forceHorizontalStick = isSliding || wallGrab;
         forceDownStick = !isJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping && !wallJump;
+        overwriteSpeedOnHorizontalTeleportation = true;
+        overwriteSpeedOnVerticalTeleportation = !isJumping;
 
-        //DebugText.instance.text += $"forceHorizontalStick : {forceHorizontalStick}\n";
-        //DebugText.instance.text += $"forceDownStick : {forceDownStick}\n";
+        DebugText.instance.text += $"forceHorizontalStick : {forceHorizontalStick}\n";
+        DebugText.instance.text += $"forceDownStick : {forceDownStick}\n";
 
         HandleHorizontalCollision();
 
@@ -876,10 +907,34 @@ public class CharacterController : MonoBehaviour
 
     private void HandleHorizontalCollision()
     {
-        if (onWall || rightFootRay.collider != null || leftFootRay.collider != null)
+        Vector2 TransformHitPoint(in Vector2 point, bool leftPoint)
         {
+            if (leftPoint)
+            {
+                if (point.x > transform.position.x + groundRaycastOffset.x)
+                {
+                    return new Vector2(point.x - LevelMapData.currentMap.mapSize.x * LevelMapData.currentMap.cellSize.x, point.y);
+                }
+            }
+            else
+            {
+                if (point.x < transform.position.x + topRaycastOffset.x)
+                {
+                    return new Vector2(point.x + LevelMapData.currentMap.mapSize.x * LevelMapData.currentMap.cellSize.x, point.y);
+                }
+            }
+            return point;
+        }
+
+        if (onWall || rightFootRay || raycastRight || leftFootRay || raycastLeft)
+        {
+            int cpRight = (raycastRight ? 1 : 0) + (rightFootRay ? 1 : 0);
+            int cpLeft = (raycastLeft ? 1 : 0) + (leftFootRay ? 1 : 0);
+            bool right = cpRight > 0 && cpRight > cpLeft;
+            bool left = cpLeft > 0 && cpLeft > cpRight;
+
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
-            if (onRightWall || rightFootRay.collider != null)
+            if (right)
             {
                 ToricRaycastHit2D hit = onRightWall ? ref raycastRight : ref rightFootRay;
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
@@ -887,11 +942,15 @@ public class CharacterController : MonoBehaviour
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (forceHorizontalStick || extendedHitbox.Contains(hit.point))
                 {
-                    transform.position = new Vector2(hit.point.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, transform.position.y);
-                    velocity = new Vector2(wallSpeed.x, velocity.y);
+                    Vector2 hitPoint = TransformHitPoint(hit.point, false);
+                    Vector2 target = new Vector2(hitPoint.x - gapBetweenHitboxAndWall - hitbox.size.x * 0.5f + hitbox.offset.x, transform.position.y);
+                    teleportationShift += target - (Vector2)transform.position;
+                    transform.position = target;
+                    if(overwriteSpeedOnHorizontalTeleportation)
+                        velocity = new Vector2(wallSpeed.x, velocity.y);
                 }
             }
-            else if (onLeftWall || leftFootRay.collider != null)
+            else if (left)
             {
                 ToricRaycastHit2D hit = onLeftWall ? ref raycastLeft : ref leftFootRay;
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
@@ -899,8 +958,12 @@ public class CharacterController : MonoBehaviour
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (forceHorizontalStick || extendedHitbox.Contains(hit.point))
                 {
-                    transform.position = new Vector2(hit.point.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, transform.position.y);
-                    velocity = new Vector2(wallSpeed.x, velocity.y);
+                    Vector2 hitPoint = TransformHitPoint(hit.point, true);
+                    Vector2 target = new Vector2(hitPoint.x + gapBetweenHitboxAndWall + hitbox.size.x * 0.5f - hitbox.offset.x, transform.position.y);
+                    teleportationShift += target - (Vector2)transform.position;
+                    transform.position = target;
+                    if (overwriteSpeedOnHorizontalTeleportation)
+                        velocity = new Vector2(wallSpeed.x, velocity.y);
                 }
             }
         }
@@ -908,11 +971,35 @@ public class CharacterController : MonoBehaviour
 
     private void HandleVerticalCollision()
     {
-        if (rightSlopeRay.collider != null || leftSlopeRay.collider != null || topRightRay.collider != null || topLeftRay.collider != null)
+        Vector2 TransformHitPoint(in Vector2 point, bool downPoint)
         {
+            if (downPoint)
+            {
+                if (point.y > transform.position.y + groundRaycastOffset.y)
+                {
+                    return new Vector2(point.x, point.y - LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y);
+                }
+            }
+            else
+            {
+                if (point.y < transform.position.y + topRaycastOffset.y)
+                {
+                    return new Vector2(point.x, point.y + LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y);
+                }
+            }
+            return point;
+        }
+
+        if (rightSlopeRay || leftSlopeRay || topRightRay || topLeftRay)
+        {
+            int cpUp = (topRightRay ? 1 : 0) + (topLeftRay ? 1 : 0);
+            int cpDown = (rightSlopeRay ? 1 : 0) + (leftSlopeRay ? 1 : 0);
+            bool up = cpUp > 0 && cpUp > cpDown;
+            bool down = cpDown > 0 && cpDown > cpUp;
+
             Vector2 hitboxCenter = (Vector2)transform.position + hitbox.offset;
             //Down
-            if (rightSlopeRay.collider != null || leftSlopeRay.collider != null)
+            if (down)
             {
                 ToricRaycastHit2D hit = rightSlopeRay.collider != null ? ref rightSlopeRay : ref leftSlopeRay;
                 Vector2 groundVelocity = groundColliderData.velocity;
@@ -920,11 +1007,15 @@ public class CharacterController : MonoBehaviour
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
                 if (forceDownStick || extendedHitbox.Contains(hit.point))
                 {
-                    transform.position = new Vector2(transform.position.x, hit.point.y + gapBetweenHitboxAndGround + hitbox.size.y * 0.5f - hitbox.offset.y);
-                    velocity = new Vector2(velocity.x, groundVelocity.y);
+                    Vector2 hitPoint = TransformHitPoint(hit.point, true);
+                    Vector2 target = new Vector2(transform.position.x, hitPoint.y + gapBetweenHitboxAndGround + hitbox.size.y * 0.5f - hitbox.offset.y);
+                    teleportationShift += target - (Vector2)transform.position;
+                    transform.position = target;
+                    if(overwriteSpeedOnVerticalTeleportation)
+                        velocity = new Vector2(velocity.x, groundVelocity.y);
                 }
             }
-            else if (topRightRay.collider != null || topLeftRay.collider != null)
+            else if (up)
             {
                 ToricRaycastHit2D hit = topRightRay.collider != null ? ref topRightRay : ref topLeftRay;
                 Vector2 groundVelocity = hit.collider.GetComponent<MapColliderData>().velocity;
@@ -932,8 +1023,12 @@ public class CharacterController : MonoBehaviour
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x, hitboxCenter.y + deltaY), new Vector2(hitbox.size.x, hitbox.size.y + (2f * gapBetweenHitboxAndGround)));
                 if (extendedHitbox.Contains(hit.point))
                 {
-                    transform.position = new Vector2(transform.position.x, hit.point.y - gapBetweenHitboxAndGround - hitbox.size.y * 0.5f - hitbox.offset.y);
-                    velocity = new Vector2(velocity.x, groundVelocity.y);
+                    Vector2 hitPoint = TransformHitPoint(hit.point, false);
+                    Vector2 target = new Vector2(transform.position.x, hitPoint.y - gapBetweenHitboxAndGround - hitbox.size.y * 0.5f - hitbox.offset.y);
+                    teleportationShift += target - (Vector2)transform.position;
+                    transform.position = target;
+                    if (overwriteSpeedOnVerticalTeleportation)
+                        velocity = new Vector2(velocity.x, groundVelocity.y);
                 }
             }
         }

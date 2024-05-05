@@ -131,9 +131,13 @@ Name : Chaos
 TODO :
 Trad all text
 netoyer tout les fichiers du projet
+fix apexJumpOn moving plateform
+fix walk start speed when start walking push by movable plateform
+fix jump on high speed movable plateform
 verif spell using Freeze method
 add interact input on setting menu
 test wall projectile and prohectile collision and retest all attack/char
 polish convyor belt visual (make separate script from convyior belt to handle visual updates)
 Complete Maxwell house and Into the jungle maps and méca
 Huge test of ALL before V0.1
+

@@ -92,10 +92,22 @@ public class MovablePlateform : PathFindingBlocker
     private void Start()
     {
         PhysicsToric.AddPriorityCollider(hitbox);
+        toricObject.onCloneCreatedCallback += OnCloneCreated;
+        toricObject.onCloneDestroyCallback += OnCloneDestroy;
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
         charMask = LayerMask.GetMask("Char");
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
+    }
+
+    private void OnCloneCreated(GameObject clone)
+    {
+        PhysicsToric.AddPriorityCollider(clone.GetComponent<BoxCollider2D>());
+    }
+
+    private void OnCloneDestroy(GameObject clone)
+    {
+        PhysicsToric.RemovePriorityCollider(clone.GetComponent<BoxCollider2D>());
     }
 
     #endregion
@@ -548,6 +560,8 @@ public class MovablePlateform : PathFindingBlocker
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        toricObject.onCloneCreatedCallback -= OnCloneCreated;
+        toricObject.onCloneDestroyCallback -= OnCloneDestroy;
         PauseManager.instance.callBackOnPauseEnable -= Disable;
         PauseManager.instance.callBackOnPauseDisable -= Enable;
         PhysicsToric.RemovePriorityCollider(hitbox);
