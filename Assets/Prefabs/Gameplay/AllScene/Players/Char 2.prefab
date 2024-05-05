@@ -197,7 +197,7 @@ MonoBehaviour:
   jumpForce: 9
   jumpGravityMultiplier: 1
   jumpMaxDuration: 0.3
-  jumpSpeed: {x: 8, y: 20}
+  jumpSpeed: {x: 8, y: 99999}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
@@ -207,13 +207,13 @@ MonoBehaviour:
   airHorizontalSpeed: 5.5
   airInitHorizontalSpeed: 0.4
   airSpeedLerp: 20
-  fallGravityMultiplier: 1.5
+  fallGravityMultiplier: 2
   fallInitHorizontalSpeed: 0.35
   fallSpeed: {x: 5.5, y: 14}
   fallSpeedLerp: 30
   fallDecelerationSpeedLerp: 15
-  beginFallExtraGravity: 2.3
-  maxBeginFallSpeed: 0.4
+  beginFallExtraGravity: 3
+  maxBeginFallSpeed: 0.6
   fallClampSpeedMultiplierWhenDownPressed: 1.6
   fallGravityMultiplierWhenDownPressed: 2
   wallJumpInitSpeed: 10
@@ -412,6 +412,7 @@ MonoBehaviour:
   - {fileID: 1261712740702541876}
   - {fileID: 2136925604514613036}
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &3274420078070027857
 MonoBehaviour:

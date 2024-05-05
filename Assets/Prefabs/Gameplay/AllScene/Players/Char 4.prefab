@@ -178,12 +178,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   <velocity>k__BackingField: {x: 0, y: 0}
-  drawGizmos: 0
+  drawGizmos: 1
   timeUntilCommandIsInvalid: 0.1
-  sideRayLength: 0.4
+  sideRayLength: 0.5
   sideRayOffset: 0
   grabRayOffset: -0.6
-  grabRayLength: 0.45
+  grabRayLength: 0.5
   groundRaycastOffset: {x: 0.2, y: -0.35}
   groundRaycastLength: 0.55
   topRaycastOffset: {x: 0.2, y: 0}
@@ -198,7 +198,7 @@ MonoBehaviour:
   jumpForce: 9
   jumpGravityMultiplier: 1
   jumpMaxDuration: 0.3
-  jumpSpeed: {x: 8, y: 20}
+  jumpSpeed: {x: 8, y: 99999}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
@@ -208,13 +208,13 @@ MonoBehaviour:
   airHorizontalSpeed: 5.5
   airInitHorizontalSpeed: 0.4
   airSpeedLerp: 20
-  fallGravityMultiplier: 1.5
+  fallGravityMultiplier: 2
   fallInitHorizontalSpeed: 0.35
   fallSpeed: {x: 5.5, y: 14}
   fallSpeedLerp: 30
   fallDecelerationSpeedLerp: 15
-  beginFallExtraGravity: 2.3
-  maxBeginFallSpeed: 0.4
+  beginFallExtraGravity: 3
+  maxBeginFallSpeed: 0.6
   fallClampSpeedMultiplierWhenDownPressed: 1.6
   fallGravityMultiplierWhenDownPressed: 2
   wallJumpInitSpeed: 10
@@ -414,6 +414,7 @@ MonoBehaviour:
   - {fileID: 1113869503384375398}
   - {fileID: 238728056774250366}
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &3712884546189942275
 MonoBehaviour:
