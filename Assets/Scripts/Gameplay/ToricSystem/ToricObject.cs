@@ -399,17 +399,6 @@ public class ToricObject : MonoBehaviour
         {
             RemoveClones();
         }
-        //else
-        //{
-        //    if (cloner != null)
-        //    {
-        //        ToricObject to = cloner.GetComponent<ToricObject>();
-        //        if (to != null)
-        //        {
-        //            to.RemoveClone(this);
-        //        }
-        //    }
-        //}
     }
 
     #endregion

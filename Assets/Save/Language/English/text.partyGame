@@ -58,6 +58,10 @@
             "content": "Grab"
         },
 		{
+            "textID": "interactTextSettingMenu",
+            "content": "Interact"
+        },
+		{
             "textID": "keyboard",
             "content": "Keyboard"
         },

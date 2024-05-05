@@ -9,7 +9,8 @@
             "Grab",
             "Jump",
             "AttackWeak",
-            "AttackStrong"
+            "AttackStrong",
+            "Interact"
         ],
         "keys": [
             {
@@ -56,6 +57,11 @@
                 "keys": [
                     102
                 ]
+            },
+            {
+                "keys": [
+                    273
+                ]
             }
         ]
     },
@@ -69,7 +75,8 @@
             "Grab",
             "Jump",
             "AttackWeak",
-            "AttackStrong"
+            "AttackStrong",
+            "Interact"
         ],
         "keys": [
             {
@@ -119,6 +126,12 @@
             {
                 "keys": [
                     333
+                ]
+            },
+            {
+                "keys": [
+                    -71,
+                    -63
                 ]
             }
         ]
@@ -153,7 +166,8 @@
             "Grab",
             "Jump",
             "AttackWeak",
-            "AttackStrong"
+            "AttackStrong",
+            "Interact"
         ],
         "keys": [
             {
@@ -200,6 +214,11 @@
                 "keys": [
                     102
                 ]
+            },
+            {
+                "keys": [
+                    273
+                ]
             }
         ]
     },
@@ -213,7 +232,8 @@
             "Grab",
             "Jump",
             "AttackWeak",
-            "AttackStrong"
+            "AttackStrong",
+            "Interact"
         ],
         "keys": [
             {
@@ -263,6 +283,12 @@
             {
                 "keys": [
                     333
+                ]
+            },
+            {
+                "keys": [
+                    -71,
+                    -63
                 ]
             }
         ]

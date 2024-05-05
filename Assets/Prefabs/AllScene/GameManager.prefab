@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 6842532504228175351}
   - component: {fileID: 3639208383533933286}
   - component: {fileID: 8101875005452331617}
-  - component: {fileID: 7950456835390513230}
+  - component: {fileID: 268064778931433680}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -138,6 +138,7 @@ MonoBehaviour:
   - keys: 20000000
   - keys: 64000000
   - keys: 66000000
+  - keys: 11010000
   inputsKeyForGamepad:
   - keys: b7ffffffc0ffffff
   - keys: b6ffffffbeffffff
@@ -148,6 +149,7 @@ MonoBehaviour:
   - keys: 4a010000
   - keys: 4c010000
   - keys: 4d010000
+  - keys: b9ffffffc1ffffff
   inputsActions:
   - MoveRight
   - MoveLeft
@@ -158,6 +160,7 @@ MonoBehaviour:
   - Jump
   - AttackWeak
   - AttackStrong
+  - Interact
   saveInput: 0
 --- !u!114 &3112457484048425201
 MonoBehaviour:
@@ -288,7 +291,7 @@ MonoBehaviour:
     statDatas: []
   writeCurrentStats: 0
   loadStats: 0
---- !u!114 &7950456835390513230
+--- !u!114 &268064778931433680
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -304,6 +307,7 @@ MonoBehaviour:
   saveHash: 0
   hashes:
   - 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+  - 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
   folderToVerify:
   - Save/Language
   - Save/Levels

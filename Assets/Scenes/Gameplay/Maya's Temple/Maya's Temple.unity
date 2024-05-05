@@ -346,7 +346,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8609941561006750364, guid: 77f96886e5b97bc41b9c0d903aebe800, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -577,6 +577,7 @@ MonoBehaviour:
   - {fileID: 3923091009495939953}
   - {fileID: 4203263570955707497}
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 0
 --- !u!1001 &1393366166460120882
 PrefabInstance:
@@ -1114,6 +1115,7 @@ MonoBehaviour:
   - {fileID: 1873805918129010038}
   - {fileID: 1595535409917831790}
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &4718427195015561721
 MonoBehaviour:

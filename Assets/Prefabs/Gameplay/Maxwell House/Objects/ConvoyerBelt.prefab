@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1306492554722676040}
   - component: {fileID: 1306492554722676045}
   - component: {fileID: 1306492554722676042}
-  - component: {fileID: 1306492554722676043}
+  - component: {fileID: 8626952912276504675}
   m_Layer: 3
   m_Name: ConvoyerBelt
   m_TagString: Floor
@@ -180,7 +180,7 @@ MonoBehaviour:
   disableAntiKnockHead: 1
   grabable: 0
   frictionCoefficient: 0
---- !u!114 &1306492554722676043
+--- !u!114 &8626952912276504675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,11 +189,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1306492554722676041}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0196547175cad34f93fbcbb1e38210b, type: 3}
+  m_Script: {fileID: 11500000, guid: 843750da3fd4c33428a90872dea50932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 6
+  <startActive>k__BackingField: 1
+  maxSpeed: 3
   speedLerp: 25
   useByInterruptor: 0
   invertInterruptor: 0
   interruptor: {fileID: 0}
+  colorActivated: {r: 0, g: 0, b: 0, a: 0}
+  colorInacticated: {r: 0, g: 0, b: 0, a: 0}

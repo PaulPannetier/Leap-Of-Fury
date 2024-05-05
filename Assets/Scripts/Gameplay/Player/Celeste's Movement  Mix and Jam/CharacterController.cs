@@ -13,7 +13,7 @@ public class CharacterController : MonoBehaviour
     private BoxCollider2D hitbox;
     private ToricRaycastHit2D raycastRight, raycastLeft, groundRay, rightSlopeRay, leftSlopeRay, rightFootRay, leftFootRay, topRightRay, topLeftRay;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
-    private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData;
+    private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData, apexJumpColliderData;
     private FightController fightController;
     private ToricObject toricObject;
     private int disableMovementCounter = 0;
@@ -383,6 +383,8 @@ public class CharacterController : MonoBehaviour
 
     #region Update
 
+    #region LateUpdate
+
     private void LateUpdate()
     {
         if (!enableBehaviour)
@@ -435,6 +437,8 @@ public class CharacterController : MonoBehaviour
         DebugText.instance.text += $"shi : {shift / Time.deltaTime}\n";
     }
 
+    #endregion
+
     #region UpdateState
 
     private void UpdateState()
@@ -464,7 +468,7 @@ public class CharacterController : MonoBehaviour
             else
             {
                 print("Debug pls");
-                LogManager.instance.WriteLog("Ground ray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay);
+                LogManager.instance.WriteLog("Ground ray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay, "CharacterController::UpdateState");
                 groundCollider = rightSlopeRay.collider;
                 groundColliderData = groundCollider.GetComponent<MapColliderData>();
             }
@@ -489,7 +493,7 @@ public class CharacterController : MonoBehaviour
         rightWallColliderData = onRightWall ? rightWallCollider.GetComponent<MapColliderData>() : null;
         leftWallColliderData = onLeftWall ? leftWallCollider.GetComponent<MapColliderData>() : null;
 
-        //detect quitting convoyerBelt
+        //Detect quitting convoyerBelt
         if(!isBumping && groundCollider == null && oldGroundCollider != null)
         {
             MapColliderData mapColliderData = oldGroundCollider.GetComponent<MapColliderData>();
@@ -619,6 +623,16 @@ public class CharacterController : MonoBehaviour
                 isApexJumpRight = grabApexRight;
                 isApexJumpLeft = grabApexLeft;
                 grabApexRight = grabApexLeft = wallGrab = false;
+
+                if(isApexJumpRight)
+                {
+                    apexJumpColliderData = raycastRight ? raycastRight.collider.GetComponent<MapColliderData>() : rightFootRay.collider.GetComponent<MapColliderData>();
+                }
+                else
+                {
+                    apexJumpColliderData = raycastLeft ? raycastLeft.collider.GetComponent<MapColliderData>() : leftFootRay.collider.GetComponent<MapColliderData>();
+                }
+
                 lastTimeApexJump = Time.time;
             }
 
@@ -644,6 +658,7 @@ public class CharacterController : MonoBehaviour
                 if (Time.time - lastTimeApexJump > apexJumpDuration2)
                 {
                     isApexJump1 = isApexJump2 = false;
+                    apexJumpColliderData = null;
                 }
             }
         }
@@ -868,6 +883,9 @@ public class CharacterController : MonoBehaviour
 
     private void UpdateVelocity()
     {
+        overwriteSpeedOnHorizontalTeleportation = true;
+        overwriteSpeedOnVerticalTeleportation = !isJumping;
+
         HandleWalk();
 
         HandleGrab();
@@ -884,8 +902,6 @@ public class CharacterController : MonoBehaviour
 
         forceHorizontalStick = isSliding || wallGrab;
         forceDownStick = !isJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping && !wallJump;
-        overwriteSpeedOnHorizontalTeleportation = true;
-        overwriteSpeedOnVerticalTeleportation = !isJumping;
 
         DebugText.instance.text += $"forceHorizontalStick : {forceHorizontalStick}\n";
         DebugText.instance.text += $"forceDownStick : {forceDownStick}\n";
@@ -1075,6 +1091,26 @@ public class CharacterController : MonoBehaviour
             Vector2 groundVel = groundColliderData.velocity;
             Vector2 localVel = velocity - groundVel;
 
+            //Avoid stick on side
+            if(enableInput && raycastLeft && playerInput.rawX == 1)
+            {
+                MapColliderData sideColliderData = raycastLeft.collider.GetComponent<MapColliderData>();
+                if((int)sideColliderData.velocity.x.Sign() == 1 && sideColliderData.velocity.x < walkSpeed)
+                {
+                    localVel.x = Mathf.Min(sideColliderData.velocity.x + initSpeed * walkSpeed, walkSpeed);
+                    overwriteSpeedOnHorizontalTeleportation = false;
+                }
+            }
+            if (enableInput && raycastRight && playerInput.rawX == -1)
+            {
+                MapColliderData sideColliderData = raycastRight.collider.GetComponent<MapColliderData>();
+                if ((int)sideColliderData.velocity.x.Sign() == -1 && -sideColliderData.velocity.x < walkSpeed)
+                {
+                    localVel.x = Mathf.Max(sideColliderData.velocity.x - initSpeed * walkSpeed, -walkSpeed);
+                    overwriteSpeedOnHorizontalTeleportation = false;
+                }
+            }
+
             //Clamp, on est dans le mauvais sens
             if (enableInput && ((playerInput.x >= 0f && localVel.x <= 0f) || (playerInput.x <= 0f && localVel.x >= 0f)))
             {
@@ -1232,6 +1268,12 @@ public class CharacterController : MonoBehaviour
         {
             ConvoyerBelt convoyer = groundColliderData.GetComponent<ConvoyerBelt>();
 
+            if(!convoyer.isActive)
+            {
+                HandleNormalWalk();
+                return;
+            }
+
             //clamp, mauvais sens
             if(playerInput.rawX != 0 && playerInput.rawX != convoyer.maxSpeed.Sign() && enableInput)
             {
@@ -1344,35 +1386,39 @@ public class CharacterController : MonoBehaviour
 
         if(isApexJumping)
         {
+            Vector2 localVel = apexJumpColliderData != null ? velocity - apexJumpColliderData.velocity : velocity;
+
             if(isApexJump1)
             {
-                if(Mathf.Abs(velocity.x) <= apexJumpSpeed.x * 0.95f * apexJumpInitSpeed)
+                if(Mathf.Abs(localVel.x) <= apexJumpSpeed.x * 0.95f * apexJumpInitSpeed)
                 {
-                    velocity = new Vector2(velocity.x.Sign() * apexJumpSpeed.x * apexJumpInitSpeed, velocity.y);
+                    localVel = new Vector2(localVel.x.Sign() * apexJumpSpeed.x * apexJumpInitSpeed, localVel.y);
                 }
-                if (Mathf.Abs(velocity.y) <= apexJumpSpeed.y * 0.95f * apexJumpInitSpeed)
+                if (Mathf.Abs(localVel.y) <= apexJumpSpeed.y * 0.95f * apexJumpInitSpeed)
                 {
-                    velocity = new Vector2(velocity.x, velocity.y.Sign() * apexJumpSpeed.y * apexJumpInitSpeed);
+                    localVel = new Vector2(localVel.x, localVel.y.Sign() * apexJumpSpeed.y * apexJumpInitSpeed);
                 }
 
                 Vector2 targetSpped = new Vector2(isApexJumpRight ? apexJumpSpeed.x : -apexJumpSpeed.x, apexJumpSpeed.y);
-                velocity = Vector2.MoveTowards(velocity, targetSpped, apexJumpSpeedLerp);
+                localVel = Vector2.MoveTowards(localVel, targetSpped, apexJumpSpeedLerp * Time.deltaTime);
             }
             else
             //isApexJump2
             {
-                if (Mathf.Abs(velocity.x) <= apexJumpSpeed2.x * 0.95f * apexJumpInitSpeed2)
+                if (Mathf.Abs(localVel.x) <= apexJumpSpeed2.x * 0.95f * apexJumpInitSpeed2)
                 {
-                    velocity = new Vector2(velocity.x.Sign() * apexJumpSpeed2.x * apexJumpInitSpeed2, velocity.y);
+                    localVel = new Vector2(localVel.x.Sign() * apexJumpSpeed2.x * apexJumpInitSpeed2, localVel.y);
                 }
-                if (Mathf.Abs(velocity.y) <= apexJumpSpeed2.y * 0.95f * apexJumpInitSpeed2)
+                if (Mathf.Abs(localVel.y) <= apexJumpSpeed2.y * 0.95f * apexJumpInitSpeed2)
                 {
-                    velocity = new Vector2(velocity.x, velocity.y.Sign() * apexJumpSpeed2.y * apexJumpInitSpeed2);
+                    localVel = new Vector2(localVel.x, localVel.y.Sign() * apexJumpSpeed2.y * apexJumpInitSpeed2);
                 }
 
                 Vector2 targetSpped = new Vector2(isApexJumpRight ? apexJumpSpeed2.x : -apexJumpSpeed2.x, apexJumpSpeed2.y);
-                velocity = Vector2.MoveTowards(velocity, targetSpped, apexJumpSpeedLerp2);
+                localVel = Vector2.MoveTowards(localVel, targetSpped, apexJumpSpeedLerp2 * Time.deltaTime);
             }
+
+            velocity = apexJumpColliderData != null ? localVel + apexJumpColliderData.velocity : localVel;
         }
 
         if(reachGrabApex)

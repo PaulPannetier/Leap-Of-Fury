@@ -21,6 +21,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
     [SerializeField] private ControlItem attack1Control;
     [SerializeField] private ControlItem attack2Control;
     [SerializeField] private ControlItem grapControl;
+    [SerializeField] private ControlItem interactControl;
 
     private void Awake()
     {
@@ -46,6 +47,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         attack1Control.SetNameText(LanguageManager.instance.GetText("attack1TextSettingMenu"));
         attack2Control.SetNameText(LanguageManager.instance.GetText("attack2TextSettingMenu"));
         grapControl.SetNameText(LanguageManager.instance.GetText("grabTextSettingMenu"));
+        interactControl.SetNameText(LanguageManager.instance.GetText("interactTextSettingMenu"));
     }
 
     private void RefreshControl(bool defaultControl)
@@ -96,6 +98,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         InputManager.ReplaceAction("AttackWeak", attack1Control.key, curCon);
         InputManager.ReplaceAction("AttackStrong", attack2Control.key, curCon);
         InputManager.ReplaceAction("Grab", grapControl.key, curCon);
+        InputManager.ReplaceAction("Interact", interactControl.key, curCon);
         InputEditor.instance.SaveInputConfig();
     }
 
@@ -121,6 +124,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         attack1Control.key = InputManager.GetInputKey("AttackWeak", curCon, defaultConfig)[0];
         attack2Control.key = InputManager.GetInputKey("AttackStrong", curCon, defaultConfig)[0];
         grapControl.key = InputManager.GetInputKey("Grab", curCon, defaultConfig)[0];
+        interactControl.key = InputManager.GetInputKey("Interact", curCon, defaultConfig)[0];
     }
 
     private void OnEnable()

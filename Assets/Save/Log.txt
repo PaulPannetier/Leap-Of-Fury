@@ -135,79 +135,6 @@ LogMessage :
 }
 LogMessage : 
 {
-    Error : An Exeption occur in runtime,
-    Params : 3
-    {
-        Type : LogType,
-        Value : Warning
-
-        Type : String,
-        Value : Script 'CharacterController' has the same name as built-in Unity component.
-AddComponent and GetComponent will not work with this script.
-
-        Type : String,
-        Value : UnityEditor.AssetDatabase:Refresh ()
-Microsoft.Unity.VisualStudio.Editor.VisualStudioIntegration/<>c__DisplayClass8_0:<RunOnceOnUpdate>b__0 () (at ./Library/PackageCache/com.unity.ide.visualstudio@2.0.22/Editor/VisualStudioIntegration.cs:100)
-UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
-
-    }
-}
-LogMessage : 
-{
-    Error : The secure folder Save/Levels was modified,
-    Params : 4
-    {
-        Type : String,
-        Value : Save/Levels
-
-        Type : String,
-        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
-
-        Type : Hash,
-        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
-
-        Type : String,
-        Value : SecutityManager.Start
-    }
-}
-LogMessage : 
-{
-    Error : File corrupted found, close the application,
-    Params : 1
-    {
-        Type : String,
-        Value : SecutityManager.Start
-    }
-}
-LogMessage : 
-{
-    Error : The secure folder Save/Levels was modified,
-    Params : 4
-    {
-        Type : String,
-        Value : Save/Levels
-
-        Type : String,
-        Value : B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
-
-        Type : Hash,
-        Value : 5519FE44156DA592DD5EF1098C4CA553C9F7544BC972AA4250AFCBC21FD5F0A1
-
-        Type : String,
-        Value : SecutityManager.Start
-    }
-}
-LogMessage : 
-{
-    Error : File corrupted found, close the application,
-    Params : 1
-    {
-        Type : String,
-        Value : SecutityManager.Start
-    }
-}
-LogMessage : 
-{
     Error : The secure folder Save/Levels was modified,
     Params : 4
     {
@@ -266,16 +193,162 @@ LogMessage :
     Params : 3
     {
         Type : LogType,
-        Value : Log
+        Value : Exception
 
         Type : String,
-        Value : Debug pls
+        Value : MissingReferenceException: The object of type 'GameObject' has been destroyed but you are still trying to access it.
+Your script should either check if it is null or you should not destroy the object.
 
         Type : String,
-        Value : UnityEngine.MonoBehaviour:print (object)
-ToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:356)
-ToricObject:CustomUpdate () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:204)
-CharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:421)
+        Value : UnityEngine.GameObject.GetComponent[T] () (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MovablePlateform.OnCloneDestroy (UnityEngine.GameObject clone) (at Assets/Scripts/Gameplay/Map/MovablePlateform.cs:110)
+ToricObject.RemoveClone (ToricObject+ObjectClone clone) (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:380)
+ToricObject.RemoveClones () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:388)
+ToricObject.OnDestroy () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:400)
+
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
 
     }
 }
@@ -285,16 +358,4578 @@ LogMessage :
     Params : 3
     {
         Type : LogType,
-        Value : Log
+        Value : Exception
 
         Type : String,
-        Value : Debug pls
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
 
         Type : String,
-        Value : UnityEngine.MonoBehaviour:print (object)
-ToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:336)
-ToricObject:CustomUpdate () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:204)
-CharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:421)
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
 
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : An Exeption occur in runtime,
+    Params : 3
+    {
+        Type : LogType,
+        Value : Exception
+
+        Type : String,
+        Value : MissingComponentException: There is no 'SpriteRenderer' attached to the "ConvoyerBelt (1)" game object, but a script is trying to access it.
+You probably need to add a SpriteRenderer to the game object "ConvoyerBelt (1)". Or your script needs to check if the component is attached before using it.
+
+        Type : String,
+        Value : UnityEngine.SpriteRenderer.set_color (UnityEngine.Color value) (at <55fbbbd17b724c15b6abe8c1a3e3289c>:0)
+MaxwellHouseConvoyerBelt.Update () (at Assets/Scripts/Gameplay/Levels/Maxwell House/MaxwellHouseConvoyerBelt.cs:18)
+
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : The secure folder Save/Language was modified,
+    Params : 4
+    {
+        Type : String,
+        Value : Save/Language
+
+        Type : String,
+        Value : 9D80922FBC004FD907662BF2F7A05DE46207D4E125F1E01A6307B2E64585F86D
+
+        Type : Hash,
+        Value : A0E7CBEF90D2686A2A1615A7554BB2ABF472B0BB45CEFB795106B607DE0F366B
+
+        Type : String,
+        Value : SecutityManager.Start
+    }
+}
+LogMessage : 
+{
+    Error : File corrupted found, close the application,
+    Params : 1
+    {
+        Type : String,
+        Value : SecutityManager.Start
     }
 }

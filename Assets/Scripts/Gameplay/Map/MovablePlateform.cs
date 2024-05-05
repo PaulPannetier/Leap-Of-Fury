@@ -242,7 +242,7 @@ public class MovablePlateform : PathFindingBlocker
                         if (col.CompareTag("Char"))
                         {
                             GameObject player = col.GetComponent<ToricObject>().original;
-                            if (IsPlayerDash(player))
+                            if (IsPlayerDash(player) && IsValidDashDirection(player, hitboxSide))
                             {
                                 if (Time.time - lastTimeActivated > activationCooldown)
                                 {
@@ -412,7 +412,7 @@ public class MovablePlateform : PathFindingBlocker
                     if (col.CompareTag("Char"))
                     {
                         GameObject player = col.GetComponent<ToricObject>().original;
-                        if (IsPlayerDash(player))
+                        if (IsPlayerDash(player) && IsValidDashDirection(player, hitboxSide))
                         {
                             if (Time.time - lastTimeActivated > activationCooldown)
                             {
@@ -428,6 +428,13 @@ public class MovablePlateform : PathFindingBlocker
         bool IsPlayerDash(GameObject player)
         {
             return player.GetComponent<CharacterController>().isDashing;
+        }
+
+        bool IsValidDashDirection(GameObject player, HitboxSide hitboxSide)
+        {
+            Vector2 playerDir = -player.GetComponent<CharacterController>().velocity;
+            Vector2 sideDir = convertHitboxSideToDir[(int)hitboxSide];
+            return Vector2.Angle(playerDir, sideDir) <= 50f;
         }
 
         Collider2D[] GetCharColliders(HitboxSide hitboxSide)

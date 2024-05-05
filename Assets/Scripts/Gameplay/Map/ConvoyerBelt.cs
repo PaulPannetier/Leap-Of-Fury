@@ -1,12 +1,12 @@
 using UnityEngine;
 
 [RequireComponent(typeof(MapColliderData))]
-public class ConvoyerBelt : MonoBehaviour
+public abstract class ConvoyerBelt : MonoBehaviour
 {
     private MapColliderData mapColliderData;
 
     private bool _isActive;
-    private bool isActive
+    public bool isActive
     {
         get => _isActive;
         set
@@ -30,6 +30,7 @@ public class ConvoyerBelt : MonoBehaviour
         }
     }
 
+    [field:SerializeField] public bool startActive { get; protected set; } = true;
     public float maxSpeed;
     public float speedLerp;
 
@@ -38,14 +39,13 @@ public class ConvoyerBelt : MonoBehaviour
     [SerializeField] private bool invertInterruptor;
     [SerializeField] private Interruptor interruptor;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         mapColliderData = GetComponent<MapColliderData>();
-        if(useByInterruptor)
-            isActive = false;
+        isActive = startActive;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if(useByInterruptor)
         {
@@ -70,7 +70,7 @@ public class ConvoyerBelt : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         speedLerp = Mathf.Max(speedLerp, 0f);
     }
