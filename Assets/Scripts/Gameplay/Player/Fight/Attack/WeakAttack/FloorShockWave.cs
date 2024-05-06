@@ -2,16 +2,13 @@ using UnityEngine;
 
 public class FloorShockWave : MonoBehaviour
 {
-    private float speedX;
+    private float speedX, timeCreated;
     private bool right;
-    private bool isFinish = false;
     private FallAttack fallAttack;
     private PlayerCommon playerCommon;
-    private ToricObject toricObject;
+    private LayerMask playersMask, groundMask;
 
     [SerializeField] private Vector2 colliderOffset, colliderSize;
-    [SerializeField] private LayerMask playersMask;
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private float distanceFromFloor = 1f;
     [Tooltip("Horizontale detection")]
     [SerializeField] private float rayLengthHori = 1f;
@@ -19,39 +16,35 @@ public class FloorShockWave : MonoBehaviour
     [Tooltip("Vertical detection")]
     [SerializeField] private float rayLengthVerti = 1f;
     [SerializeField] private Vector2 offsetVertiRaycast = new Vector2(1f, 0.2f);
-
-    [Tooltip("Stat")]
-    [Range(0f, 100f)] public float attackForce = 30f;
+    [SerializeField] private float maxDuration = 5f;
 
     private void Awake()
     {
-        toricObject = GetComponent<ToricObject>();
+        playersMask = LayerMask.GetMask("Char");
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
-    public void Launch(in Vector2 impactPoint, in bool right, in float maxSpeed, FallAttack fallAttack)
+    public void Launch(bool right, float maxSpeed, FallAttack fallAttack)
     {
-        RaycastHit2D raycast = Physics2D.Raycast(impactPoint, Vector2.down, LevelMapData.currentMap.mapSize.y, groundMask);
+        ToricRaycastHit2D raycast = PhysicsToric.Raycast(transform.position, Vector2.down, LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y, groundMask);
         if(raycast.collider == null)
         {
-            print("Debug shock wave raycasting! plsss");
+            print("Debug pls");
+            LogManager.instance.WriteLog("Raycast must collide with the ground!", raycast, "FloorShockWave::Launch");
+            Destroy(gameObject);
             return;
         }
+
         transform.position = raycast.point + Vector2.up * distanceFromFloor;
         speedX = right ? maxSpeed : -maxSpeed;
         this.fallAttack = fallAttack;
         this.right = right;
-        isFinish = false;
         playerCommon = fallAttack.GetComponent<PlayerCommon>();
+        timeCreated = Time.time;
     }
 
     private void OnHitChar(GameObject player)
     {
-        if(toricObject.isAClone)
-        {
-            toricObject.original.GetComponent<FloorShockWave>().OnHitChar(player);
-            return;
-        }
-
         if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
         {
             fallAttack.OnTouchEnemyByShockWave(player, this);
@@ -61,7 +54,16 @@ public class FloorShockWave : MonoBehaviour
     private void Update()
     {
         if (PauseManager.instance.isPauseEnable)
+        {
+            timeCreated += Time.deltaTime;
             return;
+        }
+
+        if(Time.time - timeCreated > maxDuration)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, playersMask);
         foreach (Collider2D col in cols)
@@ -72,31 +74,21 @@ public class FloorShockWave : MonoBehaviour
             }
         }
 
-        if (toricObject.isAClone)
-            return;
-
         Vector2 beg = (Vector2)transform.position + (right ? offsetVertiRaycast : new Vector2(-offsetVertiRaycast.x, offsetVertiRaycast.y));
-        ToricRaycastHit2D raycast = PhysicsToric.Raycast(beg, Vector2.down, rayLengthVerti, groundMask);//en bas
-        if(raycast.collider == null)
-        {
-            //on arréte la shockWave ici
-            isFinish = true;
-        }
+        ToricRaycastHit2D raycast = PhysicsToric.Raycast(beg, Vector2.down, rayLengthVerti, groundMask);
+        bool hitground = raycast.collider != null;
+
         beg = (Vector2)transform.position + (right ? offsetHoriRaycast : new Vector2(-offsetHoriRaycast.x, offsetHoriRaycast.y));
         raycast = PhysicsToric.Raycast(beg, right ? Vector2.right : Vector2.left, rayLengthHori, groundMask);
-        if(raycast.collider != null)
-        {
-            isFinish = true;
-        }
+        bool hitWall = raycast.collider != null;
 
-        if (isFinish)
+        if (hitWall || !hitground)
         {
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            transform.position += (Vector3)(Vector2.right * (speedX * Time.deltaTime));
-        }
+
+        transform.position += (Vector3)(Vector2.right * (speedX * Time.deltaTime));
     }
 
     #region Gizmos/OnValidate
@@ -129,6 +121,7 @@ public class FloorShockWave : MonoBehaviour
         rayLengthVerti = Mathf.Max(0f, rayLengthVerti);
         distanceFromFloor = Mathf.Max(0f, distanceFromFloor);
         colliderSize = new Vector2(Mathf.Max(0f, colliderSize.x), Mathf.Max(0f, colliderSize.y));
+        maxDuration = Mathf.Max(0f, maxDuration);
     }
 
 #endif

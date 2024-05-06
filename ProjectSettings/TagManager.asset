@@ -15,8 +15,6 @@ TagManager:
   - Char
   - Clone
   - Global Light
-  - WeakAttackSlider
-  - StrongAttackSlider
   - Canvas
   - CharsParent
   - Map

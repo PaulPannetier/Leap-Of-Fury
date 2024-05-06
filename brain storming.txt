@@ -86,8 +86,7 @@ Name : Maya's Temple
 //Pas a mettre pour l'instant
 Carte 3 : 
 Méca : De temps en temps, un portail temporel apparait au milieu de la map, un joueur peut le prendre, il reste dedans pendant quelques secondes
-puis plusieurs portail apparaisse et le joueur se tp devant un (au choix selon la direction de son input), crée une explosion devant 
-le portail, 
+puis un nouveau portail apparait et le joueur se tp devant créant une explosion devant le portail.
 debient invinsible pendant quelques seconde, et ralentie le temps(sauf pour lui).***
 De + le pendule de l'hormoge tangue et tue tout sur son passage//ok
 DA : L'atelier d'un horloger / sommet d'une cathédrale avec cloche.
@@ -129,11 +128,12 @@ DA : jsp
 Name : Chaos
 
 TODO :
+hyperparam charcontroller grab apex
 Trad all text
 netoyer tout les fichiers du projet
 verif spell using Freeze method
 test wall projectile and prohectile collision and retest all attack/char
-polish convyor belt visual (make separate script from convyior belt to handle visual updates)
 Complete Maxwell house and Into the jungle maps and méca
+polish attacks
 Huge test of ALL before V0.1
 

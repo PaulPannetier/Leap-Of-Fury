@@ -177,7 +177,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   <velocity>k__BackingField: {x: 0, y: 0}
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   sideRayLength: 0.5
   sideRayOffset: 0
@@ -676,11 +676,11 @@ MonoBehaviour:
   cooldown:
     duration: 3
   saveAttackStats: 0
-  drawGizmos: 0
+  drawGizmos: 1
   explosionRadius: 1.5
   minDistanceFromGround: 1.2
   speedFall: 50
-  maxFallDuration: 1.5
+  maxFallDuration: 2
   upForceWhenCancelFalling: 10
   explosionForce: 1.2
   floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}

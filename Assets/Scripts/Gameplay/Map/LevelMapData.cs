@@ -16,7 +16,8 @@ public class LevelMapData : MonoBehaviour
         get
         {
 #if UNITY_EDITOR
-            _currentMap = GameObject.FindGameObjectWithTag("Map").GetComponent<LevelMapData>();
+            if (_currentMap == null)
+                _currentMap = GameObject.FindGameObjectWithTag("Map").GetComponent<LevelMapData>();
 #endif
             return _currentMap;
         }

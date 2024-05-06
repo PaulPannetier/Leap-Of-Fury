@@ -114,7 +114,9 @@ public class FallAttack : WeakAttack
             }
 
             //collision avec le sol
-            hitGround = PhysicsToric.OverlapCircle(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), charController.groundRaycastLength, groundMask) != null;
+            hitGround = PhysicsToric.Raycast((Vector2)transform.position + charController.groundRaycastOffset, Vector2.down, charController.groundRaycastLength, groundMask);
+            hitGround = hitGround || PhysicsToric.Raycast((Vector2)transform.position + new Vector2(-charController.groundRaycastOffset.x, charController.groundRaycastOffset.y), Vector2.down, charController.groundRaycastLength, groundMask);
+
             //Collision avec les autre personnages
             cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position, hitbox.size, transform.rotation.eulerAngles.z, charMask);
             foreach (UnityEngine.Collider2D col in cols)
@@ -167,13 +169,13 @@ public class FallAttack : WeakAttack
             Vector2 shockWavePos = (Vector2)transform.position + Vector2.right * shockWaveHoriOffset;
             GameObject shockWaveGO = Instantiate(floorShockWavePrefaps, shockWavePos, Quaternion.identity, CloneParent.cloneParent);
             FloorShockWave shockWave = shockWaveGO.GetComponent<FloorShockWave>();
-            shockWave.Launch(transform.position, true, shockWaveSpeed, this);
+            shockWave.Launch(true, shockWaveSpeed, this);
 
             //Left
             shockWavePos = (Vector2)transform.position + Vector2.left * shockWaveHoriOffset;
             shockWaveGO = Instantiate(floorShockWavePrefaps, shockWavePos, Quaternion.identity, CloneParent.cloneParent);
             shockWave = shockWaveGO.GetComponent<FloorShockWave>();
-            shockWave.Launch(transform.position, false, shockWaveSpeed, this);
+            shockWave.Launch(false, shockWaveSpeed, this);
         }
 
         isFalling = false;
@@ -204,11 +206,11 @@ public class FallAttack : WeakAttack
         if (!drawGizmos)
             return;
 
-        if(charController == null)
-            charController = GetComponent<CharacterController>();
+        charController = GetComponent<CharacterController>();
 
-        Gizmos.color = Color.black;
-        Circle.GizmosDraw(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), explosionRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine((Vector2)transform.position + charController.groundRaycastOffset, (Vector2)transform.position + charController.groundRaycastOffset + Vector2.down * charController.groundRaycastLength);
+        Gizmos.DrawLine((Vector2)transform.position + new Vector2(-charController.groundRaycastOffset.x, charController.groundRaycastOffset.y), (Vector2)transform.position + new Vector2(-charController.groundRaycastOffset.x, charController.groundRaycastOffset.y) + Vector2.down * charController.groundRaycastLength);
     }
 
 #endif

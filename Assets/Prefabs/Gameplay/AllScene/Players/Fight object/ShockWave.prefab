@@ -103,9 +103,12 @@ MonoBehaviour:
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  componentsToDisableInClone: []
-  componentsToSynchroniseInClone: []
+  componentsToDisableInClone:
+  - {fileID: 7980275822135795112}
+  componentsToSynchroniseInClone:
+  - {fileID: 7980275822135795114}
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &7980275822135795112
 MonoBehaviour:
@@ -121,15 +124,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colliderOffset: {x: 0, y: 0}
   colliderSize: {x: 1, y: 1}
-  playersMask:
-    serializedVersion: 2
-    m_Bits: 256
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 16392
   distanceFromFloor: 0.5
   rayLengthHori: 0.35
   offsetHoriRaycast: {x: 0.3, y: -0.3}
   rayLengthVerti: 0.6
   offsetVertiRaycast: {x: 0.55, y: -0.3}
-  attackForce: 45
