@@ -3022,6 +3022,7 @@ namespace Collision2D
         public virtual bool CollideStraightLine(StraightLine2D d) => false;
         public virtual bool Contains(in Vector2 p) => false;
         public virtual float Distance(in Vector2 point) => 0f;
+        public virtual float SignedDistance(in Vector2 point) => 0f;
         public virtual Vector2 ClosestPoint(in Vector2 point) => default;
         public virtual void MoveAt(in Vector2 position) { }
         public virtual void Rotate(float angle) { }
@@ -3225,6 +3226,37 @@ namespace Collision2D
 
         public override float Distance(in Vector2 point) => Contains(point) ? 0f : ClosestPoint(point).Distance(point);
 
+        public override float SignedDistance(in Vector2 point)
+        {
+            Vector2[] closestPointOnSide = new Vector2[vertices.Length];
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                closestPointOnSide[i] = Line2D.ClosestPoint(vertices[i], vertices[(i + 1) % vertices.Length], point);
+            }
+
+            float minSqrDist = closestPointOnSide[0].SqrDistance(point);
+            int closestIndex = 0;
+            float currestSqrDistance;
+
+            for (int i = 1; i < vertices.Length; i++)
+            {
+                currestSqrDistance = closestPointOnSide[i].SqrDistance(point);
+                if (currestSqrDistance < minSqrDist)
+                {
+                    minSqrDist = currestSqrDistance;
+                    closestIndex = i;
+                }
+            }
+
+            minSqrDist = point.Distance(closestPointOnSide[closestIndex]);
+            if (Contains(point))
+            {
+                minSqrDist = -minSqrDist;
+            }
+
+            return minSqrDist;
+        }
+
         public override bool CollideLine(Line2D line) => CollidePolygoneLine(this, line.A, line.B);
 
         public override bool CollideStraightLine(StraightLine2D straightLine) => CollidePolygoneStaightLine(this, straightLine.A, straightLine.B);
@@ -3412,6 +3444,7 @@ namespace Collision2D
 
         public override Vector2 ClosestPoint(in Vector2 point) => rec.ClosestPoint(point);
         public override float Distance(in Vector2 point) => rec.Distance(point);
+        public override float SignedDistance(in Vector2 point) => rec.SignedDistance(point);
 
         public override void Scale(in Vector2 scale)
         {
@@ -3468,7 +3501,6 @@ namespace Collision2D
                 GizmosDraw(center, radius, color, Debug.DrawLine);
             }
         }
-
         public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, bool gizmos = true) => GizmosDraw(center, radius, begAngle, endAngle, Color.white, gizmos);
         public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, Color color, bool gizmos = true)
         {
@@ -3487,7 +3519,6 @@ namespace Collision2D
                 GizmosDraw(center, radius, begAngle, endAngle, color, Debug.DrawLine);
             }
         }
-
         public static void GizmosDraw(in Vector2 center, float radius, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
         {
             int sides = ((radius + 10f) * 7f).Round();
@@ -3502,7 +3533,6 @@ namespace Collision2D
                 lastPoint = p;
             }
         }
-
         public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
         {
             int sides = Math.Max(((radius + 10f) * 7f * Mathf.Abs((endAngle - begAngle) / (2f * Mathf.PI))).Round(), 4);
@@ -3543,13 +3573,9 @@ namespace Collision2D
             Scale(circle.transform.lossyScale);
         }
 
-        #region CollideLine
-
         public override bool CollideLine(Line2D line) => CollideCircleLine(this, line.A, line.B);
 
         public override bool CollideStraightLine(StraightLine2D straightLine) => CollideCircleStraightLine(this, straightLine.A, straightLine.B);
-
-        #endregion
 
         public override bool Collide(Collider2D collider) => Collider2D.Collide(collider, this);
 
@@ -3559,6 +3585,8 @@ namespace Collision2D
         }
 
         public override float Distance(in Vector2 point) => Mathf.Max(0f, point.Distance(center) - radius);
+
+        public override float SignedDistance(in Vector2 point) => point.Distance(center) - radius;
 
         public override Hitbox ToHitbox() => new Hitbox(center, new Vector2(radius, radius));
 
@@ -3754,6 +3782,18 @@ namespace Collision2D
         }
 
         public override float Distance(in Vector2 point) => Contains(point) ? 0f : ClosestPoint(point).Distance(point);
+
+        public override float SignedDistance(in Vector2 point)
+        {
+            Vector2 cp = ClosestPoint(point);
+            float distance = point.Distance(cp);
+            if(Contains(point))
+            {
+                distance = -distance;
+            }
+
+            return distance;
+        }
 
         public override void MoveAt(in Vector2 pos)
         {

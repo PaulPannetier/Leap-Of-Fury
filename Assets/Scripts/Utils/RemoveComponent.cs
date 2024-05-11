@@ -29,6 +29,7 @@ public class RemoveComponent : MonoBehaviour
             DestroyImmediate(component);
         }
         componentsTypeToRemove = null;
+        DestroyImmediate(this);
         Debug.ClearDeveloperConsole();
     }
 }

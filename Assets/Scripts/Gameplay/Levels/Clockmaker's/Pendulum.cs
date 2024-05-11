@@ -1,24 +1,26 @@
+using System;
 using UnityEngine;
-using Collision2D;
-using Collider2D = UnityEngine.Collider2D;
 
 public class Pendulum : MonoBehaviour
 {
-    private float accAng, vAng, ang, MgOl;
-    private GameObject line, pendulumCol;
+    private float accAng, vAng, ang, MgOl, oldAng;
+    private LayerMask charMask;
+    private new Transform transform;
 
     public bool enableBehaviour = true;
     [SerializeField] private float length = 3f;
     [SerializeField] private float radius = 1.5f;
-    [SerializeField, Range(0f, 360f)] private float angleInit = 45f;
+    [SerializeField, Range(-180f, 180f)] private float angleInit = 45f;
     [SerializeField] private float initAngularVelocity = 0f;
-    [SerializeField] private float gravityScale = 1f;
-    [SerializeField] private LayerMask charMask;
+    [Tooltip("The oscillating speed."), SerializeField] private float gravityScale = 1f;
+
+    [HideInInspector] public Action callbackOnPendulumTick;
 
     private void Awake()
     {
-        line = transform.GetChild(0).gameObject;
-        pendulumCol = transform.GetChild(1).gameObject;
+        callbackOnPendulumTick = () => { };
+        charMask = LayerMask.GetMask("Char");
+        this.transform = base.transform;
     }
 
     private void Start()
@@ -26,6 +28,7 @@ public class Pendulum : MonoBehaviour
         accAng = 0f;
         vAng = initAngularVelocity;
         ang = angleInit * Mathf.Deg2Rad;
+        oldAng = ang;
         MgOl = (Physics2D.gravity.y * gravityScale) / length;
         PauseManager.instance.callBackOnPauseDisable += Enable;
         PauseManager.instance.callBackOnPauseEnable += Disable;
@@ -41,7 +44,8 @@ public class Pendulum : MonoBehaviour
         ang += vAng * Time.deltaTime;
         transform.rotation = Quaternion.Euler(0f, 0f, ang * Mathf.Rad2Deg);
 
-        Collider2D[] cols = PhysicsToric.OverlapCircleAll(pendulumCol.transform.position, radius, charMask);
+        Vector2 pendulumPos = GetPendulumPosition();
+        Collider2D[] cols = PhysicsToric.OverlapCircleAll(pendulumPos, radius, charMask);
         foreach (Collider2D col in cols)
         {
             if(col.CompareTag("Char"))
@@ -51,7 +55,17 @@ public class Pendulum : MonoBehaviour
                 ec.OnBeenTouchByEnvironnement(gameObject);
             }
         }
+
+        if((int)oldAng.Sign() != (int)ang.Sign())
+        {
+            callbackOnPendulumTick.Invoke();
+        }
+        oldAng = ang;
     }
+
+    private Vector2 GetPendulumPosition() => (Vector2)transform.position + Useful.Vector2FromAngle(ang - Mathf.PI * 0.5f, length);
+
+    #region Pause/OnValidate/Gizmos
 
     private void Enable()
     {
@@ -73,27 +87,19 @@ public class Pendulum : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (pendulumCol == null)
-            pendulumCol = transform.GetChild(1).gameObject;
-
-        Gizmos.color = Color.green;
-        Circle.GizmosDraw(pendulumCol.transform.position, radius);
+        Vector2 pos = GetPendulumPosition();
+        Collision2D.Circle.GizmosDraw(pos, radius, Color.green, true);
     }
 
     private void OnValidate()
     {
+        this.transform = base.transform;
         gravityScale = Mathf.Max(0f, gravityScale);
-        if (line == null)
-            line = transform.GetChild(0).gameObject;
-        if (pendulumCol == null)
-            pendulumCol = transform.GetChild(1).gameObject;
-
-        line.transform.localPosition = new Vector3(0f, -length * 0.5f, 0f);
-        line.transform.localScale = new Vector3(line.transform.localScale.x, -length, 0f);
-        pendulumCol.transform.localPosition = new Vector3(0f, -length, 0f);
-        pendulumCol.transform.localScale = new Vector3(2f * radius, 2f * radius, 1f);
-        transform.localRotation = Quaternion.Euler(0f, 0f, angleInit);
+        transform.rotation = Quaternion.Euler(0f, 0f, angleInit);
+        ang = angleInit * Mathf.Deg2Rad;
     }
 
 #endif
+
+    #endregion
 }

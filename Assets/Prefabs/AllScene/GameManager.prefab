@@ -221,6 +221,12 @@ MonoBehaviour:
     pitch: 1
     loop: 1
     soundEffect: 0
+  - name: Clockermaker's Theme
+    audioClip: {fileID: 8300000, guid: 4c31524d4dc668c4fb08726b1ba940e9, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 1
+    soundEffect: 0
   musicSourcePrefab: {fileID: 160324979959570180, guid: 0a7f32685a478654e8d8a72a1a7434f2, type: 3}
   soundEffectSourcePrefab: {fileID: 837524125875579688, guid: bedb528f517e4a2459d8d3e2162723ad, type: 3}
 --- !u!114 &8496452321927903596

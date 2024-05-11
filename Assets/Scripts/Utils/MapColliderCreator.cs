@@ -237,6 +237,7 @@ public class MapColliderCreator : MonoBehaviour
                 FindLevelMapData();
 
             CreateColliders();
+            DestroyImmediate(this);
             Debug.ClearDeveloperConsole();
         }
     }
