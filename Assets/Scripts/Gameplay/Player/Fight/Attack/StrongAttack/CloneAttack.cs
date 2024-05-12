@@ -51,8 +51,6 @@ public class CloneAttack : StrongAttack
         cloneRenderer.enabled = false;
         charMask = LayerMask.GetMask("Char");
 
-        eventController.callBackEnterTimePortal += OnEnterTimePortal;
-        eventController.callBackExitTimePortal += OnExitTimePortal;
         PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
         PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
     }
@@ -237,21 +235,9 @@ public class CloneAttack : StrongAttack
         cloneAnimator.enabled = true;
     }
 
-    protected void OnEnterTimePortal(TimePortal timePortal)
-    {
-        disableRegisteringData = true;
-    }
-
-    protected void OnExitTimePortal(TimePortal timePortal)
-    {
-        disableRegisteringData = false;
-    }
-
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        eventController.callBackEnterTimePortal -= OnEnterTimePortal;
-        eventController.callBackExitTimePortal -= OnExitTimePortal;
         PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
         PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
     }

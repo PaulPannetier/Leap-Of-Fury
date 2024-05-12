@@ -14,8 +14,6 @@ public class EventController : MonoBehaviour
     public Action<Attack, GameObject> callBackBeenBlockAttack;
     public Action<GameObject> callBackKill;
     public Action callBackBeenKill;
-    public Action<TimePortal> callBackEnterTimePortal;
-    public Action<TimePortal> callBackExitTimePortal;
 
     public Action<GameObject> callBackKillByDash;
     public Action<GameObject> callBackBeenKillByDash;
@@ -40,8 +38,6 @@ public class EventController : MonoBehaviour
         callBackBeenBlockAttack = new Action<Attack, GameObject>((Attack p, GameObject b) => { });
         callBackKill = new Action<GameObject>((GameObject player) => { });
         callBackBeenKill = new Action(() => { });
-        callBackEnterTimePortal = new Action<TimePortal>((TimePortal arg1) => { });
-        callBackExitTimePortal = new Action<TimePortal>((TimePortal arg1) => { });
         callBackKillByDash = new Action<GameObject>((GameObject arg) => { });
         callBackBeenKillByDash = new Action<GameObject>((GameObject arg) => { });
         callBackTouchByEnvironnement = new Action<GameObject>((GameObject arg1) => { });
@@ -100,16 +96,6 @@ public class EventController : MonoBehaviour
     public void OnDeath()
     {
         callBackBeenKill.Invoke();
-    }
-
-    public void OnEnterTimePortal(TimePortal timePortal)
-    {
-        callBackEnterTimePortal.Invoke(timePortal);
-    }
-
-    public void OnExitTimePortal(TimePortal timePortal)
-    {
-        callBackExitTimePortal.Invoke(timePortal);
     }
 
     public void OnKillByDash(GameObject playerKilled)

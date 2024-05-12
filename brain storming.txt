@@ -116,6 +116,7 @@ Méca : Plusieurs levier sont activable par ls joueurs :
 - un pont levis peu etre levée/baissé
 - Un pendule pique peut etre déverrouiler
 - certaint sol desuus de la lave peuvent etre enlever
+- Mettre des porte de téléportation qui nous téléporte de l'une vers l'autre.
 DA : Un chateau fort
 Name : The queen Castle 
 
@@ -131,7 +132,7 @@ Trad all text
 netoyer tout les fichiers du projet
 verif spell using Freeze method
 test wall projectile and prohectile collision and retest all attack/char
-Complete Maxwell house and Into the jungle maps and méca
+Complete Clockmaker's, Maxwell house and Into the jungle maps and méca
 polish attacks
 Huge test of ALL before V0.1
 
