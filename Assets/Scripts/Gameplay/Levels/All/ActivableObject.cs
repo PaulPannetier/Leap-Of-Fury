@@ -3,7 +3,7 @@ using static Interruptor;
 
 public abstract class ActivableObject : MonoBehaviour
 {
-    [SerializeField] private bool startActivated = true;
+    [SerializeField] protected bool startActivated = true;
 
     [Header("Pendulum")]
     [SerializeField] private bool usePendulum;
@@ -16,6 +16,7 @@ public abstract class ActivableObject : MonoBehaviour
     [SerializeField] private Interruptor interruptor;
 
     public bool isActivated {  get; private set; }
+    [HideInInspector] public float activationPercentage => isActivated ? 1f : (float)nbCurrentTick / nbTickDesactivatedToActivated;
 
     protected virtual void Start()
     {
@@ -89,6 +90,12 @@ public abstract class ActivableObject : MonoBehaviour
     {
         if (usePendulum)
             pendulum.callbackOnPendulumTick -= OnPendulumTick;
+
+        if (useByInterruptor)
+        {
+            interruptor.onActivate += OnInterruptorActivated;
+            interruptor.onDesactivate += OnInterruptorDesactivated;
+        }
     }
 
 #if UNITY_EDITOR

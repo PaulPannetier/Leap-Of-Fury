@@ -2,20 +2,49 @@ using UnityEngine;
 
 public class ActivableBomb : ActivableObject
 {
+    private LayerMask charMask;
+    private SpriteRenderer spriteRenderer;
+
+    [Space(10)]
     [SerializeField] private float explosionRadius;
     [SerializeField] private Vector2 explosionOffset;
 
+    protected override void Start()
+    {
+        base.Start();
+        charMask = LayerMask.GetMask("Char");
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
     protected override void OnActivated()
     {
-        throw new System.NotImplementedException();
+        Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + explosionOffset, explosionRadius, charMask);
+        Collider2D currentCol;
+        for (int i = 0; i < cols.Length; i++)
+        {
+            currentCol = cols[i];
+            if (currentCol.CompareTag("Char"))
+            {
+                GameObject player = currentCol.GetComponent<ToricObject>().original;
+                EventController ec = player.GetComponent<EventController>();
+                ec.OnBeenTouchByEnvironnement(gameObject);
+            }
+        }
+
+        Destroy(gameObject, 1f);
     }
 
     protected override void OnDesactivated()
     {
-        throw new System.NotImplementedException();
+        
     }
 
-    #region OnValidate
+    private void Update()
+    {
+        spriteRenderer.color = isActivated ? Color.black : Color.Lerp(Color.white, Color.red, base.activationPercentage);
+    }
+
+    #region OnValidate/Gizmos
 
 #if UNITY_EDITOR
 
@@ -23,6 +52,12 @@ public class ActivableBomb : ActivableObject
     {
         base.OnValidate();
         explosionRadius = Mathf.Max(explosionRadius, 0f);
+        base.startActivated = false;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Collision2D.Circle.GizmosDraw((Vector2)transform.position + explosionOffset, explosionRadius, Color.green, true);
     }
 
 #endif
