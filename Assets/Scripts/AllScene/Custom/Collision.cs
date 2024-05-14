@@ -3016,18 +3016,19 @@ namespace Collision2D
             
         }
 
-        public virtual Collider2D Clone() => null;
-        public virtual bool Collide(Collider2D collider) => false;
-        public virtual bool CollideLine(Line2D line) => false;
-        public virtual bool CollideStraightLine(StraightLine2D d) => false;
-        public virtual bool Contains(in Vector2 p) => false;
-        public virtual float Distance(in Vector2 point) => 0f;
-        public virtual float SignedDistance(in Vector2 point) => 0f;
-        public virtual Vector2 ClosestPoint(in Vector2 point) => default;
-        public virtual void MoveAt(in Vector2 position) { }
-        public virtual void Rotate(float angle) { }
-        public virtual Hitbox ToHitbox() => null;
-        public virtual void Scale(in Vector2 scale) { }
+        public abstract Collider2D Clone();
+        public abstract bool Collide(Collider2D collider);
+        public abstract bool CollideLine(Line2D line);
+        public abstract bool CollideStraightLine(StraightLine2D d);
+        public abstract bool Contains(in Vector2 p);
+        public abstract float Distance(in Vector2 point);
+        public abstract float SignedDistance(in Vector2 point);
+        public abstract float Area();
+        public abstract Vector2 ClosestPoint(in Vector2 point);
+        public abstract void MoveAt(in Vector2 position);
+        public abstract void Rotate(float angle);
+        public abstract Hitbox ToHitbox();
+        public abstract void Scale(in Vector2 scale);
         public virtual bool Normal(in Vector2 point, out Vector2 normal) { normal = Vector2.zero; return false; }
 
         #endregion
@@ -3257,6 +3258,19 @@ namespace Collision2D
             return minSqrDist;
         }
 
+        public override float Area()
+        {
+            float sum = 0f;
+            int end = vertices.Length - 1;
+            for (int i = 0; i < end; i++)
+            {
+                sum += (vertices[i].x * vertices[i + 1].y) - (vertices[i + 1].x * vertices[i].y);
+            }
+            sum += (vertices[end].x * vertices[0].y) - (vertices[0].x * vertices[end].y);
+
+            return 0.5f * Mathf.Abs(sum);
+        }
+
         public override bool CollideLine(Line2D line) => CollidePolygoneLine(this, line.A, line.B);
 
         public override bool CollideStraightLine(StraightLine2D straightLine) => CollidePolygoneStaightLine(this, straightLine.A, straightLine.B);
@@ -3300,7 +3314,6 @@ namespace Collision2D
                 float newAngle = Useful.AngleHori(O, vertices[i]) + angle;
                 vertices[i] = new Vector2(O.x + distOP * Mathf.Cos(newAngle), O.y + distOP * Mathf.Sin(newAngle));
             }
-            base.Rotate(angle);
         }
 
         internal bool IsNormalOnRightDirection(in Vector2 point, in Vector2 n, int indexSide)
@@ -3370,6 +3383,8 @@ namespace Collision2D
             sb.AppendLine(vertices[vertices.Length - 1].ToString());
             return sb.ToString();
         }
+
+        public override Hitbox ToHitbox() => new Hitbox(center, new Vector2(inclusiveCircle.radius, inclusiveCircle.radius));
     }
 
     #endregion
@@ -3446,6 +3461,8 @@ namespace Collision2D
         public override float Distance(in Vector2 point) => rec.Distance(point);
         public override float SignedDistance(in Vector2 point) => rec.SignedDistance(point);
 
+        public override float Area() => size.x * size.y;
+
         public override void Scale(in Vector2 scale)
         {
             rec.Scale(scale);
@@ -3462,6 +3479,8 @@ namespace Collision2D
         }
 
         public override bool Contains(in Vector2 point) => rec.Contains(point);
+
+        public override Hitbox ToHitbox() => this;
 
         public override Collider2D Clone()
         {
@@ -3587,6 +3606,8 @@ namespace Collision2D
         public override float Distance(in Vector2 point) => Mathf.Max(0f, point.Distance(center) - radius);
 
         public override float SignedDistance(in Vector2 point) => point.Distance(center) - radius;
+
+        public override float Area() => Mathf.PI * radius * radius;
 
         public override Hitbox ToHitbox() => new Hitbox(center, new Vector2(radius, radius));
 
@@ -3794,6 +3815,8 @@ namespace Collision2D
 
             return distance;
         }
+
+        public override float Area() => circle1.Area() + hitbox.Area();
 
         public override void MoveAt(in Vector2 pos)
         {
