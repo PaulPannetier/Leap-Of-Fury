@@ -18,10 +18,14 @@ public class MaxwellHouseConvoyerBelt : ConvoyerBelt
         spriteRenderer.color = isActive ? colorActivated : colorInacticated;
     }
 
+#if UNITY_EDITOR
+
     protected override void OnValidate()
     {
         base.OnValidate();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.color = base.startActive ? colorActivated : colorInacticated;
     }
+
+#endif
 }
