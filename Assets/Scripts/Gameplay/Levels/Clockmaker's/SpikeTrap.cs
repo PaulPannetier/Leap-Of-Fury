@@ -5,14 +5,16 @@ public class SpikeTrap : ActivableObject
     private new Transform transform;
     private BoxCollider2D hitbox;
     private LayerMask charMask;
-
-    [Space(10)]
-    [SerializeField] private GameObject spikeGO;
+    private Animator[] animators;
+    private int activateAnim, desactivateAnim;
 
     private void Awake()
     {
         this.transform = base.transform;
         hitbox = GetComponentInChildren<BoxCollider2D>();
+        animators = GetComponentsInChildren<Animator>();
+        activateAnim = Animator.StringToHash("spikeUp");
+        desactivateAnim = Animator.StringToHash("spikeDown");
     }
 
     protected override void Start()
@@ -42,12 +44,20 @@ public class SpikeTrap : ActivableObject
 
     protected override void OnActivated()
     {
-        spikeGO.SetActive(true);
+        hitbox.enabled = true;
+        foreach (Animator animator in animators)
+        {
+            animator.CrossFade(activateAnim, 0, 0);
+        }
     }
 
     protected override void OnDesactivated()
     {
-        spikeGO.SetActive(false);
+        hitbox.enabled = false;
+        foreach (Animator animator in animators)
+        {
+            animator.CrossFade(desactivateAnim, 0, 0);
+        }
     }
 
     #region OnValidate
