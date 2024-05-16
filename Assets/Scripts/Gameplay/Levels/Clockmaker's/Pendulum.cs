@@ -15,6 +15,7 @@ public class Pendulum : MonoBehaviour
     [Tooltip("The oscillating speed."), SerializeField] private float gravityScale = 1f;
 
     [HideInInspector] public Action callbackOnPendulumTick;
+    public float oscilatingDuration => 2f * Mathf.PI * Mathf.Sqrt(length / -Physics2D.gravity.y);
 
     private void Awake()
     {

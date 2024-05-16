@@ -8,6 +8,8 @@ public class ActivableBomb : ActivableObject
     [Space(10)]
     [SerializeField] private float explosionRadius;
     [SerializeField] private Vector2 explosionOffset;
+    [SerializeField] private Gradient colorGradient;
+    [SerializeField] private GameObject explosionParticlesPrefabs;
 
     protected override void Start()
     {
@@ -31,7 +33,13 @@ public class ActivableBomb : ActivableObject
             }
         }
 
-        Destroy(gameObject, 1f);
+        if(explosionParticlesPrefabs != null)
+        {
+            GameObject explosion = Instantiate(explosionParticlesPrefabs, (Vector2)transform.position + explosionOffset, Quaternion.identity, CloneParent.cloneParent);
+            Destroy(explosion, 5f);
+        }
+
+        Destroy(gameObject);
     }
 
     protected override void OnDesactivated()
@@ -41,7 +49,7 @@ public class ActivableBomb : ActivableObject
 
     private void Update()
     {
-        spriteRenderer.color = isActivated ? Color.black : Color.Lerp(Color.white, Color.red, base.activationPercentage);
+        spriteRenderer.color = colorGradient.Evaluate(activationPercentageSmooth);
     }
 
     #region OnValidate/Gizmos

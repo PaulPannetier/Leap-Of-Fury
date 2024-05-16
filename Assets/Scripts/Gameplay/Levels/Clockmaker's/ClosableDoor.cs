@@ -4,12 +4,17 @@ public class ClosableDoor : ActivableObject
 {
     private LayerMask charMask;
     private BoxCollider2D doorHitbox;
+    private Animator animator;
+    private int closeAnim, openAnim;
 
     [SerializeField] private GameObject doorGo;
 
     private void Awake()
     {
-        doorHitbox = GetComponentInChildren<BoxCollider2D>();
+        doorHitbox = GetComponent<BoxCollider2D>();
+        animator = GetComponentInChildren<Animator>();
+        openAnim = Animator.StringToHash("open");
+        closeAnim = Animator.StringToHash("close");
     }
 
     protected override void Start()
@@ -20,23 +25,32 @@ public class ClosableDoor : ActivableObject
 
     protected override void OnActivated()
     {
-        doorGo.SetActive(false);
+        doorHitbox.enabled = false;
+        if(!isActivated)
+        {
+            animator.CrossFade(openAnim, 0, 0);
+        }
     }
 
     protected override void OnDesactivated()
     {
-        doorGo.SetActive(true);
+        doorHitbox.enabled = true;
 
-        Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + doorHitbox.offset, doorHitbox.size, 0f, charMask);
-        Collider2D currentCol;
-        for (int i = 0; i < cols.Length; i++)
+        if (isActivated)
         {
-            currentCol = cols[i];
-            if (currentCol.CompareTag("Char"))
+            animator.CrossFade(closeAnim, 0, 0);
+
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + doorHitbox.offset, doorHitbox.size, 0f, charMask);
+            Collider2D currentCol;
+            for (int i = 0; i < cols.Length; i++)
             {
-                GameObject player = currentCol.GetComponent<ToricObject>().original;
-                EventController ec = player.GetComponent<EventController>();
-                ec.OnBeenTouchByEnvironnement(gameObject);
+                currentCol = cols[i];
+                if (currentCol.CompareTag("Char"))
+                {
+                    GameObject player = currentCol.GetComponent<ToricObject>().original;
+                    EventController ec = player.GetComponent<EventController>();
+                    ec.OnBeenTouchByEnvironnement(gameObject);
+                }
             }
         }
     }

@@ -10,6 +10,8 @@ public abstract class ActivableObject : MonoBehaviour
     [SerializeField] private Pendulum pendulum;
     [SerializeField] private int nbTickActivatedToDesactivated, nbTickDesactivatedToActivated;
     private int nbCurrentTick;
+    private float lastTickTime = -10f;
+    private float pendulumOscillationDuration;
 
     [Header("Interruptor")]
     [SerializeField] private bool useByInterruptor;
@@ -17,15 +19,31 @@ public abstract class ActivableObject : MonoBehaviour
 
     public bool isActivated {  get; private set; }
     [HideInInspector] public float activationPercentage => isActivated ? 1f : (float)nbCurrentTick / nbTickDesactivatedToActivated;
+    [HideInInspector]
+    public float activationPercentageSmooth
+    {
+        get
+        {
+            if (isActivated)
+                return 1f;
+
+            float maxInter = 1f / nbTickDesactivatedToActivated;
+            float inter =  Mathf.Lerp(0f, maxInter, (Time.time - lastTickTime) / pendulumOscillationDuration);
+            return activationPercentage + inter;
+        }
+    }
 
     protected virtual void Start()
     {
         nbCurrentTick = 0;
-
+        lastTickTime = Time.time;
         if (usePendulum)
+        {
+            pendulumOscillationDuration = pendulum.oscilatingDuration;
             pendulum.callbackOnPendulumTick += OnPendulumTick;
+        }
 
-        if(useByInterruptor)
+        if (useByInterruptor)
         {
             interruptor.onActivate += OnInterruptorActivated;
             interruptor.onDesactivate += OnInterruptorDesactivated;
@@ -46,6 +64,8 @@ public abstract class ActivableObject : MonoBehaviour
     private void OnPendulumTick()
     {
         nbCurrentTick++;
+        lastTickTime = Time.time;
+        pendulumOscillationDuration = pendulum.oscilatingDuration;
         if (isActivated)
         {
             if (nbCurrentTick >= nbTickActivatedToDesactivated)
