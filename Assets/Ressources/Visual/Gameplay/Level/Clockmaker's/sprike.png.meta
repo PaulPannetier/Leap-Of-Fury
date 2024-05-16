@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 100b238f837f14643a566a84aa83fcd1
-      internalID: -1953957312
+      spriteID: f3dd37334292c8f4390d25635930bc7f
+      internalID: 1047935437
       vertices: []
       indices: 
       edges: []
@@ -132,8 +132,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 24a6353513fdc7a4292fb268fdd9f774
-      internalID: -547330554
+      spriteID: 21fa483b37bfccb4fa3066e79d6dec79
+      internalID: 1659233595
       vertices: []
       indices: 
       edges: []
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cec6adf57d9765940b369393db3784a4
-      internalID: 1554489006
+      spriteID: 0f2c1a4ef8a42b74080c8566c4a82da0
+      internalID: -1066038309
       vertices: []
       indices: 
       edges: []
@@ -174,8 +174,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2d5d1aaf85f58274db1123912cc363d9
-      internalID: 698950857
+      spriteID: dc80a835be88fe641a7c1a84d874eecf
+      internalID: -56068238
       vertices: []
       indices: 
       edges: []
@@ -195,8 +195,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc39ac19ba3894b47bf28a72ce3188fb
-      internalID: 209251627
+      spriteID: 9f6fed3b878c4724f901b01db7c0530f
+      internalID: -1972861675
       vertices: []
       indices: 
       edges: []
@@ -212,11 +212,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sprike_0: -1953957312
-      sprike_1: -547330554
-      sprike_2: 1554489006
-      sprike_3: 698950857
-      sprike_4: 209251627
+      sprike_0: 1047935437
+      sprike_1: 1659233595
+      sprike_2: -1066038309
+      sprike_3: -56068238
+      sprike_4: -1972861675
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

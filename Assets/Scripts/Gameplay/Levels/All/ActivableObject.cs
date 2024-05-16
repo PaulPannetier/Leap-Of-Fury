@@ -50,18 +50,18 @@ public abstract class ActivableObject : MonoBehaviour
         {
             if (nbCurrentTick >= nbTickActivatedToDesactivated)
             {
-                isActivated = false;
                 nbCurrentTick = 0;
                 OnDesactivated();
+                isActivated = false;
             }
         }
         else
         {
             if (nbCurrentTick >= nbTickDesactivatedToActivated)
             {
-                isActivated = true;
                 nbCurrentTick = 0;
                 OnActivated();
+                isActivated = true;
             }
         }
     }

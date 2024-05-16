@@ -45,18 +45,25 @@ public class SpikeTrap : ActivableObject
     protected override void OnActivated()
     {
         hitbox.enabled = true;
-        foreach (Animator animator in animators)
+
+        if(!isActivated)
         {
-            animator.CrossFade(activateAnim, 0, 0);
+            foreach (Animator animator in animators)
+            {
+                animator.CrossFade(activateAnim, 0, 0);
+            }
         }
     }
 
     protected override void OnDesactivated()
     {
         hitbox.enabled = false;
-        foreach (Animator animator in animators)
+        if (isActivated)
         {
-            animator.CrossFade(desactivateAnim, 0, 0);
+            foreach (Animator animator in animators)
+            {
+                animator.CrossFade(desactivateAnim, 0, 0);
+            }
         }
     }
 
