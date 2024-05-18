@@ -1,13 +1,11 @@
 using UnityEngine;
 
-public class ClosableDoor : ActivableObject
+public class ClosableDoor : PendulumActivable
 {
     private LayerMask charMask;
     private BoxCollider2D doorHitbox;
     private Animator animator;
     private int closeAnim, openAnim;
-
-    [SerializeField] private GameObject doorGo;
 
     private void Awake()
     {

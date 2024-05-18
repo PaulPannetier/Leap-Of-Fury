@@ -129,7 +129,6 @@ Name : Chaos
 TODO :
 hyperparam charcontroller grab apex
 Trad all text
-netoyer tout les fichiers du projet
 verif spell using Freeze method
 test wall projectile and prohectile collision and retest all attack/char
 Complete Clockmaker's, Maxwell house and Into the jungle maps and méca

@@ -27,14 +27,19 @@ public class LevelMapData : MonoBehaviour
         }
     }
 
-    private SpawnConfigsData spawnConfigs;
     private Grid grid;
     private Collider2D[] mapColliders;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool drawGizmos = true;
+#endif
+
+    [SerializeField] private SpawnConfigsData spawnConfigs;
+
+#if UNITY_EDITOR
+
     [Header("Save spawn Point")]
+    [SerializeField] private bool applyCurrentConfig;
     [SerializeField] private bool addSpawnConfig;
     [SerializeField] private bool loadSpawnConfig;
     [SerializeField] private bool clearSpawnConfig;
@@ -282,6 +287,13 @@ public class LevelMapData : MonoBehaviour
     private void OnValidate()
     {
         currentMap = this;
+
+        if(applyCurrentConfig)
+        {
+            applyCurrentConfig = false;
+            Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+        }
+
         if (addSpawnConfig && spawnConfig != null && spawnConfig.Length >= 2 && spawnConfig.Length <= 4)
         {
             //Save info

@@ -30,7 +30,7 @@ public class ToricObject : MonoBehaviour
     [SerializeField] private List<Component> componentsToSynchroniseInClone;
     public List<GameObject> chidrenToRemoveInClone;
 
-    public bool useCustomUpdate = false;
+    [Tooltip("Allow to call the update methods externally (via other script).")] public bool useCustomUpdate = false;
 
     public GameObject original => isAClone ? cloner : gameObject;
     public Action<Vector2, Vector2> onTeleportCallback;
@@ -81,10 +81,10 @@ public class ToricObject : MonoBehaviour
 
         mapsHitboxesAround = new Hitbox[4]
         {
-            new Hitbox(new Vector3(0f, mapSize.y), mapSize),
-            new Hitbox(new Vector3(0f, -mapSize.y), mapSize),
-            new Hitbox(new Vector3(mapSize.x, 0f), mapSize),
-            new Hitbox(new Vector3(-mapSize.x, 0f), mapSize)
+            new Hitbox(new Vector2(0f, mapSize.y), mapSize),
+            new Hitbox(new Vector2(0f, -mapSize.y), mapSize),
+            new Hitbox(new Vector2(mapSize.x, 0f), mapSize),
+            new Hitbox(new Vector2(-mapSize.x, 0f), mapSize)
         };
     }
 
@@ -316,45 +316,43 @@ public class ToricObject : MonoBehaviour
         oldCollideCamBounds = collideWithCamBounds;
 
         //Anti bug
-        for (int i = beg; i < end; i++)
+
+        int maxClone = enableHorizontal ? (enableVertical ? 3 : 1) : (enableVertical ? 1 : 0);
+        if(clones.Count > maxClone)
         {
-            int maxClone = enableHorizontal ? (enableVertical ? 3 : 1) : 0;
-            if(clones.Count > maxClone)
-            {
 #if false && (UNITY_EDITOR || ADVANCE_DEBUG)
-                LogManager.instance.WriteLog($"The number of clones of the GO cannot exceed {maxClone} but reach {clones.Count}", clones, maxClone, transform.position, gameObject);
+            LogManager.instance.WriteLog($"The number of clones of the GO cannot exceed {maxClone} but reach {clones.Count}", clones, maxClone, transform.position, gameObject);
 #endif
+            RemoveClones();
+            transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
+            print("Debug pls");
+        }
+
+        //Anti bug 2
+        if (clones.Count <= 0 && !PhysicsToric.IsPointInsideBound((Vector2)transform.position + boundsOffset))
+        {
+            transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
+            print("Debug pls");
+        }
+
+        //Anti bug 3
+        if (clones.Count > 0)
+        {
+            bool allClonesIsOutBounded = true;
+            foreach (ObjectClone clone in clones)
+            {
+                if(PhysicsToric.IsPointInsideBound((Vector2)clone.go.transform.position + boundsOffset))
+                {
+                    allClonesIsOutBounded = false;
+                    break;
+                }
+            }
+
+            if(allClonesIsOutBounded && !PhysicsToric.IsPointInsideBound((Vector2)transform.position + boundsOffset))
+            {
                 RemoveClones();
                 transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
                 print("Debug pls");
-            }
-
-            //Anti bug 2
-            if (clones.Count <= 0 && !PhysicsToric.IsPointInsideBound((Vector2)transform.position + boundsOffset))
-            {
-                transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
-                print("Debug pls");
-            }
-
-            //Anti bug 3
-            if (clones.Count > 0)
-            {
-                bool allClonesIsOutBounded = true;
-                foreach (ObjectClone clone in clones)
-                {
-                    if(PhysicsToric.IsPointInsideBound((Vector2)clone.go.transform.position + boundsOffset))
-                    {
-                        allClonesIsOutBounded = false;
-                        break;
-                    }
-                }
-
-                if(allClonesIsOutBounded && !PhysicsToric.IsPointInsideBound((Vector2)transform.position + boundsOffset))
-                {
-                    RemoveClones();
-                    transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
-                    print("Debug pls");
-                }
             }
         }
     }

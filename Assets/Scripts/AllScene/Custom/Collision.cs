@@ -3070,7 +3070,7 @@ namespace Collision2D
             get => _center;
             protected set
             {
-                _center = value;
+                MoveAt(value);
             }
         }
 
@@ -3079,38 +3079,38 @@ namespace Collision2D
         public Polygone(Vector2[] vertices) : base()
         {
             Builder(vertices.ToList());
-            center = Vector2.zero;
+            _center = Vector2.zero;
             foreach (Vector2 pos in this.vertices)
             {
                 center += pos;
             }
-            center /= vertices.Length;
+            _center /= vertices.Length;
             inclusiveCircle = GetInclusiveCircle();
         }
 
         public Polygone(List<Vector2> vertices) : base()
         {
             Builder(vertices);
-            center = Vector2.zero;
+            _center = Vector2.zero;
             foreach (Vector2 pos in this.vertices)
             {
                 center += pos;
             }
-            center /= vertices.Count;
+            _center /= vertices.Count;
             inclusiveCircle = GetInclusiveCircle();
         }
 
         public Polygone(Vector2[] vertices, in Vector2 center) : base()
         {
             Builder(vertices.ToList());
-            this.center = center;
+            _center = center;
             inclusiveCircle = GetInclusiveCircle();
         }
 
         public Polygone(List<Vector2> vertices, in Vector2 center) : base()
         {
             Builder(vertices);
-            this.center = center;
+            _center = center;
             inclusiveCircle = GetInclusiveCircle();
         }
 
@@ -3119,7 +3119,7 @@ namespace Collision2D
             List<Vector2> vertices = new List<Vector2>();
             poly.GetPath(0, vertices);
             this.vertices = new Vector2[vertices.Count];
-            center = (Vector2)poly.transform.position;
+            _center = (Vector2)poly.transform.position;
             for (int i = 0; i < vertices.Count; i++)
             {
                 this.vertices[i] = vertices[i] + center + poly.offset;
@@ -3128,12 +3128,12 @@ namespace Collision2D
             Scale(poly.transform.lossyScale);
             Rotate(poly.transform.rotation.eulerAngles.z * Mathf.Deg2Rad);
 
-            center = Vector2.zero;
+            _center = Vector2.zero;
             foreach (Vector2 pos in this.vertices)
             {
-                center += pos;
+                _center += pos;
             }
-            center /= vertices.Count;
+            _center /= vertices.Count;
             inclusiveCircle = GetInclusiveCircle();
         }
 
@@ -3278,7 +3278,7 @@ namespace Collision2D
         public override void MoveAt(in Vector2 position)
         {
             Vector2 oldCenter = center;
-            center = position;
+            _center = position;
             for (int i = 0; i < vertices.Length; i++)
             {
                 vertices[i] = center + (vertices[i] - oldCenter);
@@ -3875,7 +3875,7 @@ namespace Collision2D
             return base.Normal(point, out normal);
         }
 
-        public override string ToString() => $"Center:{center}, size:{hitbox.size}";
+        public override string ToString() => $"Center:{center}, size:{hitbox.size}, rotation:{AngleHori()}";
     }
 
     #endregion

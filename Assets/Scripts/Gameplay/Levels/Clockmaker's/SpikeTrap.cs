@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpikeTrap : ActivableObject
+public class SpikeTrap : PendulumActivable
 {
     private new Transform transform;
     private BoxCollider2D hitbox;
