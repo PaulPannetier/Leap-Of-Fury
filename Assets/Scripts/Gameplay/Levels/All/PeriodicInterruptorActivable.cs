@@ -7,13 +7,25 @@ public abstract class PeriodicInterruptorActivable : ActivableObject
     protected override void Start()
     {
         base.Start();
-        periodicIterruptor.onActivated += OnActivated;
-        periodicIterruptor.onDesactivated += OnDesactivated;
+        periodicIterruptor.onActivated += OnActivatedInternal;
+        periodicIterruptor.onDesactivated += OnDesactivatedInternal;
+    }
+
+    private void OnActivatedInternal()
+    {
+        OnActivated();
+        isActivated = true;
+    }
+
+    private void OnDesactivatedInternal()
+    {
+        OnDesactivated();
+        isActivated = false;
     }
 
     protected virtual void OnDestroy()
     {
-        periodicIterruptor.onActivated -= OnActivated;
-        periodicIterruptor.onDesactivated -= OnDesactivated;
+        periodicIterruptor.onActivated -= OnActivatedInternal;
+        periodicIterruptor.onDesactivated -= OnDesactivatedInternal;
     }
 }

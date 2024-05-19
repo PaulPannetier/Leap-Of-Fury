@@ -176,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3893311690644505991, guid: 40d63f071d31e474897a686f53774882, type: 3}
       propertyPath: delayoffset
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3893311690644505991, guid: 40d63f071d31e474897a686f53774882, type: 3}
       propertyPath: startActivated
@@ -184,11 +184,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3893311690644505991, guid: 40d63f071d31e474897a686f53774882, type: 3}
       propertyPath: delayActivatedToDesactivated
-      value: 3
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3893311690644505991, guid: 40d63f071d31e474897a686f53774882, type: 3}
       propertyPath: delayDesactivatedToActivated
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7955124462825885917, guid: 40d63f071d31e474897a686f53774882, type: 3}
       propertyPath: periodicIterruptor
@@ -1332,7 +1332,7 @@ Transform:
   m_GameObject: {fileID: 407455361710912217}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.43, y: -7.19, z: 0}
+  m_LocalPosition: {x: 6.08, y: -7.19, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
