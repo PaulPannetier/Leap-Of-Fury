@@ -28,6 +28,7 @@ public class FightController : MonoBehaviour
 
 #endif
 
+    public bool enableBehavior = true;
     [Header("Fight")]
     [SerializeField] private float dashBumpSpeed = 10f;
     [SerializeField] private float dashInvicibilityTimeOffset = 0.1f;
@@ -83,7 +84,7 @@ public class FightController : MonoBehaviour
             return;
         }
 
-        if (isStun)
+        if (isStun || !enableBehavior)
             return;
 
         //attaques
@@ -481,10 +482,10 @@ public class FightController : MonoBehaviour
 
     private void DisableLauchingAttack(float duration)
     {
-        StartCoroutine(Dl(duration));
+        StartCoroutine(DisableLauchingAttackInternal(duration));
     }
 
-    private IEnumerator Dl(float duration)
+    private IEnumerator DisableLauchingAttackInternal(float duration)
     {
         short weakAttackCount = (short)(canLaunchWeakAttackCounter + 1);
         short strongAttackCount = (short)(canLaunchStrongAttackCounter + 1);

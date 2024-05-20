@@ -47381,15 +47381,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawGizmos: 1
   spawnConfigs:
-    spawnConfigPoints2Char: []
-    spawnConfigPoints3Char: []
-    spawnConfigPoints4Char: []
+    spawnConfigPoints2Char:
+    - points:
+      - {x: 10.5, y: 1.5}
+      - {x: -10.5, y: 1.5}
+    - points:
+      - {x: -6.5, y: -7.5}
+      - {x: 6.5, y: -7.5}
+    - points:
+      - {x: 13.5, y: -7.5}
+      - {x: -13.5, y: -7.5}
+    spawnConfigPoints3Char:
+    - points:
+      - {x: -6.5, y: -7.5}
+      - {x: 6.5, y: -7.5}
+      - {x: 0, y: -2}
+    - points:
+      - {x: 0, y: -2}
+      - {x: 11, y: 1.5}
+      - {x: -11, y: 1.5}
+    spawnConfigPoints4Char:
+    - points:
+      - {x: -11, y: 1.5}
+      - {x: 11, y: 1.5}
+      - {x: -6.5, y: -7.5}
+      - {x: 6.5, y: -7.5}
+    - points:
+      - {x: 11, y: 1.5}
+      - {x: -11, y: 1.5}
+      - {x: 13.5, y: -7.5}
+      - {x: -13.5, y: -7.5}
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/Clockmakers/Map1SpawnPoints
+  relatifSpawnConfigsPath: /Save/Levels/Clockmakers/Map2SpawnPoints
   collidersGameObject:
   - {fileID: 5527294876546768217}
   mapSize: {x: 64, y: 36}
@@ -72301,6 +72328,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Closable Door Periodic Interruptor
       objectReference: {fileID: 0}
+    - target: {fileID: 7964416841283724213, guid: efb4c2226147f024193319ade21e2799, type: 3}
+      propertyPath: periodicIterruptor
+      value: 
+      objectReference: {fileID: 3893311690644505991}
     - target: {fileID: 8260150984849015641, guid: efb4c2226147f024193319ade21e2799, type: 3}
       propertyPath: m_Size.y
       value: 5
@@ -72403,6 +72434,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
+      propertyPath: delayoffset
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
+      propertyPath: animationEndSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
+      propertyPath: animationStartSpeed
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
+      propertyPath: delayActivatedToDesactivated
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
+      propertyPath: delayDesactivatedToActivated
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8417094492122383864, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
       propertyPath: m_Name
       value: Periodic Interruptor
@@ -72417,3 +72468,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1730207324843376518, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
   m_PrefabInstance: {fileID: 1288244149628105019}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3893311690644505991 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
+  m_PrefabInstance: {fileID: 1288244149628105019}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b8bb48b048baaa43aa6dd384a717525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

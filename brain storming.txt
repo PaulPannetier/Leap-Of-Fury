@@ -87,6 +87,7 @@ Name : Maya's Temple
 Carte 3 : 
 Méca : Une horloge est sur la carte. Quand elle sonne (mettre un compteur) trigger un event (un piège de pique, une bombe, une arraigné qui immobilise, ferme une porte, ect)
 De + le pendule de l'hormoge tangue et tue tout sur son passage//ok
+Mettre des porte de téléportation qui nous téléporte de l'une vers l'autre.
 DA : L'atelier d'un horloger / sommet d'une cathédrale avec cloche.
 Name : ClockMaker's
 
@@ -116,7 +117,7 @@ Méca : Plusieurs levier sont activable par ls joueurs :
 - un pont levis peu etre levée/baissé
 - Un pendule pique peut etre déverrouiler
 - certaint sol desuus de la lave peuvent etre enlever
-- Mettre des porte de téléportation qui nous téléporte de l'une vers l'autre.
+- Décrroche une bombe accrocher a une corde
 DA : Un chateau fort
 Name : The queen Castle 
 
