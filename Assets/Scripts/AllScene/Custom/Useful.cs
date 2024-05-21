@@ -901,65 +901,6 @@ public class Polynome
         }
 
         return SolveCubicEquation(a, b, c, d);
-
-        /*
-        
-        double P = -b * b / (3d * a * a) + c / a;
-        double Q = (b / (27d * a)) * (2d * b * b / (a * a) - 9d * c / a) + d / a;
-
-        // my own computation
-        //P = ((3d * c * a) - (b * b)) / (3d * a * a);
-        //Q = (-b / 3d) + (b * b * b / (9d * a * a)) + d - (b * c / (3d * a));
-
-        float[] res = CardanFormula(P, Q);
-        float tmp = (float)(b / (3d * a));
-        for (int i = 0; i < res.Length; i++)
-        {
-            res[i] += tmp;
-        }
-
-        return res;
-
-
-        //return the real roots of the function f(x) = x^3 + px + q
-        float[] CardanFormula(double p, double q)
-        {
-            double delta = -(4d * p * p * p + 27d * q * q);
-            
-            if(((float)delta).Approximately(0f))
-            {
-                if (((float)p).Approximately(0f) && ((float)q).Approximately(0f))
-                    return new float[1] { 0f };
-
-                return new float[2]
-                {
-                    (float)(3d * q / p), (float)(-3d * q / (2d * p))
-                };
-            }
-
-            if(delta > 0f)
-            {
-                double a = 2 * Math.Sqrt(-p / 3d);
-                double b = Math.Acos((3d * q / (2d * p)) * Math.Sqrt(-3d / p)) / 3d;
-                double c = 2d * Math.PI / 3d;
-                return new float[3]
-                {
-                    (float)(a * Math.Cos(b)),
-                    (float)(a * Math.Cos(b + c)),
-                    (float)(a * Math.Cos(b + 2f * c))
-                };
-            }
-
-            //delta < 0f
-            double tmp = Math.Sqrt(-delta / 27d);
-            double u = Math.Cbrt(0.5d * (tmp - q));
-            double v = Math.Cbrt(-0.5d * (tmp + q));
-            return new float[1]
-            {
-                (float)(u + v)
-            };
-        }
-        */
     }
 
     public static float[] Degrees4Roots(Polynome p)

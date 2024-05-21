@@ -14,6 +14,8 @@ public class TeleportationPortal : MonoBehaviour
     private TeleporterState state;
     private bool isExitingCharacter => exitingCharacter != null;
     private GameObject exitingCharacter;
+    private Animator animator;
+    private int enableAnim, disableAnim;
 
     [SerializeField] private TeleportationPortal otherPortal;
     [SerializeField] private float enteringDuration;
@@ -26,6 +28,9 @@ public class TeleportationPortal : MonoBehaviour
     private void Awake()
     {
         this.transform = base.transform;
+        animator = GetComponent<Animator>();
+        enableAnim = Animator.StringToHash("enable");
+        disableAnim = Animator.StringToHash("disable");
     }
 
     private void Start()
@@ -47,6 +52,7 @@ public class TeleportationPortal : MonoBehaviour
                 HandleTeleportation();
                 break;
             case TeleporterState.Reloading:
+                HandleReloading();
                 break;
             default:
                 break;
@@ -91,6 +97,7 @@ public class TeleportationPortal : MonoBehaviour
         characterController.Freeze();
         FightController fightController = player.GetComponent<FightController>();
         fightController.enableBehavior = false;
+        animator.CrossFade(disableAnim, 0f, 0);
         lastTimer = Time.time;
         state = TeleporterState.Entering;
     }
@@ -170,6 +177,7 @@ public class TeleportationPortal : MonoBehaviour
         if (Time.time - lastTimer >= teleportationDelay)
         {
             lastTimer = -10f;
+            animator.CrossFade(enableAnim, 0f, 0);
             state = TeleporterState.Waiting;
         }
     }
