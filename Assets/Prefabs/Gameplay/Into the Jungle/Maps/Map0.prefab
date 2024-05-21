@@ -150,7 +150,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!61 &3374012740018509244
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2766,13 +2765,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a35611479efcf4dabb99163071ff46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  drawGizmos: 1
+  spawnConfigs:
+    spawnConfigPoints2Char: []
+    spawnConfigPoints3Char: []
+    spawnConfigPoints4Char: []
+  applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/IntoTheJungle/Map0SpawnPoints
-  collidersGameObject:
-  - {fileID: 5423039871038564499}
+  tilemap: {fileID: 5423039871905506384}
   mapSize: {x: 32, y: 18}
 --- !u!1 &5423039871038564496
 GameObject:
@@ -9895,7 +9899,6 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabable: 1
   frictionCoefficient: 0
-  rb: {fileID: 0}
 --- !u!61 &5423039870555577488
 BoxCollider2D:
   m_ObjectHideFlags: 0

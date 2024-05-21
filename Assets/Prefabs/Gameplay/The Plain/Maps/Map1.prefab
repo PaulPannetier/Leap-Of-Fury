@@ -109,13 +109,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 1
+  spawnConfigs:
+    spawnConfigPoints2Char: []
+    spawnConfigPoints3Char: []
+    spawnConfigPoints4Char: []
+  applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/ThePlain/Map1SpawnPoints
-  collidersGameObject:
-  - {fileID: 4538681292222235853}
+  tilemap: {fileID: 162897814637165189}
   mapSize: {x: 32, y: 18}
 --- !u!1 &3086853291485305588
 GameObject:

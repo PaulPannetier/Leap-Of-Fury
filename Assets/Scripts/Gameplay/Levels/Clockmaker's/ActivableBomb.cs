@@ -14,9 +14,10 @@ public class ActivableBomb : PendulumActivable
     [SerializeField] private Gradient colorGradient;
     [SerializeField] private GameObject explosionParticlesPrefabs;
     [SerializeField] private float explosionForce = 100f;
- 
+
     protected override void Start()
     {
+        startActivated = false;
         base.Start();
         this.transform = base.transform;
         charMask = LayerMask.GetMask("Char");
@@ -81,7 +82,7 @@ public class ActivableBomb : PendulumActivable
         explosionRadius = Mathf.Max(explosionRadius, 0f);
         triggerRadius = Mathf.Max(triggerRadius, 0f);
         explosionForce = Mathf.Max(explosionForce, 0f);
-        base.startActivated = false;
+        startActivated = false;
     }
 
     private void OnDrawGizmosSelected()

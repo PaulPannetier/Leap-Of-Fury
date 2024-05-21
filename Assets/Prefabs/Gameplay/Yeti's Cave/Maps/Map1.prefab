@@ -19467,13 +19467,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 1
+  spawnConfigs:
+    spawnConfigPoints2Char: []
+    spawnConfigPoints3Char: []
+    spawnConfigPoints4Char: []
+  applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map1SpawnPoints
-  collidersGameObject:
-  - {fileID: 6484287583440040385}
+  tilemap: {fileID: 329945550878936555}
   mapSize: {x: 32, y: 18}
 --- !u!1001 &2651208293566343196
 PrefabInstance:

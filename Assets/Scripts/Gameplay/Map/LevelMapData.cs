@@ -48,7 +48,8 @@ public class LevelMapData : MonoBehaviour
 #endif
 
     [SerializeField] private string relatifSpawnConfigsPath;
-    [SerializeField] private Transform[] collidersGameObject; 
+    [SerializeField] private GameObject tilemap;
+    //[SerializeField] private Transform[] collidersGameObject; 
 
     [Tooltip("Number of cells in the horizontal and vertical axis")] public Vector2 mapSize = new Vector2(32f, 18f);
 
@@ -86,18 +87,7 @@ public class LevelMapData : MonoBehaviour
         }
         grid = tilemapGo.GetComponent<Grid>();
 
-        List<Collider2D> mapColliders = new List<Collider2D>();
-        foreach (Transform t in collidersGameObject)
-        {
-            foreach (Collider2D col in t.GetComponents<Collider2D>())
-            {
-                if(!mapColliders.Contains(col))
-                {
-                    mapColliders.Add(col);
-                }
-            }
-        }
-        this.mapColliders = mapColliders.ToArray();
+        mapColliders = tilemap.GetComponentsInChildren<Collider2D>();
 
         EventManager.instance.OnMapChanged(this);
     }

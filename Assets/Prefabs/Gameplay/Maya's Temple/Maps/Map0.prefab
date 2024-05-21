@@ -9112,13 +9112,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 1
+  spawnConfigs:
+    spawnConfigPoints2Char: []
+    spawnConfigPoints3Char: []
+    spawnConfigPoints4Char: []
+  applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map0SpawnPoints
-  collidersGameObject:
-  - {fileID: 537159171919158614}
+  tilemap: {fileID: 537159172717285781}
   mapSize: {x: 32, y: 18}
 --- !u!1 &537159171884627902
 GameObject:
