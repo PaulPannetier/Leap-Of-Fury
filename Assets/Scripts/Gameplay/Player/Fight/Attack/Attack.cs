@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static FightController;
 
 [Serializable]
 public abstract class Attack : MonoBehaviour
@@ -7,13 +8,12 @@ public abstract class Attack : MonoBehaviour
     protected EventController eventController;
     protected PlayerCommon playerCommon;
 
-    [Tooltip("Durée l'immobilité après avoir lancé le sort en sec")] public float castDuration;
     [SerializeField] protected Cooldown cooldown;
+    [SerializeField] protected DamageType damageType = DamageType.Normal;
+    [SerializeField] protected EffectType effectType;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool saveAttackStats;
-
 #endif
 
     protected virtual void Awake()
@@ -48,10 +48,18 @@ public abstract class Attack : MonoBehaviour
         return true;
     }
 
-    public virtual void OnTouchEnemy(GameObject enemy)
+    protected virtual void ApplyEffect(GameObject enemy, EffectType effectType, EffectParams effectParams)
     {
-        eventController.OnTouchAttack(this, enemy);
-        enemy.GetComponent<ToricObject>().original.GetComponent<EventController>().OnBeenTouchAttack(this);
+        enemy = enemy.GetComponent<ToricObject>().original;
+        eventController.OnAttackApplyEffect(this, enemy, effectType, effectParams);
+        enemy.GetComponent<EventController>().OnBeenAttackApplyEffect(this, gameObject, effectType, effectParams);
+    }
+
+    protected virtual void OnTouchEnemy(GameObject enemy, DamageType damageType)
+    {
+        enemy = enemy.GetComponent<ToricObject>().original;
+        eventController.OnTouchAttack(this, enemy, damageType);
+        enemy.GetComponent<ToricObject>().original.GetComponent<EventController>().OnBeenTouchAttack(this, gameObject, damageType);
     }
 
     protected virtual void OnTriggerAnimatorSetFloat(string name, float value)

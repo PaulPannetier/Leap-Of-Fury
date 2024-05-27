@@ -7,7 +7,7 @@ using Collision2D;
 public class AmericanFistAttack : WeakAttack
 {
     private CharacterController charController;
-    private CustomPlayerInput playerInput;
+    private CharacterInputs playerInput;
     private CloneAttack cloneAttack;//null if isAClone == true
     [HideInInspector] public CloneAttack originalCloneAttack;
     private AmericanFistAttack originalAmericanFistAttack;
@@ -19,13 +19,12 @@ public class AmericanFistAttack : WeakAttack
     private bool alreadyCreateExplosionWinthThisDash;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool drawGizmos = true;
-
 #endif
 
     [SerializeField] private bool isAClone;
     [SerializeField] private float dashSpeed = 10f, dashDuration = 0.4f, minTimeBetweenDash = 0.2f, maxTimeBetweenDash = 0.7f, dashBufferTime = 0.1f;
+    [SerializeField] private float castDuration;
     [SerializeField] private AnimationCurve dashSpeedCurve;
     [SerializeField] private int nbDash = 3;
     [SerializeField] private float explosionForce = 1.1f;
@@ -60,7 +59,7 @@ public class AmericanFistAttack : WeakAttack
             return;
         base.Awake();
 
-        playerInput = GetComponent<CustomPlayerInput>();
+        playerInput = GetComponent<CharacterInputs>();
         charController = GetComponent<CharacterController>();
         cloneAttack = GetComponent<CloneAttack>();
         originalCloneAttack = cloneAttack;
@@ -310,7 +309,7 @@ public class AmericanFistAttack : WeakAttack
 
     #region Ennemies/Wall Collisions
 
-    public override void OnTouchEnemy(GameObject enemy)
+    private void OnTouchEnemy(GameObject enemy)
     {
         if(isAClone)
         {
@@ -318,7 +317,7 @@ public class AmericanFistAttack : WeakAttack
         }
         else
         {
-            base.OnTouchEnemy(enemy);
+            base.OnTouchEnemy(enemy, this.damageType);
         }
     }
 

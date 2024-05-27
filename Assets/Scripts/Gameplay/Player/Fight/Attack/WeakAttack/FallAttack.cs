@@ -17,6 +17,7 @@ public class FallAttack : WeakAttack
 
 #endif
 
+    [SerializeField] private float castDuration = 1f;
     [SerializeField] private float explosionRadius = 1f;
     [SerializeField] private float minDistanceFromGround = 0.2f;
     [SerializeField] private float speedFall = 3f;
@@ -126,7 +127,7 @@ public class FallAttack : WeakAttack
                     GameObject player = col.GetComponent<ToricObject>().original;
                     if(playerCommon.id != player.GetComponent<PlayerCommon>().id)
                     {
-                        OnTouchEnemy(player);
+                        OnTouchEnemy(player, damageType);
                     }
                 }
             }
@@ -157,7 +158,7 @@ public class FallAttack : WeakAttack
                     GameObject player = col.GetComponent<ToricObject>().original;
                     if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
                     {
-                        OnTouchEnemy(player);
+                        OnTouchEnemy(player, damageType);
                     }
                 }
             }
@@ -186,7 +187,7 @@ public class FallAttack : WeakAttack
 
     public void OnTouchEnemyByShockWave(GameObject enemy, FloorShockWave shockWave)
     {
-        OnTouchEnemy(enemy);
+        OnTouchEnemy(enemy, damageType);
     }
 
     #region Gizmos/OnValidate
@@ -199,6 +200,7 @@ public class FallAttack : WeakAttack
         this.transform = base.transform;
         minDistanceFromGround = Mathf.Max(0f, minDistanceFromGround);
         explosionRadius = Mathf.Max(0f, explosionRadius);
+        castDuration = Mathf.Max(0f, castDuration);
     }
 
     private void OnDrawGizmosSelected()

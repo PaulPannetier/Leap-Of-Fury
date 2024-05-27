@@ -132,6 +132,11 @@ public class FirePassif : PassifAttack
         fireGO.GetComponent<Fire>().OnCreate(this);
     }
 
+    public void OnFireBurnPlayer(GameObject player)
+    {
+        base.OnTouchEnemy(player, damageType);
+    }
+
 #if UNITY_EDITOR
 
     protected override void OnValidate()

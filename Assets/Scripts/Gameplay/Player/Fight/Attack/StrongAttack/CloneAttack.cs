@@ -107,7 +107,7 @@ public class CloneAttack : StrongAttack
             attack = true;
         }
 
-        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.flip, fightController.canKillDashing);
+        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.flip, fightController.IsDashKillEnable());
         lstCloneDatas.Add(data);
         originalDashThisFrame = originalCreateExplosionThisFrame = false;
 
@@ -159,7 +159,7 @@ public class CloneAttack : StrongAttack
                             PlayerCommon pc = player.GetComponent<PlayerCommon>();
                             if (playerCommon.id != pc.id)
                             {
-                                base.OnTouchEnemy(player);
+                                base.OnTouchEnemy(player, damageType);
                                 charAlreadyToucheByDash.Add(pc.id);
                             }
                         }

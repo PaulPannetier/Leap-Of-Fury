@@ -9,9 +9,7 @@ public class BoomerangAttack : WeakAttack
     private Boomerang currentBoomerang;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool drawGizmos = true;
-
 #endif
 
     [SerializeField] private GameObject boomerangPrefab;
@@ -63,9 +61,9 @@ public class BoomerangAttack : WeakAttack
         currentBoomerang = null;
     }
 
-    public override void OnTouchEnemy(GameObject enemy)
+    public void OnTouchEnemy(GameObject enemy)
     {
-        base.OnTouchEnemy(enemy);
+        base.OnTouchEnemy(enemy, damageType);
     }
 
     #region Gizmos/OnValidate

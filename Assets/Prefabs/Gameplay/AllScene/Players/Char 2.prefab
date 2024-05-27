@@ -437,7 +437,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7980238354382693259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cde511cbf40cf474484912350c9d1ee6, type: 3}
+  m_Script: {fileID: 11500000, guid: b10573594c7793340be8c69d6aa9f567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   x: 0
@@ -474,9 +474,9 @@ MonoBehaviour:
   attackWeakPressedUp: 0
   attackStrongPressedUp: 0
   interactPressedUp: 0
-  controllerType: 1
-  useMovementLerpForKeyboard: 1
-  movementLerpForKeyboard: 35
+  controllerType: 0
+  useMovementLerpForKeyboard: 0
+  movementLerpForKeyboard: 10
 --- !u!114 &5696250467530998310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -520,19 +520,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 0
+  enableBehavior: 1
+  bufferDuration: 0.1
+  dashDamageType: 1
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
-  invicibilityDurationWhenDashing: 0.2
-  dashKillTimeOffset: 0.05
+  dashInvicibilityDuration: 0.5
+  dashKillTimeOffset: 0.1
   dashKillDuration: 0.4
-  dashHitboxOffset: {x: 0, y: -0.21}
-  dashHitboxSize: {x: 0.7, y: 1}
-  enableAttackWeak: 1
-  enableAttackStrong: 1
-  enableInvisibilityWhenDashing: 1
-  castCoyoteTime: 0.15
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
+  dashHitboxOffset: {x: 0, y: -0.22}
+  dashHitboxSize: {x: 0.75, y: 1.15}
+  damageProtectionType: 0
 --- !u!114 &6848550487051244944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,9 +543,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8b457fea88e6e44593e520f86a69d3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 3
+  damageType: 1
+  effectType: 3
   saveAttackStats: 0
   drawGizmos: 0
   castRadius: 0.5
@@ -610,6 +609,8 @@ MonoBehaviour:
   wallGapDown: 1.05
   wallGapRight: 0.5
   wallGapLeft: 0.5
+  stunEffectParams:
+    duration: 0
   waitingTimeWhenCharGrab: 0.25
   maxCharGrabDuration: 0.6
   charDurationOverDistance:
@@ -672,11 +673,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cd64418b8a39244bb5698c3499e080e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0.8
   cooldown:
     duration: 3
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   drawGizmos: 1
+  castDuration: 0.8
   explosionRadius: 1.5
   minDistanceFromGround: 1.2
   speedFall: 50

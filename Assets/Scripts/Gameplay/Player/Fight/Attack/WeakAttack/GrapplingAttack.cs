@@ -11,7 +11,7 @@ public class GrapplingAttack : WeakAttack
     private CharacterController movement;
     private Rigidbody2D rb;
     private SpringJoint2D springJoint;
-    private CustomPlayerInput playerInput;
+    private CharacterInputs playerInput;
     private Rigidbody2D rbAttachPoint;
     private bool isSwinging;
     private Vector2 grapDir;
@@ -38,7 +38,7 @@ public class GrapplingAttack : WeakAttack
     [SerializeField] private float minRopeLength;
     [SerializeField] private float maxDurationAttach = 5f;
     [SerializeField] private float grapClimbUpSpeed = 2f, grapClimbDownSpeed = 4f;
-    [SerializeField] private Bomb bombPrefabs;
+    //[SerializeField] private Bomb bombPrefabs;
     [SerializeField] private float timeBetweenBombSpawn = 0.4f;
 
     [Header("Physics simulation")]
@@ -59,7 +59,7 @@ public class GrapplingAttack : WeakAttack
         { 
             lineRendererPrefabs
         };
-        playerInput = GetComponent<CustomPlayerInput>();
+        playerInput = GetComponent<CharacterInputs>();
     }
 
     protected override void Start()
@@ -172,8 +172,8 @@ public class GrapplingAttack : WeakAttack
             if (Time.time - lastTimeBombSpawn > timeBetweenBombSpawn)
             {
                 lastTimeBombSpawn = Time.time;
-                Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent);
-                bomb.Lauch(this);
+                //Bomb bomb = Instantiate(bombPrefabs, transform.position, Quaternion.identity, CloneParent.cloneParent);
+                //bomb.Lauch(this);
             }
         }
 

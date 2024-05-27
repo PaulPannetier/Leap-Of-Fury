@@ -37,12 +37,12 @@ public class EventManager : MonoBehaviour
         callbackPreUpdate.Invoke();
     }
 
-    public void OnTriggerPlayerDeath(GameObject player, GameObject killer)
+    public void OnPlayerDie(GameObject player, GameObject killer)
     {
         callbackOnPlayerDeath.Invoke(player, killer);
     }
 
-    public void OnTriggerPlayerDeathByEnvironnement(GameObject player, GameObject killer)
+    public void OnPlayerDieByEnvironnement(GameObject player, GameObject killer)
     {
         callbackOnPlayerDeathByEnvironnement.Invoke(player, killer);
     }

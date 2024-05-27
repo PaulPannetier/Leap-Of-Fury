@@ -138,7 +138,6 @@ public class Arrow : MonoBehaviour
             return;
         }
 
-        arrowAttack.OnTouchEnemy(otherPlayer);
         arrowAttack.OnArrowTouchChar(otherPlayer);
         if(isMainArrow)
         {

@@ -230,7 +230,7 @@ public class Interruptor : MonoBehaviour
                 if (col.CompareTag("Char"))
                 {
                     GameObject charGO = col.GetComponent<ToricObject>().original;
-                    CustomPlayerInput charInput = charGO.GetComponent<CustomPlayerInput>();
+                    CharacterInputs charInput = charGO.GetComponent<CharacterInputs>();
                     if (charInput.interactPressedDown)
                     {
                         CharacterController charMvt = charGO.GetComponent<CharacterController>();

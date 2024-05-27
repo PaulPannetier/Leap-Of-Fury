@@ -65,7 +65,7 @@ public class FireworkAttack : StrongAttack
 
     public void OnFireworkTouchEnnemy(Firework firework, GameObject ennemy)
     {
-        OnTouchEnemy(ennemy);
+        OnTouchEnemy(ennemy, damageType);
     }
 
 #if UNITY_EDITOR

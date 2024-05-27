@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour
@@ -56,6 +57,19 @@ public class PauseManager : MonoBehaviour
         {
             callBackOnPauseDisable.Invoke();
             _isPauseDisableThisFrame = true;
+        }
+    }
+
+    public IEnumerator Wait(float duration)
+    {
+        float timeCounter = 0f;
+        while (timeCounter < duration)
+        {
+            yield return null;
+            if (!isPauseEnable)
+            {
+                timeCounter += Time.deltaTime;
+            }
         }
     }
 

@@ -113,7 +113,7 @@ public class BouncingBall : MonoBehaviour
 
         if (player.GetComponent<PlayerCommon>().id != playerCommon.id)
         {
-            toricObj.original.GetComponent<BouncingBall>().bouncingBallAttack.OnTouchEnemy(player);
+            bouncingBallAttack.OnTouchEnemy(player);
             Destroy(gameObject);
         }
     }

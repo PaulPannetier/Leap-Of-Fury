@@ -438,7 +438,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8090791378756873177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cde511cbf40cf474484912350c9d1ee6, type: 3}
+  m_Script: {fileID: 11500000, guid: b10573594c7793340be8c69d6aa9f567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   x: 0
@@ -476,8 +476,8 @@ MonoBehaviour:
   attackStrongPressedUp: 0
   interactPressedUp: 0
   controllerType: 0
-  useMovementLerpForKeyboard: 1
-  movementLerpForKeyboard: 8
+  useMovementLerpForKeyboard: 0
+  movementLerpForKeyboard: 10
 --- !u!114 &5907287823364622964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,19 +521,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 0
+  enableBehavior: 1
+  bufferDuration: 0.1
+  dashDamageType: 1
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
-  invicibilityDurationWhenDashing: 0.2
-  dashKillTimeOffset: 0.05
+  dashInvicibilityDuration: 0.5
+  dashKillTimeOffset: 0.1
   dashKillDuration: 0.4
-  dashHitboxOffset: {x: 0, y: -0.21}
-  dashHitboxSize: {x: 0.7, y: 1}
-  enableAttackWeak: 1
-  enableAttackStrong: 1
-  enableInvisibilityWhenDashing: 1
-  castCoyoteTime: 0.15
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
+  dashHitboxOffset: {x: 0, y: -0.22}
+  dashHitboxSize: {x: 0.75, y: 1.15}
+  damageProtectionType: 0
 --- !u!114 &1125352181698265087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,12 +544,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c0b20b963c43b4b91c9882733aa9c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0.2
   cooldown:
     duration: 0.4
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   nbArrow: 0
   arrowPrefab: {fileID: 2636146267762325801, guid: 5b220040db271064fbc957e9a98a1c11, type: 3}
+  castDuration: 0.2
   arrowLaunchDistance: 0.2
   delayBetweenLauchAndRecoverArrow: 0.7
   arrowInitSpeed: 16.5
@@ -569,9 +569,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e7db84cef584b4da5f84d3fc583e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0.1
   cooldown:
     duration: 2
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   drawGizmos: 0
   tpRange: 4.5
@@ -594,9 +595,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74aa3b3f011deb646bf44c5ca6173250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 0
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   enableBehaviour: 1
   durationToWait: 1

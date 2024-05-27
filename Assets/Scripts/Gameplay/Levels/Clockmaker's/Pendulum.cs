@@ -53,7 +53,7 @@ public class Pendulum : MonoBehaviour
             {
                 GameObject player = col.GetComponent<ToricObject>().original;
                 EventController ec = player.GetComponent<EventController>();
-                ec.OnBeenTouchByEnvironnement(gameObject);
+                ec.OnBeenTouchByEnvironnement(gameObject, FightController.DamageType.AlwaysKill);
             }
         }
 

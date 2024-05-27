@@ -11,6 +11,7 @@ public class BouncingBallAttack : StrongAttack
     private int nbBalls;
 
     [SerializeField] private bool drawGizmos;
+    [SerializeField] private float castDuration = 0.1f;
     [SerializeField] private float shootDistanceFromChar = 0.4f;
     [SerializeField] private float initSpeed = 7f;
     [SerializeField] private float maxSpeed = 10f;
@@ -53,6 +54,8 @@ public class BouncingBallAttack : StrongAttack
 
     private IEnumerator DoBounceAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
+        PauseManager.instance.Wait(castDuration);
+
         float timeCounter = 0f;
         while (timeCounter < castDuration)
         {
@@ -88,6 +91,11 @@ public class BouncingBallAttack : StrongAttack
         nbBalls = Math.Min(maxNbBalls, nbBalls + 1);
     }
 
+    public void OnTouchEnemy(GameObject enemy)
+    {
+        base.OnTouchEnemy(enemy, damageType);
+    }
+
 #if UNITY_EDITOR
 
     protected override void OnValidate()
@@ -96,6 +104,7 @@ public class BouncingBallAttack : StrongAttack
         nbBounce = Math.Max(0, nbBounce);
         speed = Mathf.Max(0f, speed);
         shootTime = Mathf.Max(0f, shootTime);
+        castDuration = Mathf.Max(0f, castDuration);
     }
 
     private void OnDrawGizmosSelected()

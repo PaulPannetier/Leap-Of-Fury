@@ -47,7 +47,7 @@ public class ActivableBomb : PendulumActivable
             {
                 GameObject player = currentCol.GetComponent<ToricObject>().original;
                 EventController ec = player.GetComponent<EventController>();
-                ec.OnBeenTouchByEnvironnement(gameObject);
+                ec.OnBeenTouchByEnvironnement(gameObject, FightController.DamageType.AlwaysKill);
             }
         }
 

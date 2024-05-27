@@ -191,7 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   <velocity>k__BackingField: {x: 0, y: 0}
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   sideRayLength: 0.5
   sideRayOffset: 0
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9211636111085214947}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cde511cbf40cf474484912350c9d1ee6, type: 3}
+  m_Script: {fileID: 11500000, guid: b10573594c7793340be8c69d6aa9f567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   x: 0
@@ -491,7 +491,7 @@ MonoBehaviour:
   interactPressedUp: 0
   controllerType: 0
   useMovementLerpForKeyboard: 0
-  movementLerpForKeyboard: 8
+  movementLerpForKeyboard: 10
 --- !u!114 &6801819870953356622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,19 +535,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 0
+  enableBehavior: 1
+  bufferDuration: 0.1
+  dashDamageType: 1
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
-  invicibilityDurationWhenDashing: 0.2
-  dashKillTimeOffset: 0.05
+  dashInvicibilityDuration: 0.5
+  dashKillTimeOffset: 0.1
   dashKillDuration: 0.4
-  dashHitboxOffset: {x: 0, y: -0.21}
-  dashHitboxSize: {x: 0.7, y: 1}
-  enableAttackWeak: 1
-  enableAttackStrong: 1
-  enableInvisibilityWhenDashing: 1
-  castCoyoteTime: 0.15
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
+  dashHitboxOffset: {x: 0, y: -0.22}
+  dashHitboxSize: {x: 0.75, y: 1.15}
+  damageProtectionType: 0
 --- !u!114 &249455240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,18 +558,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6076f156ec0b7104084af103613515d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0.2
   cooldown:
     duration: 4
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   originalCloneAttack: {fileID: 0}
-  drawGizmos: 1
+  drawGizmos: 0
   isAClone: 0
   dashSpeed: 20
   dashDuration: 0.25
   minTimeBetweenDash: 0.1
   maxTimeBetweenDash: 1.5
   dashBufferTime: 0.1
+  castDuration: 0.2
   dashSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -635,9 +635,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928280bb0dad7004e9895e8bdc12f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 10
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   isCloneAttackEnable: 0
   clonePrefabs: {fileID: 1266130988093312155, guid: f24f5fb0fc04f7c438b6ee7620e65224, type: 3}
@@ -659,9 +660,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4770c9bf661a2d4491e84ebbd464610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 0
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   enableBehaviour: 0
   fireDecreasement: 0

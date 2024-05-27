@@ -439,7 +439,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8090791378756873177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cde511cbf40cf474484912350c9d1ee6, type: 3}
+  m_Script: {fileID: 11500000, guid: b10573594c7793340be8c69d6aa9f567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   x: 0
@@ -478,7 +478,7 @@ MonoBehaviour:
   interactPressedUp: 0
   controllerType: 0
   useMovementLerpForKeyboard: 0
-  movementLerpForKeyboard: 8
+  movementLerpForKeyboard: 10
 --- !u!114 &5907287823364622964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,19 +522,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawGizmos: 0
+  enableBehavior: 1
+  bufferDuration: 0.1
+  dashDamageType: 1
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
-  invicibilityDurationWhenDashing: 0.2
-  dashKillTimeOffset: 0.05
+  dashInvicibilityDuration: 0.5
+  dashKillTimeOffset: 0.1
   dashKillDuration: 0.4
-  dashHitboxOffset: {x: 0, y: -0.21}
-  dashHitboxSize: {x: 0.7, y: 1}
-  enableAttackWeak: 1
-  enableAttackStrong: 1
-  enableInvisibilityWhenDashing: 1
-  castCoyoteTime: 0.15
-  canLauchWeakAttack: 1
-  canLaunchStrongAttack: 1
+  dashHitboxOffset: {x: 0, y: -0.22}
+  dashHitboxSize: {x: 0.75, y: 1.15}
+  damageProtectionType: 0
 --- !u!114 &8225929942963548096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,9 +545,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e746b3743d283eb4ba4d0f8f99ec663c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 0.5
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   drawGizmos: 0
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
@@ -666,9 +665,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d061c27edc233a4d95c6a997709874f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 2
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   drawGizmos: 0
   bumpVelocity: 15
@@ -688,9 +688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a54806a00328a2448fe37f496088a81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 0
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   enableBehaviour: 1
   minTransparency: 0.3

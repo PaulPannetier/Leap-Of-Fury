@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
@@ -9,14 +10,17 @@ public class CharacterController : MonoBehaviour
 
     private AnimationScript anim;
     private Camera mainCam;
-    private CustomPlayerInput playerInput;
+    private CharacterInputs playerInput;
     private BoxCollider2D hitbox;
     private ToricRaycastHit2D raycastRight, raycastLeft, groundRay, rightSlopeRay, leftSlopeRay, rightFootRay, leftFootRay, topRightRay, topLeftRay;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData, apexJumpColliderData;
     private FightController fightController;
     private ToricObject toricObject;
-    private int disableMovementCounter = 0;
+    private int disableMovementCounter, disableDashCounter;
+    private bool isMovementDisable => disableMovementCounter > 0;
+    private bool isDashDisable => disableDashCounter > 0;
+    
     private new Transform transform;
     private float oldDeltaTime;
 
@@ -220,10 +224,11 @@ public class CharacterController : MonoBehaviour
     private bool doJump, doDash;
 
     [HideInInspector] public bool flip { get; private set; } = false;
+    public Action<Vector2> onDash;
 
     #endregion
 
-    #region public methods
+    #region Public Methods
 
     private static Vector2[] directions8 = new Vector2[8]
     {
@@ -287,7 +292,7 @@ public class CharacterController : MonoBehaviour
         transform.position = newPosition;
     }
 
-    public void DisableMovement(float duration)
+    public void DisableInputs(float duration)
     {
         StartCoroutine(DisableMovementCorout(duration));
     }
@@ -295,21 +300,24 @@ public class CharacterController : MonoBehaviour
     private IEnumerator DisableMovementCorout(float duration)
     {
         disableMovementCounter++;
-        enableInput = disableMovementCounter <= 0;
+        enableInput = !isMovementDisable;
 
-        float timer = 0f;
-        while (timer < duration)
-        {
-            yield return null;
-            timer += Time.deltaTime;
-            while (PauseManager.instance.isPauseEnable)
-            {
-                yield return null;
-            }
-        }
+        yield return PauseManager.instance.Wait(duration);
 
         disableMovementCounter--;
-        enableInput = disableMovementCounter <= 0;
+        enableInput = !isMovementDisable;
+    }
+
+    public void DisableDash(float duration)
+    {
+        StartCoroutine(DisableDashCorout(duration));
+    }
+
+    private IEnumerator DisableDashCorout(float duration)
+    {
+        disableMovementCounter++;
+        yield return PauseManager.instance.Wait(duration);
+        disableMovementCounter--;
     }
 
     public void Freeze()
@@ -363,9 +371,10 @@ public class CharacterController : MonoBehaviour
         this.transform = base.transform;
         anim = GetComponentInChildren<AnimationScript>();
         mainCam = Camera.main;
-        playerInput = GetComponent<CustomPlayerInput>();
+        playerInput = GetComponent<CharacterInputs>();
         fightController = GetComponent<FightController>();
         hitbox = GetComponent<BoxCollider2D>();
+        onDash = (Vector2 dir) => { };
     }
 
     private void Start()
@@ -1236,14 +1245,14 @@ public class CharacterController : MonoBehaviour
                         velocity = velocity.normalized * maxSlopeSpeed;
                     }
 
-                    void ApplyMinSpeed(bool isSlopingRight, CustomPlayerInput playerInput)
+                    void ApplyMinSpeed(bool isSlopingRight, CharacterInputs playerInput)
                     {
                         float mag = initSlopeSpeed * maxSlopeSpeed;
                         float angle = GetAngle(isSlopingRight, playerInput);
                         velocity = new Vector2(mag * Mathf.Cos(angle), mag * Mathf.Sin(angle));
                     }
 
-                    float GetAngle(bool isSlopingRight, CustomPlayerInput playerInput)
+                    float GetAngle(bool isSlopingRight, CharacterInputs playerInput)
                     {
                         float angle;
                         if (isSlopingRight)
@@ -1761,7 +1770,7 @@ public class CharacterController : MonoBehaviour
         //Dashing
         if (doDash && !isDashing)
         {
-            if (!hasDashed && Time.time - lastTimeDashFinish >= dashCooldown)
+            if (!isDashDisable && !hasDashed && Time.time - lastTimeDashFinish >= dashCooldown)
             {
                 Vector2 dir = GetCurrentDirection(true);
                 isLastDashUp = dir.SqrDistance(Vector2.up) <= 1e-6f;
@@ -1833,7 +1842,7 @@ public class CharacterController : MonoBehaviour
         velocity = dir * dashSpeedCurve.Evaluate(0);
         lastTimeDashBegin = Time.time;
         hasDashed = isDashing = dash = true;
-        fightController.StartDashing();
+        onDash.Invoke(dir);
     }
 
     #endregion

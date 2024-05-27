@@ -98,7 +98,7 @@ public class Fire : MonoBehaviour
                 if (id != playerCommon.id && !charsAlreadyTouch.Contains(id))
                 {
                     charsAlreadyTouch.Add(id);
-                    fireAttack.OnTouchEnemy(player);
+                    fireAttack.OnFireBurnPlayer(player);
                 }
             }
         }

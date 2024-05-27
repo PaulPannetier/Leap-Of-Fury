@@ -157,7 +157,7 @@ public class TPAttack : StrongAttack
             GameObject player = collider.GetComponent<ToricObject>().original;
             if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
             {
-                OnTouchEnemy(player);
+                OnTouchEnemy(player, damageType);
             }
         }
     }

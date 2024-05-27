@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class ArrowAttack : WeakAttack
@@ -11,6 +12,7 @@ public class ArrowAttack : WeakAttack
 
     [SerializeField] private GameObject arrowPrefab;
 
+    [SerializeField] private float castDuration = 0.1f;
     [SerializeField] private float arrowLaunchDistance = 0.2f;
     public float delayBetweenLauchAndRecoverArrow = 0.7f;
     [SerializeField] private float arrowInitSpeed = 4f;
@@ -76,41 +78,38 @@ public class ArrowAttack : WeakAttack
 
     private IEnumerator WaitEndAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        float timeCounter = 0f;
-        while (timeCounter < castDuration)
-        {
-            yield return null;
-            if (!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
+        yield return PauseManager.instance.Wait(castDuration);
 
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void RecoverArrow()
     {
         nbArrow++;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void RecoverArrowInAir()
     {
         OnArrowLand();
         RecoverArrow();
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void OnArrowLand()
     {
         arrowIsFlying = false;
         arrowWhoFly = null;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void OnArrowTouchChar(GameObject player)
     {
         arrowWhoFly = null;
         arrowIsFlying = false;
+        base.OnTouchEnemy(player, damageType);
     }
 
     #region OnValidate
@@ -122,6 +121,7 @@ public class ArrowAttack : WeakAttack
         base.OnValidate();
         arrowLaunchDistance = Mathf.Max(0f, arrowLaunchDistance);
         initArrow = Mathf.Max(0, initArrow);
+        castDuration = Mathf.Max(0f, castDuration);
     }
 
 #endif

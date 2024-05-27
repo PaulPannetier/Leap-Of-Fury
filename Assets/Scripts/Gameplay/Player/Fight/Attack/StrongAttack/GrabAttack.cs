@@ -38,6 +38,7 @@ public class GrabAttack : StrongAttack
     [SerializeField] private float wallGapUp = 0.7f, wallGapDown, wallGapRight, wallGapLeft;
 
     [Header("Char")]
+    [SerializeField] private StunEffectParams stunEffectParams = new StunEffectParams();
     [SerializeField] private float waitingTimeWhenCharGrab = 0.1f;
     [SerializeField] private float maxCharGrabDuration = 0.7f;
     [SerializeField, Tooltip("The duration of the dash compare to the distance, in %age of maxCharGrabDuration")] private AnimationCurve charDurationOverDistance;
@@ -153,13 +154,13 @@ public class GrabAttack : StrongAttack
 
         for (int i = 0; i < raycastAll.Length; i++)
         {
-            if (raycastAll[i].collider.gameObject.CompareTag("Char"))
+            if (raycastAll[i].collider.CompareTag("Char"))
             {
                 GameObject player = raycastAll[i].collider.gameObject;
                 if (player != gameObject)
                 {
                     FightController charFc = player.GetComponent<FightController>();
-                    if (charFc.canBeStun && raycastAll[i].distance > minRange)
+                    if (raycastAll[i].distance > minRange && (int)charFc.damageProtectionType <= 1)
                     {
                         raycast = raycastAll[i];
                         isCharCollision = true;
@@ -222,26 +223,12 @@ public class GrabAttack : StrongAttack
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
 
-        IEnumerator Wait(float duration)
-        {
-            float counter = 0f;
-            while (counter < duration)
-            {
-                yield return null;
-                if (!PauseManager.instance.isPauseEnable)
-                {
-                    counter += Time.deltaTime;
-                }
-            }
-        }
-
         IEnumerator PerformCharTouch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
         {
-            FightController charFc = charTouch.GetComponent<FightController>();
-            charFc.RequestStun(-1);
+            ApplyEffect(charTouch, effectType, new StunEffectParams(waitingTimeWhenCharGrab * 2f));
             charController.Freeze();
 
-            yield return Wait(waitingTimeWhenCharGrab);
+            yield return PauseManager.instance.Wait(waitingTimeWhenCharGrab);
 
             Vector2 begPos = transform.position;
             Vector2 oldPos = begPos;
@@ -275,13 +262,13 @@ public class GrabAttack : StrongAttack
                 charController.ForceApplyVelocity(((Vector2)transform.position - oldPos) / Time.deltaTime);
             }
 
-            OnTouchEnemy(charTouch.GetComponent<ToricObject>().original);
+            OnTouchEnemy(charTouch.GetComponent<ToricObject>().original, damageType);
         }
 
         IEnumerator PerformWallTouch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
         {
             charController.Freeze();
-            yield return Wait(waitingTimeWhenWallGrab);
+            yield return PauseManager.instance.Wait(waitingTimeWhenWallGrab);
 
             Vector2 begPos = transform.position;
             Vector2 oldPos = begPos;
@@ -328,7 +315,7 @@ public class GrabAttack : StrongAttack
                 if (!charAlreadyTouch.Contains(pc.id) && (ignoreID == null || !ignoreID.Contains(pc.id)))
                 {
                     charAlreadyTouch.Add(pc.id);
-                    base.OnTouchEnemy(col.gameObject);
+                    base.OnTouchEnemy(col.gameObject, damageType);
                 }
             }
         }
@@ -355,6 +342,7 @@ public class GrabAttack : StrongAttack
     {
         base.OnValidate();
         this.transform = base.transform;
+        stunEffectParams.OnValidate();
         range = Mathf.Max(0f, range);
         castRadius = Mathf.Max(0f, castRadius);
         waitingTimeWhenWallGrab = Mathf.Max(0f, waitingTimeWhenWallGrab);

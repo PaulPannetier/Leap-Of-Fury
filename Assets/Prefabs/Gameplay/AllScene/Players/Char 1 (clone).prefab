@@ -133,6 +133,7 @@ MonoBehaviour:
   - {fileID: 0}
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &4122206886715545145
 MonoBehaviour:
@@ -158,9 +159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6076f156ec0b7104084af103613515d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0.2
   cooldown:
     duration: 4
+  damageType: 1
+  effectType: 0
   saveAttackStats: 0
   originalCloneAttack: {fileID: 0}
   drawGizmos: 0
@@ -170,6 +172,7 @@ MonoBehaviour:
   minTimeBetweenDash: 0.1
   maxTimeBetweenDash: 1.5
   dashBufferTime: 0.1
+  castDuration: 0.2
   dashSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -233,9 +236,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4770c9bf661a2d4491e84ebbd464610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castDuration: 0
   cooldown:
     duration: 0
+  damageType: 0
+  effectType: 0
   saveAttackStats: 0
   enableBehaviour: 0
   fireDecreasement: 0

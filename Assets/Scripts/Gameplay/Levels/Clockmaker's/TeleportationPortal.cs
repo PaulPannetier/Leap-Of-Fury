@@ -80,7 +80,7 @@ public class TeleportationPortal : MonoBehaviour
             if (cols[i].CompareTag("Char"))
             {
                 GameObject player = cols[i].GetComponent<ToricObject>().original;
-                CustomPlayerInput playerInput = player.GetComponent<CustomPlayerInput>();
+                CharacterInputs playerInput = player.GetComponent<CharacterInputs>();
                 if (playerInput.interactPressedDown)
                 {
                     SetupEntering(player);

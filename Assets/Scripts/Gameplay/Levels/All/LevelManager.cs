@@ -218,7 +218,7 @@ public abstract class LevelManager : MonoBehaviour
             playerCommon.playerIndex = playerData.playerIndex;
             playerCommon.id = idCount;
             idCount++;
-            tmpGO.GetComponent<CustomPlayerInput>().controllerType = playerData.controllerType;
+            tmpGO.GetComponent<CharacterInputs>().controllerType = playerData.controllerType;
 
             if(InputManager.IsAGamepadController(playerData.controllerType))
             {
@@ -297,7 +297,7 @@ public abstract class LevelManager : MonoBehaviour
     {
         foreach (Transform t in charParent)
         {
-            t.GetComponent<CharacterController>().DisableMovement(durationToWaitAtBegining);
+            t.GetComponent<CharacterController>().DisableInputs(durationToWaitAtBegining);
         }
     }
 

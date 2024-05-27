@@ -9,19 +9,19 @@ public class BounceShotAttack : StrongAttack
     private CharacterController movement;
     private GameObject goLineRendererToDuplicate;
     private BounceShotMagicAttackData data;
-    private int maxBounce;
+    private short maxBounce;
     private float speed;
     private bool isBouncing = false;
+    private LayerMask groundMask, charMask;
 
     [SerializeField] private GameObject goLinesRendererParent;
+    [SerializeField] private float castDuration = 0.1f;
     [SerializeField] private float initSpeed = 7f;
     [SerializeField] private float duration = 2f;
     [SerializeField] private bool useMaxTotalDistance = false;
     [SerializeField] private float maxTotalDistance = 5f;
     [SerializeField] private float minDistBetween2Points = 0.1f;
-    [SerializeField] private int initMaxBounce = 1;
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private short initMaxBounce = 1;
     [SerializeField] [Range(0f, 1f)] private float detectionTolerance = 0.001f;
 
     protected override void Awake()
@@ -34,6 +34,8 @@ public class BounceShotAttack : StrongAttack
     protected override void Start()
     {
         base.Start();
+        groundMask = LayerMask.GetMask("Floor");
+        charMask = LayerMask.GetMask("Char");
         maxBounce = initMaxBounce;
         speed = initSpeed;
         data = new BounceShotMagicAttackData(Vector2.zero, null, null, 0f, 0, new List<LineRenderer> { goLinesRendererParent.transform.GetChild(0).GetComponent<LineRenderer>() });
@@ -224,7 +226,7 @@ public class BounceShotAttack : StrongAttack
 
     private IEnumerator DoBounceAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        yield return Useful.GetWaitForSeconds(castDuration);
+        yield return PauseManager.instance.Wait(castDuration);
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
 
@@ -243,7 +245,7 @@ public class BounceShotAttack : StrongAttack
             isTouchingAnEnnemy = TouchOtherEnnemy(out GameObject ennemy);
             if (isTouchingAnEnnemy)
             {
-                OnTouchEnemy(ennemy);
+                OnTouchEnemy(ennemy, damageType);
                 break;
             }
             if(BounceIsLooping())
@@ -267,7 +269,7 @@ public class BounceShotAttack : StrongAttack
                 isTouchingAnEnnemy = TouchOtherEnnemy(out GameObject ennemy);
                 if (isTouchingAnEnnemy)
                 {
-                    OnTouchEnemy(ennemy);
+                    OnTouchEnemy(ennemy, damageType);
                     break;
                 }
                 yield return null;
@@ -343,7 +345,7 @@ public class BounceShotAttack : StrongAttack
             for (int i = 1; i < points.Count; i++)
             {
                 Vector3 newPoint = points[i];
-                raycast = Physics2D.Raycast(oldPoint, newPoint - oldPoint, oldPoint.Distance(newPoint), playerMask);
+                raycast = Physics2D.Raycast(oldPoint, newPoint - oldPoint, oldPoint.Distance(newPoint), charMask);
                 if (raycast.collider != null && raycast.collider.CompareTag("Char"))
                 {
                     otherPlayer = raycast.collider.GetComponent<ToricObject>().original;
@@ -363,4 +365,22 @@ public class BounceShotAttack : StrongAttack
     {
         maxBounce++;
     }
+
+    #region OnValidate
+
+#if UNITY_EDITOR
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        castDuration = Mathf.Max(castDuration, 0f);
+        initSpeed = Mathf.Max(initSpeed, 0f);
+        maxTotalDistance = Mathf.Max(maxTotalDistance, 0f);
+        initMaxBounce = (short)Mathf.Max(initMaxBounce, 0);
+        duration = Mathf.Max(duration, 0f);
+    }
+
+#endif
+
+    #endregion
 }
