@@ -32,7 +32,7 @@ public class LanguageManager : MonoBehaviour
             }
             else
             {
-                LogManager.instance.WriteLog("The language : " + value + " doesn't exist", value);
+                LogManager.instance.AddLog("The language : " + value + " doesn't exist", value);
                 Debug.LogWarning("The language : " +  value + " doesn't exist");
             }
         }
@@ -56,7 +56,7 @@ public class LanguageManager : MonoBehaviour
             {
                 string warningText = $"Can't load the language : {language} in the path : {path}.";
                 Debug.LogWarning(warningText);
-                LogManager.instance.WriteLog(warningText, language, path);
+                LogManager.instance.AddLog(warningText, language, path);
                 return;
             }
 
@@ -130,12 +130,12 @@ public class LanguageManager : MonoBehaviour
         if(languageData.TryGetValue(textID, out content))
             return ApplyGameStatsInText(content);
         Debug.LogWarning("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
-        LogManager.instance.WriteLog("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
+        LogManager.instance.AddLog("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
 
         if (defaultLanguageData.TryGetValue(textID, out content))
             return ApplyGameStatsInText(content);
         Debug.LogWarning("The text with id : " + textID + " with the default language doesn't exist");
-        LogManager.instance.WriteLog("The text with id : " + textID + " with the default language doesn't exist");
+        LogManager.instance.AddLog("The text with id : " + textID + " with the default language doesn't exist");
         return string.Empty;
     }
 

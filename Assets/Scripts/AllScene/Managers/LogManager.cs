@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections;
 using System.Text;
 using UnityEngine;
 using System;
@@ -13,13 +12,12 @@ public class LogManager : MonoBehaviour
         private set;
     }
 
-    private logMessages messages;
-    private bool isWritingLogs = false;
+    private LogMessages messages;
+    private bool isLoadingLogs = false;
+    private List<LogMessage> waitingLogs;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool clearLogFile = false;
-
 #endif
 
     private void Awake()
@@ -30,56 +28,85 @@ public class LogManager : MonoBehaviour
             return;
         }
         instance = this;
-        messages = new logMessages();
+        LoadLogs();
     }
 
     private void Start()
     {
         Application.logMessageReceived += OnLogMessageReceive;
+        Application.quitting += OnExit;
+    }
+
+    private void OnExit()
+    {
+        WriteLogs();
     }
 
     private void OnLogMessageReceive(string condition, string stackTrace, LogType type)
     {
-        WriteLog("An Exeption occur in runtime", type, condition, stackTrace);
+        AddLog("An Exeption occur in runtime", type, condition, stackTrace);
+    }
+
+    private void LoadLogs()
+    {
+        void Callback(bool readSucess, LogMessages messages)
+        {
+            if(readSucess)
+            {
+                this.messages = messages;
+            }
+            else
+            {
+                this.messages = new LogMessages();
+            }
+
+            isLoadingLogs = false;
+            for (int i = 0; i < waitingLogs.Count; i++)
+            {
+                AddLog(waitingLogs[i]);
+            }
+        }
+
+        waitingLogs = new List<LogMessage>();
+        isLoadingLogs = true;
+        Save.ReadJSONDataAsync<LogMessages>(logPath, Callback).GetAwaiter();
     }
 
     public void AddLog(string message, params object[] values)
     {
-        LogMessage log = new LogMessage(message, values);
-        messages.AddMessage(log);
+        AddLog(new LogMessage(message, values));
     }
 
-    public void WriteRegisterLog()
+    private void AddLog(LogMessage log)
     {
-        StringBuilder sb = new StringBuilder();
-        foreach (LogMessage log in messages.messages)
+        if(isLoadingLogs)
         {
-            sb.Append(log.ToString());
+            waitingLogs.Add(log);
         }
-        StartCoroutine(WriteLogAsync(sb.ToString()));
-        messages.messages.Clear();
+        else
+        {
+            if (!messages.Contains(log))
+                messages.AddMessage(log);
+        }
     }
 
-    public void WriteLog(string message, params object[] values)
+    public void WriteLogsAsync()
     {
-        LogMessage log = new LogMessage(message, values);
-        string str = log.ToString();
-        StartCoroutine(WriteLogAsync(str));
+        Save.WriteJSONDataAsync(messages, logPath, (bool b) => { }, true).GetAwaiter();
+    }
+
+    public void WriteLogs()
+    {
+        Save.WriteJSONData(messages, logPath, true);
     }
 
     public void ClearLog()
     {
-        StartCoroutine(WriteLogAsync("", false));
+        messages = new LogMessages();
+        WriteLogs();
     }
 
-    private IEnumerator WriteLogAsync(string logData, bool append = true)
-    {
-        while (isWritingLogs)
-            yield return null;
-
-        isWritingLogs = true;
-        Save.WriteStringMultiThread(logData, logPath, (bool b) => { isWritingLogs = false; }, append);
-    }
+    #region OnValidate
 
 #if UNITY_EDITOR
 
@@ -94,13 +121,16 @@ public class LogManager : MonoBehaviour
 
 #endif
 
+    #endregion
+
     #region Struct
 
-    private class logMessages
+    [Serializable]
+    private class LogMessages
     {
         public List<LogMessage> messages;
 
-        public logMessages()
+        public LogMessages()
         {
             messages = new List<LogMessage>();
         }
@@ -109,60 +139,94 @@ public class LogManager : MonoBehaviour
         {
             messages.Add(message);
         }
+
+        public bool Contains(LogMessage logMessage) => messages.Contains(logMessage);
     }
 
-    private class LogMessage
+    [Serializable]
+    private struct LogMessage
     {
-        public string valueMessage;
-        public string errorMessage;
+        [NonSerialized] private int id;
+        private string errorMessage;
+        private LogParams[] logParams;
+
+        private LogMessage(string errorMessage, LogParams[] logParams)
+        {
+            this.errorMessage = errorMessage;
+            this.logParams = logParams;
+            id = HashCode.Combine(errorMessage, logParams);
+        }
 
         public LogMessage(string errorMessage, params object[] objs)
         {
             this.errorMessage = errorMessage;
+            logParams = new LogParams[objs.Length];
 
-            StringBuilder sb = new StringBuilder("    Params : ");
-            sb.Append(objs.Length);
-            sb.Append("\n    {\n");
-            foreach (object obj in objs)
+            for (int i = 0; i < objs.Length; i++)
             {
-                sb.Append("        Type : ");
-                sb.Append(obj.GetType().Name);
-                sb.Append(",\n        Value : ");
+                object obj = objs[i];
+                string type = obj.GetType().Name;
+                string value = string.Empty;
                 if (obj.GetType().IsArray)
                 {
                     Array arr = (Array)obj;
-                    StringBuilder sb2 = new StringBuilder("[ ");
+                    StringBuilder sb = new StringBuilder("[ ");
                     for (int l = 0; l < arr.Length; l++)
                     {
-                        sb2.Append(arr.GetValue(l).ToString());
-                        sb2.Append(", ");
+                        sb.Append(arr.GetValue(l).ToString());
+                        sb.Append(", ");
                     }
-                    if(arr.Length > 0)
+                    if (arr.Length > 0)
                     {
-                        sb2.Remove(sb2.Length - 2, 2);
+                        sb.Remove(sb.Length - 2, 2);
                     }
-                    sb2.Append(" ]");
-                    sb.Append(sb2.ToString());
+                    sb.Append(" ]");
+                    value = sb.ToString();
                 }
                 else
                 {
-                    sb.Append(obj.ToString());
+                    value = obj.ToString();
                 }
-                sb.Append("\n\n");
+                logParams[i] = new LogParams(type, value);
             }
-            sb.Remove(sb.Length - 1, 1);
-            sb.Append("    }\n");
-            valueMessage = sb.ToString();
+
+            id = HashCode.Combine(errorMessage, logParams);
         }
+
+        public override bool Equals(object obj)
+        {
+            if (object.ReferenceEquals(this, null) && object.ReferenceEquals(obj, null))
+                return true;
+
+            if (object.ReferenceEquals(this, null) || object.ReferenceEquals(obj, null))
+                return false;
+
+            if (obj is LogMessage logMessage)
+                return this == logMessage;
+            return false;
+        }
+
+        public static bool operator ==(LogMessage log1, LogMessage log2) => log1.id == log2.id;
+        public static bool operator !=(LogMessage log1, LogMessage log2) => log1.id != log2.id;
+
+        public override int GetHashCode() => id;
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder("LogMessage : \n{\n    Error : ");
-            sb.Append(errorMessage);
-            sb.Append(",\n");
-            sb.Append(valueMessage);
-            sb.Append("}\n");
-            return sb.ToString();
+            return Save.ConvertObjectToJSONString(this);
+        }
+
+        [Serializable]
+        private struct LogParams
+        {
+            public string type;
+            public string value;
+
+            public LogParams(string type, string value)
+            {
+                this.type = type;
+                this.value = value;
+            }
         }
     }
 

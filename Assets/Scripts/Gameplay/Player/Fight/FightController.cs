@@ -498,7 +498,7 @@ public class FightController : MonoBehaviour
     {
         if (!isLaunchingStrongAttack)
         {
-            LogManager.instance.WriteLog("FightController::OnEndStrongAttack can't be call if isLaunchingStrongAttack == false!");
+            LogManager.instance.AddLog("FightController::OnEndStrongAttack can't be call if isLaunchingStrongAttack == false!");
             Debug.LogWarning("Debug pls");
             return;
         }
@@ -510,7 +510,7 @@ public class FightController : MonoBehaviour
     {
         if (!isLaunchingWeakAttack)
         {
-            LogManager.instance.WriteLog("FightController::OnEndWeakAttack can't be call if isLaunchingWeakAttack == false!");
+            LogManager.instance.AddLog("FightController::OnEndWeakAttack can't be call if isLaunchingWeakAttack == false!");
             Debug.LogWarning("Debug pls");
             return;
         }

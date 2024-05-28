@@ -76,7 +76,7 @@ public class AudioManager : MonoBehaviour
         if(sound == null)
         {
             Debug.LogWarning("The sound " + name + " wasn't find in the AudioManager's audioClips array.");
-            LogManager.instance.WriteLog("The sound " + name + " wasn't find in the AudioManager's audioClips array.", name);
+            LogManager.instance.AddLog("The sound " + name + " wasn't find in the AudioManager's audioClips array.", name);
             return default(SoundID);
         }
         AudioSource audioSource = Instantiate(sound.soundEffect ? soundEffectSourcePrefab : musicSourcePrefab, audioParent);
@@ -111,7 +111,7 @@ public class AudioManager : MonoBehaviour
         if(!IsPlayingSound(currentSoundId))
         {
             Debug.Log("The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName);
-            LogManager.instance.WriteLog("The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName, currentSoundId.name, newSoundName);
+            LogManager.instance.AddLog("The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName, currentSoundId.name, newSoundName);
             PlaySound(newSoundName, 0f);
             SetVolumeSmooth(newSoundName, newSoundVolume, duration);
             return;
@@ -149,7 +149,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + id + " is not currently playing.");
-        LogManager.instance.WriteLog("The sound with id:" + id + " is not currently playing.", id);
+        LogManager.instance.AddLog("The sound with id:" + id + " is not currently playing.", id);
     }
 
     public void SetVolumeSmooth(string name, float newVolume, float duration) => SetVolumeSmooth(GetIdFromName(name), newVolume, duration);
@@ -159,13 +159,13 @@ public class AudioManager : MonoBehaviour
         if(!currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
             Debug.Log("The sound : " + id + " is not playing, can't set volume of a non playing sound.");
-            LogManager.instance.WriteLog("The sound : " + id + " is not playing, can't set volume of a non playing sound.", id);
+            LogManager.instance.AddLog("The sound : " + id + " is not playing, can't set volume of a non playing sound.", id);
             return;
         }
         if(changeVolumeCorout.ContainsKey(id))
         {
             Debug.Log("The sound : " + id + " is already changing volume smootly.");
-            LogManager.instance.WriteLog("The sound : " + id + " is already changing volume smootly.", id);
+            LogManager.instance.AddLog("The sound : " + id + " is already changing volume smootly.", id);
             StopCoroutine(changeVolumeCorout[id]);
             changeVolumeCorout.Remove(id);
         }
@@ -202,7 +202,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + id + "is not currently playing, can't mute them.");
-        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't mute them.", id);
+        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't mute them.", id);
     }
 
     public void UnMuteSound(string name) => MuteSound(GetIdFromName(name));
@@ -215,7 +215,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + id + "is not currently playing, can't unmute them.");
-        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't unmute them.", id);
+        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't unmute them.", id);
     }
 
     public void PauseSound(string name) => PauseSound(GetIdFromName(name));
@@ -228,7 +228,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + id + "is not currently playing, can't pause them.");
-        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't pause them.", id);
+        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't pause them.", id);
     }
 
     public void ResumeSound(string id) => ResumeSound(GetIdFromName(id));
@@ -241,7 +241,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         Debug.LogWarning("The sound " + id + "is not currently playing, can't resume them.");
-        LogManager.instance.WriteLog("The sound " + id + "is not currently playing, can't resume them.", id);
+        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't resume them.", id);
     }
 
     public void StopAllSound()

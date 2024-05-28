@@ -54,7 +54,7 @@ namespace ToricCollider2D
                 return new ToricPolygone(poly);
 
             Debug.LogWarning($"Cant convert a unity collider2D of type {collider.GetType()}!");
-            LogManager.instance.WriteLog($"Cant convert a unity collider2D of type {collider.GetType()}!", collider);
+            LogManager.instance.AddLog($"Cant convert a unity collider2D of type {collider.GetType()}!", collider);
             return null;
         }
 

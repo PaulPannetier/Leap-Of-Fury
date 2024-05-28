@@ -136,7 +136,7 @@ public static class PathFinderToric
 #if UNITY_EDITOR
                     Debug.LogWarning("Debug plz");
 #endif
-                    LogManager.instance.WriteLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(prepolate) block", previousPoint, firstPoint);
+                    LogManager.instance.AddLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(prepolate) block", previousPoint, firstPoint);
                     prepolate = false;
                     points = new Vector2[(extrapolate ? 1 : 0) + mapPoints.Count];
                 }
@@ -170,7 +170,7 @@ public static class PathFinderToric
 #if UNITY_EDITOR
                     Debug.LogWarning("Debug plz");
 #endif
-                    LogManager.instance.WriteLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(extrapolate) block", nextPoint, lastPoint);
+                    LogManager.instance.AddLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(extrapolate) block", nextPoint, lastPoint);
                     extrapolate = false;
                     Vector2[] tmp = new Vector2[points.Length - 1];
                     for (int i = 0; i < tmp.Length; i++)

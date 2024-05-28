@@ -477,7 +477,7 @@ public class CharacterController : MonoBehaviour
             else
             {
                 print("Debug pls");
-                LogManager.instance.WriteLog("Ground ray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay, "CharacterController::UpdateState");
+                LogManager.instance.AddLog("Ground ray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay, "CharacterController::UpdateState");
                 groundCollider = rightSlopeRay.collider;
                 groundColliderData = groundCollider.GetComponent<MapColliderData>();
             }
@@ -1212,7 +1212,7 @@ public class CharacterController : MonoBehaviour
             if((isSlopingRight && isSlopingLeft) || (!isSlopingRight && !isSlopingLeft))
             {
                 Debug.LogWarning("isSlopingRight == isSlopingLeft == " + isSlopingRight);
-                LogManager.instance.WriteLog("Function HandleSlope in Movement script, paradox between sloping right and left", isSloping, isSlopingRight, isSlopingLeft, slopeAngleRight, slopeAngleLeft, "CharacterController.HandleSlope");
+                LogManager.instance.AddLog("Function HandleSlope in Movement script, paradox between sloping right and left", isSloping, isSlopingRight, isSlopingLeft, slopeAngleRight, slopeAngleLeft, "CharacterController.HandleSlope");
             }
 
             if(playerInput.rawX != 0)

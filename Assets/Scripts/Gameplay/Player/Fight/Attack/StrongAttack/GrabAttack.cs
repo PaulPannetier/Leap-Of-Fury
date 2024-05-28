@@ -133,7 +133,7 @@ public class GrabAttack : StrongAttack
             {
                 currentWallGap = (wallGapRight + wallGapLeft) * 0.5f;
                 Debug.LogWarning("Debug pls");
-                LogManager.instance.WriteLog("Movement.GetCurrentDirection cannot return the vector : " + dir, dir, currentWallGap);
+                LogManager.instance.AddLog("Movement.GetCurrentDirection cannot return the vector : " + dir, dir, currentWallGap);
             }
         }
 

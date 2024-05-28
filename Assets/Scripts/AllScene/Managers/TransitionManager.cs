@@ -89,7 +89,7 @@ public class TransitionManager : MonoBehaviour
         {
             string errorText = "Can't prelaod the scene" + sceneName + "because the scene : " + scenePreload + " is already preloaded. Unity SceneManagement class can't also preload multiple scenes.";
             Debug.LogWarning(errorText);
-            LogManager.instance.WriteLog(errorText, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorText, sceneName, scenePreload);
             return;
         }
         isPreloadingAScene = true;
@@ -105,7 +105,7 @@ public class TransitionManager : MonoBehaviour
         {
             string errorText = "Can't prelaod the scene" + sceneName + "because the scene : " + scenePreload + " is already preloaded. Unity SceneManagement class can't also preload multiple scenes.";
             Debug.LogWarning(errorText);
-            LogManager.instance.WriteLog(errorText, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorText, sceneName, scenePreload);
             return;
         }
         SetOldSceneData(oldSceneData);
@@ -118,7 +118,7 @@ public class TransitionManager : MonoBehaviour
         {
             string errorMessage = "The scene : " + sceneName + " is not preloaded.";
             Debug.LogWarning(errorMessage);
-            LogManager.instance.WriteLog(errorMessage, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorMessage, sceneName, scenePreload);
             return false;
         }
         return preloadSceneAsyncOperation.isDone;
@@ -130,7 +130,7 @@ public class TransitionManager : MonoBehaviour
         {
             string errorMessage = "The scene : " + sceneName + " is not preloaded.";
             Debug.LogWarning(errorMessage);
-            LogManager.instance.WriteLog(errorMessage, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorMessage, sceneName, scenePreload);
             return;
         }
         isPreloadingAScene = false;

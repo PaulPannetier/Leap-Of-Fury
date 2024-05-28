@@ -101,7 +101,7 @@ public class LevelMapData : MonoBehaviour
         if (accuracy < 1)
         {
             accuracy = 1;
-            LogManager.instance.WriteLog("Accuracy must be >= 1 in LevelMapData.GetPathfindingMap(int accuracy = 1)", accuracy);
+            LogManager.instance.AddLog("Accuracy must be >= 1 in LevelMapData.GetPathfindingMap(int accuracy = 1)", accuracy);
         }
 
         List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();

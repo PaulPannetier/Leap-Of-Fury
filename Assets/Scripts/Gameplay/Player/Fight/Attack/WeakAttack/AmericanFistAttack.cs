@@ -385,7 +385,7 @@ public class AmericanFistAttack : WeakAttack
 #if UNITY_EDITOR || ADVANCE_DEBUG
                     else
                     {
-                        LogManager.instance.WriteLog("Unity trigger a collision but Collision2D no", customCol, col);
+                        LogManager.instance.AddLog("Unity trigger a collision but Collision2D no", customCol, col);
                     }
 #endif
                 }
