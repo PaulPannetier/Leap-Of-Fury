@@ -16,6 +16,8 @@ public class LogManager : MonoBehaviour
     private bool isLoadingLogs = false;
     private List<LogMessage> waitingLogs;
 
+    [SerializeField] private int maxLogs = 3000;
+
 #if UNITY_EDITOR
     [SerializeField] private bool clearLogFile = false;
 #endif
@@ -27,14 +29,11 @@ public class LogManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        instance = this;
-        LoadLogs();
-    }
 
-    private void Start()
-    {
+        instance = this;
         Application.logMessageReceived += OnLogMessageReceive;
         Application.quitting += OnExit;
+        LoadLogs();
     }
 
     private void OnExit()
@@ -85,7 +84,7 @@ public class LogManager : MonoBehaviour
         }
         else
         {
-            if (!messages.Contains(log))
+            if (messages.length < maxLogs && !messages.Contains(log))
                 messages.AddMessage(log);
         }
     }
@@ -117,6 +116,7 @@ public class LogManager : MonoBehaviour
             clearLogFile = false;
             ClearLog();
         }
+        maxLogs = Mathf.Max(0, maxLogs);
     }
 
 #endif
@@ -128,6 +128,7 @@ public class LogManager : MonoBehaviour
     [Serializable]
     private class LogMessages
     {
+        public int length => messages.Count;
         public List<LogMessage> messages;
 
         public LogMessages()
@@ -146,16 +147,27 @@ public class LogManager : MonoBehaviour
     [Serializable]
     private struct LogMessage
     {
-        [NonSerialized] private int id;
-        private string errorMessage;
-        private LogParams[] logParams;
-
-        private LogMessage(string errorMessage, LogParams[] logParams)
+        [NonSerialized] private int _id;
+        private int id
         {
-            this.errorMessage = errorMessage;
-            this.logParams = logParams;
-            id = HashCode.Combine(errorMessage, logParams);
+            get
+            {
+                if (_id == default(int))
+                {
+                    int logParamsHashCode = -640585942;
+                    for (int i = 0; i < logParams.Length; i++)
+                    {
+                        logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);
+                    }
+                    _id = HashCode.Combine(errorMessage, logParamsHashCode);
+                }
+                return _id;
+            }
+            set => _id = value;
         }
+
+        [SerializeField] private string errorMessage;
+        [SerializeField] private LogParams[] logParams;
 
         public LogMessage(string errorMessage, params object[] objs)
         {
@@ -187,10 +199,16 @@ public class LogManager : MonoBehaviour
                 {
                     value = obj.ToString();
                 }
+
                 logParams[i] = new LogParams(type, value);
             }
 
-            id = HashCode.Combine(errorMessage, logParams);
+            int logParamsHashCode = -640585942;
+            for (int i = 0; i < logParams.Length; i++)
+            {
+                logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);
+            }
+            _id = HashCode.Combine(this.errorMessage, logParamsHashCode);
         }
 
         public override bool Equals(object obj)
@@ -213,7 +231,7 @@ public class LogManager : MonoBehaviour
 
         public override string ToString()
         {
-            return Save.ConvertObjectToJSONString(this);
+            return "LogMessage{id:" + id + "}";
         }
 
         [Serializable]
@@ -226,6 +244,11 @@ public class LogManager : MonoBehaviour
             {
                 this.type = type;
                 this.value = value;
+            }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(type, value);
             }
         }
     }

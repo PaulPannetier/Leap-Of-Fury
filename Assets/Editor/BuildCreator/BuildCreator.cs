@@ -215,10 +215,10 @@ public class BuildCreator : Editor
 
         if (gamemanager != null)
         {
-            SecutityManager secutityManager = gamemanager.GetComponent<SecutityManager>();
+            SecurityManager secutityManager = gamemanager.GetComponent<SecurityManager>();
             if (secutityManager != null)
             {
-                SecutityManager secutityManager2 = secutityManager.gameObject.AddComponent<SecutityManager>();
+                SecurityManager secutityManager2 = secutityManager.gameObject.AddComponent<SecurityManager>();
                 secutityManager2.folderToVerify = new string[secutityManager.folderToVerify.Length];
                 for (int i = 0; i < secutityManager.folderToVerify.Length; i++)
                 {

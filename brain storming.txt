@@ -128,7 +128,7 @@ DA : jsp
 Name : Chaos
 
 TODO :
-improve Logmanager
+Rename SecuTITY manager into Security Manager
 hyperparam charcontroller grab apex
 Trad all text
 test wall projectile and prohectile collision and retest all attack/char

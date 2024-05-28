@@ -4,13 +4,14 @@ using System.IO;
 using System.Text;
 using System;
 
-public class SecutityManager : MonoBehaviour
+public class SecurityManager : MonoBehaviour
 {
-    public bool enableBehaviour;
-
 #if UNITY_EDITOR
     [SerializeField] private bool saveHash;
 #endif
+
+    public bool enableBehaviour;
+
     [SerializeField] private string[] hashes = { };
     public string[] folderToVerify;
 
@@ -22,9 +23,17 @@ public class SecutityManager : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_EDITOR
+        Destroy(this);
+        if(Application.isEditor)
+        {
+            return;
+        }
+#endif
+
         if (hashes == null || folderToVerify == null || hashes.Length != folderToVerify.Length)
         {
-            LogManager.instance.AddLog("Inconsistent array size, the two array must have the same size.", hashes.Length, folderToVerify.Length, hashes, folderToVerify, "SecutityManager.Start");
+            LogManager.instance.AddLog("Inconsistent array size, the two array must have the same size.", hashes.Length, folderToVerify.Length, hashes, folderToVerify, "SecurityManager.Start");
             Destroy(this);
             return;
         }
@@ -32,7 +41,7 @@ public class SecutityManager : MonoBehaviour
         Hash[] runtimeHashes = ComputeHashes();
         if(hashes.Length != runtimeHashes.Length)
         {
-            LogManager.instance.AddLog("Runtime hash and save hash have not the same size.", runtimeHashes.Length, hashes.Length, runtimeHashes, hashes, "SecutityManager.Start");
+            LogManager.instance.AddLog("Runtime hash and save hash have not the same size.", runtimeHashes.Length, hashes.Length, runtimeHashes, hashes, "SecurityManager.Start");
             Destroy(this);
             return;
         }
@@ -43,13 +52,13 @@ public class SecutityManager : MonoBehaviour
             if (hashes[i] != runtimeHashes[i].ToString())
             {
                 error = true;
-                LogManager.instance.AddLog($"The secure folder {folderToVerify[i]} was modified", folderToVerify[i], hashes[i], runtimeHashes[i], "SecutityManager.Start");
+                LogManager.instance.AddLog($"The secure folder {folderToVerify[i]} was modified", folderToVerify[i], hashes[i], runtimeHashes[i], "SecurityManager.Start");
             }
         }
 
         if(error)
         {
-            LogManager.instance.AddLog("File corrupted found, close the application", "SecutityManager.Start");
+            LogManager.instance.AddLog("File corrupted found, close the application", "SecurityManager.Start");
 #if !UNITY_EDITOR
             Application.Quit();
 #endif
@@ -138,8 +147,6 @@ public class SecutityManager : MonoBehaviour
 
     #region OnValidate
 
-#if UNITY_EDITOR
-
     private void OnValidate()
     {
         Array.Sort(folderToVerify);
@@ -150,8 +157,6 @@ public class SecutityManager : MonoBehaviour
             SaveHashes();
         }
     }
-
-#endif
 
     #endregion
 
@@ -167,7 +172,7 @@ public class SecutityManager : MonoBehaviour
             this.hash = hash;
         }
 
-        public override string ToString() => SecutityManager.ByteToString(hash);
+        public override string ToString() => SecurityManager.ByteToString(hash);
 
         public override int GetHashCode() => hash.GetHashCode();
 
@@ -195,4 +200,5 @@ public class SecutityManager : MonoBehaviour
     }
 
     #endregion
+
 }
