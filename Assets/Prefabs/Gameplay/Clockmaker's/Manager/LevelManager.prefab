@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5223124800013430423}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -44,11 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb58065e4420464ab7c0a53a8a61007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: 
-  durationToWaitAtBegining: 3
+  levelName: Clockmaker's
+  durationToWaitAtBegining: 1
   nbKillsToWin: 7
-  waitingTimeAfterLastKill: 2
+  waitingTimeAfterLastKill: 3
   suffleMapWhenLevelStart: 1
   playFirstMapAtLevelStart: 0
-  mapsPrefabs: []
+  mapsPrefabs:
+  - {fileID: 2889853000194525038, guid: d64425de76a366e4293238c9fc43a19d, type: 3}
+  - {fileID: 2889853000194525038, guid: 6b5abe3952a25b744a8b9128f2c99915, type: 3}
+  - {fileID: 2889853000194525038, guid: 40d63f071d31e474897a686f53774882, type: 3}
+  - {fileID: 2889853000194525038, guid: 6c58383c99bb7a647b073b253e0dadf0, type: 3}
+  - {fileID: 4724754146340651324, guid: 4cfeb1ec56c9cdd408293a5c40e9ccb7, type: 3}
   enableBehaviour: 1

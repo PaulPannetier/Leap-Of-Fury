@@ -47463,7 +47463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a35611479efcf4dabb99163071ff46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawGizmos: 1
+  drawGizmos: 0
   spawnConfigs:
     spawnConfigPoints2Char:
     - points:
