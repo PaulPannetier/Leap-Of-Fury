@@ -1,3 +1,21 @@
 {
-    "messages": []
+    "messages": [
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)\nLevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)\nLevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)\nIntoTheJungleManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/IntoTheJungle/IntoTheJungleManager.cs:11)\n"
+                }
+            ]
+        }
+    ]
 }

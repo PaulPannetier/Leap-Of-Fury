@@ -64,13 +64,17 @@ Niveau :
 - Homéomorphe à un tore.
 - Une a 2 mécaniques de gameplay propre.
 
+Méca commune à tous les niveau :
+- Plateforme unidirectionelle
+- Jumper
+
 Niveau 0 :
 Méca : rien, un carte simple pour les débutants ou les fdp qui désactive les jokers sur smash.
 DA : jsp
 Name : The Plain
 
 Carte 1 :
-Méca : Certain sol glisse, il y a des jumper et des mur laissant passer les porjectiles.//ok
+Méca : Certain sol glisse, Et des murs laissent passer les porjectiles.//ok
 DA : la grotte du yéti, glace neige.
 Name : Yeti's Cave
 

@@ -12,6 +12,7 @@ public class MapColliderData : MonoBehaviour
         ice,
         trampoline,
         convoyerBelt,
+        oneWayPlateform
     }
 
     private Vector2 oldPosition;

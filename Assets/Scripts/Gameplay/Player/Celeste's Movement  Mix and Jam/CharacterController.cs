@@ -182,6 +182,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float speedWhenQuittingConvoyerBelt = 1f;
     private float lastTimeQuittingConvoyerBelt = -10f;
     private bool isQuittingConvoyerBelt, isQuittingConvoyerBeltRight, isQuittingConvoyerBeltLeft;
+    private bool isTraversingOneWayPlatefrom;
 
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
@@ -432,6 +433,7 @@ public class CharacterController : MonoBehaviour
         toricObject.CustomUpdate();
 
         // VIII-Debug
+        DebugText.instance.text += $"OneWayPlateform : {isTraversingOneWayPlatefrom}\n";
         //DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
         //DebugText.instance.text += $"Apex : {isGrabApex}\n";
@@ -452,9 +454,91 @@ public class CharacterController : MonoBehaviour
 
     private void UpdateState()
     {
-        // I-Collision/detection
+        // I-Collision/Detection
         topRightRay = PhysicsToric.Raycast(new Vector2(transform.position.x + topRaycastOffset.x, transform.position.y + topRaycastOffset.y), Vector2.up, topRaycastLength, groundLayer);
         topLeftRay = PhysicsToric.Raycast(new Vector2(transform.position.x - topRaycastOffset.x, transform.position.y + topRaycastOffset.y), Vector2.up, topRaycastLength, groundLayer);
+
+        //enable traversing one way platefrom
+        if(velocity.y > 0)
+        {
+            bool isUpColliderIsOneWayPlateform = true;
+            bool isoOneWayPlateform = false;
+            if (topRightRay)
+            {
+                MapColliderData topRightColliderData = topRightRay.collider.GetComponent<MapColliderData>();
+                if(topRightColliderData != null)
+                {
+                    if(topRightColliderData.groundType == MapColliderData.GroundType.oneWayPlateform)
+                    {
+                        isUpColliderIsOneWayPlateform = isoOneWayPlateform = true;
+                    }
+                    else
+                    {
+                        isUpColliderIsOneWayPlateform = false;
+                    }
+                }
+                else
+                {
+                    print("Debug pls");
+                    LogManager.instance.AddLog($"The floor collider at pos {(Vector2)topRightRay.collider.transform.position + topRightRay.collider.offset} don't have a MapColliderData component.", topRightRay, topRightRay.collider, "CharacterController::UpdateState");
+                }
+            }
+            if (isUpColliderIsOneWayPlateform && topLeftRay)
+            {
+                MapColliderData topLeftColliderData = topLeftRay.collider.GetComponent<MapColliderData>();
+                if (topLeftColliderData != null)
+                {
+                    if (topLeftColliderData.groundType == MapColliderData.GroundType.oneWayPlateform)
+                    {
+                        isUpColliderIsOneWayPlateform = isoOneWayPlateform = true;
+                    }
+                    else
+                    {
+                        isUpColliderIsOneWayPlateform = false;
+                    }
+                }
+                else
+                {
+                    print("Debug pls");
+                    LogManager.instance.AddLog($"The floor collider at pos {(Vector2)topLeftRay.collider.transform.position + topLeftRay.collider.offset} don't have a MapColliderData component.", topLeftRay, topLeftRay.collider, "CharacterController::UpdateState");
+                }
+            }
+
+            if(isUpColliderIsOneWayPlateform && isoOneWayPlateform && !wallGrab && !isGrounded)
+            {
+                isTraversingOneWayPlatefrom = true;
+            }
+        }
+
+        // Disable on way plateform
+        if(isTraversingOneWayPlatefrom)
+        {
+            bool isOnWaylateformUp = true;
+            MapColliderData rightColliderData = topRightRay ? topRightRay.collider.GetComponent<MapColliderData>() : null;
+            MapColliderData leftColliderData = topLeftRay ? topLeftRay.collider.GetComponent<MapColliderData>() : null;
+            if(rightColliderData != null || leftColliderData != null)
+            {
+                if(rightColliderData != null)
+                {
+                    isOnWaylateformUp = rightColliderData.groundType == MapColliderData.GroundType.oneWayPlateform;
+                }
+                isOnWaylateformUp = isOnWaylateformUp && (leftColliderData == null || leftColliderData.groundType == MapColliderData.GroundType.oneWayPlateform);
+            }
+            else
+            {
+                isOnWaylateformUp = false;
+            }
+
+            Collider2D col = PhysicsToric.OverlapBox((Vector2)transform.position + hitbox.offset, hitbox.size, 0f, groundLayer);
+            if(isOnWaylateformUp)
+            {
+                isTraversingOneWayPlatefrom = col != null || velocity.y > 0f;
+            }
+            else
+            {
+                isTraversingOneWayPlatefrom = col != null;
+            }
+        }
 
         oldGroundCollider = groundCollider;
         groundRay = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + groundRaycastOffset.y), Vector2.down, groundRaycastLength, groundLayer);
@@ -521,7 +605,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //Slope detecttion
-        if (rightSlopeRay.collider != null)
+        if (rightSlopeRay.collider != null && !isTraversingOneWayPlatefrom)
         {
             groundCollider = groundCollider == null ? rightSlopeRay.collider : groundCollider;
             slopeAngleRight = Useful.WrapAngle((Vector2.Angle(Vector2.right, rightSlopeRay.normal) - 90f) * Mathf.Deg2Rad);
@@ -542,7 +626,7 @@ public class CharacterController : MonoBehaviour
             isSlopingRight = false;
         }
 
-        if (leftSlopeRay.collider != null)
+        if (leftSlopeRay.collider != null && !isTraversingOneWayPlatefrom)
         {
             groundCollider = groundCollider == null ? leftSlopeRay.collider : groundCollider;
             slopeAngleLeft = Useful.WrapAngle((270f - Vector2.Angle(Vector2.left, rightSlopeRay.normal)) * Mathf.Deg2Rad);
@@ -572,13 +656,13 @@ public class CharacterController : MonoBehaviour
         }
 
         //Trigger groundTouch
-        if (isGrounded && !oldOnGround && !isJumping)
+        if (isGrounded && !oldOnGround && !isJumping && !isTraversingOneWayPlatefrom)
         {
             GroundTouch();
             groundTouch = true;
         }
         //enable dash
-        if(hasDashed && isGrounded)
+        if(hasDashed && isGrounded && !isTraversingOneWayPlatefrom)
         {
             hasDashed = false;
         }
@@ -597,7 +681,7 @@ public class CharacterController : MonoBehaviour
         leftFootRay = PhysicsToric.Raycast(from, Vector2.left, grabRayLength, groundLayer);
 
         //Trigger wallGrab
-        if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isJumpingAlongWall && !isBumping)
+        if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isJumpingAlongWall && !isBumping && !isTraversingOneWayPlatefrom)
         {
             if((onRightWall && rightWallColliderData.grabable) || (onLeftWall && leftWallColliderData.grabable))
             {
@@ -689,12 +773,12 @@ public class CharacterController : MonoBehaviour
             isJumpingAlongWall = false;
         }
         //Trigger falling
-        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && !isGrounded && !isBumping)
+        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && (!isGrounded || isTraversingOneWayPlatefrom) && !isBumping)
         {
             isFalling = true;
         }
         //release jumping and falling
-        if ((isGrounded && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || isSliding)
+        if (((isGrounded && !isTraversingOneWayPlatefrom) && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || isSliding)
         {
             isJumping = isWallJumping = isJumpingAlongWall = isFalling = false;
         }
@@ -709,7 +793,7 @@ public class CharacterController : MonoBehaviour
         {
             isJumping = false;
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
-            if ((!isGrounded || velocity.y > 0f) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
+            if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlatefrom) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -737,7 +821,7 @@ public class CharacterController : MonoBehaviour
         isPressingJumpButtonDownForFixedUpdate = isPressingJumpButtonDownForFixedUpdate ? true : playerInput.jumpPressedDown;
 
         //reset doubleJump
-        if (onWall || wallGrab)
+        if (onWall || wallGrab && !isTraversingOneWayPlatefrom)
         {
             hasDoubleJump = false;
         }
@@ -751,8 +835,9 @@ public class CharacterController : MonoBehaviour
             isSliding = true;
             wallGrab = reachGrabApexRight = reachGrabApexLeft =  false;
         }
+
         //2case, isFalling => isSliding
-        if (!isSliding && onWall && !isApexJumping && isFalling && velocity.y < 0f && !isDashing && !isJumping && !wallGrab && !isBumping)
+        if (!isSliding && onWall && !isApexJumping && isFalling && velocity.y < 0f && !isDashing && !isJumping && !wallGrab && !isBumping && !isTraversingOneWayPlatefrom)
         {
             if (enableInput && (playerInput.rawX == 1 && onRightWall) || (playerInput.rawX == -1 && onLeftWall))
             {
@@ -951,7 +1036,7 @@ public class CharacterController : MonoBehaviour
             return point;
         }
 
-        if (onWall || rightFootRay || raycastRight || leftFootRay || raycastLeft)
+        if ((onWall || rightFootRay || raycastRight || leftFootRay || raycastLeft) && !isTraversingOneWayPlatefrom)
         {
             int cpRight = (raycastRight ? 1 : 0) + (rightFootRay ? 1 : 0);
             int cpLeft = (raycastLeft ? 1 : 0) + (leftFootRay ? 1 : 0);
@@ -1015,7 +1100,7 @@ public class CharacterController : MonoBehaviour
             return point;
         }
 
-        if (rightSlopeRay || leftSlopeRay || topRightRay || topLeftRay)
+        if ((rightSlopeRay || leftSlopeRay || topRightRay || topLeftRay) && !isTraversingOneWayPlatefrom)
         {
             int cpUp = (topRightRay ? 1 : 0) + (topLeftRay ? 1 : 0);
             int cpDown = (rightSlopeRay ? 1 : 0) + (leftSlopeRay ? 1 : 0);
@@ -1065,7 +1150,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleWalk()
     {
-        if (!isGrounded || isFalling || isJumping || isDashing || isSliding || wallGrab || isApexJumping || isBumping)
+        if (!isGrounded || isFalling || isJumping || isDashing || isSliding || wallGrab || isApexJumping || isBumping || isTraversingOneWayPlatefrom)
             return;
 
         if (isSloping && !onWall)
@@ -1088,7 +1173,11 @@ public class CharacterController : MonoBehaviour
                 case MapColliderData.GroundType.convoyerBelt:
                     HandleConvoyerBeltWalk();
                     break;
+                case MapColliderData.GroundType.oneWayPlateform:
+                    HandleNormalWalk();
+                    break;
                 default:
+                    HandleNormalWalk();
                     break;
             }
         }
@@ -1339,7 +1428,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleGrab()
     {
-        if ((!wallGrab && !isApexJumping && !isGrabApex) || isDashing || isBumping)
+        if ((!wallGrab && !isApexJumping && !isGrabApex) || isDashing || isBumping || isTraversingOneWayPlatefrom)
             return;
 
         Vector2 wallSpeed = Vector2.zero;
