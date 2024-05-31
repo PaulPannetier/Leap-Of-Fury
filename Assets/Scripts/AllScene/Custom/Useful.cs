@@ -692,21 +692,21 @@ public static class Random
 
         public static float Noise(in float x, in float y)
         {
-            var cell = new Vector2((float)Mathf.Floor(x), (float)Mathf.Floor(y));
+            Vector2 cell = new Vector2((float)Mathf.Floor(x), (float)Mathf.Floor(y));
 
-            var total = 0f;
+            float total = 0f;
 
-            var corners = new[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 0), new Vector2(1, 1) };
+            Vector2[] corners = new[] { new Vector2(0f, 0f), new Vector2(0f, 1f), new Vector2(1f, 0f), new Vector2(1f, 1f) };
 
             foreach (var n in corners)
             {
-                var ij = cell + n;
-                var uv = new Vector2(x - ij.x, y - ij.y);
+                Vector2 ij = cell + n;
+                Vector2 uv = new Vector2(x - ij.x, y - ij.y);
 
-                var index = _permutation[(int)ij.x % _permutation.Length];
+                int index = _permutation[(int)ij.x % _permutation.Length];
                 index = _permutation[(index + (int)ij.y) % _permutation.Length];
 
-                var grad = _gradients[index % _gradients.Length];
+                Vector2 grad = _gradients[index % _gradients.Length];
 
                 total += Q(uv.x, uv.y) * grad.Dot(uv);
             }

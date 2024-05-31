@@ -11,6 +11,9 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
     [HideInInspector] public bool upPressed, rightPressed, downPressed, leftPressed, dashPressed, grabPressed, jumpPressed, attackWeakPressed, attackStrongPressed, interactPressed;
     [HideInInspector] public bool upPressedDown, rightPressedDown, downPressedDown, leftPressedDown, dashPressedDown, grabPressedDown, jumpPressedDown, attackWeakPressedDown, attackStrongPressedDown, interactPressedDown;
     [HideInInspector] public bool upPressedUp, rightPressedUp, downPressedUp, leftPressedUp, dashPressedUp, grabPressedUp, jumpPressedUp, attackWeakPressedUp, attackStrongPressedUp, interactPressedUp;
+    [HideInInspector] public bool oneWayPlateformPressed => downPressed && jumpPressed;
+    [HideInInspector] public bool oneWayPlateformPressedDown => downPressed && jumpPressedDown;
+    [HideInInspector] public bool oneWayPlateformPressedUp => downPressed && jumpPressedUp;
 
     public ControllerType controllerType;
     [SerializeField] private bool useMovementLerpForKeyboard = true;
@@ -39,7 +42,7 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             leftPressed = InputManager.GetKey("MoveLeft", playerCommon.playerIndex);
             leftPressedDown = InputManager.GetKeyDown("MoveLeft", playerCommon.playerIndex);
             leftPressedUp = InputManager.GetKeyUp("MoveLeft", playerCommon.playerIndex);
-            newX = leftPressed ? (newX > 1e-6f ? 0f : -1f) : newX;
+            newX = leftPressed ? (newX > 1e-5f ? 0f : -1f) : newX;
             upPressed = InputManager.GetKey("MoveUp", playerCommon.playerIndex);
             upPressedDown = InputManager.GetKeyDown("MoveUp", playerCommon.playerIndex);
             upPressedUp = InputManager.GetKeyUp("MoveUp", playerCommon.playerIndex);
@@ -47,7 +50,7 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             downPressed = InputManager.GetKey("MoveDown", playerCommon.playerIndex);
             downPressedDown = InputManager.GetKeyDown("MoveDown", playerCommon.playerIndex);
             downPressedUp = InputManager.GetKeyUp("MoveDown", playerCommon.playerIndex);
-            newY = downPressed ? (newY > 1e-6f ? 0f : -1f) : newY;
+            newY = downPressed ? (newY > 1e-5f ? 0f : -1f) : newY;
             if(useMovementLerpForKeyboard)
             {
                 x = Mathf.MoveTowards(x, newX, movementLerpForKeyboard * Time.deltaTime);
@@ -66,25 +69,25 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             if (stickPos.sqrMagnitude > 1f)
                 stickPos = stickPos.normalized;
 
-            upPressed = stickPos.y > 1e-6f;
-            upPressedDown = oldStickPos.y <= 1e-6f && stickPos.y > 1e-6f;
+            upPressed = stickPos.y > 1e-5f;
+            upPressedDown = oldStickPos.y <= 1e-5f && stickPos.y > 1e-5f;
             if(upPressedDown)
             {
                 upPressedDown = true;
             }
-            upPressedUp = oldStickPos.y > 1e-6f && stickPos.y <= 1e-6f;
+            upPressedUp = oldStickPos.y > 1e-5f && stickPos.y <= 1e-5f;
 
-            downPressed = stickPos.y < -1e-6f;
-            downPressedDown = oldStickPos.y >= -1e-6f && stickPos.y < -1e-6f;
-            downPressedUp = oldStickPos.y < -1e-6f && stickPos.y >= -1e-6f;
+            downPressed = stickPos.y < -1e-5f;
+            downPressedDown = oldStickPos.y >= -1e-5f && stickPos.y < -1e-5f;
+            downPressedUp = oldStickPos.y < -1e-5f && stickPos.y >= -1e-5f;
 
-            rightPressed = stickPos.x > 1e-6f;
-            rightPressedDown = oldStickPos.x <= 1e-6f && stickPos.x > 1e-6f;
-            rightPressedUp = oldStickPos.x > 1e-6f && stickPos.x <= 1e-6f;
+            rightPressed = stickPos.x > 1e-5f;
+            rightPressedDown = oldStickPos.x <= 1e-5f && stickPos.x > 1e-5f;
+            rightPressedUp = oldStickPos.x > 1e-5f && stickPos.x <= 1e-5f;
 
-            leftPressed = stickPos.x < -1e-6f;
-            leftPressedDown = oldStickPos.x >= -1e-6f && stickPos.x < -1e-6f;
-            leftPressedUp = oldStickPos.x < -1e-6f && stickPos.x >= -1e-6f;
+            leftPressed = stickPos.x < -1e-5f;
+            leftPressedDown = oldStickPos.x >= -1e-5f && stickPos.x < -1e-5f;
+            leftPressedUp = oldStickPos.x < -1e-5f && stickPos.x >= -1e-5f;
 
             x = stickPos.x;
             y = stickPos.y;
@@ -101,7 +104,7 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             leftPressed = InputManager.GetKey("MoveLeft", playerCommon.playerIndex);
             leftPressedDown = InputManager.GetKeyDown("MoveLeft", playerCommon.playerIndex);
             leftPressedUp = InputManager.GetKeyUp("MoveLeft", playerCommon.playerIndex);
-            newX = leftPressed ? (newX > 1e-6f ? 0f : -1f) : newX;
+            newX = leftPressed ? (newX > 1e-5f ? 0f : -1f) : newX;
             upPressed = InputManager.GetKey("MoveUp", playerCommon.playerIndex);
             upPressedDown = InputManager.GetKeyDown("MoveUp", playerCommon.playerIndex);
             upPressedUp = InputManager.GetKeyUp("MoveUp", playerCommon.playerIndex);
@@ -109,7 +112,7 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             downPressed = InputManager.GetKey("MoveDown", playerCommon.playerIndex);
             downPressedDown = InputManager.GetKeyDown("MoveDown", playerCommon.playerIndex);
             downPressedUp = InputManager.GetKeyUp("MoveDown", playerCommon.playerIndex);
-            newY = downPressed ? (newY > 1e-6f ? 0f : -1f) : newY;
+            newY = downPressed ? (newY > 1e-5f ? 0f : -1f) : newY;
             if (useMovementLerpForKeyboard)
             {
                 x = Mathf.MoveTowards(x, newX, movementLerpForKeyboard * Time.deltaTime);
@@ -124,23 +127,23 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             Vector2 stickPos = InputManager.GetGamepadStickPosition(controllerType, GamepadStick.left);
             if (stickPos.sqrMagnitude > 1f)
                 stickPos = stickPos.normalized;
-            if (Mathf.Abs(newX) <= 1e-6f || Mathf.Abs(newY) <= 1e-6f)
+            if (Mathf.Abs(newX) <= 1e-5f || Mathf.Abs(newY) <= 1e-5f)
             {
-                upPressed = stickPos.y > 1e-6f;
-                upPressedDown = oldStickPos.y <= 1e-6f && stickPos.y > 1e-6f;
-                upPressedUp = oldStickPos.y > 1e-6f && stickPos.y <= 1e-6f;
+                upPressed = stickPos.y > 1e-5f;
+                upPressedDown = oldStickPos.y <= 1e-5f && stickPos.y > 1e-5f;
+                upPressedUp = oldStickPos.y > 1e-5f && stickPos.y <= 1e-5f;
 
-                downPressed = stickPos.y < -1e-6f;
-                downPressedDown = oldStickPos.y >= -1e-6f && stickPos.y < -1e-6f;
-                downPressedUp = oldStickPos.y < -1e-6f && stickPos.y >= -1e-6f;
+                downPressed = stickPos.y < -1e-5f;
+                downPressedDown = oldStickPos.y >= -1e-5f && stickPos.y < -1e-5f;
+                downPressedUp = oldStickPos.y < -1e-5f && stickPos.y >= -1e-5f;
 
-                rightPressed = stickPos.x > 1e-6f;
-                rightPressedDown = oldStickPos.x <= 1e-6f && stickPos.x > 1e-6f;
-                rightPressedUp = oldStickPos.x > 1e-6f && stickPos.x <= 1e-6f;
+                rightPressed = stickPos.x > 1e-5f;
+                rightPressedDown = oldStickPos.x <= 1e-5f && stickPos.x > 1e-5f;
+                rightPressedUp = oldStickPos.x > 1e-5f && stickPos.x <= 1e-5f;
 
-                leftPressed = stickPos.x < -1e-6f;
-                leftPressedDown = oldStickPos.x >= -1e-6f && stickPos.x < -1e-6f;
-                leftPressedUp = oldStickPos.x < -1e-6f && stickPos.x >= -1e-6f;
+                leftPressed = stickPos.x < -1e-5f;
+                leftPressedDown = oldStickPos.x >= -1e-5f && stickPos.x < -1e-5f;
+                leftPressedUp = oldStickPos.x < -1e-5f && stickPos.x >= -1e-5f;
 
                 x = stickPos.x;
                 y = stickPos.y;
@@ -148,8 +151,8 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             oldStickPos = stickPos;
         }
 
-        rawX = (x > 1e-6f) ? 1 : (x < -1e-6f ? -1 : 0);
-        rawY = (y > 1e-6f) ? 1 : (y < -1e-6f ? -1 : 0);
+        rawX = (x > 1e-5f) ? 1 : (x < -1e-5f ? -1 : 0);
+        rawY = (y > 1e-5f) ? 1 : (y < -1e-5f ? -1 : 0);
 
         //Pressed
         dashPressed = InputManager.GetKey("Dash", playerCommon.playerIndex);

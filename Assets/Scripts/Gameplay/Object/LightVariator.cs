@@ -29,6 +29,7 @@ public class LightVariator : MonoBehaviour
     {
         if (!enableBehaviour)
             return;
+
         float noiseValue = Random.PerlinNoise(noiseIndexIntensity, yNoise) * intensityAmplitude;
         currentLight.intensity = avgIntensity + noiseValue;
         noiseIndexIntensity += Time.deltaTime * intensityFrequency;

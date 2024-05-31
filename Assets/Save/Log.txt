@@ -16,6 +16,23 @@
                     "value": "LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)\nLevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)\nLevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)\nIntoTheJungleManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/IntoTheJungle/IntoTheJungleManager.cs:11)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Error"
+                },
+                {
+                    "type": "String",
+                    "value": "Coroutine couldn't be started because the the game object 'Char 1' is inactive!"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nCharacterController:DisableInputs (single) (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:298)\nLevelManager:BlockPlayers () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:300)\nLevelManager:<StartLevel>g__HandleCharPosAndCallback|18_4 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:158)\nLevelManager:StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:67)\nIntoTheJungleManager:StartLevel () (at Assets/Scripts/Gameplay/Levels/IntoTheJungle/IntoTheJungleManager.cs:11)\n"
+                }
+            ]
         }
     ]
 }

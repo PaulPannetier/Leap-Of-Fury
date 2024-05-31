@@ -23,6 +23,11 @@ public class Jumper : PathFindingBlocker
 
 #if UNITY_EDITOR
 
+    private void OnValidate()
+    {
+        force = Mathf.Max(0f, force);
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
