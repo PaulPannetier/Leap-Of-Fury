@@ -28,7 +28,7 @@ public class MapColliderData : MonoBehaviour
 
     public GroundType groundType;
     public bool disableAntiKnockHead = false;
-    public bool grabable = true;
+    public bool grabableRight = true, grabableLeft = true;
     [Range(0f, 1f), Tooltip("Le coeff de friction quand le sol se déplace")] public float frictionCoefficient = 1f;
     public bool isGripping => frictionCoefficient > 1e-6f;
 
@@ -57,7 +57,7 @@ public class MapColliderData : MonoBehaviour
         if (groundType == GroundType.convoyerBelt)
         {
             disableAntiKnockHead = true;
-            grabable = false;
+            grabableLeft = grabableRight = false;
         }
     }
 

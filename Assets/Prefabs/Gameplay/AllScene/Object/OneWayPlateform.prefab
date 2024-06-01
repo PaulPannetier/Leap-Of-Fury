@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 489592217255884805}
   - component: {fileID: 8327095961730784614}
   - component: {fileID: 6095361004310994190}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: OneWayPlateform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 4
   disableAntiKnockHead: 0
-  grabable: 1
+  grabableRight: 1
+  grabableLeft: 1
   frictionCoefficient: 1
 --- !u!1 &7095082391675673693
 GameObject:
@@ -105,7 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7717557262153737456}
   - component: {fileID: 2023486422612979205}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}

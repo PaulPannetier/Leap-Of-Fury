@@ -17,13 +17,13 @@ public abstract class ConvoyerBelt : MonoBehaviour
             if (value)
             {
                 mapColliderData.groundType = MapColliderData.GroundType.convoyerBelt;
-                mapColliderData.grabable = false;
+                mapColliderData.grabableLeft = mapColliderData.grabableRight = false;
                 mapColliderData.disableAntiKnockHead = true;
             }
             else
             {
                 mapColliderData.groundType = MapColliderData.GroundType.normal;
-                mapColliderData.grabable = true;
+                mapColliderData.grabableLeft = mapColliderData.grabableRight = true;
                 mapColliderData.disableAntiKnockHead = false;
             }
             _isActive = value;

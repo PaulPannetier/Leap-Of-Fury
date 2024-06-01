@@ -17902,7 +17902,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 0
   disableAntiKnockHead: 0
-  grabable: 1
+  grabableRight: 1
+  grabableLeft: 1
   frictionCoefficient: 0
 --- !u!61 &62821280727999401
 BoxCollider2D:
@@ -18983,8 +18984,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 343155c9bac18b746b8b6558ed1ae3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  globalLightIntensity: 0.9
+  globalLightColor: {r: 1, g: 0.950148, b: 0.7688679, a: 1}
+  globalLightIntensity: 1
   lights: []
 --- !u!1 &4592454640619315421
 GameObject:
@@ -66467,6 +66468,89 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5492261362378694463}
   m_Father: {fileID: 4709581355697953210}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5400676986995238714
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1735235530467389925}
+    m_Modifications:
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170426484438354461, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_Name
+      value: OneWayPlateform
+      objectReference: {fileID: 0}
+    - target: {fileID: 2023486422612979205, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.21186365
+      objectReference: {fileID: 0}
+    - target: {fileID: 2023486422612979205, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.44631004
+      objectReference: {fileID: 0}
+    - target: {fileID: 2023486422612979205, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 7717557262153737456, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8327095961730784614, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+      propertyPath: m_Size.x
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+--- !u!4 &5492261362378694463 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 489592217255884805, guid: 3f00d5e3dee43f34db7924cadb98b8b9, type: 3}
+  m_PrefabInstance: {fileID: 5400676986995238714}
+  m_PrefabAsset: {fileID: 0}

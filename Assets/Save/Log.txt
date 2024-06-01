@@ -33,6 +33,57 @@
                     "value": "UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nCharacterController:DisableInputs (single) (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:298)\nLevelManager:BlockPlayers () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:300)\nLevelManager:<StartLevel>g__HandleCharPosAndCallback|18_4 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:158)\nLevelManager:StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:67)\nIntoTheJungleManager:StartLevel () (at Assets/Scripts/Gameplay/Levels/IntoTheJungle/IntoTheJungleManager.cs:11)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Debug pls"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:335)\nToricObject:Update () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:212)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Debug pls"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:335)\nToricObject:CustomUpdate () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:204)\nCharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:433)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "CharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:557)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:403)\n"
+                }
+            ]
         }
     ]
 }

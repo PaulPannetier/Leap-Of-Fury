@@ -40,7 +40,7 @@ Transform:
   m_GameObject: {fileID: 8090791378756873177}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.12, y: -6.13, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -523,7 +523,6 @@ MonoBehaviour:
   drawGizmos: 0
   enableBehavior: 1
   bufferDuration: 0.1
-  dashDamageType: 1
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
   dashInvicibilityDuration: 0.5
