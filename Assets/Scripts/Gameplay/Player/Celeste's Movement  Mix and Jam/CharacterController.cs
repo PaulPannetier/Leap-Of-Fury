@@ -182,7 +182,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float speedWhenQuittingConvoyerBelt = 1f;
     private float lastTimeQuittingConvoyerBelt = -10f;
     private bool isQuittingConvoyerBelt, isQuittingConvoyerBeltRight, isQuittingConvoyerBeltLeft;
-    private bool isTraversingOneWayPlatefromUp, isTraversingOneWayPlatefromDown;
+    private bool isTraversingOneWayPlateformUp, isTraversingOneWayPlateformDown;
+    private bool isTraversingOneWayPlateform => isTraversingOneWayPlateformUp || isTraversingOneWayPlateformDown;
 
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
@@ -433,7 +434,7 @@ public class CharacterController : MonoBehaviour
         toricObject.CustomUpdate();
 
         // VIII-Debug
-        //DebugText.instance.text += $"OneWayPlateform : {isTraversingOneWayPlatefromUp}\n";
+        DebugText.instance.text += $"OneWayPlateform : {isTraversingOneWayPlateform}\n";
         //DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
         //DebugText.instance.text += $"Apex : {isGrabApex}\n";
@@ -506,12 +507,12 @@ public class CharacterController : MonoBehaviour
 
             if(isUpColliderIsOneWayPlateform && isoOneWayPlateform && !wallGrab && !isGrounded)
             {
-                isTraversingOneWayPlatefromUp = true;
+                isTraversingOneWayPlateformUp = true;
             }
         }
 
         // Disable on way plateformUp
-        if(isTraversingOneWayPlatefromUp)
+        if(isTraversingOneWayPlateformUp)
         {
             bool isOnWaylateformUp = true;
             MapColliderData rightColliderData = topRightRay ? topRightRay.collider.GetComponent<MapColliderData>() : null;
@@ -532,11 +533,11 @@ public class CharacterController : MonoBehaviour
             Collider2D col = PhysicsToric.OverlapBox((Vector2)transform.position + hitbox.offset, hitbox.size, 0f, groundLayer);
             if(isOnWaylateformUp)
             {
-                isTraversingOneWayPlatefromUp = col != null || velocity.y > 0f;
+                isTraversingOneWayPlateformUp = col != null || velocity.y > 0f;
             }
             else
             {
-                isTraversingOneWayPlatefromUp = col != null;
+                isTraversingOneWayPlateformUp = col != null;
             }
         }
 
@@ -582,22 +583,40 @@ public class CharacterController : MonoBehaviour
 
             if(isOnlyOneWayPlateformBelow)
             {
-                isTraversingOneWayPlatefromDown = true;
+                isTraversingOneWayPlateformDown = true;
             }
         }
 
         //Disable one way platefrom down
-        if(isTraversingOneWayPlatefromDown && !isGrounded)
+        if(isTraversingOneWayPlateformDown && !isGrounded)
         {
             Collider2D col = PhysicsToric.OverlapBox((Vector2)transform.position + hitbox.offset, hitbox.size, 0f, groundLayer);
-            isTraversingOneWayPlatefromDown = col != null;
+            isTraversingOneWayPlateformDown = col != null;
         }
 
         Vector2 from = (Vector2)transform.position + Vector2.up * sideRayOffset;
-        raycastRight = PhysicsToric.Raycast(from, Vector2.right, sideRayLength, groundLayer);
+
+        ToricRaycastHit2D PerformNonOneWayPlateformRaycast(in Vector2 from, in Vector2 dir, float length)
+        {
+            ToricRaycastHit2D[] raycasts = PhysicsToric.RaycastAll(from, dir, length, groundLayer);
+            ToricRaycastHit2D? res = null;
+            bool found = false;
+            for (int i = 0; i < raycasts.Length; i++)
+            {
+                if (raycasts[i].collider.GetComponent<MapColliderData>().groundType != MapColliderData.GroundType.oneWayPlateform)
+                {
+                    res = raycasts[i];
+                    found = true; 
+                    break;
+                }
+            }
+            return found ? res.Value : default(ToricRaycastHit2D);
+        }
+
+        raycastRight = PerformNonOneWayPlateformRaycast(from, Vector2.right, sideRayLength);
         rightWallCollider = raycastRight.collider;
         onRightWall = rightWallCollider != null;
-        raycastLeft = PhysicsToric.Raycast(from, Vector2.left, sideRayLength, groundLayer);
+        raycastLeft = PerformNonOneWayPlateformRaycast(from, Vector2.left, sideRayLength);
         leftWallCollider = raycastLeft.collider;
         onLeftWall = leftWallCollider != null;
         onWall = onRightWall || onLeftWall;
@@ -623,7 +642,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //Slope detecttion
-        if (rightSlopeRay.collider != null && !isTraversingOneWayPlatefromUp)
+        if (rightSlopeRay && !isTraversingOneWayPlateform)
         {
             groundCollider = groundCollider == null ? rightSlopeRay.collider : groundCollider;
             slopeAngleRight = Useful.WrapAngle((Vector2.Angle(Vector2.right, rightSlopeRay.normal) - 90f) * Mathf.Deg2Rad);
@@ -644,7 +663,7 @@ public class CharacterController : MonoBehaviour
             isSlopingRight = false;
         }
 
-        if (leftSlopeRay.collider != null && !isTraversingOneWayPlatefromUp)
+        if (leftSlopeRay && !isTraversingOneWayPlateform)
         {
             groundCollider = groundCollider == null ? leftSlopeRay.collider : groundCollider;
             slopeAngleLeft = Useful.WrapAngle((270f - Vector2.Angle(Vector2.left, rightSlopeRay.normal)) * Mathf.Deg2Rad);
@@ -665,7 +684,7 @@ public class CharacterController : MonoBehaviour
             isSlopingLeft = false;
         }
         isSloping = isSlopingRight || isSlopingLeft;
-        isGrounded = isGrounded || (rightSlopeRay.collider != null || leftSlopeRay.collider != null);
+        isGrounded = isGrounded || rightSlopeRay || leftSlopeRay;
 
         //Trigger leave plateform
         if (oldOnGround && !isGrounded)
@@ -674,13 +693,13 @@ public class CharacterController : MonoBehaviour
         }
 
         //Trigger groundTouch
-        if (isGrounded && !oldOnGround && !isJumping && !isTraversingOneWayPlatefromUp)
+        if (isGrounded && !oldOnGround && !isJumping && !isTraversingOneWayPlateformUp)
         {
             GroundTouch();
             groundTouch = true;
         }
         //enable dash
-        if(hasDashed && isGrounded && !isTraversingOneWayPlatefromUp && !isTraversingOneWayPlatefromDown)
+        if(hasDashed && isGrounded && !isTraversingOneWayPlateformUp && !isTraversingOneWayPlateformDown)
         {
             hasDashed = false;
         }
@@ -699,7 +718,7 @@ public class CharacterController : MonoBehaviour
         leftFootRay = PhysicsToric.Raycast(from, Vector2.left, grabRayLength, groundLayer);
 
         //Trigger wallGrab
-        if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isJumpingAlongWall && !isBumping && !isTraversingOneWayPlatefromUp && !isTraversingOneWayPlatefromDown)
+        if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isJumpingAlongWall && !isBumping)
         {
             if((onRightWall && rightWallColliderData.grabableLeft) || (onLeftWall && leftWallColliderData.grabableRight))
             {
@@ -779,7 +798,7 @@ public class CharacterController : MonoBehaviour
             wallGrab = reachGrabApexLeft = reachGrabApexRight = grabApexRight = grabApexLeft = false;
         }
 
-        if ((!onRightWall && rightFootRay.collider == null && !onLeftWall && leftFootRay.collider == null) || dash || jump || wallJump || wallJumpAlongWall)
+        if ((!onRightWall && !rightFootRay && !onLeftWall && !leftFootRay) || dash || jump || wallJump || wallJumpAlongWall)
         {
             wallGrab = reachGrabApexLeft = reachGrabApexRight = grabApexRight = grabApexLeft = false;
         }
@@ -791,12 +810,12 @@ public class CharacterController : MonoBehaviour
             isJumpingAlongWall = false;
         }
         //Trigger falling
-        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && (!isGrounded || isTraversingOneWayPlatefromUp || isTraversingOneWayPlatefromDown) && !isBumping)
+        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && (!isGrounded || isTraversingOneWayPlateform) && !isBumping)
         {
             isFalling = true;
         }
         //release jumping and falling
-        if ((isGrounded && !isTraversingOneWayPlatefromUp && !isTraversingOneWayPlatefromDown && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || isSliding)
+        if ((isGrounded && !isTraversingOneWayPlateform && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || isSliding)
         {
             isJumping = isWallJumping = isJumpingAlongWall = isFalling = false;
         }
@@ -811,7 +830,7 @@ public class CharacterController : MonoBehaviour
         {
             isJumping = false;
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
-            if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlatefromUp || isTraversingOneWayPlatefromDown) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
+            if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlateform) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -821,7 +840,7 @@ public class CharacterController : MonoBehaviour
         {
             isWallJumping = false;
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement court que isGrounded est tj vrai
-            if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlatefromUp || isTraversingOneWayPlatefromDown) && !wallGrab && !!isApexJumping && !isDashing && !isSliding && !isBumping)
+            if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlateformUp || isTraversingOneWayPlateformDown) && !wallGrab && !!isApexJumping && !isDashing && !isSliding && !isBumping)
             {
                 isFalling = true;
             }
@@ -839,7 +858,7 @@ public class CharacterController : MonoBehaviour
         isPressingJumpButtonDownForFixedUpdate = isPressingJumpButtonDownForFixedUpdate ? true : playerInput.jumpPressedDown;
 
         //reset doubleJump
-        if (onWall || wallGrab && !isTraversingOneWayPlatefromUp && !isTraversingOneWayPlatefromDown)
+        if (onWall || wallGrab && !isTraversingOneWayPlateform)
         {
             hasDoubleJump = false;
         }
@@ -855,7 +874,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //2case, isFalling => isSliding
-        if (!isSliding && onWall && !isApexJumping && isFalling && velocity.y < 0f && !isDashing && !isJumping && !wallGrab && !isBumping && !isTraversingOneWayPlatefromUp && !isTraversingOneWayPlatefromDown)
+        if (!isSliding && onWall && !isApexJumping && isFalling && velocity.y < 0f && !isDashing && !isJumping && !wallGrab && !isBumping)
         {
             if (enableInput && (playerInput.rawX == 1 && onRightWall) || (playerInput.rawX == -1 && onLeftWall))
             {
@@ -866,10 +885,11 @@ public class CharacterController : MonoBehaviour
 
         //Release sliding
         //stop slide on the wall
-        if(isSliding && (!enableInput || isGrounded || !onWall || (!playerInput.grabPressed && ((onRightWall && playerInput.rawX != 1) || (onLeftWall && playerInput.rawX != -1))) || isDashing || jump || wallJump))
+        if(isSliding && (!enableInput || (isGrounded && !isTraversingOneWayPlateform) || !onWall || (!playerInput.grabPressed && ((onRightWall && playerInput.rawX != 1) || (onLeftWall && playerInput.rawX != -1))) || isDashing || jump || wallJump))
         {
             isSliding = false;
         }
+
         if(isSliding && wallGrab)
         {
             isSliding = false;
@@ -915,7 +935,7 @@ public class CharacterController : MonoBehaviour
         // VII-Inputs
         if(enableInput)
         {
-            doJump = doJump ? true : playerInput.jumpPressedDown && !isTraversingOneWayPlatefromDown;
+            doJump = doJump ? true : playerInput.jumpPressedDown && !isTraversingOneWayPlateformDown;
             if (playerInput.jumpPressedDown)
             {
                 lastTimeJumpCommand = Time.time;
@@ -1057,7 +1077,7 @@ public class CharacterController : MonoBehaviour
             return point;
         }
 
-        if ((onWall || rightFootRay || raycastRight || leftFootRay || raycastLeft) && !isTraversingOneWayPlatefromUp && !isTraversingOneWayPlatefromDown)
+        if ((onWall || rightFootRay || raycastRight || leftFootRay || raycastLeft) && !isTraversingOneWayPlateformUp && !isTraversingOneWayPlateformDown)
         {
             int cpRight = (raycastRight ? 1 : 0) + (rightFootRay ? 1 : 0);
             int cpLeft = (raycastLeft ? 1 : 0) + (leftFootRay ? 1 : 0);
@@ -1121,7 +1141,7 @@ public class CharacterController : MonoBehaviour
             return point;
         }
 
-        if ((rightSlopeRay || leftSlopeRay || topRightRay || topLeftRay) && !isTraversingOneWayPlatefromUp && !isTraversingOneWayPlatefromDown)
+        if ((rightSlopeRay || leftSlopeRay || topRightRay || topLeftRay) && !isTraversingOneWayPlateformUp && !isTraversingOneWayPlateformDown)
         {
             int cpUp = (topRightRay ? 1 : 0) + (topLeftRay ? 1 : 0);
             int cpDown = (rightSlopeRay ? 1 : 0) + (leftSlopeRay ? 1 : 0);
@@ -1171,7 +1191,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleWalk()
     {
-        if (!isGrounded || isFalling || isJumping || isDashing || isSliding || wallGrab || isApexJumping || isBumping || isTraversingOneWayPlatefromUp)
+        if (!isGrounded || isFalling || isJumping || isDashing || isSliding || wallGrab || isApexJumping || isBumping || isTraversingOneWayPlateformUp)
             return;
 
         if (isSloping && !onWall)
@@ -1449,7 +1469,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleGrab()
     {
-        if ((!wallGrab && !isApexJumping && !isGrabApex) || isDashing || isBumping || isTraversingOneWayPlatefromUp)
+        if ((!wallGrab && !isApexJumping && !isGrabApex) || isDashing || isBumping || isTraversingOneWayPlateformUp)
             return;
 
         Vector2 wallSpeed = Vector2.zero;

@@ -84,6 +84,40 @@
                     "value": "CharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:557)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:403)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Error"
+                },
+                {
+                    "type": "String",
+                    "value": "SerializedObject target has been destroyed."
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "CharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:741)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:404)\n"
+                }
+            ]
         }
     ]
 }
