@@ -118,6 +118,23 @@
                     "value": "CharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:741)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:404)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "Script 'CharacterController' has the same name as built-in Unity component.\nAddComponent and GetComponent will not work with this script."
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEditor.AssetDatabase:Refresh ()\nMicrosoft.Unity.VisualStudio.Editor.VisualStudioIntegration/<>c__DisplayClass8_0:<RunOnceOnUpdate>b__0 () (at ./Library/PackageCache/com.unity.ide.visualstudio@2.0.22/Editor/VisualStudioIntegration.cs:100)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions ()\n"
+                }
+            ]
         }
     ]
 }

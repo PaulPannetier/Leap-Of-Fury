@@ -434,19 +434,20 @@ public class CharacterController : MonoBehaviour
         toricObject.CustomUpdate();
 
         // VIII-Debug
-        DebugText.instance.text += $"OneWayPlateform : {isTraversingOneWayPlateform}\n";
+        //DebugText.instance.text += $"OneWayPlateform : {isTraversingOneWayPlateform}\n";
         //DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
-        //DebugText.instance.text += $"Apex : {isGrabApex}\n";
-        //DebugText.instance.text += $"ApexSpeed1 : {isApexJump1}\n";
-        //DebugText.instance.text += $"ApexSpeed2 : {isApexJump2}\n";
+        DebugText.instance.text += $"Apex : {isGrabApex}\n";
+        DebugText.instance.text += $"ApexJump : {isApexJumping}\n";
+        DebugText.instance.text += $"ApexRight : {isApexJumpRight}\n";
+        DebugText.instance.text += $"ApexLeft : {isApexJumpLeft}\n";
         //DebugText.instance.text += $"Jump : {isJumping}\n";
         //DebugText.instance.text += $"Fall : {isFalling}\n";
         //DebugText.instance.text += $"Slide : {isSliding}\n";
         //DebugText.instance.text += $"Gounded : {isGrounded}\n";
         //DebugText.instance.text += $"Bump : {isBumping}\n";
         //DebugText.instance.text += $"vel : {velocity}\n";
-        //DebugText.instance.text += $"shi : {shift / Time.deltaTime}\n";
+        //DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
     }
 
     #endregion
@@ -600,17 +601,15 @@ public class CharacterController : MonoBehaviour
         {
             ToricRaycastHit2D[] raycasts = PhysicsToric.RaycastAll(from, dir, length, groundLayer);
             ToricRaycastHit2D? res = null;
-            bool found = false;
             for (int i = 0; i < raycasts.Length; i++)
             {
                 if (raycasts[i].collider.GetComponent<MapColliderData>().groundType != MapColliderData.GroundType.oneWayPlateform)
                 {
                     res = raycasts[i];
-                    found = true; 
                     break;
                 }
             }
-            return found ? res.Value : default(ToricRaycastHit2D);
+            return res.HasValue ? res.Value : default(ToricRaycastHit2D);
         }
 
         raycastRight = PerformNonOneWayPlateformRaycast(from, Vector2.right, sideRayLength);
@@ -714,8 +713,8 @@ public class CharacterController : MonoBehaviour
 
         // II-Grab
         from = new Vector2(transform.position.x, transform.position.y + grabRayOffset);
-        rightFootRay = PhysicsToric.Raycast(from, Vector2.right, grabRayLength, groundLayer);
-        leftFootRay = PhysicsToric.Raycast(from, Vector2.left, grabRayLength, groundLayer);
+        rightFootRay = PerformNonOneWayPlateformRaycast(from, Vector2.right, grabRayLength);
+        leftFootRay = PerformNonOneWayPlateformRaycast(from, Vector2.left, grabRayLength);
 
         //Trigger wallGrab
         if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isJumpingAlongWall && !isBumping)
@@ -867,7 +866,7 @@ public class CharacterController : MonoBehaviour
 
         //Trigger sliding
         //1case, wallGrab => isSliding
-        if (!isSliding && wallGrab && !isApexJumping && playerInput.rawY == -1 && enableInput && !reachGrabApex && !isDashing && !isJumping && !isFalling && !isGrounded && !isBumping)
+        if (!isSliding && wallGrab && !isApexJumping && playerInput.rawY == -1 && enableInput && !reachGrabApex && !isDashing && !isJumping && !isFalling && (!isGrounded || isTraversingOneWayPlateform) && !isBumping)
         {
             isSliding = true;
             wallGrab = reachGrabApexRight = reachGrabApexLeft =  false;
@@ -1077,7 +1076,7 @@ public class CharacterController : MonoBehaviour
             return point;
         }
 
-        if ((onWall || rightFootRay || raycastRight || leftFootRay || raycastLeft) && !isTraversingOneWayPlateformUp && !isTraversingOneWayPlateformDown)
+        if (onWall || rightFootRay || raycastRight || leftFootRay || raycastLeft)
         {
             int cpRight = (raycastRight ? 1 : 0) + (rightFootRay ? 1 : 0);
             int cpLeft = (raycastLeft ? 1 : 0) + (leftFootRay ? 1 : 0);
@@ -1469,7 +1468,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleGrab()
     {
-        if ((!wallGrab && !isApexJumping && !isGrabApex) || isDashing || isBumping || isTraversingOneWayPlateformUp)
+        if ((!wallGrab && !isApexJumping && !isGrabApex) || isDashing || isBumping)
             return;
 
         Vector2 wallSpeed = Vector2.zero;
@@ -1531,11 +1530,11 @@ public class CharacterController : MonoBehaviour
             {
                 if(Mathf.Abs(localVel.x) <= apexJumpSpeed.x * 0.95f * apexJumpInitSpeed)
                 {
-                    localVel = new Vector2(localVel.x.Sign() * apexJumpSpeed.x * apexJumpInitSpeed, localVel.y);
+                    localVel = new Vector2((isApexJumpRight ? 1f : -1f) * apexJumpSpeed.x * apexJumpInitSpeed, localVel.y);
                 }
                 if (Mathf.Abs(localVel.y) <= apexJumpSpeed.y * 0.95f * apexJumpInitSpeed)
                 {
-                    localVel = new Vector2(localVel.x, localVel.y.Sign() * apexJumpSpeed.y * apexJumpInitSpeed);
+                    localVel = new Vector2(localVel.x, apexJumpSpeed.y * apexJumpInitSpeed);
                 }
 
                 Vector2 targetSpped = new Vector2(isApexJumpRight ? apexJumpSpeed.x : -apexJumpSpeed.x, apexJumpSpeed.y);
