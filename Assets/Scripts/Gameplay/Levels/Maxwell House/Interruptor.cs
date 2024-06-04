@@ -17,6 +17,9 @@ public class Interruptor : MonoBehaviour
     private bool isPauseEnable;
 
     public bool enableBehaviour = true;
+#if UNITY_EDITOR
+    public bool drawGizmos = true;
+#endif
     [SerializeField] private Vector2 hitboxOffset, hitboxSize;
     [SerializeField] private bool allowDesactivation = true;
     [SerializeField] private float minDurationBeforeReactivation;
@@ -247,6 +250,8 @@ public class Interruptor : MonoBehaviour
         }
     }
 
+    #region Destroy/Pause/OnValidate/Gizmos
+
     private void OnDestroy()
     {
         EventManager.instance.callbackOnPlayerDeath -= OnCharDied;
@@ -276,6 +281,7 @@ public class Interruptor : MonoBehaviour
         isPauseEnable = false;
     }
 
+
 #if UNITY_EDITOR
 
     private void OnValidate()
@@ -289,11 +295,17 @@ public class Interruptor : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Hitbox.GizmosDraw((Vector2)transform.position + hitboxOffset, hitboxSize);
+        if (!drawGizmos)
+            return;
+
+        Hitbox.GizmosDraw((Vector2)transform.position + hitboxOffset, hitboxSize, Color.green);
     }
 
 #endif
+
+    #endregion
+
+    #region Struct
 
     public struct PressedInfo
     {
@@ -304,4 +316,6 @@ public class Interruptor : MonoBehaviour
             this.charWhoPressed = charWhoPressed;
         }
     }
+
+    #endregion
 }

@@ -1,9 +1,29 @@
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
+#if UNITY_EDITOR
+using System.Linq;
+#endif
 
 public class LightManager : MonoBehaviour
 {
-    public static LightManager instance;
+    private static LightManager _instance;
+    public static LightManager instance
+    {
+        get 
+        {
+#if UNITY_EDITOR
+            if(Application.isPlaying)
+                return _instance;
+            return GameObject.FindAnyObjectByType<LightManager>();
+#else
+            return _instance;
+#endif
+        }
+        private set
+        {
+            _instance = value;
+        }
+    }
 
 #if UNITY_EDITOR
 
@@ -12,7 +32,23 @@ public class LightManager : MonoBehaviour
 
 #endif
 
-    [HideInInspector] public Light2D[] lights;
+    private Light2D[] _lights;
+    [HideInInspector] public Light2D[] lights
+    {
+        get
+        {
+#if UNITY_EDITOR
+            return GameObject.FindObjectsByType<Light2D>(FindObjectsSortMode.None).Where((Light2D light) => light.lightType != Light2D.LightType.Global).ToArray();
+#else
+            return _lights; 
+#endif
+        }
+
+        private set
+        {
+            _lights = value;
+        }
+    }
     public Light2D globalLight => GlobalLight.globalLight;
 
     private void Awake()
@@ -37,6 +73,8 @@ public class LightManager : MonoBehaviour
         EventManager.instance.callbackOnMapChanged -= OnMapLoaded;
     }
 
+    #region OnValidate
+
 #if UNITY_EDITOR
 
     private void OnValidate()
@@ -51,4 +89,6 @@ public class LightManager : MonoBehaviour
     }
 
 #endif
+
+    #endregion
 }

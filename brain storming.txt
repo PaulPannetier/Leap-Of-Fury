@@ -135,7 +135,7 @@ TODO :
 hyperparam charcontroller grab apex
 Trad all text
 test wall projectile and prohectile collision and retest all attack/char
-Complete Clockmaker's, Maxwell house and Into the jungle maps and méca
+Complete Maxwell house maps and méca
 polish attacks
 Huge test of ALL before V0.1
 

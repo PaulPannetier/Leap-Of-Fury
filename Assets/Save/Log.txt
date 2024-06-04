@@ -135,6 +135,23 @@
                     "value": "UnityEditor.AssetDatabase:Refresh ()\nMicrosoft.Unity.VisualStudio.Editor.VisualStudioIntegration/<>c__DisplayClass8_0:<RunOnceOnUpdate>b__0 () (at ./Library/PackageCache/com.unity.ide.visualstudio@2.0.22/Editor/VisualStudioIntegration.cs:100)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions ()\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)\nLevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)\nLevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)\n"
+                }
+            ]
         }
     ]
 }

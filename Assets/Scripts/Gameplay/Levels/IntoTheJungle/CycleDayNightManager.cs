@@ -7,8 +7,12 @@ public class CycleDayNightManager : MonoBehaviour
 
     private int counterDay;
 
-    [SerializeField, Tooltip("Le nombre de jour d'affil�")] private int nbDay;
-    [SerializeField, Tooltip("Le nombre de nuit d'affil�")] private int nbNight;
+#if UNITY_EDITOR
+    [SerializeField] private bool showDayLight, showNightLight;
+#endif
+
+    [SerializeField, Tooltip("The number of day levels in a row.")] private int nbDay;
+    [SerializeField, Tooltip("The number of night levels in a row.")] private int nbNight;
     public bool startLevelAtDay = true;
     [SerializeField] private float globalLightIntensityAtDay = 1;
     [SerializeField] private float otherLightIntensityAtDay = 0.1f;
@@ -108,4 +112,33 @@ public class CycleDayNightManager : MonoBehaviour
         EventManager.instance.callbackOnLevelRestart -= OnLevelRestart;
         EventManager.instance.callbackOnLevelStart -= OnLevelStart;
     }
+
+    #region OnValidate
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        if(showDayLight)
+        {
+            LightManager.instance.globalLight.intensity = globalLightIntensityAtDay;
+            foreach (Light2D light in LightManager.instance.lights)
+            {
+                light.intensity = otherLightIntensityAtDay;
+            }
+
+        }
+        else if (showNightLight)
+        {
+            LightManager.instance.globalLight.intensity = globalLightIntensityAtNight;
+            foreach (Light2D light in LightManager.instance.lights)
+            {
+                light.intensity = otherLightIntensityAtNight;
+            }
+        }
+    }
+
+#endif
+
+    #endregion
 }

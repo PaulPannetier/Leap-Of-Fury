@@ -178,7 +178,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 3
   disableAntiKnockHead: 1
-  grabable: 0
+  grabableRight: 0
+  grabableLeft: 0
   frictionCoefficient: 0
 --- !u!114 &8626952912276504675
 MonoBehaviour:
