@@ -19,7 +19,7 @@ public abstract class InterruptorActivable : ActivableObject
         OnActivated();
     }
 
-    private void OnInterruptorDesactivated()
+    private void OnInterruptorDesactivated(PressedInfo pressedInfo)
     {
         isActivated = false;
         OnDesactivated();

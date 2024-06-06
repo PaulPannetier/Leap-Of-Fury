@@ -11,9 +11,10 @@ public abstract class ConvoyerBelt : MonoBehaviour
         get => _isActive;
         set
         {
+#if UNITY_EDITOR
             if (mapColliderData == null)
                 mapColliderData = GetComponent<MapColliderData>();
-
+#endif
             if (value)
             {
                 mapColliderData.groundType = MapColliderData.GroundType.convoyerBelt;

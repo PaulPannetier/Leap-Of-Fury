@@ -152,6 +152,91 @@
                     "value": "LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)\nLevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)\nLevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Bite"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nInterruptor/<>c:<Awake>b__30_2 () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:41)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:42)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Bite"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nInterruptor/<>c:<Awake>b__30_1 () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:41)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:42)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Bite"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nInterruptor/<>c:<Awake>b__30_1 () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:41)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:43)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "[1, 2, 3]"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:Log (object)\nUseful:Show<int> (System.Collections.Generic.List`1<int>) (at Assets/Scripts/AllScene/Custom/Useful.cs:2182)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:44)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "[1, 2, 3]"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:Log (object)\nUseful:Show<int> (System.Collections.Generic.List`1<int>) (at Assets/Scripts/AllScene/Custom/Useful.cs:2182)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:45)\n"
+                }
+            ]
         }
     ]
 }

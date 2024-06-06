@@ -12,68 +12,61 @@ public class Interruptor : MonoBehaviour
     private float lastTimeActivated = -10f;
     private bool isCharActivating, isCharDesactivating;
     private bool isCharDying;
-    private GameObject charDied;
+    private GameObject charWhoActivate;
     private List<GameObject> charInFrontLastFrame;
-    private bool isPauseEnable;
 
     public bool enableBehaviour = true;
 #if UNITY_EDITOR
     public bool drawGizmos = true;
 #endif
     [SerializeField] private Vector2 hitboxOffset, hitboxSize;
+    [SerializeField] private bool startActivated = false;
     [SerializeField] private bool allowDesactivation = true;
-    [SerializeField] private float minDurationBeforeReactivation;
+    [SerializeField] private float minDurationBefore2Activation;
     [SerializeField] private float durationItTakesToActivate = 1f;
     [SerializeField] private float durationItTakesToDesactivate = 1f;
     [SerializeField] private float activationDuration = -1f;//unlimited if < 0f
     [SerializeField, Tooltip("Be triggered when a player pass througt the button")] private bool dontUseInputSystem = false;
 
     [HideInInspector] public bool isActivated { get; private set; }
-    public PressedInfo pressedInfo { get; private set; }
-    public Action<PressedInfo> onActivate;
-    public Action onDesactivate;
+    public Action<PressedInfo> onActivate, onDesactivate;
 
     private void Awake()
     {
         onActivate = new Action<PressedInfo>((PressedInfo arg) => { });
-        onDesactivate = new Action(() => { });
+        onDesactivate = new Action<PressedInfo>((PressedInfo arg) => { });
         charMask = LayerMask.GetMask("Char");
         this.transform = base.transform;
     }
 
     private void Start()
     {
-        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
-        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
         EventManager.instance.callbackOnPlayerDeath += OnCharDied;
         EventManager.instance.callbackOnPlayerDeathByEnvironnement += OnCharDied;
-        charInFrontLastFrame = new List<GameObject>();
+        charInFrontLastFrame = new List<GameObject>(4);
+        OnActivate(startActivated, new PressedInfo(null));
     }
 
     private void Update()
     {
-        GetComponentInChildren<SpriteRenderer>().color = isActivated ? Color.red : Color.green;
-
-        if (!enableBehaviour || isPauseEnable)
+        if (!enableBehaviour || PauseManager.instance.isPauseEnable)
+        {
+            lastTimeActivated += Time.deltaTime;
             return;
+        }
 
         if (isCharActivating || isCharDesactivating)
             return;
 
+        GetComponentInChildren<SpriteRenderer>().color = isActivated ? Color.red : Color.green;
+
         if (isActivated)
         {
-            if((Time.time - lastTimeActivated > minDurationBeforeReactivation) || allowDesactivation)
+            if((Time.time - lastTimeActivated > minDurationBefore2Activation) || allowDesactivation)
             {
                 if(TryGetCharacterInteract(out GameObject charWhoPressed))
                 {
-                    if(allowDesactivation)
-                    {
-                        Desactivate(charWhoPressed);
-                    }
-                    else
-                    {
-                        Activate(charWhoPressed);
-                    }
+                    Desactivate(charWhoPressed);
                 }
             }
 
@@ -84,7 +77,7 @@ public class Interruptor : MonoBehaviour
         }
         else
         {
-            if (TryGetCharacterInteract(out GameObject charWhoPressed))
+            if (Time.time - lastTimeActivated > minDurationBefore2Activation && TryGetCharacterInteract(out GameObject charWhoPressed))
             {
                 Activate(charWhoPressed);
             }
@@ -121,9 +114,9 @@ public class Interruptor : MonoBehaviour
     private IEnumerator ActivateCorout(bool activate, PressedInfo pressedInfo)
     {
         isCharDying = false;
-        charDied = null;
         isCharActivating = activate;
         isCharDesactivating = !activate;
+        charWhoActivate = pressedInfo.charWhoPressed;
         float duration = activate ? durationItTakesToActivate : durationItTakesToDesactivate;
         float time = Time.time;
         bool cancel = false;
@@ -133,30 +126,22 @@ public class Interruptor : MonoBehaviour
         {
             if(isCharDying)
             {
-                if(charDied == pressedInfo.charWhoPressed)
-                {
-                    cancel = true;
-                    isCharDying = false;
-                    charDied = null;
-                    break;
-                }
-                isCharDying = false;
-                charDied = null;
+                cancel = true;
+                break;
             }
 
-            float delta = Time.time - lastTimeActivated;
-            while(isPauseEnable)
+            while(PauseManager.instance.isPauseEnable)
             {
                 yield return null;
+                time += Time.deltaTime;
             }
-            lastTimeActivated = Time.time - delta;
 
             yield return null;
         }
-        charMvt.UnFreeze();
 
         if(!cancel)
         {
+            charMvt.UnFreeze();
             OnActivate(activate, pressedInfo);
         }
         isCharActivating = isCharDesactivating = false;
@@ -165,25 +150,28 @@ public class Interruptor : MonoBehaviour
     private void OnActivate(bool activate, PressedInfo pressedInfo)
     {
         isActivated = activate;
+        lastTimeActivated = Time.time;
         if (activate)
         {
-            lastTimeActivated = Time.time;
-            this.pressedInfo = pressedInfo;
             isActivated = true;
             onActivate.Invoke(pressedInfo);
         }
         else
         {
-            this.pressedInfo = new PressedInfo(null); ;
             isActivated = false;
-            onDesactivate.Invoke();
+            onDesactivate.Invoke(pressedInfo);
         }
     }
 
     private void OnCharDied(GameObject player, GameObject killer)
     {
-        isCharDying = true;
-        charDied = player.GetComponent<ToricObject>().original;
+        if(isCharActivating || isCharDesactivating)
+        {
+            if(charWhoActivate == player.GetComponent<ToricObject>().original)
+            {
+                isCharDying = true;
+            }
+        }
     }
 
     private bool TryGetCharacterInteract(out GameObject charWhoPressed)
@@ -200,7 +188,7 @@ public class Interruptor : MonoBehaviour
         bool TryGetCharacterInteractNotInputSystem(out GameObject charWhoPressed)
         {
             Collider2D[] charCols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + hitboxOffset, hitboxSize, 0f, charMask);
-            List<GameObject> charInFront = new List<GameObject>();
+            List<GameObject> charInFront = new List<GameObject>(4);
             foreach (Collider2D col in charCols)
             {
                 if (col.CompareTag("Char"))
@@ -215,7 +203,6 @@ public class Interruptor : MonoBehaviour
                 if(!charInFrontLastFrame.Contains(player))
                 {
                     charWhoPressed = player;
-                    charInFrontLastFrame = charInFront;
                     return true;
                 }
             }
@@ -250,45 +237,21 @@ public class Interruptor : MonoBehaviour
         }
     }
 
-    #region Destroy/Pause/OnValidate/Gizmos
+    #region Destroy/OnValidate/Gizmos
 
     private void OnDestroy()
     {
         EventManager.instance.callbackOnPlayerDeath -= OnCharDied;
         EventManager.instance.callbackOnPlayerDeathByEnvironnement -= OnCharDied;
-        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
-        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
     }
-
-    private IEnumerator PauseCorout()
-    {
-        float delta = Time.time - lastTimeActivated;
-        while(isPauseEnable)
-        {
-            yield return null;
-        }
-        lastTimeActivated = Time.time - delta;
-    }
-
-    private void OnPauseEnable()
-    {
-        isPauseEnable = true;
-        StartCoroutine(PauseCorout());
-    }
-
-    private void OnPauseDisable()
-    {
-        isPauseEnable = false;
-    }
-
 
 #if UNITY_EDITOR
 
     private void OnValidate()
     {
-        hitboxSize = new Vector2(Mathf.Max(hitboxSize.x, 0f), Mathf.Max(hitboxSize.y, 0f));
         this.transform = base.transform;
-        minDurationBeforeReactivation = Mathf.Max(0f, minDurationBeforeReactivation);
+        hitboxSize = new Vector2(Mathf.Max(hitboxSize.x, 0f), Mathf.Max(hitboxSize.y, 0f));
+        minDurationBefore2Activation = Mathf.Max(0f, minDurationBefore2Activation);
         durationItTakesToActivate = Mathf.Max(0f, durationItTakesToActivate);
         durationItTakesToDesactivate = Mathf.Max(0f, durationItTakesToDesactivate);
     }
