@@ -1207,7 +1207,7 @@ public class CharacterController : MonoBehaviour
                 case MapColliderData.GroundType.ice:
                     HandleIceWalk();
                     break;
-                case MapColliderData.GroundType.trampoline:
+                case MapColliderData.GroundType.jumper:
                     HandleNormalWalk();
                     break;
                 case MapColliderData.GroundType.convoyerBelt:
@@ -1705,7 +1705,7 @@ public class CharacterController : MonoBehaviour
         Vector2 newVelocity;
         if(groundColliderData != null)
         {
-            if(groundColliderData.groundType == MapColliderData.GroundType.trampoline)
+            if(groundColliderData.groundType == MapColliderData.GroundType.jumper)
             {
                 Jumper jumper = groundColliderData.GetComponent<Jumper>();
                 Vector2 newDir = new Vector2(Mathf.Cos(jumper.angleDir * Mathf.Deg2Rad), Mathf.Sin(jumper.angleDir * Mathf.Deg2Rad));

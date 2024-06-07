@@ -10,7 +10,7 @@ public class MapColliderData : MonoBehaviour
     {
         normal,
         ice,
-        trampoline,
+        jumper,
         convoyerBelt,
         oneWayPlateform
     }

@@ -17,10 +17,6 @@ public class Electrode : MonoBehaviour
     [SerializeField] private Transform electrode2;
     [SerializeField] private Transform ray;
 
-#if UNITY_EDITOR
-    [SerializeField] private float electrodesDistance = 3f;
-#endif
-
     [Header("Use with trigger")]
     [SerializeField] private bool useByInterruptor = false;
     [SerializeField] private Interruptor interruptor;
@@ -152,7 +148,6 @@ public class Electrode : MonoBehaviour
     {
         timeOffset = Mathf.Max(timeOffset, 0f);
         durationBetween2Activation = Mathf.Max(durationBetween2Activation, 0f);
-        electrodesDistance = Mathf.Max(0f, electrodesDistance);
     }
 
 #endif

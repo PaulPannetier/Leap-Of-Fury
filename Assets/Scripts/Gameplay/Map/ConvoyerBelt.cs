@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(MapColliderData))]
 public abstract class ConvoyerBelt : MonoBehaviour
 {
-    private MapColliderData mapColliderData;
+    protected MapColliderData mapColliderData;
 
     private bool _isActive;
     public bool isActive
@@ -36,9 +36,9 @@ public abstract class ConvoyerBelt : MonoBehaviour
     public float speedLerp;
 
     [Header("Use by Interruptor")]
-    [SerializeField] private bool useByInterruptor;
-    [SerializeField] private bool invertInterruptor;
-    [SerializeField] private Interruptor interruptor;
+    [SerializeField] protected bool useByInterruptor;
+    [SerializeField] protected bool invertInterruptor;
+    [SerializeField] protected Interruptor interruptor;
 
     protected virtual void Awake()
     {
