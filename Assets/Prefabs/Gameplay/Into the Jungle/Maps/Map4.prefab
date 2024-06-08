@@ -18949,7 +18949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2582582542604411724}
-  - component: {fileID: 4346065135798893393}
+  - component: {fileID: 4337309346864158269}
   m_Layer: 7
   m_Name: Lights
   m_TagString: light
@@ -18981,7 +18981,7 @@ Transform:
   - {fileID: 3213529577013058876}
   m_Father: {fileID: 4709581355697953210}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4346065135798893393
+--- !u!114 &4337309346864158269
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18990,10 +18990,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4216839513045630224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 343155c9bac18b746b8b6558ed1ae3d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e291833fd15f504d81b7435d80da09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  globalLightColor: {r: 1, g: 0.950148, b: 0.7688679, a: 1}
+  globalLightColor: {r: 1, g: 0.9749776, b: 0.8349056, a: 1}
   globalLightIntensity: 0.25
 --- !u!1 &4592454640619315421
 GameObject:

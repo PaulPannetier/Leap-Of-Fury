@@ -513,34 +513,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelManager
       objectReference: {fileID: 0}
-    - target: {fileID: 4235235567787367747, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
-      propertyPath: enableBehaviour
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
-      propertyPath: showDayLight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
-      propertyPath: showNightLight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
-      propertyPath: otherLightIntensityAtDay
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
-      propertyPath: globalLightIntensityAtDay
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
-      propertyPath: otherLightIntensityAtNight
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
-      propertyPath: globalLightIntensityAtNight
-      value: 0.05
-      objectReference: {fileID: 0}
     - target: {fileID: 8778289041252250656, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -731,6 +703,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: loadStats
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: gameStat.statDatas.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: gameStat.statDatas.Array.data[0].id
+      value: char1WeakAttackDuration
+      objectReference: {fileID: 0}
+    - target: {fileID: 8101875005452331617, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
+      propertyPath: gameStat.statDatas.Array.data[0].value
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_RootOrder
       value: 0

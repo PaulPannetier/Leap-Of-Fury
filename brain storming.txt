@@ -134,8 +134,11 @@ Name : Chaos
 TODO :
 hyperparam charcontroller grab apex
 Trad all text
-test wall projectile and prohectile collision and retest all attack/char
+test player attacks and gameplay
 Complete Maxwell house maps and méca
 polish attacks
+review gamepad input surcouche
+fix wall jump along wall (jump if disable)
+fix wall jump mi duration (stay grab)
 Huge test of ALL before V0.1
 

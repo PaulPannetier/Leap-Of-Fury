@@ -74,11 +74,11 @@ public class CharacterController : MonoBehaviour
     private Vector2 teleportationShift;
 
     [Header("Jumping")]
-    [Tooltip("La hauteur min du saut.")] [SerializeField] private float jumpInitForce = 20f;
-    [Tooltip("L'accélération continue dû au saut.")] [SerializeField] private float jumpForce = 20f;
+    [Tooltip("Initial jumps speed")] [SerializeField] private float jumpInitSpeed = 20f;
+    [Tooltip("Continuous upward acceleration du to jump.")] [SerializeField] private float jumpForce = 20f;
     [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")] [SerializeField] private float jumpGravityMultiplier = 1f;
     [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")] [SerializeField] private float jumpMaxDuration = 1f;
-    [Tooltip("La vitesse maximal de saut (VMAX en l'air).")] [SerializeField] private Vector2 jumpSpeed = new Vector2(4f, 20f);
+    [Tooltip("La vitesse maximal de saut (VMAX en l'air).")] [SerializeField] private Vector2 jumpMaxSpeed = new Vector2(4f, 20f);
     [Tooltip("La vitesse init horizontale en saut (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float jumpInitHorizontaSpeed = 0.4f;
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale de saut")] [SerializeField] private float jumpSpeedLerp = 20f;
     [SerializeField] private bool enableDoubleJump = true;
@@ -87,11 +87,11 @@ public class CharacterController : MonoBehaviour
     private float lastTimeLeavePlateform = -10f, lastTimeJumpCommand = -10f, lastTimeBeginJump = -10f;
     private bool isPressingJumpButtonDownForFixedUpdate;
 
-    [Header("Air")]//en chute mais en phase montante
-    [Tooltip("L'accélération continue dû au saut.")] [SerializeField] private float airGravityMultiplier = 1f;
-    [Tooltip("La vitesse horizontale maximal en l'air (VMAX en l'air).")] [SerializeField] private float airHorizontalSpeed = 4f;
-    [Tooltip("La vitesse init horizontale en l'air (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float airInitHorizontalSpeed = 0.4f;
-    [Tooltip("La vitesse d'interpolation de la vitesse horizontale en l'air")] [SerializeField] private float airSpeedLerp = 20f;
+    [Header("Air")]//In falling state but with velocity.y > 0
+    [Tooltip("Gravity multiplier when falling with upward velocity.")] [SerializeField] private float airGravityMultiplier = 1f;
+    [Tooltip("Max horizontal speed when falling with upward velocity.")] [SerializeField] private float airHorizontalSpeed = 4f;
+    [Tooltip("Init horizontal speed when falling with upward velocity in percentage of \"airHorizontalSpeed\")")] [Range(0f, 1f)] [SerializeField] private float airInitHorizontalSpeed = 0.4f;
+    [Tooltip("Interpolation horizontal speed when falling with upward velocity.")] [SerializeField] private float airSpeedLerp = 20f;
 
     [Header("Fall")]
     [Tooltip("Coeff ajustant l'accélération de chute.")] [SerializeField] private float fallGravityMultiplier = 1.5f;
@@ -437,17 +437,17 @@ public class CharacterController : MonoBehaviour
         //DebugText.instance.text += $"OneWayPlateform : {isTraversingOneWayPlateform}\n";
         //DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
-        DebugText.instance.text += $"Apex : {isGrabApex}\n";
-        DebugText.instance.text += $"ApexJump : {isApexJumping}\n";
-        DebugText.instance.text += $"ApexRight : {isApexJumpRight}\n";
-        DebugText.instance.text += $"ApexLeft : {isApexJumpLeft}\n";
+        //DebugText.instance.text += $"Apex : {isGrabApex}\n";
+        //DebugText.instance.text += $"ApexJump : {isApexJumping}\n";
+        //DebugText.instance.text += $"ApexRight : {isApexJumpRight}\n";
+        //DebugText.instance.text += $"ApexLeft : {isApexJumpLeft}\n";
         //DebugText.instance.text += $"Jump : {isJumping}\n";
         //DebugText.instance.text += $"Fall : {isFalling}\n";
         //DebugText.instance.text += $"Slide : {isSliding}\n";
         //DebugText.instance.text += $"Gounded : {isGrounded}\n";
         //DebugText.instance.text += $"Bump : {isBumping}\n";
         //DebugText.instance.text += $"vel : {velocity}\n";
-        //DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
+        DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
     }
 
     #endregion
@@ -965,7 +965,7 @@ public class CharacterController : MonoBehaviour
         }
         else if(isJumping)
         {
-            if (Mathf.Abs(velocity.x) > jumpSpeed.x * jumpInitHorizontaSpeed * 0.95f)
+            if (Mathf.Abs(velocity.x) > jumpMaxSpeed.x * jumpInitHorizontaSpeed * 0.95f)
             {
                 flip = velocity.x > 0f ? false : true;
             }
@@ -1611,7 +1611,7 @@ public class CharacterController : MonoBehaviour
             {
                 gravityMultiplier = jumpGravityMultiplier;
                 force = jumpForce;
-                speed = jumpSpeed;
+                speed = jumpMaxSpeed;
             }
             else
             {
@@ -1665,7 +1665,7 @@ public class CharacterController : MonoBehaviour
                 //Clamp, on est dans le mauvais sens
                 if ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f))
                 {
-                    velocity = new Vector2(jumpInitHorizontaSpeed * jumpSpeed.x * playerInput.x.Sign(), velocity.y);
+                    velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
                 }
             }
 
@@ -1713,16 +1713,16 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                newVelocity = new Vector2(velocity.x + dir.x * jumpInitForce, dir.y * jumpInitForce) + groundColliderData.velocity;
+                newVelocity = new Vector2(velocity.x + dir.x * jumpInitSpeed, dir.y * jumpInitSpeed) + groundColliderData.velocity;
             }
         }
         else if (lastGroundColliderData != null)
         {
-            newVelocity = new Vector2(velocity.x + dir.x * jumpInitForce, dir.y * jumpInitForce) + lastGroundColliderData.velocity;
+            newVelocity = new Vector2(velocity.x + dir.x * jumpInitSpeed, dir.y * jumpInitSpeed) + lastGroundColliderData.velocity;
         }
         else
         {
-            newVelocity = new Vector2(velocity.x + dir.x * jumpInitForce, dir.y * jumpInitForce);
+            newVelocity = new Vector2(velocity.x + dir.x * jumpInitSpeed, dir.y * jumpInitSpeed);
         }
 
         velocity = newVelocity;
@@ -2143,7 +2143,7 @@ public class CharacterController : MonoBehaviour
         slopeSpeed = Mathf.Max(0f, slopeSpeed);
         fallSpeed = new Vector2(Mathf.Max(0f, fallSpeed.x), Mathf.Max(0f, fallSpeed.y));
         airHorizontalSpeed = Mathf.Max(0f, airHorizontalSpeed);
-        jumpSpeed = new Vector2(Mathf.Max(0f, jumpSpeed.x), Mathf.Max(0f, jumpSpeed.y));
+        jumpMaxSpeed = new Vector2(Mathf.Max(0f, jumpMaxSpeed.x), Mathf.Max(0f, jumpMaxSpeed.y));
         doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);
         wallJumpMaxDuration = Mathf.Max(wallJumpMaxDuration, 0f);
         wallJumpMinDuration = Mathf.Clamp(wallJumpMinDuration, 0f, wallJumpMaxDuration);
@@ -2155,7 +2155,7 @@ public class CharacterController : MonoBehaviour
         speedLerp = Mathf.Max(0f, speedLerp);
         grabRayLength = Mathf.Max(0f, grabRayLength);
         airSpeedLerp = Mathf.Max(0f, airSpeedLerp);
-        jumpInitForce = Mathf.Max(0f, jumpInitForce);
+        jumpInitSpeed = Mathf.Max(0f, jumpInitSpeed);
         groundRaycastLength = Mathf.Max(0f, groundRaycastLength);
         minBumpSpeedX = Mathf.Max(0f, minBumpSpeedX);
         bumpFrictionLerp = Mathf.Max(0f, bumpFrictionLerp);

@@ -3527,7 +3527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
-  grabable: 0
+  grabableRight: 1
+  grabableLeft: 1
   frictionCoefficient: 0
 --- !u!61 &4056638031798414933
 BoxCollider2D:
@@ -20715,7 +20716,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundType: 0
   disableAntiKnockHead: 0
-  grabable: 1
+  grabableRight: 1
+  grabableLeft: 1
   frictionCoefficient: 0
 --- !u!61 &6952316471795445162
 BoxCollider2D:
@@ -21011,7 +21013,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6595626707601269879}
-  - component: {fileID: 562678069841476297}
+  - component: {fileID: 4470973128260115775}
   m_Layer: 7
   m_Name: Lights
   m_TagString: light
@@ -21040,7 +21042,7 @@ Transform:
   - {fileID: 2319941635116089256}
   m_Father: {fileID: 6099075860824696446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &562678069841476297
+--- !u!114 &4470973128260115775
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21049,12 +21051,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8573189635458081925}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 343155c9bac18b746b8b6558ed1ae3d1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e291833fd15f504d81b7435d80da09a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   globalLightColor: {r: 1, g: 1, b: 1, a: 1}
-  globalLightIntensity: 0.8
-  lights: []
+  globalLightIntensity: 1
 --- !u!1001 &34507666326810647
 PrefabInstance:
   m_ObjectHideFlags: 0

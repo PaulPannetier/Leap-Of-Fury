@@ -1,5 +1,7 @@
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
+using UnityEditor.Build.Player;
+using UnityEditor.SceneManagement;
 
 public class CycleDayNightManager : MonoBehaviour
 {
@@ -119,21 +121,24 @@ public class CycleDayNightManager : MonoBehaviour
 
     private void OnValidate()
     {
-        if(showDayLight)
+        if(PrefabStageUtility.GetCurrentPrefabStage() == null)
         {
-            LightManager.instance.globalLight.intensity = globalLightIntensityAtDay;
-            foreach (Light2D light in LightManager.instance.lights)
+            if (showDayLight)
             {
-                light.intensity = otherLightIntensityAtDay;
-            }
+                LightManager.instance.globalLight.intensity = globalLightIntensityAtDay;
+                foreach (Light2D light in LightManager.instance.lights)
+                {
+                    light.intensity = otherLightIntensityAtDay;
+                }
 
-        }
-        else if (showNightLight)
-        {
-            LightManager.instance.globalLight.intensity = globalLightIntensityAtNight;
-            foreach (Light2D light in LightManager.instance.lights)
+            }
+            else if (showNightLight)
             {
-                light.intensity = otherLightIntensityAtNight;
+                LightManager.instance.globalLight.intensity = globalLightIntensityAtNight;
+                foreach (Light2D light in LightManager.instance.lights)
+                {
+                    light.intensity = otherLightIntensityAtNight;
+                }
             }
         }
     }

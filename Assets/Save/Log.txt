@@ -5,83 +5,15 @@
             "logParams": [
                 {
                     "type": "LogType",
-                    "value": "Exception"
+                    "value": "Warning"
                 },
                 {
                     "type": "String",
-                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                    "value": "Gamepad1 is not connected!"
                 },
                 {
                     "type": "String",
-                    "value": "LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)\nLevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)\nLevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)\nIntoTheJungleManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/IntoTheJungle/IntoTheJungleManager.cs:11)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Error"
-                },
-                {
-                    "type": "String",
-                    "value": "Coroutine couldn't be started because the the game object 'Char 1' is inactive!"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nCharacterController:DisableInputs (single) (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:298)\nLevelManager:BlockPlayers () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:300)\nLevelManager:<StartLevel>g__HandleCharPosAndCallback|18_4 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:158)\nLevelManager:StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:67)\nIntoTheJungleManager:StartLevel () (at Assets/Scripts/Gameplay/Levels/IntoTheJungle/IntoTheJungleManager.cs:11)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Log"
-                },
-                {
-                    "type": "String",
-                    "value": "Debug pls"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.MonoBehaviour:print (object)\nToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:335)\nToricObject:Update () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:212)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Log"
-                },
-                {
-                    "type": "String",
-                    "value": "Debug pls"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.MonoBehaviour:print (object)\nToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:335)\nToricObject:CustomUpdate () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:204)\nCharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:433)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Exception"
-                },
-                {
-                    "type": "String",
-                    "value": "NullReferenceException: Object reference not set to an instance of an object"
-                },
-                {
-                    "type": "String",
-                    "value": "CharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:557)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:403)\n"
+                    "value": "UnityEngine.Debug:LogWarning (object)\nInputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1657)\nCharacterInputs:Update () (at Assets/Scripts/Gameplay/Player/CharacterInputs.cs:68)\n"
                 }
             ]
         },
@@ -99,142 +31,6 @@
                 {
                     "type": "String",
                     "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Exception"
-                },
-                {
-                    "type": "String",
-                    "value": "NullReferenceException: Object reference not set to an instance of an object"
-                },
-                {
-                    "type": "String",
-                    "value": "CharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:741)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:404)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "Script 'CharacterController' has the same name as built-in Unity component.\nAddComponent and GetComponent will not work with this script."
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEditor.AssetDatabase:Refresh ()\nMicrosoft.Unity.VisualStudio.Editor.VisualStudioIntegration/<>c__DisplayClass8_0:<RunOnceOnUpdate>b__0 () (at ./Library/PackageCache/com.unity.ide.visualstudio@2.0.22/Editor/VisualStudioIntegration.cs:100)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions ()\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Exception"
-                },
-                {
-                    "type": "String",
-                    "value": "NullReferenceException: Object reference not set to an instance of an object"
-                },
-                {
-                    "type": "String",
-                    "value": "LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)\nLevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)\nLevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Log"
-                },
-                {
-                    "type": "String",
-                    "value": "Bite"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.MonoBehaviour:print (object)\nInterruptor/<>c:<Awake>b__30_2 () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:41)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:42)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Log"
-                },
-                {
-                    "type": "String",
-                    "value": "Bite"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.MonoBehaviour:print (object)\nInterruptor/<>c:<Awake>b__30_1 () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:41)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:42)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Log"
-                },
-                {
-                    "type": "String",
-                    "value": "Bite"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.MonoBehaviour:print (object)\nInterruptor/<>c:<Awake>b__30_1 () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:41)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:43)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Log"
-                },
-                {
-                    "type": "String",
-                    "value": "[1, 2, 3]"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.Debug:Log (object)\nUseful:Show<int> (System.Collections.Generic.List`1<int>) (at Assets/Scripts/AllScene/Custom/Useful.cs:2182)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:44)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Log"
-                },
-                {
-                    "type": "String",
-                    "value": "[1, 2, 3]"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.Debug:Log (object)\nUseful:Show<int> (System.Collections.Generic.List`1<int>) (at Assets/Scripts/AllScene/Custom/Useful.cs:2182)\nInterruptor:Awake () (at Assets/Scripts/Gameplay/Levels/Maxwell House/Interruptor.cs:45)\n"
                 }
             ]
         }
