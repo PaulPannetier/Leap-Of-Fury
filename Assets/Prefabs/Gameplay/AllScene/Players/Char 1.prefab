@@ -191,7 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   <velocity>k__BackingField: {x: 0, y: 0}
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   sideRayLength: 0.5
   sideRayOffset: 0
@@ -207,11 +207,12 @@ MonoBehaviour:
   speedLerp: 30
   initSpeed: 0.285
   inertiaDurationWhenQuittingGround: 0.1
-  jumpInitForce: 6
-  jumpForce: 9
+  jumpInitSpeed: 3
+  jumpForce: 20
   jumpGravityMultiplier: 1
+  jumpMinDuration: 0.1
   jumpMaxDuration: 0.3
-  jumpSpeed: {x: 8, y: 99999}
+  jumpMaxSpeed: {x: 5.5, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1

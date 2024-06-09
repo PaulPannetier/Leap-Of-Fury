@@ -77,7 +77,8 @@ public class CharacterController : MonoBehaviour
     [Tooltip("Initial jumps speed")] [SerializeField] private float jumpInitSpeed = 20f;
     [Tooltip("Continuous upward acceleration du to jump.")] [SerializeField] private float jumpForce = 20f;
     [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")] [SerializeField] private float jumpGravityMultiplier = 1f;
-    [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")] [SerializeField] private float jumpMaxDuration = 1f;
+    [Tooltip("The minimum duration of a jump.")] [SerializeField] private float jumpMinDuration = 0.1f;
+    [Tooltip("The maximum duration of a jump.")] [SerializeField] private float jumpMaxDuration = 1f;
     [Tooltip("La vitesse maximal de saut (VMAX en l'air).")] [SerializeField] private Vector2 jumpMaxSpeed = new Vector2(4f, 20f);
     [Tooltip("La vitesse init horizontale en saut (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float jumpInitHorizontaSpeed = 0.4f;
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale de saut")] [SerializeField] private float jumpSpeedLerp = 20f;
@@ -825,7 +826,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //release jumping and trigger falling
-        if (isJumping && (velocity.y <= 0f || !playerInput.jumpPressed || (Time.time - lastTimeBeginJump > jumpMaxDuration)))
+        if (isJumping && (velocity.y <= 0f || (!playerInput.jumpPressed && Time.time - lastTimeBeginJump > jumpMinDuration) || (Time.time - lastTimeBeginJump > jumpMaxDuration)))
         {
             isJumping = false;
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
@@ -835,7 +836,7 @@ public class CharacterController : MonoBehaviour
             }
         }
         //release Wall jumping and trigger falling
-        if (isWallJumping && (velocity.y <= 0f || !playerInput.jumpPressed || (Time.time - lastTimeBeginWallJump > wallJumpMaxDuration)))
+        if (isWallJumping && (velocity.y <= 0f || (!playerInput.jumpPressed && Time.time - lastTimeBeginJump > wallJumpMinDuration) || (Time.time - lastTimeBeginWallJump > wallJumpMaxDuration)))
         {
             isWallJumping = false;
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement court que isGrounded est tj vrai
@@ -1620,7 +1621,7 @@ public class CharacterController : MonoBehaviour
                 speed = wallJumpSpeed;
             }
 
-            HandleJumpGravity(gravityMultiplier, force, speed);
+            HandleVerticalMovement(gravityMultiplier, force, speed);
 
             HandleHorizontalMovement(speed);
         }
@@ -1641,17 +1642,12 @@ public class CharacterController : MonoBehaviour
 
         isPressingJumpButtonDownForFixedUpdate = false;
 
-        void HandleJumpGravity(float GravityMultiplier, float force, in Vector2 speed)
+        void HandleVerticalMovement(float GravityMultiplier, float force, in Vector2 speed)
         {
             velocity += Vector2.up * (Physics2D.gravity.y * GravityMultiplier * Time.deltaTime);
+            velocity += Vector2.up * (force * Time.deltaTime);
 
-            //phase montante du saut
-            if (playerInput.jumpPressed && enableInput)
-            {
-                velocity += Vector2.up * (force * Time.deltaTime);
-            }
-
-            //clamp en y
+            //clamp in the y axis
             if (velocity.y > speed.y)
             {
                 velocity = new Vector2(velocity.x, speed.y);
@@ -1675,14 +1671,8 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                float targetSpeed = enableInput ? ((Time.time - lastTimeBeginWallJump >= wallJumpMinDuration) ? playerInput.x * speed.x : speed.x) : 0f;
+                float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * speed.x), jumpInitHorizontaSpeed * speed.x) : 0f;
                 velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, jumpSpeedLerp * Time.deltaTime), velocity.y);
-            }
-
-            //clamp en x
-            if (Mathf.Abs(velocity.x) > speed.x)
-            {
-                velocity = new Vector2(speed.x * velocity.x.Sign(), velocity.y);
             }
         }
 
@@ -2156,6 +2146,8 @@ public class CharacterController : MonoBehaviour
         grabRayLength = Mathf.Max(0f, grabRayLength);
         airSpeedLerp = Mathf.Max(0f, airSpeedLerp);
         jumpInitSpeed = Mathf.Max(0f, jumpInitSpeed);
+        jumpMaxDuration = Mathf.Max(jumpMaxDuration, 0f);
+        jumpMinDuration = Mathf.Max(jumpMinDuration, 0f);
         groundRaycastLength = Mathf.Max(0f, groundRaycastLength);
         minBumpSpeedX = Mathf.Max(0f, minBumpSpeedX);
         bumpFrictionLerp = Mathf.Max(0f, bumpFrictionLerp);

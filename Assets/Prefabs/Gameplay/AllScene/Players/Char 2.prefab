@@ -193,11 +193,12 @@ MonoBehaviour:
   speedLerp: 30
   initSpeed: 0.285
   inertiaDurationWhenQuittingGround: 0.1
-  jumpInitForce: 6
-  jumpForce: 9
+  jumpInitSpeed: 3
+  jumpForce: 20
   jumpGravityMultiplier: 1
+  jumpMinDuration: 0.1
   jumpMaxDuration: 0.3
-  jumpSpeed: {x: 8, y: 99999}
+  jumpMaxSpeed: {x: 6.5, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
@@ -273,13 +274,13 @@ MonoBehaviour:
   grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
   grabSpeedMultiplierWhenPreciseGrab: 0.75
-  apexJumpSpeed: {x: 3, y: 8}
-  apexJumpSpeed2: {x: 4, y: -2}
+  apexJumpSpeed: {x: 3, y: 6}
+  apexJumpSpeed2: {x: 3, y: -20}
   grabSpeedLerp: 25
   apexJumpSpeedLerp: 400
-  apexJumpSpeedLerp2: 50
-  apexJumpDuration: 0.125
-  apexJumpDuration2: 0.1
+  apexJumpSpeedLerp2: 400
+  apexJumpDuration: 0.15
+  apexJumpDuration2: 0.15
   apexJumpInitSpeed: 0.4
   apexJumpInitSpeed2: 0.4
   dashSpeed: 20
@@ -522,7 +523,6 @@ MonoBehaviour:
   drawGizmos: 0
   enableBehavior: 1
   bufferDuration: 0.1
-  dashDamageType: 1
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
   dashInvicibilityDuration: 0.5

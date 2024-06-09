@@ -3275,11 +3275,12 @@ MonoBehaviour:
   speedLerp: 30
   initSpeed: 0.993
   inertiaDurationWhenQuittingGround: 0.1
-  jumpInitForce: 6
+  jumpInitSpeed: 20
   jumpForce: 9
   jumpGravityMultiplier: 1
+  jumpMinDuration: 0.1
   jumpMaxDuration: 0.3
-  jumpSpeed: {x: 8, y: 99999}
+  jumpMaxSpeed: {x: 4, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
@@ -3704,7 +3705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   <velocity>k__BackingField: {x: 0, y: 0}
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   sideRayLength: 0.5
   sideRayOffset: 0
@@ -3718,13 +3719,14 @@ MonoBehaviour:
   gapBetweenHitboxAndWall: 0.13
   walkSpeed: 8.5
   speedLerp: 30
-  initSpeed: 0.993
+  initSpeed: 0.285
   inertiaDurationWhenQuittingGround: 0.1
-  jumpInitForce: 6
-  jumpForce: 9
-  jumpGravityMultiplier: 1
-  jumpMaxDuration: 0.3
-  jumpSpeed: {x: 8, y: 99999}
+  jumpInitSpeed: 6
+  jumpForce: 40
+  jumpGravityMultiplier: 3
+  jumpMinDuration: 0.1
+  jumpMaxDuration: 0.2
+  jumpMaxSpeed: {x: 4, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
@@ -3797,9 +3799,9 @@ MonoBehaviour:
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
   grabSpeed: 5
-  grabInitSpeed: 0.33
+  grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
-  grabSpeedMultiplierWhenPreciseGrab: 1
+  grabSpeedMultiplierWhenPreciseGrab: 0.75
   apexJumpSpeed: {x: 3, y: 8}
   apexJumpSpeed2: {x: 4, y: -2}
   grabSpeedLerp: 25
@@ -3857,7 +3859,7 @@ MonoBehaviour:
   antiKnockHead: 0.4
   slideSpeed: 6
   slideSpeedLerp: 30
-  slideSpeedLerpDeceleration: 40
+  slideSpeedLerpDeceleration: 100
   initSlideSpeed: 0.223
   maxSlopeAngle: 22.5
   slopeSpeed: 8.5

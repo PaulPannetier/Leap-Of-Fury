@@ -33,6 +33,74 @@
                     "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "Joystick disconnected (\"Controller (Xbox One For Windows)\")."
+                },
+                {
+                    "type": "String",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Joystick reconnected (\"Controller (Xbox One For Windows)\")."
+                },
+                {
+                    "type": "String",
+                    "value": ""
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "Script 'CharacterController' has the same name as built-in Unity component.\nAddComponent and GetComponent will not work with this script."
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEditor.AssetDatabase:Refresh ()\nMicrosoft.Unity.VisualStudio.Editor.VisualStudioIntegration/<>c__DisplayClass8_0:<RunOnceOnUpdate>b__0 () (at ./Library/PackageCache/com.unity.ide.visualstudio@2.0.22/Editor/VisualStudioIntegration.cs:100)\nUnityEditor.EditorApplication:Internal_CallUpdateFunctions ()\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Debug pls"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:335)\nToricObject:CustomUpdate () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:204)\nCharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:435)\n"
+                }
+            ]
         }
     ]
 }
