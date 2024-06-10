@@ -101,6 +101,57 @@
                     "value": "UnityEngine.MonoBehaviour:print (object)\nToricObject:UpdateInternal () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:335)\nToricObject:CustomUpdate () (at Assets/Scripts/Gameplay/ToricSystem/ToricObject.cs:204)\nCharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/Celeste's Movement  Mix and Jam/CharacterController.cs:435)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "PreUpdate"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nTestScript:PreUpdate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:15)\nEventManager:Update () (at Assets/Scripts/AllScene/Managers/EventManager.cs:37)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "1.65"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nCharacterController:<HandleJump>g__HandleWallJump|300_1 () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1678)\nCharacterController:HandleJump () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1615)\nCharacterController:UpdateVelocity () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1030)\nCharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:407)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "0"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nCharacterController:<HandleJump>g__HandleWallJump|300_1 () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1678)\nCharacterController:HandleJump () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1615)\nCharacterController:UpdateVelocity () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1030)\nCharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:407)\n"
+                }
+            ]
         }
     ]
 }

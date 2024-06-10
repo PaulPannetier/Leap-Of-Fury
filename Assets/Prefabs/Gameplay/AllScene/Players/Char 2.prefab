@@ -202,7 +202,7 @@ MonoBehaviour:
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
-  doubleJumpSpeed: 11
+  doubleJumpSpeed: 8
   jumpCoyoteTime: 0.1
   airGravityMultiplier: 3
   airHorizontalSpeed: 5.5
@@ -217,12 +217,14 @@ MonoBehaviour:
   maxBeginFallSpeed: 0.6
   fallClampSpeedMultiplierWhenDownPressed: 1.6
   fallGravityMultiplierWhenDownPressed: 2
-  wallJumpInitSpeed: 10
-  wallJumpAngle: 53.9
-  wallJumpForce: 5
-  wallJumpSpeed: {x: 5.5, y: 20}
+  wallJumpInitSpeed: 7
+  wallJumpAngle: 40
+  wallJumpForce: 7
+  wallJumpMaxSpeed: {x: 5.5, y: 20}
+  wallJumpInitHorizontaSpeed: 0
+  wallJumpSpeedLerp: 4
   wallJumpGravityMultiplier: 1
-  wallJumpMinDuration: 0.1
+  wallJumpMinDuration: 0.15
   wallJumpMaxDuration: 0.3
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11

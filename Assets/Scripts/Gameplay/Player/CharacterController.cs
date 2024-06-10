@@ -17,7 +17,7 @@ public class CharacterController : MonoBehaviour
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData, apexJumpColliderData;
     private FightController fightController;
     private ToricObject toricObject;
-    private int disableMovementCounter, disableDashCounter;
+    private short disableMovementCounter, disableDashCounter;
     private bool isMovementDisable => disableMovementCounter > 0;
     private bool isDashDisable => disableDashCounter > 0;
     
@@ -86,7 +86,6 @@ public class CharacterController : MonoBehaviour
     [Tooltip("The speed of the second jump(magnitude of his velocity vector)"), SerializeField] private float doubleJumpSpeed = 6f;
     [Tooltip("Le temps apres avoir quité la plateforme ou le saut est possible")] [SerializeField] private float jumpCoyoteTime = 0.1f;
     private float lastTimeLeavePlateform = -10f, lastTimeJumpCommand = -10f, lastTimeBeginJump = -10f;
-    private bool isPressingJumpButtonDownForFixedUpdate;
 
     [Header("Air")]//In falling state but with velocity.y > 0
     [Tooltip("Gravity multiplier when falling with upward velocity.")] [SerializeField] private float airGravityMultiplier = 1f;
@@ -109,9 +108,11 @@ public class CharacterController : MonoBehaviour
     [Tooltip("la vitesse de début de saut de mur")] [SerializeField] private float wallJumpInitSpeed = 10f;
     [Tooltip("L'angle en degré par rapport à la vertical de la direction du wall jump")] [Range(0f, 90f)] [SerializeField] private float wallJumpAngle = 45f;
     [Tooltip("L'accélération continue du saut depuis le mur.")] [SerializeField] private float wallJumpForce = 20f;
-    [Tooltip("La vitesse maximal de saut depuis le mur (VMAX en l'air).")] [SerializeField] private Vector2 wallJumpSpeed = new Vector2(4f, 20f);
+    [Tooltip("La vitesse maximal de saut depuis le mur (VMAX en l'air).")] [SerializeField] private Vector2 wallJumpMaxSpeed = new Vector2(4f, 20f);
+    [Tooltip("La vitesse init horizontale en saut depuis le mur (%age de la vitesse max)"), Range(0f, 1f), SerializeField] private float wallJumpInitHorizontaSpeed = 0.4f;
+    [SerializeField] private float wallJumpSpeedLerp = 15f;
     [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")] [SerializeField] private float wallJumpGravityMultiplier = 1f;
-    [Tooltip("La durée minimale ou le joueur peut avoir la touche de saut effective")] [SerializeField] private float wallJumpMinDuration = 0.1f;
+    [Tooltip("La durée minimale ou le joueur doit avoir la touche de saut effective")] [SerializeField] private float wallJumpMinDuration = 0.1f;
     [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")] [SerializeField] private float wallJumpMaxDuration = 1f;
     private float lastTimeBeginWallJump = -10f;
 
@@ -449,6 +450,8 @@ public class CharacterController : MonoBehaviour
         //DebugText.instance.text += $"Bump : {isBumping}\n";
         //DebugText.instance.text += $"vel : {velocity}\n";
         DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
+        DebugText.instance.text += $"wallJump : {isWallJumping}\n";
+        DebugText.instance.text += $"wallGrab : {wallGrab}\n";
     }
 
     #endregion
@@ -718,7 +721,7 @@ public class CharacterController : MonoBehaviour
         leftFootRay = PerformNonOneWayPlateformRaycast(from, Vector2.left, grabRayLength);
 
         //Trigger wallGrab
-        if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isJumpingAlongWall && !isBumping)
+        if (enableInput && !wallGrab && onWall && playerInput.grabPressed && (!isSliding || playerInput.rawY >= 0) && !isDashing && !isWallJumping && !isJumpingAlongWall && !isBumping)
         {
             if((onRightWall && rightWallColliderData.grabableLeft) || (onLeftWall && leftWallColliderData.grabableRight))
             {
@@ -815,7 +818,7 @@ public class CharacterController : MonoBehaviour
             isFalling = true;
         }
         //release jumping and falling
-        if ((isGrounded && !isTraversingOneWayPlateform && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || isSliding)
+        if ((isGrounded && !isTraversingOneWayPlateform && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || (isSliding && !wallJump))
         {
             isJumping = isWallJumping = isJumpingAlongWall = isFalling = false;
         }
@@ -836,7 +839,7 @@ public class CharacterController : MonoBehaviour
             }
         }
         //release Wall jumping and trigger falling
-        if (isWallJumping && (velocity.y <= 0f || (!playerInput.jumpPressed && Time.time - lastTimeBeginJump > wallJumpMinDuration) || (Time.time - lastTimeBeginWallJump > wallJumpMaxDuration)))
+        if (isWallJumping && (velocity.y <= 0f || (!playerInput.jumpPressed && Time.time - lastTimeBeginWallJump > wallJumpMinDuration) || (Time.time - lastTimeBeginWallJump > wallJumpMaxDuration)))
         {
             isWallJumping = false;
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement court que isGrounded est tj vrai
@@ -855,7 +858,7 @@ public class CharacterController : MonoBehaviour
             }
         }
         //set isPressingJumpButtonDownForFixedUpdate
-        isPressingJumpButtonDownForFixedUpdate = isPressingJumpButtonDownForFixedUpdate ? true : playerInput.jumpPressedDown;
+        //isPressingJumpButtonDownForFixedUpdate = isPressingJumpButtonDownForFixedUpdate ? true : playerInput.jumpPressedDown;
 
         //reset doubleJump
         if (onWall || wallGrab && !isTraversingOneWayPlateform)
@@ -1035,8 +1038,8 @@ public class CharacterController : MonoBehaviour
 
         HandleBump();
 
-        forceHorizontalStick = isSliding || wallGrab;
-        forceDownStick = !isJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping && !wallJump;
+        forceHorizontalStick = (isSliding || wallGrab) && !isWallJumping;
+        forceDownStick = !isJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping && !isWallJumping;
 
         //DebugText.instance.text += $"forceHorizontalStick : {forceHorizontalStick}\n";
         //DebugText.instance.text += $"forceDownStick : {forceDownStick}\n";
@@ -1191,7 +1194,7 @@ public class CharacterController : MonoBehaviour
 
     private void HandleWalk()
     {
-        if (!isGrounded || isFalling || isJumping || isDashing || isSliding || wallGrab || isApexJumping || isBumping || isTraversingOneWayPlateformUp)
+        if (!isGrounded || isFalling || isJumping || isWallJumping || isDashing || isSliding || wallGrab || isApexJumping || isBumping || isTraversingOneWayPlateformUp)
             return;
 
         if (isSloping && !onWall)
@@ -1574,22 +1577,22 @@ public class CharacterController : MonoBehaviour
     {
         if (doJump)
         {
-            if (isGrounded && !isBumping)
+            if (isGrounded && !wallGrab && !isBumping)
             {
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && !isBumping)
+            else if (!isGrounded && Time.time - lastTimeLeavePlateform <= jumpCoyoteTime && !wallGrab && !isBumping)
             {
                 Jump(Vector2.up);
                 doJump = false;
             }
-            else if ((wallGrab || onWall || isSliding) && !isGrounded && !isApexJumping && !isBumping)
+            else if ((wallGrab || onWall || isSliding) && !isApexJumping && !isBumping)
             {
                 WallJump();
                 doJump = false;
             }
-            else if (!isGrounded && !wallGrab && isPressingJumpButtonDownForFixedUpdate && !hasDoubleJump && !isApexJumping && enableDoubleJump && !isBumping)
+            else if (!isGrounded && !onWall && !hasDoubleJump && !isApexJumping && !isBumping && enableDoubleJump)
             {
                 HandleDoubleJump();
                 doJump = false;
@@ -1606,24 +1609,14 @@ public class CharacterController : MonoBehaviour
 
         if (isJumping || isWallJumping)
         {
-            float gravityMultiplier, force;
-            Vector2 speed;
             if(isJumping)
             {
-                gravityMultiplier = jumpGravityMultiplier;
-                force = jumpForce;
-                speed = jumpMaxSpeed;
+                HandleNormalJump();
             }
             else
             {
-                gravityMultiplier = wallJumpGravityMultiplier;
-                force = wallJumpForce;
-                speed = wallJumpSpeed;
+                HandleWallJump();
             }
-
-            HandleVerticalMovement(gravityMultiplier, force, speed);
-
-            HandleHorizontalMovement(speed);
         }
 
         if(enableJumpAlongWall && isJumpingAlongWall)
@@ -1640,39 +1633,69 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        isPressingJumpButtonDownForFixedUpdate = false;
-
-        void HandleVerticalMovement(float GravityMultiplier, float force, in Vector2 speed)
+        void HandleNormalJump()
         {
-            velocity += Vector2.up * (Physics2D.gravity.y * GravityMultiplier * Time.deltaTime);
-            velocity += Vector2.up * (force * Time.deltaTime);
+            //vertical movement
+            velocity += Vector2.up * (Physics2D.gravity.y * jumpGravityMultiplier * Time.deltaTime);
+            velocity += Vector2.up * (jumpForce * Time.deltaTime);
 
             //clamp in the y axis
-            if (velocity.y > speed.y)
+            if (velocity.y > jumpMaxSpeed.y)
             {
-                velocity = new Vector2(velocity.x, speed.y);
-            }
-        }
-
-        void HandleHorizontalMovement(in Vector2 speed)
-        {
-            if (Time.time - lastTimeBeginWallJump >= wallJumpMinDuration && enableInput)
-            {
-                //Clamp, on est dans le mauvais sens
-                if ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f))
-                {
-                    velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
-                }
+                velocity = new Vector2(velocity.x, jumpMaxSpeed.y);
             }
 
-            if (Mathf.Abs(velocity.x) < jumpInitHorizontaSpeed * speed.x * 0.95f && playerInput.rawX != 0)
+            //Horizontal movement
+            if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)))
             {
-                velocity = new Vector2(jumpInitHorizontaSpeed * speed.x * playerInput.x.Sign(), velocity.y);
+                velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
+            }
+
+            if (Mathf.Abs(velocity.x) < jumpInitHorizontaSpeed * jumpMaxSpeed.x * 0.95f && playerInput.rawX != 0)
+            {
+                velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
             }
             else
             {
-                float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * speed.x), jumpInitHorizontaSpeed * speed.x) : 0f;
+                float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * jumpMaxSpeed.x), jumpInitHorizontaSpeed * jumpMaxSpeed.x) : 0f;
                 velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, jumpSpeedLerp * Time.deltaTime), velocity.y);
+            }
+        }
+
+        void HandleWallJump()
+        {
+            //Vertical movement
+            velocity += Vector2.up * (Physics2D.gravity.y * wallJumpGravityMultiplier * Time.deltaTime);
+            velocity += Vector2.up * (wallJumpForce * Time.deltaTime);
+
+            //clamp in the y axis
+            if (velocity.y > wallJumpMaxSpeed.y)
+            {
+                velocity = new Vector2(velocity.x, wallJumpMaxSpeed.y);
+            }
+
+            //Horizontal movement
+            if (Time.time - lastTimeBeginWallJump < wallJumpMinDuration)
+            {
+                float targetedSpeed = velocity.x.Sign() * (playerInput.rawX == 0 ? wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x : wallJumpMaxSpeed.x);
+                velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetedSpeed, wallJumpSpeedLerp * Time.deltaTime), velocity.y);
+            }
+            else
+            {
+                if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)))
+                {
+                    velocity = new Vector2(wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
+                }
+
+                if (Mathf.Abs(velocity.x) < wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * 0.95f && playerInput.rawX != 0)
+                {
+                    velocity = new Vector2(wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
+                }
+                else
+                {
+                    float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * wallJumpMaxSpeed.x), wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x) : 0f;
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, wallJumpSpeedLerp * Time.deltaTime), velocity.y);
+                }
             }
         }
 
@@ -1728,25 +1751,48 @@ public class CharacterController : MonoBehaviour
         bool right;
         if (onWall)
         {
-            right = onRightWall;
             if (onRightWall == onLeftWall)
             {
                 print("Debug pls1 : " + onRightWall);
+                LogManager.instance.AddLog("onRightWall == onLeftWall which is not possible!", onRightWall, onLeftWall, "CharacterControler::WallJump");
                 return;
+            }
+
+            if(onRightWall)
+            {
+                if (!rightWallColliderData.grabableLeft)
+                    return;
+                right = true;
+            }
+            else
+            {
+                if (!leftWallColliderData.grabableRight)
+                    return;
+                right = false;
             }
         }
         else //ApexJump ou on est accrocher tout en haut d'un mur
         {
-            right = rightFootRay.collider != null;
-            bool left = leftFootRay.collider != null;
-
-            if (right == left)//!bug
+            right = rightFootRay;
+            if (right == leftFootRay)//!bug
             {
                 print("Debug pls2 right : " + right);
-                //evité de plus gros bug
+                LogManager.instance.AddLog("rightFootRay and leftFootRay are egal which is not possible!", leftFootRay, rightFootRay, right, "CharacterControler::WallJump");
+                //Avoid bigger bugs
                 isSliding = wallGrab = wallJump = false;
                 isFalling = true;
                 return;
+            }
+
+            if(right)
+            {
+                if (!rightFootRay.collider.GetComponent<MapColliderData>().grabableLeft)
+                    return;
+            }
+            else
+            {
+                if (!leftFootRay.collider.GetComponent<MapColliderData>().grabableRight)
+                    return;
             }
         }
 
@@ -1755,32 +1801,29 @@ public class CharacterController : MonoBehaviour
 
     private void WallJump(bool right)
     {
-        if(enableJumpAlongWall)
+        if(playerInput.rawX == 0 && wallGrab)
         {
             //first case : jump along the wall
-            if ((right && playerInput.rawX >= 0) || (!right && playerInput.rawX <= 0) && wallGrab)
+            if(enableJumpAlongWall)
             {
-                if (Time.time - lastTimeBeginWallJumpAlongWall > wallJumpAlongCooldown)
+                if(Time.time - lastTimeBeginWallJumpAlongWall > wallJumpAlongCooldown)
                 {
                     WallJumpAlongWall(right);
                 }
-            }
-            else if ((right && playerInput.rawX == -1) || (!right && playerInput.rawX == 1)) //2nd case : jump on the oposite of the wall
-            {
-                WallJumpOppositeSide(right);
+                else
+                {
+                    return;
+                }
             }
             else
             {
-                return;
+                WallJumpOppositeSide(right);
             }
         }
         else
         {
             WallJumpOppositeSide(right);
         }
-
-        StopCoroutine(nameof(DisableMovementCorout));
-        StartCoroutine(DisableMovementCorout(0.1f));
     }
 
     private void WallJumpAlongWall(bool right)
@@ -2137,6 +2180,7 @@ public class CharacterController : MonoBehaviour
         doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);
         wallJumpMaxDuration = Mathf.Max(wallJumpMaxDuration, 0f);
         wallJumpMinDuration = Mathf.Clamp(wallJumpMinDuration, 0f, wallJumpMaxDuration);
+        wallJumpSpeedLerp = Mathf.Max(wallJumpSpeedLerp, 0f);
         apexJumpSpeed = new Vector2(Mathf.Max(0f, apexJumpSpeed.x), apexJumpSpeed.y);
         apexJumpSpeed2 = new Vector2(Mathf.Max(0f, apexJumpSpeed2.x), apexJumpSpeed2.y);
         slideSpeed = Mathf.Max(0f, slideSpeed);

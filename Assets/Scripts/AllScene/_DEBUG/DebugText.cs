@@ -1,4 +1,5 @@
-using UnityEngine.UI;
+#if UNITY_EDITOR || ADVANCE_DEBUG
+
 using UnityEngine;
 using TMPro;
 
@@ -27,14 +28,6 @@ public class DebugText : MonoBehaviour
 
     private void Awake()
     {
-
-#if !UNITY_EDITOR
-
-        Destroy(gameObject);
-        return;
-
-#else
-
         if(instance != null)
         {
             Destroy(gameObject);
@@ -42,8 +35,6 @@ public class DebugText : MonoBehaviour
         }
         instance = this;
         _Text = GetComponent<TextMeshProUGUI>();
-
-#endif
     }
 
     private void Start()
@@ -55,4 +46,11 @@ public class DebugText : MonoBehaviour
     {
         text = "";
     }
+
+    private void OnDestroy()
+    {
+        EventManager.instance.callbackPreUpdate -= PreUpdate;
+    }
 }
+
+#endif

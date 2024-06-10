@@ -6,10 +6,23 @@ using System;
 public class LogManager : MonoBehaviour
 {
     private const string logPath = "/Save/Log.txt";
+    private static LogManager _instance;
     public static LogManager instance
     {
-        get;
-        private set;
+        get
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying && _instance == null)
+                return GameObject.FindObjectOfType<LogManager>();
+            return _instance;
+#else
+            return _instance;
+#endif
+        }
+        private set
+        {
+            _instance = value;
+        }
     }
 
     private LogMessages messages;
@@ -26,7 +39,7 @@ public class LogManager : MonoBehaviour
     {
         if (instance != null)
         {
-            Destroy(gameObject);
+            Destroy(this);
             return;
         }
 
@@ -103,6 +116,12 @@ public class LogManager : MonoBehaviour
     {
         messages = new LogMessages();
         WriteLogs();
+    }
+
+    private void OnDestroy()
+    {
+        Application.logMessageReceived -= OnLogMessageReceive;
+        Application.quitting -= OnExit;
     }
 
     #region OnValidate
@@ -245,6 +264,23 @@ public class LogManager : MonoBehaviour
                 this.type = type;
                 this.value = value;
             }
+
+            public override bool Equals(object obj)
+            {
+                if(object.ReferenceEquals(this, null) && object.ReferenceEquals(obj, null))
+                    return true;
+
+                if (object.ReferenceEquals(this, null) || object.ReferenceEquals(obj, null))
+                    return false;
+
+                if(obj is LogParams logParams)
+                    return this == logParams;
+
+                return false;
+            }
+
+            public static bool operator ==(LogParams log1, LogParams log2) => log1.type == log2.type && log1.value == log2.value;
+            public static bool operator !=(LogParams log1, LogParams log2) => log1.type != log2.type || log1.value != log2.value;
 
             public override int GetHashCode()
             {
