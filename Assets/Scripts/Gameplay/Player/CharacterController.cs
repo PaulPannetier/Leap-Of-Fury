@@ -3,23 +3,24 @@ using System.Collections;
 using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class CharacterController : MonoBehaviour
 {
     #region Fields
 
-    private AnimationScript anim;
+    #region private field
+
     private Camera mainCam;
     private CharacterInputs playerInput;
     private BoxCollider2D hitbox;
     private ToricRaycastHit2D raycastRight, raycastLeft, groundRay, rightSlopeRay, leftSlopeRay, rightFootRay, leftFootRay, topRightRay, topLeftRay;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData, apexJumpColliderData;
-    private FightController fightController;
     private ToricObject toricObject;
     private short disableMovementCounter, disableDashCounter;
-    private bool isMovementDisable => disableMovementCounter > 0;
-    private bool isDashDisable => disableDashCounter > 0;
+    private bool isMovementDisabled => disableMovementCounter > 0;
+    private bool isDashDisabled => disableDashCounter > 0;
     
     private new Transform transform;
     private float oldDeltaTime;
@@ -43,10 +44,12 @@ public class CharacterController : MonoBehaviour
     [field:SerializeField, ShowOnly] public Vector2 velocity { get; private set; }
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool drawGizmos = true;
+#endif
 
-    #endif
+    #endregion
+
+    #region General/Collision
 
     [Header("General")]
     [Tooltip("Le temps maximal entre l'appuie du joueur sur la touche est l'action engendré."), SerializeField] private float timeUntilCommandIsInvalid = 0.2f;
@@ -64,6 +67,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float gapBetweenHitboxAndWall = 0.1f;
     private LayerMask groundLayer;
 
+    #endregion
+
+    #region Walk
+
     [Header("Walk")]
     [Tooltip("La vitesse de marche"), SerializeField] private float walkSpeed = 10f;
     [Tooltip("La vitesse d'interpolation de marche"), SerializeField] private float speedLerp = 50f;
@@ -72,6 +79,22 @@ public class CharacterController : MonoBehaviour
     private float lastTimeQuitGround = -10f;
     private bool forceHorizontalStick = false, forceDownStick = false, overwriteSpeedOnHorizontalTeleportation = true, overwriteSpeedOnVerticalTeleportation = true;
     private Vector2 teleportationShift;
+
+    [Header("Slope")]
+    [Tooltip("The maximum angle in degres we can walk"), SerializeField, Range(0f, 90f)] private float maxSlopeAngle = 22.5f;
+    [SerializeField] private float slopeSpeed;
+    [SerializeField, Range(0f, 1f)] private float initSlopeSpeed = 0.3f;
+    [SerializeField, Tooltip("La vitesse de monter selon l'angle de la pente : 0 => pente nulle, 1 => pente max en %ageVMAX")] private AnimationCurve slopeSpeedCurve;
+    [SerializeField, Tooltip("acceleration during slope in %ageVMAX/sec ")] private float slopeSpeedLerp = 1f;
+    [HideInInspector] public bool isSlopingRight, isSlopingLeft;
+    private float slopeAngleLeft, slopeAngleRight;
+    private bool isToSteepSlopeRight, isToSteepSlopeLeft;
+
+    #endregion
+
+    #region Jump
+
+    #region Normal Jump
 
     [Header("Jumping")]
     [Tooltip("Initial jumps speed")] [SerializeField] private float jumpInitSpeed = 20f;
@@ -84,14 +107,54 @@ public class CharacterController : MonoBehaviour
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale de saut")] [SerializeField] private float jumpSpeedLerp = 20f;
     [SerializeField] private bool enableDoubleJump = true;
     [Tooltip("The speed of the second jump(magnitude of his velocity vector)"), SerializeField] private float doubleJumpSpeed = 6f;
+    [Tooltip("The angle of the double jump"), SerializeField, Range(0f, 90f)] private float doubleJumpAngle = 45f;
     [Tooltip("Le temps apres avoir quité la plateforme ou le saut est possible")] [SerializeField] private float jumpCoyoteTime = 0.1f;
     private float lastTimeLeavePlateform = -10f, lastTimeJumpCommand = -10f, lastTimeBeginJump = -10f;
+
+    #endregion
+
+    #region WallJump
+
+    [Header("Wall jump Opposite Wall")]
+    [Tooltip("la vitesse de début de saut de mur")][SerializeField] private float wallJumpInitSpeed = 10f;
+    [Tooltip("The angle in degrees between the wall and the horizontal.")][Range(0f, 90f)][SerializeField] private float wallJumpAngle = 45f;
+    [Tooltip("L'accélération continue du saut depuis le mur.")][SerializeField] private float wallJumpForce = 20f;
+    [Tooltip("La vitesse maximal de saut depuis le mur (VMAX en l'air).")][SerializeField] private Vector2 wallJumpMaxSpeed = new Vector2(4f, 20f);
+    [Tooltip("La vitesse init horizontale en saut depuis le mur (%age de la vitesse max)"), Range(0f, 1f), SerializeField] private float wallJumpInitHorizontaSpeed = 0.4f;
+    [SerializeField] private float wallJumpSpeedLerp = 15f;
+    [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")][SerializeField] private float wallJumpGravityMultiplier = 1f;
+    [Tooltip("La durée minimale ou le joueur doit avoir la touche de saut effective")][SerializeField] private float wallJumpMinDuration = 0.1f;
+    [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")][SerializeField] private float wallJumpMaxDuration = 1f;
+    [Tooltip("Enable or not the jump on non grabable wall."), SerializeField] private bool enableWallJumpOnNonGrabableWall = false;
+    [Tooltip("The angle in degrees between the non grabable wall and the horizontal."), Range(0f, 90f), SerializeField] private float wallJumpAngleOnNonGrabableWall = 45f;
+    [Tooltip("la vitesse de début de saut de mur"), SerializeField] private float wallJumpInitSpeedOnNonGrabableWall = 20f;
+    [Tooltip(""), SerializeField] private float wallJumpOnNonGrabableWallDuration = 0.2f;
+    private bool isWallJumpingOnNonGrabableWall, wallJumpOnNonGrabableWall;
+    private float lastTimeBeginWallJump = -10f, lastTimeBeginWallJumpOnNonGrabableWall = -10f;
+
+    [Header("Wall Jump Along Wall")]
+    [SerializeField] private bool enableJumpAlongWall = true;
+    [Tooltip("la vitesse de début de saut de mur face au mur")][SerializeField] private float wallJumpAlongSpeed = 20f;
+    [Tooltip("la courbe de vitesse saut de mur face au mur")][SerializeField] private AnimationCurve wallJumpAlongCurveSpeed;
+    [Tooltip("La durée d'un saut face au mur")][SerializeField] private float jumpAlongWallDuration = 0.3f;
+    [Tooltip("Le temps minimal entre 2 saut face au mur (sec)")][SerializeField] private float wallJumpAlongCooldown = 0.1f;
+    private float lastTimeBeginWallJumpAlongWall = -10f;
+
+    #endregion
+
+    #endregion
+
+    #region Air
 
     [Header("Air")]//In falling state but with velocity.y > 0
     [Tooltip("Gravity multiplier when falling with upward velocity.")] [SerializeField] private float airGravityMultiplier = 1f;
     [Tooltip("Max horizontal speed when falling with upward velocity.")] [SerializeField] private float airHorizontalSpeed = 4f;
     [Tooltip("Init horizontal speed when falling with upward velocity in percentage of \"airHorizontalSpeed\")")] [Range(0f, 1f)] [SerializeField] private float airInitHorizontalSpeed = 0.4f;
     [Tooltip("Interpolation horizontal speed when falling with upward velocity.")] [SerializeField] private float airSpeedLerp = 20f;
+
+    #endregion
+
+    #region Fall
 
     [Header("Fall")]
     [Tooltip("Coeff ajustant l'accélération de chute.")] [SerializeField] private float fallGravityMultiplier = 1.5f;
@@ -104,25 +167,9 @@ public class CharacterController : MonoBehaviour
     [Tooltip("Change la vitesse maximal de chute lors de l'appuie sur le bouton bas.")] [SerializeField] private float fallClampSpeedMultiplierWhenDownPressed = 1.2f;
     [Tooltip("Change la gravité appliqué lors de l'appuie sur la touche bas.")] [SerializeField] private float fallGravityMultiplierWhenDownPressed = 2f;
 
-    [Header("Wall jump Opposite Wall")]
-    [Tooltip("la vitesse de début de saut de mur")] [SerializeField] private float wallJumpInitSpeed = 10f;
-    [Tooltip("L'angle en degré par rapport à la vertical de la direction du wall jump")] [Range(0f, 90f)] [SerializeField] private float wallJumpAngle = 45f;
-    [Tooltip("L'accélération continue du saut depuis le mur.")] [SerializeField] private float wallJumpForce = 20f;
-    [Tooltip("La vitesse maximal de saut depuis le mur (VMAX en l'air).")] [SerializeField] private Vector2 wallJumpMaxSpeed = new Vector2(4f, 20f);
-    [Tooltip("La vitesse init horizontale en saut depuis le mur (%age de la vitesse max)"), Range(0f, 1f), SerializeField] private float wallJumpInitHorizontaSpeed = 0.4f;
-    [SerializeField] private float wallJumpSpeedLerp = 15f;
-    [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")] [SerializeField] private float wallJumpGravityMultiplier = 1f;
-    [Tooltip("La durée minimale ou le joueur doit avoir la touche de saut effective")] [SerializeField] private float wallJumpMinDuration = 0.1f;
-    [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")] [SerializeField] private float wallJumpMaxDuration = 1f;
-    private float lastTimeBeginWallJump = -10f;
+    #endregion
 
-    [Header("Wall Jump Along Wall")]
-    [SerializeField] private bool enableJumpAlongWall = true;
-    [Tooltip("la vitesse de début de saut de mur face au mur")] [SerializeField] private float wallJumpAlongSpeed = 20f;
-    [Tooltip("la courbe de vitesse saut de mur face au mur")] [SerializeField] private AnimationCurve wallJumpAlongCurveSpeed;
-    [Tooltip("La durée d'un saut face au mur")] [SerializeField] private float jumpAlongWallDuration = 0.3f;
-    [Tooltip("Le temps minimal entre 2 saut face au mur (sec)")] [SerializeField] private float wallJumpAlongCooldown = 0.1f;
-    private float lastTimeBeginWallJumpAlongWall = -10f;
+    #region Grab
 
     [Header("Grab")]
     [Tooltip("La vitesse de monter.")] [SerializeField] private float grabSpeed = 6f;
@@ -144,6 +191,10 @@ public class CharacterController : MonoBehaviour
     private bool reachGrabApexRight = false, reachGrabApexLeft = false, isApexJump1 = false, isApexJump2 = false, isApexJumpRight = false, isApexJumpLeft = false;
     private float lastTimeApexJump = -10;
 
+    #endregion
+
+    #region Dash
+
     [Header("Dash")]
     [Tooltip("La vitesse maximal du dash")] [SerializeField] private float dashSpeed = 20f;
     [Tooltip("La durée du dash en sec")] [SerializeField] private float dashDuration = 0.4f;
@@ -154,21 +205,19 @@ public class CharacterController : MonoBehaviour
     private bool isLastDashUp = false;
     private float lastTimeDashCommand = -10f, lastTimeDashFinish = -10f, lastTimeDashBegin = -10f;
 
+    #endregion
+
+    #region Slide
+
     [Header("Slide")]
     [Tooltip("La vitesse de glissement sur les murs")] [SerializeField] private float slideSpeed = 5f;
     [Tooltip("L'interpolation lorsqu'on glisse sur un mur.")] [SerializeField] private float slideSpeedLerp = 10f;
     [Tooltip("L'interpolation lorsqu'on ralentie en glissant sur un mur.")] [SerializeField] private float slideSpeedLerpDeceleration = 55f;
     [Tooltip("La vitesse initiale de glissement en %age de vitesse max lorsqu'on glisse a partir de 0.")] [SerializeField] [Range(0f, 1f)] private float initSlideSpeed = 0.1f;
 
-    [Header("Slope")]
-    [Tooltip("The maximum angle in degres we can walk"), SerializeField, Range(0f, 90f)] private float maxSlopeAngle = 22.5f;
-    [SerializeField] private float slopeSpeed;
-    [SerializeField, Range(0f, 1f)] private float initSlopeSpeed = 0.3f;
-    [SerializeField, Tooltip("La vitesse de monter selon l'angle de la pente : 0 => pente nulle, 1 => pente max en %ageVMAX")] private AnimationCurve slopeSpeedCurve;
-    [SerializeField, Tooltip("acceleration during slope in %ageVMAX/sec ")] private float slopeSpeedLerp = 1f;
-    [HideInInspector] public bool isSlopingRight, isSlopingLeft;
-    private float slopeAngleLeft, slopeAngleRight;
-    private bool isToSteepSlopeRight, isToSteepSlopeLeft;
+    #endregion
+
+    #region Bump
 
     [Header("Bump")]
     [SerializeField] private float minBumpSpeedX = 1f;
@@ -179,6 +228,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float minBumpDuration = 0.3f;
     private float lastTimeBump = -10f;
 
+    #endregion
+
+    #region Map
+
     [Header("Map Object")]
     [SerializeField] private float inertiaDurationWhenQuittingConvoyerBelt = 0.08f;
     [SerializeField] private float speedWhenQuittingConvoyerBelt = 1f;
@@ -187,6 +240,10 @@ public class CharacterController : MonoBehaviour
     private bool isTraversingOneWayPlateformUp, isTraversingOneWayPlateformDown;
     private bool isTraversingOneWayPlateform => isTraversingOneWayPlateformUp || isTraversingOneWayPlateformDown;
 
+    #endregion
+
+    #region VisualEffect
+
     [Header("Polish")]
     [SerializeField] private ParticleSystem dashParticle;
     [SerializeField] private ParticleSystem jumpParticle;
@@ -194,6 +251,10 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private ParticleSystem slideParticle;
     [SerializeField] private bool enableCameraShaking = true;
     [SerializeField] private ShakeSetting cameraShakeSetting = new ShakeSetting(0.15f, 0.2f, 14, 90, false, true);
+
+    #endregion
+
+    #region State
 
     public bool isGrounded { get; private set; } //le joueur touche le sol
     public bool onWall { get; private set; } //le joueur touche un mur a droite ou a gauche
@@ -223,12 +284,14 @@ public class CharacterController : MonoBehaviour
     public bool doubleJump { get; private set; }//vaut true la frame ou l'action est faite;
     public bool wallJumpAlongWall { get; private set; }//vaut true la frame ou l'action est faite;
     public bool dash { get; private set; }//vaut true la frame ou l'action est faite;
-    private bool oldWallJump, oldJump, oldSecondJump, oldWallJumpAlongWall, oldDash;//use to set var on top just for only one frame
+    private bool oldWallJump, oldJump, oldSecondJump, oldWallJumpAlongWall, oldWallJumpOnNonGrabableWall, oldDash;//use to set var on top just for only one frame
 
     private bool doJump, doDash;
 
     [HideInInspector] public bool flip { get; private set; } = false;
     public Action<Vector2> onDash;
+
+    #endregion
 
     #endregion
 
@@ -304,12 +367,12 @@ public class CharacterController : MonoBehaviour
     private IEnumerator DisableMovementCorout(float duration)
     {
         disableMovementCounter++;
-        enableInput = !isMovementDisable;
+        enableInput = !isMovementDisabled;
 
         yield return PauseManager.instance.Wait(duration);
 
         disableMovementCounter--;
-        enableInput = !isMovementDisable;
+        enableInput = !isMovementDisabled;
     }
 
     public void DisableDash(float duration)
@@ -356,7 +419,7 @@ public class CharacterController : MonoBehaviour
     {
         velocity = bumpForce;
         isBumping = true;
-        isDashing = isSliding = wallGrab = isJumping = isApexJump1 = isApexJump2  = grabApexRight = grabApexLeft = isFalling = wallJump = false;
+        isDashing = isSliding = wallGrab = isJumping = isApexJump1 = isApexJump2  = grabApexRight = grabApexLeft = isFalling = wallJump = isWallJumping = isWallJumpingOnNonGrabableWall = wallJumpOnNonGrabableWall = false;
         doubleJump = false;
         lastTimeBump = Time.time;
     }
@@ -373,10 +436,8 @@ public class CharacterController : MonoBehaviour
     private void Awake()
     {
         this.transform = base.transform;
-        anim = GetComponentInChildren<AnimationScript>();
         mainCam = Camera.main;
         playerInput = GetComponent<CharacterInputs>();
-        fightController = GetComponent<FightController>();
         hitbox = GetComponent<BoxCollider2D>();
         onDash = (Vector2 dir) => { };
     }
@@ -813,17 +874,17 @@ public class CharacterController : MonoBehaviour
             isJumpingAlongWall = false;
         }
         //Trigger falling
-        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && (!isGrounded || isTraversingOneWayPlateform) && !isBumping)
+        if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !isWallJumpingOnNonGrabableWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && (!isGrounded || isTraversingOneWayPlateform) && !isBumping)
         {
             isFalling = true;
         }
         //release jumping and falling
-        if ((isGrounded && !isTraversingOneWayPlateform && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || (isSliding && !wallJump))
+        if ((isGrounded && !isTraversingOneWayPlateform && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || (isSliding && !wallJump && !isWallJumpingOnNonGrabableWall))
         {
-            isJumping = isWallJumping = isJumpingAlongWall = isFalling = false;
+            isJumping = isWallJumping = isWallJumpingOnNonGrabableWall = isJumpingAlongWall = isFalling = false;
         }
         //Release Falling
-        if(jump || wallJump || doubleJump || isApexJumping)
+        if(jump || wallJump || wallJumpOnNonGrabableWall || doubleJump || isApexJumping)
         {
             isFalling = false;
         }
@@ -857,8 +918,16 @@ public class CharacterController : MonoBehaviour
                 isFalling = true;
             }
         }
-        //set isPressingJumpButtonDownForFixedUpdate
-        //isPressingJumpButtonDownForFixedUpdate = isPressingJumpButtonDownForFixedUpdate ? true : playerInput.jumpPressedDown;
+
+        //release Wall jumping on non grabable wall and trigger falling
+        if (isWallJumpingOnNonGrabableWall && (velocity.y <= 0f || isDashing || Time.time - lastTimeBeginWallJumpOnNonGrabableWall > wallJumpOnNonGrabableWallDuration))
+        {
+            isWallJumpingOnNonGrabableWall = false;
+            if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlateform) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
+            {
+                isFalling = true;
+            }
+        }
 
         //reset doubleJump
         if (onWall || wallGrab && !isTraversingOneWayPlateform)
@@ -888,12 +957,7 @@ public class CharacterController : MonoBehaviour
 
         //Release sliding
         //stop slide on the wall
-        if(isSliding && (!enableInput || (isGrounded && !isTraversingOneWayPlateform) || !onWall || (!playerInput.grabPressed && ((onRightWall && playerInput.rawX != 1) || (onLeftWall && playerInput.rawX != -1))) || isDashing || jump || wallJump))
-        {
-            isSliding = false;
-        }
-
-        if(isSliding && wallGrab)
+        if(isSliding && (!enableInput || (isGrounded && !isTraversingOneWayPlateform) || !onWall || (!playerInput.grabPressed && ((onRightWall && playerInput.rawX != 1) || (onLeftWall && playerInput.rawX != -1))) || wallGrab || isDashing || jump || wallJump || wallJumpOnNonGrabableWall))
         {
             isSliding = false;
         }
@@ -1005,6 +1069,8 @@ public class CharacterController : MonoBehaviour
             wallJump = false;
         if (oldSecondJump)
             doubleJump = false;
+        if (oldWallJumpOnNonGrabableWall)
+            wallJumpOnNonGrabableWall = false;
         if (oldWallJumpAlongWall)
             wallJumpAlongWall = false;
 
@@ -1012,6 +1078,7 @@ public class CharacterController : MonoBehaviour
         oldJump = jump;
         oldWallJump = wallJump;
         oldSecondJump = doubleJump;
+        oldWallJumpOnNonGrabableWall = wallJumpOnNonGrabableWall;
         oldWallJumpAlongWall = wallJumpAlongWall;
     }
 
@@ -1038,8 +1105,8 @@ public class CharacterController : MonoBehaviour
 
         HandleBump();
 
-        forceHorizontalStick = (isSliding || wallGrab) && !isWallJumping;
-        forceDownStick = !isJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping && !isWallJumping;
+        forceHorizontalStick = (isSliding || wallGrab) && !isWallJumping && !isWallJumpingOnNonGrabableWall;
+        forceDownStick = !isJumping && !isWallJumping && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping;
 
         //DebugText.instance.text += $"forceHorizontalStick : {forceHorizontalStick}\n";
         //DebugText.instance.text += $"forceDownStick : {forceDownStick}\n";
@@ -1594,7 +1661,7 @@ public class CharacterController : MonoBehaviour
             }
             else if (!isGrounded && !onWall && !hasDoubleJump && !isApexJumping && !isBumping && enableDoubleJump)
             {
-                HandleDoubleJump();
+                DoubleJump();
                 doJump = false;
             }
             else if (Time.time - lastTimeJumpCommand <= timeUntilCommandIsInvalid)
@@ -1607,30 +1674,21 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        if (isJumping || isWallJumping)
+        if (isJumping)
         {
-            if(isJumping)
-            {
-                HandleNormalJump();
-            }
-            else
-            {
-                HandleWallJump();
-            }
+            HandleNormalJump();
         }
-
-        if(enableJumpAlongWall && isJumpingAlongWall)
+        else if(isWallJumping)
         {
-            //detect changing direction
-            if((playerInput.rawX == -1 && onRightWall) || (playerInput.rawX == 1 && onLeftWall))
-            {
-                WallJumpOppositeSide(onRightWall);
-            }
-            else // continue jumping along wall
-            {
-                float per100 = (Time.time - lastTimeBeginWallJumpAlongWall) / jumpAlongWallDuration;
-                velocity = new Vector2(0f, wallJumpAlongSpeed * wallJumpAlongCurveSpeed.Evaluate(per100));
-            }
+            HandleWallJump();
+        }
+        else if (isJumpingAlongWall)
+        {
+            HandleJumpAlongWall();
+        }
+        else if(isWallJumpingOnNonGrabableWall)
+        {
+            HandleJumpOnNonGrabableWall();
         }
 
         void HandleNormalJump()
@@ -1699,12 +1757,23 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        void HandleDoubleJump()
+        void HandleJumpAlongWall()
         {
-            float right = playerInput.rawX != 0 ? playerInput.rawX : (flip ? -1 : 1);
-            Vector2 dir = new Vector2(right, 1f).normalized;
-            velocity = dir * doubleJumpSpeed;
-            hasDoubleJump = doubleJump = true;
+            //detect changing direction
+            if ((playerInput.rawX == -1 && onRightWall) || (playerInput.rawX == 1 && onLeftWall))
+            {
+                WallJumpOppositeSide(onRightWall);
+            }
+            else // continue jumping along wall
+            {
+                float per100 = (Time.time - lastTimeBeginWallJumpAlongWall) / jumpAlongWallDuration;
+                velocity = new Vector2(0f, wallJumpAlongSpeed * wallJumpAlongCurveSpeed.Evaluate(per100));
+            }
+        }
+
+        void HandleJumpOnNonGrabableWall()
+        {
+
         }
     }
 
@@ -1760,15 +1829,21 @@ public class CharacterController : MonoBehaviour
 
             if(onRightWall)
             {
-                if (!rightWallColliderData.grabableLeft)
-                    return;
                 right = true;
+                if (!rightWallColliderData.grabableLeft)
+                {
+                    NonGrabableWallJump(right);
+                    return;
+                }
             }
             else
             {
-                if (!leftWallColliderData.grabableRight)
-                    return;
                 right = false;
+                if (!leftWallColliderData.grabableRight)
+                {
+                    NonGrabableWallJump(right);
+                    return;
+                }
             }
         }
         else //ApexJump ou on est accrocher tout en haut d'un mur
@@ -1787,16 +1862,33 @@ public class CharacterController : MonoBehaviour
             if(right)
             {
                 if (!rightFootRay.collider.GetComponent<MapColliderData>().grabableLeft)
+                {
+                    NonGrabableWallJump(right);
                     return;
+                }
             }
             else
             {
                 if (!leftFootRay.collider.GetComponent<MapColliderData>().grabableRight)
+                {
+                    NonGrabableWallJump(right);
                     return;
+                }
             }
         }
 
         WallJump(right);
+    }
+
+    void NonGrabableWallJump(bool right)
+    {
+        if(enableWallJumpOnNonGrabableWall)
+        {
+            float angle = right ? Mathf.PI - (wallJumpAngleOnNonGrabableWall * Mathf.Deg2Rad) : wallJumpAngleOnNonGrabableWall * Mathf.Deg2Rad;
+            velocity = new Vector2(wallJumpInitSpeedOnNonGrabableWall * Mathf.Cos(angle), wallJumpInitSpeedOnNonGrabableWall * Mathf.Sin(angle));
+            isWallJumpingOnNonGrabableWall = wallJumpOnNonGrabableWall = true;
+            lastTimeBeginWallJumpOnNonGrabableWall = Time.time;
+        }
     }
 
     private void WallJump(bool right)
@@ -1838,8 +1930,16 @@ public class CharacterController : MonoBehaviour
         float angle = (right ? 1f : -1f) * wallJumpAngle * Mathf.Deg2Rad + Mathf.PI * 0.5f;
         Vector2 dir = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         velocity = dir * wallJumpInitSpeed;
-        isWallJumping = wallJump = true;
+        wallJump = isWallJumping = true;
         lastTimeBeginWallJump = Time.time;
+    }
+
+    void DoubleJump()
+    {
+        bool right = playerInput.rawX != 0 ? playerInput.rawX == 1 : !flip;
+        float angle = right ? doubleJumpAngle * Mathf.Deg2Rad : Mathf.PI - (doubleJumpAngle * Mathf.Deg2Rad);
+        velocity = new Vector2(doubleJumpSpeed * Mathf.Cos(angle), doubleJumpSpeed * Mathf.Sin(angle));
+        hasDoubleJump = doubleJump = true;
     }
 
     #endregion
@@ -1932,7 +2032,7 @@ public class CharacterController : MonoBehaviour
         //Dashing
         if (doDash && !isDashing)
         {
-            if (!isDashDisable && !hasDashed && Time.time - lastTimeDashFinish >= dashCooldown)
+            if (!isDashDisabled && !hasDashed && Time.time - lastTimeDashFinish >= dashCooldown)
             {
                 Vector2 dir = GetCurrentDirection(true);
                 isLastDashUp = dir.SqrDistance(Vector2.up) <= 1e-6f;
@@ -2181,6 +2281,7 @@ public class CharacterController : MonoBehaviour
         wallJumpMaxDuration = Mathf.Max(wallJumpMaxDuration, 0f);
         wallJumpMinDuration = Mathf.Clamp(wallJumpMinDuration, 0f, wallJumpMaxDuration);
         wallJumpSpeedLerp = Mathf.Max(wallJumpSpeedLerp, 0f);
+        wallJumpOnNonGrabableWallDuration = Mathf.Max(0f, wallJumpOnNonGrabableWallDuration);
         apexJumpSpeed = new Vector2(Mathf.Max(0f, apexJumpSpeed.x), apexJumpSpeed.y);
         apexJumpSpeed2 = new Vector2(Mathf.Max(0f, apexJumpSpeed2.x), apexJumpSpeed2.y);
         slideSpeed = Mathf.Max(0f, slideSpeed);

@@ -142,5 +142,6 @@ test wall jump along wall
 fix sliding floor bug
 fix char anim when wall jump
 fix wall jump during slide
+Trad char controller tooltip
 Huge test of ALL before V0.1
 
