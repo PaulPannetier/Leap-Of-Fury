@@ -137,11 +137,8 @@ test player attacks and gameplay
 Complete Maxwell house maps and méca
 polish attacks
 review gamepad input surcouche
-fix wall jump (jump if disable)
 test wall jump along wall
 fix sliding floor bug
-fix char anim when wall jump
-fix wall jump during slide
 Trad char controller tooltip
 Huge test of ALL before V0.1
 

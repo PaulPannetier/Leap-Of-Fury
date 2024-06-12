@@ -44,8 +44,9 @@ public class AnimationScript : MonoBehaviour
         eventController.OnTriggerAnimatorSetBool("isFalling", charController.isFalling);
         anim.SetBool("isGrounded", charController.isGrounded);
         eventController.OnTriggerAnimatorSetBool("isGrounded", charController.isGrounded);
-        anim.SetBool("isJumping", charController.isJumping);
-        eventController.OnTriggerAnimatorSetBool("isJumping", charController.isJumping);
+        bool isJumping = charController.isJumping || charController.isWallJumping || charController.isWallJumpingOnNonGrabableWall;
+        anim.SetBool("isJumping", isJumping);
+        eventController.OnTriggerAnimatorSetBool("isJumping", isJumping);
         anim.SetBool("isDashing", charController.isDashing);
         eventController.OnTriggerAnimatorSetBool("isDashing", charController.isDashing);
         anim.SetBool("death", false);

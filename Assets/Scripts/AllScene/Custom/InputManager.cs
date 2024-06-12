@@ -1614,20 +1614,38 @@ public static class InputManager
                 return (value + min) / (max - min);
             }
 
-            float x = Mathf.Abs(newState.ThumbSticks.Right.X) <= rDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Right.X) >= (1f - rDeadZone.x) ? newState.ThumbSticks.Right.X.Sign() : newState.ThumbSticks.Right.X);
-            float y = Mathf.Abs(newState.ThumbSticks.Right.Y) <= rDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Right.Y) >= (1f - rDeadZone.y) ? newState.ThumbSticks.Right.Y.Sign() : newState.ThumbSticks.Right.Y);
+            float norm = newState.ThumbSticks.Right.X * newState.ThumbSticks.Right.X + newState.ThumbSticks.Right.Y * newState.ThumbSticks.Right.Y;
+            float trueX = newState.ThumbSticks.Right.X;
+            float trueY = newState.ThumbSticks.Right.Y;
+            if (norm >= 1f)
+            {
+                norm = Mathf.Sqrt(norm);
+                trueX /= norm;
+                trueY /= norm;
+            }
+
+            float x = Mathf.Abs(trueX) <= rDeadZone.x ? 0f : (Mathf.Abs(trueX) >= (1f - rDeadZone.x) ? trueX.Sign() : trueX);
+            float y = Mathf.Abs(trueY) <= rDeadZone.x ? 0f : (Mathf.Abs(trueY) >= (1f - rDeadZone.y) ? trueY.Sign() : trueY);
             rStickPos = new Vector2(Regression(rDeadZone.x, 1f - rDeadZone.x, x), Regression(rDeadZone.y, 1f - rDeadZone.y, y));
-            if(rStickPos.sqrMagnitude > 1f)
-                rStickPos = new Vector2(newState.ThumbSticks.Right.X, newState.ThumbSticks.Right.Y).normalized;
 
-            x = Mathf.Abs(newState.ThumbSticks.Left.X) <= lDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Left.X) >= (1f - lDeadZone.x) ? newState.ThumbSticks.Left.X.Sign() : newState.ThumbSticks.Left.X);
-            y = Mathf.Abs(newState.ThumbSticks.Left.Y) <= lDeadZone.x ? 0f : (Mathf.Abs(newState.ThumbSticks.Left.Y) >= (1f - lDeadZone.y) ? newState.ThumbSticks.Left.Y.Sign() : newState.ThumbSticks.Left.Y);
-            lStickPos = new Vector2(Regression(lDeadZone.x, 1f - lDeadZone.x, x), Regression(lDeadZone.y, 1f - lDeadZone.y, y));
-            if (lStickPos.sqrMagnitude > 1f)
-                lStickPos = new Vector2(newState.ThumbSticks.Left.X, newState.ThumbSticks.Left.Y).normalized;
+            norm = newState.ThumbSticks.Left.X * newState.ThumbSticks.Left.X + newState.ThumbSticks.Left.Y * newState.ThumbSticks.Left.Y;
+            trueX = newState.ThumbSticks.Left.X;
+            trueY = newState.ThumbSticks.Left.Y;
+            if (norm >= 1f)
+            {
+                norm = Mathf.Sqrt(norm);
+                trueX /= norm;
+                trueY /= norm;
+            }
 
-            x = newState.Triggers.Left <= triggerDeadZone.x ? 0f : (newState.Triggers.Left >= 1f - triggerDeadZone.x ? 1f : newState.Triggers.Left);
-            y = newState.Triggers.Right <= triggerDeadZone.y ? 0f : (newState.Triggers.Right >= 1f - triggerDeadZone.y ? 1f : newState.Triggers.Right);
+            x = Mathf.Abs(trueX) <= rDeadZone.x ? 0f : (Mathf.Abs(trueX) >= (1f - rDeadZone.x) ? trueX.Sign() : trueX);
+            y = Mathf.Abs(trueY) <= rDeadZone.x ? 0f : (Mathf.Abs(trueY) >= (1f - rDeadZone.y) ? trueY.Sign() : trueY);
+            lStickPos = new Vector2(Regression(rDeadZone.x, 1f - rDeadZone.x, x), Regression(rDeadZone.y, 1f - rDeadZone.y, y));
+
+            trueX = Mathf.Clamp01(newState.Triggers.Left);
+            trueY = Mathf.Clamp01(newState.Triggers.Right);
+            x = trueX <= triggerDeadZone.x ? 0f : (trueX >= 1f - triggerDeadZone.x ? 1f : trueX);
+            y = trueY <= triggerDeadZone.y ? 0f : (trueY >= 1f - triggerDeadZone.y ? 1f : trueY);
             triggerPos = new Vector2(Regression(triggerDeadZone.x, 1f - triggerDeadZone.x, x), Regression(triggerDeadZone.y, 1f - triggerDeadZone.y, y));
         }
 
@@ -4245,6 +4263,7 @@ public static class InputManager
         newGP2State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Two);
         newGP3State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Three);
         newGP4State = GamePad.GetState(XInputDotNetPure.PlayerIndex.Four);
+
         SetNewGamepadSticksAndTriggersPositions();
 
         //vibration

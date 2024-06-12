@@ -245,9 +245,9 @@ MonoBehaviour:
   wallJumpMinDuration: 0.15
   wallJumpMaxDuration: 0.3
   enableWallJumpOnNonGrabableWall: 1
-  wallJumpAngleOnNonGrabableWall: 45
+  wallJumpAngleOnNonGrabableWall: 40
   wallJumpInitSpeedOnNonGrabableWall: 10
-  wallJumpOnNonGrabableWallDuration: 0.2
+  wallJumpOnNonGrabableWallDuration: 0.3
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:

@@ -178,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableInput: 1
   <velocity>k__BackingField: {x: 0, y: 0}
-  drawGizmos: 1
+  drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
   sideRayLength: 0.5
   sideRayOffset: 0
@@ -194,36 +194,61 @@ MonoBehaviour:
   speedLerp: 30
   initSpeed: 0.285
   inertiaDurationWhenQuittingGround: 0.1
-  jumpInitForce: 6
-  jumpForce: 9
+  maxSlopeAngle: 22.5
+  slopeSpeed: 8.5
+  initSlopeSpeed: 0.3
+  slopeSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0000172
+      value: 0.64946747
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  slopeSpeedLerp: 2.5
+  isSlopingRight: 0
+  isSlopingLeft: 0
+  jumpInitSpeed: 3
+  jumpForce: 20
   jumpGravityMultiplier: 1
+  jumpMinDuration: 0.1
   jumpMaxDuration: 0.3
-  jumpSpeed: {x: 8, y: 99999}
+  jumpMaxSpeed: {x: 6.5, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
-  doubleJumpSpeed: 11
+  doubleJumpSpeed: 8
+  doubleJumpAngle: 45
   jumpCoyoteTime: 0.1
-  airGravityMultiplier: 3
-  airHorizontalSpeed: 5.5
-  airInitHorizontalSpeed: 0.4
-  airSpeedLerp: 20
-  fallGravityMultiplier: 2
-  fallInitHorizontalSpeed: 0.35
-  fallSpeed: {x: 5.5, y: 14}
-  fallSpeedLerp: 30
-  fallDecelerationSpeedLerp: 15
-  beginFallExtraGravity: 3
-  maxBeginFallSpeed: 0.6
-  fallClampSpeedMultiplierWhenDownPressed: 1.6
-  fallGravityMultiplierWhenDownPressed: 2
-  wallJumpInitSpeed: 10
-  wallJumpAngle: 53.9
-  wallJumpForce: 5
-  wallJumpSpeed: {x: 5.5, y: 20}
+  wallJumpInitSpeed: 7
+  wallJumpAngle: 40
+  wallJumpForce: 7
+  wallJumpMaxSpeed: {x: 5.5, y: 20}
+  wallJumpInitHorizontaSpeed: 0
+  wallJumpSpeedLerp: 4
   wallJumpGravityMultiplier: 1
-  wallJumpMinDuration: 0.1
+  wallJumpMinDuration: 0.15
   wallJumpMaxDuration: 0.3
+  enableWallJumpOnNonGrabableWall: 1
+  wallJumpAngleOnNonGrabableWall: 40
+  wallJumpInitSpeedOnNonGrabableWall: 10
+  wallJumpOnNonGrabableWallDuration: 0.3
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -270,17 +295,30 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
+  airGravityMultiplier: 3
+  airHorizontalSpeed: 5.5
+  airInitHorizontalSpeed: 0.4
+  airSpeedLerp: 20
+  fallGravityMultiplier: 2
+  fallInitHorizontalSpeed: 0.35
+  fallSpeed: {x: 5.5, y: 14}
+  fallSpeedLerp: 30
+  fallDecelerationSpeedLerp: 15
+  beginFallExtraGravity: 3
+  maxBeginFallSpeed: 0.6
+  fallClampSpeedMultiplierWhenDownPressed: 1.6
+  fallGravityMultiplierWhenDownPressed: 2
   grabSpeed: 5
   grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
   grabSpeedMultiplierWhenPreciseGrab: 0.75
-  apexJumpSpeed: {x: 3, y: 8}
-  apexJumpSpeed2: {x: 4, y: -2}
+  apexJumpSpeed: {x: 3, y: 6}
+  apexJumpSpeed2: {x: 3, y: -20}
   grabSpeedLerp: 25
   apexJumpSpeedLerp: 400
-  apexJumpSpeedLerp2: 50
-  apexJumpDuration: 0.125
-  apexJumpDuration2: 0.1
+  apexJumpSpeedLerp2: 400
+  apexJumpDuration: 0.15
+  apexJumpDuration2: 0.15
   apexJumpInitSpeed: 0.4
   apexJumpInitSpeed2: 0.4
   dashSpeed: 20
@@ -333,36 +371,6 @@ MonoBehaviour:
   slideSpeedLerp: 30
   slideSpeedLerpDeceleration: 100
   initSlideSpeed: 0.223
-  maxSlopeAngle: 22.5
-  slopeSpeed: 8.5
-  initSlopeSpeed: 0.3
-  slopeSpeedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.3505265
-      outSlope: -0.3505265
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0000172
-      value: 0.64946747
-      inSlope: -0.3505265
-      outSlope: -0.3505265
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  slopeSpeedLerp: 2.5
-  isSlopingRight: 0
-  isSlopingLeft: 0
   minBumpSpeedX: 1
   maxFallBumpSpeed: 20
   bumpFrictionLerp: 40
@@ -524,7 +532,6 @@ MonoBehaviour:
   drawGizmos: 0
   enableBehavior: 1
   bufferDuration: 0.1
-  dashDamageType: 1
   dashBumpSpeed: 10
   dashInvicibilityTimeOffset: 0
   dashInvicibilityDuration: 0.5

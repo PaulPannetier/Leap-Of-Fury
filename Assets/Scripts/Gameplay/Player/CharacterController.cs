@@ -129,7 +129,7 @@ public class CharacterController : MonoBehaviour
     [Tooltip("The angle in degrees between the non grabable wall and the horizontal."), Range(0f, 90f), SerializeField] private float wallJumpAngleOnNonGrabableWall = 45f;
     [Tooltip("la vitesse de début de saut de mur"), SerializeField] private float wallJumpInitSpeedOnNonGrabableWall = 20f;
     [Tooltip(""), SerializeField] private float wallJumpOnNonGrabableWallDuration = 0.2f;
-    private bool isWallJumpingOnNonGrabableWall, wallJumpOnNonGrabableWall;
+    private bool wallJumpOnNonGrabableWall;
     private float lastTimeBeginWallJump = -10f, lastTimeBeginWallJumpOnNonGrabableWall = -10f;
 
     [Header("Wall Jump Along Wall")]
@@ -144,17 +144,13 @@ public class CharacterController : MonoBehaviour
 
     #endregion
 
-    #region Air
+    #region Air/Fall
 
     [Header("Air")]//In falling state but with velocity.y > 0
     [Tooltip("Gravity multiplier when falling with upward velocity.")] [SerializeField] private float airGravityMultiplier = 1f;
     [Tooltip("Max horizontal speed when falling with upward velocity.")] [SerializeField] private float airHorizontalSpeed = 4f;
     [Tooltip("Init horizontal speed when falling with upward velocity in percentage of \"airHorizontalSpeed\")")] [Range(0f, 1f)] [SerializeField] private float airInitHorizontalSpeed = 0.4f;
     [Tooltip("Interpolation horizontal speed when falling with upward velocity.")] [SerializeField] private float airSpeedLerp = 20f;
-
-    #endregion
-
-    #region Fall
 
     [Header("Fall")]
     [Tooltip("Coeff ajustant l'accélération de chute.")] [SerializeField] private float fallGravityMultiplier = 1.5f;
@@ -266,6 +262,7 @@ public class CharacterController : MonoBehaviour
     public bool isJumping { get; private set; }//dans la phase montante apres un saut
     public bool isJumpingAlongWall { get; private set; } //dans la phase montante d'un saut face au mur
     public bool isWallJumping { get; private set; } //dans la phase montante d'un saut depuis un mur
+    public bool isWallJumpingOnNonGrabableWall { get; private set; }
     public bool isFalling { get; private set; } //est en l'air sans saut ni grab ni rien d'autre.
     public bool isSloping { get; private set; } //on est en pente.
     public bool isBumping { get; private set; } //on est en train d'être bump.
@@ -447,8 +444,8 @@ public class CharacterController : MonoBehaviour
         toricObject = GetComponent<ToricObject>();
         toricObject.useCustomUpdate = true;
         oldGroundCollider = null;
-        PauseManager.instance.callBackOnPauseDisable += Enable;
-        PauseManager.instance.callBackOnPauseEnable += Disable;
+        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
+        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
         oldDeltaTime = Time.deltaTime;
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
@@ -1031,7 +1028,7 @@ public class CharacterController : MonoBehaviour
                 flip = velocity.x > 0f ? false : true;
             }
         }
-        else if(isJumping)
+        else if(isJumping || isWallJumping || isWallJumpingOnNonGrabableWall)
         {
             if (Mathf.Abs(velocity.x) > jumpMaxSpeed.x * jumpInitHorizontaSpeed * 0.95f)
             {
@@ -1773,7 +1770,11 @@ public class CharacterController : MonoBehaviour
 
         void HandleJumpOnNonGrabableWall()
         {
-
+            //Use fall parameters
+            //Gravity
+            velocity += Vector2.up * Physics2D.gravity.y * (airGravityMultiplier * Time.deltaTime);
+            //Horizotal movement
+            velocity = new Vector2(Mathf.MoveTowards(velocity.x, 0f, airSpeedLerp * Time.deltaTime), velocity.y);
         }
     }
 
@@ -1953,15 +1954,13 @@ public class CharacterController : MonoBehaviour
         if (!isFalling)
             return;
 
-        //phase montante en l'air
         if (velocity.y > 0f)
         {
             //Gravity
             float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
-            velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.deltaTime);
+            velocity += Vector2.up * Physics2D.gravity.y * (coeff * Time.deltaTime);
 
-            //Movement horizontal
-            //Clamp, on est dans le mauvais sens
+            //Horizontal movement 
             if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f))
                 velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
             if (enableInput && Mathf.Abs(velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
@@ -1973,9 +1972,8 @@ public class CharacterController : MonoBehaviour
                 float targetSpeed = !enableInput ? 0f : playerInput.x * airHorizontalSpeed;
                 velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, airSpeedLerp * Time.deltaTime), velocity.y);
             }
-
         }
-        else//phase descendante
+        else
         {
             //Clamp the fall speed
             float targetedSpeed;
@@ -2000,13 +1998,12 @@ public class CharacterController : MonoBehaviour
             }
 
             //Horizontal movement
-            //Clamp, on est dans le mauvais sens
             if (isQuittingConvoyerBelt)
             {
                 float speed = speedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
                 velocity = new Vector2(speed, velocity.y);
             }
-            else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)//else just keep our velocity
+            else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)
             {
                 if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f))
                     velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), velocity.y);
@@ -2196,7 +2193,7 @@ public class CharacterController : MonoBehaviour
 
     #endregion
 
-    #region Gizmos and OnValidate
+    #region Gizmos/OnValidate/Pause
 
     private IEnumerator PauseCorout()
     {
@@ -2206,8 +2203,21 @@ public class CharacterController : MonoBehaviour
 
         while(!enableBehaviour)
         {
-            Freeze();
             yield return null;
+            Freeze();
+            lastTimeApexJump += Time.deltaTime;
+            lastTimeBeginJump += Time.deltaTime;
+            lastTimeBeginWallJump += Time.deltaTime;
+            lastTimeBeginWallJumpAlongWall += Time.deltaTime;
+            lastTimeBeginWallJumpOnNonGrabableWall += Time.deltaTime;
+            lastTimeBump += Time.deltaTime;
+            lastTimeDashBegin += Time.deltaTime;
+            lastTimeDashCommand += Time.deltaTime;
+            lastTimeDashFinish += Time.deltaTime;
+            lastTimeJumpCommand += Time.deltaTime;
+            lastTimeLeavePlateform += Time.deltaTime;
+            lastTimeQuitGround += Time.deltaTime;
+            lastTimeQuittingConvoyerBelt += Time.deltaTime;
         }
 
         UnFreeze();
@@ -2215,20 +2225,20 @@ public class CharacterController : MonoBehaviour
         velocity = speed;
     }
 
-    private void Disable()
+    private void OnPauseEnable()
     {
         StartCoroutine(PauseCorout());
     }
 
-    private void Enable()
+    private void OnPauseDisable()
     {
         enableBehaviour = true;
     }
 
     private void OnDestroy()
     {
-        PauseManager.instance.callBackOnPauseEnable -= Disable;
-        PauseManager.instance.callBackOnPauseDisable -= Enable;
+        PauseManager.instance.callBackOnPauseEnable -= OnPauseEnable;
+        PauseManager.instance.callBackOnPauseDisable -= OnPauseDisable;
     }
 
 #if UNITY_EDITOR
