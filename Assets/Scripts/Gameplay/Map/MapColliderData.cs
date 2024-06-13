@@ -32,6 +32,10 @@ public class MapColliderData : MonoBehaviour
     [Range(0f, 1f), Tooltip("Le coeff de friction quand le sol se déplace")] public float frictionCoefficient = 1f;
     public bool isGripping => frictionCoefficient > 1e-6f;
 
+    [Header("Ice")]
+    [Range(0f, 1f)] public float iceSpeedLerpFactor;
+    [Range(0f, 1f)] public float iceDecelerationSpeedLerpFactor;
+
     private void Awake()
     {
         this.transform = base.transform;
@@ -67,6 +71,8 @@ public class MapColliderData : MonoBehaviour
         {
             Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
         }
+        iceSpeedLerpFactor = Mathf.Max(0f, iceSpeedLerpFactor);
+        iceDecelerationSpeedLerpFactor = Mathf.Max(0f, iceDecelerationSpeedLerpFactor);
     }
 
 #endif

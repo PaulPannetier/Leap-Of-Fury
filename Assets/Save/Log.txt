@@ -8074,6 +8074,23 @@
                     "value": "UnityEngine.Debug:Log (object)\nInputManager:PreUpdate () (at Assets/Scripts/AllScene/Custom/InputManager.cs:4249)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "Gamepad1 is not connected!"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nInputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1675)\nCharacterInputs:Update () (at Assets/Scripts/Gameplay/Player/CharacterInputs.cs:68)\n"
+                }
+            ]
         }
     ]
 }

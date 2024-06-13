@@ -181,6 +181,8 @@ MonoBehaviour:
   grabableRight: 0
   grabableLeft: 0
   frictionCoefficient: 0
+  iceSpeedLerpFactor: 0
+  iceDecelerationSpeedLerpFactor: 0
 --- !u!114 &8626952912276504675
 MonoBehaviour:
   m_ObjectHideFlags: 0

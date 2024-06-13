@@ -3,7 +3,6 @@ using System.Collections;
 using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
-using System.Collections.Generic;
 
 public class CharacterController : MonoBehaviour
 {
@@ -1273,7 +1272,7 @@ public class CharacterController : MonoBehaviour
                     HandleNormalWalk();
                     break;
                 case MapColliderData.GroundType.ice:
-                    HandleIceWalk();
+                    HandleIceWalkV2();
                     break;
                 case MapColliderData.GroundType.jumper:
                     HandleNormalWalk();
@@ -1369,19 +1368,57 @@ public class CharacterController : MonoBehaviour
 
         #region HandleIceWalk
 
-        void HandleIceWalk()
+        void HandleIceWalkV2()
         {
             Vector2 groundVel = groundColliderData.velocity;
             Vector2 localVel = velocity - groundVel;
 
-            if(playerInput.rawX != 0f & enableInput)
+            //Avoid stick on side
+            if (enableInput && raycastLeft && playerInput.rawX == 1)
             {
-                localVel = new Vector2(Mathf.MoveTowards(localVel.x, playerInput.x * walkSpeed, GroundData.instance.iceSpeedLerpFactor * speedLerp * Time.deltaTime), localVel.y);
+                MapColliderData sideColliderData = raycastLeft.collider.GetComponent<MapColliderData>();
+                if ((int)sideColliderData.velocity.x.Sign() == 1 && sideColliderData.velocity.x < walkSpeed)
+                {
+                    localVel.x = Mathf.Min(sideColliderData.velocity.x + initSpeed * walkSpeed, walkSpeed);
+                    overwriteSpeedOnHorizontalTeleportation = false;
+                }
+            }
+            if (enableInput && raycastRight && playerInput.rawX == -1)
+            {
+                MapColliderData sideColliderData = raycastRight.collider.GetComponent<MapColliderData>();
+                if ((int)sideColliderData.velocity.x.Sign() == -1 && -sideColliderData.velocity.x < walkSpeed)
+                {
+                    localVel.x = Mathf.Max(sideColliderData.velocity.x - initSpeed * walkSpeed, -walkSpeed);
+                    overwriteSpeedOnHorizontalTeleportation = false;
+                }
+            }
+
+            float targetedSpeed, speedLerp;
+            if(enableInput && playerInput.rawX != 0)
+            {
+                if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
+                {
+                    targetedSpeed = playerInput.x * walkSpeed;
+                    speedLerp = this.speedLerp * groundColliderData.iceSpeedLerpFactor;
+                }
+                else
+                {
+                    targetedSpeed = 0f;
+                    speedLerp = this.speedLerp * groundColliderData.iceDecelerationSpeedLerpFactor;
+                }
             }
             else
             {
-                localVel = new Vector2(localVel.x * GroundData.instance.iceFrictionSpeedFactor * (Time.deltaTime / oldDeltaTime), velocity.y);
+                targetedSpeed = 0f;
+                speedLerp = this.speedLerp * groundColliderData.iceDecelerationSpeedLerpFactor;
             }
+
+            localVel = new Vector2(Mathf.MoveTowards(localVel.x, targetedSpeed, speedLerp * Time.deltaTime), localVel.y);
+
+            //Clamp if too steep slope
+            float xMin = isToSteepSlopeLeft ? 0f : float.MinValue;
+            float xMax = isToSteepSlopeRight ? 0f : float.MaxValue;
+            localVel = new Vector2(Mathf.Clamp(localVel.x, xMin, xMax), localVel.y);
 
             //friction du to ground horizontal axis
             if (groundColliderData != null && groundColliderData.isGripping)
@@ -1792,7 +1829,7 @@ public class CharacterController : MonoBehaviour
             {
                 Jumper jumper = groundColliderData.GetComponent<Jumper>();
                 Vector2 newDir = new Vector2(Mathf.Cos(jumper.angleDir * Mathf.Deg2Rad), Mathf.Sin(jumper.angleDir * Mathf.Deg2Rad));
-                newVelocity = new Vector2(velocity.x + newDir.x * jumper.force, newDir.y * jumper.force);
+                newVelocity = new Vector2(velocity.x + newDir.x * jumper.impulseSpeed, newDir.y * jumper.impulseSpeed);
             }
             else
             {

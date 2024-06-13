@@ -8,7 +8,7 @@ public class Jumper : PathFindingBlocker
     private BoxCollider2D hitbox;
 
     [Range(0f, 360f)] public float angleDir;
-    public float force;
+    public float impulseSpeed;
 
     protected override void Awake()
     {
@@ -25,7 +25,7 @@ public class Jumper : PathFindingBlocker
 
     private void OnValidate()
     {
-        force = Mathf.Max(0f, force);
+        impulseSpeed = Mathf.Max(0f, impulseSpeed);
     }
 
     private void OnDrawGizmosSelected()

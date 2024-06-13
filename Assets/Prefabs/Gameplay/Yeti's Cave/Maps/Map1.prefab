@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7098074101501707366}
   - component: {fileID: 2793786386810040963}
-  - component: {fileID: 8071369459909661945}
   m_Layer: 0
   m_Name: TileMap
   m_TagString: Tilemap
@@ -48,20 +47,6 @@ Grid:
   m_CellGap: {x: -0.0001, y: -0.0001, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &8071369459909661945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 329945550878936555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f326184beeadf347b47625645f85a98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iceSpeedLerpFactor: 0.4
-  iceFrictionSpeedFactor: 0.985
 --- !u!1 &486830313808933748
 GameObject:
   m_ObjectHideFlags: 0
@@ -6819,6 +6804,8 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0
+  iceSpeedLerp: 0
+  iceDecelerationSpeedLerp: 0
 --- !u!61 &1951958196010077997
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -1560,10 +1560,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundType: 1
-  disableAntiKnockHead: 0
+  disableAntiKnockHead: 1
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
+  frictionCoefficient: 1
+  iceSpeedLerpFactor: 0.3
+  iceDecelerationSpeedLerpFactor: 0.2
 --- !u!1 &393641468
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,7 +2253,9 @@ MonoBehaviour:
   disableAntiKnockHead: 1
   grabableRight: 0
   grabableLeft: 0
-  frictionCoefficient: 0
+  frictionCoefficient: 1
+  iceSpeedLerpFactor: 0
+  iceDecelerationSpeedLerpFactor: 0
 --- !u!483693784 &867714290
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -3006,6 +3010,36 @@ MonoBehaviour:
   speedLerp: 30
   initSpeed: 0.285
   inertiaDurationWhenQuittingGround: 0.1
+  maxSlopeAngle: 22.5
+  slopeSpeed: 8.5
+  initSlopeSpeed: 0.3
+  slopeSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0000172
+      value: 0.64946747
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  slopeSpeedLerp: 2.5
+  isSlopingRight: 0
+  isSlopingLeft: 0
   jumpInitSpeed: 6
   jumpForce: 40
   jumpGravityMultiplier: 3
@@ -3016,20 +3050,8 @@ MonoBehaviour:
   jumpSpeedLerp: 35
   enableDoubleJump: 1
   doubleJumpSpeed: 11
+  doubleJumpAngle: 45
   jumpCoyoteTime: 0.1
-  airGravityMultiplier: 3
-  airHorizontalSpeed: 5.5
-  airInitHorizontalSpeed: 0.4
-  airSpeedLerp: 20
-  fallGravityMultiplier: 2
-  fallInitHorizontalSpeed: 0.35
-  fallSpeed: {x: 5.5, y: 14}
-  fallSpeedLerp: 30
-  fallDecelerationSpeedLerp: 15
-  beginFallExtraGravity: 3
-  maxBeginFallSpeed: 0.6
-  fallClampSpeedMultiplierWhenDownPressed: 1.6
-  fallGravityMultiplierWhenDownPressed: 2
   wallJumpInitSpeed: 10
   wallJumpAngle: 53.9
   wallJumpForce: 5
@@ -3039,6 +3061,10 @@ MonoBehaviour:
   wallJumpGravityMultiplier: 1
   wallJumpMinDuration: 0.1
   wallJumpMaxDuration: 0.3
+  enableWallJumpOnNonGrabableWall: 0
+  wallJumpAngleOnNonGrabableWall: 45
+  wallJumpInitSpeedOnNonGrabableWall: 20
+  wallJumpOnNonGrabableWallDuration: 0.2
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -3085,6 +3111,19 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
+  airGravityMultiplier: 3
+  airHorizontalSpeed: 5.5
+  airInitHorizontalSpeed: 0.4
+  airSpeedLerp: 20
+  fallGravityMultiplier: 2
+  fallInitHorizontalSpeed: 0.35
+  fallSpeed: {x: 5.5, y: 14}
+  fallSpeedLerp: 30
+  fallDecelerationSpeedLerp: 15
+  beginFallExtraGravity: 3
+  maxBeginFallSpeed: 0.6
+  fallClampSpeedMultiplierWhenDownPressed: 1.6
+  fallGravityMultiplierWhenDownPressed: 2
   grabSpeed: 5
   grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
@@ -3148,36 +3187,6 @@ MonoBehaviour:
   slideSpeedLerp: 30
   slideSpeedLerpDeceleration: 100
   initSlideSpeed: 0.223
-  maxSlopeAngle: 22.5
-  slopeSpeed: 8.5
-  initSlopeSpeed: 0.3
-  slopeSpeedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.3505265
-      outSlope: -0.3505265
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0000172
-      value: 0.64946747
-      inSlope: -0.3505265
-      outSlope: -0.3505265
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  slopeSpeedLerp: 2.5
-  isSlopingRight: 0
-  isSlopingLeft: 0
   minBumpSpeedX: 1
   maxFallBumpSpeed: 20
   bumpFrictionLerp: 40
@@ -3283,7 +3292,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4004647850300160636}
   - component: {fileID: 1997748313425152195}
-  - component: {fileID: 2526296967832774144}
   m_Layer: 0
   m_Name: TileMap
   m_TagString: Tilemap
@@ -3421,20 +3429,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ab17bf7ebdf3454599d3d22e929acfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2526296967832774144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443198449202101084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f326184beeadf347b47625645f85a98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iceSpeedLerpFactor: 0.4
-  iceFrictionSpeedFactor: 0.985
 --- !u!114 &2704830417750982105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51082,7 +51076,9 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
+  frictionCoefficient: 1
+  iceSpeedLerpFactor: 0
+  iceDecelerationSpeedLerpFactor: 0
 --- !u!483693784 &5367197714520042626
 TilemapRenderer:
   m_ObjectHideFlags: 0
