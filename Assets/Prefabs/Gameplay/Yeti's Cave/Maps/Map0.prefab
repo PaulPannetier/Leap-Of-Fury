@@ -1289,8 +1289,8 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  iceSpeedLerpFactor: 0.3
+  iceDecelerationSpeedLerpFactor: 0.2
 --- !u!61 &7374820873243658505
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9419,8 +9419,8 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  iceSpeedLerpFactor: 0
+  iceDecelerationSpeedLerpFactor: 0
 --- !u!61 &2089747614485841761
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16935,8 +16935,8 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  iceSpeedLerpFactor: 0
+  iceDecelerationSpeedLerpFactor: 0
 --- !u!61 &2033046108200749824
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17096,6 +17096,10 @@ PrefabInstance:
     - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
       propertyPath: angleDir
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
+      propertyPath: impulseSpeed
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18496,6 +18500,10 @@ PrefabInstance:
     - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
       propertyPath: angleDir
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
+      propertyPath: impulseSpeed
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -2276,7 +2276,7 @@ public static class Useful
 
         double I = 0d;
 
-        int nbSub = Mathf.Max(1, (int)((b - a) * (double)samplePerUnit));
+        int nbSub = Math.Max(1, (int)((b - a) * (double)samplePerUnit));
         double step = (b - a) / nbSub;
         double stepT05 = step * 0.5d;//cache
 
@@ -2341,7 +2341,7 @@ public static class Useful
 
         decimal I = 0m;
 
-        int nbSub = Mathf.Max(1, (int)((float)(b - a) * samplePerUnit));
+        int nbSub = Math.Max(1, (int)((float)(b - a) * samplePerUnit));
         decimal step = (b - a) / nbSub;
         decimal stepT05 = step * 0.5m;//cache
 

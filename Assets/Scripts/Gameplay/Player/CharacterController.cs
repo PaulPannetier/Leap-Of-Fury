@@ -17,10 +17,11 @@ public class CharacterController : MonoBehaviour
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData, apexJumpColliderData;
     private ToricObject toricObject;
-    private short disableMovementCounter, disableDashCounter;
+    private short disableMovementCounter, disableDashCounter, disableInstantTurnCounter;
     private bool isMovementDisabled => disableMovementCounter > 0;
     private bool isDashDisabled => disableDashCounter > 0;
-    
+    private bool disableInstantTurn => disableInstantTurnCounter > 0;
+
     private new Transform transform;
     private float oldDeltaTime;
 
@@ -425,6 +426,18 @@ public class CharacterController : MonoBehaviour
         this.velocity = velocity;
     }
 
+    private void DisableInstantTurn(float duration)
+    {
+        StartCoroutine(DisableInstantTurnCorout(duration));
+    }
+
+    private IEnumerator DisableInstantTurnCorout(float duration)
+    {
+        disableInstantTurnCounter++;
+        yield return PauseManager.instance.Wait(duration);
+        disableInstantTurnCounter--;
+    }
+
     #endregion
 
     #region Awake and Start
@@ -506,9 +519,9 @@ public class CharacterController : MonoBehaviour
         //DebugText.instance.text += $"Gounded : {isGrounded}\n";
         //DebugText.instance.text += $"Bump : {isBumping}\n";
         //DebugText.instance.text += $"vel : {velocity}\n";
-        DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
-        DebugText.instance.text += $"wallJump : {isWallJumping}\n";
-        DebugText.instance.text += $"wallGrab : {wallGrab}\n";
+        //DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
+        //DebugText.instance.text += $"wallJump : {isWallJumping}\n";
+        //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
     }
 
     #endregion
@@ -750,6 +763,10 @@ public class CharacterController : MonoBehaviour
         if (oldOnGround && !isGrounded)
         {
             lastTimeLeavePlateform = Time.time;
+            if(oldGroundCollider.GetComponent<MapColliderData>().groundType == MapColliderData.GroundType.ice)
+            {
+                DisableInstantTurn(0.5f);
+            }
         }
 
         //Trigger groundTouch
@@ -759,7 +776,7 @@ public class CharacterController : MonoBehaviour
             groundTouch = true;
         }
         //enable dash
-        if(hasDashed && isGrounded && !isTraversingOneWayPlateformUp && !isTraversingOneWayPlateformDown)
+        if(hasDashed && isGrounded && !isTraversingOneWayPlateformUp && !isTraversingOneWayPlateformDown && (Time.time - lastTimeDashBegin > dashDuration))
         {
             hasDashed = false;
         }
@@ -1317,7 +1334,7 @@ public class CharacterController : MonoBehaviour
             }
 
             //Clamp, on est dans le mauvais sens
-            if (enableInput && ((playerInput.x >= 0f && localVel.x <= 0f) || (playerInput.x <= 0f && localVel.x >= 0f)))
+            if (enableInput && ((playerInput.x >= 0f && localVel.x <= 0f) || (playerInput.x <= 0f && localVel.x >= 0f)) && !disableInstantTurn)
             {
                 if (playerInput.rawX != 0)
                 {
@@ -1330,7 +1347,7 @@ public class CharacterController : MonoBehaviour
                 }
             }
 
-            if (Mathf.Abs(localVel.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0 && enableInput)
+            if (Mathf.Abs(localVel.x) < initSpeed * walkSpeed * 0.95f && playerInput.rawX != 0 && enableInput && !disableInstantTurn)
             {
                 if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
                 {
@@ -1518,7 +1535,7 @@ public class CharacterController : MonoBehaviour
             }
 
             //clamp, mauvais sens
-            if(playerInput.rawX != 0 && playerInput.rawX != convoyer.maxSpeed.Sign() && enableInput)
+            if(playerInput.rawX != 0 && playerInput.rawX != convoyer.maxSpeed.Sign() && enableInput && !disableInstantTurn)
             {
                 if (speedLerp > convoyer.speedLerp)
                 {
@@ -1725,6 +1742,8 @@ public class CharacterController : MonoBehaviour
             HandleJumpOnNonGrabableWall();
         }
 
+        #region Normal Jump
+
         void HandleNormalJump()
         {
             //vertical movement
@@ -1738,12 +1757,12 @@ public class CharacterController : MonoBehaviour
             }
 
             //Horizontal movement
-            if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)))
+            if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
             {
                 velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
             }
 
-            if (Mathf.Abs(velocity.x) < jumpInitHorizontaSpeed * jumpMaxSpeed.x * 0.95f && playerInput.rawX != 0)
+            if (Mathf.Abs(velocity.x) < jumpInitHorizontaSpeed * jumpMaxSpeed.x * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
             {
                 velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
             }
@@ -1753,6 +1772,10 @@ public class CharacterController : MonoBehaviour
                 velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, jumpSpeedLerp * Time.deltaTime), velocity.y);
             }
         }
+
+        #endregion
+
+        #region Wall Jump
 
         void HandleWallJump()
         {
@@ -1774,12 +1797,12 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)))
+                if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
                 {
                     velocity = new Vector2(wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
                 }
 
-                if (Mathf.Abs(velocity.x) < wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * 0.95f && playerInput.rawX != 0)
+                if (Mathf.Abs(velocity.x) < wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
                 {
                     velocity = new Vector2(wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
                 }
@@ -1790,6 +1813,10 @@ public class CharacterController : MonoBehaviour
                 }
             }
         }
+
+        #endregion
+
+        #region Jump Along Wall
 
         void HandleJumpAlongWall()
         {
@@ -1805,6 +1832,10 @@ public class CharacterController : MonoBehaviour
             }
         }
 
+        #endregion
+
+        #region Jump on non Grabable wall
+
         void HandleJumpOnNonGrabableWall()
         {
             //Use fall parameters
@@ -1813,6 +1844,8 @@ public class CharacterController : MonoBehaviour
             //Horizotal movement
             velocity = new Vector2(Mathf.MoveTowards(velocity.x, 0f, airSpeedLerp * Time.deltaTime), velocity.y);
         }
+
+        #endregion
     }
 
     #region Jump
@@ -1991,16 +2024,16 @@ public class CharacterController : MonoBehaviour
         if (!isFalling)
             return;
 
-        if (velocity.y > 0f)
+        if (velocity.y > 1e-5f)
         {
             //Gravity
             float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
             velocity += Vector2.up * Physics2D.gravity.y * (coeff * Time.deltaTime);
 
             //Horizontal movement 
-            if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f))
+            if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f) && !disableInstantTurn)
                 velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
-            if (enableInput && Mathf.Abs(velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f)
+            if (enableInput && Mathf.Abs(velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f && !disableInstantTurn)
             {
                 velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
             }
@@ -2042,9 +2075,9 @@ public class CharacterController : MonoBehaviour
             }
             else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)
             {
-                if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f))
+                if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
                     velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), velocity.y);
-                if (enableInput && Mathf.Abs(velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0)
+                if (enableInput && Mathf.Abs(velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
                 {
                     velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), velocity.y);
                 }

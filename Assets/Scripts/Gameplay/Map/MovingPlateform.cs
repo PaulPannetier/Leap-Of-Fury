@@ -2,7 +2,6 @@ using UnityEngine;
 using PathFinding;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class MovingPlateform : PathFindingBlocker
 {
     private Rigidbody2D rb;

@@ -21,6 +21,9 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public SelectableUI rightSelectableUI;
     public SelectableUI leftSelectableUI;
 
+#if UNITY_EDITOR
+    [Space, Space]
+#endif
     public UnityEvent onPressed;
 
     [HideInInspector] public SelectableUIGroup selectableUIGroup;
@@ -162,6 +165,8 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         }
     }
 
+    #region OnValidate
+
 #if UNITY_EDITOR
 
     private void OnValidate()
@@ -176,6 +181,8 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     }
 
 #endif
+
+    #endregion
 
     [System.Serializable]
     private struct ColorFader

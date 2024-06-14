@@ -224,16 +224,16 @@ MonoBehaviour:
   slopeSpeedLerp: 2.5
   isSlopingRight: 0
   isSlopingLeft: 0
-  jumpInitSpeed: 3
-  jumpForce: 20
-  jumpGravityMultiplier: 1
-  jumpMinDuration: 0.1
-  jumpMaxDuration: 0.3
+  jumpInitSpeed: 5
+  jumpForce: 40
+  jumpGravityMultiplier: 4
+  jumpMinDuration: 0.05
+  jumpMaxDuration: 0.25
   jumpMaxSpeed: {x: 6.5, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
-  doubleJumpSpeed: 8
+  doubleJumpSpeed: 9
   doubleJumpAngle: 45
   jumpCoyoteTime: 0.1
   wallJumpInitSpeed: 7
@@ -295,7 +295,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
-  airGravityMultiplier: 3
+  airGravityMultiplier: 4
   airHorizontalSpeed: 5.5
   airInitHorizontalSpeed: 0.4
   airSpeedLerp: 20
@@ -321,33 +321,33 @@ MonoBehaviour:
   apexJumpDuration2: 0.15
   apexJumpInitSpeed: 0.4
   apexJumpInitSpeed2: 0.4
-  dashSpeed: 20
+  dashSpeed: 16
   dashDuration: 0.2
   dashCooldown: 0.15
   dashSpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0015487671
-      value: 0.3981247
-      inSlope: 1.2024701
-      outSlope: 1.2024701
-      tangentMode: 34
+      time: 0.00037384033
+      value: 0.20250702
+      inSlope: 2.509907
+      outSlope: 2.509907
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0.04815577
     - serializedVersion: 3
       time: 0.47421142
       value: 0.9664874
-      inSlope: 0.4397599
-      outSlope: 0.4397599
+      inSlope: 0.6046502
+      outSlope: 0.6046502
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.85814667
-      value: 0.84249544
+      time: 0.8288498
+      value: 0.8235593
       inSlope: -1.4731337
       outSlope: -1.4731337
       tangentMode: 0
@@ -355,10 +355,10 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.31726992
     - serializedVersion: 3
-      time: 1.0013428
+      time: 1.0001715
       value: 0.20751953
-      inSlope: -4.43431
-      outSlope: -4.43431
+      inSlope: -3.595806
+      outSlope: -3.595806
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334

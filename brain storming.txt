@@ -136,10 +136,8 @@ Trad all text
 test player attacks and gameplay
 Complete Maxwell house maps and méca
 polish attacks
-review gamepad input surcouche
 test bump
 test wall jump along wall
-fix sliding floor bug
 Trad char controller tooltip
 coder des sol ou va va moins vite
 Huge test of ALL before V0.1
