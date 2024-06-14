@@ -765,7 +765,7 @@ public class CharacterController : MonoBehaviour
             lastTimeLeavePlateform = Time.time;
             if(oldGroundCollider.GetComponent<MapColliderData>().groundType == MapColliderData.GroundType.ice)
             {
-                DisableInstantTurn(0.5f);
+                DisableInstantTurn(0.1f);
             }
         }
 
