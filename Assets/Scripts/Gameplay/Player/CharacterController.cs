@@ -1289,7 +1289,7 @@ public class CharacterController : MonoBehaviour
                     HandleNormalWalk();
                     break;
                 case MapColliderData.GroundType.ice:
-                    HandleIceWalkV2();
+                    HandleIceWalk();
                     break;
                 case MapColliderData.GroundType.jumper:
                     HandleNormalWalk();
@@ -1385,7 +1385,7 @@ public class CharacterController : MonoBehaviour
 
         #region HandleIceWalk
 
-        void HandleIceWalkV2()
+        void HandleIceWalk()
         {
             Vector2 groundVel = groundColliderData.velocity;
             Vector2 localVel = velocity - groundVel;
@@ -1410,24 +1410,32 @@ public class CharacterController : MonoBehaviour
                 }
             }
 
+            IceColliderData iceColliderData = groundColliderData as IceColliderData;
+            if (iceColliderData == null)
+            {
+                string logMessage = "Can't have a MapColliderData with groundType == ice which is not of type IceColliderData!";
+                print(logMessage);
+                LogManager.instance.AddLog(logMessage, groundColliderData, "CharacterController::HandleIceWalk");
+            }
+
             float targetedSpeed, speedLerp;
             if(enableInput && playerInput.rawX != 0)
             {
                 if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
                 {
                     targetedSpeed = playerInput.x * walkSpeed;
-                    speedLerp = this.speedLerp * groundColliderData.iceSpeedLerpFactor;
+                    speedLerp = this.speedLerp * iceColliderData.iceSpeedLerpFactor;
                 }
                 else
                 {
                     targetedSpeed = 0f;
-                    speedLerp = this.speedLerp * groundColliderData.iceDecelerationSpeedLerpFactor;
+                    speedLerp = this.speedLerp * iceColliderData.iceDecelerationSpeedLerpFactor;
                 }
             }
             else
             {
                 targetedSpeed = 0f;
-                speedLerp = this.speedLerp * groundColliderData.iceDecelerationSpeedLerpFactor;
+                speedLerp = this.speedLerp * iceColliderData.iceDecelerationSpeedLerpFactor;
             }
 
             localVel = new Vector2(Mathf.MoveTowards(localVel.x, targetedSpeed, speedLerp * Time.deltaTime), localVel.y);

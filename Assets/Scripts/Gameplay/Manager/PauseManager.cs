@@ -73,6 +73,17 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    public void Invoke(Action method, float delay)
+    {
+        StartCoroutine(InvokeCorout(method, delay));
+    }
+
+    private IEnumerator InvokeCorout(Action method, float delay)
+    {
+        yield return Wait(delay);
+        method.Invoke();
+    }
+
     private void OnDestroy()
     {
         EventManager.instance.callbackPreUpdate -= PreUpdate;

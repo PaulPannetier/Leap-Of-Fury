@@ -26,11 +26,12 @@ public class BoomerangAttack : WeakAttack
     {
         base.Awake();
         movement = GetComponent<CharacterController>();
+        currentBoomerang = null;
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        if (!cooldown.isActive)
+        if (!cooldown.isActive || currentBoomerang != null)
         {
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();
@@ -79,6 +80,7 @@ public class BoomerangAttack : WeakAttack
         maxSpeedPhase2 = Mathf.Max(0f, maxSpeedPhase2);
         distanceToInstantiate = Mathf.Max(0f, distanceToInstantiate);
         recuperationRange = Mathf.Max(0f, recuperationRange);
+        minDelayBetweenPathfinfindSearch = Mathf.Max(minDelayBetweenPathfinfindSearch, 0f);
     }
 
     private void OnDrawGizmosSelected()
@@ -86,10 +88,8 @@ public class BoomerangAttack : WeakAttack
         if (!drawGizmos)
             return;
 
-        Gizmos.color = Color.green;
-        Circle.GizmosDraw(transform.position, recuperationRange);
-        Gizmos.color = Color.black;
-        Circle.GizmosDraw(transform.position, distanceToInstantiate);
+        Circle.GizmosDraw(transform.position, recuperationRange, Color.green);
+        Circle.GizmosDraw(transform.position, distanceToInstantiate, Color.black);
     }
 
 #endif

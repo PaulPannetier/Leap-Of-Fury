@@ -63,8 +63,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5423039871905506386}
-  - {fileID: 5423039870430210538}
   - {fileID: 5824144232899146257}
+  - {fileID: 5423039870430210538}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-3424494351658979434
@@ -115,7 +115,6 @@ GameObject:
   - component: {fileID: 5423039871038564499}
   - component: {fileID: 5423039871038564510}
   - component: {fileID: 5423039871038564511}
-  - component: {fileID: 5423039871038564509}
   - component: {fileID: 6988164368520306035}
   - component: {fileID: 5423039870555577488}
   - component: {fileID: 5423039870555577491}
@@ -7182,33 +7181,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &5423039871038564509
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5423039871038564496}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &6988164368520306035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7225,9 +7197,7 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  frictionCoefficient: 1
 --- !u!61 &5423039870555577488
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -18365,6 +18335,10 @@ PrefabInstance:
     - target: {fileID: 7318460111358879654, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
       propertyPath: m_Size.x
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
+      propertyPath: impulseSpeed
+      value: 16.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

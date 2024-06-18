@@ -32,10 +32,6 @@ public class MapColliderData : MonoBehaviour
     [Range(0f, 1f), Tooltip("Le coeff de friction quand le sol se déplace")] public float frictionCoefficient = 1f;
     public bool isGripping => frictionCoefficient > 1e-6f;
 
-    [Header("Ice")]
-    [Range(0f, 1f)] public float iceSpeedLerpFactor;
-    [Range(0f, 1f)] public float iceDecelerationSpeedLerpFactor;
-
     private void Awake()
     {
         this.transform = base.transform;
@@ -55,7 +51,15 @@ public class MapColliderData : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected virtual void OnDrawGizmosSelected()
+    {
+        if (PrefabStageUtility.GetCurrentPrefabStage() == null)
+        {
+            Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
+        }
+    }
+
+    protected virtual void OnValidate()
     {
         this.transform = base.transform;
         if (groundType == GroundType.convoyerBelt)
@@ -63,16 +67,11 @@ public class MapColliderData : MonoBehaviour
             disableAntiKnockHead = true;
             grabableLeft = grabableRight = false;
         }
-    }
 
-    private void OnDrawGizmosSelected()
-    {
-        if(PrefabStageUtility.GetCurrentPrefabStage() == null)
+        if (groundType == GroundType.ice && !(this is IceColliderData))
         {
-            Hitbox.GizmosDraw(Vector2.zero, LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize);
+            print("GroundType.ice is compatible only with IceColliderData. Replace this component by an IceColliderData.");
         }
-        iceSpeedLerpFactor = Mathf.Max(0f, iceSpeedLerpFactor);
-        iceDecelerationSpeedLerpFactor = Mathf.Max(0f, iceDecelerationSpeedLerpFactor);
     }
 
 #endif

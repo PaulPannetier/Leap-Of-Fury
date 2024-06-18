@@ -963,7 +963,7 @@ GameObject:
   - component: {fileID: 5838678480003020637}
   - component: {fileID: 5838678480003020626}
   - component: {fileID: 5838678480003020630}
-  - component: {fileID: 7634615651885669981}
+  - component: {fileID: 4875493555248432111}
   - component: {fileID: 7374820873243658505}
   - component: {fileID: 8138985267797373927}
   - component: {fileID: 7572453217819227859}
@@ -1272,7 +1272,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &7634615651885669981
+--- !u!114 &4875493555248432111
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1281,14 +1281,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5838678480003020636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68f9fd9e7fd8c2468da7307aaebad4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 46675e9206a30864591a909de1ecef5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
+  frictionCoefficient: 1
   iceSpeedLerpFactor: 0.3
   iceDecelerationSpeedLerpFactor: 0.2
 --- !u!61 &7374820873243658505
@@ -9418,9 +9418,7 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerpFactor: 0
-  iceDecelerationSpeedLerpFactor: 0
+  frictionCoefficient: 0.192
 --- !u!61 &2089747614485841761
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16483,7 +16481,7 @@ GameObject:
   - component: {fileID: 7374820873655701194}
   - component: {fileID: 7374820873655701198}
   - component: {fileID: 7374820873655701199}
-  - component: {fileID: 3806667833049873633}
+  - component: {fileID: 6693410625712293252}
   - component: {fileID: 2033046108200749824}
   m_Layer: 14
   m_Name: WallProjectile
@@ -16918,7 +16916,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &3806667833049873633
+--- !u!114 &6693410625712293252
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16927,16 +16925,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7374820873655701195}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68f9fd9e7fd8c2468da7307aaebad4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 46675e9206a30864591a909de1ecef5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerpFactor: 0
-  iceDecelerationSpeedLerpFactor: 0
+  frictionCoefficient: 1
+  iceSpeedLerpFactor: 0.3
+  iceDecelerationSpeedLerpFactor: 0.2
 --- !u!61 &2033046108200749824
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -17099,7 +17097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
       propertyPath: impulseSpeed
-      value: 12
+      value: 12.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18503,7 +18501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
       propertyPath: impulseSpeed
-      value: 12
+      value: 12.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

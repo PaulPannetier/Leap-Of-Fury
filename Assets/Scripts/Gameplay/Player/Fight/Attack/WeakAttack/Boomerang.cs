@@ -10,47 +10,42 @@ using System;
 
 public class Boomerang : MonoBehaviour
 {
-    private enum State
+    private enum State : byte
     {
         go,
         getBack
     }
 
     private new Transform transform;
-    private ToricObject toricObject;
     private Animator animator;
     private BoomerangAttack sender;
     private Vector2 dir;
     private AnimationCurve speedCurvePhase1, speedCurvePhase2;
     private float maxSpeedPhase1, durationPhase1, accelerationDurationPhase2;
     private float maxSpeedPhase2, recuperationRange;
-    private float rotationSpeed;
     private State state;
     private float timeLaunch = -10f, lastPathFindingSearch = -10f;
     private Vector2 velocity;
-    private float startPhase2Velocity;
     private LayerMask groundMask, charMask;
-    private bool isDestroy;
-    private bool isTargetingSender, requestSearchPath;
+    private bool isTargetingSender, requestSearchPath, isDestroy;
     private SplinePath path;
     private float reachDist;
     private PlayerCommon playerCommon;
     private List<uint> charAlreadyTouch;
     private Map pathFindingMap;
     private float minDelayBetweenPathfindingSearch;
+    private int pathFindingAccuracy;
 
     [SerializeField] private Vector2 groundCircleOffset;
     [SerializeField] private float groundCircleRadius;
     [SerializeField] private Vector2 charCircleOffset;
     [SerializeField] private float charCircleRadius;
-    [SerializeField, Range(1, 10)] private int pathFindingAccuracy = 1;
 
     private void Awake()
     {
         this.transform = base.transform;
-        toricObject = GetComponent<ToricObject>();
         animator = GetComponent<Animator>();
-        charAlreadyTouch = new List<uint>();
+        charAlreadyTouch = new List<uint>(4);
     }
 
     private void Start()
@@ -63,27 +58,22 @@ public class Boomerang : MonoBehaviour
 
     public void Launch(in BoomerangLaunchData boomerangLauchData)
     {
-        Builder(boomerangLauchData);
+        dir = boomerangLauchData.dir;
+        speedCurvePhase1 = boomerangLauchData.speedCurvePhase1;
+        maxSpeedPhase1 = boomerangLauchData.maxSpeedPhase1;
+        durationPhase1 = boomerangLauchData.durationPhase1;
+        sender = boomerangLauchData.sender;
+        maxSpeedPhase2 = boomerangLauchData.maxSpeedPhase2;
+        speedCurvePhase2 = boomerangLauchData.speedCurvePhase2;
+        recuperationRange = boomerangLauchData.recuperationRange;
+        accelerationDurationPhase2 = boomerangLauchData.accelerationDurationPhase2;
+        pathFindingAccuracy = boomerangLauchData.pathFindingAccuracy;
+        minDelayBetweenPathfindingSearch = boomerangLauchData.minDelayBetweenPathfindingSearch;
 
         state = State.go;
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate(0f) * dir;
         timeLaunch = Time.time;
         playerCommon = sender.GetComponent<PlayerCommon>();
-
-        void Builder(in BoomerangLaunchData data)
-        {
-            dir = data.dir; 
-            speedCurvePhase1 = data.speedCurvePhase1;
-            maxSpeedPhase1 = data.maxSpeedPhase1;
-            durationPhase1 = data.durationPhase1;
-            sender = data.sender;
-            maxSpeedPhase2 = data.maxSpeedPhase2;
-            speedCurvePhase2 = data.speedCurvePhase2;
-            recuperationRange = data.recuperationRange;
-            accelerationDurationPhase2 = data.accelerationDurationPhase2;
-            pathFindingAccuracy = data.pathFindingAccuracy;
-            minDelayBetweenPathfindingSearch = data.minDelayBetweenPathfindingSearch;
-        }
     }
 
     private void Update()
@@ -182,7 +172,7 @@ public class Boomerang : MonoBehaviour
 
         if (requestSearchPath || (path == null && !isTargetingSender) || (Time.time - lastPathFindingSearch > minDelayBetweenPathfindingSearch))
         {
-            Map pathFindingMap = LevelMapData.currentMap.GetPathfindingMap(pathFindingAccuracy);
+            pathFindingMap = LevelMapData.currentMap.GetPathfindingMap(pathFindingAccuracy);
 
             Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
             {
@@ -192,18 +182,19 @@ public class Boomerang : MonoBehaviour
             path = PathFinderToric.FindBestCurve(pathFindingMap, currentMapPoint, currentSenderMapPoint, GetPositionOfMapPoint,
                 true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
 
-            int maxIter = 20;
-            while (path == null && maxIter > 0)
-            {
-                transform.position -= (Vector3)(velocity * Time.deltaTime);
-                currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(pathFindingMap, transform.position);
-                path = PathFinderToric.FindBestCurve(pathFindingMap, currentMapPoint, currentSenderMapPoint, GetPositionOfMapPoint,
-                    true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
-                maxIter--;
-            }
+            //int maxIter = 20;
+            //while (path == null && maxIter > 0)
+            //{
+            //    transform.position -= (Vector3)(velocity * Time.deltaTime);
+            //    currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(pathFindingMap, transform.position);
+            //    path = PathFinderToric.FindBestCurve(pathFindingMap, currentMapPoint, currentSenderMapPoint, GetPositionOfMapPoint,
+            //        true, SplineType.Catmulrom, SmoothnessMode.ExtraSmoothness);
+            //    maxIter--;
+            //}
 
             if (path == null)
             {
+                LogManager.instance.AddLog("No valid path was found, destroying boomerang", "Boomerang::HandleGetBackState");
                 StartDestroy();
                 return;
             }
@@ -262,24 +253,10 @@ public class Boomerang : MonoBehaviour
         isDestroy = true;
         if (animator.GetAnimationLength("destroy", out float length))
         {
-            StartCoroutine(InvokePause(Destroy, length));
+            PauseManager.instance.Invoke(Destroy, length);
         }
         else
             Destroy();
-    }
-
-    private IEnumerator InvokePause(Action method, float delay)
-    {
-        float timeCounter = 0f;
-        while (timeCounter < delay)
-        {
-            yield return null;
-            if (!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
-        method.Invoke();
     }
 
     private Circle GetGroundCircleCollider()
@@ -327,9 +304,8 @@ public class Boomerang : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.green;
-        Circle.GizmosDraw(GetGroundCircleCollider());
-        Circle.GizmosDraw(GetCharCircleCollider());
+        Circle.GizmosDraw(GetGroundCircleCollider(), Color.green);
+        Circle.GizmosDraw(GetCharCircleCollider(), Color.green);
 
         if(path != null && state == State.getBack)
         {
@@ -348,7 +324,7 @@ public class Boomerang : MonoBehaviour
 
     #endregion
 
-    #region struct
+    #region Struct
 
     public struct BoomerangLaunchData
     {

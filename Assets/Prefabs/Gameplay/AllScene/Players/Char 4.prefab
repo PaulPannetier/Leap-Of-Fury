@@ -557,7 +557,7 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  drawGizmos: 0
+  drawGizmos: 1
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
   distanceToInstantiate: 0.5
   speedCurvePhase1:

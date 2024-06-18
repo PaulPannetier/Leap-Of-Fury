@@ -47496,7 +47496,6 @@ GameObject:
   - component: {fileID: 2686280167371898555}
   - component: {fileID: 2341886977648307360}
   - component: {fileID: 5126778470492291746}
-  - component: {fileID: 513065084567378838}
   - component: {fileID: 632911213342755724}
   - component: {fileID: 6658627906832782653}
   - component: {fileID: 3038345583203177879}
@@ -68239,23 +68238,7 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
---- !u!114 &513065084567378838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3690566526390329997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 592615210cc7e7e43adeaff38d1ecc5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  createColliders: 0
-  levelMapData: {fileID: 4108775025327784417}
+  frictionCoefficient: 1
 --- !u!61 &632911213342755724
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -19,8 +19,21 @@ public static class PathFinderToric
         return new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
     }
 
+    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None)
+    {
+        return FindBestCurve(map, start, end, convertMapPointToWorldPosition, allowDiagonal, splineType, smoothnessMode, -1f);
+    }
+
     public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None, float tension = 1f)
     {
+#if UNITY_EDITOR || ADVANCE_DEBUG
+        if (tension > 0f && splineType != SplineType.Cardinal)
+        {
+            LogManager.instance.AddLog("tension params is only for Cardinal spline, not for " + splineType.ToString() + " spline", "PathFinderToric::FindBestCurve", tension, splineType);
+        }
+#endif
+
+        tension = Mathf.Clamp01(tension);
         Path path = new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
 
         if (path.path.Length <= 1)
@@ -34,6 +47,7 @@ public static class PathFinderToric
 
         for (int i = 1; i < path.path.Length; i++)
         {
+            //check for toric intersection
             if (Mathf.Max(Mathf.Abs(path.path[i].X - path.path[i - 1].X), Mathf.Abs(path.path[i].Y - path.path[i - 1].Y)) > 1)
             {
                 index++;
@@ -41,7 +55,6 @@ public static class PathFinderToric
             }
             subPath[index].Add(path.path[i]);
         }
-
 
         switch (smoothnessMode)
         {
@@ -56,6 +69,8 @@ public static class PathFinderToric
             default:
                 break;
         }
+
+        #region Smooth
 
         void HandleSmoothnessMode(ref List<List<MapPoint>> subPath)
         {
@@ -113,6 +128,8 @@ public static class PathFinderToric
             }
         }
 
+        #endregion
+
         Vector2[] CreatePoints(List<MapPoint> mapPoints, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool prepolate, MapPoint previousMapPoint, bool extrapolate, MapPoint nextMapPoint)
         {
             Vector2[] points = new Vector2[(prepolate ? 1 : 0) + (extrapolate ? 1 : 0) + mapPoints.Count];
@@ -134,9 +151,9 @@ public static class PathFinderToric
                 else
                 {
 #if UNITY_EDITOR
-                    Debug.LogWarning("Debug plz");
+                    Debug.Log("Debug pls");
 #endif
-                    LogManager.instance.AddLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(prepolate) block", previousPoint, firstPoint);
+                    LogManager.instance.AddLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in the if(prepolate) block", previousPoint, firstPoint, "PathFindingToric::FindBestCurve::CreatePoints");
                     prepolate = false;
                     points = new Vector2[(extrapolate ? 1 : 0) + mapPoints.Count];
                 }
@@ -168,9 +185,9 @@ public static class PathFinderToric
                 else
                 {
 #if UNITY_EDITOR
-                    Debug.LogWarning("Debug plz");
+                    Debug.Log("Debug pls");
 #endif
-                    LogManager.instance.AddLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(extrapolate) block", nextPoint, lastPoint);
+                    LogManager.instance.AddLog("PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter) must return true in PathFinderToric.FindBestCurve.CreatePoints in the if(extrapolate) block", nextPoint, lastPoint, "PathFindingToric::FindBestCurve::CreatePoints");
                     extrapolate = false;
                     Vector2[] tmp = new Vector2[points.Length - 1];
                     for (int i = 0; i < tmp.Length; i++)
@@ -204,7 +221,6 @@ public static class PathFinderToric
         }
 
         Spline[] splines = new Spline[subPath.Count];
-        tension = Mathf.Clamp01(tension);
 
         if(splines.Length <= 1)
         {

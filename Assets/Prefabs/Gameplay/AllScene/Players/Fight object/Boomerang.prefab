@@ -129,6 +129,7 @@ MonoBehaviour:
   - {fileID: 3711943665631869996}
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
+  useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &3711943665631869996
 MonoBehaviour:
@@ -146,4 +147,3 @@ MonoBehaviour:
   groundCircleRadius: 0.54
   charCircleOffset: {x: 0.18, y: 0}
   charCircleRadius: 0.79
-  pathFindingAccuracy: 1

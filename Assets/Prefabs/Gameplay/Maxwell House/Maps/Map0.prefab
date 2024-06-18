@@ -13664,7 +13664,6 @@ GameObject:
   - component: {fileID: 6710356389431308808}
   - component: {fileID: 1626434103484240434}
   - component: {fileID: 1023396212409574802}
-  - component: {fileID: 6753284379643344411}
   - component: {fileID: 8349066411828996086}
   - component: {fileID: 2510304835771274780}
   - component: {fileID: 4286413823316427907}
@@ -20878,33 +20877,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!50 &6753284379643344411
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7428583750817229624}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!114 &8349066411828996086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20921,9 +20893,7 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerpFactor: 0
-  iceDecelerationSpeedLerpFactor: 0
+  frictionCoefficient: 1
 --- !u!61 &2510304835771274780
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7586809454967959184}
   - component: {fileID: 6330383330034389707}
   - component: {fileID: 7581680027395898952}
-  - component: {fileID: 6137011264403670697}
+  - component: {fileID: 7416158607708185635}
   - component: {fileID: 4056638031798414933}
   - component: {fileID: 1031473580134807532}
   - component: {fileID: 5413341278509686657}
@@ -3513,7 +3513,7 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!114 &6137011264403670697
+--- !u!114 &7416158607708185635
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3522,16 +3522,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 639038179512928425}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a68f9fd9e7fd8c2468da7307aaebad4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 46675e9206a30864591a909de1ecef5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   groundType: 1
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  frictionCoefficient: 1
+  iceSpeedLerpFactor: 0.3
+  iceDecelerationSpeedLerpFactor: 0.2
 --- !u!61 &4056638031798414933
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20705,9 +20705,7 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  frictionCoefficient: 1
 --- !u!61 &6952316471795445162
 BoxCollider2D:
   m_ObjectHideFlags: 0

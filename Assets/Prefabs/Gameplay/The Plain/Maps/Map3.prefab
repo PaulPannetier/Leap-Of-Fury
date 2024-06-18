@@ -1881,9 +1881,7 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  frictionCoefficient: 0.314
 --- !u!61 &475719940861655230
 BoxCollider2D:
   m_ObjectHideFlags: 0

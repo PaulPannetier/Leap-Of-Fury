@@ -21715,9 +21715,7 @@ MonoBehaviour:
   disableAntiKnockHead: 0
   grabableRight: 1
   grabableLeft: 1
-  frictionCoefficient: 0
-  iceSpeedLerp: 0
-  iceDecelerationSpeedLerp: 0
+  frictionCoefficient: 1
 --- !u!61 &6559382001873792018
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -69783,6 +69781,10 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 3.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
+      propertyPath: impulseSpeed
+      value: 14
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -69984,6 +69986,10 @@ PrefabInstance:
     - target: {fileID: 7318460111358879654, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
       propertyPath: m_Size.x
       value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
+      propertyPath: impulseSpeed
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -70260,6 +70266,10 @@ PrefabInstance:
     - target: {fileID: 7318460111358879654, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
       propertyPath: m_Size.x
       value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318460111358879655, guid: 3034c67337ca42846a1c87ad5d3b417c, type: 3}
+      propertyPath: impulseSpeed
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

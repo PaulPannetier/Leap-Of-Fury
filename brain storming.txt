@@ -140,5 +140,8 @@ test bump
 test wall jump along wall
 Trad char controller tooltip
 coder des sol ou va va moins vite
+repair boomerang attack
+allow 2 block jump height
+
 Huge test of ALL before V0.1
 
