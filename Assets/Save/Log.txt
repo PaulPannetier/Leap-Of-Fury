@@ -161,6 +161,244 @@
                     "value": "PathFindingToric::FindBestCurve::CreatePoints"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "LevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:147)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:123)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object."
+                },
+                {
+                    "type": "String",
+                    "value": "PhysicsToric.Direction (UnityEngine.Vector2 a, UnityEngine.Vector2 b) (at Assets/Scripts/Gameplay/ToricSystem/PhysicsToric.cs:140)\nMapColliderData.Update () (at Assets/Scripts/Gameplay/Map/MapColliderData.cs:45)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object."
+                },
+                {
+                    "type": "String",
+                    "value": "PhysicsToric.GetPointInsideBounds (UnityEngine.Vector2& point) (at Assets/Scripts/Gameplay/ToricSystem/PhysicsToric.cs:110)\nPhysicsToric.Raycast (UnityEngine.Vector2& from, UnityEngine.Vector2& direction, System.Single distance, UnityEngine.LayerMask layerMask) (at Assets/Scripts/Gameplay/ToricSystem/PhysicsToric.cs:515)\nCharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:534)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:476)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object."
+                },
+                {
+                    "type": "String",
+                    "value": "PhysicsToric.GetPointInsideBounds (UnityEngine.Vector2& point) (at Assets/Scripts/Gameplay/ToricSystem/PhysicsToric.cs:110)\nLevelMapData.GetMapPointAtPosition (PathFinding.Map map, UnityEngine.Vector2& position) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:231)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:25)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:155)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:125)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Square(Clone): OnSpriteTilingPropertyChange)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform)\nPathFindingMapCreatorTest:GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:36)\nPathFindingMapCreatorTest:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:62)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (TEST: OnTransformChildrenChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform)\nPathFindingMapCreatorTest:GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:36)\nPathFindingMapCreatorTest:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:62)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:102)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:102)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:76)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:102)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:76)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:102)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:76)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "OutOfMemoryException: Out of memory"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
         }
     ]
 }

@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using Collision2D;
 using PathFinding;
 
 public class PathFindingMapCreatorTest : MonoBehaviour
@@ -67,6 +68,33 @@ public class PathFindingMapCreatorTest : MonoBehaviour
             removeMap = false;
             RemoveTiles();
         }
+    }
+
+    public Vector2 size;
+    bool HPressed = false;
+
+    private void Update()
+    {
+        HPressed = HPressed || InputManager.GetKeyDown(InputKey.H);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Vector2 mousePos = PhysicsToric.GetPointInsideBounds(Camera.main.ScreenToWorldPoint(InputManager.mousePosition));
+        Map map = new Map(new int[0, 0], accuracy);
+
+        if(HPressed)
+        {
+            HPressed = false;
+        }
+
+        List<MapPoint> points = PathFindingBlocker.GetBlockedCellsInRectangle(map, mousePos, size);
+        foreach (MapPoint p in points)
+        {
+            Hitbox.GizmosDraw(LevelMapData.currentMap.GetPositionOfMapPoint(map, p), LevelMapData.currentMap.cellSize / accuracy, Color.red, true);
+        }
+
+        Hitbox.GizmosDraw(mousePos, size, Color.green, true);
     }
 }
 

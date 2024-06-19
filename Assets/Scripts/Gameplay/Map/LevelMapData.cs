@@ -28,7 +28,19 @@ public class LevelMapData : MonoBehaviour
     }
 
     private Grid grid;
-    private Collider2D[] mapColliders;
+    private Collider2D[] staticMapColliders;
+    private Collider2D[] nonStaticMapColliders;
+    private Dictionary<int, Map> _staticPathfindingMap;
+    private Dictionary<int, Map> staticPathfindingMap
+    {
+        get
+        {
+            if(_staticPathfindingMap == null)
+                _staticPathfindingMap = new Dictionary<int, Map>();
+            return _staticPathfindingMap;
+        }
+        set { _staticPathfindingMap = value; }
+    }
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -49,7 +61,6 @@ public class LevelMapData : MonoBehaviour
 
     [SerializeField] private string relatifSpawnConfigsPath;
     [SerializeField] private GameObject tilemap;
-    //[SerializeField] private Transform[] collidersGameObject; 
 
     [Tooltip("Number of cells in the horizontal and vertical axis")] public Vector2 mapSize = new Vector2(32f, 18f);
 
@@ -57,10 +68,12 @@ public class LevelMapData : MonoBehaviour
     {
         get
         {
+#if UNITY_EDITOR
             if(grid == null)
             {
                 grid = GetComponentInChildren<Grid>();
             }
+#endif
             return grid.cellSize;
         }
     }
@@ -85,28 +98,101 @@ public class LevelMapData : MonoBehaviour
                 break;
             }
         }
-        grid = tilemapGo.GetComponent<Grid>();
 
-        mapColliders = tilemap.GetComponentsInChildren<Collider2D>();
+        staticPathfindingMap = new Dictionary<int, Map>();
+        grid = tilemapGo.GetComponent<Grid>();
+        Collider2D[] collliders = tilemap.GetComponentsInChildren<Collider2D>();
+        List<Collider2D> staticCol = new();
+        List<Collider2D> nonStaticCol = new();
+        for (int i = 0; i < collliders.Length; i++)
+        {
+            MapColliderData colliderData = collliders[i].GetComponent<MapColliderData>();
+            if (colliderData != null)
+            {
+                if (colliderData.isStatic)
+                {
+                    staticCol.Add(collliders[i]);
+                }
+                else
+                {
+                    nonStaticCol.Add(collliders[i]);
+                }
+            }
+        }
+        staticMapColliders = staticCol.ToArray();
+        nonStaticMapColliders = nonStaticCol.ToArray();
 
         EventManager.instance.OnMapChanged(this);
+        //GetStaticPathfindingMap(1);
     }
 
     #endregion
 
     #region PathFinding
 
+    private List<MapPoint> GetColliderBlockedPoints(Map map, Collider2D collider)
+    {
+        if (collider is BoxCollider2D boxCollider)
+        {
+            return PathFindingBlocker.GetBlockedCellsInRectangle(map, (Vector2)boxCollider.transform.position + boxCollider.offset, boxCollider.size);
+        }
+        else if (collider is CircleCollider2D circleCollider)
+        {
+            return PathFindingBlocker.GetBlockedCellsInCircle(map, (Vector2)circleCollider.transform.position + circleCollider.offset, circleCollider.radius);
+        }
+        Hitbox hitbox = Collision2D.Collider2D.FromUnityCollider2D(collider).ToHitbox();
+        return PathFindingBlocker.GetBlockedCellsInRectangle(map, hitbox.center, hitbox.size);
+    }
+
+    private Map GetStaticPathfindingMap(int accuracy = 1)
+    {
+        if (accuracy < 1)
+        {
+            LogManager.instance.AddLog("Accuracy must be >= 1 in LevelMapData.GetPathfindingMap(int accuracy = 1)", accuracy, "LevelMapData::GetPathfindingMap");
+            accuracy = 1;
+        }
+
+        if (staticPathfindingMap.TryGetValue(accuracy, out Map map))
+            return map;
+
+        Vector2Int mapCellsSize = new Vector2Int((mapSize.x / cellSize.x).Round(), (mapSize.y / cellSize.y).Round());
+        int[,] costMap = new int[mapCellsSize.x * accuracy, mapCellsSize.y * accuracy];
+        Map res = new Map(costMap, accuracy);
+
+        HashSet<MapPoint> blockedPoints = new HashSet<MapPoint>();
+        for (int i = 0; i < staticMapColliders.Length; i++)
+        {
+            List<MapPoint> colPoints = GetColliderBlockedPoints(res, staticMapColliders[i]);
+            for (int j = 0; j < colPoints.Count; j++)
+            {
+                blockedPoints.Add(colPoints[j]);
+            }
+        }
+
+        for (int x = 0; x < costMap.GetLength(0); x++)
+        {
+            for (int y = 0; y < costMap.GetLength(1); y++)
+            {
+                costMap[x, y] = blockedPoints.Contains(new MapPoint(x, y)) ? -1 : 1;
+            }
+        }
+
+        staticPathfindingMap.Add(accuracy, res);
+        return res;
+    }
+
     public Map GetPathfindingMap(int accuracy = 1)
     {
         if (accuracy < 1)
         {
-            accuracy = 1;
             LogManager.instance.AddLog("Accuracy must be >= 1 in LevelMapData.GetPathfindingMap(int accuracy = 1)", accuracy, "LevelMapData::GetPathfindingMap");
+            accuracy = 1;
         }
 
-        List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();
+        Map staticMap = GetStaticPathfindingMap(accuracy);
 
-        List<MapPoint> blockedPoints = new List<MapPoint>();
+        List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();
+        HashSet<MapPoint> blockedPoints = new HashSet<MapPoint>();
 
         Vector2Int mapCellsSize = new Vector2Int((mapSize.x / cellSize.x).Round(), (mapSize.y / cellSize.y).Round());
         int[,] costMap = new int[mapCellsSize.x * accuracy, mapCellsSize.y * accuracy];
@@ -116,41 +202,33 @@ public class LevelMapData : MonoBehaviour
         {
             foreach (MapPoint mapPoint in blocker.GetBlockedCells(res))
             {
-                if(!blockedPoints.Contains(mapPoint))
-                {
-                    blockedPoints.Add(mapPoint);
-                }
+                blockedPoints.Add(mapPoint);
             }
         }
 
-        Vector2 offset = -0.5f * mapSize;
-        Vector2 cellCenter;
-        Vector2 cellSizeWithAccuracy = cellSize / accuracy;
+        for (int i = 0; i < nonStaticMapColliders.Length; i++)
+        {
+            List<MapPoint> colPoints = GetColliderBlockedPoints(res, nonStaticMapColliders[i]);
+            for (int j = 0; j < colPoints.Count; j++)
+            {
+                blockedPoints.Add(colPoints[j]);
+            }
+        }
 
         for (int x = 0; x < costMap.GetLength(0); x++)
         {
             for (int y = 0; y < costMap.GetLength(1); y++)
             {
-                cellCenter = new Vector2(offset.x + (x + 0.5f) * cellSizeWithAccuracy.x, offset.y + (y + 0.5f) * cellSizeWithAccuracy.y);
-                costMap[x, y] = GetCostAtPoint(cellCenter, new MapPoint(x, y));
-            }
-        }
-
-        int GetCostAtPoint(in Vector2 point, MapPoint mapPoint)
-        {
-            if(blockedPoints.Contains(mapPoint))
-            {
-                return -1;
-            }
-
-            foreach (Collider2D col in mapColliders)
-            {
-                if(col.OverlapPoint(point))
+                MapPoint mapPoint = new MapPoint(x, y);
+                if (staticMap.GetCost(mapPoint) < 0)
                 {
-                    return -1;
+                    costMap[x, y] = -1;
+                }
+                else
+                {
+                    costMap[x, y] = blockedPoints.Contains(mapPoint) ? -1 : 1;
                 }
             }
-            return 1;
         }
 
         return res;

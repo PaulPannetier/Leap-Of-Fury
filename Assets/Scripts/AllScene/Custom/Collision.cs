@@ -3883,9 +3883,9 @@ namespace Collision2D
 
 #endregion
 
-#if UNITY_EDITOR
-
 #region 3D Collisions
+
+#if UNITY_EDITOR
 
 namespace Collision3D
 {
@@ -4481,6 +4481,7 @@ namespace Collision3D
 
 }
 
+#endif
+
 #endregion
 
-#endif
