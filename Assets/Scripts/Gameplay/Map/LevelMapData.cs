@@ -41,6 +41,10 @@ public class LevelMapData : MonoBehaviour
         }
         set { _staticPathfindingMap = value; }
     }
+    private Dictionary<int, float> pathfindingCellSizePerAccuracy = new Dictionary<int, float>()
+    {
+        { 1, 1f }, { 2, 0.5f }, { 3, 1f/3f }, { 4, 0.25f }, { 5, 0.2f }
+    };
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -123,8 +127,7 @@ public class LevelMapData : MonoBehaviour
         nonStaticMapColliders = nonStaticCol.ToArray();
 
         EventManager.instance.OnMapChanged(this);
-        //GetStaticPathfindingMap(1);
-        print("Dont forget to uncomment the line above");
+        GetStaticPathfindingMap(1);
     }
 
     #endregion
@@ -153,12 +156,13 @@ public class LevelMapData : MonoBehaviour
             accuracy = 1;
         }
 
-        if (staticPathfindingMap.TryGetValue(accuracy, out Map map))
-            return map;
+        Map res;
+        if (staticPathfindingMap.TryGetValue(accuracy, out res))
+            return res;
 
-        Vector2Int mapCellsSize = new Vector2Int((mapSize.x / cellSize.x).Round(), (mapSize.y / cellSize.y).Round());
-        int[,] costMap = new int[mapCellsSize.x * accuracy, mapCellsSize.y * accuracy];
-        Map res = new Map(costMap, accuracy);
+        Vector2Int pathfindignSize = new Vector2Int((mapSize.x * cellSize.x / accuracy).Round(), (mapSize.y * cellSize.y / accuracy).Round());
+        int[,] costMap = new int[pathfindignSize.x, pathfindignSize.y];
+        res = new Map(costMap, accuracy);
 
         HashSet<MapPoint> blockedPoints = new HashSet<MapPoint>();
         for (int i = 0; i < staticMapColliders.Length; i++)
@@ -191,6 +195,7 @@ public class LevelMapData : MonoBehaviour
         }
 
         Map staticMap = GetStaticPathfindingMap(accuracy);
+        return staticMap;
 
         List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();
         HashSet<MapPoint> blockedPoints = new HashSet<MapPoint>();

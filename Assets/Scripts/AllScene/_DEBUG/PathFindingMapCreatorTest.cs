@@ -13,7 +13,7 @@ public class PathFindingMapCreatorTest : MonoBehaviour
     [SerializeField] private bool generateMap;
     [SerializeField] private bool removeMap;
 
-    [SerializeField, Range(1, 10)] private int accuracy;
+    [SerializeField, Range(1, 5)] private int accuracy;
 
     private void GenerateTiles()
     {
@@ -25,7 +25,7 @@ public class PathFindingMapCreatorTest : MonoBehaviour
 
         MapPoint mapPoint;
         Vector2 pos;
-        Vector3 scale = Vector3.one / accuracy;
+        Vector3 scale = LevelMapData.currentMap.cellSize / accuracy;
 
         for (int x = 0; x < map.GetLength(0); x++)
         {
@@ -35,7 +35,7 @@ public class PathFindingMapCreatorTest : MonoBehaviour
                 pos = LevelMapData.currentMap.GetPositionOfMapPoint(map, mapPoint);
 
                 GameObject square = Instantiate(squarePrefabs, pos, Quaternion.identity, transform);
-                square.GetComponent<SpriteRenderer>().color = 0.7f * ( map.IsWall(mapPoint) ? Color.red : Color.green);
+                square.GetComponent<SpriteRenderer>().color = 0.7f * (map.IsWall(mapPoint) ? Color.red : Color.green);
                 square.transform.localScale = scale;
                 tiles.Add(square);
             }
