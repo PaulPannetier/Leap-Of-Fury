@@ -34,21 +34,17 @@ namespace PathFinding
 
         public static List<MapPoint> GetBlockedCellsInRectangle(Map map, in Vector2 pos, in Vector2 size)
         {
-            if(!Application.isPlaying)
-            {
-                return null;
-            }
-
             //1 Slice the hitbox into multiple to fix the toric Space
             List<Rectangle> rectangles = SliceRectangle(new Rectangle(pos, size));
 
             List<Rectangle> SliceRectangle(Rectangle rectangle)
             {       
                 List<Rectangle> res = new List<Rectangle>() { };
-                float xMin = -0.5f * LevelMapData.currentMap.mapSize.x * LevelMapData.currentMap.cellSize.x;
-                float xMax = 0.5f * LevelMapData.currentMap.mapSize.x * LevelMapData.currentMap.cellSize.x;
-                float yMin = -0.5f * LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y;
-                float yMax = 0.5f * LevelMapData.currentMap.mapSize.y * LevelMapData.currentMap.cellSize.y;
+                Vector2 mapSize = LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize;
+                float xMax = 0.5f * mapSize.x;
+                float xMin = -xMax;
+                float yMax = 0.5f * mapSize.y;
+                float yMin = -yMax;
                 float value;
                 Rectangle currentRec;
 
@@ -66,10 +62,10 @@ namespace PathFinding
                         value = currentRec.center.x - (currentRec.size.x * 0.5f);
                         if (value < xMin)
                         {
-                            float halfSize1 = currentRec.center.x - xMin;
                             float size2 = xMin - value;
-                            Rectangle rec1 = new Rectangle(new Vector2(xMin + halfSize1, currentRec.center.y), new Vector2(halfSize1 * 2f, currentRec.size.y));
-                            Rectangle rec2 = new Rectangle(new Vector2(value + (size2 * 0.5f), currentRec.center.y), new Vector2(size2, currentRec.size.y));
+                            float size1 = currentRec.size.x - size2;
+                            Rectangle rec1 = new Rectangle(new Vector2(xMin + (size1 * 0.5f), currentRec.center.y), new Vector2(size1, currentRec.size.y));
+                            Rectangle rec2 = new Rectangle(new Vector2(value + (size2 * 0.5f) + mapSize.x, currentRec.center.y), new Vector2(size2, currentRec.size.y));
                             newRecToSlice.Add(rec1);
                             newRecToSlice.Add(rec2);
                             isCurrentRecSlice = true;
@@ -79,10 +75,10 @@ namespace PathFinding
                         value = currentRec.center.x + (currentRec.size.x * 0.5f);
                         if (value > xMax)
                         {
-                            float halfSize1 = xMax - currentRec.center.x;
                             float size2 = value - xMax;
-                            Rectangle rec1 = new Rectangle(new Vector2(xMax - halfSize1, currentRec.center.y), new Vector2(halfSize1 * 2f, currentRec.size.y));
-                            Rectangle rec2 = new Rectangle(new Vector2(value - (size2 * 0.5f), currentRec.center.y), new Vector2(size2, currentRec.size.y));
+                            float size1 = currentRec.size.x - size2;
+                            Rectangle rec1 = new Rectangle(new Vector2(xMax - (0.5f * size1), currentRec.center.y), new Vector2(size1, currentRec.size.y));
+                            Rectangle rec2 = new Rectangle(new Vector2(value - (size2 * 0.5f) - mapSize.x, currentRec.center.y), new Vector2(size2, currentRec.size.y));
                             newRecToSlice.Add(rec1);
                             newRecToSlice.Add(rec2);
                             isCurrentRecSlice = true;
@@ -92,22 +88,23 @@ namespace PathFinding
                         value = currentRec.center.y - (currentRec.size.y * 0.5f);
                         if (value < yMin)
                         {
-                            float halfSize1 = currentRec.center.y - yMin;
                             float size2 = yMin - value;
-                            Rectangle rec1 = new Rectangle(new Vector2(currentRec.center.x, yMin + halfSize1), new Vector2(currentRec.size.x, halfSize1 * 2f));
-                            Rectangle rec2 = new Rectangle(new Vector2(currentRec.center.x, value + (size2 * 0.5f)), new Vector2(currentRec.size.x, size2));
+                            float size1 = currentRec.size.y - size2;
+                            Rectangle rec1 = new Rectangle(new Vector2(currentRec.center.x, yMin + (0.5f * size1)), new Vector2(currentRec.size.x, size1));
+                            Rectangle rec2 = new Rectangle(new Vector2(currentRec.center.x, value + (size2 * 0.5f) + mapSize.y), new Vector2(currentRec.size.x, size2));
                             newRecToSlice.Add(rec1);
                             newRecToSlice.Add(rec2);
                             isCurrentRecSlice = true;
                         }
 
+                        //up
                         value = currentRec.center.y + (currentRec.size.y * 0.5f);
                         if (value > yMax)
                         {
-                            float halfSize1 = yMax - currentRec.center.y;
                             float size2 = value - yMax;
-                            Rectangle rec1 = new Rectangle(new Vector2(currentRec.center.x, yMax - halfSize1), new Vector2(currentRec.size.x, halfSize1 * 2f));
-                            Rectangle rec2 = new Rectangle(new Vector2(currentRec.center.x, value - (size2 * 0.5f)), new Vector2(currentRec.size.x, size2));
+                            float size1 = currentRec.size.y - size2;
+                            Rectangle rec1 = new Rectangle(new Vector2(currentRec.center.x, yMax - (size1 * 0.5f)), new Vector2(currentRec.size.x, size1));
+                            Rectangle rec2 = new Rectangle(new Vector2(currentRec.center.x, value - (size2 * 0.5f) - mapSize.y), new Vector2(currentRec.size.x, size2));
                             newRecToSlice.Add(rec1);
                             newRecToSlice.Add(rec2);
                             isCurrentRecSlice = true;
@@ -118,13 +115,12 @@ namespace PathFinding
                             res.Add(currentRec);
                             recToSlice.RemoveAt(i);
                         }
-
-                        recToSlice.Clear();
-                        List<Rectangle> tmp = recToSlice;
-                        recToSlice = newRecToSlice;
-                        newRecToSlice = tmp;
                     }
 
+                    recToSlice.Clear();
+                    List<Rectangle> tmp = recToSlice;
+                    recToSlice = newRecToSlice;
+                    newRecToSlice = tmp;
                 }
 
                 return res;

@@ -399,6 +399,40 @@
                     "value": "System.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nLevelMapData.GetColliderBlockedPoints (PathFinding.Map map, UnityEngine.Collider2D collider) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:137)\nLevelMapData.GetStaticPathfindingMap (System.Int32 accuracy) (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:165)\nLevelMapData.Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:126)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nSystem.Collections.Generic.List`1[T].set_Capacity (System.Int32 value) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].EnsureCapacity (System.Int32 min) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].AddWithResize (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nSystem.Collections.Generic.List`1[T].Add (T item) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:114)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:80)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index"
+                },
+                {
+                    "type": "String",
+                    "value": "System.Collections.Generic.List`1[T].get_Item (System.Int32 index) (at <51fded79cd284d4d911c5949aff4cb21>:0)\nPathFinding.PathFindingBlocker.<GetBlockedCellsInRectangle>g__SliceRectangle|5_0 (PathFinding.PathFindingBlocker+Rectangle rectangle) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:63)\nPathFinding.PathFindingBlocker.GetBlockedCellsInRectangle (PathFinding.Map map, UnityEngine.Vector2& pos, UnityEngine.Vector2& size) (at Assets/Scripts/Gameplay/Other/PathFindingBlocker.cs:43)\nPathFindingMapCreatorTest.OnDrawGizmosSelected () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:91)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Dont forget to uncomment the line above"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nLevelMapData:Start () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:127)\n"
+                }
+            ]
         }
     ]
 }

@@ -124,6 +124,7 @@ public class LevelMapData : MonoBehaviour
 
         EventManager.instance.OnMapChanged(this);
         //GetStaticPathfindingMap(1);
+        print("Dont forget to uncomment the line above");
     }
 
     #endregion
