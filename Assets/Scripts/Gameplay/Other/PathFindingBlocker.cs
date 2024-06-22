@@ -168,17 +168,17 @@ namespace PathFinding
 
         public static List<MapPoint> GetBlockedCellsInCircle(Map map, in Vector2 pos, float radius)
         {
-            MapPoint top = LevelMapData.currentMap.GetMapPointAtPosition(map, new Vector2(pos.x, pos.y + radius));
-            MapPoint down = LevelMapData.currentMap.GetMapPointAtPosition(map, new Vector2(pos.x, pos.y - radius));
-            MapPoint right = LevelMapData.currentMap.GetMapPointAtPosition(map, new Vector2(pos.x + radius, pos.y));
-            MapPoint left = LevelMapData.currentMap.GetMapPointAtPosition(map, new Vector2(pos.x - radius, pos.y));
+            float cache = 2f * radius;
+            List<MapPoint> res = GetBlockedCellsInRectangle(map, pos, new Vector2(cache, cache));
+            float d = LevelMapData.currentMap.cellSize.x * Mathf.Sqrt(0.5f) / map.accuracy;
+            cache = Mathf.Sqrt(radius) + d;
 
-            List<MapPoint> res = new List<MapPoint>();
-            for (int x = left.X; x <= right.X; x++)
+            for (int i = res.Count - 1; i >= 0; i--)
             {
-                for (int y = down.Y; y <= top.Y; y++)
+                d = PhysicsToric.Distance(pos, LevelMapData.currentMap.GetPositionOfMapPoint(map, res[i]));
+                if(d > cache)
                 {
-                    res.Add(new MapPoint(x, y));
+                    res.RemoveAt(i);
                 }
             }
             return res;

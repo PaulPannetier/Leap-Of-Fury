@@ -41,10 +41,6 @@ public class LevelMapData : MonoBehaviour
         }
         set { _staticPathfindingMap = value; }
     }
-    private Dictionary<int, float> pathfindingCellSizePerAccuracy = new Dictionary<int, float>()
-    {
-        { 1, 1f }, { 2, 0.5f }, { 3, 1f/3f }, { 4, 0.25f }, { 5, 0.2f }
-    };
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -106,8 +102,8 @@ public class LevelMapData : MonoBehaviour
         staticPathfindingMap = new Dictionary<int, Map>();
         grid = tilemapGo.GetComponent<Grid>();
         Collider2D[] collliders = tilemap.GetComponentsInChildren<Collider2D>();
-        List<Collider2D> staticCol = new();
-        List<Collider2D> nonStaticCol = new();
+        List<Collider2D> staticCol = new List<Collider2D>();
+        List<Collider2D> nonStaticCol = new List<Collider2D>();
         for (int i = 0; i < collliders.Length; i++)
         {
             MapColliderData colliderData = collliders[i].GetComponent<MapColliderData>();
@@ -160,7 +156,7 @@ public class LevelMapData : MonoBehaviour
         if (staticPathfindingMap.TryGetValue(accuracy, out res))
             return res;
 
-        Vector2Int pathfindignSize = new Vector2Int((mapSize.x * cellSize.x / accuracy).Round(), (mapSize.y * cellSize.y / accuracy).Round());
+        Vector2Int pathfindignSize = new Vector2Int((mapSize.x * accuracy).Round(), (mapSize.y * accuracy).Round());
         int[,] costMap = new int[pathfindignSize.x, pathfindignSize.y];
         res = new Map(costMap, accuracy);
 
@@ -240,31 +236,44 @@ public class LevelMapData : MonoBehaviour
         return res;
     }
 
-    public MapPoint GetMapPointAtPosition(Map map, in Vector2 position)
+    public MapPoint GetMapPointAtPosition(Vector2 position)
     {
-        Vector2 origin = PhysicsToric.GetPointInsideBounds(position) + mapSize * 0.5f;
-        Vector2 cellSizeWithAccuracy = cellSize / map.accuracy;
-
-        Vector2Int coord = new Vector2Int((int)(origin.x / cellSizeWithAccuracy.x), (int)(origin.y / cellSizeWithAccuracy.y));
-        return new MapPoint(coord.x, coord.y);
+        Vector2 size = mapSize * cellSize;
+        position = PhysicsToric.GetPointInsideBounds(position) + size * 0.5f - (cellSize * 0.5f);
+        float x = Mathf.InverseLerp(0f, size.x, position.x);
+        x = Mathf.Lerp(0f, mapSize.x, x);
+        float y = Mathf.InverseLerp(0f, size.y, position.y);
+        y = Mathf.Lerp(0f, mapSize.y, y);
+        return new MapPoint(x.Round(), y.Round());
     }
 
-    public MapPoint GetMapPointAtPosition(in Vector2 position)
+    public MapPoint GetMapPointAtPosition(Map pathfindingMap, Vector2 position)
     {
-        Vector2 origin = PhysicsToric.GetPointInsideBounds(position) + mapSize * 0.5f;
-        Vector2Int coord = new Vector2Int((int)(origin.x / cellSize.x), (int)(origin.y / cellSize.y));
-        return new MapPoint(coord.x, coord.y);
-    }
-
-    public Vector2 GetPositionOfMapPoint(Map map, MapPoint mapPoint)
-    {
-        Vector2 cellSizeWithAccuracy = cellSize / map.accuracy;
-        return new Vector2((mapPoint.X + 0.5f) * cellSizeWithAccuracy.x - (0.5f * mapSize.x), (mapPoint.Y + 0.5f) * cellSizeWithAccuracy.y - (0.5f * mapSize.y));
+        Vector2 pathfindingMapSize = mapSize * pathfindingMap.accuracy;
+        Vector2 size = mapSize * cellSize;
+        position = PhysicsToric.GetPointInsideBounds(position) + size * 0.5f - (cellSize * 0.5f / pathfindingMap.accuracy);
+        float x = Mathf.InverseLerp(0f, size.x, position.x);
+        x = Mathf.Lerp(0f, pathfindingMapSize.x, x);
+        float y = Mathf.InverseLerp(0f, size.y, position.y);
+        y = Mathf.Lerp(0f, pathfindingMapSize.y, y);
+        return new MapPoint(x.Round(), y.Round());
     }
 
     public Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
     {
-        return new Vector2((mapPoint.X + 0.5f) * cellSize.x - (0.5f * mapSize.x), (mapPoint.Y + 0.5f) * cellSize.y - (0.5f * mapSize.y));
+        Vector2 size = mapSize * cellSize;
+        float x = ((mapPoint.X / mapSize.x) * size.x) - (size.x * 0.5f);
+        float y = ((mapPoint.Y / mapSize.y) * size.y) - (size.y * 0.5f);
+        return new Vector2(x + (cellSize.x * 0.5f), y + (cellSize.y * 0.5f));
+    }
+
+    public Vector2 GetPositionOfMapPoint(Map pathfindingMap, MapPoint mapPoint)
+    {
+        Vector2 pathfindingMapSize = mapSize * pathfindingMap.accuracy;
+        Vector2 size = mapSize * cellSize;
+        float x = ((mapPoint.X / pathfindingMapSize.x) * size.x) - (size.x * 0.5f); 
+        float y = ((mapPoint.Y / pathfindingMapSize.y) * size.y) - (size.y * 0.5f);
+        return new Vector2(x + (cellSize.x * 0.5f / pathfindingMap.accuracy), y + (cellSize.y * 0.5f / pathfindingMap.accuracy));
     }
 
     #endregion

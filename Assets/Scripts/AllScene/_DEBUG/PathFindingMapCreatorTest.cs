@@ -70,8 +70,9 @@ public class PathFindingMapCreatorTest : MonoBehaviour
         }
     }
 
-    public Vector2 size;
+    public float radius;
     bool HPressed = false;
+    public Vector2Int mapPoint;
 
     private void Update()
     {
@@ -80,21 +81,25 @@ public class PathFindingMapCreatorTest : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Vector2 mousePos = PhysicsToric.GetPointInsideBounds(Camera.main.ScreenToWorldPoint(InputManager.mousePosition));
-        Map map = new Map(new int[0, 0], accuracy);
+        //Vector2 mousePos = PhysicsToric.GetPointInsideBounds(Camera.main.ScreenToWorldPoint(InputManager.mousePosition));
+        //Map map = new Map(new int[0, 0], accuracy);
 
-        if(HPressed)
-        {
-            HPressed = false;
-        }
+        //if (HPressed)
+        //{
+        //    HPressed = false;
+        //}
 
-        List<MapPoint> points = PathFindingBlocker.GetBlockedCellsInRectangle(map, mousePos, size);
-        foreach (MapPoint p in points)
-        {
-            Hitbox.GizmosDraw(LevelMapData.currentMap.GetPositionOfMapPoint(map, p), LevelMapData.currentMap.cellSize / accuracy, Color.red, true);
-        }
+        //List<MapPoint> points = PathFindingBlocker.GetBlockedCellsInCircle(map, mousePos, radius);
+        //foreach (MapPoint p in points)
+        //{
+        //    Hitbox.GizmosDraw(LevelMapData.currentMap.GetPositionOfMapPoint(map, p), LevelMapData.currentMap.cellSize / accuracy, Color.red, true);
+        //}
 
-        Hitbox.GizmosDraw(mousePos, size, Color.green, true);
+        //Circle.GizmosDraw(mousePos, radius, Color.green, true);
+
+        //Map map = new Map(new int[0, 0], accuracy);
+        //Vector2 pos = LevelMapData.currentMap.GetPositionOfMapPoint(map, new MapPoint(mapPoint.x, mapPoint.y));
+        //Circle.GizmosDraw(pos, 0.1f, Color.green, true);
     }
 }
 
