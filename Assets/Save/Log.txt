@@ -467,6 +467,74 @@
                     "value": "UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform)\nPathFindingMapCreatorTest:GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:37)\nPathFindingMapCreatorTest:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:63)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Square(Clone): OnSpriteTilingPropertyChange)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform)\nPathFindingMapCreatorTest:GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:35)\nPathFindingMapCreatorTest:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:61)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (TEST: OnTransformChildrenChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Object:Instantiate<UnityEngine.GameObject> (UnityEngine.GameObject,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Transform)\nPathFindingMapCreatorTest:GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:35)\nPathFindingMapCreatorTest:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:61)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "IndexOutOfRangeException: Index was outside the bounds of the array."
+                },
+                {
+                    "type": "String",
+                    "value": "PathFinding.Map.GetCost (PathFinding.MapPoint mapPoint) (at Assets/Scripts/AllScene/Custom/AStar.cs:712)\nLevelMapData.GetPathfindingMap () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:238)\nPathFindingMapCreatorTest.GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:22)\nPathFindingMapCreatorTest.OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:61)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "IndexOutOfRangeException: Index was outside the bounds of the array."
+                },
+                {
+                    "type": "String",
+                    "value": "PathFinding.Map.GetCost (PathFinding.MapPoint mapPoint) (at Assets/Scripts/AllScene/Custom/AStar.cs:712)\nLevelMapData.GetPathfindingMap () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:225)\nPathFindingMapCreatorTest.GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:22)\nPathFindingMapCreatorTest.OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:61)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
         }
     ]
 }

@@ -1312,6 +1312,7 @@ MonoBehaviour:
   relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map3SpawnPoints
   tilemap: {fileID: 8073366223637301981}
   mapSize: {x: 32, y: 18}
+  pathfindingMapAccuracy: 1
 --- !u!1 &7508079419312900212
 GameObject:
   m_ObjectHideFlags: 0
@@ -19637,6 +19638,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0.993
+  isStatic: 1
 --- !u!61 &7803342069370031433
 BoxCollider2D:
   m_ObjectHideFlags: 0

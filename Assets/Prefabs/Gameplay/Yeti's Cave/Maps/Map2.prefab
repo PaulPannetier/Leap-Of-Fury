@@ -3530,6 +3530,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
+  isStatic: 1
   iceSpeedLerpFactor: 0.3
   iceDecelerationSpeedLerpFactor: 0.2
 --- !u!61 &4056638031798414933
@@ -20706,6 +20707,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
+  isStatic: 1
 --- !u!61 &6952316471795445162
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20991,6 +20993,7 @@ MonoBehaviour:
   relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map2SpawnPoints
   tilemap: {fileID: 7009821137410066223}
   mapSize: {x: 32, y: 18}
+  pathfindingMapAccuracy: 1
 --- !u!1 &8573189635458081925
 GameObject:
   m_ObjectHideFlags: 0

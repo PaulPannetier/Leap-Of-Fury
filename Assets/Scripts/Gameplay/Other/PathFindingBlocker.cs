@@ -35,7 +35,7 @@ namespace PathFinding
         public static List<MapPoint> GetBlockedCellsInRectangle(Map map, in Vector2 pos, in Vector2 size)
         {
             //1 Slice the hitbox into multiple to fix the toric Space
-            List<Rectangle> rectangles = SliceRectangle(new Rectangle(pos, size));
+            List<Rectangle> rectangles = SliceRectangle(new Rectangle(PhysicsToric.GetPointInsideBounds(pos), size));
 
             List<Rectangle> SliceRectangle(Rectangle rectangle)
             {       

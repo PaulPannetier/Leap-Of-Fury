@@ -34,7 +34,6 @@ public class Boomerang : MonoBehaviour
     private List<uint> charAlreadyTouch;
     private Map pathFindingMap;
     private float minDelayBetweenPathfindingSearch;
-    private int pathFindingAccuracy;
 
     [SerializeField] private Vector2 groundCircleOffset;
     [SerializeField] private float groundCircleRadius;
@@ -67,7 +66,6 @@ public class Boomerang : MonoBehaviour
         speedCurvePhase2 = boomerangLauchData.speedCurvePhase2;
         recuperationRange = boomerangLauchData.recuperationRange;
         accelerationDurationPhase2 = boomerangLauchData.accelerationDurationPhase2;
-        pathFindingAccuracy = boomerangLauchData.pathFindingAccuracy;
         minDelayBetweenPathfindingSearch = boomerangLauchData.minDelayBetweenPathfindingSearch;
 
         state = State.go;
@@ -150,7 +148,7 @@ public class Boomerang : MonoBehaviour
     private void LaunchGetBackState()
     {
         state = State.getBack;
-        pathFindingMap = LevelMapData.currentMap.GetPathfindingMap(pathFindingAccuracy);
+        pathFindingMap = LevelMapData.currentMap.GetPathfindingMap();
         timeLaunch = lastPathFindingSearch = Time.time;
     }
 
@@ -172,7 +170,7 @@ public class Boomerang : MonoBehaviour
 
         if (requestSearchPath || (path == null && !isTargetingSender) || (Time.time - lastPathFindingSearch > minDelayBetweenPathfindingSearch))
         {
-            pathFindingMap = LevelMapData.currentMap.GetPathfindingMap(pathFindingAccuracy);
+            pathFindingMap = LevelMapData.currentMap.GetPathfindingMap();
 
             Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
             {
@@ -334,7 +332,6 @@ public class Boomerang : MonoBehaviour
         public BoomerangAttack sender;
         public float maxSpeedPhase2;
         public float recuperationRange;
-        public int pathFindingAccuracy;
         public float minDelayBetweenPathfindingSearch;
 
         public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1,
@@ -350,7 +347,6 @@ public class Boomerang : MonoBehaviour
             this.sender = sender;
             this.maxSpeedPhase2 = maxSpeedPhase2;
             this.recuperationRange = recuperationRange;
-            this.pathFindingAccuracy = pathFindingAccuracy;
             this.minDelayBetweenPathfindingSearch = minDelayBetweenPathfindingSearch;
         }
     }

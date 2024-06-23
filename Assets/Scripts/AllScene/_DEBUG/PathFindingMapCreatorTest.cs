@@ -13,19 +13,17 @@ public class PathFindingMapCreatorTest : MonoBehaviour
     [SerializeField] private bool generateMap;
     [SerializeField] private bool removeMap;
 
-    [SerializeField, Range(1, 5)] private int accuracy;
-
     private void GenerateTiles()
     {
         if(tiles == null)
             tiles = new List<GameObject>();
 
         RemoveTiles();
-        Map map = LevelMapData.currentMap.GetPathfindingMap(accuracy);
+        Map map = LevelMapData.currentMap.GetPathfindingMap();
 
         MapPoint mapPoint;
         Vector2 pos;
-        Vector3 scale = LevelMapData.currentMap.cellSize / accuracy;
+        Vector3 scale = LevelMapData.currentMap.pathfindingCellsSize;
 
         for (int x = 0; x < map.GetLength(0); x++)
         {
