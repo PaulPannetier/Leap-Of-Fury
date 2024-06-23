@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 
 public class GlobalLightParams : MonoBehaviour
@@ -14,6 +16,8 @@ public class GlobalLightParams : MonoBehaviour
 
     #region OnValidate
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         globalLightIntensity = Mathf.Max(globalLightIntensity, 0f);
@@ -25,5 +29,7 @@ public class GlobalLightParams : MonoBehaviour
         }
     }
 
-    #endregion
+#endif
+
+#endregion
 }

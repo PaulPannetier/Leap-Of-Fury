@@ -147,6 +147,8 @@ public class SecurityManager : MonoBehaviour
 
     #region OnValidate
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         Array.Sort(folderToVerify);
@@ -158,9 +160,11 @@ public class SecurityManager : MonoBehaviour
         }
     }
 
+#endif
+
     #endregion
 
-    #region struct
+    #region Struct
 
     [Serializable]
     private struct Hash
@@ -200,5 +204,4 @@ public class SecurityManager : MonoBehaviour
     }
 
     #endregion
-
 }

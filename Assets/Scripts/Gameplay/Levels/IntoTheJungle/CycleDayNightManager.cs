@@ -1,6 +1,8 @@
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
+#endif
 
 public class CycleDayNightManager : MonoBehaviour
 {

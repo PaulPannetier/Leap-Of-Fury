@@ -15,7 +15,6 @@ public class BuildCreatorConfig : ScriptableObject
     public bool performBuild = true;
     public bool developpementBuild = true;
     public bool enableFilesSecurity = true;
-    public bool advancedDebug = false;
     public bool copySaveDirectory = true;
     public bool setDefaultSettingAndInput = true;
 }

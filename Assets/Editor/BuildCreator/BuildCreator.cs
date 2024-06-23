@@ -121,7 +121,7 @@ public class BuildCreator : Editor
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, "PartyGame.exe");
             buildPlayerOptions.target = BuildTarget.StandaloneWindows;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
-            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.advancedDebug ? new string[] { "ADVANCE_DEBUG" } : new string[] { };
+            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developpementBuild ? new string[] { "ADVANCE_DEBUG" } : new string[] { };
             Debug.Log("Start building at " + buildDir);
             //BuildReport reporting = BuildPipeline.BuildPlayer(buildPlayerOptions);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
