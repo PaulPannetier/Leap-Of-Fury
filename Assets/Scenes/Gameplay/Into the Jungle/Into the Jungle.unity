@@ -515,10 +515,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4235235567787367747, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
       propertyPath: enableBehaviour
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
       propertyPath: showDayLight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777902526585386819, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
+      propertyPath: showNightLight
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8778289041252250656, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}

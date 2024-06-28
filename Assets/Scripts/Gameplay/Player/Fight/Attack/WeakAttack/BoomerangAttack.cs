@@ -19,7 +19,6 @@ public class BoomerangAttack : WeakAttack
     [SerializeField] private float recuperationRange;
 
     [Header("PathFinding")]
-    [SerializeField, Range(1, 3)] private int pathFindingAccuracy = 1;
     [SerializeField] private float minDelayBetweenPathfinfindSearch = 0.5f;
 
     protected override void Awake()
@@ -54,7 +53,7 @@ public class BoomerangAttack : WeakAttack
     private BoomerangLaunchData CreateLaunchData(in Vector2 dir)
     {
         return new BoomerangLaunchData(dir, speedCurvePhase1, speedCurvePhase2, maxSpeedPhase1, durationPhase1,
-            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, pathFindingAccuracy, minDelayBetweenPathfinfindSearch);
+            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, minDelayBetweenPathfinfindSearch);
     }
 
     public void GetBack()

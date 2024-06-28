@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using static BezierUtility;
+using System.Linq;
 
 public static class PathFinderToric
 {
@@ -195,6 +196,11 @@ public static class PathFinderToric
 
         Spline CreateSpline(Vector2[] points, SplineType splineType)
         {
+            if(points.Length <= 1)
+            {
+                return new HermiteSpline(new Vector2[2] { convertMapPointToWorldPosition(path.path[0]), convertMapPointToWorldPosition(path.path.Last()) });
+            }
+
             switch (splineType)
             {
                 case SplineType.Bezier:

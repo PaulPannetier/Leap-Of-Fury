@@ -122,18 +122,22 @@ public class CycleDayNightManager : MonoBehaviour
 
     private void OnValidate()
     {
-        if(PrefabStageUtility.GetCurrentPrefabStage() == null)
+        if(showDayLight)
         {
-            if (showDayLight)
+            showDayLight = false;
+            if (!Application.isPlaying && PrefabStageUtility.GetCurrentPrefabStage() == null)
             {
                 LightManager.instance.globalLight.intensity = globalLightIntensityAtDay;
                 foreach (Light2D light in LightManager.instance.lights)
                 {
                     light.intensity = otherLightIntensityAtDay;
                 }
-
             }
-            else if (showNightLight)
+        }
+        if (showNightLight)
+        {
+            showNightLight = false;
+            if (!Application.isPlaying && PrefabStageUtility.GetCurrentPrefabStage() == null)
             {
                 LightManager.instance.globalLight.intensity = globalLightIntensityAtNight;
                 foreach (Light2D light in LightManager.instance.lights)

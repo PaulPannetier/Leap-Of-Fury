@@ -535,6 +535,66 @@
                     "value": "PathFinding.Map.GetCost (PathFinding.MapPoint mapPoint) (at Assets/Scripts/AllScene/Custom/AStar.cs:712)\nLevelMapData.GetPathfindingMap () (at Assets/Scripts/Gameplay/Map/LevelMapData.cs:225)\nPathFindingMapCreatorTest.GenerateTiles () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:22)\nPathFindingMapCreatorTest.OnValidate () (at Assets/Scripts/AllScene/_DEBUG/PathFindingMapCreatorTest.cs:61)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "LevelManager.<StartLevel>g__FillCharData|18_1 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:94)\nLevelManager.<StartLevel>g__NormalStartLevel|18_0 () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:82)\nLevelManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/All/LevelManager.cs:71)\nIntoTheJungleManager.StartLevel () (at Assets/Scripts/Gameplay/Levels/IntoTheJungle/IntoTheJungleManager.cs:11)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "No valid path was found, destroying boomerang",
+            "logParams": [
+                {
+                    "type": "String",
+                    "value": "Boomerang::HandleGetBackState"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "MissingReferenceException: The object of type 'Boomerang' has been destroyed but you are still trying to access it.\nYour script should either check if it is null or you should not destroy the object."
+                },
+                {
+                    "type": "String",
+                    "value": "Boomerang.Destroy () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:274)\nPauseManager+<InvokeCorout>d__23.MoveNext () (at Assets/Scripts/Gameplay/Manager/PauseManager.cs:84)\nUnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <779cc116a5954f1c9b92496e62345641>:0)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "Exception: A CatmulRom Spline have at least two points, got only 1 point."
+                },
+                {
+                    "type": "String",
+                    "value": "BezierUtility+CatmulRomSpline..ctor (UnityEngine.Vector2[] points) (at Assets/Scripts/AllScene/Custom/BezierUtility.cs:668)\nPathFinderToric.<FindBestCurve>g__CreateSpline|3_3 (UnityEngine.Vector2[] points, BezierUtility+SplineType splineType, PathFinderToric+<>c__DisplayClass3_0& ) (at Assets/Scripts/Gameplay/ToricSystem/PathFindingToric.cs:205)\nPathFinderToric.FindBestCurve (PathFinding.Map map, PathFinding.MapPoint start, PathFinding.MapPoint end, System.Func`2[T,TResult] convertMapPointToWorldPosition, System.Boolean allowDiagonal, BezierUtility+SplineType splineType, PathFinderToric+SmoothnessMode smoothnessMode, System.Single tension) (at Assets/Scripts/Gameplay/ToricSystem/PathFindingToric.cs:224)\nPathFinderToric.FindBestCurve (PathFinding.Map map, PathFinding.MapPoint start, PathFinding.MapPoint end, System.Func`2[T,TResult] convertMapPointToWorldPosition, System.Boolean allowDiagonal, BezierUtility+SplineType splineType, PathFinderToric+SmoothnessMode smoothnessMode) (at Assets/Scripts/Gameplay/ToricSystem/PathFindingToric.cs:24)\nBoomerang.HandleGetBackState () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:180)\nBoomerang.Update () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:95)\n"
+                }
+            ]
         }
     ]
 }

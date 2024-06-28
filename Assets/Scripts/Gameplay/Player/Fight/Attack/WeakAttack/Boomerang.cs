@@ -5,8 +5,6 @@ using Collider2D = UnityEngine.Collider2D;
 using static PathFinderToric;
 using static BezierUtility;
 using System.Collections.Generic;
-using System.Collections;
-using System;
 
 public class Boomerang : MonoBehaviour
 {
@@ -245,6 +243,9 @@ public class Boomerang : MonoBehaviour
 
     private void StartDestroy()
     {
+        if (isDestroy)
+            return;
+
         sender.GetBack();
         animator.SetTrigger("destroy");
         velocity = Vector2.zero;
@@ -335,8 +336,7 @@ public class Boomerang : MonoBehaviour
         public float minDelayBetweenPathfindingSearch;
 
         public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1,
-            float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange,
-            int pathFindingAccuracy, float minDelayBetweenPathfindingSearch)
+            float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange, float minDelayBetweenPathfindingSearch)
         {
             this.dir = dir;
             this.speedCurvePhase1 = speedCurvePhase1;
