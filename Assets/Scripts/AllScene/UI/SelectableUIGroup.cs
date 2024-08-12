@@ -62,10 +62,10 @@ public class SelectableUIGroup : MonoBehaviour
     {
         selectedUI = null;
 
-        List<SelectableUI> lst = new List<SelectableUI>();
-        InitRecur(defaultUISelected, ref lst);
+        HashSet<SelectableUI> cache = new HashSet<SelectableUI>();
+        InitRecur(defaultUISelected, ref cache);
 
-        void InitRecur(SelectableUI selectableUI, ref List<SelectableUI> cache)
+        void InitRecur(SelectableUI selectableUI, ref HashSet<SelectableUI> cache)
         {
             if (cache.Contains(selectableUI))
                 return;
@@ -86,10 +86,10 @@ public class SelectableUIGroup : MonoBehaviour
 
     public void ResetToDefault()
     {
-        List<SelectableUI> lst = new List<SelectableUI>();
-        ResetSelectableUIRecur(defaultUISelected, ref lst);
+        HashSet<SelectableUI> cache = new HashSet<SelectableUI>();
+        ResetSelectableUIRecur(defaultUISelected, ref cache);
 
-        void ResetSelectableUIRecur(SelectableUI selectableUI, ref List<SelectableUI> cache)
+        void ResetSelectableUIRecur(SelectableUI selectableUI, ref HashSet<SelectableUI> cache)
         {
             if (cache.Contains(selectableUI))
                 return;
@@ -193,7 +193,6 @@ public class SelectableUIGroup : MonoBehaviour
                     selectedUI = selectedUI.leftSelectableUI;
                     selectedUI.OnSelected();
                 }
-
 
                 //validate
                 if (applyInput.IsPressedDown())

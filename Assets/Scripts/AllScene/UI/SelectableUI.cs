@@ -9,8 +9,9 @@ using UnityEngine.EventSystems;
 public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     private List<Coroutine> changeColorCorout;
-    private bool isSelected = false;
     private bool isMouseOver;
+
+    protected bool isSelected = false;
 
     [SerializeField] private bool mouseInteractable = true;
 
@@ -52,12 +53,11 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         selectableUIGroup = null;
     }
 
-    public void OnPressed()
+    public virtual void OnPressed()
     {
         if(isSelected)
         {
             onPressed.Invoke();
-            isSelected = false;
         }
     }
 
@@ -169,7 +169,7 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
 #if UNITY_EDITOR
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         if(colors != null)
         {

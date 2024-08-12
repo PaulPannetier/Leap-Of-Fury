@@ -4359,11 +4359,11 @@ public static class InputManager
                     return false;
             }
 
-            bool GetKeySomething(Func<InputKey, bool> func, InputKey[] keys)
+            bool GetKeySomething(Func<InputKey, bool> predicate, InputKey[] keys)
             {
                 foreach (InputKey k in keys)
                 {
-                    if(func(k))
+                    if(predicate(k))
                         return true;
                 }
                 return false;
