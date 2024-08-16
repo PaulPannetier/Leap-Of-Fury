@@ -45,6 +45,8 @@ public class SelectableUIGroup : MonoBehaviour
     }
 
     public bool enableBehaviour = true;
+
+    [SerializeField] private BaseController allowedController = BaseController.KeyboardAndGamepad;
     [SerializeField] private ControllerSelector controllerSelector = ControllerSelector.last;
     [SerializeField] private SelectableUI defaultUISelected;
     [SerializeField] private InputManager.GeneralInput upItemInput;
@@ -71,6 +73,7 @@ public class SelectableUIGroup : MonoBehaviour
                 return;
 
             selectableUI.selectableUIGroup = this;
+            selectableUI.isMouseInteractable = allowedController != BaseController.Gamepad;
             selectableUI.OnDeselected();
             cache.Add(selectableUI);
             if (selectableUI.upSelectableUI != null)
@@ -143,9 +146,12 @@ public class SelectableUIGroup : MonoBehaviour
             {
                 if(ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                 {
-                    selectedUI = defaultUISelected;
-                    selectedUI.OnSelected();
-                    this.controllerType = controllerType;
+                    if(IsControllerTypeAnAllowedController(controllerType))
+                    {
+                        selectedUI = defaultUISelected;
+                        selectedUI.OnSelected();
+                        this.controllerType = controllerType;
+                    }
                 }
             }
         }
@@ -156,7 +162,7 @@ public class SelectableUIGroup : MonoBehaviour
             {
                 if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                 {
-                    if(this.controllerType != controllerType)
+                    if(this.controllerType != controllerType && IsControllerTypeAnAllowedController(controllerType))
                     {
                         this.controllerType = controllerType;
                         changeControllerType = true;
@@ -201,6 +207,17 @@ public class SelectableUIGroup : MonoBehaviour
                 }
             }
         }
+    }
+
+    private bool IsControllerTypeAnAllowedController(ControllerType controllerType)
+    {
+        if (allowedController == BaseController.KeyboardAndGamepad || controllerType == ControllerType.All)
+            return true;
+
+        if (controllerType == ControllerType.Keyboard && allowedController == BaseController.Keyboard)
+            return true;
+
+        return allowedController == BaseController.Gamepad && controllerType != ControllerType.Keyboard;
     }
 
     private bool ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key)

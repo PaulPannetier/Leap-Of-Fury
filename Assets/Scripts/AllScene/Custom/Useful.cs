@@ -10,7 +10,6 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Reflection;
 using System.Threading;
 using DG.Tweening;
 using System.Threading.Tasks;
@@ -387,11 +386,11 @@ public static class Random
         Noise2d.Reseed();
     }
     /// <summary>
-    /// randomize de seed of the random, allow to have diffenrent random number at each lauch of the game
+    /// randomize de seed of the random, allow to have diffenrent random number at each launch of the game
     /// </summary>
     public static void SetRandomSeed()
     {
-        SetSeed((int)DateTime.Now.Ticks);
+        SetSeed(Environment.TickCount);
     }
 
     #endregion

@@ -1,21 +1,18 @@
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
-public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
 {
     private List<Coroutine> changeColorCorout;
     private bool isMouseOver;
 
     protected bool isSelected = false;
 
-    [SerializeField] private bool mouseInteractable = true;
-
-    [SerializeField] ColorFader[] colors;
+    [SerializeField] protected ColorFader[] colors;
 
     public SelectableUI upSelectableUI;
     public SelectableUI downSelectableUI;
@@ -25,13 +22,28 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 #if UNITY_EDITOR
     [Space, Space]
 #endif
-    public UnityEvent onPressed;
-
     [HideInInspector] public SelectableUIGroup selectableUIGroup;
+
+    private bool _isMouseInteractable = true;
+    public virtual bool isMouseInteractable
+    {
+        get => _isMouseInteractable;
+        set
+        {
+            _isMouseInteractable = value;
+        }
+    }
+
+    public abstract void OnPressed();
 
     private void Awake()
     {
         changeColorCorout = new List<Coroutine>();
+    }
+
+    protected virtual void Start()
+    {
+
     }
 
     public void ResetToDefault()
@@ -53,17 +65,9 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         selectableUIGroup = null;
     }
 
-    public virtual void OnPressed()
-    {
-        if(isSelected)
-        {
-            onPressed.Invoke();
-        }
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!mouseInteractable)
+        if (!isMouseInteractable)
             return;
 
         isMouseOver = true;
@@ -73,7 +77,7 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!mouseInteractable)
+        if (!isMouseInteractable)
             return;
 
         isMouseOver = false;
@@ -83,7 +87,7 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!mouseInteractable || !isMouseOver)
+        if (!isMouseInteractable || !isMouseOver)
             return;
 
         foreach(Coroutine coroutine in changeColorCorout)
@@ -99,7 +103,7 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!mouseInteractable || !isMouseOver)
+        if (!isMouseInteractable || !isMouseOver)
             return;
 
         foreach (Coroutine coroutine in changeColorCorout)
@@ -185,7 +189,7 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     #endregion
 
     [System.Serializable]
-    private struct ColorFader
+    protected struct ColorFader
     {
         public Color normalColor;
         public Color highlightedColor;
@@ -194,5 +198,16 @@ public class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         public TextMeshProUGUI text;
         public Image image;
         public float fadeDuration;
+
+        public ColorFader(in Color normalColor, in Color highlightedColor, in Color pressedColor, in Color selectedColor, TextMeshProUGUI text, Image image, float fadeDuration)
+        {
+            this.normalColor = normalColor;
+            this.highlightedColor = highlightedColor;
+            this.pressedColor = pressedColor;
+            this.selectedColor = selectedColor;
+            this.text = text;
+            this.image = image;
+            this.fadeDuration = fadeDuration;
+        }
     }
 }

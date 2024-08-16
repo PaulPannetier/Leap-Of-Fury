@@ -595,6 +595,125 @@
                     "value": "BezierUtility+CatmulRomSpline..ctor (UnityEngine.Vector2[] points) (at Assets/Scripts/AllScene/Custom/BezierUtility.cs:668)\nPathFinderToric.<FindBestCurve>g__CreateSpline|3_3 (UnityEngine.Vector2[] points, BezierUtility+SplineType splineType, PathFinderToric+<>c__DisplayClass3_0& ) (at Assets/Scripts/Gameplay/ToricSystem/PathFindingToric.cs:205)\nPathFinderToric.FindBestCurve (PathFinding.Map map, PathFinding.MapPoint start, PathFinding.MapPoint end, System.Func`2[T,TResult] convertMapPointToWorldPosition, System.Boolean allowDiagonal, BezierUtility+SplineType splineType, PathFinderToric+SmoothnessMode smoothnessMode, System.Single tension) (at Assets/Scripts/Gameplay/ToricSystem/PathFindingToric.cs:224)\nPathFinderToric.FindBestCurve (PathFinding.Map map, PathFinding.MapPoint start, PathFinding.MapPoint end, System.Func`2[T,TResult] convertMapPointToWorldPosition, System.Boolean allowDiagonal, BezierUtility+SplineType splineType, PathFinderToric+SmoothnessMode smoothnessMode) (at Assets/Scripts/Gameplay/ToricSystem/PathFindingToric.cs:24)\nBoomerang.HandleGetBackState () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:180)\nBoomerang.Update () (at Assets/Scripts/Gameplay/Player/Fight/Attack/WeakAttack/Boomerang.cs:95)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUIGroup.<Init>g__InitRecur|14_0 (SelectableUI selectableUI, System.Collections.Generic.HashSet`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:73)\nSelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:66)\nSelectableUIGroup.Start () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:58)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnPointerEnter (UnityEngine.EventSystems.PointerEventData eventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:70)\nUnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerEnterHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:29)\nUnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)\nUnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnPointerExit (UnityEngine.EventSystems.PointerEventData eventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:80)\nUnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerExitHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:36)\nUnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)\nUnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnPointerEnter (UnityEngine.EventSystems.PointerEventData eventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:74)\nUnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerEnterHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:29)\nUnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)\nUnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnPointerExit (UnityEngine.EventSystems.PointerEventData eventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:84)\nUnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerExitHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:36)\nUnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)\nUnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "LanguageManager.GetText (System.String textID) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:130)\nSettingMenu.InitOptions () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:53)\nSettingMenu.OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:180)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "OnPressed"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:23)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:206)\n"
+                }
+            ]
         }
     ]
 }
