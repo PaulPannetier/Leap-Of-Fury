@@ -28,7 +28,6 @@ public enum ControllerSelector
 
 public class SelectableUIGroup : MonoBehaviour
 {
-    private SelectableUI selectedUI = null;
     private ControllerType _controllerType;
     private ControllerType controllerType
     {
@@ -46,7 +45,6 @@ public class SelectableUIGroup : MonoBehaviour
 
     public bool enableBehaviour = true;
 
-    [SerializeField] private BaseController allowedController = BaseController.KeyboardAndGamepad;
     [SerializeField] private ControllerSelector controllerSelector = ControllerSelector.last;
     [SerializeField] private SelectableUI defaultUISelected;
     [SerializeField] private InputManager.GeneralInput upItemInput;
@@ -54,6 +52,10 @@ public class SelectableUIGroup : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput rightItemInput;
     [SerializeField] private InputManager.GeneralInput leftItemInput;
     [SerializeField] private InputManager.GeneralInput applyInput;
+    public BaseController allowedController = BaseController.KeyboardAndGamepad;
+
+    public SelectableUI selectedUI { get; private set; } = null;
+
 
     private void Start()
     {
@@ -91,6 +93,7 @@ public class SelectableUIGroup : MonoBehaviour
     {
         HashSet<SelectableUI> cache = new HashSet<SelectableUI>();
         ResetSelectableUIRecur(defaultUISelected, ref cache);
+        selectedUI = null;
 
         void ResetSelectableUIRecur(SelectableUI selectableUI, ref HashSet<SelectableUI> cache)
         {
@@ -157,53 +160,64 @@ public class SelectableUIGroup : MonoBehaviour
         }
         else
         {
-            bool changeControllerType = false;
-            if (controllerSelector == ControllerSelector.last)
+            if(selectedUI.isActive)
             {
-                if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
+                UpdateSelectedUI(selectedUI.MustMoveRightWhenActive(), selectedUI.MustMoveLeftWhenActive(), selectedUI.MustMoveUpWhenActive(), selectedUI.MustMoveDownWhenActive());
+            }
+            else
+            {
+                bool changeControllerType = false;
+                if (controllerSelector == ControllerSelector.last)
                 {
-                    if(this.controllerType != controllerType && IsControllerTypeAnAllowedController(controllerType))
+                    if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                     {
-                        this.controllerType = controllerType;
-                        changeControllerType = true;
+                        if (this.controllerType != controllerType && IsControllerTypeAnAllowedController(controllerType))
+                        {
+                            this.controllerType = controllerType;
+                            changeControllerType = true;
+                        }
+                    }
+                }
+
+                if (!changeControllerType)
+                {
+                    UpdateSelectedUI(rightItemInput.IsPressedDown(), leftItemInput.IsPressedDown(), upItemInput.IsPressedDown(), downItemInput.IsPressedDown());
+
+                    if (applyInput.IsPressedDown())
+                    {
+                        selectedUI.OnPressed();
                     }
                 }
             }
 
-            if(!changeControllerType)
+            void UpdateSelectedUI(bool moveRight, bool moveLeft, bool moveUp, bool moveDown)
             {
-                if (selectedUI.upSelectableUI != null && upItemInput.IsPressedDown())
+                if (selectedUI.upSelectableUI != null && moveUp)
                 {
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.upSelectableUI;
                     selectedUI.OnSelected();
                 }
 
-                if (selectedUI.downSelectableUI != null && downItemInput.IsPressedDown())
+                if (selectedUI.downSelectableUI != null && moveDown)
                 {
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.downSelectableUI;
                     selectedUI.OnSelected();
                 }
 
-                if (selectedUI.rightSelectableUI != null && rightItemInput.IsPressedDown())
+                if (selectedUI.rightSelectableUI != null && moveRight)
                 {
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.rightSelectableUI;
                     selectedUI.OnSelected();
                 }
 
-                if (selectedUI.leftSelectableUI != null && leftItemInput.IsPressedDown())
+                if (selectedUI.leftSelectableUI != null && moveLeft)
                 {
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.leftSelectableUI;
                     selectedUI.OnSelected();
-                }
-
-                //validate
-                if (applyInput.IsPressedDown())
-                {
-                    selectedUI.OnPressed();
                 }
             }
         }
@@ -261,5 +275,10 @@ public class SelectableUIGroup : MonoBehaviour
         key = (int)KeyCode.None;
         controllerType = ControllerType.Keyboard;
         return false;
+    }
+
+    private void OnDisable()
+    {
+        ResetToDefault();
     }
 }

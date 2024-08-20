@@ -1,18 +1,43 @@
 #if UNITY_EDITOR
 
-using System.Diagnostics;
 using UnityEngine;
+using TMPro;
 
 public class TestScript : MonoBehaviour
 {
-    private void Start()
+    public TMP_Dropdown dropdown;
+
+    public InputKey showOption = InputKey.S;
+    public InputKey hideOption = InputKey.H;
+
+    public void Update()
     {
-        EventManager.instance.callbackPreUpdate += PreUpdate;
+        if (InputManager.GetKeyDown(showOption))
+        {
+            print("Show");
+            dropdown.Show();
+        }
+
+        if (InputManager.GetKeyDown(hideOption))
+        {
+            print("Hide");
+            dropdown.Hide();
+        }
     }
 
-    private void PreUpdate()
+    private void OnValidate()
     {
-        print("PreUpdate");
+        //if(showOption)
+        //{
+        //    showOption = false;
+        //    dropdown.Select();
+        //}
+
+        //if(hideOption)
+        //{
+        //    hideOption = false;
+        //    dropdown.Hide();
+        //}
     }
 }
 

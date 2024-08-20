@@ -714,6 +714,686 @@
                     "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:23)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:206)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Decrease"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:42)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Increase"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:48)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SettingMenu.get_isUIElementActive () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:46)\nSettingMenu.Update () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:200)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "OnPressed"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:21)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:209)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Decrease"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:38)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Increase"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:44)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "OnPressed"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:37)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:210)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Decrease"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:54)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Increase"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:60)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "OnPressed"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:39)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:210)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Decrease"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:59)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Increase"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:65)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Decrease"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:57)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Increase"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nSliderSelectableUI:Update () (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:63)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:154)\nSelectableUIGroup.<Init>g__InitRecur|18_0 (SelectableUI selectableUI, System.Collections.Generic.HashSet`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:79)\nSelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:70)\nSelectableUIGroup.OnEnable () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:62)\nUnityEngine.GUIUtility:ProcessEvent(Int32, IntPtr, Boolean&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SliderSelectableUI.set_selectableUIGroup (SelectableUIGroup value) (at Assets/Scripts/AllScene/UI/SliderSelectableUI.cs:21)\nSelectableUI.ResetToDefault () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:80)\nSelectableUIGroup.<ResetToDefault>g__ResetSelectableUIRecur|19_0 (SelectableUI selectableUI, System.Collections.Generic.HashSet`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:103)\nSelectableUIGroup.ResetToDefault () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:95)\nSelectableUIGroup.OnDisable () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:283)\nUnityEngine.GameObject:SetActive(GameObject, Boolean)\nSettingMenu:Update() (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:205)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Select"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nDropDownSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/DropDownSelectableUI.cs:41)\nSelectableUIGroup:<Update>g__UpdateSelectedUI|22_0 (bool,bool,bool,bool) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:221)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:184)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnDeselected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:154)\nSelectableUIGroup.<Init>g__InitRecur|18_0 (SelectableUI selectableUI, System.Collections.Generic.HashSet`1[SelectableUI]& cache) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:79)\nSelectableUIGroup.Init () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:70)\nSelectableUIGroup.Start () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:62)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Dropdown List: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Viewport: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Content: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Item: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Item Background: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Item Checkmark: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Item Label: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Item 0: Option A: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Item 1: Option B: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Item 2: Option C: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Scrollbar: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Sliding Area: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Handle: OnCanvasGroupChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.StackTraceUtility:ExtractStackTrace ()\nTMPro.TMP_Dropdown:SetAlpha (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1080)\nUnityEngine.Events.UnityEvent`1<single>:Invoke (single)\nTMPro.FloatTween:TweenValue (single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:160)\nTMPro.TweenRunner`1/<Start>d__2<TMPro.FloatTween>:MoveNext () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:206)\nUnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nTMPro.TweenRunner`1<TMPro.FloatTween>:StartTween (TMPro.FloatTween) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_CoroutineTween.cs:234)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1071)\nTMPro.TMP_Dropdown:AlphaFadeList (single,single) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1060)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1092)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "SendMessage cannot be called during Awake, CheckConsistency, or OnValidate (Blocker: OnCanvasHierarchyChanged)"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Object:Destroy (UnityEngine.Object)\nTMPro.TMP_Dropdown:DestroyBlocker (UnityEngine.GameObject) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:977)\nTMPro.TMP_Dropdown:Hide () (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1100)\nTestScript:OnValidate () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:25)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Show"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nTestScript:Update () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:18)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Hide"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nTestScript:Update () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:24)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Show"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nTestScript:Update () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:17)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Hide"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nTestScript:Update () (at Assets/Scripts/AllScene/_DEBUG/TestScript.cs:23)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnPointerEnter (UnityEngine.EventSystems.PointerEventData eventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:89)\nUnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerEnterHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:29)\nUnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)\nUnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "SelectableUI.OnPointerExit (UnityEngine.EventSystems.PointerEventData eventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:99)\nUnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerExitHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:36)\nUnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)\nUnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Error"
+                },
+                {
+                    "type": "String",
+                    "value": "Failed setting EventSystem.current to unknown EventSystem "
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.EventSystems.EventSystem:set_current (UnityEngine.EventSystems.EventSystem)\nDropDownSelectableUI:<Update>g__Desactivate|11_0 () (at Assets/Scripts/AllScene/UI/DropDownSelectableUI.cs:82)\nDropDownSelectableUI:Update () (at Assets/Scripts/AllScene/UI/DropDownSelectableUI.cs:62)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Index change : 3"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nDropDownSelectableUI:OnDropdownValueChanged (int) (at Assets/Scripts/AllScene/UI/DropDownSelectableUI.cs:43)\nUnityEngine.Events.UnityEvent`1<int>:Invoke (int)\nTMPro.TMP_Dropdown:SetValue (int,bool) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:431)\nTMPro.TMP_Dropdown:set_value (int) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:406)\nTMPro.TMP_Dropdown:OnSelectItem (UnityEngine.UI.Toggle) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:1155)\nTMPro.TMP_Dropdown/<>c__DisplayClass70_0:<Show>b__0 (bool) (at ./Library/PackageCache/com.unity.textmeshpro@3.0.8/Scripts/Runtime/TMP_Dropdown.cs:820)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
         }
     ]
 }

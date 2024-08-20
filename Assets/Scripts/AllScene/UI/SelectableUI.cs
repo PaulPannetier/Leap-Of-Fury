@@ -22,7 +22,15 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 #if UNITY_EDITOR
     [Space, Space]
 #endif
-    [HideInInspector] public SelectableUIGroup selectableUIGroup;
+
+    private SelectableUIGroup _selectableUIGroup;
+    public virtual SelectableUIGroup selectableUIGroup
+    {
+        get => _selectableUIGroup;
+        set => _selectableUIGroup = value;
+    }
+
+    public bool isActive { get; protected set; } = false;
 
     private bool _isMouseInteractable = true;
     public virtual bool isMouseInteractable
@@ -34,7 +42,14 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
         }
     }
 
+    public bool isDesactivatedThisFrame { get; protected set; } = false;
+
     public abstract void OnPressed();
+
+    public virtual bool MustMoveRightWhenActive() => false;
+    public virtual bool MustMoveLeftWhenActive() => false;
+    public virtual bool MustMoveUpWhenActive() => false;
+    public virtual bool MustMoveDownWhenActive() => false;
 
     private void Awake()
     {
@@ -61,7 +76,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
                 fader.image.color = fader.normalColor;
         }
 
-        isSelected = isMouseOver = false;
+        isSelected = isMouseOver = isActive = false;
         selectableUIGroup = null;
     }
 
@@ -135,7 +150,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnDeselected()
     {
-        isSelected = false;
+        isSelected = isActive = false;
         foreach (Coroutine coroutine in changeColorCorout)
         {
             StopCoroutine(coroutine);

@@ -41,6 +41,9 @@ public class SettingMenu : MonoBehaviour
     [SerializeField] private TMP_Text defaultButtonText;
     [SerializeField] private InputManager.GeneralInput echapInput;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private SelectableUIGroup groupMenu;
+
+    public bool isUIElementActive => groupMenu.selectedUI != null && (groupMenu.selectedUI.isActive || groupMenu.selectedUI.isDesactivatedThisFrame);
 
     private void Awake()
     {
@@ -194,7 +197,7 @@ public class SettingMenu : MonoBehaviour
         if (!isEnable)
             return;
 
-        if(echapInput.IsPressedDown())
+        if((echapInput.controllerType == ControllerType.Keyboard || !isUIElementActive) && echapInput.IsPressedDown())
         {
             isEnable = false;
             mainMenu.SetActive(true);

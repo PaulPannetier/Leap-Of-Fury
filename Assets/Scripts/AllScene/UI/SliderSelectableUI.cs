@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class SliderSelectableUI : SelectableUI
 {
-    private bool isActive = false;
-
+    private bool isActivatedThisFrame = false;
     [SerializeField] private Slider slider;
 
     [SerializeField] private InputManager.GeneralInput inputIncrease;
@@ -12,42 +11,65 @@ public class SliderSelectableUI : SelectableUI
     [SerializeField] private InputManager.GeneralInput inputDesactive;
     [SerializeField] private float durationToFill = 1f;
 
+    public override SelectableUIGroup selectableUIGroup
+    { 
+        get => base.selectableUIGroup;
+        set
+        {
+            base.selectableUIGroup = value;
+            if (value != null)
+            {
+                ControllerType controllerType = ControllerType.Keyboard;
+                if (value.allowedController == BaseController.KeyboardAndGamepad)
+                    controllerType = ControllerType.All;
+                else if (value.allowedController == BaseController.Gamepad)
+                    controllerType = ControllerType.GamepadAll;
+
+                inputIncrease.controllerType = inputDecrease.controllerType = inputDesactive.controllerType = controllerType;
+            }
+        }    
+    }
+
 #if UNITY_EDITOR
     public bool generateDefaultSliderColorFaders = false;
 #endif
 
     public override void OnPressed()
     {
-        if(isSelected)
+        if(isSelected && !isDesactivatedThisFrame)
         {
-            print("OnPressed");
-            selectableUIGroup.enableBehaviour = false;
             isActive = true;
+            isActivatedThisFrame = true;
         }
     }
 
     private void Update()
     {
-        if (!isActive)
-            return;
+        isDesactivatedThisFrame = false;
 
-        if(inputDesactive.IsPressedDown())
+        if (!isActive)
+        {
+            isActivatedThisFrame = false;
+            return;
+        }
+
+        if (inputDesactive.IsPressedDown() && !isActivatedThisFrame)
         {
             isActive = false;
-            selectableUIGroup.enableBehaviour = true;
+            isDesactivatedThisFrame = true;
         }
 
         if(inputDecrease.IsPressed())
         {
-            print("Decrease");
             slider.value = Mathf.Max(0f, slider.value - (Time.deltaTime / durationToFill));
         }
 
         if(inputIncrease.IsPressed())
         {
-            print("Increase");
             slider.value = Mathf.Min(1f, slider.value + (Time.deltaTime / durationToFill));
         }
+
+        isActivatedThisFrame = false;
     }
 
     #region OnValidate
