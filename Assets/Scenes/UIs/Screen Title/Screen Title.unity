@@ -216,6 +216,127 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
   m_PrefabInstance: {fileID: 8970924278945479409}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &871109105 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 801489381, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &966302823 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1118501246, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &966302825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966302823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b155e22d3d9d4d143a66e8c562c1c248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colors:
+  - normalColor: {r: 0.9843137, g: 0.9843137, b: 0.9843137, a: 1}
+    highlightedColor: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 1}
+    pressedColor: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+    selectedColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
+    text: {fileID: 0}
+    image: {fileID: 2028749738}
+    fadeDuration: 0.1
+  upSelectableUI: {fileID: 1284490602}
+  downSelectableUI: {fileID: 1130853774}
+  rightSelectableUI: {fileID: 0}
+  leftSelectableUI: {fileID: 1284490602}
+  onButtonPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1625948554}
+        m_TargetAssemblyTypeName: SettingMenu, Assembly-CSharp
+        m_MethodName: OnApplyButtonDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &1037891656 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4471675702472801, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1037891658 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6631333187037895776, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037891656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1037891659 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1804071050776442317, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037891656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1037891661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037891656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d99590e7ede1db543af10ff6ff7d5283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colors:
+  - normalColor: {r: 0.9843137, g: 0.9843137, b: 0.9843137, a: 1}
+    highlightedColor: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 1}
+    pressedColor: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+    selectedColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
+    text: {fileID: 0}
+    image: {fileID: 1037891659}
+    fadeDuration: 0.1
+  upSelectableUI: {fileID: 0}
+  downSelectableUI: {fileID: 0}
+  rightSelectableUI: {fileID: 1130853774}
+  leftSelectableUI: {fileID: 1130853774}
+  dropdown: {fileID: 1037891658}
+  applyInput:
+    keysKeyboard: 0d0000000f010000
+    keyGamepad1: 5e010000
+    keyGamepad2: 72010000
+    keyGamepad3: 86010000
+    keyGamepad4: 9a010000
+    controllerType: 0
+  desactivateInput:
+    keysKeyboard: 1b000000
+    keyGamepad1: 5f010000
+    keyGamepad2: 73010000
+    keyGamepad3: 87010000
+    keyGamepad4: 9b010000
+    controllerType: 6
 --- !u!114 &1098750380 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9178026064046758666, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
@@ -257,6 +378,17 @@ MonoBehaviour:
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
   toggle: {fileID: 1098750380}
+--- !u!114 &1130853774 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4832861504504462543, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e80205aef0ac4f42a8a1c4f5ed8c96a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1229850465
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +424,50 @@ Transform:
   - {fileID: 1442455928}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1284490600 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1455191594, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1284490602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1284490600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b155e22d3d9d4d143a66e8c562c1c248, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colors:
+  - normalColor: {r: 0.9843137, g: 0.9843137, b: 0.9843137, a: 1}
+    highlightedColor: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 1}
+    pressedColor: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+    selectedColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
+    text: {fileID: 0}
+    image: {fileID: 871109105}
+    fadeDuration: 0.1
+  upSelectableUI: {fileID: 1454847599}
+  downSelectableUI: {fileID: 1130853774}
+  rightSelectableUI: {fileID: 966302825}
+  leftSelectableUI: {fileID: 0}
+  onButtonPressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1625948554}
+        m_TargetAssemblyTypeName: SettingMenu, Assembly-CSharp
+        m_MethodName: OnDefaultButtonDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1419993134 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 985891850, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
@@ -322,20 +498,6 @@ MonoBehaviour:
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
   dropdown: {fileID: 1949459972}
-  inputUp:
-    keysKeyboard: 11010000
-    keyGamepad1: fdfffffff9fffffff5ffffff
-    keyGamepad2: eeffffffeaffffffe6ffffff
-    keyGamepad3: dfffffffdbffffffd7ffffff
-    keyGamepad4: d0ffffffccffffffc8ffffff
-    controllerType: 0
-  inputDown:
-    keysKeyboard: 7300000012010000
-    keyGamepad1: fbfffffff8fffffff4ffffff
-    keyGamepad2: ecffffffe9ffffffe5ffffff
-    keyGamepad3: ddffffffdaffffffd6ffffff
-    keyGamepad4: ceffffffcbffffffc7ffffff
-    controllerType: 6
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -454,24 +616,10 @@ MonoBehaviour:
     image: {fileID: 299401061}
     fadeDuration: 0.1
   upSelectableUI: {fileID: 1100270106}
-  downSelectableUI: {fileID: 0}
+  downSelectableUI: {fileID: 1284490602}
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
   dropdown: {fileID: 299401059}
-  inputUp:
-    keysKeyboard: 11010000
-    keyGamepad1: fdfffffff9fffffff5ffffff
-    keyGamepad2: eeffffffeaffffffe6ffffff
-    keyGamepad3: dfffffffdbffffffd7ffffff
-    keyGamepad4: d0ffffffccffffffc8ffffff
-    controllerType: 0
-  inputDown:
-    keysKeyboard: 7300000012010000
-    keyGamepad1: fbfffffff8fffffff4ffffff
-    keyGamepad2: ecffffffe9ffffffe5ffffff
-    keyGamepad3: ddffffffdaffffffd6ffffff
-    keyGamepad4: ceffffffcbffffffc7ffffff
-    controllerType: 6
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -495,6 +643,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1625948554 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 430348432, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ae900e1599c9441bf8c73831c7927b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1652779618 stripped
@@ -527,20 +686,6 @@ MonoBehaviour:
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
   dropdown: {fileID: 2117040528}
-  inputUp:
-    keysKeyboard: 11010000
-    keyGamepad1: fdfffffff9fffffff5ffffff
-    keyGamepad2: eeffffffeaffffffe6ffffff
-    keyGamepad3: dfffffffdbffffffd7ffffff
-    keyGamepad4: d0ffffffccffffffc8ffffff
-    controllerType: 0
-  inputDown:
-    keysKeyboard: 7300000012010000
-    keyGamepad1: fbfffffff8fffffff4ffffff
-    keyGamepad2: ecffffffe9ffffffe5ffffff
-    keyGamepad3: ddffffffdaffffffd6ffffff
-    keyGamepad4: ceffffffcbffffffc7ffffff
-    controllerType: 6
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -662,20 +807,6 @@ MonoBehaviour:
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
   dropdown: {fileID: 7257736670912565204}
-  inputUp:
-    keysKeyboard: 11010000
-    keyGamepad1: fdfffffff9fffffff5ffffff
-    keyGamepad2: eeffffffeaffffffe6ffffff
-    keyGamepad3: dfffffffdbffffffd7ffffff
-    keyGamepad4: d0ffffffccffffffc8ffffff
-    controllerType: 0
-  inputDown:
-    keysKeyboard: 7300000012010000
-    keyGamepad1: fbfffffff8fffffff4ffffff
-    keyGamepad2: ecffffffe9ffffffe5ffffff
-    keyGamepad3: ddffffffdaffffffd6ffffff
-    keyGamepad4: ceffffffcbffffffc7ffffff
-    controllerType: 6
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -690,6 +821,17 @@ MonoBehaviour:
     keyGamepad3: 87010000
     keyGamepad4: 9b010000
     controllerType: 6
+--- !u!114 &2028749738 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1194399896, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+  m_PrefabInstance: {fileID: 7257736670912565202}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2117040528 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1405352481, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
@@ -912,7 +1054,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 430348430, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 439446766, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_IsActive
@@ -1025,6 +1167,10 @@ PrefabInstance:
     - target: {fileID: 1073484811578574396, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -590
+      objectReference: {fileID: 0}
+    - target: {fileID: 1804071050776442317, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1913149143755195774, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1306,6 +1452,18 @@ PrefabInstance:
       propertyPath: durationToFill
       value: 0.75
       objectReference: {fileID: 0}
+    - target: {fileID: 4832861504504462543, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: upSelectableUI
+      value: 
+      objectReference: {fileID: 966302825}
+    - target: {fileID: 4832861504504462543, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: leftSelectableUI
+      value: 
+      objectReference: {fileID: 1037891661}
+    - target: {fileID: 4832861504504462543, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: rightSelectableUI
+      value: 
+      objectReference: {fileID: 1037891661}
     - target: {fileID: 4832861504504462543, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: inputIncrease.controllerType
       value: 6
@@ -1800,6 +1958,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6856944009028530179, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1454847599}
+    - targetCorrespondingSourceObject: {fileID: 1455191594, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1284490602}
+    - targetCorrespondingSourceObject: {fileID: 1118501246, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 966302825}
+    - targetCorrespondingSourceObject: {fileID: 4471675702472801, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1037891661}
   m_SourcePrefab: {fileID: 100100000, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
 --- !u!114 &7257736670912565203 stripped
 MonoBehaviour:

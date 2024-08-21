@@ -51,13 +51,13 @@ public class ControlItem : MonoBehaviour
         isListening = false;
     }
 
+    public void SetKey(InputKey key)
+    {
+        this.key = key == InputKey.Escape ? InputKey.None : key;
+    }
+
     private void Update()
     {
-        void SetKey(InputKey key)
-        {
-            this.key = key == InputKey.Escape ? InputKey.None : key;
-        }
-
         if(isListening)
         {
             if(InputManager.Listen(controller, out InputKey key))

@@ -2,12 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using System;
 
 public class DropDownSelectableUI : SelectableUI
 {
+    private const float delayBetweenStartHoldingAndRepeateKey = 0.5f;
+    private const float delayBetweenRepeatingKey = 0.1f;
+
     private bool isActivatedThisFrame = false;
     private InputManager.GeneralInput downInput, upInput;
     private int initValue, currentValue;
+    private float lastTimeHoldChangeKey = -10f;
+    private bool isDelayBetweenStartHoldingAndRepeateKeyPass;
 
     [SerializeField] private TMP_Dropdown dropdown;
     [SerializeField] private InputManager.GeneralInput applyInput;
@@ -35,32 +41,33 @@ public class DropDownSelectableUI : SelectableUI
     protected override void Start()
     {
         base.Start();
-        downInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.UpArrow };
-        downInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLUp };
-        downInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLUp };
-        downInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLUp };
-        downInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLUp };
+        upInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.UpArrow };
+        upInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLUp };
+        upInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLUp };
+        upInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLUp };
+        upInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLUp };
 
-        upInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.DownArrow };
-        upInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLDown };
-        upInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLDown };
-        upInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLDown };
-        upInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLDown };
+        downInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.DownArrow };
+        downInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLDown };
+        downInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLDown };
+        downInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLDown };
+        downInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLDown };
     }
 
     private void AdjustScrollPosition()
     {
+        float normalizedIndexPosition = currentValue / (dropdown.options.Count - 1f);
+        SetExtendedDropdownPosition(normalizedIndexPosition);
+    }
+
+    private void SetExtendedDropdownPosition(float position)
+    {
         if (dropdown.transform.Find("Dropdown List"))
         {
-            // Get the ScrollRect component (which contains the scrollbar and viewport)
             ScrollRect scrollRect = dropdown.transform.Find("Dropdown List").GetComponentInChildren<ScrollRect>();
-
             if (scrollRect != null)
             {
-                // Calculate the relative position of the selected item (normalized between 0 and 1)
-                float normalizedIndexPosition = (float)currentValue / (dropdown.options.Count - 1f);
-                // Smoothly move the scrollbar to the selected item
-                scrollRect.verticalNormalizedPosition = 1f - Mathf.Clamp01(normalizedIndexPosition);
+                scrollRect.verticalNormalizedPosition = 1f - Mathf.Clamp01(position);
             }
         }
     }
@@ -73,6 +80,20 @@ public class DropDownSelectableUI : SelectableUI
             dropdown.Show();
             initValue = currentValue = dropdown.value;
         }
+    }
+
+    private void IncreaseCurrentValue()
+    {
+        currentValue = Mathf.Min(dropdown.options.Count - 1, currentValue + 1);
+        AdjustScrollPosition();
+        lastTimeHoldChangeKey = Time.time;
+    }
+
+    private void DecreaseCurrentValue()
+    {
+        currentValue = Mathf.Max(0, currentValue - 1);
+        AdjustScrollPosition();
+        lastTimeHoldChangeKey = Time.time;
     }
 
     private void Update()
@@ -98,14 +119,47 @@ public class DropDownSelectableUI : SelectableUI
 
         if(upInput.IsPressedDown())
         {
-            currentValue = Mathf.Min(0, currentValue - 1);
-            AdjustScrollPosition();
+            DecreaseCurrentValue();
         }
 
         if(downInput.IsPressedDown())
         {
-            currentValue = Mathf.Max(dropdown.options.Count - 1, currentValue + 1);
-            AdjustScrollPosition();
+            IncreaseCurrentValue();
+        }
+
+        void HandleReapitingKey(Action action)
+        {
+            if (isDelayBetweenStartHoldingAndRepeateKeyPass)
+            {
+                if (Time.time - lastTimeHoldChangeKey > delayBetweenRepeatingKey)
+                {
+                    action.Invoke();
+                }
+            }
+            else
+            {
+                if (Time.time - lastTimeHoldChangeKey > delayBetweenStartHoldingAndRepeateKey)
+                {
+                    isDelayBetweenStartHoldingAndRepeateKeyPass = true;
+                    action.Invoke();
+                }
+            }
+        }
+
+        if(upInput.IsPressed())
+        {
+            HandleReapitingKey(DecreaseCurrentValue);
+        }
+
+        if (downInput.IsPressed())
+        {
+            HandleReapitingKey(IncreaseCurrentValue);
+        }
+
+        if (upInput.IsPressedUp() || downInput.IsPressedUp())
+        {
+            lastTimeHoldChangeKey = -10f;
+            isDelayBetweenStartHoldingAndRepeateKeyPass = false;
         }
 
         isActivatedThisFrame = false;
@@ -115,7 +169,7 @@ public class DropDownSelectableUI : SelectableUI
             isActive = false;
             isDesactivatedThisFrame = true;
             dropdown.Hide();
-            //This lane is terrible, can't UnSelect the TMP_Dropdown so select a random gameobject to unselect the dropdown
+            //This line is terrible, can't UnSelect the TMP_Dropdown so select a random gameobject to unselect the dropdown
             EventSystem.current.SetSelectedGameObject(gameObject);
         }
     }
