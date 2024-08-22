@@ -7,8 +7,20 @@ public class ControlManagerSettingMenu : MonoBehaviour
 {
     public static ControlManagerSettingMenu instance;
 
+    [SerializeField] private SelectableUI masterVolume;
+    [SerializeField] private SelectableUI musicVolume;
+    [SerializeField] private SelectableUI soundFXVolume;
+    [SerializeField] private SelectableUI windowMode;
+    [SerializeField] private SelectableUI resolution;
+    [SerializeField] private SelectableUI framerate;
+    [SerializeField] private SelectableUI vsync;
+    [SerializeField] private SelectableUI language;
+    [SerializeField] private SelectableUI defaultButton;
+    [SerializeField] private SelectableUI applyButton;
+
+    [Space, Space]
     [SerializeField] private TextMeshProUGUI controlText;
-    [SerializeField] private TMP_Dropdown inputTypeDropdown;
+    [SerializeField] private DropDownSelectableUI inputTypeDropdown;
     [SerializeField] private ControlItem moveUp;
     [SerializeField] private ControlItem moveDown;
     [SerializeField] private ControlItem moveRight;
@@ -30,7 +42,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         instance = this;
     }
 
-    public BaseController GetSelectedBaseController() => inputTypeDropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
+    public BaseController GetSelectedBaseController() => inputTypeDropdown.dropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
 
     private void RefreshSettings()
     {
@@ -49,16 +61,17 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     private void RefreshControl(bool defaultControl)
     {
-        inputTypeDropdown.options = new List<TMP_Dropdown.OptionData>()
+        inputTypeDropdown.dropdown.options = new List<TMP_Dropdown.OptionData>()
         {
             new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("keyboard") },
             new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("gamepad") }
         };
 
-        inputTypeDropdown.onValueChanged.RemoveAllListeners();
-        inputTypeDropdown.onValueChanged.AddListener(OnInputTypeChanged);
+        inputTypeDropdown.dropdown.onValueChanged.RemoveAllListeners();
+        inputTypeDropdown.dropdown.onValueChanged.AddListener(OnInputTypeChanged);
 
         SetKeysKey(defaultControl);
+        SetUINeighbourhood();
     }
 
     private void OnInputTypeChanged(int value)
@@ -70,6 +83,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         moveRight.gameObject.SetActive(activeKB);
         moveLeft.gameObject.SetActive(activeKB);
         SetKeysKey(false);
+        SetUINeighbourhood();
     }
 
     public void OnApplyButtonDown()
@@ -118,6 +132,105 @@ public class ControlManagerSettingMenu : MonoBehaviour
         interactControl.key = InputManager.GetInputKey("Interact", curCon, defaultConfig)[0];
     }
 
+    private void SetUINeighbourhood()
+    {
+        bool kbLayout = GetSelectedBaseController() == BaseController.Keyboard;
+        if(kbLayout)
+        {
+            inputTypeDropdown.upSelectableUI = interactControl.selectableUI;
+            inputTypeDropdown.downSelectableUI = moveUp.selectableUI;
+            inputTypeDropdown.rightSelectableUI = masterVolume;
+            inputTypeDropdown.leftSelectableUI = masterVolume;
+
+            moveUp.selectableUI.upSelectableUI = inputTypeDropdown;
+            moveUp.selectableUI.downSelectableUI = moveRight.selectableUI;
+            moveUp.selectableUI.rightSelectableUI = musicVolume;
+            moveUp.selectableUI.leftSelectableUI = musicVolume;
+
+            moveDown.selectableUI.upSelectableUI = moveUp.selectableUI;
+            moveDown.selectableUI.downSelectableUI = moveRight.selectableUI;
+            moveDown.selectableUI.rightSelectableUI = soundFXVolume;
+            moveDown.selectableUI.leftSelectableUI = soundFXVolume;
+
+            moveRight.selectableUI.upSelectableUI = moveDown.selectableUI;
+            moveRight.selectableUI.downSelectableUI = moveLeft.selectableUI;
+            moveRight.selectableUI.rightSelectableUI = windowMode;
+            moveRight.selectableUI.leftSelectableUI = windowMode;
+
+            moveLeft.selectableUI.upSelectableUI = moveRight.selectableUI;
+            moveLeft.selectableUI.downSelectableUI = dashControl.selectableUI;
+            moveLeft.selectableUI.rightSelectableUI = resolution;
+            moveLeft.selectableUI.leftSelectableUI = resolution;
+
+            dashControl.selectableUI.upSelectableUI = moveLeft.selectableUI;
+            dashControl.selectableUI.downSelectableUI = jumpControl.selectableUI;
+            dashControl.selectableUI.rightSelectableUI = framerate;
+            dashControl.selectableUI.leftSelectableUI = framerate;
+
+            jumpControl.selectableUI.upSelectableUI = dashControl.selectableUI;
+            jumpControl.selectableUI.downSelectableUI = grapControl.selectableUI;
+            jumpControl.selectableUI.rightSelectableUI = vsync;
+            jumpControl.selectableUI.leftSelectableUI = vsync;
+
+            grapControl.selectableUI.upSelectableUI = jumpControl.selectableUI;
+            grapControl.selectableUI.downSelectableUI = attack1Control.selectableUI;
+            grapControl.selectableUI.rightSelectableUI = vsync;
+            grapControl.selectableUI.leftSelectableUI = vsync;
+
+            attack1Control.selectableUI.upSelectableUI = grapControl.selectableUI;
+            attack1Control.selectableUI.downSelectableUI = attack2Control.selectableUI;
+            attack1Control.selectableUI.rightSelectableUI = language;
+            attack1Control.selectableUI.leftSelectableUI = language;
+
+            attack2Control.selectableUI.upSelectableUI = attack1Control.selectableUI;
+            attack2Control.selectableUI.downSelectableUI = interactControl.selectableUI;
+            attack2Control.selectableUI.rightSelectableUI = language;
+            attack2Control.selectableUI.leftSelectableUI = language;
+
+            interactControl.selectableUI.upSelectableUI = attack2Control.selectableUI;
+            interactControl.selectableUI.downSelectableUI = inputTypeDropdown;
+            interactControl.selectableUI.rightSelectableUI = applyButton;
+            interactControl.selectableUI.leftSelectableUI = applyButton;
+        }
+        else
+        {
+            inputTypeDropdown.upSelectableUI = interactControl.selectableUI;
+            inputTypeDropdown.downSelectableUI = dashControl.selectableUI;
+            inputTypeDropdown.rightSelectableUI = masterVolume;
+            inputTypeDropdown.leftSelectableUI = masterVolume;
+
+            dashControl.selectableUI.upSelectableUI = inputTypeDropdown;
+            dashControl.selectableUI.downSelectableUI = jumpControl.selectableUI;
+            dashControl.selectableUI.rightSelectableUI = framerate;
+            dashControl.selectableUI.leftSelectableUI = framerate;
+
+            jumpControl.selectableUI.upSelectableUI = dashControl.selectableUI;
+            jumpControl.selectableUI.downSelectableUI = grapControl.selectableUI;
+            jumpControl.selectableUI.rightSelectableUI = vsync;
+            jumpControl.selectableUI.leftSelectableUI = vsync;
+
+            grapControl.selectableUI.upSelectableUI = jumpControl.selectableUI;
+            grapControl.selectableUI.downSelectableUI = attack1Control.selectableUI;
+            grapControl.selectableUI.rightSelectableUI = vsync;
+            grapControl.selectableUI.leftSelectableUI = vsync;
+
+            attack1Control.selectableUI.upSelectableUI = grapControl.selectableUI;
+            attack1Control.selectableUI.downSelectableUI = attack2Control.selectableUI;
+            attack1Control.selectableUI.rightSelectableUI = language;
+            attack1Control.selectableUI.leftSelectableUI = language;
+
+            attack2Control.selectableUI.upSelectableUI = attack1Control.selectableUI;
+            attack2Control.selectableUI.downSelectableUI = interactControl.selectableUI;
+            attack2Control.selectableUI.rightSelectableUI = language;
+            attack2Control.selectableUI.leftSelectableUI = language;
+
+            interactControl.selectableUI.upSelectableUI = attack2Control.selectableUI;
+            interactControl.selectableUI.downSelectableUI = inputTypeDropdown;
+            interactControl.selectableUI.rightSelectableUI = applyButton;
+            interactControl.selectableUI.leftSelectableUI = applyButton;
+        }
+    }
+
     private void OnEnable()
     {
         StartCoroutine(OnEnableCorout());
@@ -128,7 +241,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
         yield return null;
         yield return null;
 
-        inputTypeDropdown.value = 0;
+        inputTypeDropdown.dropdown.value = 0;
 
         RefreshSettings();
         RefreshControl(false);

@@ -19,12 +19,14 @@ public class ControlItem : MonoBehaviour
         }
     }
     public bool isListening { get; private set; }
+    public SelectableUI selectableUI { get; private set; }
 
     private void Awake()
     {
         nameText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         keyText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         keyButton = transform.GetChild(1).GetComponent<Button>();
+        selectableUI = GetComponent<SelectableUI>();
         keyButton.onClick.AddListener(OnKeyButtonDown);
     }
 

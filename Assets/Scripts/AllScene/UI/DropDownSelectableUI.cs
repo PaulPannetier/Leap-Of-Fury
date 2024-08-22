@@ -15,9 +15,11 @@ public class DropDownSelectableUI : SelectableUI
     private float lastTimeHoldChangeKey = -10f;
     private bool isDelayBetweenStartHoldingAndRepeateKeyPass;
 
-    [SerializeField] private TMP_Dropdown dropdown;
+    [SerializeField] private TMP_Dropdown _dropdown;
     [SerializeField] private InputManager.GeneralInput applyInput;
     [SerializeField] private InputManager.GeneralInput desactivateInput;
+
+    public TMP_Dropdown dropdown => _dropdown;
 
     public override SelectableUIGroup selectableUIGroup
     {

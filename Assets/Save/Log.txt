@@ -1831,6 +1831,23 @@
                     "value": "UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nSelectableUI:OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:147)\nSelectableUIGroup:<Update>g__UpdateSelectedUI|22_0 (bool,bool,bool,bool) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:206)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:184)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "ControlManagerSettingMenu+<OnEnableCorout>d__33.MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:244)\nUnityEngine.SetupCoroutine.InvokeMoveNext (System.Collections.IEnumerator enumerator, System.IntPtr returnValueAddress) (at <011ccacb58784a80ac4b48b4c50ee0b7>:0)\n"
+                }
+            ]
         }
     ]
 }

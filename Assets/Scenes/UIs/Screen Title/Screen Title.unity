@@ -670,7 +670,7 @@ MonoBehaviour:
   downSelectableUI: {fileID: 7257736670912565207}
   rightSelectableUI: {fileID: 1130853774}
   leftSelectableUI: {fileID: 1130853774}
-  dropdown: {fileID: 1037891658}
+  _dropdown: {fileID: 1037891658}
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -878,7 +878,7 @@ MonoBehaviour:
   downSelectableUI: {fileID: 1652779620}
   rightSelectableUI: {fileID: 1037891661}
   leftSelectableUI: {fileID: 1037891661}
-  dropdown: {fileID: 1949459972}
+  _dropdown: {fileID: 1949459972}
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   downSelectableUI: {fileID: 1284490602}
   rightSelectableUI: {fileID: 1037891661}
   leftSelectableUI: {fileID: 1037891661}
-  dropdown: {fileID: 299401059}
+  _dropdown: {fileID: 299401059}
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -1077,7 +1077,7 @@ MonoBehaviour:
   downSelectableUI: {fileID: 1100270106}
   rightSelectableUI: {fileID: 1037891661}
   leftSelectableUI: {fileID: 1037891661}
-  dropdown: {fileID: 2117040528}
+  _dropdown: {fileID: 2117040528}
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -1314,7 +1314,7 @@ MonoBehaviour:
   downSelectableUI: {fileID: 1419993136}
   rightSelectableUI: {fileID: 1037891661}
   leftSelectableUI: {fileID: 1037891661}
-  dropdown: {fileID: 7257736670912565204}
+  _dropdown: {fileID: 7257736670912565204}
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 5e010000
@@ -1984,6 +1984,46 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: vsync
+      value: 
+      objectReference: {fileID: 1100270106}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: language
+      value: 
+      objectReference: {fileID: 1454847599}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: framerate
+      value: 
+      objectReference: {fileID: 1652779620}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: resolution
+      value: 
+      objectReference: {fileID: 1419993136}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: windowMode
+      value: 
+      objectReference: {fileID: 2022177001}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: applyButton
+      value: 
+      objectReference: {fileID: 966302825}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: musicVolume
+      value: 
+      objectReference: {fileID: 7257736670912565203}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: masterVolume
+      value: 
+      objectReference: {fileID: 1130853774}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: defaultButton
+      value: 
+      objectReference: {fileID: 1284490602}
+    - target: {fileID: 3694118879773068922, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: soundFXVolume
+      value: 
+      objectReference: {fileID: 96725482}
     - target: {fileID: 3977043525648929251, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
