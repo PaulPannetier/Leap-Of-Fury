@@ -51,7 +51,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
     public virtual bool MustMoveUpWhenActive() => false;
     public virtual bool MustMoveDownWhenActive() => false;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         changeColorCorout = new List<Coroutine>();
     }

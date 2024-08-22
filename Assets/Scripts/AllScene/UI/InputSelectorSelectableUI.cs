@@ -1,25 +1,13 @@
 using UnityEngine;
-using TMPro;
 
 public class InputSelectorSelectableUI : SelectableUI
 {
-    private bool isActivatedThisFrame = false;
-    private BaseController controller;
+    private ControlItem controlItem;
 
-    [SerializeField] private TMP_Text inputText;
-    [SerializeField] private TMP_Text keyText;
-
-    public override SelectableUIGroup selectableUIGroup
+    protected override void Awake()
     {
-        get => base.selectableUIGroup;
-        set
-        {
-            base.selectableUIGroup = value;
-            if (value != null)
-            {
-                controller = value.allowedController;
-            }
-        }
+        base.Awake();
+        controlItem = GetComponent<ControlItem>();
     }
 
     public override void OnPressed()
@@ -27,28 +15,20 @@ public class InputSelectorSelectableUI : SelectableUI
         if (isSelected && !isDesactivatedThisFrame)
         {
             isActive = true;
-            isActivatedThisFrame = true;
-            keyText.text = string.Empty;
+            controlItem.StartListening();
         }
     }
 
     private void Update()
     {
         isDesactivatedThisFrame = false;
-
         if (!isActive)
-        {
-            isActivatedThisFrame = false;
             return;
-        }
 
-        if(InputManager.Listen(controller, out InputKey key) && !isActivatedThisFrame)
+        if(!controlItem.isListening)
         {
-            print(key);
             isActive = false;
             isDesactivatedThisFrame = true;
         }
-
-        isActivatedThisFrame = false;
     }
 }

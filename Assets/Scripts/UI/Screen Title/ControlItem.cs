@@ -6,8 +6,7 @@ public class ControlItem : MonoBehaviour
 {
     private TextMeshProUGUI nameText, keyText;
     private Button keyButton;
-    private bool isListening;
-    private BaseController controller;
+    private BaseController controller => ControlManagerSettingMenu.instance.GetSelectedBaseController();
 
     private InputKey _key;
     public InputKey key
@@ -19,6 +18,7 @@ public class ControlItem : MonoBehaviour
             keyText.text = InputManager.KeyToString(key);
         }
     }
+    public bool isListening { get; private set; }
 
     private void Awake()
     {
@@ -33,17 +33,15 @@ public class ControlItem : MonoBehaviour
         nameText.text = text;
     }
 
-    public void OnKeyButtonDown()
+    private void OnKeyButtonDown()
     {
-        if(!ControlManagerSettingMenu.instance.isInputListening)
-        {
-            isListening = true;
-            controller = ControlManagerSettingMenu.instance.GetSelectedBaseController();
-        }
-        else
-        {
-            StopListening();
-        }
+        StartListening();
+    }
+
+    public void StartListening()
+    {
+        isListening = true;
+        keyText.text = string.Empty;
     }
 
     public void StopListening()
@@ -51,7 +49,7 @@ public class ControlItem : MonoBehaviour
         isListening = false;
     }
 
-    public void SetKey(InputKey key)
+    private void SetKey(InputKey key)
     {
         this.key = key == InputKey.Escape ? InputKey.None : key;
     }
@@ -62,16 +60,7 @@ public class ControlItem : MonoBehaviour
         {
             if(InputManager.Listen(controller, out InputKey key))
             {
-                if(ControlManagerSettingMenu.instance.GetSelectedBaseController() == BaseController.Gamepad)
-                {
-                    if(InputManager.IsGamepadKey(key))
-                        SetKey(key);
-                }
-                else
-                {
-                    if (InputManager.IsKeyboardKey(key))
-                        SetKey(key);
-                }
+                SetKey(key);
                 StopListening();
             }
         }

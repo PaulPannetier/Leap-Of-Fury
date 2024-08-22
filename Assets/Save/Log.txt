@@ -1814,6 +1814,23 @@
         {
             "errorMessage": "The text with id : gamepad with the language : Francais doesn't exist",
             "logParams": []
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Error"
+                },
+                {
+                    "type": "String",
+                    "value": "Coroutine couldn't be started because the the game object 'MoveUp' is inactive!"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)\nSelectableUI:OnSelected () (at Assets/Scripts/AllScene/UI/SelectableUI.cs:147)\nSelectableUIGroup:<Update>g__UpdateSelectedUI|22_0 (bool,bool,bool,bool) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:206)\nSelectableUIGroup:Update () (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:184)\n"
+                }
+            ]
         }
     ]
 }

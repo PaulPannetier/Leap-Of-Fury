@@ -7,9 +7,6 @@ public class ControlManagerSettingMenu : MonoBehaviour
 {
     public static ControlManagerSettingMenu instance;
 
-    private ControlItem listeningInput;
-    public bool isInputListening => listeningInput != null;
-
     [SerializeField] private TextMeshProUGUI controlText;
     [SerializeField] private TMP_Dropdown inputTypeDropdown;
     [SerializeField] private ControlItem moveUp;
@@ -66,12 +63,6 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     private void OnInputTypeChanged(int value)
     {
-        if(listeningInput != null)
-        {
-            listeningInput.StopListening();
-            listeningInput = null;
-        }
-
         BaseController curCon = GetSelectedBaseController();
         bool activeKB = curCon == BaseController.Keyboard;
         moveUp.gameObject.SetActive(activeKB);
