@@ -2,14 +2,7 @@ using UnityEngine;
 
 public class ButtonsFunction : MonoBehaviour
 {
-    private SelectableUIGroup selectableUIGroup;
-
     [SerializeField] private SettingMenu settingMenu;
-
-    private void Awake()
-    {
-        selectableUIGroup = GetComponent<SelectableUIGroup>();
-    }
 
     public void LoadCharSelectorScene()
     {
@@ -18,7 +11,6 @@ public class ButtonsFunction : MonoBehaviour
 
     public void LoadOption()
     {
-        selectableUIGroup.enableBehaviour = false;
         settingMenu.gameObject.SetActive(true);
     }
 

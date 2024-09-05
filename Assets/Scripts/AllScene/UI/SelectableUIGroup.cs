@@ -56,7 +56,6 @@ public class SelectableUIGroup : MonoBehaviour
 
     public SelectableUI selectedUI { get; private set; } = null;
 
-
     private void Start()
     {
         Init();
@@ -122,9 +121,18 @@ public class SelectableUIGroup : MonoBehaviour
         selectedUI = selectableUI;
     }
 
+    public void DeselectSelecteUI()
+    {
+        if(selectedUI != null)
+        {
+            selectedUI.OnDeselected();
+        }
+        selectedUI = null;
+    }
+
     public void RequestDeselected(SelectableUI selectableUI)
     {
-        if(selectedUI != selectableUI)
+        if(selectedUI != selectableUI && selectedUI != null)
         {
             selectedUI.OnDeselected();
         }
@@ -275,10 +283,5 @@ public class SelectableUIGroup : MonoBehaviour
         key = (int)KeyCode.None;
         controllerType = ControllerType.Keyboard;
         return false;
-    }
-
-    private void OnDisable()
-    {
-        ResetToDefault();
     }
 }

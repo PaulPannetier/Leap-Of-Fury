@@ -7,7 +7,7 @@ public class ControlItem : MonoBehaviour
     private TextMeshProUGUI nameText, keyText;
     private Button keyButton;
     private BaseController controller => ControlManagerSettingMenu.instance.GetSelectedBaseController();
-
+    private bool isStartingListeningThisFrame;
     private InputKey _key;
     public InputKey key
     {
@@ -42,7 +42,7 @@ public class ControlItem : MonoBehaviour
 
     public void StartListening()
     {
-        isListening = true;
+        isListening = isStartingListeningThisFrame = true;
         keyText.text = string.Empty;
     }
 
@@ -60,11 +60,12 @@ public class ControlItem : MonoBehaviour
     {
         if(isListening)
         {
-            if(InputManager.Listen(controller, out InputKey key))
+            if(InputManager.Listen(controller, out InputKey key) && !isStartingListeningThisFrame)
             {
                 SetKey(key);
                 StopListening();
             }
+            isStartingListeningThisFrame = false;
         }
     }
 }

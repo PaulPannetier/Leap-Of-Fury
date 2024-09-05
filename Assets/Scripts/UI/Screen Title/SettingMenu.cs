@@ -20,6 +20,7 @@ public class SettingMenu : MonoBehaviour
     private Vector2Int[] availableResolutions;
     private RefreshRate[] availableFramerate;
     private bool isEnable;
+    private Vector2 oldMousePosition;
 
     [SerializeField] private Slider masterSlider;
     [SerializeField] private TMP_Text masterText;
@@ -48,6 +49,7 @@ public class SettingMenu : MonoBehaviour
     private void Awake()
     {
         isEnable = false;
+        oldMousePosition = InputManager.mousePosition;
     }
 
     private void InitOptions()
@@ -175,6 +177,12 @@ public class SettingMenu : MonoBehaviour
         ControlManagerSettingMenu.instance.OnDefaultButtonDown();
     }
 
+
+    private void EnableGroupMenu()
+    {
+        groupMenu.Init();
+    }
+
     private void OnEnable()
     {
         availableResolutions = SettingsManager.instance.GetAvailableResolutions();
@@ -188,6 +196,9 @@ public class SettingMenu : MonoBehaviour
         {
             t.gameObject.SetActive(true);
         }
+
+        this.InvokeWaitAFrame(nameof(EnableGroupMenu));
+
         mainMenu.SetActive(false);
         isEnable = true;
     }
@@ -200,9 +211,15 @@ public class SettingMenu : MonoBehaviour
         if((echapInput.controllerType == ControllerType.Keyboard || !isUIElementActive) && echapInput.IsPressedDown())
         {
             isEnable = false;
+            groupMenu.ResetToDefault();
             mainMenu.SetActive(true);
-            mainMenu.GetComponentInChildren<SelectableUIGroup>().enableBehaviour = true;
             gameObject.SetActive(false);
         }
+
+        if(InputManager.mousePosition != oldMousePosition)
+        {
+            groupMenu.DeselectSelecteUI();
+        }
+        oldMousePosition = InputManager.mousePosition;
     }
 }

@@ -143,7 +143,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
             inputTypeDropdown.leftSelectableUI = masterVolume;
 
             moveUp.selectableUI.upSelectableUI = inputTypeDropdown;
-            moveUp.selectableUI.downSelectableUI = moveRight.selectableUI;
+            moveUp.selectableUI.downSelectableUI = moveDown.selectableUI;
             moveUp.selectableUI.rightSelectableUI = musicVolume;
             moveUp.selectableUI.leftSelectableUI = musicVolume;
 
@@ -201,33 +201,33 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
             dashControl.selectableUI.upSelectableUI = inputTypeDropdown;
             dashControl.selectableUI.downSelectableUI = jumpControl.selectableUI;
-            dashControl.selectableUI.rightSelectableUI = framerate;
-            dashControl.selectableUI.leftSelectableUI = framerate;
+            dashControl.selectableUI.rightSelectableUI = musicVolume;
+            dashControl.selectableUI.leftSelectableUI = musicVolume;
 
             jumpControl.selectableUI.upSelectableUI = dashControl.selectableUI;
             jumpControl.selectableUI.downSelectableUI = grapControl.selectableUI;
-            jumpControl.selectableUI.rightSelectableUI = vsync;
-            jumpControl.selectableUI.leftSelectableUI = vsync;
+            jumpControl.selectableUI.rightSelectableUI = soundFXVolume;
+            jumpControl.selectableUI.leftSelectableUI = soundFXVolume;
 
             grapControl.selectableUI.upSelectableUI = jumpControl.selectableUI;
             grapControl.selectableUI.downSelectableUI = attack1Control.selectableUI;
-            grapControl.selectableUI.rightSelectableUI = vsync;
-            grapControl.selectableUI.leftSelectableUI = vsync;
+            grapControl.selectableUI.rightSelectableUI = windowMode;
+            grapControl.selectableUI.leftSelectableUI = windowMode;
 
             attack1Control.selectableUI.upSelectableUI = grapControl.selectableUI;
             attack1Control.selectableUI.downSelectableUI = attack2Control.selectableUI;
-            attack1Control.selectableUI.rightSelectableUI = language;
-            attack1Control.selectableUI.leftSelectableUI = language;
+            attack1Control.selectableUI.rightSelectableUI = resolution;
+            attack1Control.selectableUI.leftSelectableUI = resolution;
 
             attack2Control.selectableUI.upSelectableUI = attack1Control.selectableUI;
             attack2Control.selectableUI.downSelectableUI = interactControl.selectableUI;
-            attack2Control.selectableUI.rightSelectableUI = language;
-            attack2Control.selectableUI.leftSelectableUI = language;
+            attack2Control.selectableUI.rightSelectableUI = framerate;
+            attack2Control.selectableUI.leftSelectableUI = framerate;
 
             interactControl.selectableUI.upSelectableUI = attack2Control.selectableUI;
             interactControl.selectableUI.downSelectableUI = inputTypeDropdown;
-            interactControl.selectableUI.rightSelectableUI = applyButton;
-            interactControl.selectableUI.leftSelectableUI = applyButton;
+            interactControl.selectableUI.rightSelectableUI = vsync;
+            interactControl.selectableUI.leftSelectableUI = vsync;
         }
     }
 

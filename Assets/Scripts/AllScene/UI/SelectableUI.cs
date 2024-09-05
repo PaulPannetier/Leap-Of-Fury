@@ -82,7 +82,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!isMouseInteractable)
+        if (!isMouseInteractable || selectableUIGroup == null)
             return;
 
         isMouseOver = true;
@@ -92,7 +92,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!isMouseInteractable)
+        if (!isMouseInteractable || selectableUIGroup == null)
             return;
 
         isMouseOver = false;

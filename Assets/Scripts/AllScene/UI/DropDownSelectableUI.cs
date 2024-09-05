@@ -171,8 +171,8 @@ public class DropDownSelectableUI : SelectableUI
             isActive = false;
             isDesactivatedThisFrame = true;
             dropdown.Hide();
-            //This line is terrible, can't UnSelect the TMP_Dropdown so select a random gameobject to unselect the dropdown
-            EventSystem.current.SetSelectedGameObject(gameObject);
+            //This line is terrible, can't UnSelect the TMP_Dropdown so select a null gameobject to unselect the dropdown
+            EventSystem.current.SetSelectedGameObject(null);
         }
     }
 }
