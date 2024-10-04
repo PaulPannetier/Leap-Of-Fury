@@ -1,43 +1,39 @@
 #if UNITY_EDITOR
 
 using UnityEngine;
-using TMPro;
+using Collision2D;
+
 
 public class TestScript : MonoBehaviour
 {
-    public TMP_Dropdown dropdown;
+    public static Vector3 staticVar = Vector3.zero;
 
-    public InputKey showOption = InputKey.S;
-    public InputKey hideOption = InputKey.H;
+    public const int NUMBER = 5;
+    private float primitiveType;
+    private Vector2 structVariable;
+    private GameObject classVariable;
 
-    public void Update()
+    private void Method()
     {
-        if (InputManager.GetKeyDown(showOption))
-        {
-            print("Show");
-            dropdown.Show();
-        }
-
-        if (InputManager.GetKeyDown(hideOption))
-        {
-            print("Hide");
-            dropdown.Hide();
-        }
+        GameObject localVar = classVariable;
+        Vector3 localVarStruct = staticVar;
     }
+}
 
-    private void OnValidate()
+
+public class MyClass
+{
+    public static Vector3 staticVar = Vector3.zero;
+
+    public const int NUMBER = 5;
+    private float primitiveType;
+    private Vector2 structVariable;
+    private GameObject classVariable;
+
+    private void Method()
     {
-        //if(showOption)
-        //{
-        //    showOption = false;
-        //    dropdown.Select();
-        //}
-
-        //if(hideOption)
-        //{
-        //    hideOption = false;
-        //    dropdown.Hide();
-        //}
+        GameObject localVar = classVariable;
+        Vector3 localVarStruct = staticVar;
     }
 }
 

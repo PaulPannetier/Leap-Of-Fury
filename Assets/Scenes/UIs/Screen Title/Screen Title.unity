@@ -1484,6 +1484,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
+    - target: {fileID: 5034790997836796944, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034790997836796944, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
+      propertyPath: m_NormalizedViewPortRect.width
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034790997836796944, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
+      propertyPath: m_NormalizedViewPortRect.height
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5034790997836796947, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
       propertyPath: m_Name
       value: Main Camera

@@ -282,7 +282,6 @@ public class CloneAttack : StrongAttack
 
     protected override void SaveAttackStats()
     {
-        base.SaveAttackStats();
         GameStatisticManager.SetStat("char1WeakAttackDuration", duration.Round(2).ToString());
     }
 
