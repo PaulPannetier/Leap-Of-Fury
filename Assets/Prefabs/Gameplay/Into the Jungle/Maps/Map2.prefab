@@ -75,6 +75,7 @@ MonoBehaviour:
   relatifSpawnConfigsPath: /Save/Levels/IntoTheJungle/Map2SpawnPoints
   tilemap: {fileID: 2218702090748180647}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!1 &2218702090748180647
 GameObject:
   m_ObjectHideFlags: 0
@@ -21716,6 +21717,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
+  isStatic: 1
 --- !u!61 &6559382001873792018
 BoxCollider2D:
   m_ObjectHideFlags: 0

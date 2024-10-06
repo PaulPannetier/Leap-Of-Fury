@@ -489,6 +489,7 @@ MonoBehaviour:
   grabableRight: 0
   grabableLeft: 0
   frictionCoefficient: 1
+  isStatic: 1
 --- !u!61 &2301766904673299149
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20060,6 +20061,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0.784
+  isStatic: 1
 --- !u!61 &8855001302834965774
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -21021,6 +21023,7 @@ MonoBehaviour:
   relatifSpawnConfigsPath: /Save/Levels/MaxwellHouse/Map2SpawnPoints
   tilemap: {fileID: 6792681595224786730}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!1 &6792681595224786730
 GameObject:
   m_ObjectHideFlags: 0

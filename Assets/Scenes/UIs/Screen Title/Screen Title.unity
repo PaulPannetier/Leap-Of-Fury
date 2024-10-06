@@ -2081,6 +2081,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4224357153829643125, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: m_text
+      value: Leap of Fury
+      objectReference: {fileID: 0}
     - target: {fileID: 4832861504504462543, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: durationToFill
       value: 0.75

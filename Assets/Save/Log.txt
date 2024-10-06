@@ -1984,6 +1984,346 @@
                     "value": "SelectableUIGroup.RequestDeselected (SelectableUI selectableUI) (at Assets/Scripts/AllScene/UI/SelectableUIGroup.cs:128)\nSelectableUI.OnPointerExit (UnityEngine.EventSystems.PointerEventData eventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:99)\nUnityEngine.EventSystems.ExecuteEvents.Execute (UnityEngine.EventSystems.IPointerExitHandler handler, UnityEngine.EventSystems.BaseEventData eventData) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:36)\nUnityEngine.EventSystems.ExecuteEvents.Execute[T] (UnityEngine.GameObject target, UnityEngine.EventSystems.BaseEventData eventData, UnityEngine.EventSystems.ExecuteEvents+EventFunction`1[T1] functor) (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/ExecuteEvents.cs:272)\nUnityEngine.EventSystems.EventSystem:Update() (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : masterVolume with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:101)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : musicVolume with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:102)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : soundFXVolume with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:103)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : windowMode with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:104)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : resolution with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:105)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : framerate with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:106)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : language with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:107)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : vsync with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:110)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : moveUpTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:50)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : moveDownTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:51)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : moveRightTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:52)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : moveLeftTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:53)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : dashTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:54)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : jumpTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:55)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : attack1TextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:56)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : attack2TextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:57)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : grabTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:58)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : interactTextSettingMenu with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshSettings () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:59)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:246)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : keyboard with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshControl (bool) (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:64)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:247)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Warning"
+                },
+                {
+                    "type": "String",
+                    "value": "The text with id : gamepad with the language : Francais doesn't exist"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:132)\nControlManagerSettingMenu:RefreshControl (bool) (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:64)\nControlManagerSettingMenu/<OnEnableCorout>d__33:MoveNext () (at Assets/Scripts/UI/Screen Title/ControlManagerSettingMenu.cs:247)\nUnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)\n"
+                }
+            ]
         }
     ]
 }
