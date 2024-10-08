@@ -144,6 +144,18 @@
 		{
             "textID": "helpMenuChar4WeakAttackDescription",
             "content": "Throw an projectile that return to the player after touching a wall."
+        },
+		{
+            "textID": "resumeButton",
+            "content": "Resume"
+        },
+		{
+            "textID": "mapsSelectionButton",
+            "content": "Map Selection"
+        },
+		{
+            "textID": "mainTitleButton",
+            "content": "Main Title"
         }
     ]
 }

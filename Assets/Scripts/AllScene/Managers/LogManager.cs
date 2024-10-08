@@ -97,8 +97,14 @@ public class LogManager : MonoBehaviour
         }
         else
         {
-            if (messages.length < maxLogs && !messages.Contains(log))
+            if (!messages.Contains(log))
+            {
+                if (messages.length >= maxLogs)
+                {
+                    messages.RemoveFirst();
+                }
                 messages.AddMessage(log);
+            }
         }
     }
 
@@ -155,9 +161,14 @@ public class LogManager : MonoBehaviour
             messages = new List<LogMessage>();
         }
 
-        public void AddMessage(LogMessage message)
+        public void AddMessage(in LogMessage message)
         {
             messages.Add(message);
+        }
+
+        public void RemoveFirst()
+        {
+            messages.RemoveAt(0);
         }
 
         public bool Contains(LogMessage logMessage) => messages.Contains(logMessage);

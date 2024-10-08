@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 8530819003563730869}
   - component: {fileID: 2353466712098822351}
   - component: {fileID: 1128068407829120691}
-  - component: {fileID: 4159773045740412122}
+  - component: {fileID: 1390609359895405775}
   m_Layer: 5
   m_Name: MapSelection
   m_TagString: Untagged
@@ -608,7 +608,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4159773045740412122
+--- !u!114 &1390609359895405775
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -617,45 +617,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1862510958826738305}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4677d4b75865eb14a8b100c7b5fe5c44, type: 3}
+  m_Script: {fileID: 11500000, guid: b155e22d3d9d4d143a66e8c562c1c248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseInteractable: 1
   colors:
   - normalColor: {r: 1, g: 1, b: 1, a: 1}
-    highlightedColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
-    pressedColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 0.49803922}
-    selectedColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 1}
+    highlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    pressedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    selectedColor: {r: 0.7843138, g: 0.7843138, b: 0.7843138, a: 1}
     text: {fileID: 0}
     image: {fileID: 1128068407829120691}
-    fadeDuration: 0.2
-  - normalColor: {r: 0, g: 0, b: 0, a: 1}
-    highlightedColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
-    pressedColor: {r: 0.18823531, g: 0.18823531, b: 0.18823531, a: 0.49803922}
-    selectedColor: {r: 0.18823531, g: 0.18823531, b: 0.18823531, a: 1}
-    text: {fileID: 7578912999686579970}
-    image: {fileID: 0}
-    fadeDuration: 0.2
-  upSelectableUI: {fileID: 2845102735973413294}
-  downSelectableUI: {fileID: 5239623746656716848}
+    fadeDuration: 0.1
+  upSelectableUI: {fileID: 1436184279733953686}
+  downSelectableUI: {fileID: 3818041549601881948}
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
-  onPressed:
+  onButtonPressed:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1424903760071287960}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: OnMapSelectionButtonDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  selectableUIGroup: {fileID: 0}
+      m_Calls: []
 --- !u!1 &2171901870973629207
 GameObject:
   m_ObjectHideFlags: 0
@@ -935,7 +914,7 @@ GameObject:
   - component: {fileID: 2662330324238603067}
   - component: {fileID: 7015239259293274075}
   - component: {fileID: 1671720011974482536}
-  - component: {fileID: 2845102735973413294}
+  - component: {fileID: 1436184279733953686}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -1001,7 +980,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2845102735973413294
+--- !u!114 &1436184279733953686
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1010,45 +989,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2898470858352353255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4677d4b75865eb14a8b100c7b5fe5c44, type: 3}
+  m_Script: {fileID: 11500000, guid: b155e22d3d9d4d143a66e8c562c1c248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseInteractable: 1
   colors:
   - normalColor: {r: 1, g: 1, b: 1, a: 1}
-    highlightedColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
-    pressedColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 0.49803922}
-    selectedColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 1}
+    highlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    pressedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    selectedColor: {r: 0.7843138, g: 0.7843138, b: 0.7843138, a: 1}
     text: {fileID: 0}
     image: {fileID: 1671720011974482536}
-    fadeDuration: 0.2
-  - normalColor: {r: 0, g: 0, b: 0, a: 1}
-    highlightedColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
-    pressedColor: {r: 0.18823531, g: 0.18823531, b: 0.18823531, a: 0.49803922}
-    selectedColor: {r: 0.18823531, g: 0.18823531, b: 0.18823531, a: 1}
-    text: {fileID: 8951532012000269659}
-    image: {fileID: 0}
-    fadeDuration: 0.2
-  upSelectableUI: {fileID: 5239623746656716848}
-  downSelectableUI: {fileID: 4159773045740412122}
+    fadeDuration: 0.1
+  upSelectableUI: {fileID: 3818041549601881948}
+  downSelectableUI: {fileID: 1390609359895405775}
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
-  onPressed:
+  onButtonPressed:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1424903760071287960}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: OnResumeButtonDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  selectableUIGroup: {fileID: 0}
+      m_Calls: []
 --- !u!1 &3359613433068316379
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,7 +1207,7 @@ GameObject:
   - component: {fileID: 5022622864676720609}
   - component: {fileID: 7418351071108921167}
   - component: {fileID: 7420582947488407398}
-  - component: {fileID: 5239623746656716848}
+  - component: {fileID: 3818041549601881948}
   m_Layer: 5
   m_Name: MainTitleButton
   m_TagString: Untagged
@@ -1315,7 +1273,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5239623746656716848
+--- !u!114 &3818041549601881948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1324,45 +1282,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 4632514418326069758}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4677d4b75865eb14a8b100c7b5fe5c44, type: 3}
+  m_Script: {fileID: 11500000, guid: b155e22d3d9d4d143a66e8c562c1c248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseInteractable: 1
   colors:
   - normalColor: {r: 1, g: 1, b: 1, a: 1}
-    highlightedColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
-    pressedColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 0.49803922}
-    selectedColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 1}
+    highlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    pressedColor: {r: 0.5882353, g: 0.5882353, b: 0.5882353, a: 1}
+    selectedColor: {r: 0.7843138, g: 0.7843138, b: 0.7843138, a: 1}
     text: {fileID: 0}
     image: {fileID: 7420582947488407398}
-    fadeDuration: 0.2
-  - normalColor: {r: 0, g: 0, b: 0, a: 1}
-    highlightedColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
-    pressedColor: {r: 0.18823531, g: 0.18823531, b: 0.18823531, a: 0.49803922}
-    selectedColor: {r: 0.18823531, g: 0.18823531, b: 0.18823531, a: 1}
-    text: {fileID: 749525914939621714}
-    image: {fileID: 0}
-    fadeDuration: 0.2
-  upSelectableUI: {fileID: 4159773045740412122}
-  downSelectableUI: {fileID: 2845102735973413294}
+    fadeDuration: 0.1
+  upSelectableUI: {fileID: 1390609359895405775}
+  downSelectableUI: {fileID: 1436184279733953686}
   rightSelectableUI: {fileID: 0}
   leftSelectableUI: {fileID: 0}
-  onPressed:
+  onButtonPressed:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1424903760071287960}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: OnMainTitleButtonDown
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  selectableUIGroup: {fileID: 0}
+      m_Calls: []
 --- !u!1 &4699910002187651260
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,6 +1386,7 @@ GameObject:
   - component: {fileID: 1062824299144006337}
   - component: {fileID: 8771395005395755700}
   - component: {fileID: 386999396832511552}
+  - component: {fileID: 2495186805345660987}
   m_Layer: 5
   m_Name: LayoutGroup
   m_TagString: Untagged
@@ -1518,7 +1456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableBehaviour: 1
   controllerSelector: 8
-  defaultUISelected: {fileID: 2845102735973413294}
+  defaultUISelected: {fileID: 1436184279733953686}
   upItemInput:
     keysKeyboard: 7700000011010000
     keyGamepad1: fdfffffff9fffffff5ffffff
@@ -1554,6 +1492,26 @@ MonoBehaviour:
     keyGamepad3: 86010000
     keyGamepad4: 9a010000
     controllerType: 6
+  allowedController: 2
+--- !u!114 &2495186805345660987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5827681526664370498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94911561fc526d84bb1c68bb63bedef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messagesToTranslate:
+  - textId: resumeButton
+    _text: {fileID: 8951532012000269659}
+  - textId: mapsSelectionButton
+    _text: {fileID: 7578912999686579970}
+  - textId: mainTitleButton
+    _text: {fileID: 749525914939621714}
 --- !u!1 &6489188591155357022
 GameObject:
   m_ObjectHideFlags: 0
