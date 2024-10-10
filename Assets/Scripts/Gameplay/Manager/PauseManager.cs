@@ -31,6 +31,12 @@ public class PauseManager : MonoBehaviour
     {
         pauseCounter = 0;
         EventManager.instance.callbackPreUpdate += PreUpdate;
+        EventManager.instance.callbackOnLevelEnd += OnLevelEnd;
+    }
+
+    private void OnLevelEnd(LevelManager.EndLevelData levelData)
+    {
+        StopAllCoroutines();
     }
 
     private void PreUpdate()

@@ -163,7 +163,10 @@ public class LogManager : MonoBehaviour
 
         public void AddMessage(in LogMessage message)
         {
-            messages.Add(message);
+            if(!messages.Contains(message))
+            {
+                messages.Add(message);
+            }
         }
 
         public void RemoveFirst()

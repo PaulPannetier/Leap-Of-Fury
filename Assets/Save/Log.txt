@@ -5,134 +5,49 @@
             "logParams": [
                 {
                     "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "FightController.Update () (at Assets/Scripts/Gameplay/Player/Fight/FightController.cs:126)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Exception"
+                },
+                {
+                    "type": "String",
+                    "value": "NullReferenceException: Object reference not set to an instance of an object"
+                },
+                {
+                    "type": "String",
+                    "value": "CharacterController.UpdateState () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:652)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:476)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
                     "value": "Warning"
                 },
                 {
                     "type": "String",
-                    "value": "GameObject (named 'MapSelection') references runtime script in scene file. Fixing!"
+                    "value": "Joystick disconnected (\"Controller (Xbox One For Windows)\")."
                 },
                 {
                     "type": "String",
                     "value": ""
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "The class named 'SelectableUI' is abstract. The script class can't be abstract!"
-                },
-                {
-                    "type": "String",
-                    "value": ""
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "GameObject (named 'ResumeButton') references runtime script in scene file. Fixing!"
-                },
-                {
-                    "type": "String",
-                    "value": ""
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "GameObject (named 'MainTitleButton') references runtime script in scene file. Fixing!"
-                },
-                {
-                    "type": "String",
-                    "value": ""
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "The class named 'SelectableUI' is abstract. The script class can't be abstract!"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "GameObject (named 'MapSelection') references runtime script in scene file. Fixing!"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "GameObject (named 'ResumeButton') references runtime script in scene file. Fixing!"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "GameObject (named 'MainTitleButton') references runtime script in scene file. Fixing!"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
                 }
             ]
         }

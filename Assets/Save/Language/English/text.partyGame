@@ -90,19 +90,19 @@
             "content": "vSync"
         },
 		{
-            "textID": "resumeButton",
+            "textID": "pauseMenuResumeButton",
             "content": "Resume"
         },
 		{
-            "textID": "mapSelectionButton",
+            "textID": "pauseMenuMapSelectionButton",
             "content": "Map Selection"
         },
 		{
-            "textID": "mainTitleButton",
+            "textID": "pauseMenuMainTitleButton",
             "content": "Main Title"
         },
 		{
-            "textID": "masterVolume",
+            "textID": "MasterVolume",
             "content": "Master"
         },
 		{
@@ -156,6 +156,30 @@
 		{
             "textID": "mainTitleButton",
             "content": "Main Title"
+        },
+		{
+            "textID": "mainTitleSingleButton",
+            "content": "SOLO"
+        },
+		{
+            "textID": "mainTitleMultiButton",
+            "content": "MULTI"
+        },
+		{
+            "textID": "mainTitleOptionButton",
+            "content": "OPTION"
+        },
+		{
+            "textID": "mainTitleCreditButton",
+            "content": "CREDIT"
+        },
+		{
+            "textID": "mainTitleQuitButton",
+            "content": "QUIT"
+        },
+		{
+            "textID": "gameTitle",
+            "content": "Leap of Fury"
         }
     ]
 }

@@ -63,6 +63,13 @@ public class LanguageManager : MonoBehaviour
             dico = new Dictionary<string, string>();
             foreach(LanguageData.ItemData itemData in languageData.data)
             {
+                if(dico.ContainsKey(itemData.textID))
+                {
+                    string warningText = $"The extID : {itemData.textID} already exist in the languagee : {language}";
+                    Debug.LogWarning(warningText);
+                    LogManager.instance.AddLog(warningText, language, itemData);
+                    continue;
+                }
                 dico.Add(itemData.textID, itemData.content);
             }
         }

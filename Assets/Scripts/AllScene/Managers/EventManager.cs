@@ -57,11 +57,13 @@ public class EventManager : MonoBehaviour
         callbackOnLevelRestart.Invoke(levelName);
     }
 
+    //Call at the end of a level, before restarting again
     public void OnLevelEnd(in LevelManager.EndLevelData endLevelData)
     {
         callbackOnLevelEnd.Invoke(endLevelData);
     }
 
+    //Call when the level is finish and final score reach, before go to the map selection menu
     public void OnLevelFinish(in LevelManager.FinishLevelData finishLevelData)
     {
         callbackOnLevelFinish.Invoke(finishLevelData);

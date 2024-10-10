@@ -1509,9 +1509,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawGizmos: 1
   spawnConfigs:
-    spawnConfigPoints2Char: []
-    spawnConfigPoints3Char: []
-    spawnConfigPoints4Char: []
+    spawnConfigPoints2Char:
+    - points:
+      - {x: 9, y: -1.5}
+      - {x: -9, y: -1.5}
+    - points:
+      - {x: -2.5, y: -6}
+      - {x: 3.5, y: -6}
+    spawnConfigPoints3Char:
+    - points:
+      - {x: 0, y: 3.5}
+      - {x: -9, y: -1.5}
+      - {x: 9, y: -1.5}
+    - points:
+      - {x: 0, y: 3.5}
+      - {x: -2.5, y: -6}
+      - {x: 3.5, y: -6}
+    spawnConfigPoints4Char:
+    - points:
+      - {x: -9, y: -1.5}
+      - {x: 9, y: -1.5}
+      - {x: -2.5, y: -6}
+      - {x: 3.5, y: -6}
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0

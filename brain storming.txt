@@ -136,8 +136,10 @@ Trad all text
 test player attacks and gameplay
 Complete Maxwell house maps and méca
 polish attacks
-test bump
+repair bump (mayas temple)
+repair movable plateform (fix tp when reach wall)
 test wall jump along wall
+fix dash killing time (to long)
 Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack

@@ -88,8 +88,7 @@ public class HitboxBumpZone : BumpsZone
 
         base.OnDrawGizmosSelected();
         hitbox = GetComponent<BoxCollider2D>();
-        Gizmos.color = Color.green;
-        Hitbox.GizmosDraw((Vector2)transform.position + hitbox.offset, hitbox.size * collisionDetectionScale);
+        Hitbox.GizmosDraw((Vector2)transform.position + hitbox.offset, hitbox.size * collisionDetectionScale, Color.green);
     }
 
 #endif
