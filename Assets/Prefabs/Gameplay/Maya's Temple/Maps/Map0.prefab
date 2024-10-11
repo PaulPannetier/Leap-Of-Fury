@@ -9119,6 +9119,7 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map0SpawnPoints
@@ -21770,6 +21771,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: drawGizmos
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}

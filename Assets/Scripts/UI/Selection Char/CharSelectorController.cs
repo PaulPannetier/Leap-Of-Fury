@@ -18,6 +18,13 @@ public class CharSelectorController : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput previousItemInput;
     [SerializeField] private InputManager.GeneralInput applyItemInput;
 
+#if UNITY_EDITOR
+    [Header("DEBUG")]
+    [Space]
+    [SerializeField] private bool addSelectedGamepadCharacter;
+    [SerializeField] private InputManager.GeneralInput addSelectedGamepadCharacterInput;
+#endif
+
     private void Awake()
     {
         turningSelectors = new TurningSelector[4];
@@ -39,6 +46,16 @@ public class CharSelectorController : MonoBehaviour
 
     private void Update()
     {
+
+#if UNITY_EDITOR
+
+        if(addSelectedGamepadCharacterInput.IsPressedDown())
+        {
+            AddSelectedGamepadCharacter();
+        }
+
+#endif
+
         for (int i = 0; i < turningSelectors.Length; i++)
         {
             if (!isTurningSelectorInit[i])
@@ -138,8 +155,6 @@ public class CharSelectorController : MonoBehaviour
                 TransitionManager.instance.LoadSceneAsync("Screen Title", null);
             }
         }
-
-        //DebugText.instance.text += turningSelectors[0].selectedItem.GetComponent<CharSelectorItemData>().gameObject.name;
     }
 
     private void OpenHelpCanvas(int indexTuringSelector)
@@ -173,6 +188,7 @@ public class CharSelectorController : MonoBehaviour
     {
         if (index >= turningSelectors.Length)
             return;
+
         if(index == 3)
         {
             isTurningSelectorInit[index] = isTurningSelectorsFinishSelection[index] = false;
@@ -180,12 +196,14 @@ public class CharSelectorController : MonoBehaviour
             indexToInit--;
             return;
         }
+
         for (int i = index; i < turningSelectors.Length - 1; i++)
         {
             isTurningSelectorInit[i] = isTurningSelectorInit[i + 1];
             controllerIndexs[i] = controllerIndexs[i + 1];
             isTurningSelectorsFinishSelection[i] = isTurningSelectorsFinishSelection[i + 1];
         }
+
         isTurningSelectorInit[turningSelectors.Length - 1] = isTurningSelectorsFinishSelection[turningSelectors.Length - 1] = false;
         controllerIndexs[turningSelectors.Length - 1] = ControllerType.Keyboard;
         indexToInit = Mathf.Max(0, indexToInit - 1);
@@ -250,6 +268,31 @@ public class CharSelectorController : MonoBehaviour
         controllerType = ControllerType.Keyboard;
         return false;
     }
+
+    #endregion
+
+    #region OnValidate
+
+#if UNITY_EDITOR
+    
+    private void AddSelectedGamepadCharacter()
+    {
+        isTurningSelectorInit[indexToInit] = true;
+        controllerIndexs[indexToInit] = ControllerType.Gamepad1;
+        isTurningSelectorsFinishSelection[indexToInit] = true;
+        indexToInit++;
+    }
+
+    private void OnValidate()
+    {
+        if(addSelectedGamepadCharacter)
+        {
+            addSelectedGamepadCharacter = false;
+            AddSelectedGamepadCharacter();
+        }
+    }
+
+#endif
 
     #endregion
 }

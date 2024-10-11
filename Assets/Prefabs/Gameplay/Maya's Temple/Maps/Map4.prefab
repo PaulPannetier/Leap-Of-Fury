@@ -47479,11 +47479,13 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map4SpawnPoints
   tilemap: {fileID: 2529693373023424155}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!1 &3690566526390329997
 GameObject:
   m_ObjectHideFlags: 0
@@ -68239,6 +68241,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
+  isStatic: 1
 --- !u!61 &632911213342755724
 BoxCollider2D:
   m_ObjectHideFlags: 0

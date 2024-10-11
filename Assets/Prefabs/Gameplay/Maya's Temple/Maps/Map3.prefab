@@ -47387,11 +47387,13 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map3SpawnPoints
   tilemap: {fileID: 8194832789679470622}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!1 &4227170838155896359
 GameObject:
   m_ObjectHideFlags: 0
@@ -67387,6 +67389,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
+  isStatic: 1
 --- !u!61 &5121968428067714331
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -68134,6 +68137,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: enableHorizontalDash
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: returnBumpSpeedOnChar
       value: 0
       objectReference: {fileID: 0}
@@ -68246,6 +68253,10 @@ PrefabInstance:
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: enableVerticalDash
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: enableUpAndDownDash

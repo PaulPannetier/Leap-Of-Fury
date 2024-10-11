@@ -504,7 +504,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: enableBehaviour
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: m_Name

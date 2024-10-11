@@ -55,11 +55,13 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map2SpawnPoints
   tilemap: {fileID: 797363155213539974}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!1 &797363155213539974
 GameObject:
   m_ObjectHideFlags: 0
@@ -70049,6 +70051,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0.055
+  isStatic: 1
 --- !u!61 &6436117028572786515
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -71366,6 +71369,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MovablePlateform (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: enableVerticalDash
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820867, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: grabable
       value: 0
@@ -71430,7 +71437,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2329972634777868312, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: boundsSize.x
@@ -71458,15 +71465,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGizmos
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: dashHitboxSize
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
-      propertyPath: drawDashHiboxGizmos
+      propertyPath: enableVerticalDash
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: drawDashHiboxGizmos
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: enableLeftAndRightDash
@@ -71474,11 +71485,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHitboxAccurate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawCrushHiboxSimpleGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: groundCollisionHitboxSafeZone
@@ -71486,7 +71497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawGroundDetectionHitoxGizmos
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820867, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: grabable
@@ -71597,6 +71608,10 @@ PrefabInstance:
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: dashHitboxSize
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
+      propertyPath: enableVerticalDash
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4909847896574820866, guid: 731cc308196af8c47a581edcf2d1cacb, type: 3}
       propertyPath: drawDashHiboxGizmos
