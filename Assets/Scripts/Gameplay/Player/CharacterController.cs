@@ -1870,7 +1870,7 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                newVelocity = new Vector2(velocity.x + dir.x * jumpInitSpeed, dir.y * jumpInitSpeed) + groundColliderData.velocity;
+                newVelocity = new Vector2(velocity.x + dir.x * jumpInitSpeed, dir.y * jumpInitSpeed) + colData.velocity;
             }
         }
         else

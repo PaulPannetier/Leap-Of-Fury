@@ -5,76 +5,17 @@
             "logParams": [
                 {
                     "type": "LogType",
-                    "value": "Error"
-                },
-                {
-                    "type": "String",
-                    "value": "SerializedObject target has been destroyed."
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Exception"
-                },
-                {
-                    "type": "String",
-                    "value": "NullReferenceException: Object reference not set to an instance of an object"
-                },
-                {
-                    "type": "String",
-                    "value": "CharacterController.Jump (UnityEngine.Vector2& dir) (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1867)\nCharacterController.HandleJump () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1708)\nCharacterController.UpdateVelocity () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:1108)\nCharacterController.LateUpdate () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:478)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
                     "value": "Warning"
                 },
                 {
                     "type": "String",
-                    "value": "The text with id : masterVolume with the language : English doesn't exist"
+                    "value": "Gamepad1 is not connected!"
                 },
                 {
                     "type": "String",
-                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:139)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:101)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
+                    "value": "UnityEngine.Debug:LogWarning (object)\nInputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1675)\nCharacterInputs:Update () (at Assets/Scripts/Gameplay/Player/CharacterInputs.cs:68)\n"
                 }
             ]
-        },
-        {
-            "errorMessage": "The text with id : masterVolume with the language : English doesn't exist",
-            "logParams": []
-        },
-        {
-            "errorMessage": "An Exeption occur in runtime",
-            "logParams": [
-                {
-                    "type": "LogType",
-                    "value": "Warning"
-                },
-                {
-                    "type": "String",
-                    "value": "The text with id : masterVolume with the default language doesn't exist"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.Debug:LogWarning (object)\nLanguageManager:GetText (string) (at Assets/Scripts/AllScene/Managers/LanguageManager.cs:144)\nSettingMenu:RefreshText () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:101)\nSettingMenu:ShowConfig (SettingsManager/ConfigurationData&) (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:168)\nSettingMenu:OnEnable () (at Assets/Scripts/UI/Screen Title/SettingMenu.cs:193)\nButtonsFunction:LoadOption () (at Assets/Scripts/UI/Screen Title/ButtonsFunction.cs:14)\nUnityEngine.Events.UnityEvent:Invoke ()\nButtonSelectableUI:OnPressed () (at Assets/Scripts/AllScene/UI/ButtonSelectableUI.cs:13)\nSelectableUI:OnPointerUp (UnityEngine.EventSystems.PointerEventData) (at Assets/Scripts/AllScene/UI/SelectableUI.cs:134)\nUnityEngine.EventSystems.EventSystem:Update () (at ./Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs:530)\n"
-                }
-            ]
-        },
-        {
-            "errorMessage": "The text with id : masterVolume with the default language doesn't exist",
-            "logParams": []
         },
         {
             "errorMessage": "An Exeption occur in runtime",
@@ -102,28 +43,32 @@
                 },
                 {
                     "type": "String",
-                    "value": "isTargetingPosition"
+                    "value": "Debug pls"
                 },
                 {
                     "type": "String",
-                    "value": "UnityEngine.MonoBehaviour:print (object)\nMovablePlateform:<Update>g__HandleMoving|49_0 () (at Assets/Scripts/Gameplay/Map/MovablePlateform.cs:142)\nMovablePlateform:Update () (at Assets/Scripts/Gameplay/Map/MovablePlateform.cs:130)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nCharacterController:UpdateState () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:636)\nCharacterController:LateUpdate () (at Assets/Scripts/Gameplay/Player/CharacterController.cs:476)\n"
                 }
             ]
         },
         {
-            "errorMessage": "An Exeption occur in runtime",
+            "errorMessage": "Ground ray collider is null but the left and rigth ray are not null!",
             "logParams": [
                 {
-                    "type": "LogType",
-                    "value": "Warning"
+                    "type": "ToricRaycastHit2D",
+                    "value": "ToricRaycastHit2D"
+                },
+                {
+                    "type": "ToricRaycastHit2D",
+                    "value": "ToricRaycastHit2D"
+                },
+                {
+                    "type": "ToricRaycastHit2D",
+                    "value": "ToricRaycastHit2D"
                 },
                 {
                     "type": "String",
-                    "value": "Gamepad1 is not connected!"
-                },
-                {
-                    "type": "String",
-                    "value": "UnityEngine.Debug:LogWarning (object)\nInputManager:GetGamepadStickPosition (ControllerType,GamepadStick) (at Assets/Scripts/AllScene/Custom/InputManager.cs:1675)\nCharacterInputs:Update () (at Assets/Scripts/Gameplay/Player/CharacterInputs.cs:68)\n"
+                    "value": "CharacterController::UpdateState"
                 }
             ]
         }

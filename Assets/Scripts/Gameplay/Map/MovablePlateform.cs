@@ -139,7 +139,6 @@ public class MovablePlateform : PathFindingBlocker
             //ground Detection
             if (!isTargetingPosition && IsGroundCollision(lastSideActiavated, out Collider2D groundCol))
             {
-                print("isTargetingPosition");
                 targetPosition = CalculateTargetPos(lastSideActiavated, groundCol);
                 isTargetingPosition = true;
             }
