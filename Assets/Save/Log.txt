@@ -75,6 +75,40 @@
         {
             "errorMessage": "The text with id : masterVolume with the default language doesn't exist",
             "logParams": []
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "isTargetingPosition"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nMovablePlateform:<Update>g__HandleMoving|49_0 () (at Assets/Scripts/Gameplay/Map/MovablePlateform.cs:142)\nMovablePlateform:Update () (at Assets/Scripts/Gameplay/Map/MovablePlateform.cs:130)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "isTargetingPosition"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.MonoBehaviour:print (object)\nMovablePlateform:<Update>g__HandleMoving|49_0 () (at Assets/Scripts/Gameplay/Map/MovablePlateform.cs:142)\nMovablePlateform:Update () (at Assets/Scripts/Gameplay/Map/MovablePlateform.cs:130)\nUnityEngine.GUIUtility:ProcessEvent (int,intptr,bool&)\n"
+                }
+            ]
         }
     ]
 }

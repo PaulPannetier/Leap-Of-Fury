@@ -139,6 +139,7 @@ public class MovablePlateform : PathFindingBlocker
             //ground Detection
             if (!isTargetingPosition && IsGroundCollision(lastSideActiavated, out Collider2D groundCol))
             {
+                print("isTargetingPosition");
                 targetPosition = CalculateTargetPos(lastSideActiavated, groundCol);
                 isTargetingPosition = true;
             }
@@ -172,7 +173,14 @@ public class MovablePlateform : PathFindingBlocker
                         ToricObject tc = col.GetComponent<ToricObject>();
                         if (tc == null || tc.original != gameObject)
                         {
-                            groundCol = col;
+                            if (tc != null)
+                            {
+                                groundCol = tc.original.GetComponent<Collider2D>();
+                            }
+                            else
+                            {
+                                groundCol = col;
+                            }
                             return true;
                         }
                     }
@@ -187,7 +195,7 @@ public class MovablePlateform : PathFindingBlocker
                 velocity = Vector2.zero;
                 transform.position = Vector2.MoveTowards(transform.position, targetPosition, maxSpeed * Time.fixedDeltaTime);
 
-                if(((Vector2)transform.position).SqrDistance(targetPosition) < 4f * Time.fixedDeltaTime * Time.fixedDeltaTime * maxSpeed * maxSpeed)
+                if (((Vector2)transform.position).SqrDistance(targetPosition) < Time.fixedDeltaTime * Time.fixedDeltaTime * maxSpeed * maxSpeed)
                 {
                     OnStopOnGround();
                 }
@@ -721,7 +729,7 @@ public class MovablePlateform : PathFindingBlocker
 
     #endregion
 
-    #region Custom struct
+    #region Custom Struct
 
     private struct PauseData
     {
