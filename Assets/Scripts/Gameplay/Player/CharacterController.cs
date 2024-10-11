@@ -990,12 +990,7 @@ public class CharacterController : MonoBehaviour
                 DisableBump();
             }
 
-            if (onWall && Time.time - lastTimeBump >= minBumpDuration)
-            {
-                DisableBump();
-            }
-
-            if(isGrounded)
+            if ((onWall || isGrounded) && Time.time - lastTimeBump >= minBumpDuration)
             {
                 DisableBump();
             }
@@ -1864,11 +1859,12 @@ public class CharacterController : MonoBehaviour
             slideParticle.transform.parent.localScale = new Vector3(flip ? -1 : 1, 1, 1);
 
         Vector2 newVelocity;
-        if(groundColliderData != null)
+        if(groundColliderData != null || lastGroundColliderData != null)
         {
-            if(groundColliderData.groundType == MapColliderData.GroundType.jumper)
+            MapColliderData colData = groundColliderData != null ? groundColliderData : lastGroundColliderData;
+            if (colData.groundType == MapColliderData.GroundType.jumper)
             {
-                Jumper jumper = groundColliderData.GetComponent<Jumper>();
+                Jumper jumper = colData.GetComponent<Jumper>();
                 Vector2 newDir = new Vector2(Mathf.Cos(jumper.angleDir * Mathf.Deg2Rad), Mathf.Sin(jumper.angleDir * Mathf.Deg2Rad));
                 newVelocity = new Vector2(velocity.x + newDir.x * jumper.impulseSpeed, newDir.y * jumper.impulseSpeed);
             }
@@ -1876,10 +1872,6 @@ public class CharacterController : MonoBehaviour
             {
                 newVelocity = new Vector2(velocity.x + dir.x * jumpInitSpeed, dir.y * jumpInitSpeed) + groundColliderData.velocity;
             }
-        }
-        else if (lastGroundColliderData != null)
-        {
-            newVelocity = new Vector2(velocity.x + dir.x * jumpInitSpeed, dir.y * jumpInitSpeed) + lastGroundColliderData.velocity;
         }
         else
         {

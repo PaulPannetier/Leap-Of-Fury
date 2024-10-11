@@ -26,17 +26,17 @@ namespace ToricCollider2D
             mapHitbox = new Hitbox(Vector2.zero, size);
             mapSides = new Line2D[4]
             {
-            new Line2D(new Vector2(-halfSize.x, halfSize.y), halfSize),
-            new Line2D(-halfSize, new Vector2(halfSize.x, -halfSize.y)),
-            new Line2D(new Vector2(-halfSize.x, halfSize.y), -halfSize),
-            new Line2D(halfSize, new Vector2(halfSize.x, -halfSize.y))
+                new Line2D(new Vector2(-halfSize.x, halfSize.y), halfSize),
+                new Line2D(-halfSize, new Vector2(halfSize.x, -halfSize.y)),
+                new Line2D(new Vector2(-halfSize.x, halfSize.y), -halfSize),
+                new Line2D(halfSize, new Vector2(halfSize.x, -halfSize.y))
             };
             mapOffset = new Vector2[4]
             {
-            new Vector2(0f, size.y),
-            new Vector2(0f, -size.y),
-            new Vector2(-size.x, 0f),
-            new Vector2(size.x, 0f)
+                new Vector2(0f, size.y),
+                new Vector2(0f, -size.y),
+                new Vector2(-size.x, 0f),
+                new Vector2(size.x, 0f)
             };
         }
 

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField][Range(0, 10)] private int pixelQuality = 10;
     [SerializeField] private Vector2Int maxResolution = new Vector2Int(1920, 1080);
-    [Tooltip("info")] public Vector2Int currentResolution = new Vector2Int(1920, 1080);
+    public Vector2Int currentResolution = new Vector2Int(1920, 1080);
 
     private int[] divisor = new int[11] { 60, 30, 20, 15, 12, 10, 6, 5, 3, 2, 1 };
     private PixelPerfectCamera pixelPerfectCam;
@@ -57,6 +57,11 @@ public class GameManager : MonoBehaviour
         {
             File.Delete(Path.Combine(path, file));
         }
+    }
+
+    private void OnDestroy()
+    {
+        Application.quitting -= OnQuitApplication;
     }
 
 #if UNITY_EDITOR

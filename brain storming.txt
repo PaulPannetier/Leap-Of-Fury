@@ -136,7 +136,6 @@ Trad all text
 test player attacks and gameplay
 Complete Maxwell house maps and méca
 polish attacks
-repair bump (mayas temple)
 repair movable plateform (fix tp when reach wall)
 test wall jump along wall
 fix dash killing time (to long)

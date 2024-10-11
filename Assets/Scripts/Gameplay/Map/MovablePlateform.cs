@@ -35,7 +35,7 @@ public class MovablePlateform : PathFindingBlocker
     private Vector2 velocity;
 
     public bool enableBehaviour = true;
-    [SerializeField] private bool enableLeftAndRightDash, enableUpAndDownDash;
+    [SerializeField] private bool enableHorizontalDash, enableVerticalDash;
     [SerializeField, Range(0f, 1f)] private float groundCollisionHitboxSafeZone = 1f;
     [SerializeField, Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushPadding = 1.05f;
     [SerializeField, Range(0f, 1f), Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushZone = 0.95f;
@@ -203,7 +203,7 @@ public class MovablePlateform : PathFindingBlocker
             {
                 Collider2D[] cols;
                 bool dashAlreadyCollide = false;
-                if (enableUpAndDownDash)
+                if (enableVerticalDash)
                 {
                     //up
                     cols = GetCharColliders(HitboxSide.up);
@@ -216,7 +216,7 @@ public class MovablePlateform : PathFindingBlocker
                     }
                 }
 
-                if (enableLeftAndRightDash)
+                if (enableHorizontalDash)
                 {
                     if (!dashAlreadyCollide)
                     {
@@ -382,7 +382,7 @@ public class MovablePlateform : PathFindingBlocker
         {
             //detect char dash
             Collider2D[] cols;
-            if (enableUpAndDownDash)
+            if (enableVerticalDash)
             {
                 //up
                 cols = GetCharColliders(HitboxSide.up);
@@ -392,7 +392,7 @@ public class MovablePlateform : PathFindingBlocker
                 HandleDashCollision(cols, HitboxSide.down);
             }
 
-            if (enableLeftAndRightDash)
+            if (enableHorizontalDash)
             {
                 //right
                 cols = GetCharColliders(HitboxSide.right);

@@ -54,6 +54,7 @@ public class LevelMapData : MonoBehaviour
     [SerializeField] private bool applyCurrentConfig;
     [SerializeField] private bool addSpawnConfig;
     [SerializeField] private bool loadSpawnConfig;
+    [SerializeField] private bool unloadSpawnConfig;
     [SerializeField] private bool clearSpawnConfig;
     [SerializeField] private Vector2[] spawnConfig;
 
@@ -376,46 +377,56 @@ public class LevelMapData : MonoBehaviour
             Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
         }
 
-        if (addSpawnConfig && spawnConfig != null && spawnConfig.Length >= 2 && spawnConfig.Length <= 4)
+        if (addSpawnConfig)
         {
-            //Save info
-            if (!Save.ReadJSONData<SpawnConfigsData>(relatifSpawnConfigsPath + SettingsManager.saveFileExtension, out spawnConfigs))
+            addSpawnConfig = false;
+            if(spawnConfig != null && spawnConfig.Length >= 2 && spawnConfig.Length <= 4)
             {
-                spawnConfigs = new SpawnConfigsData();
-            }
+                //Save info
+                if (!Save.ReadJSONData<SpawnConfigsData>(relatifSpawnConfigsPath + SettingsManager.saveFileExtension, out spawnConfigs))
+                {
+                    spawnConfigs = new SpawnConfigsData();
+                }
 
-            switch (spawnConfig.Length)
-            {
-                case 2:
-                    spawnConfigs.spawnConfigPoints2Char.Add(new SpawnConfigsData.SpawnConfigPoints(spawnConfig));
-                    break;
-                case 3:
-                    spawnConfigs.spawnConfigPoints3Char.Add(new SpawnConfigsData.SpawnConfigPoints(spawnConfig));
-                    break;
-                case 4:
-                    spawnConfigs.spawnConfigPoints4Char.Add(new SpawnConfigsData.SpawnConfigPoints(spawnConfig));
-                    break;
-                default:
-                    break;
-            }
+                switch (spawnConfig.Length)
+                {
+                    case 2:
+                        spawnConfigs.spawnConfigPoints2Char.Add(new SpawnConfigsData.SpawnConfigPoints(spawnConfig));
+                        break;
+                    case 3:
+                        spawnConfigs.spawnConfigPoints3Char.Add(new SpawnConfigsData.SpawnConfigPoints(spawnConfig));
+                        break;
+                    case 4:
+                        spawnConfigs.spawnConfigPoints4Char.Add(new SpawnConfigsData.SpawnConfigPoints(spawnConfig));
+                        break;
+                    default:
+                        break;
+                }
 
-            Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
-            spawnConfig = new Vector2[0];
+                Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+                spawnConfig = new Vector2[0];
+            }
         }
-        addSpawnConfig = false;
+
         if(clearSpawnConfig)
         {
+            clearSpawnConfig = false;
             spawnConfigs = new SpawnConfigsData();
             Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
             spawnConfig = new Vector2[0];
         }
-        clearSpawnConfig = false;
 
         if(loadSpawnConfig)
         {
+            loadSpawnConfig = false;
             LoadSpawnPoint();
         }
-        loadSpawnConfig = false;
+
+        if (unloadSpawnConfig)
+        {
+            unloadSpawnConfig = false;
+            spawnConfigs = new SpawnConfigsData();
+        }
     }
 
 #endif

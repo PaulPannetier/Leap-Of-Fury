@@ -565,9 +565,9 @@ RectTransform:
   - {fileID: 1729044132255959626}
   m_Father: {fileID: 1062824299144006337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 241.94519, y: -379.34274}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2353466712098822351
@@ -634,7 +634,19 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 0}
   onButtonPressed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1424903760071287960}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: OnMapSelectionButtonDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2171901870973629207
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,9 +949,9 @@ RectTransform:
   - {fileID: 757988123370749136}
   m_Father: {fileID: 1062824299144006337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 241.94519, y: -126.44758}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7015239259293274075
@@ -1006,7 +1018,19 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 0}
   onButtonPressed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1424903760071287960}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: OnResumeButtonDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3359613433068316379
 GameObject:
   m_ObjectHideFlags: 0
@@ -1230,9 +1254,9 @@ RectTransform:
   - {fileID: 2080361565539609914}
   m_Father: {fileID: 1062824299144006337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 241.94519, y: -632.2379}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7418351071108921167
@@ -1299,7 +1323,19 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 0}
   onButtonPressed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1424903760071287960}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: OnMainTitleButtonDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4699910002187651260
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,11 +1542,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messagesToTranslate:
-  - textId: resumeButton
+  - textId: pauseMenuResumeButton
     _text: {fileID: 8951532012000269659}
-  - textId: mapsSelectionButton
+  - textId: pauseMenuMapSelectionButton
     _text: {fileID: 7578912999686579970}
-  - textId: mainTitleButton
+  - textId: pauseMenuMainTitleButton
     _text: {fileID: 749525914939621714}
 --- !u!1 &6489188591155357022
 GameObject:
@@ -1625,7 +1661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseInput:
-    keysKeyboard: 70000000
+    keysKeyboard: 700000001b000000
     keyGamepad1: 65010000
     keyGamepad2: 79010000
     keyGamepad3: 8d010000

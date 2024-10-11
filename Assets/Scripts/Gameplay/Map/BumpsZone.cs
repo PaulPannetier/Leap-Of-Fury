@@ -50,7 +50,9 @@ public abstract class BumpsZone : PathFindingBlocker
         for (int i = charAlreadyTouch.Count - 1; i >= 0; i--)
         {
             if (charAlreadyTouch[i] == id)
+            {
                 charAlreadyTouch.RemoveAt(i);
+            }
         }
     }
 

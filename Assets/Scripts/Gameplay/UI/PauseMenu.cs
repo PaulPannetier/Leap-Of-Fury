@@ -78,11 +78,7 @@ public class PauseMenu : MonoBehaviour
             t.gameObject.SetActive(true);
         }
 
-        resumeText.text = LanguageManager.instance.GetText("resumeButton");
-        mapSelectionText.text = LanguageManager.instance.GetText("mapSelectionButton");
-        mainTitleText.text = LanguageManager.instance.GetText("mainTitleButton");
         selectableUIGroup.Init();
-
         PauseManager.instance.EnablePause();
     }
 
