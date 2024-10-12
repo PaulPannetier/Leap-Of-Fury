@@ -12,6 +12,7 @@ using static SettingsManager;
 using static StatisticsManager;
 using System.Threading.Tasks;
 using UnityEditor.Rendering;
+using UnityEditor.Build;
 
 [CustomEditor(typeof(BuildCreatorConfig))]
 public class BuildCreator : Editor
@@ -119,11 +120,18 @@ public class BuildCreator : Editor
             buildPlayerOptions.options = buildCreatorConfig.developpementBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath.ToArray();
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, "PartyGame.exe");
-            buildPlayerOptions.target = BuildTarget.StandaloneWindows;
+            buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
             buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developpementBuild ? new string[] { "ADVANCE_DEBUG" } : new string[] { };
+
+            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
+            PlayerSettings.SetArchitecture(BuildTargetGroup.Standalone, (int)buildCreatorConfig.architectureCPU);
+            PlayerSettings.productName = buildCreatorConfig.gameName;
+            PlayerSettings.companyName = buildCreatorConfig.compagnyName;
+            PlayerSettings.bundleVersion = buildCreatorConfig.version;
+            PlayerSettings.SetManagedStrippingLevel(BuildTargetGroup.Standalone, buildCreatorConfig.managedStrippingLevel);
+
             Debug.Log("Start building at " + buildDir);
-            //BuildReport reporting = BuildPipeline.BuildPlayer(buildPlayerOptions);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
 
             //Copy save content
