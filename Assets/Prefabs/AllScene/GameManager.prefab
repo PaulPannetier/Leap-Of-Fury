@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 8970924279353906112}
   - component: {fileID: 8970924279353906115}
   - component: {fileID: 8970924279353906114}
+  - component: {fileID: 6264509854169554235}
   - component: {fileID: 3112457484048425201}
   - component: {fileID: 299310299462171991}
   - component: {fileID: 8496452321927903596}
@@ -51,7 +52,7 @@ GameObject:
   - component: {fileID: 6842532504228175351}
   - component: {fileID: 3639208383533933286}
   - component: {fileID: 8101875005452331617}
-  - component: {fileID: 425759290967685840}
+  - component: {fileID: 3095323472968891076}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -162,6 +163,19 @@ MonoBehaviour:
   - AttackStrong
   - Interact
   saveInput: 0
+--- !u!114 &6264509854169554235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8970924279353906143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3eb8d4772ada35499bab8d9dbc5e00a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iconsData: {fileID: 11400000, guid: 7d72abea8009f2444aed8eb4a590f176, type: 2}
 --- !u!114 &3112457484048425201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +312,7 @@ MonoBehaviour:
     statDatas: []
   writeCurrentStats: 0
   loadStats: 0
---- !u!114 &425759290967685840
+--- !u!114 &3095323472968891076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -311,6 +325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveHash: 0
-  enableBehaviour: 0
+  enableBehaviour: 1
   hashes: []
   folderToVerify: []

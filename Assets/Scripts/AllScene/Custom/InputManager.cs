@@ -28,6 +28,23 @@ using UnityEngine.PlayerLoop;
 
 #region Enums
 
+public enum InputControllerType
+{
+    Keyboard,
+    PSVita,
+    PS3,
+    PS4,
+    PS5,
+    SteamDeck,
+    Switch,
+    XBox360,
+    XBoxOne,
+    XBoxSeries,
+    AmazonLuna,
+    GoogleStadia,
+    Ouya
+}
+
 public enum GamepadStick
 {
     right,

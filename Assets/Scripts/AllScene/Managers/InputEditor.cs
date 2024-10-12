@@ -40,7 +40,7 @@ public class InputEditor : MonoBehaviour
     {
         void ListenAndShowInput()
         {
-            if (false && InputManager.Listen(ControllerType.All, out InputKey key))
+            if (InputManager.Listen(ControllerType.All, out InputKey key))
             {
                 Debug.Log("Input listen : " + InputManager.KeyToString(key));
             }

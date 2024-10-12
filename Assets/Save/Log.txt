@@ -71,6 +71,91 @@
                     "value": "CharacterController::UpdateState"
                 }
             ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Input listen : Mouse0"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:Log (object)\nInputEditor:<Update>g__ListenAndShowInput|8_0 () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:45)\nInputEditor:Update () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:50)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Input listen : Mouse1"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:Log (object)\nInputEditor:<Update>g__ListenAndShowInput|8_0 () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:45)\nInputEditor:Update () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:50)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Input listen : Mouse2"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:Log (object)\nInputEditor:<Update>g__ListenAndShowInput|8_0 () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:45)\nInputEditor:Update () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:50)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Input listen : Mouse4"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:Log (object)\nInputEditor:<Update>g__ListenAndShowInput|8_0 () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:45)\nInputEditor:Update () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:50)\n"
+                }
+            ]
+        },
+        {
+            "errorMessage": "An Exeption occur in runtime",
+            "logParams": [
+                {
+                    "type": "LogType",
+                    "value": "Log"
+                },
+                {
+                    "type": "String",
+                    "value": "Input listen : Mouse3"
+                },
+                {
+                    "type": "String",
+                    "value": "UnityEngine.Debug:Log (object)\nInputEditor:<Update>g__ListenAndShowInput|8_0 () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:45)\nInputEditor:Update () (at Assets/Scripts/AllScene/Managers/InputEditor.cs:50)\n"
+                }
+            ]
         }
     ]
 }

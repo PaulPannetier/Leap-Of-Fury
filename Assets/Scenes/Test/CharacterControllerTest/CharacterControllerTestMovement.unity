@@ -1564,8 +1564,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
-  iceSpeedLerpFactor: 0.3
-  iceDecelerationSpeedLerpFactor: 0.2
+  isStatic: 1
 --- !u!1 &393641468
 GameObject:
   m_ObjectHideFlags: 0
@@ -1829,9 +1828,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0
-    width: 1
-    height: 1
+    y: 0.23518518
+    width: 0.17760417
+    height: 0.17760417
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
@@ -2254,8 +2253,7 @@ MonoBehaviour:
   grabableRight: 0
   grabableLeft: 0
   frictionCoefficient: 1
-  iceSpeedLerpFactor: 0
-  iceDecelerationSpeedLerpFactor: 0
+  isStatic: 1
 --- !u!483693784 &867714290
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -51077,8 +51075,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
-  iceSpeedLerpFactor: 0
-  iceDecelerationSpeedLerpFactor: 0
+  isStatic: 1
 --- !u!483693784 &5367197714520042626
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -71118,11 +71115,13 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: 
   tilemap: {fileID: 1443198449202101084}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!114 &7178452524620365188
 MonoBehaviour:
   m_ObjectHideFlags: 0
