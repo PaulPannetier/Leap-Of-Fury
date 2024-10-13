@@ -5,7 +5,7 @@ public class InputIconManager : MonoBehaviour
     public static InputIconManager instance { get; private set; }
 
     [SerializeField] private UIIconsData iconsData;
-    private Sprite unknowButton => iconsData.unknowButton;
+    public Sprite unknowButton => iconsData.unknowButton;
 
     private void Awake()
     {

@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ControlItem : MonoBehaviour
 {
-    private TextMeshProUGUI nameText, keyText;
+    private TextMeshProUGUI nameText;
+    private Image keyImage;
     private Button keyButton;
     private BaseController controller => ControlManagerSettingMenu.instance.GetSelectedBaseController();
     private bool isStartingListeningThisFrame;
@@ -15,7 +16,7 @@ public class ControlItem : MonoBehaviour
         set
         {
             _key = value;
-            keyText.text = InputManager.KeyToString(key);
+            keyImage.sprite = InputIconManager.instance.GetButtonSprite(controller, value);
         }
     }
     public bool isListening { get; private set; }
@@ -23,9 +24,9 @@ public class ControlItem : MonoBehaviour
 
     private void Awake()
     {
-        nameText = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        keyText = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        keyButton = transform.GetChild(1).GetComponent<Button>();
+        nameText = GetComponentInChildren<TextMeshProUGUI>();
+        keyImage = GetComponentInChildren<Image>();
+        keyButton = GetComponentInChildren<Button>();
         selectableUI = GetComponent<SelectableUI>();
         keyButton.onClick.AddListener(OnKeyButtonDown);
     }
@@ -43,7 +44,7 @@ public class ControlItem : MonoBehaviour
     public void StartListening()
     {
         isListening = isStartingListeningThisFrame = true;
-        keyText.text = string.Empty;
+        keyImage.sprite = InputIconManager.instance.unknowButton;
     }
 
     public void StopListening()
