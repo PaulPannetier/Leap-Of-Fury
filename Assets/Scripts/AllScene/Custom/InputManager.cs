@@ -1677,6 +1677,7 @@ public static class InputManager
 
     #endregion
 
+    public static string GetCurrentGamepadName() => Gamepad.current.displayName;
 
     public static bool IsAGamepadController(ControllerType controllerType)
     {
@@ -3788,6 +3789,31 @@ public static class InputManager
     #endregion
 
     #region Useful region
+
+    public static string GetControllerName(ControllerType controller)
+    {
+        if (controller == ControllerType.All)
+        {
+            string errorMsg = "Can't get the name of multiple controller";
+            Debug.LogWarning(errorMsg);
+            LogManager.instance.AddLog(errorMsg, "InputManager.GetControllerName", controller);
+            return string.Empty;
+        }
+
+        if (controller == ControllerType.Keyboard)
+            return "Keyboard";
+
+        if(controller == ControllerType.GamepadAll)
+            return GetCurrentGamepadName();
+
+        int index = (int)controller - 1;
+        ReadOnlyArray<Gamepad> gamepads = Gamepad.all;
+
+        if(index >= gamepads.Count)
+            return string.Empty;
+
+        return gamepads[index].displayName;
+    }
 
     public static InputControllerType GetCurrentGamepadControllerType()
     {
