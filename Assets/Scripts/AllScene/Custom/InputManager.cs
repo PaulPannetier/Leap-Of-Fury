@@ -17,12 +17,16 @@
 using System;
 using System.Collections.Generic;
 using XInputDotNetPure;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XInput;
+using UnityEngine.InputSystem.DualShock;
 using System.Collections;
 using System.Threading.Tasks;
 using System.Text;
 using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
+using UnityEngine.InputSystem.Utilities;
 
 #endregion
 
@@ -42,7 +46,8 @@ public enum InputControllerType
     XBoxSeries,
     AmazonLuna,
     GoogleStadia,
-    Ouya
+    Ouya,
+    None
 }
 
 public enum GamepadStick
@@ -1533,11 +1538,11 @@ public static class InputManager
 
     #endregion
 
-    #region GamePad only
+    #region GamePad Only
 
     #region SetVibration
 
-    private static void PrivateSetVibration(float rightIntensity, float leftIntensity, ControllerType gamepadIndex)
+    private static void SetVibrationInternal(float rightIntensity, float leftIntensity, ControllerType gamepadIndex)
     {
         if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
         {
@@ -1561,14 +1566,12 @@ public static class InputManager
 
     public static void SetVibration(float rightIntensity = 1f, float leftIntensity = 1f, ControllerType gamepadIndex = ControllerType.GamepadAll)
     {
-        //Handheld.Vibrate();//unity build-in poor version
-
         if (gamepadIndex == ControllerType.Keyboard)
         {
             Debug.LogWarning("Cannot vibrate the keyboard!");
             return;
         }
-        PrivateSetVibration(rightIntensity, leftIntensity, gamepadIndex);
+        SetVibrationInternal(rightIntensity, leftIntensity, gamepadIndex);
     }
 
     public static void SetVibration(float rightIntensity, float leftIntensity, float duration, ControllerType gamepadIndex = ControllerType.GamepadAll)
@@ -1602,7 +1605,7 @@ public static class InputManager
             Debug.LogWarning("Cannot vibrate the keyboard!");
             return;
         }
-        PrivateSetVibration(0f, 0f, gamepadIndex);
+        SetVibrationInternal(0f, 0f, gamepadIndex);
     }
 
     public static void CancelVibration()
@@ -1673,6 +1676,7 @@ public static class InputManager
     }
 
     #endregion
+
 
     public static bool IsAGamepadController(ControllerType controllerType)
     {
@@ -3785,6 +3789,92 @@ public static class InputManager
 
     #region Useful region
 
+    public static InputControllerType GetCurrentGamepadControllerType()
+    {
+        Gamepad gamepad = Gamepad.current;
+        ReadOnlyArray<Gamepad> gamepads = Gamepad.all;
+        int index = -1;
+        for (int i = 0; i < gamepads.Count; i++)
+        {
+            if(gamepads[i].deviceId == gamepad.deviceId)
+            {
+                index = i; 
+                break;
+            }
+        }
+
+        if(index < 0)
+            return InputControllerType.None;
+
+        return GetGamepadControllerType(index);
+    }
+
+    private static InputControllerType GetGamepadControllerType(int gamepadIndex)
+    {
+        ReadOnlyArray<Gamepad> gamepads = Gamepad.all;
+        Gamepad gamepad = gamepads[gamepadIndex];
+        bool CheckGamepad(Gamepad gamePad, string name)
+        {
+            StringComparison sc = StringComparison.OrdinalIgnoreCase;
+            bool res = gamepad.name.Replace(" ", "").Contains(name, sc) || gamepad.displayName.Replace(" ", "").Contains(name, sc) || gamepad.shortDisplayName.Replace(" ", "").Contains(name, sc);
+            res = res || gamepad.description.product.Replace(" ", "").Contains(name, sc) || gamepad.description.manufacturer.Replace(" ", "").Contains(name, sc) || gamepad.description.deviceClass.Replace(" ", "").Contains(name, sc);
+            return res || gamepad.description.serial.Replace(" ", "").Contains(name, sc) || gamepad.description.interfaceName.Replace(" ", "").Contains(name, sc);
+        }
+
+        if (gamepad is XInputController)
+        {
+            if (CheckGamepad(gamepad, "Xbox360"))
+                return InputControllerType.XBox360;
+            if (CheckGamepad(gamepad, "XboxOne"))
+                return InputControllerType.XBoxOne;
+            return InputControllerType.XBoxSeries;
+        }
+        else if (gamepad is DualShockGamepad)
+        {
+            if (CheckGamepad(gamepad, "PS3"))
+                return InputControllerType.PS3;
+            if (CheckGamepad(gamepad, "PS4"))
+                return InputControllerType.PS4;
+            return InputControllerType.PS5;
+        }
+        else if (CheckGamepad(gamepad, "SteamDeck"))
+            return InputControllerType.SteamDeck;
+        else if (CheckGamepad(gamepad, "Switch"))
+            return InputControllerType.Switch;
+        else if (CheckGamepad(gamepad, "Luna"))
+            return InputControllerType.AmazonLuna;
+        else if (CheckGamepad(gamepad, "Stadia"))
+            return InputControllerType.GoogleStadia;
+        else if (CheckGamepad(gamepad, "Ouya"))
+            return InputControllerType.Ouya;
+        return InputControllerType.XBoxSeries;
+    }
+
+    public static InputControllerType GetInputControllerType(ControllerType controllerType)
+    {
+        if (controllerType == ControllerType.Keyboard)
+            return InputControllerType.Keyboard;
+
+        if (controllerType == ControllerType.All)
+        {
+            string errorMsg = $"Can't get a InputControllerType of {controllerType.ToString()}!";
+            Debug.LogWarning(errorMsg);
+            LogManager.instance.AddLog(errorMsg, "InputManager.GetInputControllerType(ControllerType controllerType)");
+            return InputControllerType.None;
+        }
+
+        if (controllerType == ControllerType.GamepadAll)
+            controllerType = ControllerType.Gamepad1;
+
+        ReadOnlyArray<Gamepad> gamepads = Gamepad.all;
+        int gamepadIndex = (int)controllerType - 1;
+
+        if (gamepadIndex >= gamepads.Count)
+             return InputControllerType.None;
+
+        return GetGamepadControllerType(gamepadIndex);
+    }
+
     public static bool IsConfigurationEmpty(PlayerIndex playerIndex)
     {
         switch (playerIndex)
@@ -4297,7 +4387,7 @@ public static class InputManager
             }
 
             if(setting.timer > 0f)
-                PrivateSetVibration(setting.rightIntensity, setting.leftIntensity, setting.gamepadIndex);
+                SetVibrationInternal(setting.rightIntensity, setting.leftIntensity, setting.gamepadIndex);
         }
 
         foreach (VibrationSetting vib in stopSetting)

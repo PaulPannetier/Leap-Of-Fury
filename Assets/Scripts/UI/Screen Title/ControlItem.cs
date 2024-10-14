@@ -16,7 +16,16 @@ public class ControlItem : MonoBehaviour
         set
         {
             _key = value;
-            keyImage.sprite = InputIconManager.instance.GetButtonSprite(controller, value);
+            if(controller == BaseController.Keyboard)
+            {
+                keyImage.sprite = InputIconManager.instance.GetButtonSprite(InputControllerType.Keyboard, value);
+            }
+            else
+            {
+                InputControllerType type = InputManager.GetCurrentGamepadControllerType();
+                type = type == InputControllerType.None ? InputControllerType.XBoxSeries : type;
+                keyImage.sprite = InputIconManager.instance.GetButtonSprite(type, value);
+            }
         }
     }
     public bool isListening { get; private set; }
