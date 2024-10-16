@@ -97,11 +97,6 @@ public class CharSelectorController : MonoBehaviour
                 turningSelectors[i].SelectPreviousItem();
             }
 
-			String text = Useful.ToString(isTurningSelectorsFinishSelection) + Useful.ToString(isTurningSelectorInit);
-			// if (isTurningSelectorInit) 
-			// text += Useful.ToString(isTurningSelectorInit);
-			DebugText.instance.text = text;
-
             if(applyItemInput.IsPressedDown())
             {
                 isTurningSelectorsFinishSelection[i] = true;
@@ -164,7 +159,12 @@ public class CharSelectorController : MonoBehaviour
                 TransitionManager.instance.LoadSceneAsync("Screen Title", null);
             }
         }
-    }
+    
+		// String text = Useful.ToString(isTurningSelectorsFinishSelection) + Useful.ToString(isTurningSelectorInit);
+		// if (isTurningSelectorInit) 
+		// text += Useful.ToString(isTurningSelectorInit);
+		// DebugText.instance.text = text;
+	}
 
     private void OpenHelpCanvas(int indexTuringSelector)
     {
