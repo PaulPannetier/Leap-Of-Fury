@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c8dd3d49041a3947bce7d47ce963b02, type: 3}
   m_Name: BuildCreatorConfig
   m_EditorClassIdentifier: 
-  compagnyName: DefaultCopany
+  compagnyName: DefaultCompany
   gameName: Leap of Fury
   version: 0.1
   gameplayScenes:

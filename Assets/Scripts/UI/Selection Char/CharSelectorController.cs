@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CharSelectorController : MonoBehaviour
@@ -11,6 +12,8 @@ public class CharSelectorController : MonoBehaviour
     private int indexToInit;
     private bool canLoadNextScene = false;
     private bool nextSceneIsLoading = false;
+
+	private const int MAX_PLAYERS = 4;
 
     [SerializeField] private InputManager.GeneralInput helpButton;
     [SerializeField] private InputManager.GeneralInput escapeButton;
@@ -27,8 +30,9 @@ public class CharSelectorController : MonoBehaviour
 
     private void Awake()
     {
-        turningSelectors = new TurningSelector[4];
-        for (int i = 0; i < 4; i++)
+		// Debug.Log(transform.GetComponents<GameObject>());
+	    turningSelectors = new TurningSelector[MAX_PLAYERS];
+        for (int i = 0; i < MAX_PLAYERS; i++)
         {
             turningSelectors[i] = transform.GetChild(i).gameObject.GetComponent<TurningSelector>();
         }
@@ -36,11 +40,11 @@ public class CharSelectorController : MonoBehaviour
 
     private void Start()
     {
-        isTurningSelectorInit = new bool[4];
-        isTurningSelectorsFinishSelection = new bool[4];
-        isHelpCanvasOpen = new bool[4];
-        helpCanvas = new GameObject[4];
-        controllerIndexs = new ControllerType[4];
+        isTurningSelectorInit = new bool[MAX_PLAYERS];
+        isTurningSelectorsFinishSelection = new bool[MAX_PLAYERS];
+        isHelpCanvasOpen = new bool[MAX_PLAYERS];
+        helpCanvas = new GameObject[MAX_PLAYERS];
+        controllerIndexs = new ControllerType[MAX_PLAYERS];
         indexToInit = 0;
     }
 
@@ -92,6 +96,11 @@ public class CharSelectorController : MonoBehaviour
             {
                 turningSelectors[i].SelectPreviousItem();
             }
+
+			String text = Useful.ToString(isTurningSelectorsFinishSelection) + Useful.ToString(isTurningSelectorInit);
+			// if (isTurningSelectorInit) 
+			// text += Useful.ToString(isTurningSelectorInit);
+			DebugText.instance.text = text;
 
             if(applyItemInput.IsPressedDown())
             {
@@ -213,7 +222,7 @@ public class CharSelectorController : MonoBehaviour
 
     private bool ControllerIsAlreadyInit(ControllerType controllerType, out int index)
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < MAX_PLAYERS; i++)
         {
             if (isTurningSelectorInit[i] && controllerIndexs[i] == controllerType)
             {
@@ -229,7 +238,7 @@ public class CharSelectorController : MonoBehaviour
     {
         bool TestControllerType(ControllerType controllerType, out InputKey key)
         {
-            if (!ControllerIsAlreadyInit(controllerType, out int i) && 
+            if (!ControllerIsAlreadyInit(controllerType, out int i) &&
                 (controllerType == ControllerType.Keyboard || InputManager.IsGamePadConnected(controllerType)))
             {
                 if (InputManager.Listen(controllerType, out key))
@@ -238,7 +247,7 @@ public class CharSelectorController : MonoBehaviour
             key = (int)KeyCode.None;
             return false;
         }
-        
+
         if(TestControllerType(ControllerType.Keyboard, out key))
         {
             controllerType = ControllerType.Keyboard;
@@ -274,7 +283,7 @@ public class CharSelectorController : MonoBehaviour
     #region OnValidate
 
 #if UNITY_EDITOR
-    
+
     private void AddSelectedGamepadCharacter()
     {
         isTurningSelectorInit[indexToInit] = true;

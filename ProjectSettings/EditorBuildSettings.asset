@@ -29,5 +29,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Gameplay/The Plain/The Plain.unity
     guid: 857f19da6c4bbbc43b7b9cbe942c62ac
+  - enabled: 1
+    path: Assets/Scenes/Gameplay/Clockmaker's/Clockmaker's.unity
+    guid: fd41a9a1edaef814f9aa33a4e077760f
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: b3401402397a0484da801286af4df00b, type: 2}
