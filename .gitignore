@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 # Visual Studio Code configs
 .vscode
+
+# Runtime stuff
+Assets/Save/
