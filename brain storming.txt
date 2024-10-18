@@ -145,6 +145,7 @@ allow 2 block jump height
 recalculate screen res and frequency each 0.2sec
 change extension file
 test input system (mouse button unreconized)
+create default Save file for puttin Save dir in gitignore
 
 Huge test of ALL before V0.1
 
