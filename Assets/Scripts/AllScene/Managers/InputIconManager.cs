@@ -27,23 +27,23 @@ public class InputIconManager : MonoBehaviour
             return unknowButton;
         }
 
-        InputControllerType controllerType = baseController == BaseController.Keyboard ? InputControllerType.Keyboard : InputControllerType.XBoxSeries;
+        ControllerModel controllerType = baseController == BaseController.Keyboard ? ControllerModel.Keyboard : ControllerModel.XBoxSeries;
         return GetButtonSprite(controllerType, key);
     }
 
     public Sprite GetKeyboardButtonSprite(KeyboardKey key)
     {
-        return GetButtonSprite(InputControllerType.Keyboard, (InputKey)key);
+        return GetButtonSprite(ControllerModel.Keyboard, (InputKey)key);
     }
 
     public Sprite GetGamepadButtonSprite(GeneralGamepadKey key)
     {
-        return GetButtonSprite(InputControllerType.XBoxSeries, (InputKey)key);
+        return GetButtonSprite(ControllerModel.XBoxSeries, (InputKey)key);
     }
 
-    public Sprite GetGamepadButtonSprite(InputControllerType inputControllerType, GeneralGamepadKey key)
+    public Sprite GetGamepadButtonSprite(ControllerModel inputControllerType, GeneralGamepadKey key)
     {
-        if(inputControllerType == InputControllerType.Keyboard)
+        if(inputControllerType == ControllerModel.Keyboard)
         {
             string errorMsg = "InputControllerType.Keyboard is not a Gamepad controller!";
             Debug.LogError(errorMsg);
@@ -54,7 +54,7 @@ public class InputIconManager : MonoBehaviour
         return GetButtonSprite(inputControllerType, (InputKey)key);
     }
 
-    public Sprite GetButtonSprite(InputControllerType inputControllerType, InputKey inputKey)
+    public Sprite GetButtonSprite(ControllerModel inputControllerType, InputKey inputKey)
     {
         return iconsData.controllerData[inputControllerType].buttonsSprite[inputKey];
     }

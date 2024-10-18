@@ -141,16 +141,16 @@ MonoBehaviour:
   - keys: 66000000
   - keys: 11010000
   inputsKeyForGamepad:
-  - keys: b7ffffffc0ffffff
-  - keys: b6ffffffbeffffff
-  - keys: b9ffffffc1ffffff
-  - keys: b8ffffffbfffffff
-  - keys: c3ffffff
+  - keys: bfffffffc4ffffff
+  - keys: beffffffc2ffffff
+  - keys: c1ffffffc5ffffff
+  - keys: c0ffffffc3ffffff
+  - keys: c7ffffff
   - keys: 4f010000
   - keys: 4a010000
   - keys: 4c010000
   - keys: 4d010000
-  - keys: b9ffffffc1ffffff
+  - keys: c1ffffffc5ffffff
   inputsActions:
   - MoveRight
   - MoveLeft

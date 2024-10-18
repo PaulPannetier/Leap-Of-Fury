@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public class SerializableDictionary<TKey, TValue>
 {
-    [SerializeField] private List<DictionaryElement> elements;
+    public List<DictionaryElement> elements;
 
     public SerializableDictionary()
     {
@@ -44,7 +43,7 @@ public class SerializableDictionary<TKey, TValue>
     public void Add(TKey key, TValue value) => this[key] = value;
 
     [Serializable]
-    private struct DictionaryElement
+    public struct DictionaryElement
     {
         public TKey key;
         public TValue value;

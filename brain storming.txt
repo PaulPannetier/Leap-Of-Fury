@@ -144,6 +144,7 @@ repair boomerang attack
 allow 2 block jump height
 recalculate screen res and frequency each 0.2sec
 change extension file
+test input system (mouse button unreconized)
 
 Huge test of ALL before V0.1
 

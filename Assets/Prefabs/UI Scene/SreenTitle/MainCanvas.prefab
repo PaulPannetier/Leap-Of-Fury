@@ -994,9 +994,9 @@ MonoBehaviour:
   echapInput:
     keysKeyboard: 1b000000
     keyGamepad1: 5f010000
-    keyGamepad2: 73010000
-    keyGamepad3: 87010000
-    keyGamepad4: 9b010000
+    keyGamepad2: 5f010000
+    keyGamepad3: 69010000
+    keyGamepad4: 73010000
     controllerType: 6
   mainMenu: {fileID: 1233765589}
   groupMenu: {fileID: 3666333588179227438}
@@ -2290,16 +2290,16 @@ MonoBehaviour:
   upItemInput:
     keysKeyboard: 7700000011010000
     keyGamepad1: fdfffffff9fffffff5ffffff
-    keyGamepad2: eeffffffeaffffffe6ffffff
-    keyGamepad3: dfffffffdbffffffd7ffffff
-    keyGamepad4: d0ffffffccffffffc8ffffff
+    keyGamepad2: efffffffebffffffe7ffffff
+    keyGamepad3: e1ffffffddffffffd9ffffff
+    keyGamepad4: d3ffffffcfffffffcbffffff
     controllerType: 0
   downItemInput:
     keysKeyboard: 7300000012010000
     keyGamepad1: fbfffffff8fffffff4ffffff
-    keyGamepad2: ecffffffe9ffffffe5ffffff
-    keyGamepad3: ddffffffdaffffffd6ffffff
-    keyGamepad4: ceffffffcbffffffc7ffffff
+    keyGamepad2: edffffffeaffffffe6ffffff
+    keyGamepad3: dfffffffdcffffffd8ffffff
+    keyGamepad4: d1ffffffceffffffcaffffff
     controllerType: 0
   rightItemInput:
     keysKeyboard: 
@@ -2317,10 +2317,10 @@ MonoBehaviour:
     controllerType: 0
   applyInput:
     keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
     controllerType: 0
   allowedController: 2
 --- !u!114 &1938206539169063782
@@ -5568,10 +5568,10 @@ MonoBehaviour:
   _dropdown: {fileID: 6631333187037895776}
   applyInput:
     keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
     controllerType: 0
   desactivateInput:
     keysKeyboard: 1b000000
@@ -7016,7 +7016,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 6194209690344111280}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -7519,7 +7519,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 4754247021256092084}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -8445,7 +8445,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1095718864596439209}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -9234,7 +9234,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 588141153966286982}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -9707,7 +9707,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3616590776207774048}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -11114,7 +11114,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 2758174224337888019}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -11274,7 +11274,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 387d10945a18493438849311fb50f635, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11324,7 +11324,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 3407516267586462405}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -12220,7 +12220,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 4821020610147242673}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -12704,37 +12704,37 @@ MonoBehaviour:
   upItemInput:
     keysKeyboard: 7700000011010000
     keyGamepad1: fdfffffff9fffffff5ffffff
-    keyGamepad2: eeffffffeaffffffe6ffffff
-    keyGamepad3: dfffffffdbffffffd7ffffff
-    keyGamepad4: d0ffffffccffffffc8ffffff
+    keyGamepad2: efffffffebffffffe7ffffff
+    keyGamepad3: e1ffffffddffffffd9ffffff
+    keyGamepad4: d3ffffffcfffffffcbffffff
     controllerType: 0
   downItemInput:
     keysKeyboard: 7300000012010000
     keyGamepad1: fbfffffff8fffffff4ffffff
-    keyGamepad2: ecffffffe9ffffffe5ffffff
-    keyGamepad3: ddffffffdaffffffd6ffffff
-    keyGamepad4: ceffffffcbffffffc7ffffff
-    controllerType: 6
+    keyGamepad2: edffffffeaffffffe6ffffff
+    keyGamepad3: dfffffffdcffffffd8ffffff
+    keyGamepad4: d1ffffffceffffffcaffffff
+    controllerType: 0
   rightItemInput:
     keysKeyboard: 6400000013010000
     keyGamepad1: fcfffffff7fffffff3ffffff
-    keyGamepad2: edffffffe8ffffffe4ffffff
-    keyGamepad3: deffffffd9ffffffd5ffffff
-    keyGamepad4: cfffffffcaffffffc6ffffff
+    keyGamepad2: eeffffffe9ffffffe5ffffff
+    keyGamepad3: e0ffffffdbffffffd7ffffff
+    keyGamepad4: d2ffffffcdffffffc9ffffff
     controllerType: 6
   leftItemInput:
     keysKeyboard: 6100000014010000
     keyGamepad1: fafffffff6fffffff2ffffff
-    keyGamepad2: ebffffffe7ffffffe3ffffff
-    keyGamepad3: dcffffffd8ffffffd4ffffff
-    keyGamepad4: cdffffffc9ffffffc5ffffff
+    keyGamepad2: ecffffffe8ffffffe4ffffff
+    keyGamepad3: deffffffdaffffffd6ffffff
+    keyGamepad4: d0ffffffccffffffc8ffffff
     controllerType: 0
   applyInput:
     keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
     controllerType: 0
   allowedController: 1
 --- !u!1 &6825167769682055844
@@ -13828,7 +13828,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ca5ebf1bb6c6d574fa594710ab5270f8, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13878,7 +13878,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1529344359587080826}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -15521,7 +15521,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1405127080924625699}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []

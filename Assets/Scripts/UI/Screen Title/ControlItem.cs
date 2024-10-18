@@ -18,12 +18,12 @@ public class ControlItem : MonoBehaviour
             _key = value;
             if(controller == BaseController.Keyboard)
             {
-                keyImage.sprite = InputIconManager.instance.GetButtonSprite(InputControllerType.Keyboard, value);
+                keyImage.sprite = InputIconManager.instance.GetButtonSprite(ControllerModel.Keyboard, value);
             }
             else
             {
-                InputControllerType type = InputManager.GetCurrentGamepadControllerType();
-                type = type == InputControllerType.None ? InputControllerType.XBoxSeries : type;
+                ControllerModel type = InputManager.GetCurrentGamepadModel();
+                type = type == ControllerModel.None ? ControllerModel.XBoxSeries : type;
                 keyImage.sprite = InputIconManager.instance.GetButtonSprite(type, value);
             }
         }
