@@ -75,4 +75,8 @@ crashlytics-build.properties
 .vscode
 
 # Runtime stuff
-Assets/Save/
+Assets/Save/configuration.partyGame*
+Assets/Save/gameStat.partyGame*
+Assets/Save/stat.partyGame*
+Assets/Save/inputs.partyGame*
+Assets/Save/tmp*
