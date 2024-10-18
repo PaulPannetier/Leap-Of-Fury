@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System;
+using System.Diagnostics;
+using System.Collections;
 
 public class LogManager : MonoBehaviour
 {
@@ -186,14 +188,7 @@ public class LogManager : MonoBehaviour
             get
             {
                 if (_id == default(int))
-                {
-                    int logParamsHashCode = -640585942;
-                    for (int i = 0; i < logParams.Length; i++)
-                    {
-                        logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);
-                    }
-                    _id = HashCode.Combine(errorMessage, logParamsHashCode);
-                }
+                    _id = ComputeId();
                 return _id;
             }
             set => _id = value;
@@ -201,9 +196,26 @@ public class LogManager : MonoBehaviour
 
         [SerializeField] private string errorMessage;
         [SerializeField] private LogParams[] logParams;
+        [SerializeField] private string stackTrace;
 
         public LogMessage(string errorMessage, params object[] objs)
         {
+            StackTrace current = new StackTrace(true);
+            StringBuilder sb = new StringBuilder("at ");
+            StackFrame[] frames = current.GetFrames();
+            foreach (StackFrame frame in frames)
+            {
+                sb.Append(frame.GetMethod().ToString());
+                sb.Append(" at ");
+            }
+
+            if(frames.Length > 0)
+            {
+                sb.Remove(sb.Length - 4, 4);
+            }
+
+            stackTrace = sb.ToString();
+
             this.errorMessage = errorMessage;
             logParams = new LogParams[objs.Length];
 
@@ -215,7 +227,8 @@ public class LogManager : MonoBehaviour
                 if (obj.GetType().IsArray)
                 {
                     Array arr = (Array)obj;
-                    StringBuilder sb = new StringBuilder("[ ");
+                    sb.Clear();
+                    sb.Append("[");
                     for (int l = 0; l < arr.Length; l++)
                     {
                         sb.Append(arr.GetValue(l).ToString());
@@ -225,7 +238,45 @@ public class LogManager : MonoBehaviour
                     {
                         sb.Remove(sb.Length - 2, 2);
                     }
-                    sb.Append(" ]");
+                    sb.Append("]");
+                    value = sb.ToString();
+                }
+                if(obj.GetType().IsGenericType && obj.GetType().GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    IList lst = (IList)obj;
+                    sb.Clear();
+                    sb.Append("[");
+                    for (int l = 0; l < lst.Count; l++)
+                    {
+                        sb.Append(lst[l].ToString());
+                        sb.Append(", ");
+                    }
+                    if (lst.Count > 0)
+                    {
+                        sb.Remove(sb.Length - 2, 2);
+                    }
+                    sb.Append("]");
+                    value = sb.ToString();
+                }
+                else if(obj.GetType().IsGenericType && obj.GetType().GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                {
+                    IDictionary dic = (IDictionary)obj;
+                    sb.Clear();
+                    sb.Append("[");
+                    foreach (object key in dic.Keys)
+                    {
+                        sb.Append("{");
+                        sb.Append(key.ToString());
+                        sb.Append(":");
+                        sb.Append(dic[key].ToString());
+                        sb.Append("}, ");
+                    }
+
+                    if (dic.Count > 0)
+                    {
+                        sb.Remove(sb.Length - 2, 2);
+                    }
+                    sb.Append("]");
                     value = sb.ToString();
                 }
                 else
@@ -236,12 +287,8 @@ public class LogManager : MonoBehaviour
                 logParams[i] = new LogParams(type, value);
             }
 
-            int logParamsHashCode = -640585942;
-            for (int i = 0; i < logParams.Length; i++)
-            {
-                logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);
-            }
-            _id = HashCode.Combine(this.errorMessage, logParamsHashCode);
+            _id = 0;
+            ComputeId();
         }
 
         public override bool Equals(object obj)
@@ -259,6 +306,16 @@ public class LogManager : MonoBehaviour
 
         public static bool operator ==(LogMessage log1, LogMessage log2) => log1.id == log2.id;
         public static bool operator !=(LogMessage log1, LogMessage log2) => log1.id != log2.id;
+
+        private int ComputeId()
+        {
+            int logParamsHashCode = -640585942;
+            for (int i = 0; i < logParams.Length; i++)
+            {
+                logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);
+            }
+            return HashCode.Combine(errorMessage, logParamsHashCode);
+        }
 
         public override int GetHashCode() => id;
 

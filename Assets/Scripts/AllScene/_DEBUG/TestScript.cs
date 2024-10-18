@@ -1,39 +1,43 @@
 #if UNITY_EDITOR
 
+using System.Collections.Generic;
 using UnityEngine;
-using Collision2D;
-
 
 public class TestScript : MonoBehaviour
 {
-    public static Vector3 staticVar = Vector3.zero;
+    [SerializeField] private bool addLog = false;
 
-    public const int NUMBER = 5;
-    private float primitiveType;
-    private Vector2 structVariable;
-    private GameObject classVariable;
-
-    private void Method()
+    private void OnValidate()
     {
-        GameObject localVar = classVariable;
-        Vector3 localVarStruct = staticVar;
+        if(addLog)
+        {
+            addLog = false;
+            LogManager.instance.ClearLog();
+            if(Application.isPlaying)
+            {
+                string param1 = "param1";
+                float param2 = 3.1415f;
+                InputKey param3 = InputKey.Escape;
+                Vector3 param4 = new Vector3(1.25f, 54.1f, 54.8f);
+                MyClass myClass = new MyClass();
+                List<float> floatList = new List<float>() { 2.1f, 68.0f };
+                float[] floatArray = new float[3] { 1.0f, 3.14f, 8.4f };
+                Dictionary<string, Vector2> dict = new Dictionary<string, Vector2>()
+                {
+                    { "bonjour", Vector2.one },
+                    { "aurevoir", Vector2.zero }
+                };
+
+                LogManager.instance.AddLog("This is a test log", param1, param2, param3, param4, myClass, floatList, dict);
+            }
+        }
     }
-}
 
-
-public class MyClass
-{
-    public static Vector3 staticVar = Vector3.zero;
-
-    public const int NUMBER = 5;
-    private float primitiveType;
-    private Vector2 structVariable;
-    private GameObject classVariable;
-
-    private void Method()
+    private class MyClass
     {
-        GameObject localVar = classVariable;
-        Vector3 localVarStruct = staticVar;
+        public int publicInt = 5;
+        private int privateInt = 65;
+        public List<float> floatList = new List<float>() { 2.1f, 68.0f};
     }
 }
 
