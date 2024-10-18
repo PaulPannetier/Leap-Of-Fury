@@ -510,6 +510,126 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad1.Array.data[0]
+      value: 341
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad2.Array.data[0]
+      value: 351
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad3.Array.data[0]
+      value: 361
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: backInput.keyGamepad4.Array.data[0]
+      value: 371
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad1.Array.data[0]
+      value: 340
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad2.Array.data[0]
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad3.Array.data[0]
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: applyInput.keyGamepad4.Array.data[0]
+      value: 370
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad2.Array.data[0]
+      value: -18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad2.Array.data[1]
+      value: -23
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad2.Array.data[2]
+      value: -27
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad3.Array.data[0]
+      value: -31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad3.Array.data[1]
+      value: -37
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad3.Array.data[2]
+      value: -41
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad4.Array.data[0]
+      value: -46
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad4.Array.data[1]
+      value: -51
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: nextMapInput.keyGamepad4.Array.data[2]
+      value: -55
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad2.Array.data[0]
+      value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad2.Array.data[1]
+      value: -24
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad2.Array.data[2]
+      value: -28
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad3.Array.data[0]
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad3.Array.data[1]
+      value: -38
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad3.Array.data[2]
+      value: -42
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad4.Array.data[0]
+      value: -48
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad4.Array.data[1]
+      value: -52
+      objectReference: {fileID: 0}
+    - target: {fileID: 3816683227502487430, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
+      propertyPath: previousMapInput.keyGamepad4.Array.data[2]
+      value: -56
+      objectReference: {fileID: 0}
     - target: {fileID: 4122402382672322817, guid: 0a7d0489fd34a3145a63ceb4263cff7a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.33884344

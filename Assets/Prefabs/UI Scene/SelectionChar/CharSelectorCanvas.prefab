@@ -121,7 +121,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -295,6 +295,22 @@ PrefabInstance:
       value: 104
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpButton.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: nextItemInput.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: applyItemInput.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: previousItemInput.controllerType
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: helpButton.keyGamepad1.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -340,19 +356,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: helpButton.keyGamepad1.Array.data[0]
-      value: 353
+      value: 343
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: helpButton.keyGamepad2.Array.data[0]
-      value: 373
+      value: 353
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: helpButton.keyGamepad3.Array.data[0]
-      value: 393
+      value: 363
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: helpButton.keyGamepad4.Array.data[0]
-      value: 413
+      value: 373
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad1.Array.size
@@ -416,19 +432,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: escapeButton.keyGamepad1.Array.data[0]
-      value: 351
+      value: 341
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: escapeButton.keyGamepad2.Array.data[0]
-      value: 371
+      value: 351
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: escapeButton.keyGamepad3.Array.data[0]
-      value: 391
+      value: 361
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: escapeButton.keyGamepad4.Array.data[0]
-      value: 411
+      value: 371
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: escapeButton.keysKeyboard.Array.data[0]
@@ -448,55 +464,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad2.Array.data[0]
-      value: -18
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad2.Array.data[1]
-      value: -22
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad2.Array.data[2]
-      value: -26
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad3.Array.data[0]
-      value: -33
+      value: -31
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad3.Array.data[1]
-      value: -37
+      value: -35
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad3.Array.data[2]
-      value: -41
+      value: -39
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad4.Array.data[0]
-      value: -48
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad4.Array.data[1]
-      value: -52
+      value: -49
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keyGamepad4.Array.data[2]
-      value: -56
+      value: -49
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: applyItemInput.keyGamepad1.Array.data[0]
-      value: 350
+      value: 340
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: applyItemInput.keyGamepad2.Array.data[0]
-      value: 370
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: applyItemInput.keyGamepad3.Array.data[0]
-      value: 390
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: applyItemInput.keyGamepad4.Array.data[0]
-      value: 410
+      value: 370
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: nextItemInput.keysKeyboard.Array.data[0]
@@ -548,39 +564,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad2.Array.data[0]
-      value: -20
+      value: -19
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad2.Array.data[1]
-      value: -23
+      value: -22
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad2.Array.data[2]
-      value: -27
+      value: -26
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad3.Array.data[0]
-      value: -38
+      value: -36
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad3.Array.data[1]
-      value: -38
+      value: -36
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad3.Array.data[2]
-      value: -42
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad4.Array.data[0]
-      value: -50
+      value: -47
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad4.Array.data[1]
-      value: -53
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keyGamepad4.Array.data[2]
-      value: -57
+      value: -54
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keysKeyboard.Array.data[0]
@@ -589,6 +605,14 @@ PrefabInstance:
     - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: previousItemInput.keysKeyboard.Array.data[1]
       value: 115
+      objectReference: {fileID: 0}
+    - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: addSelectedGamepadCharacterInput.keysKeyboard.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5536954025131069488, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: addSelectedGamepadCharacterInput.keysKeyboard.Array.data[0]
+      value: 113
       objectReference: {fileID: 0}
     - target: {fileID: 5536954025131069494, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_Name
@@ -706,6 +730,14 @@ PrefabInstance:
       propertyPath: charNumber
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250766069012553, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
+    - target: {fileID: 6178250766388419072, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
     - target: {fileID: 6178250766388419075, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -718,6 +750,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 210
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250766519259566, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
     - target: {fileID: 6178250766519259567, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -738,6 +774,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -300
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250766560220480, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
     - target: {fileID: 6178250766560220481, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -770,6 +810,10 @@ PrefabInstance:
       propertyPath: charNumber
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250766632427402, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 6178250766950931622, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -782,6 +826,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 620
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250766950931623, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
+    - target: {fileID: 6178250767012943469, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 6178250767012943470, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4137443
@@ -798,6 +850,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 300
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250767210892428, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 6178250767210892431, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4137443
@@ -830,6 +886,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 210
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250767463337889, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
+    - target: {fileID: 6178250767634874593, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
     - target: {fileID: 6178250767634874594, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -862,6 +926,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -300
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250767772601167, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
     - target: {fileID: 6178250768023750917, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -878,6 +946,10 @@ PrefabInstance:
       propertyPath: charNumber
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6178250768023750918, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
     - target: {fileID: 6320344182217138613, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4137443
@@ -898,6 +970,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 300
       objectReference: {fileID: 0}
+    - target: {fileID: 6320344182217138614, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f574f1ffdfd462e4b85db92d24c91c26, type: 3}
     - target: {fileID: 6320344182234702490, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -910,6 +986,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -620
       objectReference: {fileID: 0}
+    - target: {fileID: 6320344182234702491, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: f25eee9d2bee5234ea79d49761117a05, type: 3}
     - target: {fileID: 6320344182732842612, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -934,6 +1014,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -300
       objectReference: {fileID: 0}
+    - target: {fileID: 6320344182732842613, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: c4ad673ecc6794a41897307935087fdc, type: 3}
     - target: {fileID: 6320344183311464249, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -945,6 +1029,14 @@ PrefabInstance:
     - target: {fileID: 6320344183311464249, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -620
+      objectReference: {fileID: 0}
+    - target: {fileID: 6320344183311464250, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: helpCanvasPrefab
+      value: 
+      objectReference: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
+    - target: {fileID: 8204202153654938254, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: offset.x
+      value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 8204202153654938254, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: itemsGO.Array.size
@@ -999,6 +1091,10 @@ PrefabInstance:
       value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 8204202155094863983, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: offset.x
+      value: -210
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204202155094863983, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: itemsGO.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -1051,6 +1147,10 @@ PrefabInstance:
       value: -210
       objectReference: {fileID: 0}
     - target: {fileID: 8204202155172837768, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: offset.x
+      value: 620
+      objectReference: {fileID: 0}
+    - target: {fileID: 8204202155172837768, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: itemsGO.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -1101,6 +1201,10 @@ PrefabInstance:
     - target: {fileID: 8204202155172837768, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: <offset>k__BackingField.x
       value: 620
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345451304746305460, guid: f049b241a7245804e85210e32f496a09, type: 3}
+      propertyPath: offset.x
+      value: -620
       objectReference: {fileID: 0}
     - target: {fileID: 8345451304746305460, guid: f049b241a7245804e85210e32f496a09, type: 3}
       propertyPath: itemsGO.Array.size
