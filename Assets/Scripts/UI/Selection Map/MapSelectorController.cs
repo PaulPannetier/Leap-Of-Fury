@@ -82,7 +82,7 @@ public class MapSelectorController : MonoBehaviour
             }
         }
 
-        ControllerType escapeController = isControllerIndexInit ? controllerIndex : ControllerType.All;
+        ControllerType escapeController = isControllerIndexInit ? controllerIndex : ControllerType.Any;
         backInput.controllerType = escapeController;
         if (backInput.IsPressedDown())
         {

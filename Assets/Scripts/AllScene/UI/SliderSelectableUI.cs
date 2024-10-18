@@ -21,9 +21,9 @@ public class SliderSelectableUI : SelectableUI
             {
                 ControllerType controllerType = ControllerType.Keyboard;
                 if (value.allowedController == BaseController.KeyboardAndGamepad)
-                    controllerType = ControllerType.All;
+                    controllerType = ControllerType.Any;
                 else if (value.allowedController == BaseController.Gamepad)
-                    controllerType = ControllerType.GamepadAll;
+                    controllerType = ControllerType.GamepadAny;
 
                 inputIncrease.controllerType = inputDecrease.controllerType = inputDesactive.controllerType = controllerType;
             }

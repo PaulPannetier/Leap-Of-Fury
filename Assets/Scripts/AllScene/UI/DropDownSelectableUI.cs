@@ -31,9 +31,9 @@ public class DropDownSelectableUI : SelectableUI
             {
                 ControllerType controllerType = ControllerType.Keyboard;
                 if (value.allowedController == BaseController.KeyboardAndGamepad)
-                    controllerType = ControllerType.All;
+                    controllerType = ControllerType.Any;
                 else if (value.allowedController == BaseController.Gamepad)
-                    controllerType = ControllerType.GamepadAll;
+                    controllerType = ControllerType.GamepadAny;
 
                 downInput.controllerType = upInput.controllerType = applyInput.controllerType = desactivateInput.controllerType = controllerType;
             }

@@ -95,7 +95,7 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
             oldStickPos = stickPos;
         }
 
-        if(controllerType == ControllerType.All)
+        if(controllerType == ControllerType.Any)
         {
             rightPressed = InputManager.GetKey("MoveRight", playerCommon.playerIndex);
             rightPressedDown = InputManager.GetKeyDown("MoveRight", playerCommon.playerIndex);

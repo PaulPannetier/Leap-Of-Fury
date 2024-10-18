@@ -79,8 +79,8 @@ public enum ControllerType
     Gamepad2 = 2,
     Gamepad3 = 3,
     Gamepad4 = 4,
-    GamepadAll = 5,
-    All = 6
+    GamepadAny = 5,
+    Any = 6
 }
 
 public enum BaseController
@@ -1556,7 +1556,7 @@ public static class InputManager
             get => _controllerType;
             set
             {
-                if (controllerType == ControllerType.All)
+                if (controllerType == ControllerType.Any)
                 {
                     string errorMsg = "An input data is for keyboard or gamepads not both!";
                     Debug.LogError(errorMsg);
@@ -1572,12 +1572,12 @@ public static class InputManager
         public InputData()
         {
             controlsDic = new Dictionary<string, ListInt>();
-            _controllerType = ControllerType.All;
+            _controllerType = ControllerType.Any;
         }
 
         public InputData(ControllerType controllerType)
         {
-            if(controllerType == ControllerType.All)
+            if(controllerType == ControllerType.Any)
             {
                 string errorMsg = "An input data is for keyboard or gamepads not both!";
                 Debug.LogError(errorMsg);
@@ -1600,7 +1600,7 @@ public static class InputManager
             }
 #endif
 
-            if (controllerType == ControllerType.All)
+            if (controllerType == ControllerType.Any)
             {
                 string errorMsg = "An input data is for keyboard or gamepads not both!";
                 Debug.LogError(errorMsg);
@@ -1620,7 +1620,7 @@ public static class InputManager
 
         public InputData(ControllerType controllerType, in InputDataRaw inputDataRaw)
         {
-            if (controllerType == ControllerType.All)
+            if (controllerType == ControllerType.Any)
             {
                 string errorMsg = "An input data is for keyboard or gamepads not both!";
                 Debug.LogError(errorMsg);
@@ -1710,7 +1710,7 @@ public static class InputManager
                     return true;
                 }
             }
-            else if (controllerType == ControllerType.GamepadAll)
+            else if (controllerType == ControllerType.GamepadAny)
             {
                 if (IsGamepadKey((InputKey)key))
                 {
@@ -1718,7 +1718,7 @@ public static class InputManager
                     return true;
                 }
             }
-            else if (controllerType == ControllerType.All)
+            else if (controllerType == ControllerType.Any)
             {
                 newKey = (int)key;
                 return true;
@@ -1935,7 +1935,7 @@ public static class InputManager
 
     public static GamepadKey ConvertGeneralGamepadKeyToGamepadKey(GeneralGamepadKey key, ControllerType gamepadIndex)
     {
-        if(gamepadIndex == ControllerType.GamepadAll)
+        if(gamepadIndex == ControllerType.GamepadAny)
             return (GamepadKey)key;
 
         int k = (int)key;
@@ -2029,7 +2029,7 @@ public static class InputManager
             case PlayerIndex.Five:
                 return player5Keys.controllerType;
             default:
-                return ControllerType.All;
+                return ControllerType.Any;
         }
     }
 
@@ -2039,7 +2039,7 @@ public static class InputManager
     {
         lowFrequency = Mathf.Clamp01(lowFrequency);
         hightFrequency = Mathf.Clamp01(hightFrequency);
-        if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
+        if (gamepadIndex == ControllerType.Any || gamepadIndex == ControllerType.GamepadAny)
         {
             foreach (Gamepad gamepad in Gamepad.all)
             {
@@ -2060,12 +2060,12 @@ public static class InputManager
         }
     }
 
-    public static void SetVibration(float intensity, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    public static void SetVibration(float intensity, ControllerType gamepadIndex = ControllerType.GamepadAny)
     {
         SetVibration(intensity, intensity, gamepadIndex);
     }
 
-    public static void SetVibration(float lowFrequency = 1f, float highFrequency = 1f, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    public static void SetVibration(float lowFrequency = 1f, float highFrequency = 1f, ControllerType gamepadIndex = ControllerType.GamepadAny)
     {
         if (gamepadIndex == ControllerType.Keyboard)
         {
@@ -2075,12 +2075,12 @@ public static class InputManager
         SetVibrationInternal(lowFrequency, highFrequency, gamepadIndex);
     }
 
-    public static void SetVibration(float lowFrequency, float highFrequency, float duration, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    public static void SetVibration(float lowFrequency, float highFrequency, float duration, ControllerType gamepadIndex = ControllerType.GamepadAny)
     {
         SetVibration(lowFrequency, highFrequency, duration, 0f, gamepadIndex);
     }
 
-    public static void SetVibration(float lowFrequency, float highFrequency, float duration, float delay, ControllerType gamepadIndex = ControllerType.GamepadAll)
+    public static void SetVibration(float lowFrequency, float highFrequency, float duration, float delay, ControllerType gamepadIndex = ControllerType.GamepadAny)
     {
         if (gamepadIndex == ControllerType.Keyboard)
         {
@@ -2110,7 +2110,7 @@ public static class InputManager
 
     public static void CancelVibration()
     {
-        StopVibration(ControllerType.GamepadAll);
+        StopVibration(ControllerType.GamepadAny);
         vibrationSettings.Clear();
     }
 
@@ -2195,7 +2195,7 @@ public static class InputManager
             return Vector2.zero;
         }
 
-        if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
+        if (gamepadIndex == ControllerType.Any || gamepadIndex == ControllerType.GamepadAny)
         {
             string errorMsg = "Can't return the stick position of multiple device";
             Debug.LogWarning(errorMsg);
@@ -2217,7 +2217,7 @@ public static class InputManager
             return 0f;
         }
 
-        if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
+        if (gamepadIndex == ControllerType.Any || gamepadIndex == ControllerType.GamepadAny)
         {
             string errorMsg = "Can't return the trigger of multiple device";
             Debug.LogWarning(errorMsg);
@@ -2235,7 +2235,7 @@ public static class InputManager
         if (gamepadIndex == ControllerType.Keyboard)
             return true;
 
-        if (gamepadIndex == ControllerType.All || gamepadIndex == ControllerType.GamepadAll)
+        if (gamepadIndex == ControllerType.Any || gamepadIndex == ControllerType.GamepadAny)
             return newGP1State.isConnected && newGP2State.isConnected && newGP3State.isConnected && newGP4State.isConnected;
 
         return GetState(gamepadIndex).isConnected;
@@ -3603,10 +3603,10 @@ public static class InputManager
                 GP4LeftThumbStickDeadZone = defaultGP4LeftThumbStickDeadZone;
                 GP4TriggersDeadZone = defaultGP4TriggersDeadZone;
                 break;
-            case ControllerType.GamepadAll:
+            case ControllerType.GamepadAny:
                 ClearDeadZone();
                 break;
-            case ControllerType.All:
+            case ControllerType.Any:
                 ClearDeadZone();
                 break;
             default:
@@ -3632,7 +3632,7 @@ public static class InputManager
         if(controller == BaseController.Gamepad)
         {
             defaultGPKeys = gpKeys.Clone();
-            defaultGPKeys.controllerType = ControllerType.GamepadAll;
+            defaultGPKeys.controllerType = ControllerType.GamepadAny;
             return;
         }
         SetDefaultController();
@@ -3643,7 +3643,7 @@ public static class InputManager
         defaultKBKeys = kbKeys.Clone();
         defaultKBKeys.controllerType = ControllerType.Keyboard;
         defaultGPKeys = gpKeys.Clone();
-        defaultGPKeys.controllerType = ControllerType.GamepadAll;
+        defaultGPKeys.controllerType = ControllerType.GamepadAny;
     }
 
     public static void SetDefaultController(BaseController controller, PlayerIndex player)
@@ -3682,13 +3682,13 @@ public static class InputManager
         if (controller == BaseController.Keyboard)
         {
             defaultGPKeys = inputs.Clone();
-            defaultGPKeys.controllerType = ControllerType.GamepadAll;
+            defaultGPKeys.controllerType = ControllerType.GamepadAny;
             return;
         }
         defaultKBKeys = inputs.Clone();
         defaultKBKeys.controllerType = ControllerType.Keyboard;
         defaultGPKeys = inputs.Clone();
-        defaultGPKeys.controllerType = ControllerType.GamepadAll;
+        defaultGPKeys.controllerType = ControllerType.GamepadAny;
     }
 
     /// <summary>
@@ -3707,7 +3707,7 @@ public static class InputManager
             return;
         }
 
-        if (controllerType == ControllerType.All)
+        if (controllerType == ControllerType.Any)
         {
             string errorMsg = "Can't assign from multiples inputs";
             Debug.LogWarning(errorMsg);
@@ -3760,13 +3760,13 @@ public static class InputManager
         if(controller == BaseController.Gamepad)
         {
             gpKeys = defaultGPKeys.Clone();
-            gpKeys.controllerType = ControllerType.GamepadAll;
+            gpKeys.controllerType = ControllerType.GamepadAny;
             return;
         }
         kbKeys = defaultKBKeys.Clone();
         kbKeys.controllerType = ControllerType.Keyboard;
         gpKeys = defaultGPKeys.Clone();
-        gpKeys.controllerType = ControllerType.GamepadAll;
+        gpKeys.controllerType = ControllerType.GamepadAny;
     }
 
     #endregion
@@ -3872,9 +3872,9 @@ public static class InputManager
             return false;
         
         defaultKBKeys = new InputData(ControllerType.Keyboard, data.defaultKBKeys);
-        defaultGPKeys = new InputData(ControllerType.GamepadAll, data.defaultGPKeys);
+        defaultGPKeys = new InputData(ControllerType.GamepadAny, data.defaultGPKeys);
         kbKeys = new InputData(ControllerType.Keyboard, data.kbKeys);
-        gpKeys = new InputData(ControllerType.GamepadAll, data.gpKeys);
+        gpKeys = new InputData(ControllerType.GamepadAny, data.gpKeys);
         GP1RightThumbStickDeadZone = data.GP1RightThumbStickDeadZone;
         GP1LeftThumbStickDeadZone = data.GP1LeftThumbStickDeadZone;
         GP1TriggersDeadZone = data.GP1TriggersDeadZone;
@@ -3899,7 +3899,7 @@ public static class InputManager
             return false;
 
         defaultKBKeys = new InputData(ControllerType.Keyboard, data.defaultKBKeys);
-        defaultGPKeys = new InputData(ControllerType.GamepadAll, data.defaultGPKeys);
+        defaultGPKeys = new InputData(ControllerType.GamepadAny, data.defaultGPKeys);
         return true;
     }
 
@@ -3912,7 +3912,7 @@ public static class InputManager
             return false;
 
         kbKeys = new InputData(ControllerType.Keyboard, data.kbKeys);
-        gpKeys = new InputData(ControllerType.GamepadAll, data.gpKeys);
+        gpKeys = new InputData(ControllerType.GamepadAny, data.gpKeys);
         GP1RightThumbStickDeadZone = data.GP1RightThumbStickDeadZone;
         GP1LeftThumbStickDeadZone = data.GP1LeftThumbStickDeadZone;
         GP1TriggersDeadZone = data.GP1TriggersDeadZone;
@@ -4014,9 +4014,9 @@ public static class InputManager
         void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData data)
         {
             defaultKBKeys = new InputData(ControllerType.Keyboard, data.defaultKBKeys);
-            defaultGPKeys = new InputData(ControllerType.GamepadAll, data.defaultGPKeys);
+            defaultGPKeys = new InputData(ControllerType.GamepadAny, data.defaultGPKeys);
             kbKeys = new InputData(ControllerType.Keyboard, data.kbKeys);
-            gpKeys = new InputData(ControllerType.GamepadAll, data.gpKeys);
+            gpKeys = new InputData(ControllerType.GamepadAny, data.gpKeys);
             GP1RightThumbStickDeadZone = data.GP1RightThumbStickDeadZone;
             GP1LeftThumbStickDeadZone = data.GP1LeftThumbStickDeadZone;
             GP1TriggersDeadZone = data.GP1TriggersDeadZone;
@@ -4044,7 +4044,7 @@ public static class InputManager
         void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData data)
         {
             defaultKBKeys = new InputData(ControllerType.Keyboard, data.defaultKBKeys);
-            defaultGPKeys = new InputData(ControllerType.GamepadAll, data.defaultGPKeys);
+            defaultGPKeys = new InputData(ControllerType.GamepadAny, data.defaultGPKeys);
         }
 
         bool res = await Save.ReadJSONDataAsync<InputManagerConfigData>(fileName, CallbackReadInputManagerConfigData);
@@ -4060,7 +4060,7 @@ public static class InputManager
         void CallbackReadInputManagerConfigData(bool b, InputManagerConfigData data)
         {
             kbKeys = new InputData(ControllerType.Keyboard, data.kbKeys);
-            gpKeys = new InputData(ControllerType.GamepadAll, data.gpKeys);
+            gpKeys = new InputData(ControllerType.GamepadAny, data.gpKeys);
             GP1RightThumbStickDeadZone = data.GP1RightThumbStickDeadZone;
             GP1LeftThumbStickDeadZone = data.GP1LeftThumbStickDeadZone;
             GP1TriggersDeadZone = data.GP1TriggersDeadZone;
@@ -4112,7 +4112,7 @@ public static class InputManager
 
     public static string GetControllerName(ControllerType controller)
     {
-        if (controller == ControllerType.All)
+        if (controller == ControllerType.Any)
         {
             string errorMsg = "Can't get the name of multiple controller";
             Debug.LogWarning(errorMsg);
@@ -4123,7 +4123,7 @@ public static class InputManager
         if (controller == ControllerType.Keyboard)
             return "Keyboard";
 
-        if(controller == ControllerType.GamepadAll)
+        if(controller == ControllerType.GamepadAny)
             return GetCurrentGamepadName();
 
 
@@ -4140,7 +4140,7 @@ public static class InputManager
 
     public static ControllerModel GetControllerModel(ControllerType controllerType)
     {
-        if(controllerType == ControllerType.All || controllerType == ControllerType.GamepadAll)
+        if(controllerType == ControllerType.Any || controllerType == ControllerType.GamepadAny)
         {
             string errorMsg = "Can't get the model of multiple devices";
             Debug.LogWarning(errorMsg);
@@ -4449,7 +4449,7 @@ public static class InputManager
 
                 key = 0;
                 return false;
-            case ControllerType.GamepadAll:
+            case ControllerType.GamepadAny:
                 for (i = 330; i <= 339; i++)
                 {
                     if (GetPositiveKeyDown(i))
@@ -4470,7 +4470,7 @@ public static class InputManager
 
                 key = 0;
                 return false;
-            case ControllerType.All:
+            case ControllerType.Any:
                 foreach (KeyboardKey keyboardKey in Enum.GetValues(typeof(KeyboardKey)))
                 {
                     if (Input.GetKeyDown((KeyCode)keyboardKey))
@@ -4510,13 +4510,13 @@ public static class InputManager
     {
         if(controller == BaseController.Gamepad)
         {
-            return Listen(ControllerType.GamepadAll, out key);
+            return Listen(ControllerType.GamepadAny, out key);
         }
         if (controller == BaseController.Keyboard)
         {
             return Listen(ControllerType.Keyboard, out key);
         }
-        return Listen(ControllerType.All, out key);
+        return Listen(ControllerType.Any, out key);
     }
 
     public static bool ListenAll(ControllerType controller, out InputKey[] resultKeys)
@@ -4584,7 +4584,7 @@ public static class InputManager
                         res.Add((InputKey)i);
                 }
                 break;
-            case ControllerType.GamepadAll:
+            case ControllerType.GamepadAny:
                 for (i = 330; i <= 339; i++)
                 {
                     if (GetPositiveKeyDown(i))
@@ -4597,7 +4597,7 @@ public static class InputManager
                         res.Add((InputKey)i);
                 }
                 break;
-            case ControllerType.All:
+            case ControllerType.Any:
                 foreach (KeyboardKey keyboardKey in Enum.GetValues(typeof(KeyboardKey)))
                 {
                     if (Input.GetKeyDown((KeyCode)keyboardKey))
@@ -4652,13 +4652,13 @@ public static class InputManager
     {
         if (controller == BaseController.Gamepad)
         {
-            return ListenAll(ControllerType.GamepadAll, out resultKeys);
+            return ListenAll(ControllerType.GamepadAny, out resultKeys);
         }
         if (controller == BaseController.Keyboard)
         {
             return ListenAll(ControllerType.Keyboard, out resultKeys);
         }
-        return ListenAll(ControllerType.All, out resultKeys);
+        return ListenAll(ControllerType.Any, out resultKeys);
     }
 
     /// <param name="letter"> the letter pressed this frame</param>
@@ -5002,10 +5002,10 @@ public static class InputManager
                     return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad3));
                 case ControllerType.Gamepad4:
                     return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad4));
-                case ControllerType.GamepadAll:
+                case ControllerType.GamepadAny:
                     return GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad1)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad2))
                         || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad3)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad4));
-                case ControllerType.All:
+                case ControllerType.Any:
                     return GetKeySomething(func, ConvertKeyboardKeysToInputKeys(keysKeyboard)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad1)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad2))
                         || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad3)) || GetKeySomething(func, ConvertGamepadKeysToInputKeys(keyGamepad4));
                 default:

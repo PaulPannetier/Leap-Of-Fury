@@ -168,7 +168,7 @@ public class CharSelectorController : MonoBehaviour
             LoadSelectionMapScene();
         }
 
-        escapeButton.controllerType = ControllerType.All;
+        escapeButton.controllerType = ControllerType.Any;
 
         for (int i = 0; i < indexToInit; i++)
         {

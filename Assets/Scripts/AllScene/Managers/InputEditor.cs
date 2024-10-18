@@ -41,7 +41,7 @@ public class InputEditor : MonoBehaviour
     {
         void ListenAndShowInput()
         {
-            if (InputManager.Listen(ControllerType.All, out InputKey key))
+            if (InputManager.Listen(ControllerType.Any, out InputKey key))
             {
                 Debug.Log("Input listen : " + InputManager.KeyToString(key));
             }

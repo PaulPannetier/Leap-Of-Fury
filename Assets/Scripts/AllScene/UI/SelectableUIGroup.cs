@@ -144,7 +144,7 @@ public class SelectableUIGroup : MonoBehaviour
         if (!enableBehaviour)
             return;
 
-        //on attend la première interaction
+        //on attend la premiï¿½re interaction
         if(selectedUI == null)
         {
             if(controllerSelector == ControllerSelector.keyboard || controllerSelector == ControllerSelector.gamepad1 || controllerSelector == ControllerSelector.gamepad2 || controllerSelector == ControllerSelector.gamepad3
@@ -233,7 +233,7 @@ public class SelectableUIGroup : MonoBehaviour
 
     private bool IsControllerTypeAnAllowedController(ControllerType controllerType)
     {
-        if (allowedController == BaseController.KeyboardAndGamepad || controllerType == ControllerType.All)
+        if (allowedController == BaseController.KeyboardAndGamepad || controllerType == ControllerType.Any)
             return true;
 
         if (controllerType == ControllerType.Keyboard && allowedController == BaseController.Keyboard)
