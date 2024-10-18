@@ -6,12 +6,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    private int[] divisor = new int[11] { 60, 30, 20, 15, 12, 10, 6, 5, 3, 2, 1 };
+    private PixelPerfectCamera pixelPerfectCam;
+
     [SerializeField][Range(0, 10)] private int pixelQuality = 10;
     [SerializeField] private Vector2Int maxResolution = new Vector2Int(1920, 1080);
     public Vector2Int currentResolution = new Vector2Int(1920, 1080);
-
-    private int[] divisor = new int[11] { 60, 30, 20, 15, 12, 10, 6, 5, 3, 2, 1 };
-    private PixelPerfectCamera pixelPerfectCam;
 
     private void Awake()
     {
@@ -20,15 +20,16 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         instance = this;
         pixelPerfectCam = Camera.main.GetComponent<PixelPerfectCamera>();
         transform.parent = null;
-        Application.quitting += OnQuitApplication;
         DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
+        Application.quitting += OnQuitApplication;
         Random.SetRandomSeed();
     }
 

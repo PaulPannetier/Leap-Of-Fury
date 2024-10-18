@@ -183,6 +183,9 @@ public class BuildCreator : Editor
                 //clear tmp folder
                 Directory.Delete(Path.Combine(saveDirectory, "tmp"), true);
                 Directory.CreateDirectory(Path.Combine(saveDirectory, "tmp"));
+
+                //Write version
+                VersionManager.WriteBuildVersion(buildCreatorConfig.version, saveDirectory);
             }
         }
     }

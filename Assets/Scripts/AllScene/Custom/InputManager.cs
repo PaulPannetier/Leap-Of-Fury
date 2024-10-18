@@ -4169,10 +4169,26 @@ public static class InputManager
     {
         bool CheckGamepad(Gamepad gamePad, string name)
         {
+            string[] strToTests = new string[]
+            {
+                gamepad.name,
+                gamepad.displayName,
+                gamepad.shortDisplayName,
+                gamepad.description.product,
+                gamepad.description.manufacturer,
+                gamepad.description.deviceClass,
+                gamepad.description.serial,
+                gamepad.description.interfaceName
+            };
+
             StringComparison sc = StringComparison.OrdinalIgnoreCase;
-            bool res = gamepad.name.Replace(" ", "").Contains(name, sc) || gamepad.displayName.Replace(" ", "").Contains(name, sc) || gamepad.shortDisplayName.Replace(" ", "").Contains(name, sc);
-            res = res || gamepad.description.product.Replace(" ", "").Contains(name, sc) || gamepad.description.manufacturer.Replace(" ", "").Contains(name, sc) || gamepad.description.deviceClass.Replace(" ", "").Contains(name, sc);
-            return res || gamepad.description.serial.Replace(" ", "").Contains(name, sc) || gamepad.description.interfaceName.Replace(" ", "").Contains(name, sc);
+            for (int i = 0; i < strToTests.Length; i++)
+            {
+                string str = strToTests[i];
+                if (!string.IsNullOrEmpty(str) && str.Replace(" ", "").Contains(name, sc))
+                    return true;
+            }
+            return false;
         }
 
         if (gamepad is XInputController)

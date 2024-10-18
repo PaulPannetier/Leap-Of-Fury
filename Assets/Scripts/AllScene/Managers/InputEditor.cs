@@ -8,6 +8,7 @@ public class InputEditor : MonoBehaviour
     #if UNITY_EDITOR
 
     [SerializeField] private bool enableListenKeyCode = false;
+    [SerializeField] private bool printControllerModel = false;
 
     [Header("Input Saver")]
     [SerializeField] private InputDataKB[] inputsKeyForKeyboard;
@@ -74,6 +75,12 @@ public class InputEditor : MonoBehaviour
                 }
             }
             InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+        }
+
+        if(printControllerModel)
+        {
+            printControllerModel = false;
+            print(InputManager.GetControllerModel(ControllerType.Gamepad1));
         }
     }
 
