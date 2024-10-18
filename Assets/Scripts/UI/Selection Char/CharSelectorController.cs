@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 public class CharSelectorController : MonoBehaviour
 {
     private TurningSelector[] turningSelectors;
     private GameObject[] helpCanvas;
     private ControllerType[] controllerIndexs;
+    private GameObject[] statusIndicators;
     private bool[] isTurningSelectorInit;
     private bool[] isTurningSelectorsFinishSelection;
     private bool[] isHelpCanvasOpen;
@@ -30,23 +32,31 @@ public class CharSelectorController : MonoBehaviour
 
     private void Awake()
     {
-		// Debug.Log(transform.GetComponents<GameObject>());
 	    turningSelectors = new TurningSelector[MAX_PLAYERS];
+		statusIndicators = new GameObject[MAX_PLAYERS];
         for (int i = 0; i < MAX_PLAYERS; i++)
         {
-            turningSelectors[i] = transform.GetChild(i).gameObject.GetComponent<TurningSelector>();
+            // The children of the CharSelectorControllerUI (which this script is attached to)
+			// are: 4 TurningSelector (character selection wheel), 4 Image (status indicator)
+			turningSelectors[i] = transform.GetChild(i).gameObject.GetComponent<TurningSelector>();
+            statusIndicators[i] = transform.GetChild(i+MAX_PLAYERS).gameObject;
         }
+
+        helpCanvas = new GameObject[MAX_PLAYERS];
+        controllerIndexs = new ControllerType[MAX_PLAYERS];
+		isTurningSelectorInit = new bool[MAX_PLAYERS];
+        isTurningSelectorsFinishSelection = new bool[MAX_PLAYERS];
+        isHelpCanvasOpen = new bool[MAX_PLAYERS];
+        indexToInit = 0;
     }
 
     private void Start()
-    {
-        isTurningSelectorInit = new bool[MAX_PLAYERS];
-        isTurningSelectorsFinishSelection = new bool[MAX_PLAYERS];
-        isHelpCanvasOpen = new bool[MAX_PLAYERS];
-        helpCanvas = new GameObject[MAX_PLAYERS];
-        controllerIndexs = new ControllerType[MAX_PLAYERS];
-        indexToInit = 0;
-    }
+	{
+		for (int i = 0; i < MAX_PLAYERS; i++)
+        {
+			statusIndicators[i].GetComponent<TMPro.TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Join");
+		}
+	}
 
     private void Update()
     {
@@ -60,7 +70,7 @@ public class CharSelectorController : MonoBehaviour
 
 #endif
 
-        for (int i = 0; i < turningSelectors.Length; i++)
+        for (int i = 0; i < MAX_PLAYERS; i++)
         {
             if (!isTurningSelectorInit[i])
                 break;
@@ -88,22 +98,32 @@ public class CharSelectorController : MonoBehaviour
             applyItemInput.controllerType = controllerIndexs[i];
             escapeButton.controllerType = controllerIndexs[i];
 
-            if (nextItemInput.IsPressedDown())
-            {
-                turningSelectors[i].SelectedNextItem();
-            }
-            else if (previousItemInput.IsPressedDown())
-            {
-                turningSelectors[i].SelectPreviousItem();
-            }
+			// If we're not ready, we can rotate the wheel
+			if (!isTurningSelectorsFinishSelection[i])
+			{
+				if (nextItemInput.IsPressedDown())
+				{
+					turningSelectors[i].SelectedNextItem();
+				}
+				else if (previousItemInput.IsPressedDown())
+				{
+					turningSelectors[i].SelectPreviousItem();
+				}
+			}
 
             if(applyItemInput.IsPressedDown())
             {
                 isTurningSelectorsFinishSelection[i] = true;
+				TMPro.TextMeshProUGUI curText = statusIndicators[i].GetComponent<TMPro.TextMeshProUGUI>();
+				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready");
+				curText.color = Color.green;
             }
             else if(isTurningSelectorsFinishSelection[i] && escapeButton.IsPressedDown())
             {
                 isTurningSelectorsFinishSelection[i] = false;
+				TMPro.TextMeshProUGUI curText = statusIndicators[i].GetComponent<TMPro.TextMeshProUGUI>();
+				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose");
+				curText.color = Color.white;
             }
         }
 
@@ -121,10 +141,11 @@ public class CharSelectorController : MonoBehaviour
         //si il reste un char a init
         if (!isTurningSelectorInit[turningSelectors.Length - 1])
         {
-            if (NewControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
+			if (NewControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
             {
                 isTurningSelectorInit[indexToInit] = true;
                 controllerIndexs[indexToInit] = controllerType;
+				statusIndicators[indexToInit].GetComponent<TMPro.TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose");
                 indexToInit++;
             }
         }
@@ -159,11 +180,6 @@ public class CharSelectorController : MonoBehaviour
                 TransitionManager.instance.LoadSceneAsync("Screen Title", null);
             }
         }
-    
-		// String text = Useful.ToString(isTurningSelectorsFinishSelection) + Useful.ToString(isTurningSelectorInit);
-		// if (isTurningSelectorInit) 
-		// text += Useful.ToString(isTurningSelectorInit);
-		// DebugText.instance.text = text;
 	}
 
     private void OpenHelpCanvas(int indexTuringSelector)
