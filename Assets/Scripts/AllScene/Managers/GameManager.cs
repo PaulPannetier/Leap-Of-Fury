@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     private void OnQuitApplication()
     {
         //clear tmp files
-        string path = Path.Combine(Application.dataPath, "Save", "tmp");
+        string path = Path.Combine(Application.dataPath, "Save", "GameData", "tmp");
         string[] dirs = Directory.GetDirectories(path);
         string[] files = Directory.GetFiles(path);
 

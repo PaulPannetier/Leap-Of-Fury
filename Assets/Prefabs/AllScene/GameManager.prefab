@@ -52,7 +52,6 @@ GameObject:
   - component: {fileID: 6842532504228175351}
   - component: {fileID: 3639208383533933286}
   - component: {fileID: 8101875005452331617}
-  - component: {fileID: 3095323472968891076}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -129,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableListenKeyCode: 0
+  printControllerModel: 0
   inputsKeyForKeyboard:
   - keys: 13010000
   - keys: 14010000
@@ -312,19 +312,3 @@ MonoBehaviour:
     statDatas: []
   writeCurrentStats: 0
   loadStats: 0
---- !u!114 &3095323472968891076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8970924279353906143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b36b10a177c8a64499bb8384934a9ef0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveHash: 0
-  enableBehaviour: 1
-  hashes: []
-  folderToVerify: []

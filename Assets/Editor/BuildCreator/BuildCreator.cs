@@ -119,7 +119,7 @@ public class BuildCreator : Editor
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = buildCreatorConfig.developpementBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath.ToArray();
-            buildPlayerOptions.locationPathName = Path.Combine(buildDir, "PartyGame.exe");
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".exe");
             buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
             buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developpementBuild ? new string[] { "ADVANCE_DEBUG" } : new string[] { };
@@ -131,13 +131,13 @@ public class BuildCreator : Editor
             PlayerSettings.bundleVersion = buildCreatorConfig.version;
             PlayerSettings.SetManagedStrippingLevel(BuildTargetGroup.Standalone, buildCreatorConfig.managedStrippingLevel);
 
-            Debug.Log("Start building at " + buildDir);
+            Debug.Log("Start building in " + buildDir);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
 
             //Copy save content
             if(buildCreatorConfig.copySaveDirectory)
             {
-                string saveDirectory = Path.Combine(buildDir, "PartyGame_Data", "Save");
+                string saveDirectory = Path.Combine(buildDir, buildCreatorConfig.gameName + "_Data", "Save");
                 FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), saveDirectory);
                 RmMetaFile(Path.Combine(saveDirectory));
 
@@ -161,31 +161,34 @@ public class BuildCreator : Editor
                 //set default configuration
                 if(buildCreatorConfig.setDefaultSettingAndInput)
                 {
-                    File.WriteAllText(Path.Combine(saveDirectory, "configuration" + saveFileExtension),  "");
+                    File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "configuration" + saveFileExtension),  "");
 
                     //clear stat file
-                    File.WriteAllText(Path.Combine(saveDirectory, "stats" + saveFileExtension), Save.ConvertObjectToJSONString(new StatisticsData(0f, 0f, 0, 0)));
+                    File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "stats" + saveFileExtension), Save.Serialize(new StatisticsData(0f, 0f, 0, 0)));
 
                     //Write default inputs
-                    InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "inputs" + saveFileExtension));
+                    InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "UserSave", "inputs" + saveFileExtension));
                     InputManager.SetCurrentController(BaseController.KeyboardAndGamepad);
-                    InputManager.SaveConfiguration(@"//" + Path.Combine("Save", "tmp", "inputs.tmp"));
-                    string tmpPath = Path.Combine(Application.dataPath, "Save", "tmp", "inputs.tmp");
-                    string inputsText = File.ReadAllText(tmpPath);
-                    File.WriteAllText(Path.Combine(saveDirectory, "inputs" + saveFileExtension), inputsText);
-                    File.Delete(tmpPath);
-                    InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "inputs" + saveFileExtension));
+                    string tmpPath = Path.Combine("Save", "GameData", "tmp", "inputs.tmp");
+                    InputManager.SaveConfiguration(@"//" + tmpPath);
+                    string inputsText = File.ReadAllText(Path.Combine(Application.dataPath, tmpPath));
+                    File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "inputs" + saveFileExtension), inputsText);
+                    File.Delete(Path.Combine(Application.dataPath, tmpPath));
+                    InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "UserSave", "inputs" + saveFileExtension));
                 }
 
                 //reset log file
-                File.WriteAllText(Path.Combine(saveDirectory, "Log.txt"), "");
+                File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "Log.txt"), "");
 
                 //clear tmp folder
-                Directory.Delete(Path.Combine(saveDirectory, "tmp"), true);
-                Directory.CreateDirectory(Path.Combine(saveDirectory, "tmp"));
+                Directory.Delete(Path.Combine(saveDirectory, "GameData", "tmp"), true);
+                Directory.CreateDirectory(Path.Combine(saveDirectory, "GameData", "tmp"));
 
                 //Write version
                 VersionManager.WriteBuildVersion(buildCreatorConfig.version, saveDirectory);
+
+                //Security Manager
+                SecurityManager.WriteBuildHashed(saveDirectory);
             }
         }
     }
@@ -220,31 +223,6 @@ public class BuildCreator : Editor
                         gamemanager = t.gameObject;
                         break;
                     }
-                }
-            }
-        }
-
-        if (gamemanager != null)
-        {
-            SecurityManager secutityManager = gamemanager.GetComponent<SecurityManager>();
-            if (secutityManager != null)
-            {
-                SecurityManager secutityManager2 = secutityManager.gameObject.AddComponent<SecurityManager>();
-                secutityManager2.folderToVerify = new string[secutityManager.folderToVerify.Length];
-                for (int i = 0; i < secutityManager.folderToVerify.Length; i++)
-                {
-                    secutityManager2.folderToVerify[i] = secutityManager.folderToVerify[i];
-                }
-                DestroyImmediate(secutityManager);
-
-                if (buildCreatorConfig.enableFilesSecurity)
-                {
-                    secutityManager2.SaveHashes();
-                    secutityManager2.enableBehaviour = true;
-                }
-                else
-                {
-                    secutityManager2.enableBehaviour = false;
                 }
             }
         }

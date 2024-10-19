@@ -7,7 +7,7 @@ using System.Collections;
 
 public class LogManager : MonoBehaviour
 {
-    private const string logPath = "/Save/Log.txt";
+    private const string logPath = "/Save/UserSave/Log.txt";
     private static LogManager _instance;
     public static LogManager instance
     {

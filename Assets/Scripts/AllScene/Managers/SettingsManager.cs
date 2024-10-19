@@ -13,7 +13,7 @@ public class SettingsManager : MonoBehaviour
 
 #endif
 
-    public const string saveFileExtension = ".partyGame";
+    public const string saveFileExtension = ".LeapOfFury";
     [HideInInspector] public ConfigurationData defaultConfig { get; private set; }
     [HideInInspector] public ConfigurationData currentConfig { get; private set; }
 
@@ -51,14 +51,14 @@ public class SettingsManager : MonoBehaviour
     {
         defaultConfig = GetDefaultConfig();
 
-        if (!Save.ReadJSONData(@"/Save/configuration" + saveFileExtension, out ConfigurationData tmp))
+        if (!Save.ReadJSONData(@"/Save/UserData/configuration" + saveFileExtension, out ConfigurationData tmp))
         {
             currentConfig = defaultConfig.Clone();
 
             tmp = currentConfig.Clone();
             tmp.firstTimeLaunch = false;
 
-            Save.WriteJSONDataAsync(tmp, @"/Save/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
+            Save.WriteJSONDataAsync(tmp, @"/Save/UserData/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
         }
         else
         {
@@ -78,7 +78,7 @@ public class SettingsManager : MonoBehaviour
 
     private void SaveCurrentConfiguration()
     {
-        Save.WriteJSONData(currentConfig, @"/Save/configuration" + saveFileExtension);
+        Save.WriteJSONData(currentConfig, @"/Save/UserData/configuration" + saveFileExtension);
     }
 
     public void SetCurrentConfig(in ConfigurationData config)
@@ -161,7 +161,7 @@ public class SettingsManager : MonoBehaviour
         if(clearConfiguration)
         {
             clearConfiguration = false;
-            Save.WriteStringAsync("", @"/Save/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
+            Save.WriteStringAsync("", @"/Save/UserData/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
         }
     }
 

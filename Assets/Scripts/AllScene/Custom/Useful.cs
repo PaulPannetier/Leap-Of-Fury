@@ -79,14 +79,14 @@ public static class Save
     /// </summary>
     /// <param name="obj">The object to serialize</param>
     /// <returns> A string represent the object in parameter</returns>
-    public static string ConvertObjectToJSONString(object obj, bool withIndentation = false) => JsonUtility.ToJson(obj, withIndentation);
+    public static string Serialize(object obj, bool withIndentation = false) => JsonUtility.ToJson(obj, withIndentation);
     /// <summary>
     /// Convert any string reprensent a Serializable object to the object.
     /// </summary>
     /// <typeparam name="T">The type of the object return</typeparam>
     /// <param name="JSONString">The string represent the object return</param>
     /// <returns> A Serializable object describe by the string in parameter</returns>
-    public static T ConvertJSONStringToObject<T>(string JSONString) => JsonUtility.FromJson<T>(JSONString);
+    public static T Deserialize<T>(string JSONString) => JsonUtility.FromJson<T>(JSONString);
     
     /// <summary>
     /// Write in the customer machine a file with the object inside
@@ -98,7 +98,7 @@ public static class Save
     {
         try
         {
-            string s = ConvertObjectToJSONString(objToWrite, withIndentation);
+            string s = Serialize(objToWrite, withIndentation);
             if (s == "{}")
                 return false;
             File.WriteAllText(Application.dataPath + fileName, s);
@@ -121,7 +121,7 @@ public static class Save
     {
         try
         {
-            string s = ConvertObjectToJSONString(objToWrite, withIndentation);
+            string s = Serialize(objToWrite, withIndentation);
             if (s == "{}")
             {
                 callback?.Invoke(false);
@@ -156,7 +156,7 @@ public static class Save
             WriteMultiTreadData data = (WriteMultiTreadData)rawData;
             try
             {
-                string s = ConvertObjectToJSONString(objToWrite, withIndentation);
+                string s = Serialize(objToWrite, withIndentation);
                 if (s == "{}")
                 {
                     data.callbackWrite?.Invoke(false);
@@ -187,7 +187,7 @@ public static class Save
                 objRead = default(T);
                 return false;
             }
-            objRead = ConvertJSONStringToObject<T>(jsonString);
+            objRead = Deserialize<T>(jsonString);
             return true;
         }
         catch (Exception)
@@ -211,7 +211,7 @@ public static class Save
                 callback?.Invoke(false, default(T));
                 return false;
             }
-            callback?.Invoke(true, ConvertJSONStringToObject<T>(jsonString));
+            callback?.Invoke(true, Deserialize<T>(jsonString));
             return true;
         }
         catch (Exception)
@@ -243,7 +243,7 @@ public static class Save
                     data.callbackRead?.Invoke(false, default(T));
                     return;
                 }
-                T objRead = ConvertJSONStringToObject<T>(jsonString);
+                T objRead = Deserialize<T>(jsonString);
                 data.callbackRead?.Invoke(true, objRead);
             }
             catch (Exception)

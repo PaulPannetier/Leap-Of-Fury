@@ -1638,7 +1638,7 @@ public static class InputManager
 
         private InputData(ControllerType controllerType, Dictionary<string, ListInt> controlsDic)
         {
-            this.controllerType = controllerType;
+            this._controllerType = controllerType;
             this.controlsDic = new Dictionary<string, ListInt>(controlsDic);
         }
 

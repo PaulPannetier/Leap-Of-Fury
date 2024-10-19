@@ -142,10 +142,9 @@ Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
 allow 2 block jump height
-recalculate screen res and frequency each 0.2sec
-change extension file
-test input system (mouse button unreconized)
 create default Save file for puttin Save dir in gitignore
+Apply button in option menu (no refresh)
+Option menu => can set multiple input at one time
 
 Huge test of ALL before V0.1
 

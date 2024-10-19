@@ -43,7 +43,7 @@ public class GameStatisticManager : MonoBehaviour
 
     private void LoadStat()
     {
-        string path = "/Save/gameStat" + SettingsManager.saveFileExtension;
+        string path = "/Save/GameData/gameStat"  + SettingsManager.saveFileExtension;
         if (!Save.ReadJSONData<GameStatData>(path, out GameStatData gameStatData))
         {
             LogManager.instance.AddLog("Can't load GameStatData at the path : " + path + ".");
@@ -82,7 +82,7 @@ public class GameStatisticManager : MonoBehaviour
 
     public void WriteStats()
     {
-        string path = "/Save/gameStat" + SettingsManager.saveFileExtension;
+        string path = "/Save/GameData/gameStat" + SettingsManager.saveFileExtension;
         if (!Save.WriteJSONData(gameStat, path))
         {
             print("Can't write GameStatData at the path : " + path + ".");

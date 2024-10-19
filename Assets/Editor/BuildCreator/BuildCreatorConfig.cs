@@ -28,7 +28,6 @@ public class BuildCreatorConfig : ScriptableObject
     public CPUArchitecture architectureCPU = CPUArchitecture.x64;
     public bool developpementBuild = true;
     public ManagedStrippingLevel managedStrippingLevel = ManagedStrippingLevel.Disabled;
-    public bool enableFilesSecurity = true;
     public bool copySaveDirectory = true;
     public bool setDefaultSettingAndInput = true;
 }

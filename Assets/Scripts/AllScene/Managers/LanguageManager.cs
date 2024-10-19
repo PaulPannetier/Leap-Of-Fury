@@ -75,9 +75,9 @@ public class LanguageManager : MonoBehaviour
         }
 
         defaultLanguageData = new Dictionary<string, string>();
-        LoadLanguage(defaultLanguage, @"/Save/Language/English/text" + SettingsManager.saveFileExtension, ref defaultLanguageData);
+        LoadLanguage(defaultLanguage, @"/Save/GameData/Language/English/text" + SettingsManager.saveFileExtension, ref defaultLanguageData);
         languageData = new Dictionary<string, string>();
-        LoadLanguage(currentlanguage, @"/Save/Language/" + currentlanguage + "/text" + SettingsManager.saveFileExtension, ref languageData);
+        LoadLanguage(currentlanguage, @"/Save/GameData/Language/" + currentlanguage + "/text" + SettingsManager.saveFileExtension, ref languageData);
     }
 
     private string ApplyGameStatsInText(string content)
@@ -136,13 +136,16 @@ public class LanguageManager : MonoBehaviour
         string content;
         if(languageData.TryGetValue(textID, out content))
             return ApplyGameStatsInText(content);
-        Debug.LogWarning("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
-        LogManager.instance.AddLog("The text with id : " + textID + " with the language : " + currentlanguage + " doesn't exist");
+        string errorMsg = $"The text with id : {textID} with the language : {currentlanguage} doesn't exist";
+        Debug.LogWarning(errorMsg);
+        LogManager.instance.AddLog(errorMsg, textID, currentlanguage);
 
         if (defaultLanguageData.TryGetValue(textID, out content))
             return ApplyGameStatsInText(content);
-        Debug.LogWarning("The text with id : " + textID + " with the default language doesn't exist");
-        LogManager.instance.AddLog("The text with id : " + textID + " with the default language doesn't exist");
+
+        errorMsg = $"The text with id : {textID} with the default language doesn't exist";
+        Debug.LogWarning(errorMsg);
+        LogManager.instance.AddLog(errorMsg, textID, defaultLanguage);
         return string.Empty;
     }
 

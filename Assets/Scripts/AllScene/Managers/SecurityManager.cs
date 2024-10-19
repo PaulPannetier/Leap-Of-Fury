@@ -4,93 +4,60 @@ using System.IO;
 using System.Text;
 using System;
 
-public class SecurityManager : MonoBehaviour
+public static class SecurityManager
 {
-#if UNITY_EDITOR
-    [SerializeField] private bool saveHash;
-#endif
-
-    public bool enableBehaviour;
-
-    [SerializeField] private string[] hashes = { };
-    public string[] folderToVerify;
-
-    private void Awake()
+    public static void WriteBuildHashed(string buildSavePath)
     {
-        if (!enableBehaviour)
-            Destroy(this);
+        Hash hash = ComputeHash();
+        string hashJSON = Save.Serialize(hash);
+        File.WriteAllText(Path.Combine(buildSavePath, "GameData", "BuildHash" + SettingsManager.saveFileExtension), hashJSON);
     }
 
-    private void Start()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+    private static void Start()
     {
+
 #if UNITY_EDITOR
-        Destroy(this);
+
         if(Application.isEditor)
-        {
             return;
-        }
+
 #endif
 
-        if (hashes == null || folderToVerify == null || hashes.Length != folderToVerify.Length)
+        Hash runtimeHash = ComputeHash();
+        string buildHashFile = $"/Save/GameData/BuildHash" + SettingsManager.saveFileExtension;
+        if (!Save.ReadJSONData<Hash>(buildHashFile, out Hash buildHash))
         {
-            LogManager.instance.AddLog("Inconsistent array size, the two array must have the same size.", hashes.Length, folderToVerify.Length, hashes, folderToVerify, "SecurityManager.Start");
-            Destroy(this);
+            string errorMsg = $"Can't load build hashes file : {buildHashFile}.";
+            Debug.LogWarning(errorMsg);
+            QuitGame();
             return;
         }
 
-        Hash[] runtimeHashes = ComputeHashes();
-        if(hashes.Length != runtimeHashes.Length)
+        if (buildHash != runtimeHash)
         {
-            LogManager.instance.AddLog("Runtime hash and save hash have not the same size.", runtimeHashes.Length, hashes.Length, runtimeHashes, hashes, "SecurityManager.Start");
-            Destroy(this);
-            return;
+            QuitGame();
         }
+    }
 
-        bool error = false;
-        for(int i = 0; i < hashes.Length; i++)
-        {
-            if (hashes[i] != runtimeHashes[i].ToString())
-            {
-                error = true;
-                LogManager.instance.AddLog($"The secure folder {folderToVerify[i]} was modified", folderToVerify[i], hashes[i], runtimeHashes[i], "SecurityManager.Start");
-            }
-        }
-
-        if(error)
-        {
-            LogManager.instance.AddLog("File corrupted found, close the application", "SecurityManager.Start");
+    private static void QuitGame()
+    {
 #if !UNITY_EDITOR
+
             Application.Quit();
+
 #endif
-        }
-
-        Destroy(this);
     }
 
-    public void SaveHashes()
+    private static Hash ComputeHash()
     {
-        Hash[] tmpHashes = ComputeHashes();
-        hashes = new string[tmpHashes.Length];
-        for (int i = 0; i < hashes.Length; i++)
-        {
-            hashes[i] = tmpHashes[i].ToString();
-        }
-    }
-
-    private Hash[] ComputeHashes()
-    {
-        string[] contents = GetFoldersContents();
-        Hash[] hashes = new Hash[contents.Length];
-
-        for (int i = 0; i < contents.Length; i++)
-        {
-            SHA256 shaaaaaw = SHA256.Create();
-            hashes[i] = new Hash(shaaaaaw.ComputeHash(StringToByte(contents[i])));
-            shaaaaaw.Clear();
-            shaaaaaw.Dispose();
-        }
-
-        return hashes;
+        string contents = GetGameDataContents();
+        SHA256 shaaaaaw = SHA256.Create();
+        byte[] hashByte = shaaaaaw.ComputeHash(StringToByte(contents));
+        Hash hash = new Hash(ByteToString(hashByte));
+        shaaaaaw.Clear();
+        shaaaaaw.Dispose();
+        return hash;
     }
 
     private static byte[] StringToByte(string content) => Encoding.ASCII.GetBytes(content);
@@ -104,7 +71,7 @@ public class SecurityManager : MonoBehaviour
         return sb.ToString();
     }
 
-    private string[] GetFoldersContents()
+    private static string GetGameDataContents()
     {
         string GetFolderString(string dir)
         {
@@ -117,7 +84,7 @@ public class SecurityManager : MonoBehaviour
 
                 foreach (string file in files)
                 {
-                    if(file.Contains(".meta"))
+                    if(file.Contains(".meta") || file.EndsWith("BuildHash" + SettingsManager.saveFileExtension))
                         continue;
                     string content = File.ReadAllText(Path.Combine(dir, file));
                     sb.Append(content);
@@ -135,48 +102,22 @@ public class SecurityManager : MonoBehaviour
             return sb.ToString();
         }
 
-        Array.Sort(folderToVerify);
-        string[] contents = new string[folderToVerify.Length];
-        for (int i = 0; i < contents.Length; i++)
-        {
-            contents[i] = GetFolderString(Path.Combine(Application.dataPath, folderToVerify[i]));
-        }
-
-        return contents;
+        return GetFolderString(Path.Combine(Application.dataPath, "Save", "GameData"));
     }
-
-    #region OnValidate
-
-#if UNITY_EDITOR
-
-    private void OnValidate()
-    {
-        Array.Sort(folderToVerify);
-
-        if(saveHash)
-        {
-            saveHash = false;
-            SaveHashes();
-        }
-    }
-
-#endif
-
-    #endregion
 
     #region Struct
 
     [Serializable]
     private struct Hash
     {
-        private readonly byte[] hash;
+        [SerializeField] private string hash;
 
-        public Hash(byte[] hash)
+        public Hash(string hash)
         {
             this.hash = hash;
         }
 
-        public override string ToString() => SecurityManager.ByteToString(hash);
+        public override string ToString() => hash;
 
         public override int GetHashCode() => hash.GetHashCode();
 

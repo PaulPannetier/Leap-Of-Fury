@@ -27,12 +27,12 @@ public class InputEditor : MonoBehaviour
         }
         instance = this;
 
-        InputManager.LoadConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+        InputManager.LoadConfiguration(@"/Save/UserSave/inputs" + SettingsManager.saveFileExtension);
     }
 
     public void SaveInputConfig()
     {
-        InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+        InputManager.SaveConfiguration(@"/Save/UserSave/inputs" + SettingsManager.saveFileExtension);
     }
 
     #if UNITY_EDITOR
@@ -74,7 +74,7 @@ public class InputEditor : MonoBehaviour
                     InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, false);
                 }
             }
-            InputManager.SaveConfiguration(@"/Save/inputs" + SettingsManager.saveFileExtension);
+            InputManager.SaveConfiguration(@"/Save/UserSave/inputs" + SettingsManager.saveFileExtension);
         }
 
         if(printControllerModel)

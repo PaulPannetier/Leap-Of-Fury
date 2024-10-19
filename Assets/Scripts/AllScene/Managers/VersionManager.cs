@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEngine;
 
 public static class VersionManager
 {
-    private static Dictionary<string, Func<string>> conversionFunction = new Dictionary<string, Func<string>>()
+    private static List<Tuple<string, Func<string>>> conversionFunctions = new List<Tuple<string, Func<string>>>()
     {
-        { "0.0", ConvertV00To01 }
+        new Tuple<string, Func<string>>("0.0", ConvertVersion_00_To_01)
     };
 
     #region ConvertionFunction
 
-    private static string ConvertV00To01()
+    private static string ConvertVersion_00_To_01()
     {
         return "0.1";
     }
@@ -25,34 +24,79 @@ public static class VersionManager
     public static void WriteBuildVersion(string version, string saveBuildPath)
     {
         VersionData versionData = new VersionData(version);
-        Save.WriteJSONData(versionData, Path.Combine(saveBuildPath, version + SettingsManager.saveFileExtension));
+        string versionDataJSON = Save.Serialize(versionData);
+        File.WriteAllText(Path.Combine(saveBuildPath, "UserSave", "version" + SettingsManager.saveFileExtension), versionDataJSON);
+        File.WriteAllText(Path.Combine(saveBuildPath, "GameData", "version" + SettingsManager.saveFileExtension), versionDataJSON);
+    }
+
+    private static void WriteVersion()
+    {
+        VersionData versionData = new VersionData(version);
+        Save.WriteJSONData(versionData, $"/Save/UserSave/version" + SettingsManager.saveFileExtension);
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Start()
     {
-        if(!Save.ReadJSONData<VersionData>($"/Save/version" + SettingsManager.saveFileExtension, out VersionData versionData))
+        if (!Save.ReadJSONData<VersionData>($"/Save/UserSave/version" + SettingsManager.saveFileExtension, out VersionData versionData))
         {
-            Debug.LogWarning("version file unfound");
+            Debug.LogWarning("Version file unfound");
+            return;
+        }
+
+        if (!Save.ReadJSONData<VersionData>($"/Save/GameData/version" + SettingsManager.saveFileExtension, out VersionData buildVersionData))
+        {
+            Debug.LogWarning("Build version file unfound");
             return;
         }
 
         version = versionData.version;
+        string lastVersion = buildVersionData.version;
+
+        if (lastVersion == version)
+            return;
 
         //Convert Save directory
-        while(conversionFunction.ContainsKey(version))
+        int i;
+        int indexVersion = -1;
+        for (i = 0; i < conversionFunctions.Count; i++)
         {
-            Func<string> convertFunc = conversionFunction[version];
-            version = convertFunc.Invoke();
+            if(conversionFunctions[i].Item1 == version)
+            {
+                indexVersion = i; 
+                break;
+            }
         }
 
-        string lastVersion = conversionFunction.Keys.Last();
-        if (conversionFunction.Keys.Last() != version)
+        if (indexVersion < 0)
+        {
+            Debug.Log($"Can't find the conversion function for version {version}!");
+            return;
+        }
+
+        for (i = indexVersion; i < conversionFunctions.Count; i++)
+        {
+            Tuple<string, Func<string>> conversionFunction = conversionFunctions[i];
+
+            if(conversionFunction.Item1 != version)
+            {
+                Debug.Log($"Can't convert the version {version}!");
+                return;
+            }
+
+            conversionFunction.Item2.Invoke();
+            version = conversionFunction.Item1;
+        }
+
+        if (lastVersion != version)
         {
             Debug.LogWarning($"Current version ({version}) can't be convert to the last version ({lastVersion}).");
         }
+
+        WriteVersion();
     }
 
+    [Serializable]
     private struct VersionData
     {
         public string version;

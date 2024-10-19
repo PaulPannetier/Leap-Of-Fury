@@ -106,14 +106,14 @@ public class ColliderDrawer : MonoBehaviour
             sizes[i] = recToAdd[i].size;
         }
         ColliderDrawingData data = new ColliderDrawingData(centers, sizes);
-        Save.WriteJSONData(data, @"/Save/tmp/ColliderDrawer" + SettingsManager.saveFileExtension);
+        Save.WriteJSONData(data, @"/Save/GameData/tmp/ColliderDrawer" + SettingsManager.saveFileExtension);
         recToAdd.Clear();
         isDrawing = false;
     }
 
     private ColliderDrawingData LoadCollider()
     {
-        if(Save.ReadJSONData<ColliderDrawingData>(@"/Save/tmp/ColliderDrawer" + SettingsManager.saveFileExtension, out ColliderDrawingData data))
+        if(Save.ReadJSONData<ColliderDrawingData>(@"/Save/GameData/tmp/ColliderDrawer" + SettingsManager.saveFileExtension, out ColliderDrawingData data))
         {
             return data;
         }

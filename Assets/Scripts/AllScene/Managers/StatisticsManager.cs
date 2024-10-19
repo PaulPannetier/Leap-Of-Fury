@@ -21,7 +21,7 @@ public class StatisticsManager : MonoBehaviour
             return;
         }
         instance = this;
-        Save.ReadJSONData("/Save/stats" + SettingsManager.saveFileExtension, out currentData);
+        Save.ReadJSONData("/Save/GameData/stats" + SettingsManager.saveFileExtension, out currentData);
     }
 
     private void Start()
@@ -79,7 +79,7 @@ public class StatisticsManager : MonoBehaviour
     private void SaveStats()
     {
         isSaving = true;
-        Save.WriteJSONDataAsync(currentData, "/Save/stats" + SettingsManager.saveFileExtension, SaveCallback).GetAwaiter();
+        Save.WriteJSONDataAsync(currentData, "/Save/GameData/stats" + SettingsManager.saveFileExtension, SaveCallback).GetAwaiter();
     }
 
     private void OnDestroy()

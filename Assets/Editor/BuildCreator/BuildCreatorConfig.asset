@@ -30,8 +30,7 @@ MonoBehaviour:
   performBuild: 1
   useIL2CPPCompilation: 0
   architectureCPU: 1
-  developpementBuild: 0
-  managedStrippingLevel: 2
-  enableFilesSecurity: 1
+  developpementBuild: 1
+  managedStrippingLevel: 0
   copySaveDirectory: 1
   setDefaultSettingAndInput: 1
