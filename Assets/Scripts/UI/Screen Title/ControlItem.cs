@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections;
 
 public class ControlItem : MonoBehaviour
 {
+    private static bool isAnInputListening;
+
     private TextMeshProUGUI nameText;
     private Image keyImage;
     private Button keyButton;
@@ -47,18 +50,30 @@ public class ControlItem : MonoBehaviour
 
     public void OnKeyButtonDown()
     {
-        StartListening();
+        if(!isAnInputListening)
+        {
+            StartListening();
+        }
     }
 
     private void StartListening()
     {
-        isListening = isStartingListeningThisFrame = true;
+        isListening = isStartingListeningThisFrame = isAnInputListening = true;
         keyImage.sprite = InputIconManager.instance.unknowButton;
     }
 
     public void StopListening()
     {
         isListening = false;
+        StopCoroutine(nameof(StopListeningCorout));
+        StartCoroutine(StopListeningCorout());
+    }
+
+    private IEnumerator StopListeningCorout()
+    {
+        yield return null;
+        yield return null;
+        isAnInputListening = false;
     }
 
     private void SetKey(InputKey key)
@@ -70,7 +85,7 @@ public class ControlItem : MonoBehaviour
     {
         if(isListening)
         {
-            if(InputManager.Listen(controller, out InputKey key) && !isStartingListeningThisFrame)
+            if(InputManager.ListenUp(controller, out InputKey key) && !isStartingListeningThisFrame)
             {
                 SetKey(key);
                 StopListening();

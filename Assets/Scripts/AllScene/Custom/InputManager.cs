@@ -4110,6 +4110,8 @@ public static class InputManager
 
     #region Useful region
 
+    #region Controller Name/Model
+
     public static string GetControllerName(ControllerType controller)
     {
         if (controller == ControllerType.Any)
@@ -4220,6 +4222,10 @@ public static class InputManager
         return ControllerModel.XBoxSeries;
     }
 
+    #endregion
+
+    #region Other
+
     public static bool IsConfigurationEmpty(PlayerIndex playerIndex)
     {
         switch (playerIndex)
@@ -4268,6 +4274,8 @@ public static class InputManager
         direction = MouseWheelDirection.none;
         return false;
     }
+
+    #endregion
 
     #region KeyToString
 
@@ -4345,6 +4353,10 @@ public static class InputManager
     }
 
     #endregion
+
+    #region Listen
+
+    #region ListenDown
 
     /// <param name="key"> the key pressed, castable to an Keys, MouseButton or Buttons according to the controler type</param>
     /// <param name="gamepadIndex"></param>
@@ -4629,6 +4641,321 @@ public static class InputManager
         return false;
     }
 
+    public static bool ListenAll(BaseController controller, out InputKey[] resultKeys)
+    {
+        if (controller == BaseController.Gamepad)
+        {
+            return ListenAll(ControllerType.GamepadAny, out resultKeys);
+        }
+        if (controller == BaseController.Keyboard)
+        {
+            return ListenAll(ControllerType.Keyboard, out resultKeys);
+        }
+        return ListenAll(ControllerType.Any, out resultKeys);
+    }
+
+    #endregion
+
+    #region ListenUp
+
+    /// <param name="key"> the key pressed, castable to an Keys, MouseButton or Buttons according to the controler type</param>
+    /// <param name="gamepadIndex"></param>
+    /// <returns> true if a key of the controler is pressed this frame, false otherwise </returns>
+    public static bool ListenUp(ControllerType controller, out InputKey key)
+    {
+        int i;
+        switch (controller)
+        {
+            case ControllerType.Keyboard:
+                foreach (KeyboardKey keyboardKey in Enum.GetValues(typeof(KeyboardKey)))
+                {
+                    if (Input.GetKeyUp((KeyCode)keyboardKey))
+                    {
+                        key = (InputKey)keyboardKey;
+                        return true;
+                    }
+                }
+                key = 0;
+                return false;
+            case ControllerType.Gamepad1:
+                for (i = 340; i <= 349; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                for (i = -14; i <= -1; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                key = 0;
+                return false;
+            case ControllerType.Gamepad2:
+                for (i = 350; i <= 359; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                for (i = -28; i <= -15; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                key = 0;
+                return false;
+            case ControllerType.Gamepad3:
+                for (i = 360; i <= 369; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                for (i = -42; i <= -29; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                key = 0;
+                return false;
+            case ControllerType.Gamepad4:
+                for (i = 370; i <= 379; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                for (i = -56; i <= -43; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                key = 0;
+                return false;
+            case ControllerType.GamepadAny:
+                for (i = 330; i <= 339; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                for (i = -70; i <= -57; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                key = 0;
+                return false;
+            case ControllerType.Any:
+                foreach (KeyboardKey keyboardKey in Enum.GetValues(typeof(KeyboardKey)))
+                {
+                    if (Input.GetKeyUp((KeyCode)keyboardKey))
+                    {
+                        key = (InputKey)keyboardKey;
+                        return true;
+                    }
+                }
+
+                for (i = 330; i <= 339; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                for (i = -70; i <= -57; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                    {
+                        key = (InputKey)i;
+                        return true;
+                    }
+                }
+
+                key = 0;
+                return false;
+            default:
+                key = 0;
+                return false;
+        }
+    }
+
+    public static bool ListenUp(BaseController controller, out InputKey key)
+    {
+        if (controller == BaseController.Gamepad)
+        {
+            return ListenUp(ControllerType.GamepadAny, out key);
+        }
+        if (controller == BaseController.Keyboard)
+        {
+            return ListenUp(ControllerType.Keyboard, out key);
+        }
+        return ListenUp(ControllerType.Any, out key);
+    }
+
+    public static bool ListenUpAll(ControllerType controller, out InputKey[] resultKeys)
+    {
+        List<InputKey> res = new List<InputKey>();
+        int i;
+        switch (controller)
+        {
+            case ControllerType.Keyboard:
+                foreach (KeyboardKey keyboardKey in Enum.GetValues(typeof(KeyboardKey)))
+                {
+                    if (Input.GetKeyUp((KeyCode)keyboardKey))
+                        res.Add((InputKey)keyboardKey);
+                }
+                break;
+            case ControllerType.Gamepad1:
+                for (i = 340; i <= 349; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+
+                for (i = -14; i <= -1; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+                break;
+            case ControllerType.Gamepad2:
+                for (i = 350; i <= 359; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+
+                for (i = -28; i <= -15; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+                break;
+            case ControllerType.Gamepad3:
+                for (i = 360; i <= 369; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+
+                for (i = -42; i <= -29; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+                break;
+            case ControllerType.Gamepad4:
+                for (i = 370; i <= 379; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+
+                for (i = -56; i <= -43; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+                break;
+            case ControllerType.GamepadAny:
+                for (i = 330; i <= 339; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+
+                for (i = -70; i <= -57; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+                break;
+            case ControllerType.Any:
+                foreach (KeyboardKey keyboardKey in Enum.GetValues(typeof(KeyboardKey)))
+                {
+                    if (Input.GetKeyUp((KeyCode)keyboardKey))
+                        res.Add((InputKey)keyboardKey);
+                }
+
+                for (i = 330; i <= 339; i++)
+                {
+                    if (GetPositiveKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+
+                for (i = -70; i <= -57; i++)
+                {
+                    if (GetNegativeKeyUp(i))
+                        res.Add((InputKey)i);
+                }
+                break;
+            default:
+                break;
+        }
+
+        if (res.Count > 0)
+        {
+            resultKeys = res.ToArray();
+            return true;
+        }
+        resultKeys = null;
+        return false;
+    }
+
+    public static bool ListenUpAll(BaseController controller, out InputKey[] resultKeys)
+    {
+        if (controller == BaseController.Gamepad)
+        {
+            return ListenUpAll(ControllerType.GamepadAny, out resultKeys);
+        }
+        if (controller == BaseController.Keyboard)
+        {
+            return ListenUpAll(ControllerType.Keyboard, out resultKeys);
+        }
+        return ListenUpAll(ControllerType.Any, out resultKeys);
+    }
+
+    #endregion
+
     private static bool IsPrintableKey(UnityEngine.InputSystem.Controls.KeyControl key, out string keyString)
     {
         if (key == Keyboard.current.spaceKey)
@@ -4648,18 +4975,7 @@ public static class InputManager
         return false;
     }
 
-    public static bool ListenAll(BaseController controller, out InputKey[] resultKeys)
-    {
-        if (controller == BaseController.Gamepad)
-        {
-            return ListenAll(ControllerType.GamepadAny, out resultKeys);
-        }
-        if (controller == BaseController.Keyboard)
-        {
-            return ListenAll(ControllerType.Keyboard, out resultKeys);
-        }
-        return ListenAll(ControllerType.Any, out resultKeys);
-    }
+    #endregion
 
     /// <param name="letter"> the letter pressed this frame</param>
     /// <returns>true if a key of the letter of the keyboard controller is pressed this frame, false otherwise</returns>
