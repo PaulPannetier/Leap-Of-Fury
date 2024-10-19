@@ -2274,7 +2274,6 @@ public class CharacterController : MonoBehaviour
         while(!enableBehaviour)
         {
             yield return null;
-            Freeze();
             lastTimeApexJump += Time.deltaTime;
             lastTimeBeginJump += Time.deltaTime;
             lastTimeBeginWallJump += Time.deltaTime;

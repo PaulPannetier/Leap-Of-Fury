@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -73,6 +74,13 @@ public class PauseMenu : MonoBehaviour
 
     public void OnPauseEnable()
     {
+        StartCoroutine(OnPauseEnableCorout());
+    }
+
+    private IEnumerator OnPauseEnableCorout()
+    {
+        yield return null;
+        yield return null;
         foreach (Transform t in transform)
         {
             t.gameObject.SetActive(true);
@@ -84,6 +92,13 @@ public class PauseMenu : MonoBehaviour
 
     private void OnPauseDisable()
     {
+        StartCoroutine(OnPauseDisableCorout());
+    }
+
+    private IEnumerator OnPauseDisableCorout()
+    {
+        yield return null;
+        yield return null;
         selectableUIGroup.ResetToDefault();
         foreach (Transform t in transform)
         {

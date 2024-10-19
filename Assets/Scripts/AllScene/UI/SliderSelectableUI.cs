@@ -53,8 +53,6 @@ public class SliderSelectableUI : SelectableUI
             return;
         }
 
-        print("Update");
-
         if (inputDesactive.IsPressedDown() && !isActivatedThisFrame)
         {
             isActive = false;
@@ -63,13 +61,11 @@ public class SliderSelectableUI : SelectableUI
 
         if(inputDecrease.IsPressed())
         {
-            print("Decrease");
             slider.value = Mathf.Max(0f, slider.value - (Time.deltaTime / durationToFill));
         }
 
         if(inputIncrease.IsPressed())
         {
-            print("Increase");
             slider.value = Mathf.Min(1f, slider.value + (Time.deltaTime / durationToFill));
         }
 

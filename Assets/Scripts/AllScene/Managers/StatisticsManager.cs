@@ -5,6 +5,8 @@ public class StatisticsManager : MonoBehaviour
 {
     public static StatisticsManager instance;
 
+    private const string statsPath = @"/Save/UserSave/stats" + SettingsManager.saveFileExtension;
+
     private float lastTimeSave;
     private StatisticsData currentData;
     private bool isSaving, isCurrentGameplayScene;
@@ -22,7 +24,7 @@ public class StatisticsManager : MonoBehaviour
         }
         instance = this;
 
-        if(!Save.ReadJSONData("/Save/GameData/stats" + SettingsManager.saveFileExtension, out currentData))
+        if(!Save.ReadJSONData(statsPath, out currentData))
         {
             currentData = new StatisticsData(0f, 0f, 0, 0);
             SaveStats();
@@ -84,7 +86,7 @@ public class StatisticsManager : MonoBehaviour
     private void SaveStats()
     {
         isSaving = true;
-        Save.WriteJSONDataAsync(currentData, "/Save/GameData/stats" + SettingsManager.saveFileExtension, SaveCallback).GetAwaiter();
+        Save.WriteJSONDataAsync(currentData, statsPath, SaveCallback).GetAwaiter();
     }
 
     private void OnDestroy()

@@ -1496,16 +1496,16 @@ MonoBehaviour:
   upItemInput:
     keysKeyboard: 7700000011010000
     keyGamepad1: fdfffffff9fffffff5ffffff
-    keyGamepad2: eeffffffeaffffffe6ffffff
-    keyGamepad3: dfffffffdbffffffd7ffffff
-    keyGamepad4: d0ffffffccffffffc8ffffff
+    keyGamepad2: efffffffebffffffe7ffffff
+    keyGamepad3: e1ffffffddffffffd9ffffff
+    keyGamepad4: d3ffffffcfffffffcbffffff
     controllerType: 6
   downItemInput:
     keysKeyboard: 7300000012010000
     keyGamepad1: fbfffffff8fffffff4ffffff
-    keyGamepad2: ecffffffe9ffffffe5ffffff
-    keyGamepad3: ddffffffdaffffffd6ffffff
-    keyGamepad4: ceffffffcbffffffc7ffffff
+    keyGamepad2: edffffffeaffffffe6ffffff
+    keyGamepad3: dfffffffdcffffffd8ffffff
+    keyGamepad4: d1ffffffceffffffcaffffff
     controllerType: 6
   rightItemInput:
     keysKeyboard: 
@@ -1523,10 +1523,10 @@ MonoBehaviour:
     controllerType: 6
   applyInput:
     keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
     controllerType: 6
   allowedController: 2
 --- !u!114 &2495186805345660987
@@ -1661,11 +1661,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseInput:
-    keysKeyboard: 700000001b000000
-    keyGamepad1: 65010000
-    keyGamepad2: 79010000
-    keyGamepad3: 8d010000
-    keyGamepad4: a0010000
+    keysKeyboard: 700000001b0000000d000000
+    keyGamepad1: 5b010000
+    keyGamepad2: 65010000
+    keyGamepad3: 6f010000
+    keyGamepad4: 78010000
     controllerType: 6
   resumeText: {fileID: 8951532012000269659}
   mapSelectionText: {fileID: 7578912999686579970}
