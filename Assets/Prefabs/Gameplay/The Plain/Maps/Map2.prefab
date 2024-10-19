@@ -6335,6 +6335,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
+  isStatic: 1
 --- !u!61 &5898390773488076161
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19027,11 +19028,13 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/ThePlain/Map2SpawnPoints
+  relatifSpawnConfigsPath: /Save/GameData/Levels/ThePlain/Map2SpawnPoints
   tilemap: {fileID: 6880622753193381880}
   mapSize: {x: 32, y: 18}
+  pathfindingMapAccuracy: 1
 --- !u!1 &5703492530653290220
 GameObject:
   m_ObjectHideFlags: 0

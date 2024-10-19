@@ -47390,7 +47390,7 @@ MonoBehaviour:
   unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/MayasTemple/Map3SpawnPoints
+  relatifSpawnConfigsPath: /Save/GameData/Levels/MayasTemple/Map3SpawnPoints
   tilemap: {fileID: 8194832789679470622}
   mapSize: {x: 64, y: 36}
   pathfindingMapAccuracy: 1

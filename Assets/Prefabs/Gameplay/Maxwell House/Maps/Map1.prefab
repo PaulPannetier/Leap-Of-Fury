@@ -55,11 +55,13 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/MaxwellHouse/Map1SpawnPoints
+  relatifSpawnConfigsPath: /Save/GameData/Levels/MaxwellHouse/Map1SpawnPoints
   tilemap: {fileID: 4721793334093803618}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!1 &2609048453827990502
 GameObject:
   m_ObjectHideFlags: 0
@@ -68321,6 +68323,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 0.098
+  isStatic: 1
 --- !u!61 &2518074125758093283
 BoxCollider2D:
   m_ObjectHideFlags: 0

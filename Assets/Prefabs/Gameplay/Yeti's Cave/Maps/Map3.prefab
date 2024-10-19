@@ -1307,9 +1307,10 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/YetisCave/Map3SpawnPoints
+  relatifSpawnConfigsPath: /Save/Levels/GameData/YetisCave/Map3SpawnPoints
   tilemap: {fileID: 8073366223637301981}
   mapSize: {x: 32, y: 18}
   pathfindingMapAccuracy: 1

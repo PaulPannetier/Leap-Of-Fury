@@ -70,9 +70,10 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/IntoTheJungle/Map2SpawnPoints
+  relatifSpawnConfigsPath: /Save/GameData/Levels/IntoTheJungle/Map2SpawnPoints
   tilemap: {fileID: 2218702090748180647}
   mapSize: {x: 64, y: 36}
   pathfindingMapAccuracy: 1

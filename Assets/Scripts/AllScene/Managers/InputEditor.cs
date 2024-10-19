@@ -9,7 +9,15 @@ public class InputEditor : MonoBehaviour
 
 #if UNITY_EDITOR
 
+    private enum ListeningType
+    {
+        down,
+        up,
+        pressed
+    }
+
     [SerializeField] private bool enableListenKeyCode = false;
+    [SerializeField] private ListeningType listenKeyType = ListeningType.down;
     [SerializeField] private bool printControllerModel = false;
 
 #endif
@@ -21,6 +29,7 @@ public class InputEditor : MonoBehaviour
 
 #if UNITY_EDITOR
 
+    private InputKey currentListenKey = InputKey.None;
     [SerializeField] private bool saveInput = false;
 
 #endif
@@ -72,16 +81,40 @@ public class InputEditor : MonoBehaviour
 
     private void Update()
     {
-        void ListenAndShowInput()
+        if (enableListenKeyCode)
         {
-            if (InputManager.Listen(ControllerType.Any, out InputKey key))
+            InputKey key;
+            if (listenKeyType == ListeningType.down || listenKeyType == ListeningType.pressed)
             {
-                Debug.Log("Input listen : " + InputManager.KeyToString(key));
+                if (InputManager.Listen(ControllerType.Any, out key))
+                {
+                    if(listenKeyType == ListeningType.down)
+                        Debug.Log("Input listen : " + InputManager.KeyToString(key));
+                    else
+                    {
+                        currentListenKey = key;
+                    }
+                }
+            }
+
+            if(listenKeyType == ListeningType.up || listenKeyType == ListeningType.pressed)
+            {
+                if (InputManager.ListenUp(ControllerType.Any, out key))
+                {
+                    if (listenKeyType == ListeningType.up)
+                        Debug.Log("Input listenUp : " + InputManager.KeyToString(key));
+                    else
+                    {
+                        currentListenKey = InputKey.None;
+                    }
+                }
+            }
+
+            if (listenKeyType == ListeningType.pressed && currentListenKey != InputKey.None)
+            {
+                Debug.Log("Input listenPressed : " + InputManager.KeyToString(currentListenKey));
             }
         }
-
-        if (enableListenKeyCode)
-            ListenAndShowInput();
     }
 
     private void OnValidate()

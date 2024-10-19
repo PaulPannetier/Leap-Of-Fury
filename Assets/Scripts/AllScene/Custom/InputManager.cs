@@ -27,6 +27,7 @@ using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
 using UnityEngine.InputSystem.Utilities;
 using System.Runtime.CompilerServices;
+using UnityEngine.InputSystem.Controls;
 
 #endregion
 
@@ -1137,7 +1138,7 @@ public static class InputManager
             || (oldGP2State.dPad.right == ButtonState.Pressed && newGP2State.dPad.right == ButtonState.Released)
             || (oldGP3State.dPad.right == ButtonState.Pressed && newGP3State.dPad.right == ButtonState.Released)
             || (oldGP4State.dPad.right == ButtonState.Pressed && newGP4State.dPad.right == ButtonState.Released); },
-        () => { return (oldGP1State.dPad.down == ButtonState.Released && newGP1State.dPad.down == ButtonState.Released)
+        () => { return (oldGP1State.dPad.down == ButtonState.Pressed && newGP1State.dPad.down == ButtonState.Released)
             || (oldGP2State.dPad.down == ButtonState.Pressed && newGP2State.dPad.down == ButtonState.Released)
             || (oldGP3State.dPad.down == ButtonState.Pressed && newGP3State.dPad.down == ButtonState.Released)
             || (oldGP4State.dPad.down == ButtonState.Pressed && newGP4State.dPad.down == ButtonState.Released); },
@@ -5087,7 +5088,14 @@ public static class InputManager
         oldGP3State = newGP3State;
         oldGP4State = newGP4State;
 
-        GamePadState[] gamepadsStateTemp = new GamePadState[4];
+        GamePadState[] gamepadsStateTemp = new GamePadState[4]
+        {
+            GamePadState.Empty,
+            GamePadState.Empty,
+            GamePadState.Empty,
+            GamePadState.Empty
+        };
+
         ReadOnlyArray<Gamepad> gamepads = Gamepad.all;
         for (int i = 0; i < gamepads.Count; i++)
         {
@@ -5242,6 +5250,14 @@ public static class InputManager
 
     private struct GamePadState
     {
+        public static readonly GamePadState Empty = new GamePadState(
+            false,
+            0,
+            new GamePadButtons(ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released),
+            new GamePadDPad(ButtonState.Released, ButtonState.Released, ButtonState.Released, ButtonState.Released),
+            new GamePadThumbSticks(Vector2.zero, Vector2.zero),
+            new GamePadTriggers(0f, 0f));
+
         public bool isConnected;
         public int deviceId;
         public GamePadButtons buttons;

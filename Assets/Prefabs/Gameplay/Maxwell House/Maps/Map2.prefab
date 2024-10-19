@@ -21018,9 +21018,10 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/MaxwellHouse/Map2SpawnPoints
+  relatifSpawnConfigsPath: /Save/GameData/Levels/MaxwellHouse/Map2SpawnPoints
   tilemap: {fileID: 6792681595224786730}
   mapSize: {x: 64, y: 36}
   pathfindingMapAccuracy: 1

@@ -311,7 +311,10 @@ public class LevelMapData : MonoBehaviour
                     return null;
             }
         }
-        Debug.LogWarning("Can't open SpawnConfigsData's object at the path : " + relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+
+        string errorMsg = $"Can't open SpawnConfigsData's object at the path : {relatifSpawnConfigsPath + SettingsManager.saveFileExtension}.";
+        LogManager.instance.AddLog(errorMsg, "LevelMapData.LoadSpawnPoint(int nbChar)");
+        Debug.LogWarning(errorMsg);
         spawnConfigs = null;
         return null;
     }

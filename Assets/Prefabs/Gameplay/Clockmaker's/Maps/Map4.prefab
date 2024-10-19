@@ -47497,11 +47497,13 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/Levels/Clockmakers/Map4SpawnPoints
+  relatifSpawnConfigsPath: /Save/GameData/Levels/Clockmakers/Map4SpawnPoints
   tilemap: {fileID: 5478533791562482207}
   mapSize: {x: 64, y: 36}
+  pathfindingMapAccuracy: 1
 --- !u!1 &5478533791562482207
 GameObject:
   m_ObjectHideFlags: 0
@@ -55819,6 +55821,7 @@ MonoBehaviour:
   grabableRight: 1
   grabableLeft: 1
   frictionCoefficient: 1
+  isStatic: 1
 --- !u!61 &6153919846686163242
 BoxCollider2D:
   m_ObjectHideFlags: 0
