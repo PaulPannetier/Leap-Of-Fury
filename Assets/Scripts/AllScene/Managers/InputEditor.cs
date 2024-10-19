@@ -5,18 +5,25 @@ public class InputEditor : MonoBehaviour
 {
     public static InputEditor instance;
 
-    #if UNITY_EDITOR
+    private const string inputPath = @"/Save/UserSave/inputs" + SettingsManager.saveFileExtension;
+
+#if UNITY_EDITOR
 
     [SerializeField] private bool enableListenKeyCode = false;
     [SerializeField] private bool printControllerModel = false;
+
+#endif
 
     [Header("Input Saver")]
     [SerializeField] private InputDataKB[] inputsKeyForKeyboard;
     [SerializeField] private InputDataGP[] inputsKeyForGamepad;
     [SerializeField] private string[] inputsActions;
+
+#if UNITY_EDITOR
+
     [SerializeField] private bool saveInput = false;
 
-    #endif
+#endif
 
     private void Awake()
     {
@@ -27,15 +34,41 @@ public class InputEditor : MonoBehaviour
         }
         instance = this;
 
-        InputManager.LoadConfiguration(@"/Save/UserSave/inputs" + SettingsManager.saveFileExtension);
+        if(!InputManager.LoadConfiguration(inputPath))
+        {
+            SaveDefaultInputConfig();
+        }
     }
 
     public void SaveInputConfig()
     {
-        InputManager.SaveConfiguration(@"/Save/UserSave/inputs" + SettingsManager.saveFileExtension);
+        InputManager.SaveConfiguration(inputPath);
     }
 
-    #if UNITY_EDITOR
+    private void SaveDefaultInputConfig()
+    {
+        InputManager.ClearAll();
+        if (inputsKeyForKeyboard != null && inputsActions != null && inputsKeyForKeyboard.Length == inputsActions.Length)
+        {
+            for (int i = 0; i < inputsActions.Length; i++)
+            {
+                InputManager.AddInputsAction(inputsActions[i], inputsKeyForKeyboard[i].keys, BaseController.Keyboard, true);
+                InputManager.AddInputsAction(inputsActions[i], inputsKeyForKeyboard[i].keys, BaseController.Keyboard, false);
+            }
+        }
+
+        if (inputsKeyForGamepad != null && inputsActions != null && inputsKeyForGamepad.Length == inputsActions.Length)
+        {
+            for (int i = 0; i < inputsActions.Length; i++)
+            {
+                InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, true);
+                InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, false);
+            }
+        }
+        InputManager.SaveConfiguration(inputPath);
+    }
+
+#if UNITY_EDITOR
 
     private void Update()
     {
@@ -56,25 +89,7 @@ public class InputEditor : MonoBehaviour
         if (saveInput)
         {
             saveInput = false;
-            InputManager.ClearAll();
-            if (inputsKeyForKeyboard != null && inputsActions != null && inputsKeyForKeyboard.Length == inputsActions.Length)
-            {
-                for (int i = 0; i < inputsActions.Length; i++)
-                {
-                    InputManager.AddInputsAction(inputsActions[i], inputsKeyForKeyboard[i].keys, BaseController.Keyboard, true);
-                    InputManager.AddInputsAction(inputsActions[i], inputsKeyForKeyboard[i].keys, BaseController.Keyboard, false);
-                }
-            }
-
-            if (inputsKeyForGamepad != null && inputsActions != null && inputsKeyForGamepad.Length == inputsActions.Length)
-            {
-                for (int i = 0; i < inputsActions.Length; i++)
-                {
-                    InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, true);
-                    InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, false);
-                }
-            }
-            InputManager.SaveConfiguration(@"/Save/UserSave/inputs" + SettingsManager.saveFileExtension);
+            SaveDefaultInputConfig();
         }
 
         if(printControllerModel)
@@ -84,6 +99,9 @@ public class InputEditor : MonoBehaviour
         }
     }
 
+#endif
+
+    #region Custom Struct
 
     [Serializable]
     private struct InputDataKB
@@ -97,5 +115,5 @@ public class InputEditor : MonoBehaviour
         public GeneralGamepadKey[] keys;
     }
 
-    #endif
+    #endregion
 }

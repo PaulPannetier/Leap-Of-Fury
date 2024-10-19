@@ -21,7 +21,12 @@ public class StatisticsManager : MonoBehaviour
             return;
         }
         instance = this;
-        Save.ReadJSONData("/Save/GameData/stats" + SettingsManager.saveFileExtension, out currentData);
+
+        if(!Save.ReadJSONData("/Save/GameData/stats" + SettingsManager.saveFileExtension, out currentData))
+        {
+            currentData = new StatisticsData(0f, 0f, 0, 0);
+            SaveStats();
+        }
     }
 
     private void Start()

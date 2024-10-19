@@ -38,19 +38,22 @@ public static class VersionManager
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Start()
     {
-        if (!Save.ReadJSONData<VersionData>($"/Save/UserSave/version" + SettingsManager.saveFileExtension, out VersionData versionData))
+        if (Save.ReadJSONData<VersionData>($"/Save/UserSave/version" + SettingsManager.saveFileExtension, out VersionData versionData))
         {
-            Debug.LogWarning("Version file unfound");
-            return;
+            version = versionData.version;
+        }
+        else
+        {
+            version = "0.0";
+            WriteVersion();
         }
 
         if (!Save.ReadJSONData<VersionData>($"/Save/GameData/version" + SettingsManager.saveFileExtension, out VersionData buildVersionData))
         {
-            Debug.LogWarning("Build version file unfound");
+            Debug.LogWarning("Build version file unfound in directory ./Save/GameData/");
             return;
         }
 
-        version = versionData.version;
         string lastVersion = buildVersionData.version;
 
         if (lastVersion == version)

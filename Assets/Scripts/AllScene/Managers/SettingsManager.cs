@@ -13,6 +13,8 @@ public class SettingsManager : MonoBehaviour
 
 #endif
 
+    private const string configPath = @"/Save/UserData/configuration" + saveFileExtension;
+
     public const string saveFileExtension = ".LeapOfFury";
     [HideInInspector] public ConfigurationData defaultConfig { get; private set; }
     [HideInInspector] public ConfigurationData currentConfig { get; private set; }
@@ -30,7 +32,6 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
         LoadSettings();
-
     }
 
     private ConfigurationData GetDefaultConfig()
@@ -51,14 +52,14 @@ public class SettingsManager : MonoBehaviour
     {
         defaultConfig = GetDefaultConfig();
 
-        if (!Save.ReadJSONData(@"/Save/UserData/configuration" + saveFileExtension, out ConfigurationData tmp))
+        if (!Save.ReadJSONData(configPath, out ConfigurationData tmp))
         {
             currentConfig = defaultConfig.Clone();
 
             tmp = currentConfig.Clone();
             tmp.firstTimeLaunch = false;
 
-            Save.WriteJSONDataAsync(tmp, @"/Save/UserData/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
+            Save.WriteJSONDataAsync(tmp, configPath, (b) => { }).GetAwaiter();
         }
         else
         {
@@ -161,7 +162,7 @@ public class SettingsManager : MonoBehaviour
         if(clearConfiguration)
         {
             clearConfiguration = false;
-            Save.WriteStringAsync("", @"/Save/UserData/configuration" + saveFileExtension, (b) => { }).GetAwaiter();
+            Save.WriteStringAsync("", configPath, (b) => { }).GetAwaiter();
         }
     }
 
