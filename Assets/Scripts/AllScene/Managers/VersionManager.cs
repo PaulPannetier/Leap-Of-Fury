@@ -87,8 +87,7 @@ public static class VersionManager
                 return;
             }
 
-            conversionFunction.Item2.Invoke();
-            version = conversionFunction.Item1;
+            version = conversionFunction.Item2.Invoke();
         }
 
         if (lastVersion != version)

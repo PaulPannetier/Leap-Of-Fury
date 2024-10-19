@@ -14,8 +14,11 @@ public class InputSelectorSelectableUI : SelectableUI
     {
         if (isSelected && !isDesactivatedThisFrame)
         {
-            isActive = true;
-            controlItem.StartListening();
+            controlItem.OnKeyButtonDown();
+            if(controlItem.isListening)
+            {
+                isActive = true;
+            }
         }
     }
 

@@ -71,9 +71,10 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# Leap of fury specific ignore
 # Visual Studio Code configs
 .vscode
 
-# Runtime stuff
+# User Settings
 Assets/Save/UserSave/*
 Assets/Save/UserSave.meta

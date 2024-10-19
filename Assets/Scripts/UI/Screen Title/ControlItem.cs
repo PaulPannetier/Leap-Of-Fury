@@ -45,12 +45,12 @@ public class ControlItem : MonoBehaviour
         nameText.text = text;
     }
 
-    private void OnKeyButtonDown()
+    public void OnKeyButtonDown()
     {
         StartListening();
     }
 
-    public void StartListening()
+    private void StartListening()
     {
         isListening = isStartingListeningThisFrame = true;
         keyImage.sprite = InputIconManager.instance.unknowButton;
