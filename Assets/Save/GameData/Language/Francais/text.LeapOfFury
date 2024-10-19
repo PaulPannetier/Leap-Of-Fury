@@ -1,0 +1,25 @@
+{
+    "language": "Francais",
+    "data": [
+        {
+            "textID": "applyOptionButton",
+            "content": "Appliquer"
+        },
+        {
+            "textID": "defaultOptionButton",
+            "content": "Défaut"
+        },
+		{
+            "textID": "windowedMode",
+            "content": "Fenêtré"
+        },
+		{
+            "textID": "fullscreenMode",
+            "content": "Plein écran"
+        },
+		{
+            "textID": "controlTextSettingMenu",
+            "content": "Contrôles"
+        }
+    ]
+}

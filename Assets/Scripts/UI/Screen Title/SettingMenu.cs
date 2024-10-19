@@ -112,6 +112,13 @@ public class SettingMenu : MonoBehaviour
         //buttons
         applyButtonText.text = LanguageManager.instance.GetText("applyOptionButton");
         defaultButtonText.text = LanguageManager.instance.GetText("defaultOptionButton");
+
+        List<TMP_Dropdown.OptionData> windowModeOptions = new List<TMP_Dropdown.OptionData>
+        {
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode"), windowModeDropdown.options[0].image),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image),
+        };
+        windowModeDropdown.options = windowModeOptions;
     }
 
     public void OnApplyButtonDown()
@@ -124,6 +131,8 @@ public class SettingMenu : MonoBehaviour
         SettingsManager.ConfigurationData configurationData = new SettingsManager.ConfigurationData(masterSlider.value, musicSlider.value, soundFXSlider.value, resolution, targetedFPS, language, windowMode, false, vSynchToggle.isOn);
 
         SettingsManager.instance.SetCurrentConfig(configurationData);
+
+        RefreshText();
 
         ControlManagerSettingMenu.instance.OnApplyButtonDown();
     }

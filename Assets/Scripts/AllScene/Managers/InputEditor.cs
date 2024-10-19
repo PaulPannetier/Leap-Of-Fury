@@ -42,7 +42,7 @@ public class InputEditor : MonoBehaviour
 
     public void SaveInputConfig()
     {
-        InputManager.SaveConfiguration(inputPath);
+        InputManager.SaveConfigurationAsync(inputPath,(b) => { }).GetAwaiter();
     }
 
     private void SaveDefaultInputConfig()
@@ -65,7 +65,7 @@ public class InputEditor : MonoBehaviour
                 InputManager.AddInputsAction(inputsActions[i], inputsKeyForGamepad[i].keys, BaseController.Gamepad, false);
             }
         }
-        InputManager.SaveConfiguration(inputPath);
+        InputManager.SaveConfigurationAsync(inputPath, (b) => { }).GetAwaiter();
     }
 
 #if UNITY_EDITOR

@@ -1,0 +1,185 @@
+{
+    "language": "English",
+    "data": [
+        {
+            "textID": "applyOptionButton",
+            "content": "Apply"
+        },
+        {
+            "textID": "defaultOptionButton",
+            "content": "Default"
+        },
+		{
+            "textID": "windowedMode",
+            "content": "Windowed"
+        },
+		{
+            "textID": "fullscreenMode",
+            "content": "Fullscreen"
+        },
+		{
+            "textID": "controlTextSettingMenu",
+            "content": "Controls"
+        },		
+		{
+            "textID": "moveUpTextSettingMenu",
+            "content": "Up"
+        },
+		{
+            "textID": "moveDownTextSettingMenu",
+            "content": "Down"
+        },
+		{
+            "textID": "moveRightTextSettingMenu",
+            "content": "Right"
+        },
+		{
+            "textID": "moveLeftTextSettingMenu",
+            "content": "Left"
+        },		
+		{
+            "textID": "dashTextSettingMenu",
+            "content": "Dash"
+        },
+		{
+            "textID": "jumpTextSettingMenu",
+            "content": "Jump"
+        },
+		{
+            "textID": "attack1TextSettingMenu",
+            "content": "Attack 1"
+        },
+		{
+            "textID": "attack2TextSettingMenu",
+            "content": "Attack 2"
+        },
+		{
+            "textID": "grabTextSettingMenu",
+            "content": "Grab"
+        },
+		{
+            "textID": "interactTextSettingMenu",
+            "content": "Interact"
+        },
+		{
+            "textID": "keyboard",
+            "content": "Keyboard"
+        },
+		{
+            "textID": "gamepad",
+            "content": "Gamepad"
+        },
+		{
+            "textID": "windowMode",
+            "content": "WindowMode"
+        },
+		{
+            "textID": "resolution",
+            "content": "Resolution"
+        },
+		{
+            "textID": "framerate",
+            "content": "Framerate"
+        },
+		{
+            "textID": "language",
+            "content": "Language"
+        },
+		{
+            "textID": "vsync",
+            "content": "vSync"
+        },
+		{
+            "textID": "pauseMenuResumeButton",
+            "content": "Resume"
+        },
+		{
+            "textID": "pauseMenuMapSelectionButton",
+            "content": "Map Selection"
+        },
+		{
+            "textID": "pauseMenuMainTitleButton",
+            "content": "Main Title"
+        },
+		{
+            "textID": "masterVolume",
+            "content": "Master"
+        },
+		{
+            "textID": "musicVolume",
+            "content": "Music"
+        },
+		{
+            "textID": "soundFXVolume",
+            "content": "SoundFX"
+        },
+		{
+            "textID": "helpMenuChar1StrongAttackDescription",
+            "content": "A clone always follow the player, when this attack is activated, all past attack made by the clone will be effective for $char1WeakAttackDuration$ sec."
+        },
+		{
+            "textID": "helpMenuChar1WeakAttackDescription",
+            "content": "Dash in 8 possible directions, creating an explosion if touching a wall. Repeatable 3 times."
+        },
+		{
+            "textID": "helpMenuChar2StrongAttackDescription",
+            "content": "The player reach the wall/player in the selected direction."
+        },
+		{
+            "textID": "helpMenuChar2WeakAttackDescription",
+            "content": "The player fall into the ground, creating an explosion and 2 shockwaves."
+        },
+		{
+            "textID": "helpMenuChar3StrongAttackDescription",
+            "content": "The player is teleported in the selected direction, creating an explosion at the end."
+        },
+		{
+            "textID": "helpMenuChar3WeakAttackDescription",
+            "content": "Throw a guided arrow in the selected direction, reactivate the attack duplicate the arrow. Pick up the arrow the reuse the attack."
+        },
+		{
+            "textID": "helpMenuChar4StrongAttackDescription",
+            "content": "Throw 3 projectiles on the back of the player. A propulsion force is apply to the player."
+        },
+		{
+            "textID": "helpMenuChar4WeakAttackDescription",
+            "content": "Throw an projectile that return to the player after touching a wall."
+        },
+		{
+            "textID": "resumeButton",
+            "content": "Resume"
+        },
+		{
+            "textID": "mapsSelectionButton",
+            "content": "Map Selection"
+        },
+		{
+            "textID": "mainTitleButton",
+            "content": "Main Title"
+        },
+		{
+            "textID": "mainTitleSingleButton",
+            "content": "SOLO"
+        },
+		{
+            "textID": "mainTitleMultiButton",
+            "content": "MULTI"
+        },
+		{
+            "textID": "mainTitleOptionButton",
+            "content": "OPTION"
+        },
+		{
+            "textID": "mainTitleCreditButton",
+            "content": "CREDIT"
+        },
+		{
+            "textID": "mainTitleQuitButton",
+            "content": "QUIT"
+        },
+		{
+            "textID": "gameTitle",
+            "content": "Leap of Fury"
+        }
+    ]
+}

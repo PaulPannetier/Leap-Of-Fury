@@ -13,7 +13,7 @@ public class SettingsManager : MonoBehaviour
 
 #endif
 
-    private const string configPath = @"/Save/UserData/configuration" + saveFileExtension;
+    private const string configPath = @"/Save/UserSave/configuration" + saveFileExtension;
 
     public const string saveFileExtension = ".LeapOfFury";
     [HideInInspector] public ConfigurationData defaultConfig { get; private set; }
@@ -79,7 +79,7 @@ public class SettingsManager : MonoBehaviour
 
     private void SaveCurrentConfiguration()
     {
-        Save.WriteJSONData(currentConfig, @"/Save/UserData/configuration" + saveFileExtension);
+        Save.WriteJSONData(currentConfig, configPath);
     }
 
     public void SetCurrentConfig(in ConfigurationData config)

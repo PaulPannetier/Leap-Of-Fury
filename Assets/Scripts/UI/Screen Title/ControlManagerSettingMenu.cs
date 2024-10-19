@@ -105,6 +105,9 @@ public class ControlManagerSettingMenu : MonoBehaviour
         InputManager.ReplaceAction("Grab", grapControl.key, curCon);
         InputManager.ReplaceAction("Interact", interactControl.key, curCon);
         InputEditor.instance.SaveInputConfig();
+
+        RefreshSettings();
+        RefreshControl(false);
     }
 
     public void OnDefaultButtonDown()
