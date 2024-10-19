@@ -180,6 +180,18 @@
 		{
             "textID": "gameTitle",
             "content": "Leap of Fury"
+        },
+		{
+            "textID": "UI_StatusIndicator_Join",
+            "content": "Press any key to join..."
+        },
+		{
+            "textID": "UI_StatusIndicator_Choose",
+            "content": "Choosing..."
+        },
+		{
+            "textID": "UI_StatusIndicator_Ready",
+            "content": "Ready !"
         }
     ]
 }
