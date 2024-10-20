@@ -24,8 +24,8 @@ public class FightController : MonoBehaviour
     public enum DamageType : byte
     {
         NeverKill = 0,
-        Normal = 1, //Kill is not dashing
-        High = 2, //Kill is not invicible
+        Normal = 1, //Kill if is not dashing
+        High = 2, //Kill if is not invicible
         AlwaysKill = 3 //Always kill
     }
 

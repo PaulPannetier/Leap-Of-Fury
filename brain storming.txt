@@ -136,12 +136,10 @@ Trad all text
 test player attacks and gameplay
 Complete Maxwell house maps and méca
 polish attacks
-test wall jump along wall
 fix dash killing time (to long)
 Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
-allow 2 block jump height
 
 Huge test of ALL before V0.1
 

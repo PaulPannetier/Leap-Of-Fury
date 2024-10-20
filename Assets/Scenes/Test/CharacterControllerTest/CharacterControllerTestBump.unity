@@ -258,8 +258,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -296.2}
-  m_SizeDelta: {x: 1800, y: 500}
+  m_AnchoredPosition: {x: 0, y: -194.9}
+  m_SizeDelta: {x: 1800, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &393641470
 MonoBehaviour:
@@ -66945,6 +66945,7 @@ MonoBehaviour:
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
+  unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
   relatifSpawnConfigsPath: 
@@ -67235,7 +67236,10 @@ MonoBehaviour:
   airSpeedLerp: 20
   fallGravityMultiplier: 2
   fallInitHorizontalSpeed: 0.35
-  fallSpeed: {x: 5.5, y: 14}
+  fallSpeedY: 14
+  beginFallSpeedX: 8
+  endFallSpeedX: 5
+  beginFallDuration: 1
   fallSpeedLerp: 30
   fallDecelerationSpeedLerp: 15
   beginFallExtraGravity: 3
@@ -67407,7 +67411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906114, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: enableListenKeyCode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906143, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
       propertyPath: m_Name

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Collision2D;
 
 public class FallAttack : WeakAttack
 {

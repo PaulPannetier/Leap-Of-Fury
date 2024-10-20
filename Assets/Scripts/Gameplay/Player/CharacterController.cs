@@ -155,13 +155,17 @@ public class CharacterController : MonoBehaviour
     [Header("Fall")]
     [Tooltip("Coeff ajustant l'accélération de chute.")] [SerializeField] private float fallGravityMultiplier = 1.5f;
     [Tooltip("Vitesse initial horizontale en chute (%age de vitesse max)")] [SerializeField] [Range(0f, 1f)] private float fallInitHorizontalSpeed = 0.35f;
-    [Tooltip("La vitesse maximal de chute (VMAX en l'air).")] [SerializeField] private Vector2 fallSpeed = new Vector2(4f, 20f);
+    [Tooltip("La vitesse maximal de chute en y")] [SerializeField] private float fallSpeedY = 14f;
+    [Tooltip("La vitesse maximal de chute en x en début de chute")] [SerializeField] private float beginFallSpeedX = 8f;
+    [Tooltip("La vitesse maximal de chute en x en fin de chute")] [SerializeField] private float endFallSpeedX = 5f;
+    [Tooltip("La durée de début de chute (Sert pour beginFallSpeedX et endFallSpeedX)")] [SerializeField] private float beginFallDuration = 1f;
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale de chute")] [SerializeField] private float fallSpeedLerp = 10f;
     [Tooltip("La vitesse d'interpolation de la réduction de vitesse horizontale de chute")] [SerializeField] private float fallDecelerationSpeedLerp = 10f;
     [Tooltip("La gravité lors du début de la chute")] [SerializeField] private float beginFallExtraGravity = 2f;
     [Tooltip("Définie le %age de vitesse on l'on considère un début de chute.")] [SerializeField] [Range(0f, 1f)] private float maxBeginFallSpeed = 0.3f;
     [Tooltip("Change la vitesse maximal de chute lors de l'appuie sur le bouton bas.")] [SerializeField] private float fallClampSpeedMultiplierWhenDownPressed = 1.2f;
     [Tooltip("Change la gravité appliqué lors de l'appuie sur la touche bas.")] [SerializeField] private float fallGravityMultiplierWhenDownPressed = 2f;
+    private float lastTimefall;
 
     #endregion
 
@@ -518,7 +522,7 @@ public class CharacterController : MonoBehaviour
         //DebugText.instance.text += $"Slide : {isSliding}\n";
         //DebugText.instance.text += $"Gounded : {isGrounded}\n";
         //DebugText.instance.text += $"Bump : {isBumping}\n";
-        //DebugText.instance.text += $"vel : {velocity}\n";
+        //DebugText.instance.text += $"{velocity}\n";
         //DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
         //DebugText.instance.text += $"wallJump : {isWallJumping}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
@@ -890,6 +894,7 @@ public class CharacterController : MonoBehaviour
         if (!isFalling && !isJumping && !isWallJumping && !isJumpingAlongWall && !isWallJumpingOnNonGrabableWall && !wallGrab && !isApexJumping && !isSliding && !isDashing && (!isGrounded || isTraversingOneWayPlateform) && !isBumping)
         {
             isFalling = true;
+            lastTimefall = Time.time;
         }
         //release jumping and falling
         if ((isGrounded && !isTraversingOneWayPlateform && (velocity.y - groundColliderData.velocity.y) <= 1e-5f) || wallGrab || dash || (isSliding && !wallJump && !isWallJumpingOnNonGrabableWall))
@@ -909,7 +914,11 @@ public class CharacterController : MonoBehaviour
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement cour que isGrounded est tj vrai
             if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlateform) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
             {
-                isFalling = true;
+                if (!isFalling)
+                {
+                    isFalling = true;
+                    lastTimefall = Time.time;
+                }
             }
         }
         //release Wall jumping and trigger falling
@@ -919,7 +928,11 @@ public class CharacterController : MonoBehaviour
             //cond  || v.y > 0f pour éviter un bug ou la touche saut est activé une seul frame!, ainsi le saut est tellement court que isGrounded est tj vrai
             if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlateformUp || isTraversingOneWayPlateformDown) && !wallGrab && !!isApexJumping && !isDashing && !isSliding && !isBumping)
             {
-                isFalling = true;
+                if (!isFalling)
+                {
+                    isFalling = true;
+                    lastTimefall = Time.time;
+                }
             }
         }
         //release Wall jumping along wall and trigger falling
@@ -928,7 +941,11 @@ public class CharacterController : MonoBehaviour
             isJumpingAlongWall = false;
             if (!isGrounded && !wallGrab && !isDashing && !isApexJumping && !isSliding && !isBumping)
             {
-                isFalling = true;
+                if (!isFalling)
+                {
+                    isFalling = true;
+                    lastTimefall = Time.time;
+                }
             }
         }
 
@@ -938,7 +955,11 @@ public class CharacterController : MonoBehaviour
             isWallJumpingOnNonGrabableWall = false;
             if ((!isGrounded || velocity.y > 0f || isTraversingOneWayPlateform) && !wallGrab && !isApexJumping && !isDashing && !isSliding && !isBumping)
             {
-                isFalling = true;
+                if (!isFalling)
+                {
+                    isFalling = true;
+                    lastTimefall = Time.time;
+                }
             }
         }
 
@@ -1034,7 +1055,7 @@ public class CharacterController : MonoBehaviour
         }
         else if(isFalling)
         {
-            if(Mathf.Abs(velocity.x) > fallSpeed.x * fallInitHorizontalSpeed * 0.95f)
+            if(Mathf.Abs(velocity.x) > beginFallSpeedX * fallInitHorizontalSpeed * 0.95f)
             {
                 flip = velocity.x > 0f ? false : true;
             }
@@ -2028,7 +2049,7 @@ public class CharacterController : MonoBehaviour
         {
             //Gravity
             float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
-            velocity += Vector2.up * Physics2D.gravity.y * (coeff * Time.deltaTime);
+            velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.deltaTime);
 
             //Horizontal movement 
             if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f) && !disableInstantTurn)
@@ -2042,6 +2063,7 @@ public class CharacterController : MonoBehaviour
                 float targetSpeed = !enableInput ? 0f : playerInput.x * airHorizontalSpeed;
                 velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, airSpeedLerp * Time.deltaTime), velocity.y);
             }
+            lastTimefall = Time.time;
         }
         else
         {
@@ -2049,11 +2071,11 @@ public class CharacterController : MonoBehaviour
             float targetedSpeed;
             if(playerInput.rawY == -1 && enableInput)
             {
-                targetedSpeed = -fallSpeed.y * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f);
+                targetedSpeed = -fallSpeedY * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f);
             }
             else
             {
-                targetedSpeed = -fallSpeed.y;
+                targetedSpeed = -fallSpeedY;
             }
 
             if (velocity.y < targetedSpeed)//slow
@@ -2062,7 +2084,7 @@ public class CharacterController : MonoBehaviour
             }
             else
             {
-                float coeff = velocity.y >= -fallSpeed.y * maxBeginFallSpeed ? fallGravityMultiplier * beginFallExtraGravity : fallGravityMultiplier;
+                float coeff = velocity.y >= -fallSpeedY * maxBeginFallSpeed ? fallGravityMultiplier * beginFallExtraGravity : fallGravityMultiplier;
                 coeff = enableInput && playerInput.rawY < 0 ? coeff * fallGravityMultiplierWhenDownPressed : coeff;
                 velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.deltaTime));
             }
@@ -2075,15 +2097,16 @@ public class CharacterController : MonoBehaviour
             }
             else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)
             {
+                float maxSpeedX = Mathf.Lerp(beginFallSpeedX, endFallSpeedX, (Time.time - lastTimefall) / beginFallDuration);
                 if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
-                    velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), velocity.y);
-                if (enableInput && Mathf.Abs(velocity.x) < fallInitHorizontalSpeed * fallSpeed.x * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
+                    velocity = new Vector2(fallInitHorizontalSpeed * maxSpeedX * playerInput.x.Sign(), velocity.y);
+                if (enableInput && Mathf.Abs(velocity.x) < fallInitHorizontalSpeed * maxSpeedX * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
                 {
-                    velocity = new Vector2(fallInitHorizontalSpeed * fallSpeed.x * playerInput.x.Sign(), velocity.y);
+                    velocity = new Vector2(fallInitHorizontalSpeed * maxSpeedX * playerInput.x.Sign(), velocity.y);
                 }
                 else
                 {
-                    float targetSpeed = !enableInput ? 0f : playerInput.x * fallSpeed.x;
+                    float targetSpeed = !enableInput ? 0f : playerInput.x * maxSpeedX;
                     velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, fallSpeedLerp * Time.deltaTime), velocity.y);
                 }
             }
@@ -2217,7 +2240,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, -fallSpeed.y, -Physics2D.gravity.y * bumpGravityScale * Time.deltaTime));
+            velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, -fallSpeedY, -Physics2D.gravity.y * bumpGravityScale * Time.deltaTime));
         }
     }
 
@@ -2353,7 +2376,10 @@ public class CharacterController : MonoBehaviour
         walkSpeed = Mathf.Max(0f, walkSpeed);
         dashSpeed = Mathf.Max(0f, dashSpeed);
         slopeSpeed = Mathf.Max(0f, slopeSpeed);
-        fallSpeed = new Vector2(Mathf.Max(0f, fallSpeed.x), Mathf.Max(0f, fallSpeed.y));
+        fallSpeedY = Mathf.Max(0f, fallSpeedY);
+        beginFallSpeedX = Mathf.Max(0f, beginFallSpeedX);
+        endFallSpeedX = Mathf.Max(0f, endFallSpeedX);
+        beginFallDuration = Mathf.Max(0f, beginFallDuration);
         airHorizontalSpeed = Mathf.Max(0f, airHorizontalSpeed);
         jumpMaxSpeed = new Vector2(Mathf.Max(0f, jumpMaxSpeed.x), Mathf.Max(0f, jumpMaxSpeed.y));
         doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);

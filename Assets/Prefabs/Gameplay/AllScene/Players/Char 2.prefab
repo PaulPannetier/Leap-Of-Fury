@@ -179,19 +179,19 @@ MonoBehaviour:
   <velocity>k__BackingField: {x: 0, y: 0}
   drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
-  sideRayLength: 0.5
+  sideRayLength: 0.55
   sideRayOffset: 0
   grabRayOffset: -0.6
-  grabRayLength: 0.5
+  grabRayLength: 0.55
   groundRaycastOffset: {x: 0.2, y: -0.35}
   groundRaycastLength: 0.55
   topRaycastOffset: {x: 0.2, y: 0}
   topRaycastLength: 0.5
   gapBetweenHitboxAndGround: 0.077
   gapBetweenHitboxAndWall: 0.13
-  walkSpeed: 8.5
-  speedLerp: 30
-  initSpeed: 0.285
+  walkSpeed: 9
+  speedLerp: 25
+  initSpeed: 0.25
   inertiaDurationWhenQuittingGround: 0.1
   maxSlopeAngle: 22.5
   slopeSpeed: 8.5
@@ -224,15 +224,15 @@ MonoBehaviour:
   isSlopingRight: 0
   isSlopingLeft: 0
   jumpInitSpeed: 5
-  jumpForce: 40
+  jumpForce: 50
   jumpGravityMultiplier: 4
   jumpMinDuration: 0.05
   jumpMaxDuration: 0.25
-  jumpMaxSpeed: {x: 6.5, y: 20}
+  jumpMaxSpeed: {x: 8, y: 20}
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
-  doubleJumpSpeed: 9
+  doubleJumpSpeed: 12
   doubleJumpAngle: 45
   jumpCoyoteTime: 0.1
   wallJumpInitSpeed: 7
@@ -294,19 +294,22 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
-  airGravityMultiplier: 4
-  airHorizontalSpeed: 5.5
+  airGravityMultiplier: 3.75
+  airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
-  airSpeedLerp: 20
+  airSpeedLerp: 10
   fallGravityMultiplier: 2
-  fallInitHorizontalSpeed: 0.35
-  fallSpeed: {x: 5.5, y: 14}
+  fallInitHorizontalSpeed: 0.15
+  fallSpeedY: 15
+  beginFallSpeedX: 7
+  endFallSpeedX: 5.5
+  beginFallDuration: 0.75
   fallSpeedLerp: 30
   fallDecelerationSpeedLerp: 15
-  beginFallExtraGravity: 3
-  maxBeginFallSpeed: 0.6
-  fallClampSpeedMultiplierWhenDownPressed: 1.6
-  fallGravityMultiplierWhenDownPressed: 2
+  beginFallExtraGravity: 2
+  maxBeginFallSpeed: 0.3
+  fallClampSpeedMultiplierWhenDownPressed: 1.5
+  fallGravityMultiplierWhenDownPressed: 1.75
   grabSpeed: 5
   grabInitSpeed: 0.4
   maxPreciseGrabValue: 0.3
@@ -320,7 +323,7 @@ MonoBehaviour:
   apexJumpDuration2: 0.15
   apexJumpInitSpeed: 0.4
   apexJumpInitSpeed2: 0.4
-  dashSpeed: 16
+  dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 0.15
   dashSpeedCurve:
@@ -336,28 +339,37 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.04815577
     - serializedVersion: 3
-      time: 0.47421142
-      value: 0.9664874
-      inSlope: 0.6046502
-      outSlope: 0.6046502
-      tangentMode: 34
+      time: 0.074359864
+      value: 0.518713
+      inSlope: 3.5593827
+      outSlope: 3.5593827
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.8288498
-      value: 0.8235593
-      inSlope: -1.4731337
-      outSlope: -1.4731337
+      time: 0.16702767
+      value: 0.82015705
+      inSlope: 2.564514
+      outSlope: 2.564514
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.4215929
+      outWeight: 0.105106026
+    - serializedVersion: 3
+      time: 0.42891145
+      value: 0.9646738
+      inSlope: -0.56459093
+      outSlope: -0.56459093
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.31726992
+      outWeight: 0.07793449
     - serializedVersion: 3
       time: 1.0001715
       value: 0.20751953
-      inSlope: -3.595806
-      outSlope: -3.595806
+      inSlope: -1.3254107
+      outSlope: -1.3254107
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
