@@ -45,11 +45,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
     public bool isDesactivatedThisFrame { get; protected set; } = false;
 
     public abstract void OnPressed();
-
-    public virtual bool MustMoveRightWhenActive() => false;
-    public virtual bool MustMoveLeftWhenActive() => false;
-    public virtual bool MustMoveUpWhenActive() => false;
-    public virtual bool MustMoveDownWhenActive() => false;
+    public abstract void OnPressedUp();
 
     protected virtual void Awake()
     {
@@ -85,9 +81,11 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
         if (!isMouseInteractable || selectableUIGroup == null)
             return;
 
-        isMouseOver = true;
-        selectableUIGroup.RequestSelected(this);
-        OnSelected();
+        if(selectableUIGroup.RequestSelected(this))
+        {
+            isMouseOver = true;
+            OnSelected();
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -95,9 +93,11 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
         if (!isMouseInteractable || selectableUIGroup == null)
             return;
 
-        isMouseOver = false;
-        selectableUIGroup.RequestDeselected(this);
-        OnDeselected();
+        if(selectableUIGroup.RequestDeselected(this))
+        {
+            isMouseOver = false;
+            OnDeselected();
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -114,6 +114,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
         {
             changeColorCorout.Add(StartCoroutine(ChangeColor(fader, fader.pressedColor)));
         }
+        OnPressed();
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -131,7 +132,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
             changeColorCorout.Add(StartCoroutine(ChangeColor(fader, fader.highlightedColor)));
         }
 
-        OnPressed();
+        OnPressedUp();
     }
 
     public void OnSelected()
@@ -203,6 +204,8 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     #endregion
 
+    #region Structs
+
     [System.Serializable]
     protected struct ColorFader
     {
@@ -225,4 +228,6 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
             this.fadeDuration = fadeDuration;
         }
     }
+
+    #endregion
 }

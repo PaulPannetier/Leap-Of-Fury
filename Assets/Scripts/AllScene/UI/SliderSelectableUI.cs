@@ -34,9 +34,14 @@ public class SliderSelectableUI : SelectableUI
     public bool generateDefaultSliderColorFaders = false;
 #endif
 
+    public override void OnPressedUp()
+    {
+
+    }
+
     public override void OnPressed()
     {
-        if(isSelected && !isDesactivatedThisFrame)
+        if (isSelected && !isDesactivatedThisFrame)
         {
             isActive = true;
             isActivatedThisFrame = true;

@@ -10,7 +10,7 @@ public class InputSelectorSelectableUI : SelectableUI
         controlItem = GetComponent<ControlItem>();
     }
 
-    public override void OnPressed()
+    public override void OnPressedUp()
     {
         if (isSelected && !isDesactivatedThisFrame)
         {
@@ -20,6 +20,11 @@ public class InputSelectorSelectableUI : SelectableUI
                 isActive = true;
             }
         }
+    }
+
+    public override void OnPressed()
+    {
+
     }
 
     private void Update()

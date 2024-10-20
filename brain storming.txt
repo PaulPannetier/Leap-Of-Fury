@@ -140,6 +140,10 @@ fix dash killing time (to long)
 Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
+option menu cant set gamepad controls
+char selector scene can't cancel char => exit to main menu
+hide mouse in charselectot/map selector and gameplay scene(not when pause menu)
+voir package avec faille sécurité
 
 Huge test of ALL before V0.1
 

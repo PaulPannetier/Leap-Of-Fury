@@ -5,6 +5,11 @@ public class CheckboxSelectableUI : SelectableUI
 {
     [SerializeField] private Toggle toggle;
 
+    public override void OnPressedUp()
+    {
+
+    }
+
     public override void OnPressed()
     {
         if (isSelected)

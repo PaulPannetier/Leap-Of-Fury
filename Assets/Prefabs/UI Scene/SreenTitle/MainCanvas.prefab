@@ -763,19 +763,19 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 1628691726190753718}
   _dropdown: {fileID: 439446768}
   applyInput:
-    keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
-    controllerType: 0
+    keysKeyboard: 0d000000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
+    controllerType: 5
   desactivateInput:
     keysKeyboard: 1b000000
-    keyGamepad1: 5f010000
-    keyGamepad2: 73010000
-    keyGamepad3: 87010000
-    keyGamepad4: 9b010000
-    controllerType: 6
+    keyGamepad1: 55010000
+    keyGamepad2: 5f010000
+    keyGamepad3: 69010000
+    keyGamepad4: 73010000
+    controllerType: 5
 --- !u!1 &232050460
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,7 +993,7 @@ MonoBehaviour:
   defaultButtonText: {fileID: 1483155052}
   echapInput:
     keysKeyboard: 1b000000
-    keyGamepad1: 5f010000
+    keyGamepad1: 55010000
     keyGamepad2: 5f010000
     keyGamepad3: 69010000
     keyGamepad4: 73010000
@@ -1402,19 +1402,19 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 1628691726190753718}
   _dropdown: {fileID: 1405352481}
   applyInput:
-    keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
-    controllerType: 0
+    keysKeyboard: 0d000000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
+    controllerType: 5
   desactivateInput:
     keysKeyboard: 1b000000
-    keyGamepad1: 5f010000
-    keyGamepad2: 73010000
-    keyGamepad3: 87010000
-    keyGamepad4: 9b010000
-    controllerType: 6
+    keyGamepad1: 55010000
+    keyGamepad2: 5f010000
+    keyGamepad3: 69010000
+    keyGamepad4: 73010000
+    controllerType: 5
 --- !u!1 &649940458
 GameObject:
   m_ObjectHideFlags: 0
@@ -2322,6 +2322,9 @@ MonoBehaviour:
     keyGamepad3: 68010000
     keyGamepad4: 72010000
     controllerType: 0
+  allowKeepPressed: 1
+  keepPressFirstDelay: 0.75
+  keepPressDelay: 0.15
   allowedController: 2
 --- !u!114 &1938206539169063782
 MonoBehaviour:
@@ -3059,19 +3062,19 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 1628691726190753718}
   _dropdown: {fileID: 10603189}
   applyInput:
-    keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
-    controllerType: 0
+    keysKeyboard: 0d000000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
+    controllerType: 5
   desactivateInput:
     keysKeyboard: 1b000000
-    keyGamepad1: 5f010000
-    keyGamepad2: 73010000
-    keyGamepad3: 87010000
-    keyGamepad4: 9b010000
-    controllerType: 6
+    keyGamepad1: 55010000
+    keyGamepad2: 5f010000
+    keyGamepad3: 69010000
+    keyGamepad4: 73010000
+    controllerType: 5
 --- !u!1 &1038452897
 GameObject:
   m_ObjectHideFlags: 0
@@ -5572,14 +5575,14 @@ MonoBehaviour:
     keyGamepad2: 5e010000
     keyGamepad3: 68010000
     keyGamepad4: 72010000
-    controllerType: 0
+    controllerType: 5
   desactivateInput:
     keysKeyboard: 1b000000
-    keyGamepad1: 5f010000
-    keyGamepad2: 73010000
-    keyGamepad3: 87010000
-    keyGamepad4: 9b010000
-    controllerType: 6
+    keyGamepad1: 55010000
+    keyGamepad2: 5f010000
+    keyGamepad3: 69010000
+    keyGamepad4: 73010000
+    controllerType: 5
 --- !u!1 &90619214386235589
 GameObject:
   m_ObjectHideFlags: 0
@@ -5958,9 +5961,9 @@ RectTransform:
   - {fileID: 2314157875671063589}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -768}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4723803968061426800
@@ -6097,9 +6100,9 @@ RectTransform:
   - {fileID: 4369670463134667198}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -468}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5373940434234871953
@@ -6200,9 +6203,9 @@ RectTransform:
   - {fileID: 8349331161535106307}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -693}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4772274731173669663
@@ -6998,8 +7001,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -7501,8 +7504,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -8081,26 +8084,26 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 1628691726190753718}
   slider: {fileID: 2969096024094923598}
   inputIncrease:
-    keysKeyboard: 13010000
+    keysKeyboard: 1301000064000000
     keyGamepad1: fcfffffff7fffffff3ffffff
-    keyGamepad2: edffffffe8ffffffe4ffffff
-    keyGamepad3: deffffffd9ffffffd5ffffff
-    keyGamepad4: cfffffffcaffffffc6ffffff
-    controllerType: 6
+    keyGamepad2: eeffffffe9ffffffe5ffffff
+    keyGamepad3: e0ffffffdbffffffd7ffffff
+    keyGamepad4: d2ffffffcdffffffc9ffffff
+    controllerType: 5
   inputDecrease:
-    keysKeyboard: 14010000
+    keysKeyboard: 1401000061000000
     keyGamepad1: fafffffff6fffffff2ffffff
-    keyGamepad2: ebffffffe7ffffffe3ffffff
-    keyGamepad3: dcffffffd8ffffffd4ffffff
-    keyGamepad4: cdffffffc9ffffffc5ffffff
-    controllerType: 0
+    keyGamepad2: ecffffffe8ffffffe4ffffff
+    keyGamepad3: deffffffdaffffffd6ffffff
+    keyGamepad4: d0ffffffccffffffc8ffffff
+    controllerType: 5
   inputDesactive:
     keysKeyboard: 1b0000000f010000
-    keyGamepad1: 5e0100005f010000
-    keyGamepad2: 7201000073010000
-    keyGamepad3: 8601000087010000
-    keyGamepad4: 9a0100009b010000
-    controllerType: 0
+    keyGamepad1: 5401000055010000
+    keyGamepad2: 5e0100005f010000
+    keyGamepad3: 6801000069010000
+    keyGamepad4: 7201000073010000
+    controllerType: 5
   durationToFill: 0.75
   generateDefaultSliderColorFaders: 0
 --- !u!1 &2437863785252063236
@@ -8174,9 +8177,9 @@ RectTransform:
   - {fileID: 3396359970480543887}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -93}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6165574708290415041
@@ -8427,8 +8430,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -8805,9 +8808,9 @@ RectTransform:
   - {fileID: 6652591074869396719}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -318}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2855462212825207967
@@ -9216,8 +9219,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -9689,8 +9692,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -9819,7 +9822,7 @@ RectTransform:
   m_Father: {fileID: 5739727874258541469}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9939,26 +9942,26 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 1628691726190753718}
   slider: {fileID: 4579712181149497558}
   inputIncrease:
-    keysKeyboard: 13010000
+    keysKeyboard: 1301000064000000
     keyGamepad1: fcfffffff7fffffff3ffffff
-    keyGamepad2: edffffffe8ffffffe4ffffff
-    keyGamepad3: deffffffd9ffffffd5ffffff
-    keyGamepad4: cfffffffcaffffffc6ffffff
-    controllerType: 6
+    keyGamepad2: eeffffffe9ffffffe5ffffff
+    keyGamepad3: e0ffffffdbffffffd7ffffff
+    keyGamepad4: d2ffffffcdffffffc9ffffff
+    controllerType: 5
   inputDecrease:
-    keysKeyboard: 14010000
+    keysKeyboard: 1401000061000000
     keyGamepad1: fafffffff6fffffff2ffffff
-    keyGamepad2: ebffffffe7ffffffe3ffffff
-    keyGamepad3: dcffffffd8ffffffd4ffffff
-    keyGamepad4: cdffffffc9ffffffc5ffffff
-    controllerType: 0
+    keyGamepad2: ecffffffe8ffffffe4ffffff
+    keyGamepad3: deffffffdaffffffd6ffffff
+    keyGamepad4: d0ffffffccffffffc8ffffff
+    controllerType: 5
   inputDesactive:
     keysKeyboard: 1b0000000f010000
-    keyGamepad1: 5e0100005f010000
-    keyGamepad2: 7201000073010000
-    keyGamepad3: 8601000087010000
-    keyGamepad4: 9a0100009b010000
-    controllerType: 0
+    keyGamepad1: 5401000055010000
+    keyGamepad2: 5e0100005f010000
+    keyGamepad3: 6801000069010000
+    keyGamepad4: 7201000073010000
+    controllerType: 5
   durationToFill: 0.75
   generateDefaultSliderColorFaders: 0
 --- !u!1 &4607964717841744028
@@ -10372,26 +10375,26 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 1628691726190753718}
   slider: {fileID: 2378387524247286744}
   inputIncrease:
-    keysKeyboard: 13010000
+    keysKeyboard: 1301000064000000
     keyGamepad1: fcfffffff7fffffff3ffffff
-    keyGamepad2: edffffffe8ffffffe4ffffff
-    keyGamepad3: deffffffd9ffffffd5ffffff
-    keyGamepad4: cfffffffcaffffffc6ffffff
-    controllerType: 6
+    keyGamepad2: eeffffffe9ffffffe5ffffff
+    keyGamepad3: e0ffffffdbffffffd7ffffff
+    keyGamepad4: d2ffffffcdffffffc9ffffff
+    controllerType: 5
   inputDecrease:
-    keysKeyboard: 14010000
+    keysKeyboard: 1401000061000000
     keyGamepad1: fafffffff6fffffff2ffffff
-    keyGamepad2: ebffffffe7ffffffe3ffffff
-    keyGamepad3: dcffffffd8ffffffd4ffffff
-    keyGamepad4: cdffffffc9ffffffc5ffffff
-    controllerType: 0
+    keyGamepad2: ecffffffe8ffffffe4ffffff
+    keyGamepad3: deffffffdaffffffd6ffffff
+    keyGamepad4: d0ffffffccffffffc8ffffff
+    controllerType: 5
   inputDesactive:
     keysKeyboard: 1b0000000f010000
-    keyGamepad1: 5e0100005f010000
-    keyGamepad2: 7201000073010000
-    keyGamepad3: 8601000087010000
-    keyGamepad4: 9a0100009b010000
-    controllerType: 0
+    keyGamepad1: 5401000055010000
+    keyGamepad2: 5e0100005f010000
+    keyGamepad3: 6801000069010000
+    keyGamepad4: 7201000073010000
+    controllerType: 5
   durationToFill: 0.75
   generateDefaultSliderColorFaders: 0
 --- !u!1 &4772361794927048527
@@ -10636,7 +10639,7 @@ RectTransform:
   m_Father: {fileID: 1958624761619659686}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -10845,7 +10848,7 @@ RectTransform:
   m_Father: {fileID: 4187420429035097190}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11096,8 +11099,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -11306,8 +11309,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -12202,8 +12205,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -12468,9 +12471,9 @@ RectTransform:
   - {fileID: 1792511720388270953}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -393}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &473685848682413941
@@ -12571,9 +12574,9 @@ RectTransform:
   - {fileID: 8469091043390176286}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -243}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4972809233742432633
@@ -12707,35 +12710,38 @@ MonoBehaviour:
     keyGamepad2: efffffffebffffffe7ffffff
     keyGamepad3: e1ffffffddffffffd9ffffff
     keyGamepad4: d3ffffffcfffffffcbffffff
-    controllerType: 0
+    controllerType: 5
   downItemInput:
     keysKeyboard: 7300000012010000
     keyGamepad1: fbfffffff8fffffff4ffffff
     keyGamepad2: edffffffeaffffffe6ffffff
     keyGamepad3: dfffffffdcffffffd8ffffff
     keyGamepad4: d1ffffffceffffffcaffffff
-    controllerType: 0
+    controllerType: 5
   rightItemInput:
     keysKeyboard: 6400000013010000
     keyGamepad1: fcfffffff7fffffff3ffffff
     keyGamepad2: eeffffffe9ffffffe5ffffff
     keyGamepad3: e0ffffffdbffffffd7ffffff
     keyGamepad4: d2ffffffcdffffffc9ffffff
-    controllerType: 6
+    controllerType: 5
   leftItemInput:
     keysKeyboard: 6100000014010000
     keyGamepad1: fafffffff6fffffff2ffffff
     keyGamepad2: ecffffffe8ffffffe4ffffff
     keyGamepad3: deffffffdaffffffd6ffffff
     keyGamepad4: d0ffffffccffffffc8ffffff
-    controllerType: 0
+    controllerType: 5
   applyInput:
     keysKeyboard: 0d0000000f010000
     keyGamepad1: 54010000
     keyGamepad2: 5e010000
     keyGamepad3: 68010000
     keyGamepad4: 72010000
-    controllerType: 0
+    controllerType: 5
+  allowKeepPressed: 1
+  keepPressFirstDelay: 0.75
+  keepPressDelay: 0.15
   allowedController: 1
 --- !u!1 &6825167769682055844
 GameObject:
@@ -13011,19 +13017,19 @@ MonoBehaviour:
   leftSelectableUI: {fileID: 1628691726190753718}
   _dropdown: {fileID: 2097766501084685096}
   applyInput:
-    keysKeyboard: 0d0000000f010000
-    keyGamepad1: 5e010000
-    keyGamepad2: 72010000
-    keyGamepad3: 86010000
-    keyGamepad4: 9a010000
-    controllerType: 0
+    keysKeyboard: 0d000000
+    keyGamepad1: 54010000
+    keyGamepad2: 5e010000
+    keyGamepad3: 68010000
+    keyGamepad4: 72010000
+    controllerType: 5
   desactivateInput:
     keysKeyboard: 1b000000
-    keyGamepad1: 5f010000
-    keyGamepad2: 73010000
-    keyGamepad3: 87010000
-    keyGamepad4: 9b010000
-    controllerType: 6
+    keyGamepad1: 55010000
+    keyGamepad2: 5f010000
+    keyGamepad3: 69010000
+    keyGamepad4: 73010000
+    controllerType: 5
 --- !u!1 &6983788183580781782
 GameObject:
   m_ObjectHideFlags: 0
@@ -13059,9 +13065,9 @@ RectTransform:
   - {fileID: 1175881239663758386}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -618}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2333670694849004647
@@ -13162,9 +13168,9 @@ RectTransform:
   - {fileID: 7189051338298039023}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -168}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6802516339291832828
@@ -13397,7 +13403,7 @@ RectTransform:
   m_Father: {fileID: 3153915694088426478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13472,7 +13478,7 @@ RectTransform:
   m_Father: {fileID: 2857190258153441594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13547,7 +13553,7 @@ RectTransform:
   m_Father: {fileID: 6396076563999974399}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13860,8 +13866,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -14674,9 +14680,9 @@ RectTransform:
   - {fileID: 6503407069141846796}
   m_Father: {fileID: 5084311955542145465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 398.1971, y: -543}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7165625560391347739
@@ -15503,8 +15509,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1

@@ -28,6 +28,10 @@ public enum ControllerSelector
 
 public class SelectableUIGroup : MonoBehaviour
 {
+    private bool isCurrentUIPressed = false;
+    private byte lastDirectionHit; //0 None, 1 => up, 2 => down, 3 => right, 4 => left
+    private float lastTimeHitDirection, timerKeepPress;
+
     private ControllerType _controllerType;
     private ControllerType controllerType
     {
@@ -52,6 +56,9 @@ public class SelectableUIGroup : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput rightItemInput;
     [SerializeField] private InputManager.GeneralInput leftItemInput;
     [SerializeField] private InputManager.GeneralInput applyInput;
+    [SerializeField] private bool allowKeepPressed;
+    [SerializeField] private float keepPressFirstDelay = 1f;
+    [SerializeField] private float keepPressDelay = 0.2f;
     public BaseController allowedController = BaseController.KeyboardAndGamepad;
 
     public SelectableUI selectedUI { get; private set; } = null;
@@ -112,31 +119,42 @@ public class SelectableUIGroup : MonoBehaviour
         }
     }
 
-    public void RequestSelected(SelectableUI selectableUI)
+    public bool RequestSelected(SelectableUI selectableUI)
     {
+        if (isCurrentUIPressed)
+            return false;
+
         if (selectedUI != null)
         {
             selectedUI.OnDeselected();    
         }
         selectedUI = selectableUI;
+        return true;
     }
 
     public void DeselectSelecteUI()
     {
-        if(selectedUI != null)
+        if (isCurrentUIPressed)
+            return;
+
+        if (selectedUI != null)
         {
             selectedUI.OnDeselected();
         }
         selectedUI = null;
     }
 
-    public void RequestDeselected(SelectableUI selectableUI)
+    public bool RequestDeselected(SelectableUI selectableUI)
     {
-        if(selectedUI != selectableUI && selectedUI != null)
+        if (isCurrentUIPressed)
+            return false;
+
+        if (selectedUI != selectableUI && selectedUI != null)
         {
             selectedUI.OnDeselected();
         }
         selectedUI = null;
+        return true;
     }
 
     private void Update()
@@ -147,7 +165,8 @@ public class SelectableUIGroup : MonoBehaviour
         //on attend la premi�re interaction
         if(selectedUI == null)
         {
-            if(controllerSelector == ControllerSelector.keyboard || controllerSelector == ControllerSelector.gamepad1 || controllerSelector == ControllerSelector.gamepad2 || controllerSelector == ControllerSelector.gamepad3
+            isCurrentUIPressed = false;
+            if (controllerSelector == ControllerSelector.keyboard || controllerSelector == ControllerSelector.gamepad1 || controllerSelector == ControllerSelector.gamepad2 || controllerSelector == ControllerSelector.gamepad3
                  || controllerSelector == ControllerSelector.gamepad4 || controllerSelector == ControllerSelector.gamepadAll || controllerSelector == ControllerSelector.all)
             {
                 selectedUI = defaultUISelected;
@@ -168,14 +187,10 @@ public class SelectableUIGroup : MonoBehaviour
         }
         else
         {
-            if(selectedUI.isActive)
-            {
-                UpdateSelectedUI(selectedUI.MustMoveRightWhenActive(), selectedUI.MustMoveLeftWhenActive(), selectedUI.MustMoveUpWhenActive(), selectedUI.MustMoveDownWhenActive());
-            }
-            else
+            if(!selectedUI.isActive)
             {
                 bool changeControllerType = false;
-                if (controllerSelector == ControllerSelector.last)
+                if (controllerSelector == ControllerSelector.last && !isCurrentUIPressed)
                 {
                     if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
                     {
@@ -189,19 +204,108 @@ public class SelectableUIGroup : MonoBehaviour
 
                 if (!changeControllerType)
                 {
-                    UpdateSelectedUI(rightItemInput.IsPressedDown(), leftItemInput.IsPressedDown(), upItemInput.IsPressedDown(), downItemInput.IsPressedDown());
-
-                    if (applyInput.IsPressedDown())
+                    if(!isCurrentUIPressed)
                     {
-                        selectedUI.OnPressed();
+                        UpdateSelectedUI(rightItemInput.IsPressedDown(), leftItemInput.IsPressedDown(), upItemInput.IsPressedDown(), downItemInput.IsPressedDown());
+
+                        if (applyInput.IsPressedDown())
+                        {
+                            lastDirectionHit = 0;
+                            selectedUI.OnPressed();
+                            isCurrentUIPressed = true;
+                        }
+
+                        if(allowKeepPressed)
+                        {
+                            void ChangeSelectableUI()
+                            {
+                                switch (lastDirectionHit)
+                                {
+                                    case 1:
+                                        UpdateSelectedUI(false, false, true, false, false);
+                                        break;
+                                    case 2:
+                                        UpdateSelectedUI(false, false, false, true, false);
+                                        break;
+                                    case 3:
+                                        UpdateSelectedUI(true, false, false, false, false);
+                                        break;
+                                    case 4:
+                                        UpdateSelectedUI(false, true, false, false, false);
+                                        break;
+                                    default:
+                                        lastTimeHitDirection = Time.time;
+                                        break;
+                                }
+                            }
+
+                            bool IsLastDirectionPress()
+                            {
+                                switch (lastDirectionHit)
+                                {
+                                    case 1:
+                                        return upItemInput.IsPressed();
+                                    case 2:
+                                        return downItemInput.IsPressed();
+                                    case 3:
+                                        return rightItemInput.IsPressed();
+                                    case 4:
+                                        return leftItemInput.IsPressed();
+                                    default:
+                                        return false;
+                                }
+                            }
+
+                            if(IsLastDirectionPress())
+                            {
+                                if (Time.time - lastTimeHitDirection > keepPressFirstDelay)
+                                {
+                                    if (timerKeepPress <= 1e-5f)
+                                    {
+                                        ChangeSelectableUI();
+                                    }
+
+                                    if (timerKeepPress > keepPressDelay)
+                                    {
+                                        timerKeepPress -= keepPressDelay;
+                                        ChangeSelectableUI();
+                                    }
+                                    timerKeepPress += Time.deltaTime;
+                                }
+                                else
+                                {
+                                    timerKeepPress = 0f;
+                                }
+                            }
+                            else
+                            {
+                                timerKeepPress = 0f;
+                            }
+                        }
+                    }
+
+                    if (applyInput.IsPressedUp())
+                    {
+                        selectedUI.OnPressedUp();
+                        isCurrentUIPressed = false;
                     }
                 }
             }
+            else
+            {
+                isCurrentUIPressed = false;
+            }
 
-            void UpdateSelectedUI(bool moveRight, bool moveLeft, bool moveUp, bool moveDown)
+            void UpdateSelectedUI(bool moveRight, bool moveLeft, bool moveUp, bool moveDown, bool hitDirectionOverride = true)
             {
                 if (selectedUI.upSelectableUI != null && moveUp)
                 {
+                    if(hitDirectionOverride)
+                    {
+                        lastDirectionHit = 1;
+                        lastTimeHitDirection = Time.time;
+                        timerKeepPress = 0f;
+                    }
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.upSelectableUI;
                     selectedUI.OnSelected();
@@ -209,6 +313,12 @@ public class SelectableUIGroup : MonoBehaviour
 
                 if (selectedUI.downSelectableUI != null && moveDown)
                 {
+                    if (hitDirectionOverride)
+                    {
+                        lastDirectionHit = 2;
+                        lastTimeHitDirection = Time.time;
+                        timerKeepPress = 0f;
+                    }
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.downSelectableUI;
                     selectedUI.OnSelected();
@@ -216,6 +326,12 @@ public class SelectableUIGroup : MonoBehaviour
 
                 if (selectedUI.rightSelectableUI != null && moveRight)
                 {
+                    if (hitDirectionOverride)
+                    {
+                        lastDirectionHit = 3;
+                        lastTimeHitDirection = Time.time;
+                        timerKeepPress = 0f;
+                    }
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.rightSelectableUI;
                     selectedUI.OnSelected();
@@ -223,6 +339,12 @@ public class SelectableUIGroup : MonoBehaviour
 
                 if (selectedUI.leftSelectableUI != null && moveLeft)
                 {
+                    if (hitDirectionOverride)
+                    {
+                        lastDirectionHit = 4;
+                        lastTimeHitDirection = Time.time;
+                        timerKeepPress = 0f;
+                    }
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.leftSelectableUI;
                     selectedUI.OnSelected();
@@ -284,4 +406,18 @@ public class SelectableUIGroup : MonoBehaviour
         controllerType = ControllerType.Keyboard;
         return false;
     }
+
+    #region OnValidate
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        keepPressFirstDelay = Mathf.Max(0f, keepPressFirstDelay);
+        keepPressDelay = Mathf.Max(0f, keepPressDelay);
+    }
+
+#endif
+
+    #endregion
 }

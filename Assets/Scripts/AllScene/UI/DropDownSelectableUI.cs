@@ -74,6 +74,11 @@ public class DropDownSelectableUI : SelectableUI
         }
     }
 
+    public override void OnPressedUp()
+    {
+
+    }
+
     public override void OnPressed()
     {
         if (isSelected && !isDesactivatedThisFrame && !isActivatedThisFrame)
