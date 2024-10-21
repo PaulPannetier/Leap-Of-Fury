@@ -88,6 +88,7 @@ public class PauseMenu : MonoBehaviour
 
         selectableUIGroup.Init();
         PauseManager.instance.EnablePause();
+        InputManager.ShowMouseCursor();
     }
 
     private void OnPauseDisable()
@@ -105,6 +106,7 @@ public class PauseMenu : MonoBehaviour
             t.gameObject.SetActive(false);
         }
         PauseManager.instance.DisablePause();
+        InputManager.HideMouseCursor();
     }
 
     private void OnDestroy()

@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     {
         Application.quitting += OnQuitApplication;
         Random.SetRandomSeed();
+        InputManager.ShowMouseCursor();
     }
 
     private void SetPixelQuality()

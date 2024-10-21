@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
     private void OnEnable()
     {
         this.InvokeWaitAFrame(nameof(OnEnableInternal));
+        InputManager.ShowMouseCursor();
     }
 
     private void OnDisable()

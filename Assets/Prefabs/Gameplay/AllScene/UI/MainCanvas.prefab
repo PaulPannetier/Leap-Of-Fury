@@ -1528,6 +1528,9 @@ MonoBehaviour:
     keyGamepad3: 68010000
     keyGamepad4: 72010000
     controllerType: 6
+  allowKeepPressed: 1
+  keepPressFirstDelay: 0.75
+  keepPressDelay: 0.15
   allowedController: 2
 --- !u!114 &2495186805345660987
 MonoBehaviour:

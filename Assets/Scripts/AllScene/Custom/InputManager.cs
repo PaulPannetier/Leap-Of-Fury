@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2023 Léonard Pannetier <leonard.pannetier@laposte.net>
+ * Copyright (c) 2023 Léonard Pannetier <email>
  * 
  * This asset was create to make a Input System ease to use and powerful for project in Unity.
  * It's base on the XInputDotNetPure wrapper made by speps, see detail on their repo https://github.com/speps/XInputDotNet/releases
@@ -2396,6 +2396,36 @@ public static class InputManager
 
     #endregion
 
+    #region Keyboard Only
+
+    public static Vector2 mousePosition => Input.mousePosition;
+    public static float mouseScrollDelta => Input.mouseScrollDelta.y;
+    public static bool isAMouseConnected => Input.mousePresent;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void SetMouseCursor(Texture2D texture, in Vector2 hotpost, CursorMode cursorMode)
+    {
+        Cursor.SetCursor(texture, hotpost, cursorMode);
+    }
+
+    public static void HideMouseCursor()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public static void ShowMouseCursor()
+    {
+        Cursor.visible = true;
+#if UNITY_EDITOR
+        Cursor.lockState = CursorLockMode.None;
+#else
+        Cursor.lockState = CursorLockMode.Confined;
+#endif
+    }
+
+#endregion
+
     #region GetInputKey
 
     public static InputKey[] GetInputKey(string action, PlayerIndex player)
@@ -3617,6 +3647,8 @@ public static class InputManager
 
     #endregion
 
+    #region SetController
+
     /// <summary>
     /// Set the default Control as the current configuration of a player
     /// </summary>
@@ -3769,6 +3801,8 @@ public static class InputManager
         gpKeys = defaultGPKeys.Clone();
         gpKeys.controllerType = ControllerType.GamepadAny;
     }
+
+    #endregion
 
     #endregion
 
@@ -4285,10 +4319,6 @@ public static class InputManager
     /// </summary>
     /// <param name="key"> the key to convert to a string</param>
     public static string KeyToString(InputKey key) => key.ToString();
-
-    public static Vector2 mousePosition => Input.mousePosition;
-    public static float mouseScrollDelta => Input.mouseScrollDelta.y;
-    public static bool isAMouseConnected => Input.mousePresent;
 
     private static string KeysToString(InputData.ListInt keys)
     {
@@ -4976,8 +5006,6 @@ public static class InputManager
         return false;
     }
 
-    #endregion
-
     /// <param name="letter"> the letter pressed this frame</param>
     /// <returns>true if a key of the letter of the keyboard controller is pressed this frame, false otherwise</returns>
     public static bool CharPressed(out string letter)
@@ -5029,6 +5057,8 @@ public static class InputManager
         number = string.Empty;
         return false;
     }
+
+    #endregion
 
     #endregion
 
