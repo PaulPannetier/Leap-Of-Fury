@@ -2402,6 +2402,19 @@ public static class InputManager
     public static float mouseScrollDelta => Input.mouseScrollDelta.y;
     public static bool isAMouseConnected => Input.mousePresent;
 
+    /// <param name="direction"> the direction of the mousewheel return by the function </param>
+    /// <returns> true during the frame where the mouse wheel is moved.</returns>
+    public static bool MouseWheel(out MouseWheelDirection direction)
+    {
+        if (Input.mouseScrollDelta != Vector2.zero)
+        {
+            direction = Input.mouseScrollDelta.y > 0f ? MouseWheelDirection.Up : MouseWheelDirection.Down;
+            return true;
+        }
+        direction = MouseWheelDirection.none;
+        return false;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void SetMouseCursor(Texture2D texture, in Vector2 hotpost, CursorMode cursorMode)
     {
@@ -4295,19 +4308,6 @@ public static class InputManager
             default:
                 return true;
         }
-    }
-
-    /// <param name="direction"> the direction of the mousewheel return by the function </param>
-    /// <returns> true during the frame where the mouse wheel is moved.</returns>
-    public static bool MouseWheel(out MouseWheelDirection direction)
-    {
-        if(Input.mouseScrollDelta != Vector2.zero)
-        {
-            direction = Input.mouseScrollDelta.y > 0f ? MouseWheelDirection.Up : MouseWheelDirection.Down;
-            return true;
-        }
-        direction = MouseWheelDirection.none;
-        return false;
     }
 
     #endregion

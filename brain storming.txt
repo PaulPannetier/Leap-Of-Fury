@@ -140,7 +140,6 @@ fix dash killing time (to long)
 Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
-char selector scene can't cancel char => exit to main menu
 voir package avec faille sécurité
 ask validation when exit input menu
 
