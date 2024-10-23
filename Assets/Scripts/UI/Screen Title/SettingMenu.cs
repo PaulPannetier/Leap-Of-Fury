@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class SettingMenu : MonoBehaviour
@@ -20,36 +19,46 @@ public class SettingMenu : MonoBehaviour
     private Vector2Int[] availableResolutions;
     private RefreshRate[] availableFramerate;
     private bool isEnable;
-    private Vector2 oldMousePosition;
 
-    [SerializeField] private Slider masterSlider;
+    [SerializeField] private SliderSelectableUI masterSlider;
     [SerializeField] private TMP_Text masterText;
-    [SerializeField] private Slider musicSlider;
+    [SerializeField] private SliderSelectableUI musicSlider;
     [SerializeField] private TMP_Text musicText;
-    [SerializeField] private Slider soundFXSlider;
+    [SerializeField] private SliderSelectableUI soundFXSlider;
     [SerializeField] private TMP_Text soundFXText;
-    [SerializeField] private TMP_Dropdown windowModeDropdown;
+    [SerializeField] private DropDownSelectableUI windowModeDropdown;
     [SerializeField] private TMP_Text windowModeText;
-    [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private DropDownSelectableUI resolutionDropdown;
     [SerializeField] private TMP_Text resolutionText;
-    [SerializeField] private TMP_Dropdown framerateDropdown;
+    [SerializeField] private DropDownSelectableUI framerateDropdown;
     [SerializeField] private TMP_Text framerateText;
-    [SerializeField] private TMP_Dropdown languageDropdown;
-    [SerializeField] private TMP_Text languageText;
-    [SerializeField] private Toggle vSynchToggle;
+    [SerializeField] private CheckboxSelectableUI vSynchToggle;
     [SerializeField] private TMP_Text vSynchText;
+    [SerializeField] private DropDownSelectableUI languageDropdown;
+    [SerializeField] private TMP_Text languageText;
+    [SerializeField] private ButtonSelectableUI applyButton;
     [SerializeField] private TMP_Text applyButtonText;
+    [SerializeField] private ButtonSelectableUI defaultButton;
     [SerializeField] private TMP_Text defaultButtonText;
     [SerializeField] private InputManager.GeneralInput echapInput;
     [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject warningNoApplyPanel;
     [SerializeField] private SelectableUIGroup groupMenu;
+    [SerializeField] private ControlManagerSettingMenu controlManagerSettingMenu;
 
     public bool isUIElementActive => groupMenu.selectedUI != null && (groupMenu.selectedUI.isActive || groupMenu.selectedUI.isDesactivatedThisFrame);
 
     private void Awake()
     {
         isEnable = false;
-        oldMousePosition = InputManager.mousePosition;
+    }
+
+    private void Start()
+    {
+        applyButton.onButtonPressed.RemoveAllListeners();
+        applyButton.onButtonPressed.AddListener(OnApplyButtonDown);
+        defaultButton.onButtonPressed.RemoveAllListeners();
+        defaultButton.onButtonPressed.AddListener(OnDefaultButtonDown);
     }
 
     private void InitOptions()
@@ -96,6 +105,84 @@ public class SettingMenu : MonoBehaviour
         languageDropdown.options = languageOptions;
     }
 
+    private void Update()
+    {
+        if (!isEnable)
+            return;
+
+        if ((echapInput.controllerType == ControllerType.Keyboard || !isUIElementActive) && echapInput.IsPressedDown())
+        {
+            CloseSettingsMenu();
+            return;
+        }
+    }
+
+    private bool IsSomeSettingUnapply()
+    {
+        SettingsManager.ConfigurationData settingsConfig = GetMenuConfiguration();
+        SettingsManager.ConfigurationData currentConfig = SettingsManager.instance.currentConfig;
+        bool differentConfig = currentConfig != settingsConfig;
+        return differentConfig || controlManagerSettingMenu.IsSomeControlUnApply();
+    }
+
+    private void CloseSettingsMenu(bool force = false)
+    {
+        bool isDifferentSetting = IsSomeSettingUnapply();
+        if (!force && isDifferentSetting)
+        {
+            warningNoApplyPanel.SetActive(true);
+            DisableUISettingsElements();
+        }
+
+        if(force || !isDifferentSetting)
+        {
+            isEnable = false;
+            groupMenu.ResetToDefault();
+            mainMenu.SetActive(true);
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void EnableUISettingsElements(bool enable)
+    {
+        groupMenu.enableBehaviour = enable;
+        masterSlider.interactable = enable;
+        musicSlider.interactable = enable;
+        soundFXSlider.interactable = enable;
+        windowModeDropdown.interactable = enable;
+        resolutionDropdown.interactable = enable;
+        framerateDropdown.interactable = enable;
+        vSynchToggle.interactable = enable;
+        languageDropdown.interactable = enable;
+        applyButton.interactable = enable;
+        defaultButton.interactable = enable;
+        if (enable)
+            controlManagerSettingMenu.EnableUIElements();
+        else
+            controlManagerSettingMenu.DisableUIElements();
+    }
+
+    private void DisableUISettingsElements()
+    {
+        EnableUISettingsElements(false);
+    }
+
+    private void EnableUISettingsElements()
+    {
+        EnableUISettingsElements(true);
+    }
+
+    public void OnYesUnapplyButtonDown()
+    {
+        OnApplyButtonDown();
+        CloseSettingsMenu();
+    }
+
+    public void OnNoUnapplyButtonDown()
+    {
+        CloseSettingsMenu(true);
+    }
+
     private void RefreshText()
     {
         masterText.text = LanguageManager.instance.GetText("masterVolume") + " :";
@@ -121,20 +208,24 @@ public class SettingMenu : MonoBehaviour
         windowModeDropdown.options = windowModeOptions;
     }
 
-    public void OnApplyButtonDown()
+    private SettingsManager.ConfigurationData GetMenuConfiguration()
     {
         Vector2Int resolution = availableResolutions[resolutionDropdown.value];
         RefreshRate targetedFPS = availableFramerate[framerateDropdown.value];
         string language = LanguageManager.instance.availableLanguage[languageDropdown.value];
         FullScreenMode windowMode = convertIntToFullScreenMode[windowModeDropdown.value];
+        return new SettingsManager.ConfigurationData(masterSlider.value, musicSlider.value, soundFXSlider.value, resolution, targetedFPS, language, windowMode, false, vSynchToggle.isOn);
+    }
 
-        SettingsManager.ConfigurationData configurationData = new SettingsManager.ConfigurationData(masterSlider.value, musicSlider.value, soundFXSlider.value, resolution, targetedFPS, language, windowMode, false, vSynchToggle.isOn);
+    public void OnApplyButtonDown()
+    {
+        SettingsManager.ConfigurationData configurationData = GetMenuConfiguration();
 
         SettingsManager.instance.SetCurrentConfig(configurationData);
 
         RefreshText();
 
-        ControlManagerSettingMenu.instance.OnApplyButtonDown();
+        controlManagerSettingMenu.OnApplyButtonDown();
     }
 
     private void ShowConfig(in SettingsManager.ConfigurationData configurationData)
@@ -183,13 +274,13 @@ public class SettingMenu : MonoBehaviour
 
         RefreshText();
 
-        ControlManagerSettingMenu.instance.OnDefaultButtonDown();
+        controlManagerSettingMenu.OnDefaultButtonDown();
     }
-
 
     private void EnableGroupMenu()
     {
         groupMenu.Init();
+        EnableUISettingsElements();
     }
 
     private void OnEnable()
@@ -206,29 +297,11 @@ public class SettingMenu : MonoBehaviour
             t.gameObject.SetActive(true);
         }
 
+        warningNoApplyPanel.SetActive(false);
+
         this.InvokeWaitAFrame(nameof(EnableGroupMenu));
 
         mainMenu.SetActive(false);
         isEnable = true;
-    }
-
-    private void Update()
-    {
-        if (!isEnable)
-            return;
-
-        if((echapInput.controllerType == ControllerType.Keyboard || !isUIElementActive) && echapInput.IsPressedDown())
-        {
-            isEnable = false;
-            groupMenu.ResetToDefault();
-            mainMenu.SetActive(true);
-            gameObject.SetActive(false);
-        }
-
-        if(InputManager.mousePosition != oldMousePosition)
-        {
-            groupMenu.DeselectSelecteUI();
-        }
-        oldMousePosition = InputManager.mousePosition;
     }
 }

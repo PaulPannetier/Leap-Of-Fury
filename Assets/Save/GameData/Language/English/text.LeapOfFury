@@ -192,6 +192,22 @@
 		{
             "textID": "UI_StatusIndicator_Ready",
             "content": "Ready !"
+        },
+		{
+            "textID": "Option_Menu_warning_unapply_settings_description",
+            "content": "Unapply settings found."
+        },
+		{
+            "textID": "Option_Menu_warning_unapply_settings_question",
+            "content": "Apply Settings?"
+        },
+		{
+            "textID": "Option_Menu_warning_yes_button",
+            "content": "Yes"
+        },
+		{
+            "textID": "Option_Menu_warning_no_button",
+            "content": "No"
         }
     ]
 }

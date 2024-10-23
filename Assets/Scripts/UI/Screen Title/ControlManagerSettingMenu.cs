@@ -2,11 +2,11 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using System.Linq;
+using System;
 
 public class ControlManagerSettingMenu : MonoBehaviour
 {
-    public static ControlManagerSettingMenu instance;
-
     [SerializeField] private SelectableUI masterVolume;
     [SerializeField] private SelectableUI musicVolume;
     [SerializeField] private SelectableUI soundFXVolume;
@@ -32,17 +32,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
     [SerializeField] private ControlItem grapControl;
     [SerializeField] private ControlItem interactControl;
 
-    private void Awake()
-    {
-        if(instance != null)
-        {
-            Destroy(this);
-            return;
-        }
-        instance = this;
-    }
-
-    public BaseController GetSelectedBaseController() => inputTypeDropdown.dropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
+    public BaseController GetSelectedBaseController() => inputTypeDropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
 
     private void RefreshSettings()
     {
@@ -61,14 +51,14 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     private void RefreshControl(bool defaultControl)
     {
-        inputTypeDropdown.dropdown.options = new List<TMP_Dropdown.OptionData>()
+        inputTypeDropdown.options = new List<TMP_Dropdown.OptionData>()
         {
             new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("keyboard") },
             new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("gamepad") }
         };
 
-        inputTypeDropdown.dropdown.onValueChanged.RemoveAllListeners();
-        inputTypeDropdown.dropdown.onValueChanged.AddListener(OnInputTypeChanged);
+        inputTypeDropdown.onValueChanged.RemoveAllListeners();
+        inputTypeDropdown.onValueChanged.AddListener(OnInputTypeChanged);
 
         SetKeysKey(defaultControl);
         SetUINeighbourhood();
@@ -110,6 +100,29 @@ public class ControlManagerSettingMenu : MonoBehaviour
         RefreshControl(false);
     }
 
+    public bool IsSomeControlUnApply()
+    {
+        bool IsSomeControlUnApplyBaseController(BaseController controller)
+        {
+            bool common = InputManager.GetInputKey("Dash", controller, false).Contains(dashControl.key) &&
+                InputManager.GetInputKey("Jump", controller, false).Contains(jumpControl.key) &&
+                InputManager.GetInputKey("AttackWeak", controller, false).Contains(attack1Control.key) &&
+                InputManager.GetInputKey("AttackStrong", controller, false).Contains(attack2Control.key) &&
+                InputManager.GetInputKey("Grab", controller, false).Contains(grapControl.key) &&
+                InputManager.GetInputKey("Interact", controller, false).Contains(interactControl.key);
+            if(controller == BaseController.Gamepad)
+                return !common;
+
+            return !(common && InputManager.GetInputKey("MoveUp", controller, false).Contains(moveUp.key) &&
+                InputManager.GetInputKey("MoveDown", controller, false).Contains(moveDown.key) &&
+                InputManager.GetInputKey("MoveRight", controller, false).Contains(moveRight.key) &&
+                InputManager.GetInputKey("MoveLeft", controller, false).Contains(moveLeft.key));
+        }
+        bool a = IsSomeControlUnApplyBaseController(BaseController.Keyboard);
+        bool b = IsSomeControlUnApplyBaseController(BaseController.Gamepad);
+        return a || b;
+    }
+
     public void OnDefaultButtonDown()
     {
         RefreshSettings();
@@ -133,6 +146,34 @@ public class ControlManagerSettingMenu : MonoBehaviour
         attack2Control.key = InputManager.GetInputKey("AttackStrong", curCon, defaultConfig)[0];
         grapControl.key = InputManager.GetInputKey("Grab", curCon, defaultConfig)[0];
         interactControl.key = InputManager.GetInputKey("Interact", curCon, defaultConfig)[0];
+    }
+
+    private void EnableUIElementsInternal(bool enable)
+    {
+        if (GetSelectedBaseController() == BaseController.Keyboard)
+        {
+            moveUp.interactable = enable;
+            moveDown.interactable = enable;
+            moveRight.interactable = enable;
+            moveLeft.interactable = enable;
+        }
+        dashControl.interactable = enable;
+        jumpControl.interactable = enable;
+        attack1Control.interactable = enable;
+        attack2Control.interactable = enable;
+        grapControl.interactable = enable;
+        interactControl.interactable = enable;
+        inputTypeDropdown.interactable = enable;
+    }
+
+    public void DisableUIElements()
+    {
+        EnableUIElementsInternal(false);
+    }
+
+    public void EnableUIElements()
+    {
+        EnableUIElementsInternal(true);
     }
 
     private void SetUINeighbourhood()
@@ -244,7 +285,18 @@ public class ControlManagerSettingMenu : MonoBehaviour
         yield return null;
         yield return null;
 
-        inputTypeDropdown.dropdown.value = 0;
+        moveUp.controlManagerSettingMenu = this;
+        moveDown.controlManagerSettingMenu = this;
+        moveLeft.controlManagerSettingMenu = this;
+        moveRight.controlManagerSettingMenu = this;
+        dashControl.controlManagerSettingMenu = this;
+        jumpControl.controlManagerSettingMenu = this;
+        attack1Control.controlManagerSettingMenu = this;
+        attack2Control.controlManagerSettingMenu = this;
+        grapControl.controlManagerSettingMenu = this;
+        interactControl.controlManagerSettingMenu = this;
+
+        inputTypeDropdown.value = 0;
 
         RefreshSettings();
         RefreshControl(false);

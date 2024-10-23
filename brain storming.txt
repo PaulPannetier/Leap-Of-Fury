@@ -141,7 +141,9 @@ Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
 voir package avec faille sécurité
-ask validation when exit input menu
+desactivé le ui quand on listen une touche
+
+Migrate on Unity6
 
 Huge test of ALL before V0.1
 

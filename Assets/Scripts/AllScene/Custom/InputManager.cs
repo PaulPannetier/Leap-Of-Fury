@@ -2437,6 +2437,13 @@ public static class InputManager
 #endif
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsMouseKey(InputKey key)
+    {
+        int keyInt = (int)key;
+        return keyInt >= 323 && keyInt <= 329;
+    }
+
 #endregion
 
     #region GetInputKey

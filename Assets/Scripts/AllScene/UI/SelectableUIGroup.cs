@@ -31,12 +31,15 @@ public class SelectableUIGroup : MonoBehaviour
     private bool isCurrentUIPressed = false;
     private byte lastDirectionHit; //0 None, 1 => up, 2 => down, 3 => right, 4 => left
     private float lastTimeHitDirection, timerKeepPress;
+    private bool hasStarted;
+    private Vector2 oldMousePosition;
+    private bool isControlByMouse;
 
     private ControllerType _controllerType;
-    private ControllerType controllerType
+    public ControllerType controllerType
     {
         get => _controllerType;
-        set
+        private set
         {
             _controllerType = value;
             upItemInput.controllerType = value;
@@ -56,6 +59,7 @@ public class SelectableUIGroup : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput rightItemInput;
     [SerializeField] private InputManager.GeneralInput leftItemInput;
     [SerializeField] private InputManager.GeneralInput applyInput;
+    [SerializeField] private bool autoSelectDefaultUIWhenEnable;
     [SerializeField] private bool allowKeepPressed;
     [SerializeField] private float keepPressFirstDelay = 1f;
     [SerializeField] private float keepPressDelay = 0.2f;
@@ -63,14 +67,37 @@ public class SelectableUIGroup : MonoBehaviour
 
     public SelectableUI selectedUI { get; private set; } = null;
 
+    private void OnEnable()
+    {
+        if (!hasStarted)
+            return;
+
+        Init();
+
+        if (autoSelectDefaultUIWhenEnable)
+        {
+            selectedUI = defaultUISelected;
+            selectedUI.OnSelected();
+        }
+    }
+
     private void Start()
     {
         Init();
+        hasStarted = true;
+
+        if (autoSelectDefaultUIWhenEnable)
+        {
+            selectedUI = defaultUISelected;
+            selectedUI.OnSelected();
+        }
     }
 
     public void Init()
     {
         selectedUI = null;
+        isCurrentUIPressed = false;
+        oldMousePosition = InputManager.mousePosition;
 
         HashSet<SelectableUI> cache = new HashSet<SelectableUI>();
         InitRecur(defaultUISelected, ref cache);
@@ -119,7 +146,7 @@ public class SelectableUIGroup : MonoBehaviour
         }
     }
 
-    public bool RequestSelected(SelectableUI selectableUI)
+    public bool RequestSelectedByMouse(SelectableUI selectableUI)
     {
         if (isCurrentUIPressed)
             return false;
@@ -129,6 +156,7 @@ public class SelectableUIGroup : MonoBehaviour
             selectedUI.OnDeselected();    
         }
         selectedUI = selectableUI;
+        isControlByMouse = true;
         return true;
     }
 
@@ -141,10 +169,11 @@ public class SelectableUIGroup : MonoBehaviour
         {
             selectedUI.OnDeselected();
         }
+        isControlByMouse = false;
         selectedUI = null;
     }
 
-    public bool RequestDeselected(SelectableUI selectableUI)
+    public bool RequestDeselectedByMouse(SelectableUI selectableUI)
     {
         if (isCurrentUIPressed)
             return false;
@@ -153,6 +182,7 @@ public class SelectableUIGroup : MonoBehaviour
         {
             selectedUI.OnDeselected();
         }
+        isControlByMouse = false;
         selectedUI = null;
         return true;
     }
@@ -162,15 +192,32 @@ public class SelectableUIGroup : MonoBehaviour
         if (!enableBehaviour)
             return;
 
-        //on attend la premi�re interaction
+        if(!isControlByMouse && oldMousePosition.SqrDistance(InputManager.mousePosition) > 1e-4f)
+        {
+            DeselectSelecteUI();
+        }
+        oldMousePosition = InputManager.mousePosition;
+
         if(selectedUI == null)
         {
             isCurrentUIPressed = false;
             if (controllerSelector == ControllerSelector.keyboard || controllerSelector == ControllerSelector.gamepad1 || controllerSelector == ControllerSelector.gamepad2 || controllerSelector == ControllerSelector.gamepad3
                  || controllerSelector == ControllerSelector.gamepad4 || controllerSelector == ControllerSelector.gamepadAll || controllerSelector == ControllerSelector.all)
             {
-                selectedUI = defaultUISelected;
                 controllerType = (ControllerType)controllerSelector;
+                if (ControllerIsPressingAKey(out ControllerType controllerTrigger, out InputKey key))
+                {
+                    if(controllerTrigger == controllerType)
+                    {
+                        if (IsControllerTypeAnAllowedController(controllerType))
+                        {
+                            selectedUI = defaultUISelected;
+                            isControlByMouse = false;
+                            selectedUI.OnSelected();
+                        }
+                    }
+
+                }
             }
             else
             {
@@ -180,6 +227,7 @@ public class SelectableUIGroup : MonoBehaviour
                     {
                         selectedUI = defaultUISelected;
                         selectedUI.OnSelected();
+                        isControlByMouse = false;
                         this.controllerType = controllerType;
                     }
                 }
@@ -306,6 +354,7 @@ public class SelectableUIGroup : MonoBehaviour
                         lastTimeHitDirection = Time.time;
                         timerKeepPress = 0f;
                     }
+                    isControlByMouse = false;
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.upSelectableUI;
                     selectedUI.OnSelected();
@@ -319,6 +368,7 @@ public class SelectableUIGroup : MonoBehaviour
                         lastTimeHitDirection = Time.time;
                         timerKeepPress = 0f;
                     }
+                    isControlByMouse = false;
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.downSelectableUI;
                     selectedUI.OnSelected();
@@ -332,6 +382,7 @@ public class SelectableUIGroup : MonoBehaviour
                         lastTimeHitDirection = Time.time;
                         timerKeepPress = 0f;
                     }
+                    isControlByMouse = false;
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.rightSelectableUI;
                     selectedUI.OnSelected();
@@ -345,6 +396,7 @@ public class SelectableUIGroup : MonoBehaviour
                         lastTimeHitDirection = Time.time;
                         timerKeepPress = 0f;
                     }
+                    isControlByMouse = false;
                     selectedUI.OnDeselected();
                     selectedUI = selectedUI.leftSelectableUI;
                     selectedUI.OnSelected();
@@ -379,8 +431,11 @@ public class SelectableUIGroup : MonoBehaviour
 
         if (TestControllerType(ControllerType.Keyboard, out key))
         {
-            controllerType = ControllerType.Keyboard;
-            return true;
+            if(!InputManager.IsMouseKey(key))
+            {
+                controllerType = ControllerType.Keyboard;
+                return true;
+            }
         }
         if (TestControllerType(ControllerType.Gamepad1, out key))
         {

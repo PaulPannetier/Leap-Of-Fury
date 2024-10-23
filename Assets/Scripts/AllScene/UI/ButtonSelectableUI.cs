@@ -6,6 +6,7 @@ public class ButtonSelectableUI : SelectableUI
     [Space]
     public UnityEvent onButtonPressed;
 
+
     public override void OnPressedUp()
     {
 
@@ -15,7 +16,7 @@ public class ButtonSelectableUI : SelectableUI
     {
         if (isSelected)
         {
-            onButtonPressed.Invoke();
+            onButtonPressed?.Invoke();
         }
     }
 }

@@ -4,10 +4,20 @@ using TMPro;
 
 public class Traductor : MonoBehaviour
 {
+    private bool hasStart;
     [SerializeField] private TraductableMessage[] messagesToTranslate;
 
     private void Start()
     {
+        hasStart = true;
+        TranslateMessages();
+    }
+
+    private void OnEnable()
+    {
+        if(!hasStart)
+            return;
+
         TranslateMessages();
     }
 

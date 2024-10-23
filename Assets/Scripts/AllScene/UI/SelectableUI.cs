@@ -14,6 +14,26 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     [SerializeField] protected ColorFader[] colors;
 
+    [SerializeField] protected bool _interactable = true;
+    public virtual bool interactable
+    {
+        get => _interactable;
+        set
+        {
+            foreach (Coroutine coroutine in changeColorCorout)
+            {
+                StopCoroutine(coroutine);
+            }
+
+            foreach (ColorFader fader in colors)
+            {
+                Color color = value ? fader.normalColor : fader.notInteractableColor;
+                changeColorCorout.Add(StartCoroutine(ChangeColor(fader, color)));
+            }
+            _interactable = value;
+        }
+    }
+
     public SelectableUI upSelectableUI;
     public SelectableUI downSelectableUI;
     public SelectableUI rightSelectableUI;
@@ -78,10 +98,10 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!isMouseInteractable || selectableUIGroup == null)
+        if (!interactable || !isMouseInteractable || selectableUIGroup == null)
             return;
 
-        if(selectableUIGroup.RequestSelected(this))
+        if(selectableUIGroup.RequestSelectedByMouse(this))
         {
             isMouseOver = true;
             OnSelected();
@@ -90,10 +110,10 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (!isMouseInteractable || selectableUIGroup == null)
+        if (!interactable || !isMouseInteractable || selectableUIGroup == null)
             return;
 
-        if(selectableUIGroup.RequestDeselected(this))
+        if(selectableUIGroup.RequestDeselectedByMouse(this))
         {
             isMouseOver = false;
             OnDeselected();
@@ -102,13 +122,14 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (!isMouseInteractable || !isMouseOver)
+        if (!interactable || !isMouseInteractable || !isMouseOver)
             return;
 
         foreach(Coroutine coroutine in changeColorCorout)
         {
             StopCoroutine(coroutine);
         }
+        changeColorCorout.Clear();
 
         foreach (ColorFader fader in colors)
         {
@@ -119,13 +140,14 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!isMouseInteractable || !isMouseOver)
+        if (!interactable || !isMouseInteractable || !isMouseOver)
             return;
 
         foreach (Coroutine coroutine in changeColorCorout)
         {
             StopCoroutine(coroutine);
         }
+        changeColorCorout.Clear();
 
         foreach (ColorFader fader in colors)
         {
@@ -142,6 +164,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
         {
             StopCoroutine(coroutine);
         }
+        changeColorCorout.Clear();
 
         foreach (ColorFader fader in colors)
         {
@@ -156,6 +179,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
         {
             StopCoroutine(coroutine);
         }
+        changeColorCorout.Clear();
 
         foreach (ColorFader fader in colors)
         {
@@ -191,7 +215,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
 
     protected virtual void OnValidate()
     {
-        if(colors != null)
+        if (colors != null)
         {
             for (int i = 0; i < colors.Length; i++)
             {
@@ -213,16 +237,18 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
         public Color highlightedColor;
         public Color pressedColor;
         public Color selectedColor;
+        public Color notInteractableColor;
         public TextMeshProUGUI text;
         public Image image;
         public float fadeDuration;
 
-        public ColorFader(in Color normalColor, in Color highlightedColor, in Color pressedColor, in Color selectedColor, TextMeshProUGUI text, Image image, float fadeDuration)
+        public ColorFader(in Color normalColor, in Color highlightedColor, in Color pressedColor, in Color selectedColor, in Color notInteractableColor, TextMeshProUGUI text, Image image, float fadeDuration)
         {
             this.normalColor = normalColor;
             this.highlightedColor = highlightedColor;
             this.pressedColor = pressedColor;
             this.selectedColor = selectedColor;
+            this.notInteractableColor = notInteractableColor;
             this.text = text;
             this.image = image;
             this.fadeDuration = fadeDuration;

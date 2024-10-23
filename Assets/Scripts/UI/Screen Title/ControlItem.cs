@@ -9,8 +9,7 @@ public class ControlItem : MonoBehaviour
 
     private TextMeshProUGUI nameText;
     private Image keyImage;
-    private Button keyButton;
-    private BaseController controller => ControlManagerSettingMenu.instance.GetSelectedBaseController();
+    private BaseController controller => controlManagerSettingMenu.GetSelectedBaseController();
     private bool isStartingListeningThisFrame;
     private InputKey _key;
     public InputKey key
@@ -33,15 +32,28 @@ public class ControlItem : MonoBehaviour
     }
     public bool isListening { get; private set; }
     public SelectableUI selectableUI { get; private set; }
+    [SerializeField] private Color disableColor;
+
+    private bool _interactable;
+    public bool interactable
+    {
+        get => _interactable;
+        set
+        {
+            _interactable = value;
+            keyImage.color = value ? Color.white : disableColor;
+        }
+    }
+
+    public ControlManagerSettingMenu controlManagerSettingMenu;
 
     private void Awake()
     {
         nameText = GetComponentInChildren<TextMeshProUGUI>();
         keyImage = GetComponentInChildren<Image>();
-        keyButton = GetComponentInChildren<Button>();
         selectableUI = GetComponent<SelectableUI>();
-        keyButton.onClick.AddListener(OnKeyButtonDown);
     }
+
 
     public void SetNameText(string text)
     {
@@ -50,7 +62,7 @@ public class ControlItem : MonoBehaviour
 
     public void OnKeyButtonDown()
     {
-        if(!isAnInputListening)
+        if(interactable && !isAnInputListening)
         {
             StartListening();
         }
@@ -83,6 +95,9 @@ public class ControlItem : MonoBehaviour
 
     private void Update()
     {
+        if (!interactable)
+            return;
+
         if(isListening)
         {
             if(InputManager.ListenUp(controller, out InputKey key) && !isStartingListeningThisFrame)

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using System;
+using System.Collections.Generic;
 
 public class DropDownSelectableUI : SelectableUI
 {
@@ -15,11 +16,37 @@ public class DropDownSelectableUI : SelectableUI
     private float lastTimeHoldChangeKey = -10f;
     private bool isDelayBetweenStartHoldingAndRepeateKeyPass;
 
-    [SerializeField] private TMP_Dropdown _dropdown;
+    [SerializeField] private TMP_Dropdown dropdown;
     [SerializeField] private InputManager.GeneralInput applyInput;
     [SerializeField] private InputManager.GeneralInput desactivateInput;
 
-    public TMP_Dropdown dropdown => _dropdown;
+    public override bool interactable 
+    { 
+        get => base.interactable;
+        set
+        {
+            base.interactable = value;
+            dropdown.interactable = value;
+        }
+    }
+
+    public List<TMP_Dropdown.OptionData> options
+    {
+        get => dropdown.options; 
+        set => dropdown.options = value;
+    }
+
+    public int value
+    {
+        get => dropdown.value;
+        set => dropdown.value = value;
+    }
+
+    public TMP_Dropdown.DropdownEvent onValueChanged
+    {
+        get => dropdown.onValueChanged;
+        set => dropdown.onValueChanged = value;
+    }
 
     public override SelectableUIGroup selectableUIGroup
     {
@@ -180,4 +207,21 @@ public class DropDownSelectableUI : SelectableUI
             EventSystem.current.SetSelectedGameObject(null);
         }
     }
+
+    #region OnValidate
+
+#if UNITY_EDITOR
+
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        if(dropdown ==  null)
+        {
+            dropdown = GetComponentInChildren<TMP_Dropdown>();
+        }
+    }
+
+#endif
+
+    #endregion
 }

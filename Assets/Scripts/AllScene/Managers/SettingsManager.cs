@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class SettingsManager : MonoBehaviour
@@ -171,7 +172,7 @@ public class SettingsManager : MonoBehaviour
     #region Struct
 
     [Serializable]
-    public struct ConfigurationData : ICloneable<ConfigurationData>
+    public struct ConfigurationData : ICloneable<ConfigurationData>, IEquatable<ConfigurationData>
     {
         public float masterVolume;
         public float musicVolume;
@@ -202,11 +203,11 @@ public class SettingsManager : MonoBehaviour
             this.musicVolume = musicVolume;
             this.soundFXVolume = soundFXVolume;
             this.resolusion = resolusion;
-            this.customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
+            customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
             this.language = language;
             this.windowMode = windowMode;
             this.firstTimeLaunch = firstTimeLaunch;
-            this.deviceID = SystemInfo.deviceUniqueIdentifier;
+            deviceID = SystemInfo.deviceUniqueIdentifier;
             this.vSync = vSync;
         }
 
@@ -216,7 +217,7 @@ public class SettingsManager : MonoBehaviour
             this.musicVolume = musicVolume;
             this.soundFXVolume = soundFXVolume;
             this.resolusion = resolusion;
-            this.customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
+            customRefreshRate = new CustomRefreshRate(targetedFPS.numerator, targetedFPS.denominator);
             this.language = language;
             this.windowMode = windowMode;
             this.firstTimeLaunch = firstTimeLaunch;
@@ -229,8 +230,38 @@ public class SettingsManager : MonoBehaviour
             return new ConfigurationData(masterVolume, musicVolume, soundFXVolume, resolusion, targetedFPS, language, windowMode, firstTimeLaunch, vSync, deviceID);
         }
 
+        #region Equal
+
+        public bool Equals(ConfigurationData other)
+        {
+            return masterVolume == other.masterVolume && musicVolume == other.musicVolume && soundFXVolume == other.soundFXVolume && resolusion == other.resolusion &&
+                customRefreshRate == other.customRefreshRate && language == other.language && windowMode == other.windowMode && deviceID == other.deviceID && vSync == other.vSync;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(object.ReferenceEquals(null, obj))
+                return false;
+
+            if(obj is ConfigurationData configurationData)
+                return this == configurationData;
+
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(HashCode.Combine(masterVolume, musicVolume, soundFXVolume, resolusion, customRefreshRate), language, windowMode, deviceID, vSync);
+        }
+
+        public static bool operator==(ConfigurationData left, ConfigurationData right) => left.Equals(right);
+        public static bool operator!=(ConfigurationData left, ConfigurationData right) => !left.Equals(right);
+
+        #endregion
+
         [Serializable]
-        private struct CustomRefreshRate
+        private struct CustomRefreshRate : IEquatable<CustomRefreshRate>
         {
             public uint numerator;
             public uint denominator;
@@ -240,6 +271,38 @@ public class SettingsManager : MonoBehaviour
                 this.numerator = numerator;
                 this.denominator = denominator;
             }
+
+            #region Equal
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public bool Equals(CustomRefreshRate other)
+            {
+                if (denominator == 0)
+                    return other.denominator == 0u;
+
+                if (other.denominator == 0u)
+                    return false;
+                return (long)numerator * (long)other.denominator == (long)denominator * (long)other.numerator;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (object.ReferenceEquals(null, obj))
+                    return false;
+
+                if (obj is CustomRefreshRate configurationData)
+                    return this == configurationData;
+
+                return false;
+            }
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public override int GetHashCode() => HashCode.Combine(numerator, denominator);
+
+            public static bool operator ==(CustomRefreshRate left, CustomRefreshRate right) => left.Equals(right);
+            public static bool operator !=(CustomRefreshRate left, CustomRefreshRate right) => !left.Equals(right);
+
+            #endregion
         }
     }
 
