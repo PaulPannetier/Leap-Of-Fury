@@ -70,17 +70,33 @@ public class DropDownSelectableUI : SelectableUI
     protected override void Start()
     {
         base.Start();
-        upInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.UpArrow };
-        upInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLUp };
-        upInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLUp };
-        upInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLUp };
-        upInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLUp };
+        //upInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.UpArrow };
+        //upInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLUp };
+        //upInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLUp };
+        //upInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLUp };
+        //upInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLUp };
+        //upInput.controllerType = ControllerType.Any;
 
-        downInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.DownArrow };
-        downInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLDown };
-        downInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLDown };
-        downInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLDown };
-        downInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLDown };
+        //downInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.DownArrow };
+        //downInput.keyGamepad1 = new GamepadKey[1] { GamepadKey.GP1TBSLDown };
+        //downInput.keyGamepad2 = new GamepadKey[1] { GamepadKey.GP2TBSLDown };
+        //downInput.keyGamepad3 = new GamepadKey[1] { GamepadKey.GP3TBSLDown };
+        //downInput.keyGamepad4 = new GamepadKey[1] { GamepadKey.GP4TBSLDown };
+
+        upInput.keysKeyboard = new KeyboardKey[1] { KeyboardKey.UpArrow };
+        upInput.keyGamepad1 = new GamepadKey[] { GamepadKey.GP1DPadUp, GamepadKey.GP1TBSLUp };
+        upInput.keyGamepad2 = new GamepadKey[] { GamepadKey.GP2DPadUp, GamepadKey.GP2TBSLUp };
+        upInput.keyGamepad3 = new GamepadKey[] { GamepadKey.GP3DPadUp, GamepadKey.GP3TBSLUp };
+        upInput.keyGamepad4 = new GamepadKey[] { GamepadKey.GP4DPadUp, GamepadKey.GP4TBSLUp };
+        upInput.controllerType = ControllerType.Any;
+
+        downInput.keysKeyboard = new KeyboardKey[] { KeyboardKey.DownArrow };
+        downInput.keyGamepad1 = new GamepadKey[] { GamepadKey.GP1DPadDown, GamepadKey.GP1TBSLDown };
+        downInput.keyGamepad2 = new GamepadKey[] { GamepadKey.GP2DPadDown, GamepadKey.GP2TBSLDown };
+        downInput.keyGamepad3 = new GamepadKey[] { GamepadKey.GP3DPadDown, GamepadKey.GP3TBSLDown };
+        downInput.keyGamepad4 = new GamepadKey[] { GamepadKey.GP4DPadDown, GamepadKey.GP4TBSLDown };
+
+        downInput.controllerType = ControllerType.Any;
     }
 
     private void AdjustScrollPosition()

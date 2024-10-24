@@ -24,6 +24,7 @@ public abstract class SelectableUI : MonoBehaviour, IPointerEnterHandler, IPoint
             {
                 StopCoroutine(coroutine);
             }
+            changeColorCorout.Clear();
 
             foreach (ColorFader fader in colors)
             {

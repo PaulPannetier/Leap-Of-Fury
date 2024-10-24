@@ -7,32 +7,16 @@ public class ControlItem : MonoBehaviour
 {
     private static bool isAnInputListening;
 
-    private TextMeshProUGUI nameText;
     private Image keyImage;
-    private BaseController controller => controlManagerSettingMenu.GetSelectedBaseController();
     private bool isStartingListeningThisFrame;
-    private InputKey _key;
-    public InputKey key
-    {
-        get => _key;
-        set
-        {
-            _key = value;
-            if(controller == BaseController.Keyboard)
-            {
-                keyImage.sprite = InputIconManager.instance.GetButtonSprite(ControllerModel.Keyboard, value);
-            }
-            else
-            {
-                ControllerModel type = InputManager.GetCurrentGamepadModel();
-                type = type == ControllerModel.None ? ControllerModel.XBoxSeries : type;
-                keyImage.sprite = InputIconManager.instance.GetButtonSprite(type, value);
-            }
-        }
-    }
+    public InputKey keyboardKey { get; private set; }
+    public InputKey gamepadKey { get; private set; }
+    public InputKey key { get; private set; }
     public bool isListening { get; private set; }
     public SelectableUI selectableUI { get; private set; }
+
     [SerializeField] private Color disableColor;
+    [SerializeField] private TextMeshProUGUI nameText;
 
     private bool _interactable;
     public bool interactable
@@ -42,22 +26,45 @@ public class ControlItem : MonoBehaviour
         {
             _interactable = value;
             keyImage.color = value ? Color.white : disableColor;
+            selectableUI.interactable = value;
         }
     }
 
-    public ControlManagerSettingMenu controlManagerSettingMenu;
+    [HideInInspector] public ControlManagerSettingMenu controlManagerSettingMenu;
 
     private void Awake()
     {
-        nameText = GetComponentInChildren<TextMeshProUGUI>();
         keyImage = GetComponentInChildren<Image>();
         selectableUI = GetComponent<SelectableUI>();
     }
 
+    public void Init(InputKey kbKey, InputKey gpKey)
+    {
+        keyboardKey = kbKey;
+        gamepadKey = gpKey;
+        SetCurrentKey(kbKey, BaseController.Keyboard);
+    }
 
     public void SetNameText(string text)
     {
         nameText.text = text;
+    }
+
+    public void SetCurrentKey(InputKey key, BaseController baseController)
+    {
+        this.key = key;
+        if (baseController == BaseController.Keyboard)
+        {
+            keyImage.sprite = InputIconManager.instance.GetButtonSprite(ControllerModel.Keyboard, key);
+            keyboardKey = key;
+        }
+        else
+        {
+            ControllerModel type = InputManager.GetCurrentGamepadModel();
+            type = type == ControllerModel.None ? ControllerModel.XBoxSeries : type;
+            keyImage.sprite = InputIconManager.instance.GetButtonSprite(type, key);
+            gamepadKey = key;
+        }
     }
 
     public void OnKeyButtonDown()
@@ -72,6 +79,7 @@ public class ControlItem : MonoBehaviour
     {
         isListening = isStartingListeningThisFrame = isAnInputListening = true;
         keyImage.sprite = InputIconManager.instance.unknowButton;
+        controlManagerSettingMenu.OnControlItemStartListening(this);
     }
 
     public void StopListening()
@@ -86,11 +94,7 @@ public class ControlItem : MonoBehaviour
         yield return null;
         yield return null;
         isAnInputListening = false;
-    }
-
-    private void SetKey(InputKey key)
-    {
-        this.key = key == InputKey.Escape ? InputKey.None : key;
+        controlManagerSettingMenu.OnControlItemStopListening(this);
     }
 
     private void Update()
@@ -100,9 +104,10 @@ public class ControlItem : MonoBehaviour
 
         if(isListening)
         {
-            if(InputManager.ListenUp(controller, out InputKey key) && !isStartingListeningThisFrame)
+            BaseController currentController = controlManagerSettingMenu.GetSelectedBaseController();
+            if (InputManager.ListenUp(currentController, out InputKey key) && !isStartingListeningThisFrame)
             {
-                SetKey(key);
+                SetCurrentKey(key, currentController);
                 StopListening();
             }
             isStartingListeningThisFrame = false;

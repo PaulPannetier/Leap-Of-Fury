@@ -32,6 +32,8 @@ public class ControlManagerSettingMenu : MonoBehaviour
     [SerializeField] private ControlItem grapControl;
     [SerializeField] private ControlItem interactControl;
 
+    [HideInInspector] public SettingMenu settingMenu;
+
     public BaseController GetSelectedBaseController() => inputTypeDropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
 
     private void RefreshSettings()
@@ -68,10 +70,10 @@ public class ControlManagerSettingMenu : MonoBehaviour
     {
         BaseController curCon = GetSelectedBaseController();
         bool activeKB = curCon == BaseController.Keyboard;
-        moveUp.gameObject.SetActive(activeKB);
-        moveDown.gameObject.SetActive(activeKB);
-        moveRight.gameObject.SetActive(activeKB);
-        moveLeft.gameObject.SetActive(activeKB);
+        moveUp.transform.parent.gameObject.SetActive(activeKB);
+        moveDown.transform.parent.gameObject.SetActive(activeKB);
+        moveRight.transform.parent.gameObject.SetActive(activeKB);
+        moveLeft.transform.parent.gameObject.SetActive(activeKB);
         SetKeysKey(false);
         SetUINeighbourhood();
     }
@@ -102,25 +104,24 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     public bool IsSomeControlUnApply()
     {
-        bool IsSomeControlUnApplyBaseController(BaseController controller)
-        {
-            bool common = InputManager.GetInputKey("Dash", controller, false).Contains(dashControl.key) &&
-                InputManager.GetInputKey("Jump", controller, false).Contains(jumpControl.key) &&
-                InputManager.GetInputKey("AttackWeak", controller, false).Contains(attack1Control.key) &&
-                InputManager.GetInputKey("AttackStrong", controller, false).Contains(attack2Control.key) &&
-                InputManager.GetInputKey("Grab", controller, false).Contains(grapControl.key) &&
-                InputManager.GetInputKey("Interact", controller, false).Contains(interactControl.key);
-            if(controller == BaseController.Gamepad)
-                return !common;
+        bool res = !(InputManager.GetInputKey("Dash", BaseController.Keyboard, false)[0] == dashControl.keyboardKey &&
+                InputManager.GetInputKey("Jump", BaseController.Keyboard, false)[0] == jumpControl.keyboardKey &&
+                InputManager.GetInputKey("AttackWeak", BaseController.Keyboard, false)[0] == attack1Control.keyboardKey &&
+                InputManager.GetInputKey("AttackStrong", BaseController.Keyboard, false)[0] == attack2Control.keyboardKey &&
+                InputManager.GetInputKey("Grab", BaseController.Keyboard, false)[0] == grapControl.keyboardKey &&
+                InputManager.GetInputKey("Interact", BaseController.Keyboard, false)[0] == interactControl.keyboardKey &&
+                InputManager.GetInputKey("MoveUp", BaseController.Keyboard, false)[0] == moveUp.keyboardKey &&
+                InputManager.GetInputKey("MoveDown", BaseController.Keyboard, false)[0] == moveDown.keyboardKey &&
+                InputManager.GetInputKey("MoveRight", BaseController.Keyboard, false)[0] == moveRight.keyboardKey &&
+                InputManager.GetInputKey("MoveLeft", BaseController.Keyboard, false)[0] == moveLeft.keyboardKey);
 
-            return !(common && InputManager.GetInputKey("MoveUp", controller, false).Contains(moveUp.key) &&
-                InputManager.GetInputKey("MoveDown", controller, false).Contains(moveDown.key) &&
-                InputManager.GetInputKey("MoveRight", controller, false).Contains(moveRight.key) &&
-                InputManager.GetInputKey("MoveLeft", controller, false).Contains(moveLeft.key));
-        }
-        bool a = IsSomeControlUnApplyBaseController(BaseController.Keyboard);
-        bool b = IsSomeControlUnApplyBaseController(BaseController.Gamepad);
-        return a || b;
+        res = res || !(InputManager.GetInputKey("Dash", BaseController.Gamepad, false)[0] == dashControl.gamepadKey &&
+                InputManager.GetInputKey("Jump", BaseController.Gamepad, false)[0] == jumpControl.gamepadKey &&
+                InputManager.GetInputKey("AttackWeak", BaseController.Gamepad, false)[0] == attack1Control.gamepadKey &&
+                InputManager.GetInputKey("AttackStrong", BaseController.Gamepad, false)[0] == attack2Control.gamepadKey &&
+                InputManager.GetInputKey("Grab", BaseController.Gamepad, false)[0] == grapControl.gamepadKey &&
+                InputManager.GetInputKey("Interact", BaseController.Gamepad, false)[0] == interactControl.gamepadKey);
+        return res;
     }
 
     public void OnDefaultButtonDown()
@@ -134,18 +135,18 @@ public class ControlManagerSettingMenu : MonoBehaviour
         BaseController curCon = GetSelectedBaseController();
         if (curCon == BaseController.Keyboard)
         {
-            moveUp.key = InputManager.GetInputKey("MoveUp", curCon, defaultConfig)[0];
-            moveDown.key = InputManager.GetInputKey("MoveDown", curCon, defaultConfig)[0];
-            moveRight.key = InputManager.GetInputKey("MoveRight", curCon, defaultConfig)[0];
-            moveLeft.key = InputManager.GetInputKey("MoveLeft", curCon, defaultConfig)[0];
+            moveUp.SetCurrentKey(InputManager.GetInputKey("MoveUp", curCon, defaultConfig)[0], curCon);
+            moveDown.SetCurrentKey(InputManager.GetInputKey("MoveDown", curCon, defaultConfig)[0], curCon);
+            moveRight.SetCurrentKey(InputManager.GetInputKey("MoveRight", curCon, defaultConfig)[0], curCon);
+            moveLeft.SetCurrentKey(InputManager.GetInputKey("MoveLeft", curCon, defaultConfig)[0], curCon);
         }
 
-        dashControl.key = InputManager.GetInputKey("Dash", curCon, defaultConfig)[0];
-        jumpControl.key = InputManager.GetInputKey("Jump", curCon, defaultConfig)[0];
-        attack1Control.key = InputManager.GetInputKey("AttackWeak", curCon, defaultConfig)[0];
-        attack2Control.key = InputManager.GetInputKey("AttackStrong", curCon, defaultConfig)[0];
-        grapControl.key = InputManager.GetInputKey("Grab", curCon, defaultConfig)[0];
-        interactControl.key = InputManager.GetInputKey("Interact", curCon, defaultConfig)[0];
+        dashControl.SetCurrentKey(InputManager.GetInputKey("Dash", curCon, defaultConfig)[0], curCon);
+        jumpControl.SetCurrentKey(InputManager.GetInputKey("Jump", curCon, defaultConfig)[0], curCon);
+        attack1Control.SetCurrentKey(InputManager.GetInputKey("AttackWeak", curCon, defaultConfig)[0], curCon);
+        attack2Control.SetCurrentKey(InputManager.GetInputKey("AttackStrong", curCon, defaultConfig)[0], curCon);
+        grapControl.SetCurrentKey(InputManager.GetInputKey("Grab", curCon, defaultConfig)[0], curCon);
+        interactControl.SetCurrentKey(InputManager.GetInputKey("Interact", curCon, defaultConfig)[0], curCon);
     }
 
     private void EnableUIElementsInternal(bool enable)
@@ -275,6 +276,47 @@ public class ControlManagerSettingMenu : MonoBehaviour
         }
     }
 
+
+    private void OnControlItemListening(ControlItem controlItem, bool start)
+    {
+        List<ControlItem> controlItems = new List<ControlItem>(10)
+        {
+            dashControl, jumpControl, attack1Control, attack2Control, grapControl, interactControl
+        };
+
+        if (GetSelectedBaseController() == BaseController.Keyboard)
+        {
+            controlItems.Add(moveUp);
+            controlItems.Add(moveDown);
+            controlItems.Add(moveRight);
+            controlItems.Add(moveLeft);
+        }
+
+        for (int i = 0; i < controlItems.Count; i++)
+        {
+            if (controlItems[i] != controlItem)
+            {
+                controlItems[i].interactable = !start;
+            }
+        }
+
+        inputTypeDropdown.interactable = !start;
+        if(start)
+            settingMenu.OnControlItemStartListening(controlItem);
+        else
+            settingMenu.OnControlItemStopListening(controlItem);
+    }
+
+    public void OnControlItemStartListening(ControlItem controlItem)
+    {
+        OnControlItemListening(controlItem, true);
+    }
+
+    public void OnControlItemStopListening(ControlItem controlItem)
+    {
+        OnControlItemListening(controlItem, false);
+    }
+
     private void OnEnable()
     {
         StartCoroutine(OnEnableCorout());
@@ -286,15 +328,25 @@ public class ControlManagerSettingMenu : MonoBehaviour
         yield return null;
 
         moveUp.controlManagerSettingMenu = this;
+        moveUp.Init(InputManager.GetInputKey("MoveUp", BaseController.Keyboard)[0], InputManager.GetInputKey("MoveUp", BaseController.Gamepad)[0]);
         moveDown.controlManagerSettingMenu = this;
+        moveDown.Init(InputManager.GetInputKey("MoveDown", BaseController.Keyboard)[0], InputManager.GetInputKey("MoveDown", BaseController.Gamepad)[0]);
         moveLeft.controlManagerSettingMenu = this;
+        moveLeft.Init(InputManager.GetInputKey("MoveLeft", BaseController.Keyboard)[0], InputManager.GetInputKey("MoveLeft", BaseController.Gamepad)[0]);
         moveRight.controlManagerSettingMenu = this;
+        moveRight.Init(InputManager.GetInputKey("MoveRight", BaseController.Keyboard)[0], InputManager.GetInputKey("MoveRight", BaseController.Gamepad)[0]);
         dashControl.controlManagerSettingMenu = this;
+        dashControl.Init(InputManager.GetInputKey("Dash", BaseController.Keyboard)[0], InputManager.GetInputKey("Dash", BaseController.Gamepad)[0]);
         jumpControl.controlManagerSettingMenu = this;
+        jumpControl.Init(InputManager.GetInputKey("Jump", BaseController.Keyboard)[0], InputManager.GetInputKey("Jump", BaseController.Gamepad)[0]);
         attack1Control.controlManagerSettingMenu = this;
+        attack1Control.Init(InputManager.GetInputKey("MovAttackWeakeUp", BaseController.Keyboard)[0], InputManager.GetInputKey("AttackWeak", BaseController.Gamepad)[0]);
         attack2Control.controlManagerSettingMenu = this;
+        attack2Control.Init(InputManager.GetInputKey("AttackStrong", BaseController.Keyboard)[0], InputManager.GetInputKey("AttackStrong", BaseController.Gamepad)[0]);
         grapControl.controlManagerSettingMenu = this;
+        grapControl.Init(InputManager.GetInputKey("Grab", BaseController.Keyboard)[0], InputManager.GetInputKey("Grab", BaseController.Gamepad)[0]);
         interactControl.controlManagerSettingMenu = this;
+        interactControl.Init(InputManager.GetInputKey("Interact", BaseController.Keyboard)[0], InputManager.GetInputKey("Interact", BaseController.Gamepad)[0]);
 
         inputTypeDropdown.value = 0;
 

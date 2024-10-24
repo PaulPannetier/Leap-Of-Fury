@@ -59,6 +59,7 @@ public class SettingMenu : MonoBehaviour
         applyButton.onButtonPressed.AddListener(OnApplyButtonDown);
         defaultButton.onButtonPressed.RemoveAllListeners();
         defaultButton.onButtonPressed.AddListener(OnDefaultButtonDown);
+        controlManagerSettingMenu.settingMenu = this;
     }
 
     private void InitOptions()
@@ -143,7 +144,7 @@ public class SettingMenu : MonoBehaviour
         }
     }
 
-    private void EnableUISettingsElements(bool enable)
+    private void EnableUISettingsElements(bool enable, bool controlSetting = true)
     {
         groupMenu.enableBehaviour = enable;
         masterSlider.interactable = enable;
@@ -156,20 +157,23 @@ public class SettingMenu : MonoBehaviour
         languageDropdown.interactable = enable;
         applyButton.interactable = enable;
         defaultButton.interactable = enable;
-        if (enable)
-            controlManagerSettingMenu.EnableUIElements();
-        else
-            controlManagerSettingMenu.DisableUIElements();
+        if(controlSetting)
+        {
+            if (enable)
+                controlManagerSettingMenu.EnableUIElements();
+            else
+                controlManagerSettingMenu.DisableUIElements();
+        }
     }
 
-    private void DisableUISettingsElements()
+    private void DisableUISettingsElements(bool controlSetting = true)
     {
-        EnableUISettingsElements(false);
+        EnableUISettingsElements(false, controlSetting);
     }
 
-    private void EnableUISettingsElements()
+    private void EnableUISettingsElements(bool controlSetting = true)
     {
-        EnableUISettingsElements(true);
+        EnableUISettingsElements(true, controlSetting);
     }
 
     public void OnYesUnapplyButtonDown()
@@ -181,6 +185,16 @@ public class SettingMenu : MonoBehaviour
     public void OnNoUnapplyButtonDown()
     {
         CloseSettingsMenu(true);
+    }
+
+    public void OnControlItemStartListening(ControlItem controlItem)
+    {
+        EnableUISettingsElements(false, false);
+    }
+
+    public void OnControlItemStopListening(ControlItem controlItem)
+    {
+        EnableUISettingsElements(true, false);
     }
 
     private void RefreshText()
