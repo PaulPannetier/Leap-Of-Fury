@@ -20,6 +20,194 @@
 		{
             "textID": "controlTextSettingMenu",
             "content": "Contrôles"
+        },		
+		{
+            "textID": "moveUpTextSettingMenu",
+            "content": "Haut"
+        },
+		{
+            "textID": "moveDownTextSettingMenu",
+            "content": "Bas"
+        },
+		{
+            "textID": "moveRightTextSettingMenu",
+            "content": "Droite"
+        },
+		{
+            "textID": "moveLeftTextSettingMenu",
+            "content": "Gauche"
+        },		
+		{
+            "textID": "dashTextSettingMenu",
+            "content": "Ruée"
+        },
+		{
+            "textID": "jumpTextSettingMenu",
+            "content": "Saut"
+        },
+		{
+            "textID": "attack1TextSettingMenu",
+            "content": "Attaque 1"
+        },
+		{
+            "textID": "attack2TextSettingMenu",
+            "content": "Attaque 2"
+        },
+		{
+            "textID": "grabTextSettingMenu",
+            "content": "Agripper"
+        },
+		{
+            "textID": "interactTextSettingMenu",
+            "content": "Interragir"
+        },
+		{
+            "textID": "keyboard",
+            "content": "Clavier"
+        },
+		{
+            "textID": "gamepad",
+            "content": "Manette"
+        },
+		{
+            "textID": "windowMode",
+            "content": "Fenêtrage"
+        },
+		{
+            "textID": "resolution",
+            "content": "Résolution"
+        },
+		{
+            "textID": "framerate",
+            "content": "Fréquence de rafraîchissement"
+        },
+		{
+            "textID": "language",
+            "content": "Langue"
+        },
+		{
+            "textID": "vsync",
+            "content": "VSync"
+        },
+		{
+            "textID": "pauseMenuResumeButton",
+            "content": "Retour"
+        },
+		{
+            "textID": "pauseMenuMapSelectionButton",
+            "content": "Sélection de carte"
+        },
+		{
+            "textID": "pauseMenuMainTitleButton",
+            "content": "Menu principal"
+        },
+		{
+            "textID": "masterVolume",
+            "content": "Global"
+        },
+		{
+            "textID": "musicVolume",
+            "content": "Musique"
+        },
+		{
+            "textID": "soundFXVolume",
+            "content": "Sons FX"
+        },
+		{
+            "textID": "helpMenuChar1StrongAttackDescription",
+            "content": "Un clone suis en permanence le joueur. Quand cette attaque est activée, toutes les attaques précédentes du clone prennent effet, pour une durée de $char1WeakAttackDuration$ secondes."
+        },
+		{
+            "textID": "helpMenuChar1WeakAttackDescription",
+            "content": "Ruée dans 8 directions possibles, provoquant une explosion si elle touche un mur. Répétable 3 fois."
+        },
+		{
+            "textID": "helpMenuChar2StrongAttackDescription",
+            "content": "Le joueur atteint le mur ou joueur ennemi dans la direction regardée."
+        },
+		{
+            "textID": "helpMenuChar2WeakAttackDescription",
+            "content": "Le joueur frappe sur le sol, créant une explosion et une onde de choc."
+        },
+		{
+            "textID": "helpMenuChar3StrongAttackDescription",
+            "content": "Le joueur est téléporté dans la direction regardée, créant une explosion à l'arrivée."
+        },
+		{
+            "textID": "helpMenuChar3WeakAttackDescription",
+            "content": "Tire une flèche. Réactiver l'attaque duplique la flèche. Récupérer une flèche pour pouvoir re-attaquer."
+        },
+		{
+            "textID": "helpMenuChar4StrongAttackDescription",
+            "content": "Tire 3 projectiles derrière le joueur, le propulsant vers l'avant par la même occasion."
+        },
+		{
+            "textID": "helpMenuChar4WeakAttackDescription",
+            "content": "Tire un projectile qui revient vers le joueur après avoir touché un mur."
+        },
+		{
+            "textID": "resumeButton",
+            "content": "Retour"
+        },
+		{
+            "textID": "mapsSelectionButton",
+            "content": "Sélection de carte"
+        },
+		{
+            "textID": "mainTitleButton",
+            "content": "Menu principal"
+        },
+		{
+            "textID": "mainTitleSingleButton",
+            "content": "SOLO"
+        },
+		{
+            "textID": "mainTitleMultiButton",
+            "content": "MULTIJOUEUR"
+        },
+		{
+            "textID": "mainTitleOptionButton",
+            "content": "OPTIONS"
+        },
+		{
+            "textID": "mainTitleCreditButton",
+            "content": "CRÉDITS"
+        },
+		{
+            "textID": "mainTitleQuitButton",
+            "content": "QUITTER"
+        },
+		{
+            "textID": "gameTitle",
+            "content": "Le saut de la Fureur caaaaaaliiiice"
+        },
+		{
+            "textID": "UI_StatusIndicator_Join",
+            "content": "Appuyez sur une touche pour rejoindre..."
+        },
+		{
+            "textID": "UI_StatusIndicator_Choose",
+            "content": "Choix en cours..."
+        },
+		{
+            "textID": "UI_StatusIndicator_Ready",
+            "content": "Prêt !"
+        },
+		{
+            "textID": "Option_Menu_warning_unapply_settings_description",
+            "content": "Annuler"
+        },
+		{
+            "textID": "Option_Menu_warning_unapply_settings_question",
+            "content": "Appliquer les changements?"
+        },
+		{
+            "textID": "Option_Menu_warning_yes_button",
+            "content": "Oui"
+        },
+		{
+            "textID": "Option_Menu_warning_no_button",
+            "content": "Non"
         }
     ]
 }

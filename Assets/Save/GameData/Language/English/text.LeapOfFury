@@ -87,7 +87,7 @@
         },
 		{
             "textID": "vsync",
-            "content": "vSync"
+            "content": "VSync"
         },
 		{
             "textID": "pauseMenuResumeButton",
@@ -127,7 +127,7 @@
         },
 		{
             "textID": "helpMenuChar2WeakAttackDescription",
-            "content": "The player fall into the ground, creating an explosion and 2 shockwaves."
+            "content": "The player bashes onto the ground, creating an explosion with an horizontal shockwave."
         },
 		{
             "textID": "helpMenuChar3StrongAttackDescription",
@@ -135,11 +135,11 @@
         },
 		{
             "textID": "helpMenuChar3WeakAttackDescription",
-            "content": "Throw a guided arrow in the selected direction, reactivate the attack duplicate the arrow. Pick up the arrow the reuse the attack."
+            "content": "Throw a guided arrow in the selected direction, reactivating the attack duplicate the arrow. Pick up the arrow the reuse the attack."
         },
 		{
             "textID": "helpMenuChar4StrongAttackDescription",
-            "content": "Throw 3 projectiles on the back of the player. A propulsion force is apply to the player."
+            "content": "Throw 3 projectiles on the back of the player. A (foward) propulsion force is applied to the player."
         },
 		{
             "textID": "helpMenuChar4WeakAttackDescription",
