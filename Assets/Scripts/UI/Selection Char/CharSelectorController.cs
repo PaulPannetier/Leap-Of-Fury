@@ -217,6 +217,10 @@ public class CharSelectorController : MonoBehaviour
 
     private void OpenHelpCanvas(int indexTuringSelector)
     {
+        // we shouldn't need the check, but better safe than sorry
+		if (isHelpCanvasOpen[indexTuringSelector])
+			return;
+
         isHelpCanvasOpen[indexTuringSelector] = true;
         GameObject selectedChar = turningSelectors[indexTuringSelector].selectedItem;
         CharSelectorItemData charSelectorItemData = selectedChar.GetComponent<CharSelectorItemData>();
