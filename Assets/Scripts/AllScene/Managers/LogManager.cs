@@ -112,12 +112,14 @@ public class LogManager : MonoBehaviour
 
     public void WriteLogsAsync()
     {
-        Save.WriteJSONDataAsync(messages, logPath, (bool b) => { }, true).GetAwaiter();
+        // TODO add boolean check from the WriteJSONDataAsync function return
+		Save.WriteJSONDataAsync(messages, logPath, (bool b) => { }, true).GetAwaiter();
     }
 
     public void WriteLogs()
     {
-        Save.WriteJSONData(messages, logPath, true);
+        if (!Save.WriteJSONData(messages, logPath, withIndentation:true, mkdir:true))
+			UnityEngine.Debug.LogWarning("Couldn't save logs to disk !!!");
     }
 
     public void ClearLog()

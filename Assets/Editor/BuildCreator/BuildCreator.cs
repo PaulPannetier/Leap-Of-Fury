@@ -170,7 +170,8 @@ public class BuildCreator : Editor
                     InputManager.LoadConfiguration(@"//" + Path.Combine("Save", "UserSave", "inputs" + saveFileExtension));
                     InputManager.SetCurrentController(BaseController.KeyboardAndGamepad);
                     string tmpPath = Path.Combine("Save", "GameData", "tmp", "inputs.tmp");
-                    InputManager.SaveConfiguration(@"//" + tmpPath);
+                    if (!InputManager.SaveConfiguration(@"//" + tmpPath))
+						Debug.Log("couldn't save configuration !!!");
                     string inputsText = File.ReadAllText(Path.Combine(Application.dataPath, tmpPath));
                     File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "inputs" + saveFileExtension), inputsText);
                     File.Delete(Path.Combine(Application.dataPath, tmpPath));

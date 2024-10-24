@@ -3873,7 +3873,7 @@ public static class InputManager
         InputManagerConfigData InputManagerConfig = new InputManagerConfigData(defaultKBKeys.GetRawData(), defaultGPKeys.GetRawData(), kbKeys.GetRawData(), gpKeys.GetRawData(), GP1RightThumbStickDeadZone,
             GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone, 
             GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
-        return Save.WriteJSONData(InputManagerConfig, fileName, true);
+        return Save.WriteJSONData(InputManagerConfig, fileName, true, true);
     }
 
     /// <summary>

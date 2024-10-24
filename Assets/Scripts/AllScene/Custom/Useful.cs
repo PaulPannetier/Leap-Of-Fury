@@ -93,14 +93,18 @@ public static class Save
     /// </summary>
     /// <param name="objToWrite">The object to save</param>
     /// <param name="filename">the save path, begining to the game's folder</param>
+    /// <param name="withIndentation">Weather to format the output for readability (indent).</param>
+    /// <param name="mkdir">Weather to automatically create the directory path.</param>
     /// <returns> true if the save complete successfully, false overwise</returns>
-    public static bool WriteJSONData(object objToWrite, string fileName, bool withIndentation = false)
+    public static bool WriteJSONData(object objToWrite, string fileName, bool withIndentation = false, bool mkdir=false)
     {
         try
         {
             string s = Serialize(objToWrite, withIndentation);
             if (s == "{}")
                 return false;
+			if (mkdir)
+				Directory.CreateDirectory(Application.dataPath + Path.GetDirectoryName(fileName));
             File.WriteAllText(Application.dataPath + fileName, s);
         }
         catch

@@ -80,7 +80,8 @@ public class SettingsManager : MonoBehaviour
 
     private void SaveCurrentConfiguration()
     {
-        Save.WriteJSONData(currentConfig, configPath);
+		if (!Save.WriteJSONData(currentConfig, configPath, mkdir:true))
+			Debug.LogWarning("Couldn't save new configuration to disk !!!");
     }
 
     public void SetCurrentConfig(in ConfigurationData config)

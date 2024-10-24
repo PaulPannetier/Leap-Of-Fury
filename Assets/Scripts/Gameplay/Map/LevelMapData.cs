@@ -377,7 +377,8 @@ public class LevelMapData : MonoBehaviour
         if(applyCurrentConfig)
         {
             applyCurrentConfig = false;
-            Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+            if (!Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension, mkdir:true))
+				Debug.LogWarning("Couldn't write ??<idk what tbh>?? to disk !!!");
         }
 
         if (addSpawnConfig)
@@ -406,7 +407,8 @@ public class LevelMapData : MonoBehaviour
                         break;
                 }
 
-                Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+                if (!Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension, mkdir:true))
+					Debug.LogWarning("Couldn't write ??<idk what tbh>?? to disk !!!");
                 spawnConfig = new Vector2[0];
             }
         }
@@ -415,7 +417,8 @@ public class LevelMapData : MonoBehaviour
         {
             clearSpawnConfig = false;
             spawnConfigs = new SpawnConfigsData();
-            Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension);
+            if (!Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension, mkdir:true))
+				Debug.LogWarning("Couldn't write ??<idk what tbh>?? to disk !!!");
             spawnConfig = new Vector2[0];
         }
 

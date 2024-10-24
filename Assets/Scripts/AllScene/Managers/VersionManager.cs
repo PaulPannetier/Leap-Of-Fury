@@ -32,7 +32,8 @@ public static class VersionManager
     private static void WriteVersion()
     {
         VersionData versionData = new VersionData(version);
-        Save.WriteJSONData(versionData, $"/Save/UserSave/version" + SettingsManager.saveFileExtension);
+        if (!Save.WriteJSONData(versionData, $"/Save/UserSave/version" + SettingsManager.saveFileExtension, mkdir:true))
+			Debug.LogWarning("Couldn't save version to disk !!!");
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

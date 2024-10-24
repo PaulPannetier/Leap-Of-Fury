@@ -106,7 +106,8 @@ public class ColliderDrawer : MonoBehaviour
             sizes[i] = recToAdd[i].size;
         }
         ColliderDrawingData data = new ColliderDrawingData(centers, sizes);
-        Save.WriteJSONData(data, @"/Save/GameData/tmp/ColliderDrawer" + SettingsManager.saveFileExtension);
+        if (!Save.WriteJSONData(data, @"/Save/GameData/tmp/ColliderDrawer" + SettingsManager.saveFileExtension, mkdir:true))
+			Debug.LogWarning("Couldn't write ??<idk what tbh>?? to disk !!!");
         recToAdd.Clear();
         isDrawing = false;
     }
