@@ -163,15 +163,15 @@
         },
 		{
             "textID": "mainTitleMultiButton",
-            "content": "MULTI"
+            "content": "MULTIPLAYER"
         },
 		{
             "textID": "mainTitleOptionButton",
-            "content": "OPTION"
+            "content": "OPTIONS"
         },
 		{
             "textID": "mainTitleCreditButton",
-            "content": "CREDIT"
+            "content": "CREDITS"
         },
 		{
             "textID": "mainTitleQuitButton",

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a4966e180a2b384787f8a25ba13c8ce, type: 3}
   m_Name: AutoSaveConfig
   m_EditorClassIdentifier: 
-  Enabled: 1
+  Enabled: 0
   Frequency: 1
   Logging: 0
