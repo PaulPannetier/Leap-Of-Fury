@@ -5,7 +5,7 @@ using System.Collections;
 
 public class ControlItem : MonoBehaviour
 {
-    private static bool isAnInputListening;
+    public static bool isAnInputListening { get; private set; }
 
     private Image keyImage;
     private bool isStartingListeningThisFrame;
@@ -107,9 +107,17 @@ public class ControlItem : MonoBehaviour
             BaseController currentController = controlManagerSettingMenu.GetSelectedBaseController();
             if (InputManager.ListenUp(currentController, out InputKey key) && !isStartingListeningThisFrame)
             {
+                key = key == InputKey.Escape ? this.key : key;
                 SetCurrentKey(key, currentController);
                 StopListening();
             }
+
+            if(currentController == BaseController.Gamepad && InputManager.GetKeyDown(InputKey.Escape))
+            {
+                SetCurrentKey(this.key, currentController);
+                StopListening();
+            }
+
             isStartingListeningThisFrame = false;
         }
     }

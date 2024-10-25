@@ -111,7 +111,7 @@ public class SettingMenu : MonoBehaviour
         if (!isEnable)
             return;
 
-        if ((echapInput.controllerType == ControllerType.Keyboard || !isUIElementActive) && echapInput.IsPressedDown())
+        if (!controlManagerSettingMenu.isAnInputListening && (groupMenu.selectedUI == null || !groupMenu.selectedUI.isActive) && echapInput.IsPressedDown())
         {
             CloseSettingsMenu();
             return;

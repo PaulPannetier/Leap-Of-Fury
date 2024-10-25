@@ -33,6 +33,7 @@ public class ControlManagerSettingMenu : MonoBehaviour
     [SerializeField] private ControlItem interactControl;
 
     [HideInInspector] public SettingMenu settingMenu;
+    public bool isAnInputListening => ControlItem.isAnInputListening;
 
     public BaseController GetSelectedBaseController() => inputTypeDropdown.value == 0 ? BaseController.Keyboard : BaseController.Gamepad;
 
