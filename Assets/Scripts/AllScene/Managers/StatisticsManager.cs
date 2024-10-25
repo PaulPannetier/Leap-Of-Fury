@@ -15,6 +15,9 @@ public class StatisticsManager : MonoBehaviour
     [SerializeField] private bool autoSave = true;
     [SerializeField] private float saveInterval = 60f;
 
+	private static int saveRetryCounter = 0;
+	private const int MAX_SAVE_RETRY = 2;
+
     private void Awake()
     {
         if(instance != null)
@@ -74,13 +77,22 @@ public class StatisticsManager : MonoBehaviour
 
     private void SaveCallback(bool saveSucess)
     {
-        if (!saveSucess)
-            SaveStats();
-        else
-        {
-            lastTimeSave = Time.time;
-            isSaving = false;
-        }
+		// Failure: retry MAX_SAVE_RETRY times
+		if (!saveSucess){
+			if (saveRetryCounter++ < MAX_SAVE_RETRY)
+				SaveStats();
+			else
+			{
+				saveRetryCounter = 0;
+				Debug.LogWarning("Error, couldn't save statistics to disk");
+				isSaving = false;
+			}
+			return;
+		}
+
+		// Success
+		lastTimeSave = Time.time;
+		isSaving = false;
     }
 
     private void SaveStats()
@@ -116,7 +128,7 @@ public class StatisticsManager : MonoBehaviour
     public struct StatisticsData
     {
         public float timePlayed, timeOpen;
-        public int nbKills, levelComplete;//le nombre de manche terminé
+        public int nbKills, levelComplete;//le nombre de manche terminï¿½
 
         public StatisticsData(float timePlayed, float timeOpen, int nbKills, int levelComplete)
         {
