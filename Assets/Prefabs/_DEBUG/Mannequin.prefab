@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5050544988993366099}
   - component: {fileID: 5004232327855094864}
   - component: {fileID: 5091921072843060011}
+  - component: {fileID: 6613566655089026327}
   m_Layer: 8
   m_Name: Mannequin
   m_TagString: Char
@@ -188,6 +189,12 @@ MonoBehaviour:
   dashHitboxOffset: {x: 0, y: 0}
   dashHitboxSize: {x: 0, y: 0}
   damageProtectionType: 0
+  enableIsDashing: 0
+  effectType: 0
+  applyEffect: 0
+  currentFightState: 0
+  damageType: 0
+  touch: 0
 --- !u!114 &5004232327855094864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +229,52 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
+--- !u!114 &6613566655089026327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9141323532766933879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b10573594c7793340be8c69d6aa9f567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: 0
+  rawX: 0
+  rawY: 0
+  upPressed: 0
+  rightPressed: 0
+  downPressed: 0
+  leftPressed: 0
+  dashPressed: 0
+  grabPressed: 0
+  jumpPressed: 0
+  attackWeakPressed: 0
+  attackStrongPressed: 0
+  interactPressed: 0
+  upPressedDown: 0
+  rightPressedDown: 0
+  downPressedDown: 0
+  leftPressedDown: 0
+  dashPressedDown: 0
+  grabPressedDown: 0
+  jumpPressedDown: 0
+  attackWeakPressedDown: 0
+  attackStrongPressedDown: 0
+  interactPressedDown: 0
+  upPressedUp: 0
+  rightPressedUp: 0
+  downPressedUp: 0
+  leftPressedUp: 0
+  dashPressedUp: 0
+  grabPressedUp: 0
+  jumpPressedUp: 0
+  attackWeakPressedUp: 0
+  attackStrongPressedUp: 0
+  interactPressedUp: 0
+  controllerType: 0
+  useMovementLerpForKeyboard: 1
+  movementLerpForKeyboard: 10

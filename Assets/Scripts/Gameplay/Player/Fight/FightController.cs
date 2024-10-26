@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 public class FightController : MonoBehaviour
 {
-    private enum FightState : byte
+    protected enum FightState : byte
     {
         Normal,
         Dash,//can kill whith dash
@@ -32,53 +32,51 @@ public class FightController : MonoBehaviour
     public enum EffectType : byte
     {
         None,
-        DisableDash,
-        DisableAttacks,
         Stun
     }
 
-    private WeakAttack attackWeak;
-    private StrongAttack attackStrong;
-    private EventController eventController;
-    private PlayerCommon playerCommon;
-    private CharacterInputs playerInput;
-    private CharacterController charController;
+    protected WeakAttack attackWeak;
+    protected StrongAttack attackStrong;
+    protected EventController eventController;
+    protected PlayerCommon playerCommon;
+    protected CharacterInputs playerInput;
+    protected CharacterController charController;
 
-    private FightState fightState;
-    private float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack = -10f, lastTimeDash = -10f;
-    private bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
-    private short canLaunchWeakAttackCounter, canLaunchStrongAttackCounter, isStunCounter, isInvicibleCounter, disableDashCounter, disableWeakAttackCounter, disableStrongAttackCounter;
-    private LayerMask charMask;
-    private List<uint> charAlreadyTouchByDash = new List<uint>(4);
+    protected FightState fightState;
+    protected float lastInputLauchingWeakAttack = -10f, lastInputLauchingStrongAttack = -10f, lastTimeDash = -10f;
+    protected bool isLaunchingWeakAttack, isLaunchingStrongAttack, wantLauchWeakAttack, wantLaunchStrongAttack;
+    protected short canLaunchWeakAttackCounter, canLaunchStrongAttackCounter, isStunCounter, isInvicibleCounter, disableDashCounter, disableWeakAttackCounter, disableStrongAttackCounter;
+    protected LayerMask charMask;
+    protected List<uint> charAlreadyTouchByDash = new List<uint>(4);
 
-    private bool isStun => isStunCounter > 0;
-    private bool isDashDisable => disableDashCounter > 0;
-    private bool isWeakAttackDisable => disableWeakAttackCounter > 0;
-    private bool isStrongAttackDisable => disableStrongAttackCounter > 0;
-    private bool isDashing;//CharacterController is dashing
-    private bool isInvicible => isInvicibleCounter > 0;
-    private bool canLauchWeakAttack => canLaunchWeakAttackCounter >= 0;
-    private bool canLaunchStrongAttack => canLaunchStrongAttackCounter >= 0;
+    protected bool isStun => isStunCounter > 0;
+    protected bool isDashDisable => disableDashCounter > 0;
+    protected bool isWeakAttackDisable => disableWeakAttackCounter > 0;
+    protected bool isStrongAttackDisable => disableStrongAttackCounter > 0;
+    protected bool isDashing;
+    protected bool isInvicible => isInvicibleCounter > 0;
+    protected bool canLauchWeakAttack => canLaunchWeakAttackCounter >= 0;
+    protected bool canLaunchStrongAttack => canLaunchStrongAttackCounter >= 0;
 
 #if UNITY_EDITOR
-    [SerializeField] private bool drawGizmos = true;
+    [SerializeField] protected bool drawGizmos = true;
 #endif
 
     public bool enableBehavior = true;
     [Header("Fight")]
-    [SerializeField] private float bufferDuration = 0.1f;
-    [SerializeField] private float dashBumpSpeed = 10f;
-    [SerializeField] private float dashInvicibilityTimeOffset = 0.1f;
-    [SerializeField, Tooltip("Time during you are invicible and you attack with your dash attack")] private float dashInvicibilityDuration = 0.3f;
-    [SerializeField, Tooltip("Time offset before enabling killing when dashing")] private float dashKillTimeOffset= 0.1f;
-    [SerializeField, Tooltip("Kill duration when dashing")] private float dashKillDuration = 0.5f;
+    [SerializeField] protected float bufferDuration = 0.1f;
+    [SerializeField] protected float dashBumpSpeed = 10f;
+    [SerializeField] protected float dashInvicibilityTimeOffset = 0.1f;
+    [SerializeField, Tooltip("Time during you are invicible and you attack with your dash attack")] protected float dashInvicibilityDuration = 0.3f;
+    [SerializeField, Tooltip("Time offset before enabling killing when dashing")] protected float dashKillTimeOffset= 0.1f;
+    [SerializeField, Tooltip("Kill duration when dashing")] protected float dashKillDuration = 0.5f;
     public Vector2 dashHitboxOffset, dashHitboxSize;
 
     [HideInInspector] public DamageProtectionType damageProtectionType;
 
     #region Awake and Start
 
-    private void Awake()
+    protected virtual void Awake()
     {
         attackWeak = GetComponent<WeakAttack>();
         attackStrong = GetComponent<StrongAttack>();
@@ -88,7 +86,7 @@ public class FightController : MonoBehaviour
         charController = GetComponent<CharacterController>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         eventController.callbackBeenAttackApplyEffect += OnBeenApplyEffect;
         eventController.callBackBeenTouchAttack += OnBeenTouch;
@@ -106,7 +104,7 @@ public class FightController : MonoBehaviour
 
     #region Update
 
-    private void Update()
+    protected virtual void Update()
     {
         if (PauseManager.instance.isPauseEnable)
         {
@@ -209,9 +207,9 @@ public class FightController : MonoBehaviour
 
     #endregion
 
-    #region State
+    #region UpdateState
 
-    private void UpdateState()
+    protected void UpdateState()
     {
         HandleState();
 
@@ -297,7 +295,7 @@ public class FightController : MonoBehaviour
         StartCoroutine(EnableInvicibilityCorout(duration));
     }
 
-    private IEnumerator EnableInvicibilityCorout(float duration)
+    protected IEnumerator EnableInvicibilityCorout(float duration)
     {
         isInvicibleCounter++;
         yield return PauseManager.instance.Wait(duration);
@@ -305,33 +303,13 @@ public class FightController : MonoBehaviour
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void DisableDash(float duration)
-    {
-        StartCoroutine(DisableDashCorout(duration));
-    }
-
-    private IEnumerator DisableDashCorout(float duration)
-    {
-        disableDashCounter++;
-
-        if (isDashDisable)
-        {
-            charController.DisableInputs(duration);
-        }
-
-        yield return PauseManager.instance.Wait(duration);
-
-        disableDashCounter--;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void Stun(float duration)
+    protected void Stun(float duration)
     {
         charController.DisableInputs(duration);
         StartCoroutine(StunCorout(duration));
     }
 
-    private IEnumerator StunCorout(float duration)
+    protected IEnumerator StunCorout(float duration)
     {
         isStunCounter++;
         yield return PauseManager.instance.Wait(duration);
@@ -339,12 +317,12 @@ public class FightController : MonoBehaviour
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void DisableWeakAttack(float duration)
+    protected void DisableWeakAttack(float duration)
     {
         StartCoroutine(DisableWeakAttackCorout(duration));
     }
 
-    private IEnumerator DisableWeakAttackCorout(float duration)
+    protected IEnumerator DisableWeakAttackCorout(float duration)
     {
         disableWeakAttackCounter++;
         yield return PauseManager.instance.Wait(duration);
@@ -352,12 +330,12 @@ public class FightController : MonoBehaviour
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void DisableStrongAttack(float duration)
+    protected void DisableStrongAttack(float duration)
     {
         StartCoroutine(DisableStrongAttackCorout(duration));
     }
 
-    private IEnumerator DisableStrongAttackCorout(float duration)
+    protected IEnumerator DisableStrongAttackCorout(float duration)
     {
         disableStrongAttackCounter++;
         yield return PauseManager.instance.Wait(duration);
@@ -365,7 +343,7 @@ public class FightController : MonoBehaviour
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void DisableAttack(float duration)
+    protected void DisableAttack(float duration)
     {
         DisableWeakAttack(duration);
         DisableStrongAttack(duration);
@@ -375,7 +353,7 @@ public class FightController : MonoBehaviour
 
     #region Dash
 
-    private void HandleDash()
+    protected void HandleDash()
     {
         if (!isDashing)
             return;
@@ -413,15 +391,15 @@ public class FightController : MonoBehaviour
         }
     }
 
-    private void OnDashCollision(FightController fc)
+    protected void OnDashCollision(FightController fc)
     {
         if ((int)fc.damageProtectionType >= 1)
         {
-            ApplyBump(fc);
+            ApplyDashBump(fc);
         }
     }
 
-    private void OnBeenTouchByDash(FightController fc)
+    protected void OnBeenTouchByDash(FightController fc)
     {
         if(fightState == FightState.Dash)
         {
@@ -430,7 +408,7 @@ public class FightController : MonoBehaviour
 
         if ((int)damageProtectionType >= 1)
         {
-            ApplyBump(fc);
+            ApplyDashBump(fc);
         }
         else
         {
@@ -438,20 +416,20 @@ public class FightController : MonoBehaviour
         }
     }
 
-    private void ApplyBump(FightController fc)
+    protected void ApplyDashBump(FightController other)
     {
-        Vector2 bumpDir = (((Vector2)transform.position + dashHitboxOffset) - ((Vector2)fc.transform.position + fc.dashHitboxOffset)).normalized;
+        Vector2 bumpDir = (((Vector2)transform.position + dashHitboxOffset) - ((Vector2)other.transform.position + other.dashHitboxOffset)).normalized;
         charController.ApplyBump(bumpDir * dashBumpSpeed);
     }
 
-    private void KillByOtherWithDash(FightController other)
+    protected void KillByOtherWithDash(FightController other)
     {
         eventController.OnBeenKillByDash(other.gameObject);
         other.GetComponent<EventController>().OnKillByDash(gameObject);
         EventManager.instance.OnPlayerDie(gameObject, other.gameObject);
     }
 
-    private void StartDashing(Vector2 dir)
+    protected virtual void StartDashing(Vector2 dir)
     {
         isDashing = true;
         lastTimeDash = Time.time;
@@ -462,39 +440,39 @@ public class FightController : MonoBehaviour
 
     #region OnBegin/end Strong/Weak attack
 
-    private void DisableWeakAttack()
+    protected void DisableWeakAttack()
     {
         canLaunchWeakAttackCounter--;
     }
 
-    private void DisableStrongAttack()
+    protected void DisableStrongAttack()
     {
         canLaunchStrongAttackCounter--;
     }
 
-    private void EnableWeakAttack()
+    protected void EnableWeakAttack()
     {
         canLaunchWeakAttackCounter++;
     }
 
-    private void EnableStrongAttack()
+    protected void EnableStrongAttack()
     {
         canLaunchStrongAttackCounter++;
     }
 
-    private void OnBeginStrongAttack()
+    protected void OnBeginStrongAttack()
     {
         isLaunchingStrongAttack = true;
         DisableStrongAttack();
     }
 
-    private void OnBeginWeakAttack()
+    protected void OnBeginWeakAttack()
     {
         isLaunchingWeakAttack = true;
         DisableWeakAttack();
     }
 
-    private void OnEndStrongAttack()
+    protected void OnEndStrongAttack()
     {
         if (!isLaunchingStrongAttack)
         {
@@ -506,7 +484,7 @@ public class FightController : MonoBehaviour
         EnableStrongAttack();
     }
 
-    private void OnEndWeakAttack()
+    protected void OnEndWeakAttack()
     {
         if (!isLaunchingWeakAttack)
         {
@@ -522,40 +500,21 @@ public class FightController : MonoBehaviour
 
     #region Effect
 
-    private void OnBeenApplyEffect(Attack attack, GameObject enemy, EffectType effectType, EffectParams effectParams)
+    protected virtual void OnBeenApplyEffect(Attack attack, GameObject enemy, EffectType effectType, EffectParams effectParams)
     {
         ApplyEffect(effectType, effectParams);
     }
 
-    private void OnBeenApplyEffectByEnvironnement(GameObject go, EffectType effectType, EffectParams effectParams)
+    protected virtual void OnBeenApplyEffectByEnvironnement(GameObject go, EffectType effectType, EffectParams effectParams)
     {
         ApplyEffect(effectType, effectParams);
     }
 
-    private void ApplyEffect(EffectType effectType, EffectParams effectParams)
+    protected void ApplyEffect(EffectType effectType, EffectParams effectParams)
     {
         switch (effectType)
         {
             case EffectType.None:
-                break;
-            case EffectType.DisableDash:
-                DisableDashEffectParams dashEffectParams = (DisableDashEffectParams)effectParams;
-                DisableDash(dashEffectParams.duration);
-                break;
-            case EffectType.DisableAttacks:
-                DisableAttacksEffectParams attackEffectParams = (DisableAttacksEffectParams)effectParams;
-                if (attackEffectParams.disableAttack == DisableAttacksEffectParams.DisableAttack.Both)
-                {
-                    DisableAttack(attackEffectParams.duration);
-                }
-                else if (attackEffectParams.disableAttack == DisableAttacksEffectParams.DisableAttack.WeakAttack)
-                {
-                    DisableWeakAttack(attackEffectParams.duration);
-                }
-                else if (attackEffectParams.disableAttack == DisableAttacksEffectParams.DisableAttack.StrongAttack)
-                {
-                    DisableStrongAttack(attackEffectParams.duration);
-                }
                 break;
             case EffectType.Stun:
                 StunEffectParams stunEffectParams = (StunEffectParams)effectParams;
@@ -570,7 +529,7 @@ public class FightController : MonoBehaviour
 
     #region Touch
 
-    private void OnBeenTouch(Attack attack, GameObject enemy, DamageType damageType)
+    protected virtual void OnBeenTouch(Attack attack, GameObject enemy, DamageType damageType)
     {
         if(damageType != DamageType.NeverKill && (int)damageType > (int)damageProtectionType)
         {
@@ -585,7 +544,7 @@ public class FightController : MonoBehaviour
         }
     }
 
-    private void OnBeenTouchByEnvironement(GameObject go, DamageType damageType)
+    protected virtual void OnBeenTouchByEnvironement(GameObject go, DamageType damageType)
     {
         if (damageType != DamageType.NeverKill && (int)damageType > (int)damageProtectionType)
         {
@@ -598,17 +557,17 @@ public class FightController : MonoBehaviour
 
     #region Kill
 
-    private void OnBeenKillByDash(GameObject dasher)
+    protected virtual void OnBeenKillByDash(GameObject dasher)
     {
         OnBeenKilled(dasher);
     }
 
-    private void OnBeenKilled(GameObject killer)
+    protected virtual void OnBeenKilled(GameObject killer)
     {
         Useful.InvokeWaitAFrame(this, nameof(Death));
     }
 
-    private void Death()
+    protected void Death()
     {
         Destroy(gameObject);
     }
@@ -617,7 +576,7 @@ public class FightController : MonoBehaviour
 
     #region OnDestroy/OnValidate/Gizmos
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         eventController.callbackBeenAttackApplyEffect -= OnBeenApplyEffect;
         eventController.callBackBeenTouchAttack -= OnBeenTouch;
@@ -630,7 +589,7 @@ public class FightController : MonoBehaviour
 
 #if UNITY_EDITOR
 
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
         if (!drawGizmos)
             return;
@@ -638,7 +597,7 @@ public class FightController : MonoBehaviour
         Hitbox.GizmosDraw((Vector2)transform.position + dashHitboxOffset, dashHitboxSize, Color.green, true);
     }
 
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         dashBumpSpeed = Mathf.Max(0f, dashBumpSpeed);
         dashInvicibilityTimeOffset = Mathf.Max(0f, dashInvicibilityTimeOffset);

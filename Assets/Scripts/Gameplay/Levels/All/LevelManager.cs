@@ -231,7 +231,7 @@ public abstract class LevelManager : MonoBehaviour
                 }
             }
 
-            tmpGO.GetComponent<CharacterController>().Teleport(spawnPoint);
+            tmpGO.GetComponent<CharacterController>()?.Teleport(spawnPoint);
         }
     }
 
@@ -252,8 +252,8 @@ public abstract class LevelManager : MonoBehaviour
         };
 
         int nbChar = 0;
-        List<CharData> lstCharData = new List<CharData>();
-        List<Vector2> spawnPoint = new List<Vector2>();
+        List<CharData> lstCharData = new List<CharData>(4);
+        List<Vector2> spawnPoint = new List<Vector2>(4);
         for (int i = 0; i < charParent.childCount; i++)
         {
             Transform charI = charParent.GetChild(i);
@@ -290,7 +290,7 @@ public abstract class LevelManager : MonoBehaviour
     {
         foreach (Transform t in charParent)
         {
-            t.GetComponent<CharacterController>().DisableInputs(durationToWaitAtBegining);
+            t.GetComponent<CharacterController>()?.DisableInputs(durationToWaitAtBegining);
         }
     }
 

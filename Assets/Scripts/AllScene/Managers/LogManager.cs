@@ -7,7 +7,7 @@ using System.Collections;
 
 public class LogManager : MonoBehaviour
 {
-    private const string logPath = "/Save/UserSave/Log.txt";
+    private const string logPath = @"/Save/UserSave/Log.txt";
     private static LogManager _instance;
     public static LogManager instance
     {
@@ -58,7 +58,7 @@ public class LogManager : MonoBehaviour
 
     private void OnLogMessageReceive(string condition, string stackTrace, LogType type)
     {
-        AddLog("An Exeption occur in runtime", type, condition, stackTrace);
+        AddLog(new LogMessage("An Exeption occur at runtime", stackTrace, type, condition));
     }
 
     private void LoadLogs()
@@ -88,7 +88,26 @@ public class LogManager : MonoBehaviour
 
     public void AddLog(string message, params object[] values)
     {
-        AddLog(new LogMessage(message, values));
+        AddLog(new LogMessage(message, GetCurrentStackTrace(), values));
+    }
+
+    private string GetCurrentStackTrace()
+    {
+        StackTrace current = new StackTrace(true);
+        StringBuilder sb = new StringBuilder("at ");
+        StackFrame[] frames = current.GetFrames();
+        foreach (StackFrame frame in frames)
+        {
+            sb.Append(frame.GetMethod().ToString());
+            sb.Append(" at ");
+        }
+
+        if (frames.Length > 0)
+        {
+            sb.Remove(sb.Length - 4, 4);
+        }
+
+        return sb.ToString();
     }
 
     private void AddLog(LogMessage log)
@@ -182,7 +201,7 @@ public class LogManager : MonoBehaviour
     }
 
     [Serializable]
-    private struct LogMessage
+    private struct LogMessage : IEquatable<LogMessage>
     {
         [NonSerialized] private int _id;
         private int id
@@ -200,27 +219,13 @@ public class LogManager : MonoBehaviour
         [SerializeField] private LogParams[] logParams;
         [SerializeField] private string stackTrace;
 
-        public LogMessage(string errorMessage, params object[] objs)
+        public LogMessage(string errorMessage, string stackTrace, params object[] objs)
         {
-            StackTrace current = new StackTrace(true);
-            StringBuilder sb = new StringBuilder("at ");
-            StackFrame[] frames = current.GetFrames();
-            foreach (StackFrame frame in frames)
-            {
-                sb.Append(frame.GetMethod().ToString());
-                sb.Append(" at ");
-            }
-
-            if(frames.Length > 0)
-            {
-                sb.Remove(sb.Length - 4, 4);
-            }
-
-            stackTrace = sb.ToString();
-
             this.errorMessage = errorMessage;
+            this.stackTrace = stackTrace;
             logParams = new LogParams[objs.Length];
 
+            StringBuilder sb = new StringBuilder(); 
             for (int i = 0; i < objs.Length; i++)
             {
                 object obj = objs[i];
@@ -291,6 +296,17 @@ public class LogManager : MonoBehaviour
 
             _id = 0;
             ComputeId();
+        }
+
+        public bool Equals(LogMessage other)
+        {
+            if (object.ReferenceEquals(this, null) && object.ReferenceEquals(other, null))
+                return true;
+
+            if (object.ReferenceEquals(this, null) || object.ReferenceEquals(other, null))
+                return false;
+
+            return other.id == id;
         }
 
         public override bool Equals(object obj)

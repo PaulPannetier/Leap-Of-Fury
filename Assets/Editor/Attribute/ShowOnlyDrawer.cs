@@ -58,7 +58,7 @@ public class ShowOnlyDrawer : PropertyDrawer
                 valueStr = property.quaternionValue.ToString();
                 break;
             default:
-                valueStr = "Not supported type";
+                valueStr = property.displayName;
                 break;
         }
 
