@@ -96,15 +96,21 @@ public class LogManager : MonoBehaviour
         StackTrace current = new StackTrace(true);
         StringBuilder sb = new StringBuilder("at ");
         StackFrame[] frames = current.GetFrames();
-        foreach (StackFrame frame in frames)
-        {
-            sb.Append(frame.GetMethod().ToString());
-            sb.Append(" at ");
-        }
 
-        if (frames.Length > 0)
+        for (int i = 2; i < frames.Length; i++)
         {
-            sb.Remove(sb.Length - 4, 4);
+            var method = frames[i].GetMethod();
+            sb.Append(method.DeclaringType.Name);
+            sb.Append(".");
+            sb.Append(method.Name);
+            sb.Append("() (at ");
+            string fileName = frames[i].GetFileName();
+            int index = fileName.IndexOf("Assets", StringComparison.OrdinalIgnoreCase);
+            string shortFileName = index <= 0 ? string.Empty : fileName.Substring(index).Replace(@"\\", @"\");
+            sb.Append(shortFileName);
+            sb.Append(":");
+            sb.Append(frames[i].GetFileLineNumber());
+            sb.Append(") ");
         }
 
         return sb.ToString();
