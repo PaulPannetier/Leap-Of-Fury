@@ -32,6 +32,7 @@ public abstract class LevelManager : MonoBehaviour
 
     [Header("Level initialiser")]
     public bool enableBehaviour = true;
+    public bool disableDeathCount;
 
     #endif
 
@@ -300,6 +301,10 @@ public abstract class LevelManager : MonoBehaviour
 
     protected void OnPlayerDie(GameObject player, GameObject killer)
     {
+#if UNITY_EDITOR
+        if (disableDeathCount)
+            return;
+#endif
         currentNbPlayerAlive--;
         PlayerIndex killerIndex = killer.GetComponent<PlayerCommon>().playerIndex;
         for (int i = 0; i < playersScore.Length; i++)
@@ -319,6 +324,10 @@ public abstract class LevelManager : MonoBehaviour
 
     protected void OnPlayerDieByEnvironnement(GameObject player, GameObject env)
     {
+#if UNITY_EDITOR
+        if (disableDeathCount)
+            return;
+#endif
         currentNbPlayerAlive--;
 
         PlayerIndex playerIndex = player.GetComponent<PlayerCommon>().playerIndex;

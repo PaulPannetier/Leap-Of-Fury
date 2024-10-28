@@ -387,7 +387,7 @@ MonoBehaviour:
   playerIndex: 2
   color: {r: 1, g: 0.042311423, b: 0.011612245, a: 1}
   id: 1
-  prefabs: {fileID: 1677333555333733687}
+  prefabs: {fileID: 9141323532766933879, guid: 6efc4683f6235954fb996370c6bf6da3, type: 3}
   charImageUIPrefabs: {fileID: 651130587728809415, guid: d3a5c9e61155d3246a1b16d851484aa4, type: 3}
 --- !u!1 &180401350060420452
 GameObject:
@@ -6633,6 +6633,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5142762164738271879}
   - component: {fileID: 8585600369913271341}
+  - component: {fileID: 8585600369913271342}
   m_Layer: 0
   m_Name: TileMap
   m_TagString: Tilemap
@@ -6704,6 +6705,7 @@ MonoBehaviour:
   currentFightState: 0
   damageType: 0
   touch: 0
+  damageProtection: 0
 --- !u!61 &3538082264606947611
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19117,6 +19119,7 @@ GameObject:
   - component: {fileID: 2684736872279463512}
   - component: {fileID: 9020215117210670106}
   - component: {fileID: 3546639662820579739}
+  - component: {fileID: 9020215117210670107}
   m_Layer: 8
   m_Name: Char 2
   m_TagString: Char
@@ -19147,6 +19150,10 @@ PrefabInstance:
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: enableBehaviour
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: disableDeathCount
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: m_Name
@@ -20050,6 +20057,33 @@ Grid:
   m_CellGap: {x: -0.0001, y: -0.0001, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!50 &8585600369913271342
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2853539516476445115}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &8856065880487750708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20314,6 +20348,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3908af4cbc1045b4a95f41c0d09565e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &9020215117210670107
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5427506183990991407}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!4 &9073845914567486001
 Transform:
   m_ObjectHideFlags: 0

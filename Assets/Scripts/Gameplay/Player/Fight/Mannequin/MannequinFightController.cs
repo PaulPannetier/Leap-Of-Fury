@@ -12,6 +12,7 @@ public class MannequinFightController : FightController
     [SerializeField] FightState currentFightState;
     [SerializeField] DamageType damageType;
     [SerializeField] private bool touch;
+    [SerializeField] private DamageProtectionType damageProtection;
 
     protected override void Awake()
     {
@@ -59,23 +60,23 @@ public class MannequinFightController : FightController
 
     protected override void OnBeenApplyEffect(Attack attack, GameObject enemy, EffectType effectType, EffectParams effectParams)
     {
-        print($"Apply effect : {effectType} from {enemy.name}");
+        print($"Apply effect : {effectType.ToString()} from {enemy.name}");
     }
 
     protected override void OnBeenApplyEffectByEnvironnement(GameObject go, EffectType effectType, EffectParams effectParams)
     {
-        print($"Apply effect : {effectType} from environnement");
+        print($"Apply effect : {effectType.ToString()} from environnement");
     }
 
     protected override void OnBeenTouch(Attack attack, GameObject enemy, DamageType damageType)
     {
-        print($"Touch by {enemy.name} and applying {damageType} damage");
+        print($"Touch by {enemy.name} and applying {damageType.ToString()} damage");
         base.OnBeenTouch(attack, enemy, damageType);
     }
 
     protected override void OnBeenTouchByEnvironement(GameObject go, DamageType damageType)
     {
-        print($"Touch by Environement {go.name} and applaying {damageType} damage");
+        print($"Touch by Environement {go.name} and applaying {damageType.ToString()} damage");
         base.OnBeenTouchByEnvironement(go, damageType);
     }
 
@@ -87,6 +88,11 @@ public class MannequinFightController : FightController
     protected override void OnBeenKilled(GameObject killer)
     {
         print($"Kill by ennemi {killer.name}");
+    }
+
+    protected override void ApplyDashBump(FightController other)
+    {
+        print($"Apply dash from {other.gameObject.name}");
     }
 
     protected override void OnDrawGizmosSelected() { }
@@ -105,6 +111,7 @@ public class MannequinFightController : FightController
     {
         isDashing = enableIsDashing;
         fightState = currentFightState;
+        damageProtectionType = damageProtection;
 
         if (!Application.isPlaying)
             otherCharName = "null";
@@ -121,6 +128,6 @@ public class MannequinFightController : FightController
             otherChar.GetComponent<ToricObject>().original.GetComponent<EventController>().OnTouchAttack(attackWeak, gameObject, damageType);
         }
     }
-}
+}   
 
 #endif

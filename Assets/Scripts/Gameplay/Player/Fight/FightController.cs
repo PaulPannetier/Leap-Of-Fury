@@ -416,7 +416,7 @@ public class FightController : MonoBehaviour
         }
     }
 
-    protected void ApplyDashBump(FightController other)
+    protected virtual void ApplyDashBump(FightController other)
     {
         Vector2 bumpDir = (((Vector2)transform.position + dashHitboxOffset) - ((Vector2)other.transform.position + other.dashHitboxOffset)).normalized;
         charController.ApplyBump(bumpDir * dashBumpSpeed);

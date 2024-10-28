@@ -1,3 +1,4 @@
+using Collision2D;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -9,11 +10,10 @@ public class FallAttack : WeakAttack
     private LayerMask charMask, groundMask;
     private new Transform transform;
     private bool isFalling;
+    private Action callbackEnableOtherAttack, callbackEnableThisAttack;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool drawGizmos = true;
-
 #endif
 
     [SerializeField] private float castDuration = 1f;
@@ -51,15 +51,29 @@ public class FallAttack : WeakAttack
     {
         base.Update();
 
-        if(isFalling)
-        {
-            transform.position += speedFall * Time.deltaTime * Vector3.down;
-        }
+        if (!isFalling)
+            return;
+
+
+    }
+
+    private void LateUpdate()
+    {
+        if (!isFalling)
+            return;
+
+        transform.position += speedFall * Time.deltaTime * Vector3.down;
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        if(!cooldown.isActive || charController.isGrounded)
+        bool IsEnoughtHight()
+        {
+            ToricRaycastHit2D raycast = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), Vector2.down, minDistanceFromGround, groundMask);
+            return raycast.collider == null;
+        }
+
+        if (!cooldown.isActive || charController.isGrounded)
         {
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();
@@ -75,30 +89,25 @@ public class FallAttack : WeakAttack
         }
 
         cooldown.Reset();
+        this.callbackEnableOtherAttack = callbackEnableOtherAttack;
+        this.callbackEnableThisAttack = callbackEnableThisAttack;
+        StartCoroutine(LaunchCorout());
+
         StartCoroutine(ApplyFallAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
         return true;
     }
 
-    private bool IsEnoughtHight()
+    private IEnumerator LaunchCorout()
     {
-        ToricRaycastHit2D raycast = PhysicsToric.Raycast(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), Vector2.down, minDistanceFromGround, groundMask);
-        return raycast.collider == null;
+        charController.Freeze();
+
+        yield return PauseManager.instance.Wait(castDuration);
+
+        isFalling = true;
     }
 
     private IEnumerator ApplyFallAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        charController.Freeze();
-
-        float timeCounter = 0f;
-        while(timeCounter < castDuration)
-        {
-            yield return null;
-            if(!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
-
         //phase tombante
         UnityEngine.Collider2D[] cols;
         bool hitGround = false;
@@ -109,9 +118,7 @@ public class FallAttack : WeakAttack
         while(!hitGround)
         {
             while (PauseManager.instance.isPauseEnable)
-            {
                 yield return null;
-            }
 
             //collision avec le sol
             hitGround = PhysicsToric.Raycast((Vector2)transform.position + charController.groundRaycastOffset, Vector2.down, charController.groundRaycastLength, groundMask);
@@ -212,6 +219,8 @@ public class FallAttack : WeakAttack
         Gizmos.color = Color.red;
         Gizmos.DrawLine((Vector2)transform.position + charController.groundRaycastOffset, (Vector2)transform.position + charController.groundRaycastOffset + Vector2.down * charController.groundRaycastLength);
         Gizmos.DrawLine((Vector2)transform.position + new Vector2(-charController.groundRaycastOffset.x, charController.groundRaycastOffset.y), (Vector2)transform.position + new Vector2(-charController.groundRaycastOffset.x, charController.groundRaycastOffset.y) + Vector2.down * charController.groundRaycastLength);
+
+        Circle.GizmosDraw(transform.position, explosionRadius, Color.black, true);
     }
 
 #endif

@@ -38,9 +38,7 @@ public class ToricObject : MonoBehaviour
     public Action<GameObject> onCloneDestroyCallback;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool drawGizmos = true;
-
 #endif
 
     #region Awake/Start

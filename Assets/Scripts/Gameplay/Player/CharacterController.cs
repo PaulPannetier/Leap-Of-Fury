@@ -501,7 +501,8 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        transform.position += (Vector3)shift;
+        //transform.position += (Vector3)shift;
+        GetComponent<Rigidbody2D>().MovePosition(transform.position + (Vector3)shift);
 
         teleportationShift = Vector2.zero;
 
