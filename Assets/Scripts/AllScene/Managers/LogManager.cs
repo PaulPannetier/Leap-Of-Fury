@@ -58,6 +58,9 @@ public class LogManager : MonoBehaviour
 
     private void OnLogMessageReceive(string condition, string stackTrace, LogType type)
     {
+        if (type == LogType.Log || type == LogType.Assert)
+            return;
+
         AddLog(new LogMessage("An Exeption occur at runtime", stackTrace, type, condition));
     }
 
@@ -66,13 +69,9 @@ public class LogManager : MonoBehaviour
         void Callback(bool readSucess, LogMessages messages)
         {
             if(readSucess)
-            {
                 this.messages = messages;
-            }
             else
-            {
                 this.messages = new LogMessages();
-            }
 
             isLoadingLogs = false;
             for (int i = 0; i < waitingLogs.Count; i++)
@@ -106,7 +105,7 @@ public class LogManager : MonoBehaviour
             sb.Append("() (at ");
             string fileName = frames[i].GetFileName();
             int index = fileName.IndexOf("Assets", StringComparison.OrdinalIgnoreCase);
-            string shortFileName = index <= 0 ? string.Empty : fileName.Substring(index).Replace(@"\\", @"\");
+            string shortFileName = index < 0 ? string.Empty : fileName.Substring(index).Replace(@"\\", @"\");
             sb.Append(shortFileName);
             sb.Append(":");
             sb.Append(frames[i].GetFileLineNumber());

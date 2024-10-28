@@ -630,7 +630,7 @@ MonoBehaviour:
   wallGapRight: 0.5
   wallGapLeft: 0.5
   stunEffectParams:
-    duration: 0
+    duration: 10
   waitingTimeWhenCharGrab: 0.25
   maxCharGrabDuration: 0.6
   charDurationOverDistance:
@@ -698,7 +698,7 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  drawGizmos: 1
+  drawGizmos: 0
   castDuration: 0.8
   explosionRadius: 1.5
   groundDetectionHitboxOffset: {x: 0, y: -0.875}

@@ -136,12 +136,10 @@ Trad all text
 test player attacks and gameplay
 Complete Maxwell house maps and méca
 polish attacks
-fix dash killing time (to long)
 Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
 voir package avec faille sécurité
-desactivé le ui quand on listen une touche
 
 Migrate on Unity6
 
