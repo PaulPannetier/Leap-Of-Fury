@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 using System.IO;
 
 public class GameManager : MonoBehaviour
@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     private int[] divisor = new int[11] { 60, 30, 20, 15, 12, 10, 6, 5, 3, 2, 1 };
-    private PixelPerfectCamera pixelPerfectCam;
+    private UnityEngine.Rendering.Universal.PixelPerfectCamera pixelPerfectCam;
 
     [SerializeField][Range(0, 10)] private int pixelQuality = 10;
     [SerializeField] private Vector2Int maxResolution = new Vector2Int(1920, 1080);
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
-        pixelPerfectCam = Camera.main.GetComponent<PixelPerfectCamera>();
+        pixelPerfectCam = Camera.main.GetComponent<UnityEngine.Rendering.Universal.PixelPerfectCamera>();
         transform.parent = null;
         DontDestroyOnLoad(gameObject);
     }

@@ -36,7 +36,7 @@ public class MovingPlateform : PathFindingBlocker
         if (!enableBehaviour)
             return;
 
-        rb.velocity = Vector2.MoveTowards(rb.velocity, targetVelocity, speedLerp * Time.fixedDeltaTime);
+        rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, targetVelocity, speedLerp * Time.fixedDeltaTime);
     }
 
     private void Disable()

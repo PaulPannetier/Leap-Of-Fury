@@ -45,22 +45,22 @@ public class MoveWhenMoverPassThrough : MonoBehaviour
     private IEnumerator DisableCorout()
     {
         enableBehaviour = false;
-        Vector2 speed = rb.velocity;
+        Vector2 speed = rb.linearVelocity;
         float angularSpeed = rb.angularVelocity;
         RigidbodyConstraints2D rbConstrain = rb.constraints;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
 
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
 
         while (!enableBehaviour)
         {
             yield return null;
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.angularVelocity = 0f;
         }
 
-        rb.velocity = speed;
+        rb.linearVelocity = speed;
         rb.angularVelocity = angularSpeed;
         rb.constraints = rbConstrain;
     }

@@ -67,8 +67,8 @@ public class SettingMenu : MonoBehaviour
         //Window dropdown
         List<TMP_Dropdown.OptionData> windowModeOptions = new List<TMP_Dropdown.OptionData>
         {
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode"), windowModeDropdown.options[0].image),
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode"), windowModeDropdown.options[0].image, Color.white),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image, Color.white),
         };
         windowModeDropdown.options = windowModeOptions;
 
@@ -77,7 +77,7 @@ public class SettingMenu : MonoBehaviour
         List<TMP_Dropdown.OptionData> resolutionOptions = new List<TMP_Dropdown.OptionData>();
         for (int i = 0; i < availableResolutions.Length; i++)
         {
-            resolutionOptions.Add(new TMP_Dropdown.OptionData(Vector2IntToResolution(availableResolutions[i]), resolutionSprite));
+            resolutionOptions.Add(new TMP_Dropdown.OptionData(Vector2IntToResolution(availableResolutions[i]), resolutionSprite, Color.white));
         }
 
         string Vector2IntToResolution(in Vector2Int v)
@@ -92,7 +92,7 @@ public class SettingMenu : MonoBehaviour
         Sprite framerateSprite = framerateDropdown.options[0].image;
         for (int i = 0; i < availableFramerate.Length; i++)
         {
-            framerateOptions.Add(new TMP_Dropdown.OptionData(availableFramerate[i].value.Round().ToString() + " Hz", framerateSprite));
+            framerateOptions.Add(new TMP_Dropdown.OptionData(availableFramerate[i].value.Round().ToString() + " Hz", framerateSprite, Color.white));
         }
         framerateDropdown.options = framerateOptions;
 
@@ -101,7 +101,7 @@ public class SettingMenu : MonoBehaviour
         Sprite languageSprite = languageDropdown.options[0].image;
         foreach (string language in LanguageManager.instance.availableLanguage)
         {
-            languageOptions.Add(new TMP_Dropdown.OptionData(language, languageSprite));
+            languageOptions.Add(new TMP_Dropdown.OptionData(language, languageSprite, Color.white));
         }
         languageDropdown.options = languageOptions;
     }
@@ -216,8 +216,8 @@ public class SettingMenu : MonoBehaviour
 
         List<TMP_Dropdown.OptionData> windowModeOptions = new List<TMP_Dropdown.OptionData>
         {
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode"), windowModeDropdown.options[0].image),
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode"), windowModeDropdown.options[0].image, Color.white),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image, Color.white),
         };
         windowModeDropdown.options = windowModeOptions;
     }

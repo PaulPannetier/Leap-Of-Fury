@@ -36,7 +36,7 @@ public class MannequinFightController : FightController
 
     private void GetOtherCharacter()
     {
-        PlayerCommon[] players = GameObject.FindObjectsOfType<PlayerCommon>();
+        PlayerCommon[] players = GameObject.FindObjectsByType<PlayerCommon>(FindObjectsSortMode.InstanceID);
         foreach (PlayerCommon pc in players)
         {
             if (pc.id != playerCommon.id)

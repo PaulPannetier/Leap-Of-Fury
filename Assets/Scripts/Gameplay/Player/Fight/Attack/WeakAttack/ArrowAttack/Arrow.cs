@@ -11,7 +11,7 @@ public class Arrow : MonoBehaviour
     private PlayerCommon playerCommon;
     private CapsuleCollider2D capsuleCollider;
     private ToricObject toricObject;
-    private bool isFlying;//true si la flèche vole, false si elle est a terre.
+    private bool isFlying;//true si la flï¿½che vole, false si elle est a terre.
     private bool isDestroy = false;
     private bool isMainArrow;
     private bool isGuiding = false;
@@ -92,7 +92,7 @@ public class Arrow : MonoBehaviour
                 float newAngle = Mathf.MoveTowardsAngle(currentAngle * Mathf.Rad2Deg, targetAngle * Mathf.Rad2Deg, rotationDetectionSpeed * Time.fixedDeltaTime);
                 rb.SetRotation(newAngle);
 
-                rb.velocity = Useful.Vector2FromAngle(newAngle * Mathf.Deg2Rad, rb.velocity.magnitude);
+                rb.linearVelocity = Useful.Vector2FromAngle(newAngle * Mathf.Deg2Rad, rb.linearVelocity.magnitude);
             }
             else
             {
@@ -112,7 +112,7 @@ public class Arrow : MonoBehaviour
     {
         arrowAttack = physicAttack;
         isFlying = true;
-        rb.velocity = dir * initSpeed;
+        rb.linearVelocity = dir * initSpeed;
         SetRotation();
         playerCommon = physicAttack.GetComponent<PlayerCommon>();
         capsuleCollider.enabled = false;
@@ -127,7 +127,7 @@ public class Arrow : MonoBehaviour
 
     private void SetRotation()
     {
-        rb.SetRotation(rb.velocity.Angle(Vector2.right) * Mathf.Rad2Deg);
+        rb.SetRotation(rb.linearVelocity.Angle(Vector2.right) * Mathf.Rad2Deg);
     }
 
     private void HitPlayer(GameObject otherPlayer)
@@ -190,7 +190,7 @@ public class Arrow : MonoBehaviour
         }
         arrowAttack.OnArrowLand();
 
-        //On verif que la fleche n'est pas coincé dans un wall projectile
+        //On verif que la fleche n'est pas coincï¿½ dans un wall projectile
         capsuleCollider.enabled = true;
         float a = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
         float l = capsuleCollider.size.magnitude * 0.4f;
@@ -228,7 +228,7 @@ public class Arrow : MonoBehaviour
     private void SetLandOfProperties()
     {
         capsuleCollider.enabled = true;
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         rb.gravityScale = 0f;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         isFlying = false;
@@ -290,9 +290,9 @@ public class Arrow : MonoBehaviour
 
     private IEnumerator PauseCorout()
     {
-        Vector2 rbVel = rb.velocity;
+        Vector2 rbVel = rb.linearVelocity;
         float angularSpeed = rb.angularVelocity;
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
         animator.speed = 0f;
@@ -304,7 +304,7 @@ public class Arrow : MonoBehaviour
 
         animator.speed = 1f;
         rb.constraints = RigidbodyConstraints2D.None;
-        rb.velocity = rbVel;
+        rb.linearVelocity = rbVel;
         rb.angularVelocity = angularSpeed;
     }
 

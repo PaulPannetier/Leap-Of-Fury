@@ -136,7 +136,7 @@ public class GrapplingAttack : WeakAttack
             rb.AddForce(Vector2.right * (Time.fixedDeltaTime * grapMovementForce), ForceMode2D.Force);
         }
 
-        rb.AddForce(rb.velocity * (-linearDrag * Time.fixedDeltaTime), ForceMode2D.Force);
+        rb.AddForce(rb.linearVelocity * (-linearDrag * Time.fixedDeltaTime), ForceMode2D.Force);
         rb.AddForce(Physics2D.gravity * (gravityScaleWhenSwinging * Time.fixedDeltaTime), ForceMode2D.Force);
     }
 

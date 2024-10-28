@@ -14,8 +14,8 @@ public class GhostTrail : MonoBehaviour
 
     private void Awake()
     {
-        anim = FindObjectOfType<AnimationScript>();
-        move = FindObjectOfType<CharacterController>();
+        anim = FindAnyObjectByType<AnimationScript>();
+        move = FindAnyObjectByType<CharacterController>();
         sr = GetComponent<SpriteRenderer>();
     }
 

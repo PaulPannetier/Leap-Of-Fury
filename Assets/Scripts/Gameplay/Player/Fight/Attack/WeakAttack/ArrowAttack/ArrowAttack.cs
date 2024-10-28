@@ -17,7 +17,7 @@ public class ArrowAttack : WeakAttack
     public float delayBetweenLauchAndRecoverArrow = 0.7f;
     [SerializeField] private float arrowInitSpeed = 4f;
     [SerializeField] private int initArrow = 1;
-    [SerializeField, Tooltip("L'angle entre les arrow lors de la réactivation"), Range(0f, 180f)] private float arrowActivationAngle = 15f;
+    [SerializeField, Tooltip("L'angle entre les arrow lors de la rï¿½activation"), Range(0f, 180f)] private float arrowActivationAngle = 15f;
 
     protected override void Awake()
     {
@@ -31,10 +31,10 @@ public class ArrowAttack : WeakAttack
         if(arrowIsFlying)
         {
             Vector2 arrowPos = arrowWhoFly.transform.position;
-            float currentAngle = Useful.AngleHori(Vector2.zero, arrowWhoFly.rb.velocity) * Mathf.Rad2Deg;
+            float currentAngle = Useful.AngleHori(Vector2.zero, arrowWhoFly.rb.linearVelocity) * Mathf.Rad2Deg;
             float a2 = currentAngle + arrowActivationAngle;
             float a3 = currentAngle - arrowActivationAngle;
-            float speed = arrowWhoFly.rb.velocity.magnitude;
+            float speed = arrowWhoFly.rb.linearVelocity.magnitude;
 
             Arrow newArrow1 = Instantiate(arrowPrefab, arrowPos, Quaternion.Euler(0f, 0f, a2), CloneParent.cloneParent).GetComponent<Arrow>();
             Arrow newArrow2 = Instantiate(arrowPrefab, arrowPos, Quaternion.Euler(0f, 0f, a3), CloneParent.cloneParent).GetComponent<Arrow>();

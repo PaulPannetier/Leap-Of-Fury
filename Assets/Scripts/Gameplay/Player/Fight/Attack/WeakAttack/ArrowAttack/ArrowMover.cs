@@ -11,5 +11,5 @@ public class ArrowMover : Mover
         toricObject = GetComponent<ToricObject>();
     }
 
-    public override Vector2 Velocity() => toricObject.isAClone ? toricObject.original.GetComponent<ArrowMover>().Velocity() : rb.velocity;
+    public override Vector2 Velocity() => toricObject.isAClone ? toricObject.original.GetComponent<ArrowMover>().Velocity() : rb.linearVelocity;
 }

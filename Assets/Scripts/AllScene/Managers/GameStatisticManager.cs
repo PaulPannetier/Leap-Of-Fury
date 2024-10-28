@@ -8,7 +8,7 @@ public class GameStatisticManager : MonoBehaviour
 
     public static void SetStat(string id, string value)
     {
-        GameStatisticManager instance = FindObjectOfType<GameStatisticManager>();
+        GameStatisticManager instance = FindAnyObjectByType<GameStatisticManager>();
         instance.SetStatInternal(id, value);
     }
 

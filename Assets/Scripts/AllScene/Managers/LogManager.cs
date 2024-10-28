@@ -15,7 +15,7 @@ public class LogManager : MonoBehaviour
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying && _instance == null)
-                return GameObject.FindObjectOfType<LogManager>();
+                return GameObject.FindAnyObjectByType<LogManager>();
             return _instance;
 #else
             return _instance;

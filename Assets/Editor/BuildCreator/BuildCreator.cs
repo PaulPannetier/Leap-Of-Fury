@@ -124,12 +124,12 @@ public class BuildCreator : Editor
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
             buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developpementBuild ? new string[] { "ADVANCE_DEBUG" } : new string[] { };
 
-            PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
-            PlayerSettings.SetArchitecture(BuildTargetGroup.Standalone, (int)buildCreatorConfig.architectureCPU);
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
+            PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, (int)buildCreatorConfig.architectureCPU);
             PlayerSettings.productName = buildCreatorConfig.gameName;
             PlayerSettings.companyName = buildCreatorConfig.compagnyName;
             PlayerSettings.bundleVersion = buildCreatorConfig.version;
-            PlayerSettings.SetManagedStrippingLevel(BuildTargetGroup.Standalone, buildCreatorConfig.managedStrippingLevel);
+            PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
 
             Debug.Log("Start building in " + buildDir);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
