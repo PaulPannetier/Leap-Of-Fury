@@ -17,6 +17,7 @@ public class CharacterController : MonoBehaviour
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData, apexJumpColliderData;
     private ToricObject toricObject;
+    private Rigidbody2D rb;
     private short disableMovementCounter, disableDashCounter, disableInstantTurnCounter;
     private bool isMovementDisabled => disableMovementCounter > 0;
     private bool isDashDisabled => disableDashCounter > 0;
@@ -452,6 +453,7 @@ public class CharacterController : MonoBehaviour
         mainCam = Camera.main;
         playerInput = GetComponent<CharacterInputs>();
         hitbox = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
         onDash = (Vector2 dir) => { };
     }
 
@@ -502,7 +504,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //transform.position += (Vector3)shift;
-        GetComponent<Rigidbody2D>().MovePosition(transform.position + (Vector3)shift);
+        rb.MovePosition((Vector2)transform.position + shift);
 
         teleportationShift = Vector2.zero;
 

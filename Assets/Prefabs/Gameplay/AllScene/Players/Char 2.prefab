@@ -701,12 +701,15 @@ MonoBehaviour:
   drawGizmos: 1
   castDuration: 0.8
   explosionRadius: 1.5
-  minDistanceFromGround: 1.2
-  speedFall: 50
+  groundDetectionHitboxOffset: {x: 0, y: -0.875}
+  groundDetectionHeight: 0.3
+  fallSpeed: 20
   maxFallDuration: 2
   upForceWhenCancelFalling: 10
   explosionForce: 1.2
   floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}
+  floorShockWaveRaycastOffset: {x: 1, y: -0.4}
+  floorShockWaveRaycastLenght: 0.625
   shockWaveHoriOffset: 0.2
   shockWaveSpeed: 15
 --- !u!114 &-2827172850822402626
