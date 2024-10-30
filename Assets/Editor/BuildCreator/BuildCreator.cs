@@ -116,7 +116,7 @@ public class BuildCreator : Editor
             Directory.CreateDirectory(buildDir);
 
             //Performing Build
-            PerformBuild(buildDir, scenesPath);
+            PerformBuild(buildDir, scenesPath.ToArray());
 
             //Copy save content
             if (buildCreatorConfig.copySaveDirectory)
@@ -270,13 +270,14 @@ public class BuildCreator : Editor
         EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
     }
 
-    private void PerformBuild(string buildDir, List<string> scenesPath)
+    private void PerformBuild(string buildDir, string[] scenesPath)
     {
         void PerformWindowsBuild()
         {
             BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            Debug.Log(buildPlayerOptions.subtarget);
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
-            buildPlayerOptions.scenes = scenesPath.ToArray();
+            buildPlayerOptions.scenes = scenesPath;
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".exe");
             buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
@@ -289,16 +290,16 @@ public class BuildCreator : Editor
             PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
 
             Debug.Log("Start building for Windows in " + buildDir);
-            //BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
-            BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
-            //BuildReport report = BuildPipeline.BuildPlayer(scenesPath.ToArray(), Path.Combine(buildDir, buildCreatorConfig.gameName + ".exe"), BuildTarget.StandaloneWindows, BuildOptions.None);
+            Debug.Log(buildPlayerOptions.locationPathName);
+
+            //BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
         }
 
         void PerformLinuxBuild()
         {
-            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+            BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
-            buildPlayerOptions.scenes = scenesPath.ToArray();
+            buildPlayerOptions.scenes = scenesPath;
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".x86_64");
             buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
@@ -317,9 +318,9 @@ public class BuildCreator : Editor
 
         void PerformMacOSBuild()
         {
-            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+            BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
-            buildPlayerOptions.scenes = scenesPath.ToArray();
+            buildPlayerOptions.scenes = scenesPath;
 
             // For macOS, Unity outputs a .app bundle, so we adjust the path accordingly
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".app");

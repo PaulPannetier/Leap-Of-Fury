@@ -30,7 +30,6 @@ MonoBehaviour:
   performBuild: 1
   buildPlateform: 0
   useIL2CPPCompilation: 0
-  architectureCPU: 1
   developmentBuild: 1
   managedStrippingLevel: 0
   copySaveDirectory: 1
