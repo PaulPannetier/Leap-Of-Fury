@@ -274,7 +274,8 @@ public class BuildCreator : Editor
     {
         void PerformWindowsBuild()
         {
-            BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            //BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             Debug.Log(buildPlayerOptions.subtarget);
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
@@ -290,14 +291,13 @@ public class BuildCreator : Editor
             PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
 
             Debug.Log("Start building for Windows in " + buildDir);
-            Debug.Log(buildPlayerOptions.locationPathName);
-
-            //BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
         }
 
         void PerformLinuxBuild()
         {
-            BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            //BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".x86_64");
@@ -318,7 +318,8 @@ public class BuildCreator : Editor
 
         void PerformMacOSBuild()
         {
-            BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            //BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
 
