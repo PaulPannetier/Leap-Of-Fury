@@ -5,13 +5,15 @@ using UnityEditor;
 
 public class BuildCreatorConfig : ScriptableObject
 {
-    public enum CPUArchitecture : byte
+    public enum BuildPlateform
     {
-        x86 = 0,//32 bits CPU
-        x64 = 1 //64 bits CPU
+        Windows,
+        Linux,
+        MacOSIntel,
+        MacOSAppleSilicon
     }
 
-    public string compagnyName;
+    public string companyName;
     public string gameName;
     public string version;
 
@@ -24,9 +26,9 @@ public class BuildCreatorConfig : ScriptableObject
 
     public bool modifyGameplayScene = true;
     public bool performBuild = true;
+    public BuildPlateform buildPlateform = BuildPlateform.Windows;
     public bool useIL2CPPCompilation = true;
-    public CPUArchitecture architectureCPU = CPUArchitecture.x64;
-    public bool developpementBuild = true;
+    public bool developmentBuild = true;
     public ManagedStrippingLevel managedStrippingLevel = ManagedStrippingLevel.Disabled;
     public bool copySaveDirectory = true;
     public bool setDefaultSettingAndInput = true;

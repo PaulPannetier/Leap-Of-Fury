@@ -259,25 +259,6 @@ public class CharSelectorController : MonoBehaviour
 
         isTurningSelectorInit[index] = isTurningSelectorsFinishSelection[index] = false;
         controllers[index] = ControllerType.Keyboard;
-
-        //if (index == 3)
-        //{
-        //    isTurningSelectorInit[index] = isTurningSelectorsFinishSelection[index] = false;
-        //    controllerIndexs[indexToInit] = ControllerType.Keyboard;
-        //    indexToInit--;
-        //    return;
-        //}
-
-        //for (int i = index; i < turningSelectors.Length - 1; i++)
-        //{
-        //    isTurningSelectorInit[i] = isTurningSelectorInit[i + 1];
-        //    controllerIndexs[i] = controllerIndexs[i + 1];
-        //    isTurningSelectorsFinishSelection[i] = isTurningSelectorsFinishSelection[i + 1];
-        //}
-
-        //isTurningSelectorInit[turningSelectors.Length - 1] = isTurningSelectorsFinishSelection[turningSelectors.Length - 1] = false;
-        //controllerIndexs[turningSelectors.Length - 1] = ControllerType.Keyboard;
-        //indexToInit = Mathf.Max(0, indexToInit - 1);
     }
 
     #region ControllerAlreadyInit / NewControllerIsPressingAKey

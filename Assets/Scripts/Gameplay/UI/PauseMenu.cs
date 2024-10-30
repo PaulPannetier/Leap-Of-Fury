@@ -106,7 +106,9 @@ public class PauseMenu : MonoBehaviour
             t.gameObject.SetActive(false);
         }
         PauseManager.instance.DisablePause();
+#if !UNITY_EDITOR
         InputManager.HideMouseCursor();
+#endif
     }
 
     private void OnDestroy()

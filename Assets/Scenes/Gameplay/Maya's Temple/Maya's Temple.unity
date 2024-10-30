@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 0
@@ -307,11 +304,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
-      propertyPath: mapsPrefabs.Array.data[3]
+      propertyPath: 'mapsPrefabs.Array.data[3]'
       value: 
       objectReference: {fileID: 2889853000194525038, guid: e1bb0a524771b2047a23ddddc05132d6, type: 3}
     - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
-      propertyPath: mapsPrefabs.Array.data[4]
+      propertyPath: 'mapsPrefabs.Array.data[4]'
       value: 
       objectReference: {fileID: 2907163850566459797, guid: 14b45c0a98c548d49950b15d63a33fff, type: 3}
     - target: {fileID: 7320278589001595780, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
@@ -762,7 +759,7 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7950456835390513230, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: hashes.Array.data[1]
+      propertyPath: 'hashes.Array.data[1]'
       value: B2CB57491ED0311E98BEFE57044D587E2F24CDB072BF63EC5A56CF46308D1E79
       objectReference: {fileID: 0}
     - target: {fileID: 7950456835390513230, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
@@ -770,7 +767,7 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7950456835390513230, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
-      propertyPath: folderToVerify.Array.data[2]
+      propertyPath: 'folderToVerify.Array.data[2]'
       value: Save/Levels
       objectReference: {fileID: 0}
     - target: {fileID: 8970924279353906113, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}

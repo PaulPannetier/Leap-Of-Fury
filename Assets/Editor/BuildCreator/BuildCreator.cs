@@ -13,6 +13,8 @@ using static StatisticsManager;
 using System.Threading.Tasks;
 using UnityEditor.Rendering;
 using UnityEditor.Build;
+using System;
+using Object = UnityEngine.Object;
 
 [CustomEditor(typeof(BuildCreatorConfig))]
 public class BuildCreator : Editor
@@ -78,7 +80,7 @@ public class BuildCreator : Editor
             List<string> scenesPath = new List<string>();
             foreach (Object sceneNoCast in buildCreatorConfig.otherSceneTobuild)
             {
-                if(sceneNoCast == buildCreatorConfig.firstSceneToPlay)
+                if (sceneNoCast == buildCreatorConfig.firstSceneToPlay)
                 {
                     continue;
                 }
@@ -100,42 +102,24 @@ public class BuildCreator : Editor
                 SceneAsset sceneAsset = sceneNoCast as SceneAsset;
                 if (sceneAsset == null)
                     return;
+
                 string scenePath = AssetDatabase.GetAssetPath(sceneAsset);
-                if(atBegining)
-                {
+                if (atBegining)
                     scenesPath.Insert(0, scenePath);
-                }
                 else
-                {
                     scenesPath.Add(scenePath);
-                }
             }
 
             string buildDir = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Build");
-            if(Directory.Exists(buildDir))
+            if (Directory.Exists(buildDir))
                 Directory.Delete(buildDir, true);
             Directory.CreateDirectory(buildDir);
 
-            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-            buildPlayerOptions.options = buildCreatorConfig.developpementBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
-            buildPlayerOptions.scenes = scenesPath.ToArray();
-            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".exe");
-            buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
-            buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
-            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developpementBuild ? new string[] { "ADVANCE_DEBUG" } : new string[] { };
-
-            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
-            PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, (int)buildCreatorConfig.architectureCPU);
-            PlayerSettings.productName = buildCreatorConfig.gameName;
-            PlayerSettings.companyName = buildCreatorConfig.compagnyName;
-            PlayerSettings.bundleVersion = buildCreatorConfig.version;
-            PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
-
-            Debug.Log("Start building in " + buildDir);
-            BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
+            //Performing Build
+            PerformBuild(buildDir, scenesPath);
 
             //Copy save content
-            if(buildCreatorConfig.copySaveDirectory)
+            if (buildCreatorConfig.copySaveDirectory)
             {
                 string saveDirectory = Path.Combine(buildDir, buildCreatorConfig.gameName + "_Data", "Save");
                 FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), saveDirectory);
@@ -146,22 +130,18 @@ public class BuildCreator : Editor
                     foreach (string file in Directory.GetFiles(directory))
                     {
                         if (file.EndsWith(".meta"))
-                        {
                             File.Delete(file);
-                        }
                     }
 
                     string[] directories = Directory.GetDirectories(directory);
                     foreach (string dir in directories)
-                    {
                         RmMetaFile(dir);
-                    }
                 }
 
                 //set default configuration
-                if(buildCreatorConfig.setDefaultSettingAndInput)
+                if (buildCreatorConfig.setDefaultSettingAndInput)
                 {
-                    File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "configuration" + saveFileExtension),  "");
+                    File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "configuration" + saveFileExtension), "");
 
                     //clear stat file
                     File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "stats" + saveFileExtension), Save.Serialize(new StatisticsData(0f, 0f, 0, 0)));
@@ -171,7 +151,7 @@ public class BuildCreator : Editor
                     InputManager.SetCurrentController(BaseController.KeyboardAndGamepad);
                     string tmpPath = Path.Combine("Save", "GameData", "tmp", "inputs.tmp");
                     if (!InputManager.SaveConfiguration(@"//" + tmpPath))
-						Debug.Log("couldn't save configuration !!!");
+                        Debug.Log("couldn't save configuration !!!");
                     string inputsText = File.ReadAllText(Path.Combine(Application.dataPath, tmpPath));
                     File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "inputs" + saveFileExtension), inputsText);
                     File.Delete(Path.Combine(Application.dataPath, tmpPath));
@@ -200,7 +180,7 @@ public class BuildCreator : Editor
         SceneAsset screenTitleAsset = null;
         foreach (Object scene in buildCreatorConfig.otherSceneTobuild)
         {
-            if(scene == null || scene.name != "Screen Title")
+            if (scene == null || scene.name != "Screen Title")
                 continue;
             screenTitleAsset = scene as SceneAsset;
             break;
@@ -288,6 +268,95 @@ public class BuildCreator : Editor
         }
 
         EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
+    }
+
+    private void PerformBuild(string buildDir, List<string> scenesPath)
+    {
+        void PerformWindowsBuild()
+        {
+            BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
+            buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
+            buildPlayerOptions.scenes = scenesPath.ToArray();
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".exe");
+            buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
+            buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new string[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
+
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
+            PlayerSettings.productName = buildCreatorConfig.gameName;
+            PlayerSettings.companyName = buildCreatorConfig.companyName;
+            PlayerSettings.bundleVersion = buildCreatorConfig.version;
+            PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
+
+            Debug.Log("Start building for Windows in " + buildDir);
+            //BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
+            BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            //BuildReport report = BuildPipeline.BuildPlayer(scenesPath.ToArray(), Path.Combine(buildDir, buildCreatorConfig.gameName + ".exe"), BuildTarget.StandaloneWindows, BuildOptions.None);
+        }
+
+        void PerformLinuxBuild()
+        {
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+            buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
+            buildPlayerOptions.scenes = scenesPath.ToArray();
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".x86_64");
+            buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
+            buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
+
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
+            //PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, 1); // 1 for x64 on Linux
+            PlayerSettings.productName = buildCreatorConfig.gameName;
+            PlayerSettings.companyName = buildCreatorConfig.companyName;
+            PlayerSettings.bundleVersion = buildCreatorConfig.version;
+            PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
+
+            Debug.Log("Start building for Linux in " + buildDir);
+            BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
+        }
+
+        void PerformMacOSBuild()
+        {
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+            buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
+            buildPlayerOptions.scenes = scenesPath.ToArray();
+
+            // For macOS, Unity outputs a .app bundle, so we adjust the path accordingly
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".app");
+            buildPlayerOptions.target = BuildTarget.StandaloneOSX;
+            buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
+            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new string[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
+
+            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
+            //int architecture = buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSIntel ? 0 : 1;// Typically 0 (Intel x86_64) or 1 (Apple Silicon/Universal)
+            //PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, architecture);
+            PlayerSettings.productName = buildCreatorConfig.gameName;
+            PlayerSettings.companyName = buildCreatorConfig.companyName;
+            PlayerSettings.bundleVersion = buildCreatorConfig.version;
+            PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
+
+            Debug.Log("Starting build for macOS in " + buildDir);
+            BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
+        }
+
+        switch (buildCreatorConfig.buildPlateform)
+        {
+            case BuildCreatorConfig.BuildPlateform.Windows:
+                PerformWindowsBuild();
+                break;
+            case BuildCreatorConfig.BuildPlateform.Linux:
+                PerformLinuxBuild();
+                break;
+            case BuildCreatorConfig.BuildPlateform.MacOSAppleSilicon:
+                PerformMacOSBuild();
+                break;
+            case BuildCreatorConfig.BuildPlateform.MacOSIntel:
+                PerformMacOSBuild();
+                break;
+            default:
+                Debug.LogWarning($"Unsupported plateform : {buildCreatorConfig.buildPlateform}");
+                break;
+        }
     }
 }
 
