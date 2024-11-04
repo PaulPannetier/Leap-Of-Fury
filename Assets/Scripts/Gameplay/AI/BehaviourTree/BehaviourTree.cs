@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CustomAI
 {
-    public abstract class Tree : MonoBehaviour
+    public abstract class BehaviourTree : MonoBehaviour
     {
         private Node root = null;
 

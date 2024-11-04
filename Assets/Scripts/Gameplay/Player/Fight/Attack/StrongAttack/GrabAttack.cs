@@ -18,9 +18,7 @@ public class GrabAttack : StrongAttack
     private bool isCharTouch => charTouch != null;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool drawGizmos = true;
-
 #endif
 
     [SerializeField] private float castRadius = 0.5f;
@@ -51,13 +49,12 @@ public class GrabAttack : StrongAttack
         base.Awake();
         this.transform = base.transform;
         charAlreadyTouch = new List<uint>();
+        charController = GetComponent<CharacterController>();
     }
 
     protected override void Start()
     {
         base.Start();
-        charController = GetComponent<CharacterController>();
-
         charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
         charMask = LayerMask.GetMask("Char");
     }
@@ -330,12 +327,10 @@ public class GrabAttack : StrongAttack
         if (!drawGizmos)
             return;
 
-        Gizmos.color = Color.green;
-        Circle.GizmosDraw(transform.position, range);
-        Circle.GizmosDraw(transform.position, minRange);
-        Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, castRadius);
-        Circle.GizmosDraw((Vector2)transform.position + collisionOffset, charCollisionRadius);
-        Gizmos.color = Color.red;
+        Circle.GizmosDraw(transform.position, range, Color.green);
+        Circle.GizmosDraw(transform.position, minRange, Color.green);
+        Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, castRadius, Color.green);
+        Circle.GizmosDraw((Vector2)transform.position + collisionOffset, charCollisionRadius, Color.green);
     }
 
     protected override void OnValidate()
