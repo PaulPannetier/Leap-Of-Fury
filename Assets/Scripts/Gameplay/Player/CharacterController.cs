@@ -746,7 +746,7 @@ public class CharacterController : MonoBehaviour
         if (leftSlopeRay && !isTraversingOneWayPlateform)
         {
             groundCollider = groundCollider == null ? leftSlopeRay.collider : groundCollider;
-            slopeAngleLeft = Useful.WrapAngle((270f - Vector2.Angle(Vector2.left, rightSlopeRay.normal)) * Mathf.Deg2Rad);
+            slopeAngleLeft = Useful.WrapAngle((270f - Vector2.Angle(Vector2.left, leftSlopeRay.normal)) * Mathf.Deg2Rad);
             if (slopeAngleLeft <= 179f * Mathf.Deg2Rad && slopeAngleLeft >= (180f - maxSlopeAngle) * Mathf.Deg2Rad)
             {
                 isSlopingLeft = true;
