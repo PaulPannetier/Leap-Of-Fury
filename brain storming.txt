@@ -139,7 +139,6 @@ polish attacks
 Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
-voir package avec faille sécurité
 
 Migrate on Unity6
 

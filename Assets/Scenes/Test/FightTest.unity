@@ -18857,6 +18857,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4494924586538259143}
   - component: {fileID: 1755587016178437088}
+  - component: {fileID: 4846581986960027940}
   m_Layer: 0
   m_Name: Map4
   m_TagString: Map
@@ -18864,6 +18865,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4846581986960027940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4846581986960027939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e240486d8fd34e4b91c10d995dc5084, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4848749280268906963
 Transform:
   m_ObjectHideFlags: 0

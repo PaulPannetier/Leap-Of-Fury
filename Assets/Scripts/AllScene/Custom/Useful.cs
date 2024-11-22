@@ -15,6 +15,7 @@ using DG.Tweening;
 using System.Threading.Tasks;
 using Collision2D;
 using System.Runtime.CompilerServices;
+using UnityEngine.UI;
 
 #endregion
 
@@ -423,13 +424,13 @@ public static class Random
         return new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
     }
     /// <returns> A random Vector2 with de magnitude in param</returns>
-    public static Vector2 Vector2(in float magnitude)
+    public static Vector2 Vector2(float magnitude)
     {
         float angle = RandExclude(0f, twoPi);
         return new Vector2(magnitude * Mathf.Cos(angle), magnitude * Mathf.Sin(angle));
     }
     /// <returns> A random Vector2 with a randoml magnitude</returns>
-    public static Vector2 Vector2(in float minMagnitude, in float maxMagnitude)
+    public static Vector2 Vector2(float minMagnitude, float maxMagnitude)
     {
         float angle = RandExclude(0f, twoPi);
         float magnitude = Rand(minMagnitude, maxMagnitude);
@@ -443,14 +444,14 @@ public static class Random
         return new Vector3(Mathf.Sin(teta) * Mathf.Cos(phi), Mathf.Sin(teta) * Mathf.Sin(phi), Mathf.Cos(teta));
     }
     /// <returns> A random Vector3 with de magnitude in param</returns>
-    public static Vector3 Vector3(in float magnitude)
+    public static Vector3 Vector3(float magnitude)
     {
         float teta = Rand(0f, Mathf.PI);
         float phi = RandExclude(0f, twoPi);
         return new Vector3(magnitude * Mathf.Sin(teta) * Mathf.Cos(phi), magnitude * Mathf.Sin(teta) * Mathf.Sin(phi), magnitude * Mathf.Cos(teta));
     }
     /// <returns> A random Vector3 with a random magnitude</returns>
-    public static Vector3 Vector3(in float minMagnitude, in float maxMagnitude)
+    public static Vector3 Vector3(float minMagnitude, float maxMagnitude)
     {
         float teta = Rand(0f, Mathf.PI);
         float phi = RandExclude(0f, twoPi);
@@ -503,7 +504,7 @@ public static class Random
 
     #region Noise
 
-    public static float[,] PerlinNoise(in int width, in int height, in Vector2 scale)
+    public static float[,] PerlinNoise(int width, int height, in Vector2 scale)
     {
         float[,] res = new float[width, height];
         for (int x = 0; x < width; x++)
@@ -516,7 +517,7 @@ public static class Random
         return res;
     }
 
-    public static Array2D<float> RegularNoise(in int width, in int height)
+    public static Array2D<float> RegularNoise(int width, int height)
     {
         Array2D<float> res = new Array2D<float>(width, height);
         for (int x = 0; x < width; x++)
@@ -688,12 +689,12 @@ public static class Random
             return 1f - t * t * t * (t * (t * 6 - 15) + 10);
         }
 
-        private static float Q(in float u, in float v)
+        private static float Q(float u, float v)
         {
             return Drop(u) * Drop(v);
         }
 
-        public static float Noise(in float x, in float y)
+        public static float Noise(float x, float y)
         {
             Vector2 cell = new Vector2((float)Mathf.Floor(x), (float)Mathf.Floor(y));
 
@@ -730,8 +731,8 @@ public static class Random
             count += Bernoulli(p);
         return count;
     }
-    public static float Expodential(in float lambda) => (-1f / lambda) * Mathf.Log(Rand());
-    public static int Poisson(in float lambda)
+    public static float Expodential(float lambda) => (-1f / lambda) * Mathf.Log(Rand());
+    public static int Poisson(float lambda)
     {
         float x = Rand();
         int n = 0;
@@ -742,7 +743,7 @@ public static class Random
         }
         return n;
     }
-    public static int Geometric(in float p)
+    public static int Geometric(float p)
     {
         int count = 0;
         do
@@ -1354,6 +1355,8 @@ public static class Useful
     public static Vector2 ToVector2(in this Vector3 v) => new Vector2(v.x, v.y);
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Vector4 ToVector4(in this Vector3 v) => new Vector4(v.x, v.y);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float Cos(this Vector3 a, in Vector3 vector) => Dot(a, vector) / Mathf.Sqrt(((a.x * a.x) + (a.y * a.y) + (a.z * a.z)) * ((vector.x * vector.x) + (vector.y * a.y) + (vector.z * vector.z)));
 
     //Vector4
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1484,7 +1487,7 @@ public static class Useful
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Max(int a, int b) => a >= b  ? a : b;
+    public static int Max(int a, int b) => a >= b ? a : b;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Max(int a, int b, int c) => Max(c, Max(a, b));
     public static int Max(params int[] args)
@@ -1510,13 +1513,40 @@ public static class Useful
         return min;
     }
 
+    private static readonly uint[] fastExpMask = new uint[32] {
+        0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80,
+        0x100, 0x200, 0x400, 0x800,
+        0x1000, 0x2000, 0x4000, 0x8000,
+        0x10000, 0x20000, 0x40000, 0x80000,
+        0x100000, 0x200000, 0x400000, 0x800000,
+        0x1000000, 0x2000000, 0x4000000, 0x8000000,
+        0x10000000, 0x20000000, 0x40000000, 0x80000000
+    };
+
+    /// <returns>a^b[n]</returns>
+    public static uint FastExpodential(uint a, uint b, uint n)
+    {
+        uint res = 1u;
+        uint pow = a;
+        for (int i = 0; i < 32; i++)
+        {
+            if((fastExpMask[i] & b) != 0)
+            {
+                res = res * pow % n;
+            }
+            pow = pow * pow % n;
+        }
+
+        return res;
+    }
+
     /// <summary>
     /// t € [0, 1]
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Lerp(in int a, in int b, float t) => (int)(a + (b - a) * t);
+    public static int Lerp(int a, int b, float t) => (int)(a + (b - a) * t);
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float Lerp(in float a, in float b, float t) => a + (b - a) * t;
+    public static float Lerp(float a, float b, float t) => a + (b - a) * t;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOdd(this int number) => (number & 1) != 0;
@@ -1621,9 +1651,9 @@ public static class Useful
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float NearestFromZero(in float a, in float b) => Mathf.Abs(a) < Mathf.Abs(b) ? a : b;
+    public static float NearestFromZero(float a, float b) => Mathf.Abs(a) < Mathf.Abs(b) ? a : b;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static float FarestFromZero(in float a, in float b) => Mathf.Abs(a) > Mathf.Abs(b) ? a : b;
+    public static float FarestFromZero(float a, float b) => Mathf.Abs(a) > Mathf.Abs(b) ? a : b;
 
     public static decimal Sqrt(in decimal x)
     {
@@ -1700,7 +1730,7 @@ public static class Useful
     /// Retourne le sous tableau de Array, cad Array[IndexStart]
     /// </summary>
     /// <param name="indexStart">l'index de la première dimension de Array</param>
-    public static T[,,] GetSubArray<T>(this T[,,,] Array, in int indexStart = 0)
+    public static T[,,] GetSubArray<T>(this T[,,,] Array, int indexStart = 0)
     {
         T[,,] a = new T[Array.GetLength(1), Array.GetLength(2), Array.GetLength(3)];
         for (int l = 0; l < a.GetLength(0); l++)
@@ -2270,7 +2300,7 @@ public static class Useful
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static double Integrate(Func<double, double> f, in double a, in double b, in float samplePerUnit = 1f)
+    public static double Integrate(Func<double, double> f, in double a, in double b, float samplePerUnit = 1f)
     {
         if (Math.Abs(a - b) < 1e-10d || samplePerUnit <= 0f)
             return 0d;
@@ -2335,7 +2365,7 @@ public static class Useful
     /// <param name="b">la fin de l'intégrale</param>
     /// <param name="stepPerUnit">le nombre de subdivision par unité d'intégration <=> la précision</param>
     /// <returns>The integral between a and b of f(x)dx</returns>
-    public static decimal Integrate(Func<decimal, decimal> f, in decimal a, in decimal b, in float samplePerUnit = 1f)
+    public static decimal Integrate(Func<decimal, decimal> f, in decimal a, in decimal b, float samplePerUnit = 1f)
     {
         if (Abs(a - b) < 1e-27m || samplePerUnit <= 0f)
             return 0m;
@@ -2622,9 +2652,9 @@ public static class Useful
 
     public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir) => GizmoDrawVector(origin, dir, 1f, 0.39269908169f, Gizmos.DrawLine); // 0.39269908169f = 22.5° = pi/8 rad
     public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, Action<Vector3, Vector3> drawLineFunction) => GizmoDrawVector(origin, dir, 1f, 0.39269908169f, drawLineFunction);
-    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length) => GizmoDrawVector(origin, dir, length, 0.39269908169f, Gizmos.DrawLine);
-    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length, Action<Vector3, Vector3> drawLineFunction) => GizmoDrawVector(origin, dir, length, 0.39269908169f, drawLineFunction);
-    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, in float length, in float arrowAngle, Action<Vector3, Vector3> drawLineFunction)
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, float length) => GizmoDrawVector(origin, dir, length, 0.39269908169f, Gizmos.DrawLine);
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, float length, Action<Vector3, Vector3> drawLineFunction) => GizmoDrawVector(origin, dir, length, 0.39269908169f, drawLineFunction);
+    public static void GizmoDrawVector(in Vector2 origin, in Vector2 dir, float length, float arrowAngle, Action<Vector3, Vector3> drawLineFunction)
     {
         Vector2 end = origin + dir * length;
         drawLineFunction(origin, end);
