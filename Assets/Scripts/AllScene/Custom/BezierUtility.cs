@@ -969,46 +969,4 @@ public static class BezierUtility
     }
 
     #endregion
-
-    #region Léonard Spline
-
-    public class LeonardSpline : CustomSpline // c de la merde en barquette
-    {
-        private static Matrix4x4 ComputeMatrix(float p1, float p2, float p3)
-        {
-            float x30 = p1;
-            float x32 = p2;
-            float x33 = p3;
-
-            float x03 = 0f;
-            float x13 = 0f;
-            float x01 = 1f;
-            float x02 = 1f;
-            float x00 = -1f;
-
-            float x20 = -2f * x30 - 1f;
-            float x10 = -3f * x30 - 2f * x20;
-
-            float x12 = -x32;
-            float x31 = x01 + 1f - x12;
-            float x11 = x31 - x10 - x01 - 1f;
-            float x23 = -x12 - 3f;
-            float x21 = -x31 - x11 + x10;
-            float x22 = -x23 - x20 - x21;
-
-            Vector4 c0 = new Vector4(x00, x10, x20, x30);    
-            Vector4 c1 = new Vector4(x01, x11, x21, x31);    
-            Vector4 c2 = new Vector4(x02, x12, x22, x32);    
-            Vector4 c3 = new Vector4(x03, x13, x23, x33);
-
-            return new Matrix4x4(c0, c1, c2, c3);
-        }
-
-        public LeonardSpline(Vector2[] points, float p1, float p2, float p3) : base(ComputeMatrix(p1, p2, p3), points)
-        {
-
-        }
-    }
-
-    #endregion
 }

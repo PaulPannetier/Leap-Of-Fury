@@ -27,12 +27,12 @@ public static class PathFinderToric
 
     public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None, float tension = 1f)
     {
-#if UNITY_EDITOR || ADVANCE_DEBUG
         if (tension > 0f && splineType != SplineType.Cardinal)
         {
-            LogManager.instance.AddLog("tension params is only for Cardinal spline, not for " + splineType.ToString() + " spline", "PathFinderToric::FindBestCurve", tension, splineType);
+            string errorMsg = $"Tension params is only for Cardinal spline, not for {splineType} spline in PathFinderToric::FindBestCurve";
+            LogManager.instance.AddLog(errorMsg, tension, splineType);
+            Debug.LogWarning(errorMsg);
         }
-#endif
 
         tension = Mathf.Clamp01(tension);
         Path path = new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
