@@ -140,7 +140,5 @@ Trad char controller tooltip
 coder des sol ou va va moins vite
 repair boomerang attack
 
-Migrate on Unity6
-
 Huge test of ALL before V0.1
 

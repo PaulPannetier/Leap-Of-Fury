@@ -831,9 +831,9 @@ public class Polynome
 {
     public static Polynome Empty => new Polynome(new float[1]);
 
-    public static Polynome Unit(int i)
+    public static Polynome Unit(int degres)
     {
-        float[] coeff = new float[i + 1];
+        float[] coeff = new float[degres + 1];
         coeff[coeff.Length - 1] = 1f;
         return new Polynome(coeff);
     }
@@ -1075,7 +1075,7 @@ public class Polynome
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(coefficient);
+        return coefficient.GetHashCode();
     }
 
     public override string ToString()
@@ -1133,7 +1133,7 @@ public class Polynome
 
     public static Polynome operator +(Polynome p1, float t)
     {
-        float[] coeff = p1.coefficient;
+        float[] coeff = (float[])p1.coefficient.Clone();
         coeff[0] += t;
         return new Polynome(coeff);
     }
@@ -1187,7 +1187,6 @@ public class Polynome
     }
 
     public static Polynome operator *(float t, Polynome p1) => p1 * t;
-
 
     public static (Polynome Q, Polynome R) operator /(Polynome p1, Polynome p2) => p1.EuclidianDivision(p1, p2);
 }

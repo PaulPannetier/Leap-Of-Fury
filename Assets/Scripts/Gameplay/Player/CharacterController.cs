@@ -503,8 +503,8 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        //transform.position += (Vector3)shift;
-        rb.MovePosition((Vector2)transform.position + shift);
+        transform.position += (Vector3)shift;
+        //rb.MovePosition((Vector2)transform.position + shift);
 
         teleportationShift = Vector2.zero;
 

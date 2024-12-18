@@ -18877,6 +18877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e240486d8fd34e4b91c10d995dc5084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  test: 0
 --- !u!4 &4848749280268906963
 Transform:
   m_ObjectHideFlags: 0
@@ -19275,7 +19276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawGizmos: 0
+  drawGizmos: 1
   enableBehavior: 1
   bufferDuration: 0.1
   dashBumpSpeed: 10
