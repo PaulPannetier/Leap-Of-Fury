@@ -54,6 +54,7 @@ MonoBehaviour:
       - rid: 1958786156240568432
       - rid: 1958786156240568433
       - rid: 1958786112794918932
+      - rid: 5845182172401238016
     m_RuntimeSettings:
       m_List: []
   m_AssetVersion: 8
@@ -247,3 +248,7 @@ MonoBehaviour:
       data:
         m_Version: 1
         m_ProbeVolumeDisableStreamingAssets: 0
+    - rid: 5845182172401238016
+      type: {class: UniversalRenderPipelineEditorAssets, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.Runtime}
+      data:
+        m_DefaultSettingsVolumeProfile: {fileID: 11400000, guid: eda47df5b85f4f249abf7abd73db2cb2, type: 2}

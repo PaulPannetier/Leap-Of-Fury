@@ -104,7 +104,7 @@ public static class BezierUtility
 
     public abstract class Spline
     {
-        public static int nbPointsForLUTPerCurve = 100;
+        public static int nbPointsForLUTPerCurve = 128;
 
         protected LUT lut;
 
@@ -112,6 +112,7 @@ public static class BezierUtility
 
         public abstract Vector2 Evaluate(float t);
         public abstract Vector2 Velocity(float t);
+        public abstract Vector2 Acceleration(float t);
         public Vector2 Normal(float t)
         {
             Vector2 v = Velocity(t);
@@ -120,6 +121,16 @@ public static class BezierUtility
                 return -n;
             return n;
         }
+
+        public float Curvature(float t)
+        {
+            Vector2 PPrime = Velocity(t);
+            Vector2 PSecond = Acceleration(t);
+            float PPrimeMag = PPrime.magnitude;
+            return (PPrime.x * PSecond.y - (PSecond.x * PPrime.y)) / (PPrimeMag * PPrimeMag * PPrimeMag);
+        }
+
+        public float CurvatureRadius(float t) => Mathf.Abs(1f / Curvature(t));
 
         public virtual Vector2[] EvaluateFullCurve(int nbPoints)
         {
@@ -281,20 +292,20 @@ public static class BezierUtility
         {
             t = Mathf.Clamp01(t);
             cache0 = t * t * t;
-            return start * (-cache0 + 3f * t * t - 3f * t + 1f) + handle1 * (3f * cache0 - 6f * t * t + 3f * t) + handle2 * (-3f * cache0 + 3f * t * t) + end * cache0;
+            return start * (-cache0 + (3f * t * t) - (3f * t) + 1f) + handle1 * ((3f * cache0) - (6f * t * t) + (3f * t)) + handle2 * ((-3f * cache0) + (3f * t * t)) + (end * cache0);
         }
 
         public override Vector2[] EvaluateFullCurve(float[] t)
         {
             Vector2[] res = new Vector2[t.Length];
 
-            Vector2 P1 = -3f * start + 3f * handle1;
-            Vector2 P2 = 3f * start - 6f * handle1 + 3f * handle2;
+            Vector2 P1 = -3f * start + (3f * handle1);
+            Vector2 P2 = 3f * start - (6f * handle1) + (3f * handle2);
             Vector2 P3 = -start + 3f * handle1 - 3f * handle2 + end;
 
             for (int i = 0; i < res.Length; i++)
             {
-                res[i] = start + t[i] * P1 + t[i] * t[i] * P2 + t[i] * t[i] * t[i] * P3;
+                res[i] = start + (t[i] * P1) + (t[i] * t[i] * P2) + (t[i] * t[i] * t[i] * P3);
             }
 
             return res;
@@ -304,7 +315,12 @@ public static class BezierUtility
         {
             t = Mathf.Clamp01(t);
             cache0 = t * t;
-            return start * (-3f + 6f * t - 3f * cache0) + handle1 * (9f * cache0 - 12f * t + 3f) + handle2 * (6f * t - 9f * cache0) + 3f * cache0 * end;
+            return start * (-3f + 6f * t - 3f * cache0) + handle1 * (9f * cache0 - 12f * t + 3f) + handle2 * (6f * t - 9f * cache0) + (3f * cache0 * end);
+        }
+
+        public override Vector2 Acceleration(float t)
+        {
+            return start * (-6f * t + 6f) + handle1 * (18f * t - 12f) + handle2 * (-18f * t + 6f) + (end * 6f * t);
         }
 
         public override Hitbox Hitbox()
@@ -444,6 +460,19 @@ public static class BezierUtility
             cache0 = newT * newT;
             return points[i] * (-3f * cache0 + 6f * newT - 3f) + h1 * (9f * cache0 - 12f * newT + 3f) +
                 h2 * (-9f * cache0 + 6f * newT) + points[i + 1 ] * (3f * cache0);
+        }
+
+        public override Vector2 Acceleration(float t)
+        {
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 1);
+            int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
+            float newT = (t - (i * interLength)) / interLength;
+            (Vector2 h1, Vector2 h2) = GetHandles(i);
+
+            cache0 = newT * newT;
+            return points[i] * (-6f * newT + 6f) + h1 * (18f * newT - 12f) +
+                h2 * (-18f * newT + 6f) + points[i + 1] * 6f * newT;
         }
     }
 
@@ -649,6 +678,17 @@ public static class BezierUtility
             return velocities[i] + 2f * newT * (3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1]) + 
                 3f * newT * newT * (2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1]);
         }
+
+        public override Vector2 Acceleration(float t)
+        {
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 1);
+            int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
+            float newT = (t - (i * interLength)) / interLength;
+
+            return 2f * (3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1]) +
+                6f * newT * (2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1]);
+        }
     }
 
     #endregion
@@ -759,8 +799,15 @@ public static class BezierUtility
         {
             Vector2 C0 = M[1, 0] * P0 + M[1, 1] * P1 + M[1, 2] * P2 + M[1, 3] * P3;
             Vector2 C1 = 2f * (M[2, 0] * P0 + M[2, 1] * P1 + M[2, 2] * P2 + M[2, 3] * P3);
-            Vector2 C2 = 3f *(M[3, 0] * P0 + M[3, 1] * P1 + M[3, 2] * P2 + M[3, 3] * P3);
+            Vector2 C2 = 3f * (M[3, 0] * P0 + M[3, 1] * P1 + M[3, 2] * P2 + M[3, 3] * P3);
             return (C0, C1, C2);
+        }
+
+        protected (Vector2 C0, Vector2 C1) PrecomputeSecondDerivativePolynomialValues(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
+        {
+            Vector2 C0 = 2f * (M[2, 0] * P0 + M[2, 1] * P1 + M[2, 2] * P2 + M[2, 3] * P3);
+            Vector2 C1 = 6f * (M[3, 0] * P0 + M[3, 1] * P1 + M[3, 2] * P2 + M[3, 3] * P3);
+            return (C0, C1);
         }
 
         public override Vector2 Evaluate(float t)
@@ -826,6 +873,17 @@ public static class BezierUtility
         }
 
         public override Vector2 Velocity(float t)
+        {
+            t = Mathf.Clamp01(t);
+            float interLength = 1f / (points.Length - 3);
+            int i = t < 1f ? (t / interLength).Floor() : points.Length - 4;
+            t = (t - (i * interLength)) / interLength;
+
+            (Vector2 C0, Vector2 C1, Vector2 C2) = PrecomputeDerivativePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
+            return C0 + t * C1 + t * t * C2;
+        }
+
+        public override Vector2 Acceleration(float t)
         {
             t = Mathf.Clamp01(t);
             float interLength = 1f / (points.Length - 3);
@@ -965,7 +1023,6 @@ public static class BezierUtility
         {
 
         }
-
     }
 
     #endregion
