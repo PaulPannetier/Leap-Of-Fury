@@ -311,6 +311,29 @@ public static class BezierUtility
             return res;
         }
 
+        public override Vector2[] EvaluateFullCurve(int nbPoints)
+        {
+            if(nbPoints <= 0)
+                return Array.Empty<Vector2>();
+
+            float time = 0f;
+            float step = 1f / (nbPoints - 1);
+            Vector2[] res = new Vector2[nbPoints];
+            Vector2 P1 = -3f * start + (3f * handle1);
+            Vector2 P2 = 3f * start - (6f * handle1) + (3f * handle2);
+            Vector2 P3 = -start + 3f * handle1 - 3f * handle2 + end;
+
+            res[0] = start;
+            for (int i = 1; i < nbPoints; i++)
+            {
+                time += step;
+                cache0 = time * time;
+                res[i] = start + (time * P1) + (cache0 * P2) + (cache0 * time * P3);
+            }
+
+            return res;
+        }
+
         public override Vector2 Velocity(float t)
         {
             t = Mathf.Clamp01(t);
@@ -371,55 +394,97 @@ public static class BezierUtility
         public override Vector2 Evaluate(float t)
         {
             t = Mathf.Clamp01(t);
-            float interLength = 1f / (points.Length - 1);
-            int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
-            float newT = (t - (i * interLength)) / interLength;
+            float pM1 = (float)(points.Length - 1);
+            int i = t < 1f ? (t * pM1).Floor() : points.Length - 2;
+            float newT = t * pM1 - i;
             (Vector2 h1, Vector2 h2) = GetHandles(i);
 
             cache0 = newT * newT;
             return points[i] + newT * 3f * (h1 - points[i]) + cache0 * (3f * points[i] - 6f * h1 + 3f * h2) + cache0 * newT * (3f * h1 - points[i] - 3f * h2 + points[i + 1]);
         }
 
+        public override Vector2[] EvaluateFullCurve(int nbPoints)
+        {
+            if(nbPoints <= 0)
+                return Array.Empty<Vector2>();
+
+            float step = 1f / (nbPoints - 1);
+            float pM1 = (float)(points.Length - 1);
+            float maxT = 1f / pM1;
+            Vector2[] res = new Vector2[nbPoints];
+
+            float currentTime = 0f, newT = 0f;
+            int index = 0;
+            (Vector2 h1, Vector2 h2) = GetHandles(index);
+            Vector2 P0, P1, P2, P3;
+            P0 = points[index];
+            P1 = 3f * (h1 - points[index]);
+            P2 = 3f * points[index] - 6f * h1 + 3f * h2;
+            P3 = 3f * h1 - points[index] - 3f * h2 + points[index + 1];
+
+            cache0 = newT * newT;
+            res[0] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
+            for (int i = 1; i < nbPoints; i++)
+            {
+                currentTime += step;
+                if (currentTime > maxT)
+                {
+                    index++;
+                    maxT = (index + 1) / pM1;
+                    (h1, h2) = GetHandles(index);
+                    P0 = points[index];
+                    P1 = 3f * (h1 - points[index]);
+                    P2 = 3f * points[index] - 6f * h1 + 3f * h2;
+                    P3 = 3f * h1 - points[index] - 3f * h2 + points[index + 1];
+                }
+                newT = currentTime * pM1 - index;
+                cache0 = newT * newT;
+                res[i] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
+            }
+
+            return res;
+        }
+
         public override Vector2[] EvaluateFullCurve(float[] t)
         {
+            if (t.Length <= 0)
+                return Array.Empty<Vector2>();
+
             Vector2[] res = new Vector2[t.Length];
 
-            int nbPointByCurve = ((float)(t.Length - 1) / (points.Length - 1)).Round();
-            int indexRes = 0;
-            Vector2 P0, P1, P2, P3, h1, h2;
-            for (int i = 0; i < points.Length - 2; i++)
+            float currentTime = Mathf.Clamp01(t[0]);
+            float pM1 = (float)(points.Length - 1);
+            int index = currentTime < 1f ? (currentTime * pM1).Floor() : points.Length - 2;
+            int newIndex;
+            float newT = currentTime * pM1 - index;
+            (Vector2 h1, Vector2 h2) = GetHandles(index);
+            Vector2 P0, P1, P2, P3;
+            P0 = points[index];
+            P1 = 3f * (h1 - points[index]);
+            P2 = 3f * points[index] - 6f * h1 + 3f * h2;
+            P3 = 3f * h1 - points[index] - 3f * h2 + points[index + 1];
+
+            cache0 = newT * newT;
+            res[0] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
+
+            for (int i = 1; i < t.Length; i++)
             {
-                (h1, h2) = GetHandles(i);
-
-                P0 = points[i];
-                P1 = 3f * (h1 - P0);
-                P2 = 3f * P0 - 6f * h1 + 3f * h2;
-                P3 = 3f * (h1 - h2) - P0 + points[i + 1];
-
-                for (int j = 0; j < nbPointByCurve; j++)
+                currentTime = Mathf.Clamp01(t[i]);
+                newIndex = currentTime < 1f ? (currentTime * pM1).Floor() : points.Length - 2;
+                if(newIndex != index)
                 {
-                    cache0 = t[indexRes] * t[indexRes];
-                    res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
-                    indexRes++;
+                    index = newIndex;
+                    (h1, h2) = GetHandles(index);
+                    P0 = points[index];
+                    P1 = 3f * (h1 - points[index]);
+                    P2 = 3f * points[index] - 6f * h1 + 3f * h2;
+                    P3 = 3f * h1 - points[index] - 3f * h2 + points[index + 1];
                 }
+                newT = currentTime * pM1 - index;
+                cache0 = newT * newT;
+                res[i] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
             }
 
-            //last Curve
-            int max = t.Length - indexRes - 1;
-
-            (h1, h2) = GetHandles(points.Length - 2);
-            P0 = points[points.Length - 2];
-            P1 = 3f * (h1 - P0);
-            P2 = 3f * P0 - 6f * h1 + 3f * h2;
-            P3 = 3f * (h1 - h2) - P0 + points[points.Length - 1];
-            for (int i = 0; i < max; i++)
-            {
-                cache0 = t[indexRes] * t[indexRes];
-                res[indexRes] = P0 + t[indexRes] * P1 + cache0 * P2 + cache0 * t[indexRes] * P3;
-                indexRes++;
-            }
-
-            res[res.Length - 1] = points[points.Length - 1];
             return res;
         }
 
@@ -530,114 +595,78 @@ public static class BezierUtility
 
         public override Vector2[] EvaluateFullCurve(int nbPoints)
         {
+            if (nbPoints <= 0)
+                return Array.Empty<Vector2>();
+
+            float step = 1f / (nbPoints - 1);
+            float pM1 = (float)(points.Length - 1);
+            float maxT = 1f / pM1;
             Vector2[] res = new Vector2[nbPoints];
 
-            int nbPointByCurve = ((float)(nbPoints - 1) / (points.Length - 1)).Round();
-            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
-            int indexRes = 0;
-            float T;
+            float currentTime = 0f, newT = 0f;
+            int index = 0;
             Vector2 P0, P1, P2, P3;
-            for (int i = 0; i < points.Length - 2; i++)
+            P0 = points[0];
+            P1 = velocities[0];
+            P2 = 3f * (points[1] - points[0]) - 2f * velocities[0] - velocities[1];
+            P3 = 2f * (points[0] - points[1]) + velocities[0] + velocities[1];
+
+            cache0 = newT * newT;
+            res[0] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
+            for (int i = 1; i < nbPoints; i++)
             {
-                P0 = points[i];
-                P1 = velocities[i];
-                P2 = 3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1];
-                P3 = 2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1];
-                for (int j = 0; j < nbPointByCurve; j++)
+                currentTime += step;
+                if (currentTime > maxT)
                 {
-                    T = j * oneOnbPointByCurveM1;
-                    cache0 = T * T;
-                    res[indexRes] = P0 + T * P1 + cache0 * P2 + cache0 * T * P3;
-                    indexRes++;
+                    index++;
+                    maxT = (index + 1) / pM1;
+                    P0 = points[index];
+                    P1 = velocities[index];
+                    P2 = 3f * (points[index + 1] - points[index]) - 2f * velocities[index] - velocities[index + 1];
+                    P3 = 2f * (points[index] - points[index + 1]) + velocities[index] + velocities[index + 1];
                 }
+                newT = currentTime * pM1 - index;
+                cache0 = newT * newT;
+                res[i] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
             }
 
-            //last Curve
-            int max = res.Length - indexRes - 1;
-            float oneOmaxM1 = 1f / (max - 1);
-            P0 = points[points.Length - 2];
-            P1 = velocities[velocities.Length - 2];
-            P2 = 3f * (points[points.Length - 1] - P0) - 2f * P1 - velocities[velocities.Length - 1];
-            P3 = 2f * (P0 - points[points.Length - 1]) + P1 + velocities[velocities.Length - 1];
-
-            for (int i = 0; i < max; i++)
-            {
-                T = i * oneOmaxM1;
-                cache0 = T * T;
-                res[indexRes] = P0 + T * P1 + cache0 * P2 + cache0 * T * P3;
-                indexRes++;
-            }
-
-            res[res.Length - 1] = points[points.Length - 1];
             return res;
         }
 
         public override Vector2[] EvaluateFullCurve(float[] t)
         {
-            int GetCurveIndex(float[] joints, float t)
-            {
-                //return i st joints[i - 1] < t <= joints[i]
-                int FindRecur(float t, int start, int end, in float[] arr)
-                {
-                    if (end - start <= 1)
-                        return end;
-
-                    int mid = (start + end) / 2;
-                    if (t <= arr[mid])
-                    {
-                        return FindRecur(t, start, mid, arr);
-                    }
-                    return FindRecur(t, mid, end, arr);
-                }
-
-                return FindRecur(t, 0, joints.Length - 1, joints) - 1;
-            }
+            if (t.Length <= 0)
+                return Array.Empty<Vector2>();
 
             Vector2[] res = new Vector2[t.Length];
-
-            List<float>[] times = new List<float>[points.Length - 1];
-            for (int i = 0; i < times.Length; i++)
-            {
-                times[i] = new List<float>();
-            }
-
-            float[] joints = new float[points.Length];
-            float step = 1f / (joints.Length - 1);
-            for (int i = 1; i < joints.Length - 1; i++)
-            {
-                joints[i] = i * step;
-            }
-            joints[0] = float.MinValue;
-            joints[joints.Length - 1] = 1f;
-
-            int index;
-            float clampT;
-            for (int i = 0; i < t.Length; i++)
-            {
-                clampT = Mathf.Clamp01(t[i]);
-                index = GetCurveIndex(joints, clampT);
-                times[index].Add(clampT);
-            }
-
-            index = 0;
+            float currentTime = Mathf.Clamp01(t[0]);
+            float pM1 = (float)(points.Length - 1);
+            int index = currentTime < 1f ? (currentTime * pM1).Floor() : points.Length - 2;
+            int newIndex;
+            float newT = currentTime * pM1 - index;
             Vector2 P0, P1, P2, P3;
-            float timeOffsetPerCurve = 1f / (points.Length - 1);
-            float oneOtimeOffsetPerCurve = 1f / timeOffsetPerCurve;
-            float offset, curveTime; ;
-            for (int i = 0; i < times.Length; i++)
+            P0 = points[index];
+            P1 = velocities[index];
+            P2 = 3f * (points[index + 1] - points[index]) - 2f * velocities[index] - velocities[index + 1];
+            P3 = 2f * (points[index] - points[index + 1]) + velocities[index] + velocities[index + 1];
+            cache0 = newT * newT;
+            res[0] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
+
+            for (int i = 1; i < t.Length; i++)
             {
-                P0 = points[i];
-                P1 = velocities[i];
-                P2 = 3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1];
-                P3 = 2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1];
-                offset = -i * timeOffsetPerCurve;
-                for(int j = 0; j < times[i].Count; j++)
+                currentTime = Mathf.Clamp01(t[i]);
+                newIndex = currentTime < 1f ? (currentTime * pM1).Floor() : points.Length - 2;
+                if (newIndex != index)
                 {
-                    curveTime = (times[i][j] + offset) * oneOtimeOffsetPerCurve;
-                    cache0 = curveTime * curveTime;
-                    res[index] = P0 + curveTime * P1 + cache0 * P2 + cache0 * curveTime * P3;
-                    index++;
+                    index = newIndex;
+                    P0 = points[index];
+                    P1 = velocities[index];
+                    P2 = 3f * (points[index + 1] - points[index]) - 2f * velocities[index] - velocities[index + 1];
+                    P3 = 2f * (points[index] - points[index + 1]) + velocities[index] + velocities[index + 1];
                 }
+                newT = currentTime * pM1 - index;
+                cache0 = newT * newT;
+                res[i] = P0 + newT * P1 + cache0 * P2 + cache0 * newT * P3;
             }
 
             return res;
@@ -782,7 +811,7 @@ public static class BezierUtility
             }
 
             this.points[0] =  2f * points[0] - points[1];
-            this.points[this.points.Length - 1] = 2f * this.points[this.points.Length - 1] - this.points[this.points.Length - 2];
+            this.points[this.points.Length - 1] = 2f * points[points.Length - 1] - points[points.Length - 2];
             GenerateLUT(nbPointsForLUTPerCurve * (points.Length - 1));
         }
 
@@ -822,45 +851,6 @@ public static class BezierUtility
             return C0 + t * C1 + cache0 * C2 + t * cache0 * C3;
         }
 
-        /*
-        public override Vector2[] EvaluateFullCurve(float[] t)
-        {
-            Vector2[] res = new Vector2[t.Length];
-
-            int nbPointByCurve = ((float)(t.Length - 1) / (points.Length - 3)).Round();
-            float oneOnbPointByCurveM1 = 1f / (nbPointByCurve - 1);//cache
-            int indexRes = 0;
-            float T;
-            Vector2 P0, P1, P2, P3;
-            for (int i = 0; i < points.Length - 3; i++)
-            {
-                (P0, P1, P2, P3) = PrecomputePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
-                for (int j = 0; j < nbPointByCurve; j++)
-                {
-                    T = j * oneOnbPointByCurveM1;
-                    cache0 = T * T;
-                    res[indexRes] = P0 + T * P1 + cache0 * P2 + cache0 * T * P3;
-                    indexRes++;
-                }
-            }
-
-            //last Curve
-            int max = t.Length - indexRes;
-            float oneOmaxM1 = 1f / (max - 1);
-
-            (P0, P1, P2, P3) = PrecomputePolynomialValues(points[points.Length - 4], points[points.Length - 3], points[points.Length - 2], points[points.Length - 1]);
-            for (int i = 0; i < max; i++)
-            {
-                T = i * oneOmaxM1;
-                cache0 = T * T;
-                res[indexRes] = P0 + T * P1 + cache0 * P2 + cache0 * T * P3;
-                indexRes++;
-            }
-
-            return res;
-        }
-        */
-
         public override Vector2[] EvaluateFullCurve(float[] t)
         {
             Vector2[] res = new Vector2[t.Length];
@@ -890,8 +880,8 @@ public static class BezierUtility
             int i = t < 1f ? (t / interLength).Floor() : points.Length - 4;
             t = (t - (i * interLength)) / interLength;
 
-            (Vector2 C0, Vector2 C1, Vector2 C2) = PrecomputeDerivativePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
-            return C0 + t * C1 + t * t * C2;
+            (Vector2 C0, Vector2 C1) = PrecomputeSecondDerivativePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
+            return C0 + t * C1;
         }
 
         public override Hitbox Hitbox()

@@ -1468,11 +1468,17 @@ public static class Useful
         float npow = n * Mathf.Pow(10f, nbDecimals);
         return npow - (int)npow >= 0.5f ? (((int)(npow + 1)) / Mathf.Pow(10f, nbDecimals)) : (((int)npow) / Mathf.Pow(10f, nbDecimals));
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Round(this double n) => (int)Math.Round(n);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Round(this double n, int nbDecimals) => (int)Math.Round(n, nbDecimals);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Floor(this float n) => Mathf.FloorToInt(n);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Ceil(this float n) => Mathf.CeilToInt(n);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Floor(this double n) => (int)Math.Floor(n);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Ceil(this double n) => (int)Math.Ceiling(n);
 
     public static bool Approximately(this float a, float b)

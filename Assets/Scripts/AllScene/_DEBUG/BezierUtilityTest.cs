@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 
 using Collision2D;
+using System.Linq;
 using UnityEngine;
 using static BezierUtility;
 
@@ -27,31 +28,44 @@ public class BezierUtilityTest : MonoBehaviour
     [SerializeField] private Vector2 handle2;
     [SerializeField] private Vector2 end;
     [SerializeField] private Color colorBC = Color.green;
-    [SerializeField, ShowOnly] float lengthCBC;
+    [SerializeField, ShowOnly] float lengthCB;
 
     [Header("Cubic Bezier Spline")]
-    [SerializeField] private Vector2[] starts;
-    [SerializeField] private Vector2[] handles1;
-    [SerializeField] private Vector2[] handles2;
-    [SerializeField] private Vector2[] ends;
+    [SerializeField] private bool enableBS;
+    [SerializeField] private Vector2 offsetBS;
+    [SerializeField] private Vector2[] bsPoints;
+    [SerializeField] private Vector2[] bsHandles;
     [SerializeField] private Color colorBS = Color.green;
+    [SerializeField, ShowOnly] float lengthBS;
 
     [Header("Hermite Spline")]
+    [SerializeField] private bool enableH;
+    [SerializeField] private Vector2 offsetH;
     [SerializeField] private Vector2[] hPoints;
     [SerializeField] private Color colorH = Color.blue;
+    [SerializeField, ShowOnly] float lengthH;
 
     [Header("CatmulRom Spline")]
+    [SerializeField] private bool enableCAT;
+    [SerializeField] private Vector2 offsetCAT;
     [SerializeField] private Vector2[] catPoints;
     [SerializeField] private Color colorCAT = Color.red;
+    [SerializeField, ShowOnly] float lengthCAT;
 
     [Header("Cardinal Spline")]
+    [SerializeField] private bool enableCAR;
+    [SerializeField] private Vector2 offsetCAR;
     [SerializeField] private Vector2[] carPoints;
-    [SerializeField] private float tension;
+    [SerializeField, Range(0f, 1f)] private float tension;
     [SerializeField] private Color colorCAR = Color.magenta;
+    [SerializeField, ShowOnly] float lengthCAR;
 
     [Header("B Spline")]
+    [SerializeField] private bool enableB;
+    [SerializeField] private Vector2 offsetB;
     [SerializeField] private Vector2[] bPoints;
     [SerializeField] private Color colorB = Color.cyan;
+    [SerializeField, ShowOnly] float lengthB;
 
     [SerializeField, Range(0f, 1f)] float t;
     [SerializeField, Range(0f, 1f)] float distance;
@@ -74,7 +88,7 @@ public class BezierUtilityTest : MonoBehaviour
         Vector2[] points = cubicBezierCurve.EvaluateFullCurve(times);
         Vector2 vel = cubicBezierCurve.Velocity(t);
         Vector2 acc = cubicBezierCurve.Acceleration(t);
-        lengthCBC = cubicBezierCurve.length;
+        lengthCB = cubicBezierCurve.length;
         Vector2 distancePoint = cubicBezierCurve.EvaluateDistance(distance);
         float curvatureRadius = cubicBezierCurve.CurvatureRadius(t);
         Hitbox hitbox = cubicBezierCurve.Hitbox();
@@ -119,11 +133,351 @@ public class BezierUtilityTest : MonoBehaviour
         }
     }
 
+    private void HandleCubicBezierSpline()
+    {
+        if(bsPoints.Length < 2 || (2 * bsPoints.Length - 2 != bsHandles.Length))
+            return;
+
+        Vector2[] controlsPoints = (Vector2[])bsPoints.Clone();
+        Vector2[] handles = (Vector2[])bsHandles.Clone();
+        for (int i = 0; i < controlsPoints.Length; i++)
+        {
+            controlsPoints[i] += offsetBS;
+        }
+        for (int i = 0; i < handles.Length; i++)
+        {
+            handles[i] += offsetBS;
+        }
+
+        float[] times = GetTimes();
+        CubicBezierSpline cubicBezierspline = new CubicBezierSpline(controlsPoints, handles);
+        Vector2[] points = cubicBezierspline.EvaluateFullCurve(times);
+        Vector2 vel = cubicBezierspline.Velocity(t);
+        Vector2 acc = cubicBezierspline.Acceleration(t);
+        lengthBS = cubicBezierspline.length;
+        Vector2 distancePoint = cubicBezierspline.EvaluateDistance(distance);
+        float curvatureRadius = cubicBezierspline.CurvatureRadius(t);
+        Hitbox hitbox = cubicBezierspline.Hitbox();
+        Hitbox[] hitboxes = cubicBezierspline.Hitboxes();
+
+        Circle.GizmosDraw(distancePoint, distancePointRadius, distancePointColor, true);
+
+        Gizmos.color = colorBS;
+        Vector2 point = points[0];
+        for (int i = 1; i < points.Length; i++)
+        {
+            Gizmos.DrawLine(point, points[i]);
+            point = points[i];
+        }
+
+        Gizmos.DrawLine(controlsPoints[0], handles[0]);
+        Gizmos.DrawLine(controlsPoints.Last(), handles.Last());
+
+        int indexHandle = 1;
+        for (int i = 1; i < controlsPoints.Length - 1; i++)
+        {
+            Gizmos.DrawLine(controlsPoints[i], handles[indexHandle]);
+            Gizmos.DrawLine(controlsPoints[i], handles[indexHandle + 1]);
+            indexHandle += 2;
+        }
+
+        foreach (Vector2 controlPoint in controlsPoints)
+        {
+            Circle.GizmosDraw(controlPoint, controlPointRadius, colorBS, true);
+        }
+        foreach (Vector2 handle in handles)
+        {
+            Circle.GizmosDraw(handle, controlPointRadius, colorBS, true);
+        }
+
+        Gizmos.color = velocityColor;
+        Vector2 currentPoint = cubicBezierspline.Evaluate(t);
+        Useful.GizmoDrawVector(currentPoint, vel.normalized, 1f);
+        Gizmos.color = accelerationColor;
+        Useful.GizmoDrawVector(currentPoint, acc.normalized, 1f);
+
+        if (showCurvature)
+        {
+            Circle.GizmosDraw(currentPoint + vel.NormalVector() * curvatureRadius, curvatureRadius, curvatureColor);
+        }
+        if (showHitbox)
+        {
+            Hitbox.GizmosDraw(hitbox, colorBS);
+        }
+        if (showHitboxes)
+        {
+            foreach (Hitbox h in hitboxes)
+            {
+                Hitbox.GizmosDraw(h, colorBS);
+            }
+        }
+    }
+
+    private void HandleHermiteSpline()
+    {
+        if (hPoints.Length < 2)
+            return;
+
+        Vector2[] controlsPoints = (Vector2[])hPoints.Clone();
+        for (int i = 0; i < controlsPoints.Length; i++)
+        {
+            controlsPoints[i] += offsetH;
+        }
+
+        float[] times = GetTimes();
+        HermiteSpline hermiteSpline = new HermiteSpline(controlsPoints);
+        Vector2[] points = hermiteSpline.EvaluateFullCurve(times);
+        Vector2 vel = hermiteSpline.Velocity(t);
+        Vector2 acc = hermiteSpline.Acceleration(t);
+        lengthH = hermiteSpline.length;
+        Vector2 distancePoint = hermiteSpline.EvaluateDistance(distance);
+        float curvatureRadius = hermiteSpline.CurvatureRadius(t);
+        Hitbox hitbox = hermiteSpline.Hitbox();
+        Hitbox[] hitboxes = hermiteSpline.Hitboxes();
+
+        Circle.GizmosDraw(distancePoint, distancePointRadius, distancePointColor, true);
+
+        Gizmos.color = colorH;
+        Vector2 point = points[0];
+        for (int i = 1; i < points.Length; i++)
+        {
+            Gizmos.DrawLine(point, points[i]);
+            point = points[i];
+        }
+
+        foreach (Vector2 controlPoint in controlsPoints)
+        {
+            Circle.GizmosDraw(controlPoint, controlPointRadius, colorH, true);
+        }
+
+        Gizmos.color = velocityColor;
+        Vector2 currentPoint = hermiteSpline.Evaluate(t);
+        Useful.GizmoDrawVector(currentPoint, vel.normalized, 1f);
+        Gizmos.color = accelerationColor;
+        Useful.GizmoDrawVector(currentPoint, acc.normalized, 1f);
+
+        if (showCurvature)
+        {
+            Circle.GizmosDraw(currentPoint + vel.NormalVector() * curvatureRadius, curvatureRadius, curvatureColor);
+        }
+        if (showHitbox)
+        {
+            Hitbox.GizmosDraw(hitbox, colorH);
+        }
+        if (showHitboxes)
+        {
+            foreach (Hitbox h in hitboxes)
+            {
+                Hitbox.GizmosDraw(h, colorH);
+            }
+        }
+    }
+
+    private void HandleCatmulRomSpline()
+    {
+        if (catPoints.Length < 2)
+            return;
+
+        Vector2[] controlsPoints = (Vector2[])catPoints.Clone();
+        for (int i = 0; i < controlsPoints.Length; i++)
+        {
+            controlsPoints[i] += offsetCAT;
+        }
+
+        float[] times = GetTimes();
+        CatmulRomSpline catmulRomSpline = new CatmulRomSpline(controlsPoints);
+        Vector2[] points = catmulRomSpline.EvaluateFullCurve(nbPointPerCurve);
+        Vector2 currentPoint = catmulRomSpline.Evaluate(t);
+        Vector2 vel = catmulRomSpline.Velocity(t);
+        Vector2 acc = catmulRomSpline.Acceleration(t);
+        lengthCAT = catmulRomSpline.length;
+        Vector2 distancePoint = catmulRomSpline.EvaluateDistance(distance);
+        float curvatureRadius = catmulRomSpline.CurvatureRadius(t);
+        Hitbox hitbox = catmulRomSpline.Hitbox();
+        Hitbox[] hitboxes = catmulRomSpline.Hitboxes();
+
+        Circle.GizmosDraw(distancePoint, distancePointRadius, distancePointColor, true);
+
+        Gizmos.color = colorCAT;
+        Vector2 point = points[0];
+        for (int i = 1; i < points.Length; i++)
+        {
+            Gizmos.DrawLine(point, points[i]);
+            point = points[i];
+        }
+
+        foreach (Vector2 controlPoint in controlsPoints)
+        {
+            Circle.GizmosDraw(controlPoint, controlPointRadius, colorCAT, true);
+        }
+
+        Gizmos.color = velocityColor;
+        Useful.GizmoDrawVector(currentPoint, vel.normalized, 1f);
+        Gizmos.color = accelerationColor;
+        Useful.GizmoDrawVector(currentPoint, acc.normalized, 1f);
+
+        if (showCurvature)
+        {
+            Circle.GizmosDraw(currentPoint + vel.NormalVector() * curvatureRadius, curvatureRadius, curvatureColor);
+        }
+        if (showHitbox)
+        {
+            Hitbox.GizmosDraw(hitbox, colorCAT);
+        }
+        if (showHitboxes)
+        {
+            foreach (Hitbox h in hitboxes)
+            {
+                Hitbox.GizmosDraw(h, colorCAT);
+            }
+        }
+    }
+
+    private void HandleCardinalSpline()
+    {
+        if (carPoints.Length < 2)
+            return;
+
+        Vector2[] controlsPoints = (Vector2[])carPoints.Clone();
+        for (int i = 0; i < controlsPoints.Length; i++)
+        {
+            controlsPoints[i] += offsetCAR;
+        }
+
+        float[] times = GetTimes();
+        CardinalSpline cardinaleSpline = new CardinalSpline(controlsPoints, tension);
+        Vector2[] points = cardinaleSpline.EvaluateFullCurve(nbPointPerCurve);
+        Vector2 currentPoint = cardinaleSpline.Evaluate(t);
+        Vector2 vel = cardinaleSpline.Velocity(t);
+        Vector2 acc = cardinaleSpline.Acceleration(t);
+        lengthCAR = cardinaleSpline.length;
+        Vector2 distancePoint = cardinaleSpline.EvaluateDistance(distance);
+        float curvatureRadius = cardinaleSpline.CurvatureRadius(t);
+        Hitbox hitbox = cardinaleSpline.Hitbox();
+        Hitbox[] hitboxes = cardinaleSpline.Hitboxes();
+
+        Circle.GizmosDraw(distancePoint, distancePointRadius, distancePointColor, true);
+
+        Gizmos.color = colorCAR;
+        Vector2 point = points[0];
+        for (int i = 1; i < points.Length; i++)
+        {
+            Gizmos.DrawLine(point, points[i]);
+            point = points[i];
+        }
+
+        foreach (Vector2 controlPoint in controlsPoints)
+        {
+            Circle.GizmosDraw(controlPoint, controlPointRadius, colorCAR, true);
+        }
+
+        Gizmos.color = velocityColor;
+        Useful.GizmoDrawVector(currentPoint, vel.normalized, 1f);
+        Gizmos.color = accelerationColor;
+        Useful.GizmoDrawVector(currentPoint, acc.normalized, 1f);
+
+        if (showCurvature)
+        {
+            Circle.GizmosDraw(currentPoint + vel.NormalVector() * curvatureRadius, curvatureRadius, curvatureColor);
+        }
+        if (showHitbox)
+        {
+            Hitbox.GizmosDraw(hitbox, colorCAR);
+        }
+        if (showHitboxes)
+        {
+            foreach (Hitbox h in hitboxes)
+            {
+                Hitbox.GizmosDraw(h, colorCAR);
+            }
+        }
+    }
+
+    private void HandleBSpline()
+    {
+        if (carPoints.Length < 2)
+            return;
+
+        Vector2[] controlsPoints = (Vector2[])bPoints.Clone();
+        for (int i = 0; i < controlsPoints.Length; i++)
+        {
+            controlsPoints[i] += offsetB;
+        }
+
+        float[] times = GetTimes();
+        BSpline bSpline = new BSpline(controlsPoints);
+        Vector2[] points = bSpline.EvaluateFullCurve(nbPointPerCurve);
+        Vector2 currentPoint = bSpline.Evaluate(t);
+        Vector2 vel = bSpline.Velocity(t);
+        Vector2 acc = bSpline.Acceleration(t);
+        lengthB = bSpline.length;
+        Vector2 distancePoint = bSpline.EvaluateDistance(distance);
+        float curvatureRadius = bSpline.CurvatureRadius(t);
+        Hitbox hitbox = bSpline.Hitbox();
+        Hitbox[] hitboxes = bSpline.Hitboxes();
+
+        Circle.GizmosDraw(distancePoint, distancePointRadius, distancePointColor, true);
+
+        Gizmos.color = colorB;
+        Vector2 point = points[0];
+        for (int i = 1; i < points.Length; i++)
+        {
+            Gizmos.DrawLine(point, points[i]);
+            point = points[i];
+        }
+
+        foreach (Vector2 controlPoint in controlsPoints)
+        {
+            Circle.GizmosDraw(controlPoint, controlPointRadius, colorB, true);
+        }
+
+        Gizmos.color = velocityColor;
+        Useful.GizmoDrawVector(currentPoint, vel.normalized, 1f);
+        Gizmos.color = accelerationColor;
+        Useful.GizmoDrawVector(currentPoint, acc.normalized, 1f);
+
+        if (showCurvature)
+        {
+            Circle.GizmosDraw(currentPoint + vel.NormalVector() * curvatureRadius, curvatureRadius, curvatureColor);
+        }
+        if (showHitbox)
+        {
+            Hitbox.GizmosDraw(hitbox, colorB);
+        }
+        if (showHitboxes)
+        {
+            foreach (Hitbox h in hitboxes)
+            {
+                Hitbox.GizmosDraw(h, colorB);
+            }
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         if(enableCB)
         {
             HandleCubicBezierCurve();
+        }
+        if (enableBS)
+        {
+            HandleCubicBezierSpline();
+        }
+        if(enableH)
+        {
+            HandleHermiteSpline();
+        }
+        if (enableCAT)
+        {
+            HandleCatmulRomSpline();
+        }
+        if(enableCAR)
+        {
+            HandleCardinalSpline();
+        }
+        if(enableB)
+        {
+            HandleBSpline();
         }
     }
 

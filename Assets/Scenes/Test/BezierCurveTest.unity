@@ -164,40 +164,75 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nbPointPerCurve: 250
-  velocityColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  velocityColor: {r: 1, g: 0.142856, b: 0.015686274, a: 1}
   accelerationColor: {r: 1, g: 1, b: 1, a: 1}
   distancePointColor: {r: 1, g: 1, b: 1, a: 1}
   distancePointRadius: 0.1
   drawOnlyBeforeT: 0
   controlPointRadius: 0.2
-  curvatureColor: {r: 0.0990566, g: 0.54534525, b: 1, a: 1}
+  curvatureColor: {r: 0.09803921, g: 0.393016, b: 1, a: 1}
   showCurvature: 0
   showHitbox: 0
   showHitboxes: 0
-  enableCB: 1
+  enableCB: 0
   offsetCB: {x: 0, y: 0}
   start: {x: -5.52, y: 3.27}
   handle1: {x: -8.28, y: -3.51}
-  handle2: {x: 4.02, y: 7.09}
-  end: {x: 9.21, y: -1.31}
+  handle2: {x: 6.98, y: 12.97}
+  end: {x: 9.21, y: -4.33}
   colorBC: {r: 0, g: 1, b: 0.024961472, a: 1}
-  lengthCBC: 18.583158
-  starts: []
-  handles1: []
-  handles2: []
-  ends: []
+  lengthCB: 22.184582
+  enableBS: 0
+  offsetBS: {x: 25.4, y: 0}
+  bsPoints:
+  - {x: -14.1, y: 13.52}
+  - {x: 1.23, y: 2.1}
+  - {x: 22, y: 13.52}
+  bsHandles:
+  - {x: -14.72, y: -3.51}
+  - {x: -5.71, y: 12.97}
+  - {x: 8.21, y: -13.02}
+  - {x: 18, y: 12.6}
   colorBS: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  hPoints: []
+  lengthBS: 54.13214
+  enableH: 1
+  offsetH: {x: 20.42, y: 0}
+  hPoints:
+  - {x: -3.83, y: 0.71}
+  - {x: 3.25, y: 2.5}
+  - {x: -2.05, y: 6.23}
+  - {x: -10.09, y: 6.23}
+  - {x: -5.49, y: -5}
+  - {x: 6.78, y: -5}
   colorH: {r: 0, g: 0, b: 1, a: 1}
-  catPoints: []
+  lengthH: 50.500397
+  enableCAT: 1
+  offsetCAT: {x: 0, y: 0}
+  catPoints:
+  - {x: -3.83, y: 0.71}
+  - {x: 3.25, y: 2.5}
+  - {x: -2.05, y: 6.23}
+  - {x: -10.09, y: 6.23}
+  - {x: -5.49, y: -5}
+  - {x: 6.78, y: -5}
   colorCAT: {r: 1, g: 0, b: 0, a: 1}
-  carPoints: []
-  tension: 0
-  colorCAR: {r: 0, g: 0, b: 0, a: 0}
+  lengthCAT: 47.62954
+  enableCAR: 1
+  offsetCAR: {x: 0, y: -14.33}
+  carPoints:
+  - {x: -3.83, y: 0.71}
+  - {x: 3.25, y: 2.5}
+  - {x: -2.05, y: 6.23}
+  - {x: -10.09, y: 6.23}
+  - {x: -5.49, y: -5}
+  - {x: 6.78, y: -5}
+  tension: 0.5
+  colorCAR: {r: 0, g: 0, b: 0, a: 1}
+  lengthCAR: 47.62952
   bPoints: []
   colorB: {r: 0, g: 1, b: 1, a: 1}
-  t: 0.333
-  distance: 0.054
+  t: 0.489
+  distance: 0
 --- !u!114 &3361497719473122784
 MonoBehaviour:
   m_ObjectHideFlags: 0
