@@ -218,7 +218,7 @@ MonoBehaviour:
   colorCAT: {r: 1, g: 0, b: 0, a: 1}
   lengthCAT: 47.62954
   enableCAR: 1
-  offsetCAR: {x: 0, y: -14.33}
+  offsetCAR: {x: 0, y: -17.7}
   carPoints:
   - {x: -3.83, y: 0.71}
   - {x: 3.25, y: 2.5}
@@ -226,12 +226,21 @@ MonoBehaviour:
   - {x: -10.09, y: 6.23}
   - {x: -5.49, y: -5}
   - {x: 6.78, y: -5}
-  tension: 0.5
+  tension: 0.75
   colorCAR: {r: 0, g: 0, b: 0, a: 1}
-  lengthCAR: 47.62952
-  bPoints: []
+  lengthCAR: 48.907562
+  enableB: 1
+  offsetB: {x: 22.9, y: -16.5}
+  bPoints:
+  - {x: -3.83, y: 0.71}
+  - {x: 3.25, y: 2.5}
+  - {x: -2.05, y: 6.23}
+  - {x: -10.09, y: 6.23}
+  - {x: -5.49, y: -5}
+  - {x: 6.78, y: -5}
   colorB: {r: 0, g: 1, b: 1, a: 1}
-  t: 0.489
+  lengthB: 36.834816
+  t: 0
   distance: 0
 --- !u!114 &3361497719473122784
 MonoBehaviour:

@@ -406,7 +406,7 @@ public class BezierUtilityTest : MonoBehaviour
 
         float[] times = GetTimes();
         BSpline bSpline = new BSpline(controlsPoints);
-        Vector2[] points = bSpline.EvaluateFullCurve(nbPointPerCurve);
+        Vector2[] points = bSpline.EvaluateFullCurve(times);
         Vector2 currentPoint = bSpline.Evaluate(t);
         Vector2 vel = bSpline.Velocity(t);
         Vector2 acc = bSpline.Acceleration(t);

@@ -842,23 +842,79 @@ public static class BezierUtility
         public override Vector2 Evaluate(float t)
         {
             t = Mathf.Clamp01(t);
-            float interLength = 1f / (points.Length - 3);
-            int i = t < 1f ? (t / interLength).Floor() : points.Length - 4;
-            t = (t - (i * interLength)) / interLength;
+            float pM3 = points.Length - 3;
+            int i = t < 1f ? (t * pM3).Floor() : points.Length - 4;
+            t = t * pM3 - i;
 
             (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) = PrecomputePolynomialValues(points[i], points[i + 1], points[i + 2], points[i + 3]);
             cache0 = t * t;
             return C0 + t * C1 + cache0 * C2 + t * cache0 * C3;
         }
 
+        public override Vector2[] EvaluateFullCurve(int nbPoints)
+        {
+            if (nbPoints <= 0)
+                return Array.Empty<Vector2>();
+
+            float step = 1f / (nbPoints - 1);
+            float pM3 = points.Length - 3;
+            float maxT = 1f / pM3;
+            Vector2[] res = new Vector2[nbPoints];
+
+            float currentTime = 0f, newT = 0f;
+            int index = 0;
+            (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) = PrecomputePolynomialValues(points[0], points[1], points[2], points[3]);
+
+            cache0 = newT * newT;
+            res[0] = C0 + newT * C1 + cache0 * C2 + newT * cache0 * C3;
+            for (int i = 1; i < nbPoints; i++)
+            {
+                currentTime += step;
+                if (currentTime > maxT)
+                {
+                    index++;
+                    maxT = (index + 1) / pM3;
+                    (C0, C1, C2, C3) = PrecomputePolynomialValues(points[index], points[index + 1], points[index + 2], points[index + 3]);
+                }
+                newT = currentTime * pM3 - index;
+                cache0 = newT * newT;
+                res[i] = C0 + newT * C1 + cache0 * C2 + newT * cache0 * C3;
+            }
+
+            return res;
+        }
+
         public override Vector2[] EvaluateFullCurve(float[] t)
         {
+            if (t.Length <= 0)
+                return Array.Empty<Vector2>();
+
+            float pM3 = points.Length - 3;
             Vector2[] res = new Vector2[t.Length];
-            for (int i = 0; i < res.Length; i++)
+
+            float currentTime = Mathf.Clamp01(t[0]);
+            int index = currentTime < 1f ? (currentTime * pM3).Floor() : points.Length - 4;
+            int newIndex;
+            float newT = currentTime * pM3 - index;
+
+            (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) = PrecomputePolynomialValues(points[index], points[index + 1], points[index + 2], points[index + 3]);
+
+            cache0 = newT * newT;
+            res[0] = C0 + newT * C1 + cache0 * C2 + newT * cache0 * C3;
+            for (int i = 1; i < t.Length; i++)
             {
-                res[i] = Evaluate(t[i]);
+                currentTime = Mathf.Clamp01(t[i]);
+                newIndex = currentTime < 1f ? (currentTime * pM3).Floor() : points.Length - 4;
+                if (newIndex != index)
+                {
+                    index = newIndex;
+                    (C0, C1, C2, C3) = PrecomputePolynomialValues(points[index], points[index + 1], points[index + 2], points[index + 3]);
+                }
+                newT = currentTime * pM3 - index;
+                cache0 = newT * newT;
+                res[i] = C0 + newT * C1 + cache0 * C2 + newT * cache0 * C3;
             }
-      
+
             return res;
         }
 
