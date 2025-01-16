@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public static class BezierUtility
+namespace BezierUtility
 {
     public enum SplineType
     {
@@ -15,96 +15,91 @@ public static class BezierUtility
         BSline
     }
 
-    #region Static
-
-    private static float cache0;
-
-    private static Hitbox ComputeBezierHitbox(in Vector2 start, in Vector2 handle1, in Vector2 handle2, in Vector2 end)
-    {
-        //Search t €[0,1] | P'(t).x == 0 || P'(t).y == 0
-        float[] t = new float[4] { -1f, -1f, -1f, -1f };
-        Vector2 a = -3f * start + 9f * handle1 - 9f * handle2 + 3f * end;
-        Vector2 b = 6f * start - 12f * handle1 + 6f * handle2;
-        Vector2 c = -3f * start + 3f * handle1;
-
-        cache0 = (b.x * b.x) - (4f * a.x * c.x);
-        if (cache0 >= 0f)
-        {
-            if (cache0 <= Mathf.Epsilon)
-            {
-                t[0] = -b.x / (2f * a.x);
-                VerifyTValue(ref t, 0);
-            }
-            else
-            {
-                float sqrDelta = Mathf.Sqrt(cache0);
-                t[0] = (-b.x + sqrDelta) / (2f * a.x);
-                t[1] = (-b.x - sqrDelta) / (2f * a.x);
-                VerifyTValue(ref t, 0);
-                VerifyTValue(ref t, 1);
-            }
-        }
-
-        cache0 = (b.y * b.y) - (4f * a.y * c.y);
-        if (cache0 >= 0f)
-        {
-            if (cache0 <= Mathf.Epsilon)
-            {
-                t[2] = -b.y / (2f * a.y);
-                VerifyTValue(ref t, 2);
-            }
-            else
-            {
-                float sqrDelta = Mathf.Sqrt(cache0);
-                t[2] = (-b.y + sqrDelta) / (2f * a.y);
-                t[3] = (-b.y - sqrDelta) / (2f * a.y);
-                VerifyTValue(ref t, 2);
-                VerifyTValue(ref t, 3);
-            }
-        }
-
-        void VerifyTValue(ref float[] t, int index)
-        {
-            if (t[index] < 0f || t[index] > 1f)
-                t[index] = -1f;
-        }
-
-        List<Vector2> extremaPoints = new List<Vector2>()
-        {
-            start, end
-        };
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (t[i] >= 0f)
-            {
-                cache0 = t[i] * t[i] * t[i];
-                Vector2 evaluatePoint = start * (-cache0 + 3f * t[i] * t[i] - 3f * t[i] + 1f) + handle1 * (3f * cache0 - 6f * t[i] * t[i] + 3f * t[i]) + handle2 * (-3f * cache0 + 3f * t[i] * t[i]) + end * cache0;
-                extremaPoints.Add(evaluatePoint);
-            }
-        }
-
-        //on crée la boite de collision avec les points extremes
-        float xMin = extremaPoints[0].x, xMax = extremaPoints[0].x, yMin = extremaPoints[0].y, yMax = extremaPoints[0].y;
-
-        for (int i = 1; i < extremaPoints.Count; i++)
-        {
-            xMin = Mathf.Min(xMin, extremaPoints[i].x);
-            xMax = Mathf.Max(xMax, extremaPoints[i].x);
-            yMin = Mathf.Min(yMin, extremaPoints[i].y);
-            yMax = Mathf.Max(yMax, extremaPoints[i].y);
-        }
-
-        return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
-    }
-
-    #endregion
-
     #region Spline class
 
     public abstract class Spline
     {
+        internal static Hitbox ComputeBezierHitbox(in Vector2 start, in Vector2 handle1, in Vector2 handle2, in Vector2 end)
+        {
+            //Search t €[0,1] | P'(t).x == 0 || P'(t).y == 0
+            float[] t = new float[4] { -1f, -1f, -1f, -1f };
+            Vector2 a = -3f * start + 9f * handle1 - 9f * handle2 + 3f * end;
+            Vector2 b = 6f * start - 12f * handle1 + 6f * handle2;
+            Vector2 c = -3f * start + 3f * handle1;
+
+            cache0 = (b.x * b.x) - (4f * a.x * c.x);
+            if (cache0 >= 0f)
+            {
+                if (cache0 <= Mathf.Epsilon)
+                {
+                    t[0] = -b.x / (2f * a.x);
+                    VerifyTValue(ref t, 0);
+                }
+                else
+                {
+                    float sqrDelta = Mathf.Sqrt(cache0);
+                    t[0] = (-b.x + sqrDelta) / (2f * a.x);
+                    t[1] = (-b.x - sqrDelta) / (2f * a.x);
+                    VerifyTValue(ref t, 0);
+                    VerifyTValue(ref t, 1);
+                }
+            }
+
+            cache0 = (b.y * b.y) - (4f * a.y * c.y);
+            if (cache0 >= 0f)
+            {
+                if (cache0 <= Mathf.Epsilon)
+                {
+                    t[2] = -b.y / (2f * a.y);
+                    VerifyTValue(ref t, 2);
+                }
+                else
+                {
+                    float sqrDelta = Mathf.Sqrt(cache0);
+                    t[2] = (-b.y + sqrDelta) / (2f * a.y);
+                    t[3] = (-b.y - sqrDelta) / (2f * a.y);
+                    VerifyTValue(ref t, 2);
+                    VerifyTValue(ref t, 3);
+                }
+            }
+
+            void VerifyTValue(ref float[] t, int index)
+            {
+                if (t[index] < 0f || t[index] > 1f)
+                    t[index] = -1f;
+            }
+
+            List<Vector2> extremaPoints = new List<Vector2>()
+            {
+                start, end
+            };
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (t[i] >= 0f)
+                {
+                    cache0 = t[i] * t[i] * t[i];
+                    Vector2 evaluatePoint = start * (-cache0 + 3f * t[i] * t[i] - 3f * t[i] + 1f) + handle1 * (3f * cache0 - 6f * t[i] * t[i] + 3f * t[i]) + handle2 * (-3f * cache0 + 3f * t[i] * t[i]) + end * cache0;
+                    extremaPoints.Add(evaluatePoint);
+                }
+            }
+
+            //on crée la boite de collision avec les points extremes
+            float xMin = extremaPoints[0].x, xMax = extremaPoints[0].x, yMin = extremaPoints[0].y, yMax = extremaPoints[0].y;
+
+            for (int i = 1; i < extremaPoints.Count; i++)
+            {
+                xMin = Mathf.Min(xMin, extremaPoints[i].x);
+                xMax = Mathf.Max(xMax, extremaPoints[i].x);
+                yMin = Mathf.Min(yMin, extremaPoints[i].y);
+                yMax = Mathf.Max(yMax, extremaPoints[i].y);
+            }
+
+            return new Hitbox(new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f), new Vector2(xMax - xMin, yMax - yMin));
+        }
+
         public static int nbPointsForLUTPerCurve = 128;
+        internal static float cache0;
 
         protected LUT lut;
 
@@ -117,7 +112,7 @@ public static class BezierUtility
         {
             Vector2 v = Velocity(t);
             Vector2 n = v.NormalVector();
-            if(Vector2.SignedAngle(n, v) < 0f)
+            if (Vector2.SignedAngle(n, v) < 0f)
                 return -n;
             return n;
         }
@@ -146,13 +141,13 @@ public static class BezierUtility
         }
         public abstract Vector2[] EvaluateFullCurve(float[] t);
         public Vector2[] EvaluateFullCurve(IEnumerable<float> t) => EvaluateFullCurve(t.ToArray());
-        public abstract Hitbox Hitbox(); 
+        public abstract Hitbox Hitbox();
         public abstract Hitbox[] Hitboxes();
         public virtual Vector2[] EvaluateDistance(int nbPoints)
         {
             float[] x = new float[nbPoints];
             float step = 1f / (nbPoints - 1);
-            for(int i = 1; i < nbPoints - 1; i++)
+            for (int i = 1; i < nbPoints - 1; i++)
             {
                 x[i] = x[i - 1] + step;
             }
@@ -204,7 +199,7 @@ public static class BezierUtility
         {
             float[] t = new float[x.Length];
 
-            for(int i = 0; i < t.Length; i++)
+            for (int i = 0; i < t.Length; i++)
             {
                 t[i] = ConvertDistanceToTime(x[i]);
             }
@@ -313,7 +308,7 @@ public static class BezierUtility
 
         public override Vector2[] EvaluateFullCurve(int nbPoints)
         {
-            if(nbPoints <= 0)
+            if (nbPoints <= 0)
                 return Array.Empty<Vector2>();
 
             float time = 0f;
@@ -405,7 +400,7 @@ public static class BezierUtility
 
         public override Vector2[] EvaluateFullCurve(int nbPoints)
         {
-            if(nbPoints <= 0)
+            if (nbPoints <= 0)
                 return Array.Empty<Vector2>();
 
             float step = 1f / (nbPoints - 1);
@@ -471,7 +466,7 @@ public static class BezierUtility
             {
                 currentTime = Mathf.Clamp01(t[i]);
                 newIndex = currentTime < 1f ? (currentTime * pM1).Floor() : points.Length - 2;
-                if(newIndex != index)
+                if (newIndex != index)
                 {
                     index = newIndex;
                     (h1, h2) = GetHandles(index);
@@ -524,7 +519,7 @@ public static class BezierUtility
             (Vector2 h1, Vector2 h2) = GetHandles(i);
             cache0 = newT * newT;
             return points[i] * (-3f * cache0 + 6f * newT - 3f) + h1 * (9f * cache0 - 12f * newT + 3f) +
-                h2 * (-9f * cache0 + 6f * newT) + points[i + 1 ] * (3f * cache0);
+                h2 * (-9f * cache0 + 6f * newT) + points[i + 1] * (3f * cache0);
         }
 
         public override Vector2 Acceleration(float t)
@@ -559,7 +554,7 @@ public static class BezierUtility
 
         public HermiteSpline(Vector2[] points)
         {
-            if(points == null)
+            if (points == null)
             {
                 throw new ArgumentNullException("Points cannot be null");
             }
@@ -704,7 +699,7 @@ public static class BezierUtility
             int i = t < 1f ? (t / interLength).Floor() : points.Length - 2;
             float newT = (t - (i * interLength)) / interLength;
 
-            return velocities[i] + 2f * newT * (3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1]) + 
+            return velocities[i] + 2f * newT * (3f * (points[i + 1] - points[i]) - 2f * velocities[i] - velocities[i + 1]) +
                 3f * newT * newT * (2f * (points[i] - points[i + 1]) + velocities[i] + velocities[i + 1]);
         }
 
@@ -797,7 +792,7 @@ public static class BezierUtility
 
         public CustomSpline(Matrix4x4 caracteristicMatrix, Vector2[] points)
         {
-            if(points == null || points.Length < 4)
+            if (points == null || points.Length < 4)
             {
                 throw new Exception("A CustomSpline must have at least 4 points!");
             }
@@ -810,17 +805,17 @@ public static class BezierUtility
                 this.points[i + 1] = points[i];
             }
 
-            this.points[0] =  2f * points[0] - points[1];
+            this.points[0] = 2f * points[0] - points[1];
             this.points[this.points.Length - 1] = 2f * points[points.Length - 1] - points[points.Length - 2];
             GenerateLUT(nbPointsForLUTPerCurve * (points.Length - 1));
         }
 
         protected (Vector2 C0, Vector2 C1, Vector2 C2, Vector2 C3) PrecomputePolynomialValues(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
         {
-            Vector2 C0 = M[0,0] * P0 + M[0,1] * P1 + M[0,2] * P2 + M[0,3] * P3;
-            Vector2 C1 = M[1,0] * P0 + M[1,1] * P1 + M[1,2] * P2 + M[1,3] * P3;
-            Vector2 C2 = M[2,0] * P0 + M[2,1] * P1 + M[2,2] * P2 + M[2,3] * P3;
-            Vector2 C3 = M[3,0] * P0 + M[3,1] * P1 + M[3,2] * P2 + M[3,3] * P3;
+            Vector2 C0 = M[0, 0] * P0 + M[0, 1] * P1 + M[0, 2] * P2 + M[0, 3] * P3;
+            Vector2 C1 = M[1, 0] * P0 + M[1, 1] * P1 + M[1, 2] * P2 + M[1, 3] * P3;
+            Vector2 C2 = M[2, 0] * P0 + M[2, 1] * P1 + M[2, 2] * P2 + M[2, 3] * P3;
+            Vector2 C3 = M[3, 0] * P0 + M[3, 1] * P1 + M[3, 2] * P2 + M[3, 3] * P3;
             return (C0, C1, C2, C3);
         }
 
@@ -1061,9 +1056,9 @@ public static class BezierUtility
         private const float oneO6 = 1f / 6f;
 
         public BSpline(Vector2[] points) : base(new Matrix4x4(
-            new Vector4(oneO6, -0.5f, 0.5f, -oneO6), 
-            new Vector4(4f * oneO6, 0f, -1f, 0.5f), 
-            new Vector4(oneO6, 0.5f, 0.5f, -0.5f), 
+            new Vector4(oneO6, -0.5f, 0.5f, -oneO6),
+            new Vector4(4f * oneO6, 0f, -1f, 0.5f),
+            new Vector4(oneO6, 0.5f, 0.5f, -0.5f),
             new Vector4(0f, 0f, 0f, oneO6)
             ), points)
         {

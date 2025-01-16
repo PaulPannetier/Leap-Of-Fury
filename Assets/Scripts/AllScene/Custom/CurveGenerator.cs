@@ -1,6 +1,6 @@
 using UnityEngine;
 using Collision2D;
-using static BezierUtility;
+using BezierUtility;
 using System;
 using System.Collections.Generic;
 

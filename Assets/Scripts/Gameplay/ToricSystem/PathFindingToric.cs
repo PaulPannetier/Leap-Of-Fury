@@ -3,7 +3,7 @@ using PathFinding.Graph;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using static BezierUtility;
+using BezierUtility;
 using System.Linq;
 
 public static class PathFinderToric

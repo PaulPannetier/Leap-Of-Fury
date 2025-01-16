@@ -3,7 +3,7 @@ using PathFinding;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
 using static PathFinderToric;
-using static BezierUtility;
+using BezierUtility;
 using System.Collections.Generic;
 
 public class Boomerang : MonoBehaviour

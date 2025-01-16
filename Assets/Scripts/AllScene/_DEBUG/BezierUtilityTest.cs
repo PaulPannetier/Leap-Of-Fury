@@ -3,7 +3,7 @@
 using Collision2D;
 using System.Linq;
 using UnityEngine;
-using static BezierUtility;
+using BezierUtility;
 
 public class BezierUtilityTest : MonoBehaviour
 {
