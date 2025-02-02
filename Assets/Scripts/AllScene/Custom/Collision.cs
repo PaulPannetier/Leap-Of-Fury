@@ -3540,7 +3540,8 @@ namespace Collision2D
         }
         public static void GizmosDraw(in Vector2 center, float radius, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
         {
-            int sides = ((radius + 10f) * 7f).Round();
+            radius = Mathf.Max(radius, 0.000001f);
+            int sides = Mathf.Max(((radius + 10f) * 7f).Round(), 4);
             float angleStep = (2f * Mathf.PI) / sides;
             Vector2 lastPoint = center + radius * Vector2.right;
             Vector2 p;
@@ -3554,6 +3555,7 @@ namespace Collision2D
         }
         public static void GizmosDraw(in Vector2 center, float radius, float begAngle, float endAngle, Color color, Action<Vector3, Vector3, Color> drawLineFunction)
         {
+            radius = Mathf.Max(radius, 0.000001f);
             int sides = Math.Max(((radius + 10f) * 7f * Mathf.Abs((endAngle - begAngle) / (2f * Mathf.PI))).Round(), 4);
             float angleStep = Mathf.Abs(endAngle - begAngle) / sides;
             Vector2 lastPoint = center + Useful.Vector2FromAngle(begAngle, radius);

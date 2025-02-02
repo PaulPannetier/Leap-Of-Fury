@@ -12,6 +12,7 @@ public class PathFindingMapCreatorTest : MonoBehaviour
     [SerializeField] private GameObject squarePrefabs;
     [SerializeField] private bool generateMap;
     [SerializeField] private bool removeMap;
+    [SerializeField] private bool testMapPointConvertion;
 
     private void GenerateTiles()
     {
@@ -24,20 +25,35 @@ public class PathFindingMapCreatorTest : MonoBehaviour
         MapPoint mapPoint;
         Vector2 pos;
         Vector3 scale = LevelMapData.currentMap.pathfindingCellsSize;
+        int maxCost = -1;
 
         for (int x = 0; x < map.GetLength(0); x++)
         {
+            for (int y = 0; y < map.GetLength(1); y++)
+            {
+                maxCost = Mathf.Max(maxCost, map.GetCost(new MapPoint(x, y)));
+            }
+        }
+
+         for (int x = 0; x < map.GetLength(0); x++)
+         {
             for (int y = 0; y < map.GetLength(1); y++)
             {
                 mapPoint = new MapPoint(x, y);
                 pos = LevelMapData.currentMap.GetPositionOfMapPoint(map, mapPoint);
 
                 GameObject square = Instantiate(squarePrefabs, pos, Quaternion.identity, transform);
-                square.GetComponent<SpriteRenderer>().color = 0.7f * (map.IsWall(mapPoint) ? Color.red : Color.green);
+                Color color = Color.red * 0.75f;
+                float cost = map.GetCost(mapPoint);
+                if (cost >= 0)
+                {
+                    color = Color.green * (cost / maxCost);
+                }
+                square.GetComponent<SpriteRenderer>().color = color;
                 square.transform.localScale = scale;
                 tiles.Add(square);
             }
-        }
+         }
     }
 
     private void RemoveTiles()
@@ -68,36 +84,21 @@ public class PathFindingMapCreatorTest : MonoBehaviour
         }
     }
 
-    public float radius;
-    bool HPressed = false;
-    public Vector2Int mapPoint;
-
-    private void Update()
-    {
-        HPressed = HPressed || InputManager.GetKeyDown(InputKey.H);
-    }
-
     private void OnDrawGizmosSelected()
     {
-        //Vector2 mousePos = PhysicsToric.GetPointInsideBounds(Camera.main.ScreenToWorldPoint(InputManager.mousePosition));
-        //Map map = new Map(new int[0, 0], accuracy);
+        if (!Application.isPlaying)
+            return;
 
-        //if (HPressed)
-        //{
-        //    HPressed = false;
-        //}
+        if(testMapPointConvertion)
+        {
+            Map map = LevelMapData.currentMap.GetPathfindingMap();
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(InputManager.mousePosition);
+            MapPoint currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(map, mousePos);
+            Vector2 mapPointPosition = LevelMapData.currentMap.GetPositionOfMapPoint(map, currentMapPoint);
 
-        //List<MapPoint> points = PathFindingBlocker.GetBlockedCellsInCircle(map, mousePos, radius);
-        //foreach (MapPoint p in points)
-        //{
-        //    Hitbox.GizmosDraw(LevelMapData.currentMap.GetPositionOfMapPoint(map, p), LevelMapData.currentMap.cellSize / accuracy, Color.red, true);
-        //}
-
-        //Circle.GizmosDraw(mousePos, radius, Color.green, true);
-
-        //Map map = new Map(new int[0, 0], accuracy);
-        //Vector2 pos = LevelMapData.currentMap.GetPositionOfMapPoint(map, new MapPoint(mapPoint.x, mapPoint.y));
-        //Circle.GizmosDraw(pos, 0.1f, Color.green, true);
+            Circle.GizmosDraw(mousePos, 0.3f, Color.green);
+            Circle.GizmosDraw(mapPointPosition, 0.2f, Color.red);
+        }
     }
 }
 

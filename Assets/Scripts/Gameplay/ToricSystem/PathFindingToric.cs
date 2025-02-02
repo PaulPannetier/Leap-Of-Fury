@@ -402,38 +402,34 @@ public class AStartToric
                 NodeToric up = null, down = null, right = null, left = null;
                 if(x == 0)
                 {
-                    up = nodes[x, y + 1];
-                    down = nodes[x, y - 1];
                     right = nodes[x + 1, y];
                     left = nodes[map.GetLength(0) - 1, y];
                 }
                 else if (x == map.GetLength(0) - 1)
                 {
-                    up = nodes[x, y + 1];
-                    down = nodes[x, y - 1];
                     right = nodes[0, y];
                     left = nodes[x - 1, y];
                 }
-                else if (y == 0)
+                else
+                {
+                    right = nodes[x + 1, y];
+                    left = nodes[x - 1, y];
+                }
+
+                if (y == 0)
                 {
                     up = nodes[x, y + 1];
                     down = nodes[x, map.GetLength(1) - 1];
-                    right = nodes[x + 1, y];
-                    left = nodes[x - 1, y];
                 }
                 else if (y == map.GetLength(1) - 1)
                 {
                     up = nodes[x, 0];
                     down = nodes[x, y - 1];
-                    right = nodes[x + 1, y];
-                    left = nodes[x - 1, y];
                 }
                 else
                 {
                     up = nodes[x, y + 1];
                     down = nodes[x, y - 1];
-                    right = nodes[x + 1, y];
-                    left = nodes[x - 1, y];
                 }
 
                 if (!map.IsWall(up.point))
@@ -455,7 +451,7 @@ public class AStartToric
             }
         }
 
-        List<Node> res = new List<Node>();
+        List<Node> res = new List<Node>(map.GetLength(0) * map.GetLength(1));
         for (int x = 0; x < map.GetLength(0); x++)
         {
             for (int y = 0; y < map.GetLength(1); y++)
@@ -684,7 +680,7 @@ public class AStartToric
 
     #endregion
 
-    #region Private struct
+    #region Toric Node
 
     private class NodeToric : Node
     {

@@ -10,6 +10,9 @@ public class LevelMapData : MonoBehaviour
 {
     #region Fields
 
+    private const int pathFindingBaseCost = 1000;
+    private const int pathFindingWallPenaltyCost = 20;
+
     private static LevelMapData _currentMap;
     public static LevelMapData currentMap
     {
@@ -79,7 +82,9 @@ public class LevelMapData : MonoBehaviour
         }
     }
 
+    [Header("Pathfinding")]
     [SerializeField, Range(1, 5)] private int pathfindingMapAccuracy;
+    [SerializeField] private int maxWallDistancePenalty = 3;
     [HideInInspector] public Vector2 pathfindingCellsSize => cellSize / pathfindingMapAccuracy;
 
     #endregion
@@ -163,6 +168,76 @@ public class LevelMapData : MonoBehaviour
         return HandleHitbox(hitbox.center, hitbox.size);
     }
 
+    private void ApplyWallPenalty(ref int[,] cost, int maxWallDistance)
+    {
+        HashSet<MapPoint>[] wallDistPoint = new HashSet<MapPoint>[maxWallDistance + 1];
+        for (int i = 0; i < wallDistPoint.Length; i++)
+        {
+            wallDistPoint[i] = new HashSet<MapPoint>();
+        }
+
+        Vector2Int mapSize = new Vector2Int(cost.GetLength(0), cost.GetLength(1));
+
+        for (int x = 0; x < mapSize.x; x++)
+        {
+            for (int y = 0; y < mapSize.y; y++)
+            {
+                MapPoint mapPoint = new MapPoint(x, y);
+                if (cost[mapPoint.X, mapPoint.Y] < 0)
+                {
+                    wallDistPoint[0].Add(mapPoint);
+                }
+            }
+        }
+
+        for (int i = 1; i <= maxWallDistance; i++)
+        {
+            foreach (MapPoint mapPoint in wallDistPoint[i - 1])
+            {
+                bool IsMapPointAlreadyAssign(MapPoint mapPoint)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (wallDistPoint[j].Contains(mapPoint))
+                            return true;
+                    }
+                    return false;
+                }
+
+                MapPoint right = new MapPoint(mapPoint.X == mapSize.x - 1 ? 0 : mapPoint.X + 1, mapPoint.Y);
+                MapPoint left = new MapPoint(mapPoint.X == 0 ? mapSize.x - 1 : mapPoint.X - 1, mapPoint.Y);
+                MapPoint up = new MapPoint(mapPoint.X, mapPoint.Y == mapSize.y - 1 ? 0 : mapPoint.Y + 1);
+                MapPoint down = new MapPoint(mapPoint.X, mapPoint.Y == 0 ? mapSize.y - 1 : mapPoint.Y - 1);
+
+                if(cost[right.X, right.Y] > 0 && !IsMapPointAlreadyAssign(right))
+                {
+                    wallDistPoint[i].Add(right);
+                }
+                if (cost[left.X, left.Y] > 0 && !IsMapPointAlreadyAssign(left))
+                {
+                    wallDistPoint[i].Add(left);
+                }
+                if (cost[up.X, up.Y] > 0 && !IsMapPointAlreadyAssign(up))
+                {
+                    wallDistPoint[i].Add(up);
+                }
+                if (cost[down.X, down.Y] > 0 && !IsMapPointAlreadyAssign(down))
+                {
+                    wallDistPoint[i].Add(down);
+                }
+            }
+        }
+
+        for (int i = 1; i < wallDistPoint.Length; i++)
+        {
+            int extraCost = i * pathFindingWallPenaltyCost;
+            foreach (MapPoint mapPoint in wallDistPoint[i])
+            {
+                cost[mapPoint.X, mapPoint.Y] += extraCost;
+            }
+        }
+    }
+
     private Map ComputeStaticPathfindingMap()
     {
         Vector2Int pathfindignSize = new Vector2Int((mapSize.x * pathfindingMapAccuracy).Round(), (mapSize.y * pathfindingMapAccuracy).Round());
@@ -228,23 +303,16 @@ public class LevelMapData : MonoBehaviour
                 }
                 else
                 {
-                    costMap[x, y] = blockedPoints.Contains(mapPoint) ? -1 : 1;
+                    costMap[x, y] = blockedPoints.Contains(mapPoint) ? -1 : pathFindingBaseCost;
                 }
             }
         }
 
-        return res;
-    }
+        int maxWallDistance = this.maxWallDistancePenalty * this.pathfindingMapAccuracy;
+        if (maxWallDistance > 0)
+            ApplyWallPenalty(ref costMap, maxWallDistance);
 
-    public MapPoint GetMapPointAtPosition(Vector2 position)
-    {
-        Vector2 size = mapSize * cellSize;
-        position = PhysicsToric.GetPointInsideBounds(position) + size * 0.5f - (cellSize * 0.5f);
-        float x = Mathf.InverseLerp(0f, size.x, position.x);
-        x = Mathf.Lerp(0f, mapSize.x, x);
-        float y = Mathf.InverseLerp(0f, size.y, position.y);
-        y = Mathf.Lerp(0f, mapSize.y, y);
-        return new MapPoint(x.Round(), y.Round());
+        return res;
     }
 
     public MapPoint GetMapPointAtPosition(Map pathfindingMap, Vector2 position)
@@ -257,14 +325,6 @@ public class LevelMapData : MonoBehaviour
         float y = Mathf.InverseLerp(0f, size.y, position.y);
         y = Mathf.Lerp(0f, pathfindingMapSize.y, y);
         return new MapPoint(x.Round(), y.Round());
-    }
-
-    public Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
-    {
-        Vector2 size = mapSize * cellSize;
-        float x = ((mapPoint.X / mapSize.x) * size.x) - (size.x * 0.5f);
-        float y = ((mapPoint.Y / mapSize.y) * size.y) - (size.y * 0.5f);
-        return new Vector2(x + (cellSize.x * 0.5f), y + (cellSize.y * 0.5f));
     }
 
     public Vector2 GetPositionOfMapPoint(Map pathfindingMap, MapPoint mapPoint)
@@ -373,8 +433,9 @@ public class LevelMapData : MonoBehaviour
     private void OnValidate()
     {
         currentMap = this;
+        maxWallDistancePenalty = Mathf.Max(0, maxWallDistancePenalty);
 
-        if(applyCurrentConfig)
+        if (applyCurrentConfig)
         {
             applyCurrentConfig = false;
             if (!Save.WriteJSONData(spawnConfigs, relatifSpawnConfigsPath + SettingsManager.saveFileExtension, mkdir:true))

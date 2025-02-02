@@ -32,6 +32,9 @@ public class PathFindingToricTest : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!Application.isPlaying)
+            return;
+
         if(!freezeEnd)
             end = PhysicsToric.GetPointInsideBounds(Useful.mainCamera.ScreenToWorldPoint(InputManager.mousePosition));
 
@@ -42,8 +45,8 @@ public class PathFindingToricTest : MonoBehaviour
         if (testPathFinding || testPathNoDiagFinding)
         {
             Map map = LevelMapData.currentMap.GetPathfindingMap();
-            MapPoint startMP = LevelMapData.currentMap.GetMapPointAtPosition(start);
-            MapPoint endMP = LevelMapData.currentMap.GetMapPointAtPosition(end);
+            MapPoint startMP = LevelMapData.currentMap.GetMapPointAtPosition(map, start);
+            MapPoint endMP = LevelMapData.currentMap.GetMapPointAtPosition(map, end);
             testPathNoDiag = testPath = null;
             splinePathNoDiag = splinePath = null;
 
@@ -51,7 +54,12 @@ public class PathFindingToricTest : MonoBehaviour
             {
                 if (useSplinePathFinding)
                 {
-                    splinePathNoDiag = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, false, splineType, smoothnessMode, tension);
+                    Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
+                    {
+                        return LevelMapData.currentMap.GetPositionOfMapPoint(map, mapPoint);
+                    }
+
+                    splinePathNoDiag = PathFinderToric.FindBestCurve(map, startMP, endMP, GetPositionOfMapPoint, false, splineType, smoothnessMode, tension);
                     if (splinePathNoDiag != null)
                     {
                         Gizmos.color = Color.green;
@@ -70,7 +78,12 @@ public class PathFindingToricTest : MonoBehaviour
             {
                 if (useSplinePathFinding)
                 {
-                    splinePath = PathFinderToric.FindBestCurve(map, startMP, endMP, LevelMapData.currentMap.GetPositionOfMapPoint, true, splineType, smoothnessMode, tension);
+                    Vector2 GetPositionOfMapPoint(MapPoint mapPoint)
+                    {
+                        return LevelMapData.currentMap.GetPositionOfMapPoint(map, mapPoint);
+                    }
+
+                    splinePath = PathFinderToric.FindBestCurve(map, startMP, endMP, GetPositionOfMapPoint, true, splineType, smoothnessMode, tension);
                     if (splinePath != null)
                     {
                         Gizmos.color = Color.green;
@@ -107,11 +120,11 @@ public class PathFindingToricTest : MonoBehaviour
 
             void DrawPath(Path p)
             {
-                Vector2 beg = LevelMapData.currentMap.GetPositionOfMapPoint(p.path[0]);
+                Vector2 beg = LevelMapData.currentMap.GetPositionOfMapPoint(map, p.path[0]);
 
                 for (int i = 0; i < p.path.Length; i++)
                 {
-                    Vector2 end = LevelMapData.currentMap.GetPositionOfMapPoint(p.path[i]);
+                    Vector2 end = LevelMapData.currentMap.GetPositionOfMapPoint(map, p.path[i]);
                     PhysicsToric.GizmosDrawRaycast(beg, end);
                     beg = end;
                 }
