@@ -11,7 +11,7 @@ public class LevelMapData : MonoBehaviour
     #region Fields
 
     private const int pathFindingBaseCost = 1000;
-    private const int pathFindingWallPenaltyCost = 20;
+    private const int pathFindingWallPenaltyCost = 200;
 
     private static LevelMapData _currentMap;
     public static LevelMapData currentMap
@@ -163,6 +163,10 @@ public class LevelMapData : MonoBehaviour
         {
             return PathFindingBlocker.GetBlockedCellsInCircle(map, (Vector2)circleCollider.transform.position + circleCollider.offset, circleCollider.radius * 0.999f);
         }
+
+        string errorMsg = $"The type {collider.GetType()} of Collider is unsuported, a cast into an Hitbox is apply";
+        LogManager.instance.AddLog(errorMsg, collider, "LevelMapData::GetColliderBlockedPoints");
+        Debug.LogWarning(errorMsg);
 
         Hitbox hitbox = Collision2D.Collider2D.FromUnityCollider2D(collider).ToHitbox();
         return HandleHitbox(hitbox.center, hitbox.size);

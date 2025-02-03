@@ -247,8 +247,7 @@ MonoBehaviour:
   squarePrefabs: {fileID: 2103269425306154730, guid: 77377335cca8356499642a6ed07b141a, type: 3}
   generateMap: 0
   removeMap: 0
-  testMapPointConvertionWithMap: 0
-  testMapPointConvertionWithoutMap: 0
+  testMapPointConvertion: 0
 --- !u!4 &1269540628
 Transform:
   m_ObjectHideFlags: 0
@@ -272,6 +271,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1389616452209273845, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: maxWallDistancePenalty
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1389616452209273845, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: pathfindingMapAccuracy
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_Name
       value: Map0

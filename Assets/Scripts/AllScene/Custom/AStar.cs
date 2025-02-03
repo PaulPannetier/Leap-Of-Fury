@@ -23,9 +23,9 @@ namespace PathFinding
             return new Path(cost, mapPoints);
         }
 
-        public static Graph.GraphPath FindBestPath(Graph.Graph graph, Graph.Node start, Graph.Node end)
+        public static GraphPath FindBestPath(Graph graph, Node start, Node end)
         {
-            return new Graph.AStarGraph(graph).CalculateBestPath(start, end);
+            return new AStarGraph(graph).CalculateBestPath(start, end);
         }
     }
 
@@ -52,7 +52,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public AStar(Map map)
         {
-            if (map == null) 
+            if (map == null)
                 throw new ArgumentException("map cannot be null");
             this._map = map;
         }
@@ -77,7 +77,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public MapPoint[] CalculateBestPath(MapPoint start, MapPoint end)
         {
-            if(start == end)
+            if (start == end)
             {
                 return new MapPoint[1] { end };
             }
@@ -143,7 +143,7 @@ namespace PathFinding
             }
         }
     }
-    
+
     /// ----------------------------------------------------------------------------------------
     /// <summary>
     /// Define a node.
@@ -537,7 +537,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
-            if(Object.ReferenceEquals(this, null) && Object.ReferenceEquals(obj, null))
+            if (Object.ReferenceEquals(this, null) && Object.ReferenceEquals(obj, null))
                 return true;
 
             if (Object.ReferenceEquals(this, null) || Object.ReferenceEquals(obj, null))
@@ -708,7 +708,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public int GetCost(MapPoint mapPoint)
         {
-            if (IsPointValid(mapPoint)) 
+            if (IsPointValid(mapPoint))
                 return this._costs[mapPoint.X, mapPoint.Y];
             return -2;
         }
@@ -717,12 +717,10 @@ namespace PathFinding
     #endregion
 
     #endregion
-}
 
-#region GraphSearch
+    /*
+    #region GraphSearchV1
 
-namespace PathFinding.Graph
-{
     public class GraphPath
     {
         public float totalCost;
@@ -863,7 +861,165 @@ namespace PathFinding.Graph
             this.connectedNode = connectedNode;
         }
     }
-}
 
-#endregion
+    #endregion
+    */
+
+    #region GraphSearchV2
+
+    public class GraphPath
+    {
+        public float totalCost;
+        public Node[] path;
+
+        public GraphPath(float totalCost, Node[] path)
+        {
+            this.totalCost = totalCost;
+            this.path = path;
+        }
+    }
+
+    public class AStarGraph
+    {
+        private List<Node> nodes;
+        private List<Edge> edges;
+
+        public AStarGraph()
+        {
+            nodes = new List<Node>();
+            edges = new List<Edge>();
+        }
+
+        public AStarGraph(List<Node> nodes, List<Edge> edges)
+        {
+            this.nodes = nodes;
+            this.edges = new List<Edge>(edges.Count);
+
+            foreach (Edge edge in edges)
+            {
+                this.edges.Add(edge);
+                nodes.Find((Node node) => node.point == edge.start.point).possibleRoutes.Add(edge);
+            }
+        }
+
+        public GraphPath CalculateBestPath(Node start, Node end)
+        {
+            if (start == end)
+            {
+                return new GraphPath(0f, new Node[1] { end });
+            }
+
+            Node[] shortestPath = A_star_search(start, end);
+            return new GraphPath(shortestPathCost, shortestPath);
+        }
+
+        private Node[] A_star_search(Node start, Node end)
+        {
+            List<Node> openSet = new List<Node>(nodes.Count);
+            HashSet<Node> closedSet = new HashSet<Node>();
+
+            openSet.Add(start);
+
+            while (openSet.Count > 0)
+            {
+                Node currentVertex = openSet[0];
+                for (int i = 1; i < openSet.Count; i++)
+                {
+                    if (openSet[i].fScore < currentVertex.fScore || openSet[i].fScore == currentVertex.fScore && openSet[i].hScore < currentVertex.hScore)
+                    {
+                        currentVertex = openSet[i];
+                    }
+                }
+
+                openSet.Remove(currentVertex);
+                closedSet.Add(currentVertex);
+
+                if (currentVertex == end)
+                {
+                    return RetracePath(start, end);
+                }
+
+                // Checking each possible route from the current vertex
+                foreach (Edge edge in currentVertex.possibleRoutes)
+                {
+                    Node neighbour = edge.end;
+                    if (closedSet.Contains(neighbour))
+                    {
+                        continue;
+                    }
+
+                    // Calculating the cost of reaching the neighbour from the current vertex
+                    double newCostToNeighbour = currentVertex.gScore + edge.cost;
+                    if (newCostToNeighbour < neighbour.gScore || !openSet.Contains(neighbour))
+                    {
+                        // Updating the cost values and adding parent of the neighbour to the current vertex
+                        neighbour.gScore = newCostToNeighbour;
+                        neighbour.hScore = neighbour.Heuristic(end);
+                        neighbour.fScore = neighbour.gScore + neighbour.hScore;
+                        neighbour.parent = currentVertex;
+
+                        // Adding the neighbour to the open set if it's not already there
+                        if (!openSet.Contains(neighbour))
+                            openSet.Add(neighbour);
+                    }
+                }
+
+            }
+            // Returnig null if path was't found
+            return Array.Empty<Node>();
+        }
+
+        private List<Node> RetracePath(Node start, Node end)
+        {
+            // Retracing path from end to start using parent
+            List<Vertex> path = new List<Vertex>();
+            Vertex currentVertex = end;
+
+            while (currentVertex != start)
+            {
+                path.Add(currentVertex);
+                currentVertex = currentVertex.parent;
+            }
+
+            // Reversing the list to get the path from start to end
+            path.Reverse();
+
+            // Returning the retraced path
+            return path;
+        }
+    }
+
+    public class Node
+    {
+        public MapPoint point;
+        internal double gScore, fScore, hScore;
+        internal Node parent;
+        internal List<Edge> possibleRoutes = new List<Edge>();
+
+        public Node(MapPoint point)
+        {
+            this.point = point;
+        }
+
+        public virtual float Heuristic(Node other)
+        {
+            return MathF.Sqrt(((point.X - other.point.X) * (point.X - other.point.X)) + ((point.Y - other.point.Y) * (point.Y - other.point.Y)));
+        }
+    }
+
+    public class Edge
+    {
+        public Node start, end;
+        public int cost;
+
+        public Edge(Node start, Node end, int cost)
+        {
+            this.start = start;
+            this.end = end;
+            this.cost = cost;
+        }
+    }
+
+    #endregion
+}
 

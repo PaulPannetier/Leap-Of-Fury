@@ -1,5 +1,4 @@
 using PathFinding;
-using PathFinding.Graph;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -379,20 +378,20 @@ public class AStartToric
 
     private void GenerateGraphNonDiagonal(Map map)
     {
-        NodeToric[,] nodes = new NodeToric[map.GetLength(0), map.GetLength(1)];
         NodeToric.mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
+        NodeToric[,] nodes = new NodeToric[NodeToric.mapSize.x, NodeToric.mapSize.y];
 
-        for (int x = 0; x < map.GetLength(0); x++)
+        for (int x = 0; x < NodeToric.mapSize.x; x++)
         {
-            for (int y = 0; y < map.GetLength(1); y++)
+            for (int y = 0; y < NodeToric.mapSize.y; y++)
             {
                 nodes[x, y] = new NodeToric(new MapPoint(x, y));
             }
         }
 
-        for (int x = 0; x < map.GetLength(0); x++)
+        for (int x = 0; x < NodeToric.mapSize.x; x++)
         {
-            for (int y = 0; y < map.GetLength(1); y++)
+            for (int y = 0; y < NodeToric.mapSize.y; y++)
             {
                 NodeToric node = nodes[x, y];
 
@@ -403,9 +402,9 @@ public class AStartToric
                 if(x == 0)
                 {
                     right = nodes[x + 1, y];
-                    left = nodes[map.GetLength(0) - 1, y];
+                    left = nodes[NodeToric.mapSize.x - 1, y];
                 }
-                else if (x == map.GetLength(0) - 1)
+                else if (x == NodeToric.mapSize.x - 1)
                 {
                     right = nodes[0, y];
                     left = nodes[x - 1, y];
@@ -419,9 +418,9 @@ public class AStartToric
                 if (y == 0)
                 {
                     up = nodes[x, y + 1];
-                    down = nodes[x, map.GetLength(1) - 1];
+                    down = nodes[x, NodeToric.mapSize.y - 1];
                 }
-                else if (y == map.GetLength(1) - 1)
+                else if (y == NodeToric.mapSize.y - 1)
                 {
                     up = nodes[x, 0];
                     down = nodes[x, y - 1];
@@ -432,29 +431,30 @@ public class AStartToric
                     down = nodes[x, y - 1];
                 }
 
+                int cost = map.GetCost(node.point);
                 if (!map.IsWall(up.point))
                 {
-                    node.AddConnection(new Edge(1f, up));
+                    node.AddConnection(new Edge(cost, up));
                 }
                 if (!map.IsWall(down.point))
                 {
-                    node.AddConnection(new Edge(1f, down));
+                    node.AddConnection(new Edge(cost, down));
                 }
                 if (!map.IsWall(right.point))
                 {
-                    node.AddConnection(new Edge(1f, right));
+                    node.AddConnection(new Edge(cost, right));
                 }
                 if (!map.IsWall(left.point))
                 {
-                    node.AddConnection(new Edge(1f, left));
+                    node.AddConnection(new Edge(cost, left));
                 }
             }
         }
 
-        List<Node> res = new List<Node>(map.GetLength(0) * map.GetLength(1));
-        for (int x = 0; x < map.GetLength(0); x++)
+        List<Node> res = new List<Node>(NodeToric.mapSize.x * NodeToric.mapSize.y);
+        for (int x = 0; x < NodeToric.mapSize.x; x++)
         {
-            for (int y = 0; y < map.GetLength(1); y++)
+            for (int y = 0; y < NodeToric.mapSize.y; y++)
             {
                 res.Add(nodes[x, y]);
             }
@@ -684,7 +684,7 @@ public class AStartToric
 
     private class NodeToric : Node
     {
-        public static Vector2Int mapSize;
+        internal static Vector2Int mapSize;
 
         public NodeToric(MapPoint point) : base(point)
         {
