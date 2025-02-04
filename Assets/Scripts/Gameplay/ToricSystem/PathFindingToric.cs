@@ -451,16 +451,18 @@ public class AStartToric
             }
         }
 
-        List<Node> res = new List<Node>(NodeToric.mapSize.x * NodeToric.mapSize.y);
+        Node[] res = new Node[NodeToric.mapSize.x * NodeToric.mapSize.y];
+        int i = 0;
         for (int x = 0; x < NodeToric.mapSize.x; x++)
         {
             for (int y = 0; y < NodeToric.mapSize.y; y++)
             {
-                res.Add(nodes[x, y]);
+                res[i] = nodes[x, y];
+                i++;
             }
         }
 
-        aStar = new AStarGraph(new Graph(res));
+        aStar = new AStarGraph(res);
     }
 
     #endregion
@@ -624,16 +626,17 @@ public class AStartToric
             }
         }
 
-        List<Node> res = new List<Node>();
+        Node[] res = new Node[map.GetLength(0) * map.GetLength(1)];
+        int i = 0;
         for (int x = 0; x < map.GetLength(0); x++)
         {
             for (int y = 0; y < map.GetLength(1); y++)
             {
-                res.Add(nodes[x, y]);
+                res[i] = nodes[x, y];
             }
         }
 
-        aStar = new AStarGraph(new Graph(res));
+        aStar = new AStarGraph(res);
     }
 
     #endregion
@@ -649,7 +652,7 @@ public class AStartToric
 
         Node s = null, e = null;
 
-        foreach (Node node in aStar.graph.nodes)
+        foreach (Node node in aStar.nodes)
         {
             if(s == null && node.point == start)
             {
@@ -691,10 +694,10 @@ public class AStartToric
 
         }
 
-        public override int StraightLineDistanceTo(Node end)
+        public override float StraightLineDistanceTo(Node other)
         {
-            int x = Math.Abs(end.point.X - point.X);
-            int y = Math.Abs(end.point.Y - point.Y);
+            int x = Math.Abs(other.point.X - point.X);
+            int y = Math.Abs(other.point.Y - point.Y);
             return Math.Min(x, mapSize.x - x) + Math.Min(y, mapSize.y - y);
         }
     }

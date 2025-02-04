@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using CustomAI;
 
 /*
  *  Author : Bidou (http://www.csharpfr.com/auteurdetail.aspx?ID=13319)
@@ -23,9 +24,9 @@ namespace PathFinding
             return new Path(cost, mapPoints);
         }
 
-        public static GraphPath FindBestPath(Graph graph, Node start, Node end)
+        public static GraphPath FindBestPath(AStarGraph graph, Node start, Node end)
         {
-            return new AStarGraph(graph).CalculateBestPath(start, end);
+            return graph.CalculateBestPath(start, end);
         }
     }
 
@@ -556,7 +557,7 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public override int GetHashCode()
         {
-            return (this._x ^ this._y);
+            return HashCode.Combine(_x, _y);
         }
 
         /// ----------------------------------------------------------------------------------------
@@ -718,8 +719,7 @@ namespace PathFinding
 
     #endregion
 
-    /*
-    #region GraphSearchV1
+    #region GraphSearch
 
     public class GraphPath
     {
@@ -735,14 +735,14 @@ namespace PathFinding
 
     public class AStarGraph
     {
-        public Graph graph { get; set; }
-        private Node start { get; set; }
-        private Node end { get; set; }
-        public float shortestPathCost { get; private set; }
+        public Node[] nodes { get; private set; }
+        private Node start;
+        private Node end;
+        private float shortestPathCost;
 
-        public AStarGraph(Graph graph)
+        public AStarGraph(Node[] nodes)
         {
-            this.graph = graph;
+            this.nodes = nodes;
         }
 
         public GraphPath CalculateBestPath(Node start, Node end)
@@ -814,24 +814,14 @@ namespace PathFinding
         }
     }
 
-    public class Graph
-    {
-        internal List<Node> nodes { get; private set; }
-
-        public Graph(List<Node> nodes)
-        {
-            this.nodes = nodes;
-        }
-    }
-
     public class Node
     {
         public MapPoint point { get; set; }
         public List<Edge> connections { get; private set; }
 
-        internal double? minCostToStart { get; set; }
-        internal Node nearestToStart { get; set; }
-        internal bool visited { get; set; }
+        internal double? minCostToStart;
+        internal Node nearestToStart;
+        internal bool visited;
 
         public Node(MapPoint point)
         {
@@ -844,7 +834,7 @@ namespace PathFinding
             connections.Add(edge);
         }
 
-        public virtual int StraightLineDistanceTo(Node end)
+        public virtual float StraightLineDistanceTo(Node end)
         {
             return Math.Abs(end.point.X - point.X) + Math.Abs(end.point.Y - point.Y);
         }
@@ -852,8 +842,8 @@ namespace PathFinding
 
     public class Edge
     {
-        public float cost { get; set; }
-        public Node connectedNode { get; set; }
+        public float cost;
+        public Node connectedNode;
 
         public Edge(float cost, Node connectedNode)
         {
@@ -863,163 +853,4 @@ namespace PathFinding
     }
 
     #endregion
-    */
-
-    #region GraphSearchV2
-
-    public class GraphPath
-    {
-        public float totalCost;
-        public Node[] path;
-
-        public GraphPath(float totalCost, Node[] path)
-        {
-            this.totalCost = totalCost;
-            this.path = path;
-        }
-    }
-
-    public class AStarGraph
-    {
-        private List<Node> nodes;
-        private List<Edge> edges;
-
-        public AStarGraph()
-        {
-            nodes = new List<Node>();
-            edges = new List<Edge>();
-        }
-
-        public AStarGraph(List<Node> nodes, List<Edge> edges)
-        {
-            this.nodes = nodes;
-            this.edges = new List<Edge>(edges.Count);
-
-            foreach (Edge edge in edges)
-            {
-                this.edges.Add(edge);
-                nodes.Find((Node node) => node.point == edge.start.point).possibleRoutes.Add(edge);
-            }
-        }
-
-        public GraphPath CalculateBestPath(Node start, Node end)
-        {
-            if (start == end)
-            {
-                return new GraphPath(0f, new Node[1] { end });
-            }
-
-            Node[] shortestPath = A_star_search(start, end);
-            return new GraphPath(shortestPathCost, shortestPath);
-        }
-
-        private Node[] A_star_search(Node start, Node end)
-        {
-            List<Node> openSet = new List<Node>(nodes.Count);
-            HashSet<Node> closedSet = new HashSet<Node>();
-
-            openSet.Add(start);
-
-            while (openSet.Count > 0)
-            {
-                Node currentVertex = openSet[0];
-                for (int i = 1; i < openSet.Count; i++)
-                {
-                    if (openSet[i].fScore < currentVertex.fScore || openSet[i].fScore == currentVertex.fScore && openSet[i].hScore < currentVertex.hScore)
-                    {
-                        currentVertex = openSet[i];
-                    }
-                }
-
-                openSet.Remove(currentVertex);
-                closedSet.Add(currentVertex);
-
-                if (currentVertex == end)
-                {
-                    return RetracePath(start, end);
-                }
-
-                // Checking each possible route from the current vertex
-                foreach (Edge edge in currentVertex.possibleRoutes)
-                {
-                    Node neighbour = edge.end;
-                    if (closedSet.Contains(neighbour))
-                    {
-                        continue;
-                    }
-
-                    // Calculating the cost of reaching the neighbour from the current vertex
-                    double newCostToNeighbour = currentVertex.gScore + edge.cost;
-                    if (newCostToNeighbour < neighbour.gScore || !openSet.Contains(neighbour))
-                    {
-                        // Updating the cost values and adding parent of the neighbour to the current vertex
-                        neighbour.gScore = newCostToNeighbour;
-                        neighbour.hScore = neighbour.Heuristic(end);
-                        neighbour.fScore = neighbour.gScore + neighbour.hScore;
-                        neighbour.parent = currentVertex;
-
-                        // Adding the neighbour to the open set if it's not already there
-                        if (!openSet.Contains(neighbour))
-                            openSet.Add(neighbour);
-                    }
-                }
-
-            }
-            // Returnig null if path was't found
-            return Array.Empty<Node>();
-        }
-
-        private List<Node> RetracePath(Node start, Node end)
-        {
-            // Retracing path from end to start using parent
-            List<Vertex> path = new List<Vertex>();
-            Vertex currentVertex = end;
-
-            while (currentVertex != start)
-            {
-                path.Add(currentVertex);
-                currentVertex = currentVertex.parent;
-            }
-
-            // Reversing the list to get the path from start to end
-            path.Reverse();
-
-            // Returning the retraced path
-            return path;
-        }
-    }
-
-    public class Node
-    {
-        public MapPoint point;
-        internal double gScore, fScore, hScore;
-        internal Node parent;
-        internal List<Edge> possibleRoutes = new List<Edge>();
-
-        public Node(MapPoint point)
-        {
-            this.point = point;
-        }
-
-        public virtual float Heuristic(Node other)
-        {
-            return MathF.Sqrt(((point.X - other.point.X) * (point.X - other.point.X)) + ((point.Y - other.point.Y) * (point.Y - other.point.Y)));
-        }
-    }
-
-    public class Edge
-    {
-        public Node start, end;
-        public int cost;
-
-        public Edge(Node start, Node end, int cost)
-        {
-            this.start = start;
-            this.end = end;
-            this.cost = cost;
-        }
-    }
-
-    #endregion
 }
-
