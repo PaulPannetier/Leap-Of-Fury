@@ -91,7 +91,7 @@ public class CharSelectorController : MonoBehaviour
             escapeButton.controllerType = controllerType;
             if (escapeButton.IsPressedDown())
             {
-                TransitionManager.instance.LoadSceneAsync("Screen Title", null);
+                TransitionManager.instance.LoadSceneAsync("TitleScreen", null);
                 return;
             }
         }

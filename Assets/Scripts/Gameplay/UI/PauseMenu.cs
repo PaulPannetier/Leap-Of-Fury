@@ -69,7 +69,7 @@ public class PauseMenu : MonoBehaviour
     public void OnMainTitleButtonDown()
     {
         PauseManager.instance.DisablePause();
-        TransitionManager.instance.LoadSceneAsync("Screen Title");
+        TransitionManager.instance.LoadSceneAsync("TitleScreen");
     }
 
     public void OnPauseEnable()

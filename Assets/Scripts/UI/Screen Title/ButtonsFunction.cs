@@ -6,7 +6,7 @@ public class ButtonsFunction : MonoBehaviour
 
     public void LoadCharSelectorScene()
     {
-        TransitionManager.instance.LoadSceneAsync("Selection Char", new OldSceneData("Screen Title"));
+        TransitionManager.instance.LoadSceneAsync("Selection Char", new OldSceneData("TitleScreen"));
     }
 
     public void LoadOption()

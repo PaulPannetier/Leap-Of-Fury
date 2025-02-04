@@ -73,7 +73,7 @@ public class BuildCreator : Editor
             ModifyGameplayScenes();
         }
 
-        ModifyScreenTitleScene();
+        ModifyTitleScreenScene();
 
         if (buildCreatorConfig.performBuild)
         {
@@ -174,26 +174,26 @@ public class BuildCreator : Editor
         }
     }
 
-    private void ModifyScreenTitleScene()
+    private void ModifyTitleScreenScene()
     {
         string currentScenePath = SceneManager.GetActiveScene().path;
-        SceneAsset screenTitleAsset = null;
+        SceneAsset titleScreenAsset = null;
         foreach (Object scene in buildCreatorConfig.otherSceneTobuild)
         {
-            if (scene == null || scene.name != "Screen Title")
+            if (scene == null || scene.name != "TitleScreen")
                 continue;
-            screenTitleAsset = scene as SceneAsset;
+            titleScreenAsset = scene as SceneAsset;
             break;
         }
 
-        if (screenTitleAsset == null)
+        if (titleScreenAsset == null)
             return;
 
-        string screenTitlePath = AssetDatabase.GetAssetPath(screenTitleAsset);
-        Scene screenTitle = EditorSceneManager.OpenScene(screenTitlePath, OpenSceneMode.Single);
+        string titleScreenPath = AssetDatabase.GetAssetPath(titleScreenAsset);
+        Scene titleScreen = EditorSceneManager.OpenScene(titleScreenPath, OpenSceneMode.Single);
 
         GameObject gamemanager = null;
-        foreach (GameObject go in screenTitle.GetRootGameObjects())
+        foreach (GameObject go in titleScreen.GetRootGameObjects())
         {
             if (go.name == "Singleton")
             {
@@ -208,7 +208,7 @@ public class BuildCreator : Editor
             }
         }
 
-        EditorSceneManager.SaveScene(screenTitle, screenTitlePath);
+        EditorSceneManager.SaveScene(titleScreen, titleScreenPath);
         EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
     }
 
