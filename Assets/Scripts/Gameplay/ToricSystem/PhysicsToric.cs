@@ -77,7 +77,12 @@ public static class PhysicsToric
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Start()
     {
-        EventManager.instance.callbackOnMapChanged += OnMapChange;
+        if (EventManager.instance == null){
+			Debug.LogWarning("Could not start PhysicsToric (EventManager uninitialized)");
+			return;
+		}
+
+		EventManager.instance.callbackOnMapChanged += OnMapChange;
     }
 
     private static void OnMapChange(LevelMapData mapData)
@@ -104,7 +109,7 @@ public static class PhysicsToric
     public static bool IsPointInsideBound(in Vector2 point) => -mapHitbox.size.x * 0.5f <= point.x && mapHitbox.size.x * 0.5f >= point.x && -mapHitbox.size.y * 0.5f <= point.y && mapHitbox.size.y * 0.5f >= point.y;
 
     /// <param name="point"></param>
-    /// <returns>Le point visible au coor donnée en param dans l'espace torique</returns>
+    /// <returns>Le point visible au coor donnï¿½e en param dans l'espace torique</returns>
     public static Vector2 GetPointInsideBounds(in Vector2 point)
     {
         return new Vector2(Useful.ClampModulo(-mapHitbox.size.x * 0.5f, mapHitbox.size.x * 0.5f, point.x),

@@ -16,7 +16,12 @@ namespace ToricCollider2D
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Start()
         {
-            EventManager.instance.callbackOnMapChanged += OnMapChange;
+            if (EventManager.instance == null){
+				Debug.LogWarning("Could not start ToricCollider (EventManager uninitialized)");
+				return;
+			}
+
+			EventManager.instance.callbackOnMapChanged += OnMapChange;
         }
 
         private static void OnMapChange(LevelMapData mapData)

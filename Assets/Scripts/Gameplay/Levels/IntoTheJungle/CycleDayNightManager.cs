@@ -122,7 +122,10 @@ public class CycleDayNightManager : MonoBehaviour
 
     private void OnValidate()
     {
-        if(showDayLight)
+        if (LightManager.instance == null)
+			return;
+
+		if(showDayLight)
         {
             showDayLight = false;
             if (!Application.isPlaying && PrefabStageUtility.GetCurrentPrefabStage() == null)
