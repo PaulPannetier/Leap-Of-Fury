@@ -10,7 +10,8 @@ public class BuildCreatorConfig : ScriptableObject
         Windows,
         Linux,
         MacOSIntel,
-        MacOSAppleSilicon
+        MacOSAppleSilicon,
+        MacOSUniversal
     }
 
     public string companyName;

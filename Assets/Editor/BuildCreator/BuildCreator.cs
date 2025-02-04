@@ -320,22 +320,28 @@ public class BuildCreator : Editor
         {
             //BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-            buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
+            //buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
 
             // For macOS, Unity outputs a .app bundle, so we adjust the path accordingly
             buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".app");
             buildPlayerOptions.target = BuildTarget.StandaloneOSX;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
-            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new string[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
+            //buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new string[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
 
-            PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
-            //int architecture = buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSIntel ? 0 : 1;// Typically 0 (Intel x86_64) or 1 (Apple Silicon/Universal)
-            //PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, architecture);
-            PlayerSettings.productName = buildCreatorConfig.gameName;
-            PlayerSettings.companyName = buildCreatorConfig.companyName;
-            PlayerSettings.bundleVersion = buildCreatorConfig.version;
-            PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
+            //PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
+
+            int architecture = 0;
+            if (buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSAppleSilicon)
+                architecture = 1;
+            else if(buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSUniversal)
+                architecture = 2;
+
+            PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, architecture);
+            //PlayerSettings.productName = buildCreatorConfig.gameName;
+            //PlayerSettings.companyName = buildCreatorConfig.companyName;
+            //PlayerSettings.bundleVersion = buildCreatorConfig.version;
+            //PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
 
             Debug.Log("Starting build for macOS in " + buildDir);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
@@ -353,6 +359,9 @@ public class BuildCreator : Editor
                 PerformMacOSBuild();
                 break;
             case BuildCreatorConfig.BuildPlateform.MacOSIntel:
+                PerformMacOSBuild();
+                break;
+            case BuildCreatorConfig.BuildPlateform.MacOSUniversal:
                 PerformMacOSBuild();
                 break;
             default:
