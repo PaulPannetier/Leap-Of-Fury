@@ -100,7 +100,7 @@ public static class PathFinderToric
 
                 int index = subPath[i].Count - 1;
                 MapPoint mapPoint;
-                while(index >= 1)
+                while (index >= 1)
                 {
                     for (int j = index - 1; j >= 0; j--)
                     {
@@ -108,7 +108,7 @@ public static class PathFinderToric
 
                         if (mapPoint.X != subPath[i][index].X && mapPoint.Y != subPath[i][index].Y)
                         {
-                            if(index - j <= 1)
+                            if (index - j <= 1)
                             {
                                 index--;
                                 break;
@@ -134,13 +134,13 @@ public static class PathFinderToric
         {
             Vector2[] points = new Vector2[(prepolate ? 1 : 0) + (extrapolate ? 1 : 0) + mapPoints.Count];
 
-            if(prepolate)
+            if (prepolate)
             {
                 Vector2 previousPoint = convertMapPointToWorldPosition(previousMapPoint);
                 Vector2 firstPoint = convertMapPointToWorldPosition(mapPoints[0]);
                 if (PhysicsToric.GetToricIntersection(previousPoint, firstPoint, out Vector2 inter))
                 {
-                    if(firstPoint.SqrDistance(inter) > previousPoint.SqrDistance(inter))
+                    if (firstPoint.SqrDistance(inter) > previousPoint.SqrDistance(inter))
                         inter = PhysicsToric.GetComplementaryPoint(inter);
                     float deltaX = firstPoint.x - inter.x;
                     float deltaY = firstPoint.y - inter.y;
@@ -195,7 +195,7 @@ public static class PathFinderToric
 
         Spline CreateSpline(Vector2[] points, SplineType splineType)
         {
-            if(points.Length <= 1)
+            if (points.Length <= 1)
             {
                 return new HermiteSpline(new Vector2[2] { convertMapPointToWorldPosition(path.path[0]), convertMapPointToWorldPosition(path.path.Last()) });
             }
@@ -219,7 +219,7 @@ public static class PathFinderToric
 
         Spline[] splines = new Spline[subPath.Count];
 
-        if(splines.Length <= 1)
+        if (splines.Length <= 1)
         {
             splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, null, false, null), splineType);
         }
@@ -261,7 +261,7 @@ public static class PathFinderToric
                 length += s.length;
             }
 
-            if(path.Length > 1)
+            if (path.Length > 1)
             {
                 joints = new float[path.Length - 1];
                 joints[0] = path[0].length / length;
@@ -362,7 +362,7 @@ public class AStartToric
 
     private void Builder(Map map, bool allowDiagonal)
     {
-        if(allowDiagonal)
+        if (allowDiagonal)
         {
             GenerateGraph(map);
         }
@@ -378,20 +378,20 @@ public class AStartToric
 
     private void GenerateGraphNonDiagonal(Map map)
     {
-        NodeToric.mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
-        NodeToric[,] nodes = new NodeToric[NodeToric.mapSize.x, NodeToric.mapSize.y];
+        Vector2Int mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
+        NodeToric[,] nodes = new NodeToric[mapSize.x, mapSize.y];
 
-        for (int x = 0; x < NodeToric.mapSize.x; x++)
+        for (int x = 0; x < mapSize.x; x++)
         {
-            for (int y = 0; y < NodeToric.mapSize.y; y++)
+            for (int y = 0; y < mapSize.y; y++)
             {
                 nodes[x, y] = new NodeToric(new MapPoint(x, y));
             }
         }
 
-        for (int x = 0; x < NodeToric.mapSize.x; x++)
+        for (int x = 0; x < mapSize.x; x++)
         {
-            for (int y = 0; y < NodeToric.mapSize.y; y++)
+            for (int y = 0; y < mapSize.y; y++)
             {
                 NodeToric node = nodes[x, y];
 
@@ -399,12 +399,12 @@ public class AStartToric
                     continue;
 
                 NodeToric up = null, down = null, right = null, left = null;
-                if(x == 0)
+                if (x == 0)
                 {
                     right = nodes[x + 1, y];
-                    left = nodes[NodeToric.mapSize.x - 1, y];
+                    left = nodes[mapSize.x - 1, y];
                 }
-                else if (x == NodeToric.mapSize.x - 1)
+                else if (x == mapSize.x - 1)
                 {
                     right = nodes[0, y];
                     left = nodes[x - 1, y];
@@ -418,9 +418,9 @@ public class AStartToric
                 if (y == 0)
                 {
                     up = nodes[x, y + 1];
-                    down = nodes[x, NodeToric.mapSize.y - 1];
+                    down = nodes[x, mapSize.y - 1];
                 }
-                else if (y == NodeToric.mapSize.y - 1)
+                else if (y == mapSize.y - 1)
                 {
                     up = nodes[x, 0];
                     down = nodes[x, y - 1];
@@ -451,11 +451,11 @@ public class AStartToric
             }
         }
 
-        Node[] res = new Node[NodeToric.mapSize.x * NodeToric.mapSize.y];
+        Node[] res = new Node[mapSize.x * mapSize.y];
         int i = 0;
-        for (int x = 0; x < NodeToric.mapSize.x; x++)
+        for (int x = 0; x < mapSize.x; x++)
         {
-            for (int y = 0; y < NodeToric.mapSize.y; y++)
+            for (int y = 0; y < mapSize.y; y++)
             {
                 res[i] = nodes[x, y];
                 i++;
@@ -472,7 +472,7 @@ public class AStartToric
     private void GenerateGraph(Map map)
     {
         NodeToric[,] nodes = new NodeToric[map.GetLength(0), map.GetLength(1)];
-        NodeToric.mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
+        //NodeToric.mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
 
         for (int x = 0; x < map.GetLength(0); x++)
         {
@@ -500,7 +500,7 @@ public class AStartToric
                     right = nodes[x + 1, y];
                     left = nodes[map.GetLength(0) - 1, y];
 
-                    if(y == 0)
+                    if (y == 0)
                     {
                         upRight = nodes[x + 1, y + 1];
                         upLeft = nodes[map.GetLength(0) - 1, y + 1];
@@ -645,7 +645,7 @@ public class AStartToric
 
     public Path CalculateBestPath(MapPoint start, MapPoint end)
     {
-        if(start == end)
+        if (start == end)
         {
             return new Path(0f, new MapPoint[1] { end });
         }
@@ -654,7 +654,7 @@ public class AStartToric
 
         foreach (Node node in aStar.nodes)
         {
-            if(s == null && node.point == start)
+            if (s == null && node.point == start)
             {
                 s = node;
                 continue;
@@ -687,7 +687,7 @@ public class AStartToric
 
     private class NodeToric : Node
     {
-        internal static Vector2Int mapSize;
+        //internal static Vector2Int mapSize;
 
         public NodeToric(MapPoint point) : base(point)
         {
@@ -696,9 +696,10 @@ public class AStartToric
 
         public override float StraightLineDistanceTo(Node other)
         {
-            int x = Math.Abs(other.point.X - point.X);
-            int y = Math.Abs(other.point.Y - point.Y);
-            return Math.Min(x, mapSize.x - x) + Math.Min(y, mapSize.y - y);
+            //int x = Math.Abs(other.point.X - point.X);
+            //int y = Math.Abs(other.point.Y - point.Y);
+            //return Math.Min(x, mapSize.x - x) + Math.Min(y, mapSize.y - y);
+            return 0f;
         }
     }
 

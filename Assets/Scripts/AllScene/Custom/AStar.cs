@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using CustomAI;
+using UnityEngine;
 
 /*
  *  Author : Bidou (http://www.csharpfr.com/auteurdetail.aspx?ID=13319)
@@ -538,10 +538,10 @@ namespace PathFinding
         /// ----------------------------------------------------------------------------------------
         public override bool Equals(object obj)
         {
-            if (Object.ReferenceEquals(this, null) && Object.ReferenceEquals(obj, null))
+            if (System.Object.ReferenceEquals(this, null) && System.Object.ReferenceEquals(obj, null))
                 return true;
 
-            if (Object.ReferenceEquals(this, null) || Object.ReferenceEquals(obj, null))
+            if (System.Object.ReferenceEquals(this, null) || System.Object.ReferenceEquals(obj, null))
                 return false;
 
             if (!(obj is MapPoint point))
@@ -779,7 +779,7 @@ namespace PathFinding
 
         private void Search()
         {
-            start.minCostToStart = 0d;
+            start.minCostToStart = 0f;
 
             List<Node> prioQueue = new List<Node>()
             {
@@ -788,7 +788,7 @@ namespace PathFinding
 
             do
             {
-                prioQueue = prioQueue.OrderBy(x => x.minCostToStart + x.StraightLineDistanceTo(end)).ToList();
+                prioQueue = prioQueue.OrderBy(x => x.minCostToStart).ToList();
                 Node node = prioQueue.First();
                 prioQueue.Remove(node);
 
@@ -819,7 +819,7 @@ namespace PathFinding
         public MapPoint point { get; set; }
         public List<Edge> connections { get; private set; }
 
-        internal double? minCostToStart;
+        internal float? minCostToStart;
         internal Node nearestToStart;
         internal bool visited;
 
