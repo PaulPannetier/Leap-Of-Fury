@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BuildCreatorConfig
   m_EditorClassIdentifier: 
   companyName: Default_Company
-  gameName: Leap of Fury
+  gameName: Leap_of_Fury
   version: 0.1
   gameplayScenes:
   - {fileID: 102900000, guid: 27f17e27e441c6d41b1f6d57c7e7eba3, type: 3}
@@ -28,9 +28,9 @@ MonoBehaviour:
   firstSceneToPlay: {fileID: 102900000, guid: 95ca349782007214fb012e85db33a963, type: 3}
   modifyGameplayScene: 0
   performBuild: 1
-  buildPlateform: 0
+  buildPlateform: 2
   useIL2CPPCompilation: 0
   developmentBuild: 1
   managedStrippingLevel: 0
-  copySaveDirectory: 1
-  setDefaultSettingAndInput: 1
+  copySaveDirectory: 0
+  setDefaultSettingAndInput: 0

@@ -300,7 +300,7 @@ public class BuildCreator : Editor
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
-            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".x86_64");
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".elf");
             buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
             buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
@@ -318,33 +318,45 @@ public class BuildCreator : Editor
 
         void PerformMacOSBuild()
         {
-            //BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-            //buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
+
+            buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
-
-            // For macOS, Unity outputs a .app bundle, so we adjust the path accordingly
-            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".app");
-            buildPlayerOptions.target = BuildTarget.StandaloneOSX;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
-            //buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new string[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
+            buildPlayerOptions.target = BuildTarget.StandaloneOSX;
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".app");
 
-            //PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
-
-            int architecture = 0;
-            if (buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSAppleSilicon)
-                architecture = 1;
-            else if(buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSUniversal)
+            NamedBuildTarget namedTarget = NamedBuildTarget.Standalone;
+            PlayerSettings.SetScriptingBackend(namedTarget, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
+            int architecture = 1;
+            if(buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSAppleSilicon)
+            {
                 architecture = 2;
+            }
+            else if (buildCreatorConfig.buildPlateform == BuildCreatorConfig.BuildPlateform.MacOSUniversal)
+            {
+                architecture = 3;
+            }
 
-            PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, architecture);
-            //PlayerSettings.productName = buildCreatorConfig.gameName;
-            //PlayerSettings.companyName = buildCreatorConfig.companyName;
-            //PlayerSettings.bundleVersion = buildCreatorConfig.version;
-            //PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
+            PlayerSettings.SetArchitecture(namedTarget, architecture);
+            PlayerSettings.SetManagedStrippingLevel(namedTarget, buildCreatorConfig.managedStrippingLevel);
+            buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new string[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
+
+            PlayerSettings.productName = buildCreatorConfig.gameName;
+            PlayerSettings.companyName = buildCreatorConfig.companyName;
+            PlayerSettings.bundleVersion = buildCreatorConfig.version;
 
             Debug.Log("Starting build for macOS in " + buildDir);
-            BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
+            BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            BuildSummary summary = report.summary;
+            if (summary.result == BuildResult.Succeeded)
+            {
+                Debug.Log($"Build for MacOS completed successfully! Size: {summary.totalSize / (1024 * 1024)} MB");
+            }
+            else
+            {
+                Debug.LogError($"Build for MacOS failed: {summary.result}");
+            }
         }
 
         switch (buildCreatorConfig.buildPlateform)

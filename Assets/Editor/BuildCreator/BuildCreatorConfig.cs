@@ -33,6 +33,14 @@ public class BuildCreatorConfig : ScriptableObject
     public ManagedStrippingLevel managedStrippingLevel = ManagedStrippingLevel.Disabled;
     public bool copySaveDirectory = true;
     public bool setDefaultSettingAndInput = true;
+
+    private void OnValidate()
+    {
+        if(buildPlateform == BuildPlateform.MacOSUniversal)
+        {
+            useIL2CPPCompilation = true;
+        }
+    }
 }
 
 #endif
