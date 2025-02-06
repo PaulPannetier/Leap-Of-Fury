@@ -28,9 +28,9 @@ MonoBehaviour:
   firstSceneToPlay: {fileID: 102900000, guid: 95ca349782007214fb012e85db33a963, type: 3}
   modifyGameplayScene: 0
   performBuild: 1
-  buildPlateform: 2
+  buildPlateform: 0
   useIL2CPPCompilation: 0
   developmentBuild: 1
   managedStrippingLevel: 0
-  copySaveDirectory: 0
+  copySaveDirectory: 1
   setDefaultSettingAndInput: 0

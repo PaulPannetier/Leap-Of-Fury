@@ -22019,6 +22019,7 @@ MonoBehaviour:
   tilemap: {fileID: 6712141553325966850}
   mapSize: {x: 64, y: 36}
   pathfindingMapAccuracy: 1
+  maxWallDistancePenalty: 3
 --- !u!1 &4025057001143603372
 GameObject:
   m_ObjectHideFlags: 0

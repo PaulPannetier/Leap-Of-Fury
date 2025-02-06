@@ -73,8 +73,6 @@ public class BuildCreator : Editor
             ModifyGameplayScenes();
         }
 
-        ModifyTitleScreenScene();
-
         if (buildCreatorConfig.performBuild)
         {
             List<string> scenesPath = new List<string>();
@@ -123,7 +121,7 @@ public class BuildCreator : Editor
             {
                 string saveDirectory = Path.Combine(buildDir, buildCreatorConfig.gameName + "_Data", "Save");
                 FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), saveDirectory);
-                RmMetaFile(Path.Combine(saveDirectory));
+                RmMetaFile(saveDirectory);
 
                 void RmMetaFile(string directory)
                 {
@@ -172,44 +170,6 @@ public class BuildCreator : Editor
                 SecurityManager.WriteBuildHashed(saveDirectory);
             }
         }
-    }
-
-    private void ModifyTitleScreenScene()
-    {
-        string currentScenePath = SceneManager.GetActiveScene().path;
-        SceneAsset titleScreenAsset = null;
-        foreach (Object scene in buildCreatorConfig.otherSceneTobuild)
-        {
-            if (scene == null || scene.name != "TitleScreen")
-                continue;
-            titleScreenAsset = scene as SceneAsset;
-            break;
-        }
-
-        if (titleScreenAsset == null)
-            return;
-
-        string titleScreenPath = AssetDatabase.GetAssetPath(titleScreenAsset);
-        Scene titleScreen = EditorSceneManager.OpenScene(titleScreenPath, OpenSceneMode.Single);
-
-        GameObject gamemanager = null;
-        foreach (GameObject go in titleScreen.GetRootGameObjects())
-        {
-            if (go.name == "Singleton")
-            {
-                foreach (Transform t in go.transform)
-                {
-                    if (t.name == "GameManager")
-                    {
-                        gamemanager = t.gameObject;
-                        break;
-                    }
-                }
-            }
-        }
-
-        EditorSceneManager.SaveScene(titleScreen, titleScreenPath);
-        EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
     }
 
     private void ModifyGameplayScenes()
@@ -291,12 +251,22 @@ public class BuildCreator : Editor
             PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
 
             Debug.Log("Start building for Windows in " + buildDir);
+            //BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
+
             BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            BuildSummary summary = report.summary;
+            if (summary.result == BuildResult.Succeeded)
+            {
+                Debug.Log($"Build for Windows completed successfully! Size: {summary.totalSize / (1024 * 1024)} MB");
+            }
+            else
+            {
+                Debug.LogError($"Build for Windows failed: {summary.result}");
+            }
         }
 
         void PerformLinuxBuild()
         {
-            //BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
@@ -306,14 +276,23 @@ public class BuildCreator : Editor
             buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
 
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Standalone, buildCreatorConfig.useIL2CPPCompilation ? ScriptingImplementation.IL2CPP : ScriptingImplementation.Mono2x);
-            //PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, 1); // 1 for x64 on Linux
+            PlayerSettings.SetArchitecture(NamedBuildTarget.Standalone, 1); // 1 for x64 on Linux
             PlayerSettings.productName = buildCreatorConfig.gameName;
             PlayerSettings.companyName = buildCreatorConfig.companyName;
             PlayerSettings.bundleVersion = buildCreatorConfig.version;
             PlayerSettings.SetManagedStrippingLevel(NamedBuildTarget.Standalone, buildCreatorConfig.managedStrippingLevel);
 
             Debug.Log("Start building for Linux in " + buildDir);
-            BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(buildPlayerOptions);
+            BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
+            BuildSummary summary = report.summary;
+            if (summary.result == BuildResult.Succeeded)
+            {
+                Debug.Log($"Build for Windows completed successfully! Size: {summary.totalSize / (1024 * 1024)} MB");
+            }
+            else
+            {
+                Debug.LogError($"Build for Windows failed: {summary.result}");
+            }
         }
 
         void PerformMacOSBuild()
