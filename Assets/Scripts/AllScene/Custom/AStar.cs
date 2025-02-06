@@ -736,9 +736,6 @@ namespace PathFinding
     public class AStarGraph
     {
         public Node[] nodes { get; private set; }
-        private Node start;
-        private Node end;
-        private float shortestPathCost;
 
         public AStarGraph(Node[] nodes)
         {
@@ -748,84 +745,79 @@ namespace PathFinding
         public GraphPath CalculateBestPath(Node start, Node end)
         {
             if (start == end)
-            {
                 return new GraphPath(0f, new Node[1] { end });
+
+            Dictionary<Node, float> distances = new Dictionary<Node, float>(nodes.Length);
+            Dictionary<Node, Node> previous = new Dictionary<Node, Node>(nodes.Length);
+            HashSet<Node> visited = new HashSet<Node>(nodes.Length);
+            SortedSet<PathNode> priorityQueue = new SortedSet<PathNode>(new PathNodeComparer());
+
+            uint id = 0u;
+            foreach (Node node in nodes)
+            {
+                distances[node] = float.MaxValue;
+                previous[node] = null;
+                node.id = id;
+                id++;
             }
 
-            this.start = start;
-            this.end = end;
-            shortestPathCost = 0f;
+            distances[start] = 0f;
+            priorityQueue.Add(new PathNode(start, 0f));
 
-            Search();
-            List<Node> shortestPath = new List<Node>()
+            while (priorityQueue.Count > 0)
             {
-                this.end
-            };
+                PathNode currentPathNode = priorityQueue.Min;
+                priorityQueue.Remove(currentPathNode);
+                Node current = currentPathNode.node;
 
-            BuildShortestPath(shortestPath, this.end);
-            shortestPath.Reverse();
+                if (current == end)
+                    break;
 
-            return new GraphPath(shortestPathCost, shortestPath.ToArray());
-        }
+                if (!visited.Add(current))
+                    continue;
 
-        private void BuildShortestPath(List<Node> list, Node node)
-        {
-            if (node.nearestToStart == null)
-                return;
-            list.Add(node.nearestToStart);
-            shortestPathCost += node.connections.Single(x => x.connectedNode == node.nearestToStart).cost;
-            BuildShortestPath(list, node.nearestToStart);
-        }
-
-        private void Search()
-        {
-            start.minCostToStart = 0f;
-
-            List<Node> prioQueue = new List<Node>()
-            {
-                start
-            };
-
-            do
-            {
-                prioQueue = prioQueue.OrderBy(x => x.minCostToStart).ToList();
-                Node node = prioQueue.First();
-                prioQueue.Remove(node);
-
-                foreach (Edge cnn in node.connections.OrderBy(x => x.cost))
+                List<Edge> connections = current.connections;
+                int connectionCount = connections.Count;
+                for (int i = 0; i < connectionCount; i++)
                 {
-                    Node childNode = cnn.connectedNode;
-                    if (childNode.visited)
+                    Edge edge = connections[i];
+                    Node neighbor = edge.connectedNode;
+
+                    if (visited.Contains(neighbor))
                         continue;
-                    if (childNode.minCostToStart == null || node.minCostToStart + cnn.cost < childNode.minCostToStart)
+
+                    float newDist = distances[current] + edge.cost;
+                    if (newDist < distances[neighbor])
                     {
-                        childNode.minCostToStart = node.minCostToStart + cnn.cost;
-                        childNode.nearestToStart = node;
-                        if (!prioQueue.Contains(childNode))
-                            prioQueue.Add(childNode);
+                        priorityQueue.Remove(new PathNode(neighbor, distances[neighbor]));
+                        distances[neighbor] = newDist;
+                        previous[neighbor] = current;
+                        priorityQueue.Add(new PathNode(neighbor, newDist));
                     }
                 }
+            }
 
-                node.visited = true;
-                if (node == end)
-                    return;
+            if (distances[end] >= float.MaxValue)
+                return new GraphPath(-1f, Array.Empty<Node>()); // No path found
 
-            } while (prioQueue.Any());
+            List<Node> path = new List<Node>();
+            for (Node at = end; at != null; at = previous[at])
+            {
+                path.Add(at);
+            }
+            path.Reverse();
+
+            return new GraphPath(distances[end], path.ToArray());
         }
     }
 
     public class Node
     {
-        public MapPoint point { get; set; }
         public List<Edge> connections { get; private set; }
+        internal uint id;
 
-        internal float? minCostToStart;
-        internal Node nearestToStart;
-        internal bool visited;
-
-        public Node(MapPoint point)
+        public Node()
         {
-            this.point = point;
             connections = new List<Edge>();
         }
 
@@ -833,10 +825,26 @@ namespace PathFinding
         {
             connections.Add(edge);
         }
+    }
 
-        public virtual float StraightLineDistanceTo(Node end)
+    internal class PathNode
+    {
+        public Node node;
+        public float cost;
+
+        public PathNode(Node node, float cost)
         {
-            return Math.Abs(end.point.X - point.X) + Math.Abs(end.point.Y - point.Y);
+            this.node = node;
+            this.cost = cost;
+        }
+    }
+
+    internal class PathNodeComparer : IComparer<PathNode>
+    {
+        public int Compare(PathNode x, PathNode y)
+        {
+            int compare = x.cost.CompareTo(y.cost);
+            return compare == 0 ? x.node.id.CompareTo(y.node.id) : compare;
         }
     }
 

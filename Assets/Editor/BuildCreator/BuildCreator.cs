@@ -114,10 +114,10 @@ public class BuildCreator : Editor
             Directory.CreateDirectory(buildDir);
 
             //Performing Build
-            PerformBuild(buildDir, scenesPath.ToArray());
+            bool buildSuccess = PerformBuild(buildDir, scenesPath.ToArray());
 
             //Copy save content
-            if (buildCreatorConfig.copySaveDirectory)
+            if (buildSuccess && buildCreatorConfig.copySaveDirectory)
             {
                 string saveDirectory = Path.Combine(buildDir, buildCreatorConfig.gameName + "_Data", "Save");
                 FileUtil.CopyFileOrDirectory(Path.Combine(Application.dataPath, "Save"), saveDirectory);
@@ -149,7 +149,7 @@ public class BuildCreator : Editor
                     InputManager.SetCurrentController(BaseController.KeyboardAndGamepad);
                     string tmpPath = Path.Combine("Save", "GameData", "tmp", "inputs.tmp");
                     if (!InputManager.SaveConfiguration(@"//" + tmpPath))
-                        Debug.Log("couldn't save configuration !!!");
+                        Debug.Log("Couldn't save configuration !!!");
                     string inputsText = File.ReadAllText(Path.Combine(Application.dataPath, tmpPath));
                     File.WriteAllText(Path.Combine(saveDirectory, "UserSave", "inputs" + saveFileExtension), inputsText);
                     File.Delete(Path.Combine(Application.dataPath, tmpPath));
@@ -230,9 +230,9 @@ public class BuildCreator : Editor
         EditorSceneManager.OpenScene(currentScenePath, OpenSceneMode.Single);
     }
 
-    private void PerformBuild(string buildDir, string[] scenesPath)
+    private bool PerformBuild(string buildDir, string[] scenesPath)
     {
-        void PerformWindowsBuild()
+        bool PerformWindowsBuild()
         {
             //BuildPlayerOptions buildPlayerOptions = BuildPlayerWindow.DefaultBuildMethods.GetBuildPlayerOptions(new BuildPlayerOptions());
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
@@ -258,19 +258,21 @@ public class BuildCreator : Editor
             if (summary.result == BuildResult.Succeeded)
             {
                 Debug.Log($"Build for Windows completed successfully! Size: {summary.totalSize / (1024 * 1024)} MB");
+                return true;
             }
             else
             {
                 Debug.LogError($"Build for Windows failed: {summary.result}");
+                return false;
             }
         }
 
-        void PerformLinuxBuild()
+        bool PerformLinuxBuild()
         {
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
             buildPlayerOptions.options = buildCreatorConfig.developmentBuild ? BuildOptions.CompressWithLz4HC | BuildOptions.Development : BuildOptions.CompressWithLz4;
             buildPlayerOptions.scenes = scenesPath;
-            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName + ".elf");
+            buildPlayerOptions.locationPathName = Path.Combine(buildDir, buildCreatorConfig.gameName);
             buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
             buildPlayerOptions.targetGroup = BuildTargetGroup.Standalone;
             buildPlayerOptions.extraScriptingDefines = buildCreatorConfig.developmentBuild ? new[] { "ADVANCE_DEBUG" } : Array.Empty<string>();
@@ -287,15 +289,17 @@ public class BuildCreator : Editor
             BuildSummary summary = report.summary;
             if (summary.result == BuildResult.Succeeded)
             {
-                Debug.Log($"Build for Windows completed successfully! Size: {summary.totalSize / (1024 * 1024)} MB");
+                Debug.Log($"Build for Linux completed successfully! Size: {summary.totalSize / (1024 * 1024)} MB");
+                return true;
             }
             else
             {
-                Debug.LogError($"Build for Windows failed: {summary.result}");
+                Debug.LogError($"Build for Linux failed: {summary.result}");
+                return false;
             }
         }
 
-        void PerformMacOSBuild()
+        bool PerformMacOSBuild()
         {
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
 
@@ -331,33 +335,30 @@ public class BuildCreator : Editor
             if (summary.result == BuildResult.Succeeded)
             {
                 Debug.Log($"Build for MacOS completed successfully! Size: {summary.totalSize / (1024 * 1024)} MB");
+                return true;
             }
             else
             {
                 Debug.LogError($"Build for MacOS failed: {summary.result}");
+                return false;
             }
         }
 
         switch (buildCreatorConfig.buildPlateform)
         {
             case BuildCreatorConfig.BuildPlateform.Windows:
-                PerformWindowsBuild();
-                break;
+                return PerformWindowsBuild();
             case BuildCreatorConfig.BuildPlateform.Linux:
-                PerformLinuxBuild();
-                break;
+                return PerformLinuxBuild();
             case BuildCreatorConfig.BuildPlateform.MacOSAppleSilicon:
-                PerformMacOSBuild();
-                break;
+                return PerformMacOSBuild();                
             case BuildCreatorConfig.BuildPlateform.MacOSIntel:
-                PerformMacOSBuild();
-                break;
+                return PerformMacOSBuild();
             case BuildCreatorConfig.BuildPlateform.MacOSUniversal:
-                PerformMacOSBuild();
-                break;
+                return PerformMacOSBuild();
             default:
                 Debug.LogWarning($"Unsupported plateform : {buildCreatorConfig.buildPlateform}");
-                break;
+                return false;
         }
     }
 }

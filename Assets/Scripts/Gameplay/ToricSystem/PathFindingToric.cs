@@ -654,12 +654,13 @@ public class AStartToric
 
         foreach (Node node in aStar.nodes)
         {
-            if (s == null && node.point == start)
+            NodeToric nodeToric = (NodeToric)node;
+            if (s == null && nodeToric.point == start)
             {
                 s = node;
                 continue;
             }
-            if (e == null && node.point == end)
+            if (e == null && nodeToric.point == end)
             {
                 e = node;
                 continue;
@@ -675,7 +676,7 @@ public class AStartToric
         MapPoint[] res = new MapPoint[path.path.Length];
         for (int i = 0; i < path.path.Length; i++)
         {
-            res[i] = path.path[i].point;
+            res[i] = ((NodeToric)path.path[i]).point;
         }
 
         return new Path(path.totalCost, res);
@@ -689,18 +690,19 @@ public class AStartToric
     {
         //internal static Vector2Int mapSize;
 
-        public NodeToric(MapPoint point) : base(point)
-        {
+        public readonly MapPoint point;
 
+        public NodeToric(MapPoint point) : base()
+        {
+            this.point = point;
         }
 
-        public override float StraightLineDistanceTo(Node other)
-        {
-            //int x = Math.Abs(other.point.X - point.X);
-            //int y = Math.Abs(other.point.Y - point.Y);
-            //return Math.Min(x, mapSize.x - x) + Math.Min(y, mapSize.y - y);
-            return 0f;
-        }
+        //public override float StraightLineDistanceTo(Node other)
+        //{
+        //    //int x = Math.Abs(other.point.X - point.X);
+        //    //int y = Math.Abs(other.point.Y - point.Y);
+        //    //return Math.Min(x, mapSize.x - x) + Math.Min(y, mapSize.y - y);
+        //}
     }
 
     #endregion

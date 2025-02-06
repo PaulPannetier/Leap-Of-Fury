@@ -120,6 +120,9 @@ public class PathFindingToricTest : MonoBehaviour
 
             void DrawPath(Path p)
             {
+                if (p.path.Length <= 1)
+                    return;
+
                 Vector2 beg = LevelMapData.currentMap.GetPositionOfMapPoint(map, p.path[0]);
 
                 for (int i = 0; i < p.path.Length; i++)
