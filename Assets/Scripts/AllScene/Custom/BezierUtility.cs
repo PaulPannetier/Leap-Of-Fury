@@ -425,12 +425,19 @@ namespace BezierUtility
                 if (currentTime > maxT)
                 {
                     index++;
-                    maxT = (index + 1) / pM1;
-                    (h1, h2) = GetHandles(index);
-                    P0 = points[index];
-                    P1 = 3f * (h1 - points[index]);
-                    P2 = 3f * points[index] - 6f * h1 + 3f * h2;
-                    P3 = 3f * h1 - points[index] - 3f * h2 + points[index + 1];
+                    if(index > points.Length - 2)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        maxT = (index + 1) / pM1;
+                        (h1, h2) = GetHandles(index);
+                        P0 = points[index];
+                        P1 = 3f * (h1 - points[index]);
+                        P2 = 3f * points[index] - 6f * h1 + 3f * h2;
+                        P3 = 3f * h1 - points[index] - 3f * h2 + points[index + 1];
+                    }
                 }
                 newT = currentTime * pM1 - index;
                 cache0 = newT * newT;
@@ -614,11 +621,19 @@ namespace BezierUtility
                 if (currentTime > maxT)
                 {
                     index++;
-                    maxT = (index + 1) / pM1;
-                    P0 = points[index];
-                    P1 = velocities[index];
-                    P2 = 3f * (points[index + 1] - points[index]) - 2f * velocities[index] - velocities[index + 1];
-                    P3 = 2f * (points[index] - points[index + 1]) + velocities[index] + velocities[index + 1];
+                    //anti bug cond
+                    if (index > points.Length - 2 || index > velocities.Length - 2)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        maxT = (index + 1) / pM1;
+                        P0 = points[index];
+                        P1 = velocities[index];
+                        P2 = 3f * (points[index + 1] - points[index]) - 2f * velocities[index] - velocities[index + 1];
+                        P3 = 2f * (points[index] - points[index + 1]) + velocities[index] + velocities[index + 1];
+                    }
                 }
                 newT = currentTime * pM1 - index;
                 cache0 = newT * newT;
@@ -729,7 +744,7 @@ namespace BezierUtility
             }
             if (points.Length < 2)
             {
-                throw new Exception($"A CatmulRom Spline have at least two points, got only {points.Length} point.");
+                throw new Exception($"A CatmulRom Spline have at least two points, got only {points.Length}.");
             }
 
             this.points = points;
@@ -868,8 +883,16 @@ namespace BezierUtility
                 if (currentTime > maxT)
                 {
                     index++;
-                    maxT = (index + 1) / pM3;
-                    (C0, C1, C2, C3) = PrecomputePolynomialValues(points[index], points[index + 1], points[index + 2], points[index + 3]);
+                    //anti bug
+                    if (index > points.Length - 4)
+                    {
+                        index--;
+                    }
+                    else
+                    {
+                        maxT = (index + 1) / pM3;
+                        (C0, C1, C2, C3) = PrecomputePolynomialValues(points[index], points[index + 1], points[index + 2], points[index + 3]);
+                    }
                 }
                 newT = currentTime * pM3 - index;
                 cache0 = newT * newT;

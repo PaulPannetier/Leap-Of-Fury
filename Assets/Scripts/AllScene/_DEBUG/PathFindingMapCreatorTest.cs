@@ -43,11 +43,11 @@ public class PathFindingMapCreatorTest : MonoBehaviour
                 pos = LevelMapData.currentMap.GetPositionOfMapPoint(map, mapPoint);
 
                 GameObject square = Instantiate(squarePrefabs, pos, Quaternion.identity, transform);
-                Color color = Color.red * 0.75f;
+                Color color = new Color(1f, 0f, 0f, 0.75f);
                 float cost = map.GetCost(mapPoint);
                 if (cost >= 0)
                 {
-                    color = Color.green * (cost / maxCost);
+                    color = new Color(0f, 1f, 0f, (cost / (float)maxCost));
                 }
                 square.GetComponent<SpriteRenderer>().color = color;
                 square.transform.localScale = scale;

@@ -431,22 +431,21 @@ public class AStartToric
                     down = nodes[x, y - 1];
                 }
 
-                int cost = map.GetCost(node.point);
                 if (!map.IsWall(up.point))
                 {
-                    node.AddConnection(new Edge(cost, up));
+                    node.AddConnection(new Edge(map.GetCost(up.point), up));
                 }
                 if (!map.IsWall(down.point))
                 {
-                    node.AddConnection(new Edge(cost, down));
+                    node.AddConnection(new Edge(map.GetCost(down.point), down));
                 }
                 if (!map.IsWall(right.point))
                 {
-                    node.AddConnection(new Edge(cost, right));
+                    node.AddConnection(new Edge(map.GetCost(right.point), right));
                 }
                 if (!map.IsWall(left.point))
                 {
-                    node.AddConnection(new Edge(cost, left));
+                    node.AddConnection(new Edge(map.GetCost(left.point), left));
                 }
             }
         }
@@ -471,168 +470,84 @@ public class AStartToric
 
     private void GenerateGraph(Map map)
     {
-        NodeToric[,] nodes = new NodeToric[map.GetLength(0), map.GetLength(1)];
-        //NodeToric.mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
+        Vector2Int mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
+        NodeToric[,] nodes = new NodeToric[mapSize.x, mapSize.y];
 
-        for (int x = 0; x < map.GetLength(0); x++)
+        for (int x = 0; x < mapSize.x; x++)
         {
-            for (int y = 0; y < map.GetLength(1); y++)
+            for (int y = 0; y < mapSize.y; y++)
             {
                 nodes[x, y] = new NodeToric(new MapPoint(x, y));
             }
         }
 
         NodeToric up, down, right, left, upRight, upLeft, downRight, downLeft;
-        for (int x = 0; x < map.GetLength(0); x++)
+        int r, l, u, d;
+        for (int x = 0; x < mapSize.x; x++)
         {
-            for (int y = 0; y < map.GetLength(1); y++)
+            for (int y = 0; y < mapSize.y; y++)
             {
                 NodeToric node = nodes[x, y];
 
                 if (map.IsWall(node.point))
                     continue;
 
-                up = down = right = left = upRight = upLeft = downRight = downLeft = null;
-                if (x == 0)
-                {
-                    up = nodes[x, (y + 1) % map.GetLength(1)];
-                    down = nodes[x, Useful.ClampModulo(0, map.GetLength(1), y - 1)];
-                    right = nodes[x + 1, y];
-                    left = nodes[map.GetLength(0) - 1, y];
-
-                    if (y == 0)
-                    {
-                        upRight = nodes[x + 1, y + 1];
-                        upLeft = nodes[map.GetLength(0) - 1, y + 1];
-                        downRight = nodes[x + 1, map.GetLength(1) - 1];
-                        downLeft = nodes[map.GetLength(0) - 1, map.GetLength(1) - 1];
-                    }
-                    else if (y == map.GetLength(1) - 1)
-                    {
-                        upRight = nodes[x + 1, 0];
-                        upLeft = nodes[map.GetLength(0) - 1, 0];
-                        downRight = nodes[x + 1, y - 1];
-                        downLeft = nodes[map.GetLength(0) - 1, y - 1];
-                    }
-                    else
-                    {
-                        upRight = nodes[x + 1, y + 1];
-                        upLeft = nodes[map.GetLength(0) - 1, y + 1];
-                        downRight = nodes[x + 1, y - 1];
-                        downLeft = nodes[map.GetLength(0) - 1, y - 1];
-                    }
-                }
-                else if (x == map.GetLength(0) - 1)
-                {
-                    up = nodes[x, (y + 1) % map.GetLength(1)];
-                    down = nodes[x, Useful.ClampModulo(0, map.GetLength(1), y - 1)];
-                    right = nodes[0, y];
-                    left = nodes[x - 1, y];
-
-
-                    if (y == 0)
-                    {
-                        upRight = nodes[0, y + 1];
-                        upLeft = nodes[x - 1, y + 1];
-                        downRight = nodes[0, map.GetLength(1) - 1];
-                        downLeft = nodes[x - 1, map.GetLength(1) - 1];
-                    }
-                    else if (y == map.GetLength(1) - 1)
-                    {
-                        upRight = nodes[0, 0];
-                        upLeft = nodes[x - 1, 0];
-                        downRight = nodes[0, y - 1];
-                        downLeft = nodes[x - 1, y - 1];
-                    }
-                    else
-                    {
-                        upRight = nodes[0, y + 1];
-                        upLeft = nodes[x - 1, y + 1];
-                        downRight = nodes[0, y - 1];
-                        downLeft = nodes[x - 1, y - 1];
-                    }
-                }
-                else if (y == 0)
-                {
-                    int xP1 = (x + 1) % map.GetLength(0);
-                    int xM1 = Useful.ClampModulo(0, map.GetLength(0), x - 1);
-                    up = nodes[x, y + 1];
-                    down = nodes[x, map.GetLength(1) - 1];
-                    right = nodes[xP1, y];
-                    left = nodes[xM1, y];
-                    upRight = nodes[xP1, y + 1];
-                    upLeft = nodes[xM1, y + 1];
-                    downRight = nodes[xP1, map.GetLength(1) - 1];
-                    downLeft = nodes[xM1, map.GetLength(1) - 1];
-                }
-                else if (y == map.GetLength(1) - 1)
-                {
-                    int xP1 = (x + 1) % map.GetLength(0);
-                    int xM1 = Useful.ClampModulo(0, map.GetLength(0), x - 1);
-                    up = nodes[x, 0];
-                    down = nodes[x, y - 1];
-                    right = nodes[xP1, y];
-                    left = nodes[xM1, y];
-                    upRight = nodes[xP1, 0];
-                    upLeft = nodes[xM1, 0];
-                    downRight = nodes[xP1, y - 1];
-                    downLeft = nodes[xM1, y - 1];
-                }
-                else
-                {
-                    up = nodes[x, y + 1];
-                    down = nodes[x, y - 1];
-                    right = nodes[x + 1, y];
-                    left = nodes[x - 1, y];
-                    upRight = nodes[x + 1, y + 1];
-                    upLeft = nodes[x - 1, y + 1];
-                    downRight = nodes[x + 1, y - 1];
-                    downLeft = nodes[x - 1, y - 1];
-                }
+                r = x == mapSize.x - 1 ? 0 : x + 1;
+                l = x == 0 ? mapSize.x - 1 : x - 1;
+                u = y == mapSize.y - 1 ? 0 : y + 1;
+                d = y == 0 ? mapSize.y - 1 : y - 1;
+                up = nodes[x, u];
+                down = nodes[x, d];
+                right = nodes[r, y];
+                left = nodes[l, y];
+                upRight = nodes[r, u];
+                upLeft = nodes[l, u];
+                downRight = nodes[r, d];
+                downLeft = nodes[l, d];
 
                 if (!map.IsWall(up.point))
                 {
-                    node.AddConnection(new Edge(1f, up));
+                    node.AddConnection(new Edge(map.GetCost(up.point), up));
                 }
                 if (!map.IsWall(down.point))
                 {
-                    node.AddConnection(new Edge(1f, down));
+                    node.AddConnection(new Edge(map.GetCost(down.point), down));
                 }
                 if (!map.IsWall(right.point))
                 {
-                    node.AddConnection(new Edge(1f, right));
+                    node.AddConnection(new Edge(map.GetCost(right.point), right));
                 }
                 if (!map.IsWall(left.point))
                 {
-                    node.AddConnection(new Edge(1f, left));
+                    node.AddConnection(new Edge(map.GetCost(left.point), left));
                 }
-
                 if (!map.IsWall(upRight.point) && !map.IsWall(up.point) && !map.IsWall(right.point))
                 {
-                    node.AddConnection(new Edge(sqrt2, upRight));
+                    node.AddConnection(new Edge(sqrt2 * map.GetCost(upRight.point), upRight));
                 }
                 if (!map.IsWall(upLeft.point) && !map.IsWall(up.point) && !map.IsWall(left.point))
                 {
-                    node.AddConnection(new Edge(sqrt2, upLeft));
+                    node.AddConnection(new Edge(sqrt2 * map.GetCost(upLeft.point), upLeft));
                 }
                 if (!map.IsWall(downRight.point) && !map.IsWall(down.point) && !map.IsWall(right.point))
                 {
-                    node.AddConnection(new Edge(sqrt2, downRight));
+                    node.AddConnection(new Edge(sqrt2 * map.GetCost(downRight.point), downRight));
                 }
                 if (!map.IsWall(downLeft.point) && !map.IsWall(down.point) && !map.IsWall(left.point))
                 {
-                    node.AddConnection(new Edge(sqrt2, downLeft));
+                    node.AddConnection(new Edge(sqrt2 * map.GetCost(downLeft.point), downLeft));
                 }
             }
         }
 
-        Node[] res = new Node[map.GetLength(0) * map.GetLength(1)];
+        Node[] res = new Node[mapSize.x * mapSize.y];
         int i = 0;
-        for (int x = 0; x < map.GetLength(0); x++)
+        for (int x = 0; x < mapSize.x; x++)
         {
-            for (int y = 0; y < map.GetLength(1); y++)
+            for (int y = 0; y < mapSize.y; y++)
             {
                 res[i] = nodes[x, y];
+                i++;
             }
         }
 
@@ -703,6 +618,10 @@ public class AStartToric
         //    //int y = Math.Abs(other.point.Y - point.Y);
         //    //return Math.Min(x, mapSize.x - x) + Math.Min(y, mapSize.y - y);
         //}
+        public override string ToString()
+        {
+            return point.ToString();
+        }
     }
 
     #endregion

@@ -158,7 +158,7 @@ MonoBehaviour:
   useSplinePathFinding: 0
   smoothnessMode: 0
   splineType: 2
-  start: {x: 13, y: 6}
+  start: {x: 13.5, y: 5.5}
   tension: 0
   x: 0
   freezeEndKey: 32
@@ -273,11 +273,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1389616452209273845, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: maxWallDistancePenalty
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1389616452209273845, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: pathfindingMapAccuracy
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5838678480023942404, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5838678480386065176, guid: ed7be258e53074f4aa318f1b2ec3a18e, type: 3}
       propertyPath: m_Name

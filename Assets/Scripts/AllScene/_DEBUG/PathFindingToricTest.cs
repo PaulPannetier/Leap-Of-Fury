@@ -139,8 +139,7 @@ public class PathFindingToricTest : MonoBehaviour
                 for (int i = 1; i < points.Length; i++)
                 {
                     Color c = Gizmos.color;
-                    Gizmos.color = Color.red;
-                    Circle.GizmosDraw(PhysicsToric.GetPointInsideBounds(points[i]), 0.05f);
+                    Circle.GizmosDraw(PhysicsToric.GetPointInsideBounds(points[i]), 0.05f, Color.red);
                     Gizmos.color = c;
                     PhysicsToric.GizmosDrawRaycast(beg, points[i]);
                     beg = points[i];

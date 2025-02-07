@@ -11,7 +11,7 @@ public class LevelMapData : MonoBehaviour
     #region Fields
 
     private const int pathFindingBaseCost = 1000;
-    private const int pathFindingWallPenaltyCost = 200;
+    private const int pathFindingWallPenaltyCost = 300;
 
     private static LevelMapData _currentMap;
     public static LevelMapData currentMap
@@ -232,9 +232,10 @@ public class LevelMapData : MonoBehaviour
             }
         }
 
-        for (int i = 1; i < wallDistPoint.Length; i++)
+        wallDistPoint.Reverse();
+        for (int i = 0; i < wallDistPoint.Length - 1; i++)
         {
-            int extraCost = i * pathFindingWallPenaltyCost;
+            int extraCost = (i + 1) * pathFindingWallPenaltyCost;
             foreach (MapPoint mapPoint in wallDistPoint[i])
             {
                 cost[mapPoint.X, mapPoint.Y] += extraCost;

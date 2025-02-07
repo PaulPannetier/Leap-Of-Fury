@@ -1814,6 +1814,30 @@ public static class Useful
         return res;
     }
 
+    public static void Reverse<T>(this T[] array)
+    {
+        int end = array.Length / 2;
+        int endIndex = array.Length - 1;
+        for (int i = 0; i < end; i++)
+        {
+            T tmp = array[i];
+            array[i] = array[endIndex - i];
+            array[endIndex - i] = tmp;
+        }
+    }
+
+    public static void Reverse<T>(this List<T> lst)
+    {
+        int end = lst.Count / 2;
+        int endIndex = lst.Count - 1;
+        for (int i = 0; i < end; i++)
+        {
+            T tmp = lst[i];
+            lst[i] = lst[endIndex - i];
+            lst[endIndex - i] = tmp;
+        }
+    }
+
     #region Show
 
     public static void Print<T>(this T[] tab, string begMessage = "", string endMessage = "")
