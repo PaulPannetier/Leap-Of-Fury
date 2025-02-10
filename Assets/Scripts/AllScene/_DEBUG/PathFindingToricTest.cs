@@ -44,7 +44,7 @@ public class PathFindingToricTest : MonoBehaviour
 
         if (testPathFinding || testPathNoDiagFinding)
         {
-            Map map = LevelMapData.currentMap.GetPathfindingMap();
+            PathFindingMap map = LevelMapData.currentMap.GetPathfindingMap();
             MapPoint startMP = LevelMapData.currentMap.GetMapPointAtPosition(map, start);
             MapPoint endMP = LevelMapData.currentMap.GetMapPointAtPosition(map, end);
             testPathNoDiag = testPath = null;

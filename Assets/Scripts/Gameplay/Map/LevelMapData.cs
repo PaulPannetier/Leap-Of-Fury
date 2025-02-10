@@ -33,8 +33,8 @@ public class LevelMapData : MonoBehaviour
     private Grid grid;
     private Collider2D[] staticMapColliders;
     private Collider2D[] nonStaticMapColliders;
-    private Map _staticPathfindingMap;
-    private Map staticPathfindingMap
+    private PathFindingMap _staticPathfindingMap;
+    private PathFindingMap staticPathfindingMap
     {
         get
         {
@@ -83,8 +83,8 @@ public class LevelMapData : MonoBehaviour
     }
 
     [Header("Pathfinding")]
-    [SerializeField, Range(1, 5)] private int pathfindingMapAccuracy;
     [SerializeField] private int maxWallDistancePenalty = 3;
+    [Range(1, 5)] public int pathfindingMapAccuracy;
     [HideInInspector] public Vector2 pathfindingCellsSize => cellSize / pathfindingMapAccuracy;
 
     #endregion
@@ -138,7 +138,7 @@ public class LevelMapData : MonoBehaviour
 
     #region PathFinding
 
-    private List<MapPoint> GetColliderBlockedPoints(Map map, Collider2D collider, bool isToricCollider)
+    private List<MapPoint> GetColliderBlockedPoints(PathFindingMap map, Collider2D collider, bool isToricCollider)
     {
         List<MapPoint> HandleHitbox(Vector2 pos, Vector2 size)
         {
@@ -187,7 +187,7 @@ public class LevelMapData : MonoBehaviour
             for (int y = 0; y < mapSize.y; y++)
             {
                 MapPoint mapPoint = new MapPoint(x, y);
-                if (cost[mapPoint.X, mapPoint.Y] < 0)
+                if (cost[mapPoint.x, mapPoint.y] < 0)
                 {
                     wallDistPoint[0].Add(mapPoint);
                 }
@@ -208,24 +208,24 @@ public class LevelMapData : MonoBehaviour
                     return false;
                 }
 
-                MapPoint right = new MapPoint(mapPoint.X == mapSize.x - 1 ? 0 : mapPoint.X + 1, mapPoint.Y);
-                MapPoint left = new MapPoint(mapPoint.X == 0 ? mapSize.x - 1 : mapPoint.X - 1, mapPoint.Y);
-                MapPoint up = new MapPoint(mapPoint.X, mapPoint.Y == mapSize.y - 1 ? 0 : mapPoint.Y + 1);
-                MapPoint down = new MapPoint(mapPoint.X, mapPoint.Y == 0 ? mapSize.y - 1 : mapPoint.Y - 1);
+                MapPoint right = new MapPoint(mapPoint.x == mapSize.x - 1 ? 0 : mapPoint.x + 1, mapPoint.y);
+                MapPoint left = new MapPoint(mapPoint.x == 0 ? mapSize.x - 1 : mapPoint.x - 1, mapPoint.y);
+                MapPoint up = new MapPoint(mapPoint.x, mapPoint.y == mapSize.y - 1 ? 0 : mapPoint.y + 1);
+                MapPoint down = new MapPoint(mapPoint.x, mapPoint.y == 0 ? mapSize.y - 1 : mapPoint.y - 1);
 
-                if(cost[right.X, right.Y] > 0 && !IsMapPointAlreadyAssign(right))
+                if(cost[right.x, right.y] > 0 && !IsMapPointAlreadyAssign(right))
                 {
                     wallDistPoint[i].Add(right);
                 }
-                if (cost[left.X, left.Y] > 0 && !IsMapPointAlreadyAssign(left))
+                if (cost[left.x, left.y] > 0 && !IsMapPointAlreadyAssign(left))
                 {
                     wallDistPoint[i].Add(left);
                 }
-                if (cost[up.X, up.Y] > 0 && !IsMapPointAlreadyAssign(up))
+                if (cost[up.x, up.y] > 0 && !IsMapPointAlreadyAssign(up))
                 {
                     wallDistPoint[i].Add(up);
                 }
-                if (cost[down.X, down.Y] > 0 && !IsMapPointAlreadyAssign(down))
+                if (cost[down.x, down.y] > 0 && !IsMapPointAlreadyAssign(down))
                 {
                     wallDistPoint[i].Add(down);
                 }
@@ -238,16 +238,16 @@ public class LevelMapData : MonoBehaviour
             int extraCost = (i + 1) * pathFindingWallPenaltyCost;
             foreach (MapPoint mapPoint in wallDistPoint[i])
             {
-                cost[mapPoint.X, mapPoint.Y] += extraCost;
+                cost[mapPoint.x, mapPoint.y] += extraCost;
             }
         }
     }
 
-    private Map ComputeStaticPathfindingMap()
+    private PathFindingMap ComputeStaticPathfindingMap()
     {
         Vector2Int pathfindignSize = new Vector2Int((mapSize.x * pathfindingMapAccuracy).Round(), (mapSize.y * pathfindingMapAccuracy).Round());
         int[,] costMap = new int[pathfindignSize.x, pathfindignSize.y];
-        Map res = new Map(costMap, pathfindingMapAccuracy);
+        PathFindingMap res = new PathFindingMap(costMap);
 
         HashSet<MapPoint> blockedPoints = new HashSet<MapPoint>();
         for (int i = 0; i < staticMapColliders.Length; i++)
@@ -271,14 +271,14 @@ public class LevelMapData : MonoBehaviour
         return res;
     }
 
-    public Map GetPathfindingMap()
+    public PathFindingMap GetPathfindingMap()
     {
         List<PathFindingBlocker> blockers = PathFindingBlocker.GetPathFindingBlockers();
         HashSet<MapPoint> blockedPoints = new HashSet<MapPoint>();
 
         Vector2Int pathfindignSize = new Vector2Int((mapSize.x * pathfindingMapAccuracy).Round(), (mapSize.y * pathfindingMapAccuracy).Round());
         int[,] costMap = new int[pathfindignSize.x, pathfindignSize.y];
-        Map res = new Map(costMap, pathfindingMapAccuracy);
+        PathFindingMap res = new PathFindingMap(costMap);
 
         foreach (PathFindingBlocker blocker in blockers)
         {
@@ -320,11 +320,11 @@ public class LevelMapData : MonoBehaviour
         return res;
     }
 
-    public MapPoint GetMapPointAtPosition(Map pathfindingMap, Vector2 position)
+    public MapPoint GetMapPointAtPosition(PathFindingMap pathfindingMap, Vector2 position)
     {
-        Vector2 pathfindingMapSize = mapSize * pathfindingMap.accuracy;
+        Vector2 pathfindingMapSize = mapSize * pathfindingMapAccuracy;
         Vector2 size = mapSize * cellSize;
-        position = PhysicsToric.GetPointInsideBounds(position) + size * 0.5f - (cellSize * 0.5f / pathfindingMap.accuracy);
+        position = PhysicsToric.GetPointInsideBounds(position) + size * 0.5f - (cellSize * 0.5f / pathfindingMapAccuracy);
         float x = Mathf.InverseLerp(0f, size.x, position.x);
         x = Mathf.Lerp(0f, pathfindingMapSize.x, x);
         float y = Mathf.InverseLerp(0f, size.y, position.y);
@@ -332,13 +332,13 @@ public class LevelMapData : MonoBehaviour
         return new MapPoint(x.Round(), y.Round());
     }
 
-    public Vector2 GetPositionOfMapPoint(Map pathfindingMap, MapPoint mapPoint)
+    public Vector2 GetPositionOfMapPoint(PathFindingMap pathfindingMap, MapPoint mapPoint)
     {
-        Vector2 pathfindingMapSize = mapSize * pathfindingMap.accuracy;
+        Vector2 pathfindingMapSize = mapSize * pathfindingMapAccuracy;
         Vector2 size = mapSize * cellSize;
-        float x = ((mapPoint.X / pathfindingMapSize.x) * size.x) - (size.x * 0.5f); 
-        float y = ((mapPoint.Y / pathfindingMapSize.y) * size.y) - (size.y * 0.5f);
-        return new Vector2(x + (cellSize.x * 0.5f / pathfindingMap.accuracy), y + (cellSize.y * 0.5f / pathfindingMap.accuracy));
+        float x = ((mapPoint.x / pathfindingMapSize.x) * size.x) - (size.x * 0.5f); 
+        float y = ((mapPoint.y / pathfindingMapSize.y) * size.y) - (size.y * 0.5f);
+        return new Vector2(x + (cellSize.x * 0.5f / pathfindingMapAccuracy), y + (cellSize.y * 0.5f / pathfindingMapAccuracy));
     }
 
     #endregion

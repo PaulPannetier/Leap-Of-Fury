@@ -26,7 +26,7 @@ public class MovingPlateform : PathFindingBlocker
         PauseManager.instance.callBackOnPauseEnable += Disable;
     }
 
-    public override List<MapPoint> GetBlockedCells(Map map)
+    public override List<MapPoint> GetBlockedCells(PathFindingMap map)
     {
         return GetBlockedCellsInRectangle(map, transform.position, hitbox.size - LevelMapData.currentMap.cellSize * 0.1f);
     }

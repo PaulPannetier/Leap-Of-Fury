@@ -16,7 +16,7 @@ public class Jumper : PathFindingBlocker
         hitbox = GetComponent<BoxCollider2D>();
     }
 
-    public override List<MapPoint> GetBlockedCells(Map map)
+    public override List<MapPoint> GetBlockedCells(PathFindingMap map)
     {
         return GetBlockedCellsInRectangle(map, transform.position, hitbox.size - LevelMapData.currentMap.cellSize * 0.1f);
     }

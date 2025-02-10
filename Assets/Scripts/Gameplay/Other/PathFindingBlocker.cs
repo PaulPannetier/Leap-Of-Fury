@@ -14,7 +14,7 @@ namespace PathFinding
         /// 
         /// </summary>
         /// <returns>The list of cell where the blocker block the pathFinder algorithme, note that (0,0) is the left down corner of the map</returns>
-        public abstract List<MapPoint> GetBlockedCells(Map map);
+        public abstract List<MapPoint> GetBlockedCells(PathFindingMap map);
 
         protected virtual void Awake()
         {
@@ -32,7 +32,7 @@ namespace PathFinding
             }
         }
 
-        public static List<MapPoint> GetBlockedCellsInRectangle(Map map, in Vector2 pos, in Vector2 size)
+        public static List<MapPoint> GetBlockedCellsInRectangle(PathFindingMap map, in Vector2 pos, in Vector2 size)
         {
             //1 Slice the hitbox into multiple to fix the toric Space
             List<Rectangle> rectangles = SliceRectangle(new Rectangle(PhysicsToric.GetPointInsideBounds(pos), size));
@@ -141,7 +141,7 @@ namespace PathFinding
         }
 
         //assume that the rectangle is INSIDE the tore map space
-        private static List<MapPoint> GetBlockedCellsInRectangleInternal(Map map, Rectangle rec)
+        private static List<MapPoint> GetBlockedCellsInRectangleInternal(PathFindingMap map, Rectangle rec)
         {
             rec.size *= 0.999f;
 
@@ -150,10 +150,10 @@ namespace PathFinding
             MapPoint botLeft = LevelMapData.currentMap.GetMapPointAtPosition(map, new Vector2(rec.center.x - 0.5f * rec.size.x, rec.center.y - 0.5f * rec.size.y));
             MapPoint botRight = LevelMapData.currentMap.GetMapPointAtPosition(map, new Vector2(rec.center.x + 0.5f * rec.size.x, rec.center.y - 0.5f * rec.size.y));
 
-            int xMin = Mathf.Min(topLeft.X, botLeft.X);
-            int xMax = Mathf.Max(topRight.X, botRight.X);
-            int yMin = Mathf.Min(botLeft.Y, botRight.Y);
-            int yMax = Mathf.Max(topLeft.Y, topRight.Y);
+            int xMin = Mathf.Min(topLeft.x, botLeft.x);
+            int xMax = Mathf.Max(topRight.x, botRight.x);
+            int yMin = Mathf.Min(botLeft.y, botRight.y);
+            int yMax = Mathf.Max(topLeft.y, topRight.y);
 
             List<MapPoint> res = new List<MapPoint>();
             for (int x = xMin; x <= xMax; x++)
@@ -166,11 +166,11 @@ namespace PathFinding
             return res;
         }
 
-        public static List<MapPoint> GetBlockedCellsInCircle(Map map, in Vector2 pos, float radius)
+        public static List<MapPoint> GetBlockedCellsInCircle(PathFindingMap map, in Vector2 pos, float radius)
         {
             float cache = 2f * radius;
             List<MapPoint> res = GetBlockedCellsInRectangle(map, pos, new Vector2(cache, cache));
-            float d = LevelMapData.currentMap.cellSize.x * Mathf.Sqrt(0.5f) / map.accuracy;
+            float d = LevelMapData.currentMap.cellSize.x * Mathf.Sqrt(0.5f) / LevelMapData.currentMap.pathfindingMapAccuracy;
             cache = Mathf.Sqrt(radius) + d;
 
             for (int i = res.Count - 1; i >= 0; i--)

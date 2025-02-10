@@ -30,7 +30,7 @@ public class Boomerang : MonoBehaviour
     private float reachDist;
     private PlayerCommon playerCommon;
     private List<uint> charAlreadyTouch;
-    private Map pathFindingMap;
+    private PathFindingMap pathFindingMap;
     private float minDelayBetweenPathfindingSearch;
 
     [SerializeField] private Vector2 groundCircleOffset;

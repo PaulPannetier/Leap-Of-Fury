@@ -14,17 +14,17 @@ public static class PathFinderToric
         Smoothnesspp
     }
 
-    public static Path FindBestPath(Map map, MapPoint start, MapPoint end, bool allowDiagonal = false)
+    public static Path FindBestPath(PathFindingMap map, MapPoint start, MapPoint end, bool allowDiagonal = false)
     {
         return new AStartToric(map, allowDiagonal).CalculateBestPath(start, end);
     }
 
-    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None)
+    public static SplinePath FindBestCurve(PathFindingMap map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None)
     {
         return FindBestCurve(map, start, end, convertMapPointToWorldPosition, allowDiagonal, splineType, smoothnessMode, -1f);
     }
 
-    public static SplinePath FindBestCurve(Map map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None, float tension = 1f)
+    public static SplinePath FindBestCurve(PathFindingMap map, MapPoint start, MapPoint end, Func<MapPoint, Vector2> convertMapPointToWorldPosition, bool allowDiagonal = false, SplineType splineType = SplineType.Catmulrom, SmoothnessMode smoothnessMode = SmoothnessMode.None, float tension = 1f)
     {
         if (tension > 0f && splineType != SplineType.Cardinal)
         {
@@ -48,7 +48,7 @@ public static class PathFinderToric
         for (int i = 1; i < path.path.Length; i++)
         {
             //check for toric intersection
-            if (Mathf.Max(Mathf.Abs(path.path[i].X - path.path[i - 1].X), Mathf.Abs(path.path[i].Y - path.path[i - 1].Y)) > 1)
+            if (Mathf.Max(Mathf.Abs(path.path[i].x - path.path[i - 1].x), Mathf.Abs(path.path[i].y - path.path[i - 1].y)) > 1)
             {
                 index++;
                 subPath.Add(new List<MapPoint>());
@@ -83,7 +83,7 @@ public static class PathFinderToric
                     cur = subPath[i][j];
                     prev = subPath[i][j - 1];
 
-                    if ((next.X == cur.X && cur.X == prev.X) || (next.Y == cur.Y && cur.Y == prev.Y))
+                    if ((next.x == cur.x && cur.x == prev.x) || (next.y == cur.y && cur.y == prev.y))
                     {
                         subPath[i].RemoveAt(j);
                     }
@@ -106,7 +106,7 @@ public static class PathFinderToric
                     {
                         mapPoint = subPath[i][j];
 
-                        if (mapPoint.X != subPath[i][index].X && mapPoint.Y != subPath[i][index].Y)
+                        if (mapPoint.x != subPath[i][index].x && mapPoint.y != subPath[i][index].y)
                         {
                             if (index - j <= 1)
                             {
@@ -221,21 +221,21 @@ public static class PathFinderToric
 
         if (splines.Length <= 1)
         {
-            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, null, false, null), splineType);
+            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, MapPoint.InvalidPoint, false, MapPoint.InvalidPoint), splineType);
         }
         else if (splines.Length == 2)
         {
-            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, null, true, subPath[1][0]), splineType);
-            splines[1] = CreateSpline(CreatePoints(subPath[1], convertMapPointToWorldPosition, true, subPath[0].Last(), false, null), splineType);
+            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, MapPoint.InvalidPoint, true, subPath[1][0]), splineType);
+            splines[1] = CreateSpline(CreatePoints(subPath[1], convertMapPointToWorldPosition, true, subPath[0].Last(), false, MapPoint.InvalidPoint), splineType);
         }
         else
         {
-            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, null, true, subPath[1][0]), splineType);
+            splines[0] = CreateSpline(CreatePoints(subPath[0], convertMapPointToWorldPosition, false, MapPoint.InvalidPoint, true, subPath[1][0]), splineType);
             for (int i = 1; i < splines.Length - 1; i++)
             {
                 splines[i] = CreateSpline(CreatePoints(subPath[i], convertMapPointToWorldPosition, true, subPath[i - 1].Last(), true, subPath[i + 1][0]), splineType);
             }
-            splines[splines.Length - 1] = CreateSpline(CreatePoints(subPath[splines.Length - 1], convertMapPointToWorldPosition, true, subPath[splines.Length - 2].Last(), false, null), splineType);
+            splines[splines.Length - 1] = CreateSpline(CreatePoints(subPath[splines.Length - 1], convertMapPointToWorldPosition, true, subPath[splines.Length - 2].Last(), false, MapPoint.InvalidPoint), splineType);
         }
 
         return new SplinePath(path.totalCost, splines);
@@ -346,21 +346,21 @@ public class AStartToric
 {
     private static readonly float sqrt2 = Mathf.Sqrt(2f);
 
-    private AStarGraph aStar;
+    private PathFindingGraph aStar;
 
     #region ctor
 
-    public AStartToric(Map map)
+    public AStartToric(PathFindingMap map)
     {
         Builder(map, false);
     }
 
-    public AStartToric(Map map, bool allowDiagonal = false)
+    public AStartToric(PathFindingMap map, bool allowDiagonal = false)
     {
         Builder(map, allowDiagonal);
     }
 
-    private void Builder(Map map, bool allowDiagonal)
+    private void Builder(PathFindingMap map, bool allowDiagonal)
     {
         if (allowDiagonal)
         {
@@ -376,7 +376,7 @@ public class AStartToric
 
     #region GenerateMap !diag
 
-    private void GenerateGraphNonDiagonal(Map map)
+    private void GenerateGraphNonDiagonal(PathFindingMap map)
     {
         Vector2Int mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
         NodeToric[,] nodes = new NodeToric[mapSize.x, mapSize.y];
@@ -461,14 +461,14 @@ public class AStartToric
             }
         }
 
-        aStar = new AStarGraph(res);
+        aStar = new PathFindingGraph(res);
     }
 
     #endregion
 
     #region Generate Map
 
-    private void GenerateGraph(Map map)
+    private void GenerateGraph(PathFindingMap map)
     {
         Vector2Int mapSize = new Vector2Int(map.GetLength(0), map.GetLength(1));
         NodeToric[,] nodes = new NodeToric[mapSize.x, mapSize.y];
@@ -551,7 +551,7 @@ public class AStartToric
             }
         }
 
-        aStar = new AStarGraph(res);
+        aStar = new PathFindingGraph(res);
     }
 
     #endregion
@@ -586,7 +586,7 @@ public class AStartToric
         }
 
 
-        GraphPath path = aStar.CalculateBestPath(s, e);
+        GraphPath path = PathFinder.FindBestPath(aStar, s, e);
 
         MapPoint[] res = new MapPoint[path.path.Length];
         for (int i = 0; i < path.path.Length; i++)

@@ -72,7 +72,7 @@ public class HitboxBumpZone : BumpsZone
         return cols.ToArray();
     }
 
-    public override List<MapPoint> GetBlockedCells(Map map)
+    public override List<MapPoint> GetBlockedCells(PathFindingMap map)
     {
         return GetBlockedCellsInRectangle(map, transform.position, hitbox.size - LevelMapData.currentMap.cellSize * 0.1f);
     }

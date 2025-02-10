@@ -20,7 +20,7 @@ public class PathFindingMapCreatorTest : MonoBehaviour
             tiles = new List<GameObject>();
 
         RemoveTiles();
-        Map map = LevelMapData.currentMap.GetPathfindingMap();
+        PathFindingMap map = LevelMapData.currentMap.GetPathfindingMap();
 
         MapPoint mapPoint;
         Vector2 pos;
@@ -91,7 +91,7 @@ public class PathFindingMapCreatorTest : MonoBehaviour
 
         if(testMapPointConvertion)
         {
-            Map map = LevelMapData.currentMap.GetPathfindingMap();
+            PathFindingMap map = LevelMapData.currentMap.GetPathfindingMap();
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(InputManager.mousePosition);
             MapPoint currentMapPoint = LevelMapData.currentMap.GetMapPointAtPosition(map, mousePos);
             Vector2 mapPointPosition = LevelMapData.currentMap.GetPositionOfMapPoint(map, currentMapPoint);
