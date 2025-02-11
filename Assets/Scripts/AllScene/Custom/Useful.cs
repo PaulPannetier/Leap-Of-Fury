@@ -816,6 +816,100 @@ public class Array2D<T>
 
 #endregion
 
+#region SortedList
+
+public class SortedList<T> : ICollection<T>, IEnumerable<T>, IEnumerable, IList<T>, IReadOnlyCollection<T>, IReadOnlyList<T>
+{
+    private List<T> list;
+    private ISortedListComparer comparer;
+    public T this[int index]
+    {
+        get => list[index];
+        set
+        {
+            list[index] = value;
+        }
+    }
+
+    public int Count => list.Count;
+    public bool IsReadOnly => ((ICollection<T>)list).IsReadOnly;
+
+    public SortedList(Func<T, T, int> compare)
+    {
+        comparer = new DefaultComparer(compare);
+    }
+
+    public SortedList(ISortedListComparer comparer)
+    {
+        this.comparer = comparer;
+    }
+
+    public void Add(T item)
+    {
+        int left = 0;
+        int right = Count - 1;
+        int center = 0;
+        int comparison;
+
+        while (left <= right)
+        {
+            center = (left + right) / 2;
+            comparison = comparer.Compare(item, this[center]);
+            if(comparison < 0)
+                right = center - 1;
+            else if (comparison > 0)
+                left = center + 1;
+            else
+            {
+                left = center;
+                break;
+            }
+        }
+        Insert(left, item);
+    }
+
+    public void Clear()
+    {
+         list.Clear();
+    }
+
+    public bool Contains(T item) => list.Contains(item);
+    public void CopyTo(T[] array, int arrayIndex)
+    {
+        list.CopyTo(array, arrayIndex);
+    }
+    public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => list.GetEnumerator();
+    public int IndexOf(T item) => list.IndexOf(item);
+    public void Insert(int index, T item) => list.Insert(index, item);
+    public bool Remove(T item) => list.Remove(item);
+    public void RemoveAt(int index) => list.RemoveAt(index);
+    public List<T> ToList() => list;
+    public T[] ToArray() => list.ToArray();
+
+    #region Comparer
+
+    public interface ISortedListComparer
+    {
+        int Compare(T x, T y);
+    }
+
+    private class DefaultComparer : ISortedListComparer
+    {
+        private Func<T, T, int> compare;
+        public DefaultComparer(Func<T, T, int> compare)
+        {
+              this.compare = compare;
+        }
+
+        public int Compare(T x, T y) => compare(x, y);
+    }
+
+    #endregion
+}
+
+#endregion
+
 #region ICloneable<T>
 
 public interface ICloneable<T>
