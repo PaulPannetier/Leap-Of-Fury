@@ -845,11 +845,25 @@ public class SortedList<T> : ICollection<T>, IEnumerable<T>, IEnumerable, IList<
     public SortedList(Func<T, T, int> compare)
     {
         comparer = new DefaultComparer(compare);
+        list = new List<T>();
     }
 
     public SortedList(ISortedListComparer comparer)
     {
         this.comparer = comparer;
+        list = new List<T>();
+    }
+
+    public SortedList(Func<T, T, int> compare, int capacity)
+    {
+        comparer = new DefaultComparer(compare);
+        list = new List<T>(capacity);
+    }
+
+    public SortedList(ISortedListComparer comparer, int capacity)
+    {
+        this.comparer = comparer;
+        list = new List<T>(capacity);
     }
 
     public void Add(T item)
