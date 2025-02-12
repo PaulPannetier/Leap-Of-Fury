@@ -1,4 +1,4 @@
-﻿#region using
+﻿#region Using
 
 using UnityEngine;
 using Vec2 = UnityEngine.Vector2;
@@ -15,7 +15,6 @@ using DG.Tweening;
 using System.Threading.Tasks;
 using Collision2D;
 using System.Runtime.CompilerServices;
-using UnityEngine.UI;
 
 #endregion
 
@@ -827,7 +826,16 @@ public class SortedList<T> : ICollection<T>, IEnumerable<T>, IEnumerable, IList<
         get => list[index];
         set
         {
-            list[index] = value;
+            int left = index - 1 >= 0 ? comparer.Compare(list[index - 1], value) : int.MinValue;
+            int right = index + 1 < Count ? comparer.Compare(list[index + 1], value) : int.MaxValue;
+            if (left <= 0 && 0 <= right)
+            {
+                list[index] = value;
+                return;
+            }
+
+            list.RemoveAt(index);
+            Add(value);
         }
     }
 
