@@ -2,7 +2,7 @@ using PathFinding;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(BoxCollider2D), typeof(MapColliderData))]
 public class Jumper : PathFindingBlocker
 {
     private BoxCollider2D hitbox;
@@ -26,6 +26,7 @@ public class Jumper : PathFindingBlocker
     private void OnValidate()
     {
         impulseSpeed = Mathf.Max(0f, impulseSpeed);
+        GetComponent<MapColliderData>().groundType = MapColliderData.GroundType.jumper;
     }
 
     private void OnDrawGizmosSelected()

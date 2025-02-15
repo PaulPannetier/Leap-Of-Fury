@@ -14,6 +14,7 @@ public class Interruptor : MonoBehaviour
     private bool isCharDying;
     private GameObject charWhoActivate;
     private List<GameObject> charInFrontLastFrame;
+    private SpriteRenderer spriteRenderer;
 
     public bool enableBehaviour = true;
 #if UNITY_EDITOR
@@ -22,11 +23,13 @@ public class Interruptor : MonoBehaviour
     [SerializeField] private Vector2 hitboxOffset, hitboxSize;
     [SerializeField] private bool startActivated = false;
     [SerializeField] private bool allowDesactivation = true;
-    [SerializeField] private float minDurationBefore2Activation;
+    [SerializeField] private float minDurationBeetween2Activation;
     [SerializeField] private float durationItTakesToActivate = 1f;
     [SerializeField] private float durationItTakesToDesactivate = 1f;
     [SerializeField] private float activationDuration = -1f;//unlimited if < 0f
     [SerializeField, Tooltip("Be triggered when a player pass througt the button")] private bool dontUseInputSystem = false;
+    [SerializeField] private Color colorActivated;
+    [SerializeField] private Color colorDesactivated;
 
     [HideInInspector] public bool isActivated { get; private set; }
     public Action<PressedInfo> onActivate, onDesactivate;
@@ -37,6 +40,7 @@ public class Interruptor : MonoBehaviour
         onDesactivate = new Action<PressedInfo>((PressedInfo arg) => { });
         charMask = LayerMask.GetMask("Char");
         this.transform = base.transform;
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -58,11 +62,11 @@ public class Interruptor : MonoBehaviour
         if (isCharActivating || isCharDesactivating)
             return;
 
-        GetComponentInChildren<SpriteRenderer>().color = isActivated ? Color.red : Color.green;
+        spriteRenderer.color = isActivated ? colorActivated :colorDesactivated;
 
         if (isActivated)
         {
-            if((Time.time - lastTimeActivated > minDurationBefore2Activation) || allowDesactivation)
+            if((Time.time - lastTimeActivated > minDurationBeetween2Activation) || allowDesactivation)
             {
                 if(TryGetCharacterInteract(out GameObject charWhoPressed))
                 {
@@ -77,7 +81,7 @@ public class Interruptor : MonoBehaviour
         }
         else
         {
-            if (Time.time - lastTimeActivated > minDurationBefore2Activation && TryGetCharacterInteract(out GameObject charWhoPressed))
+            if (Time.time - lastTimeActivated > minDurationBeetween2Activation && TryGetCharacterInteract(out GameObject charWhoPressed))
             {
                 Activate(charWhoPressed);
             }
@@ -251,7 +255,7 @@ public class Interruptor : MonoBehaviour
     {
         this.transform = base.transform;
         hitboxSize = new Vector2(Mathf.Max(hitboxSize.x, 0f), Mathf.Max(hitboxSize.y, 0f));
-        minDurationBefore2Activation = Mathf.Max(0f, minDurationBefore2Activation);
+        minDurationBeetween2Activation = Mathf.Max(0f, minDurationBeetween2Activation);
         durationItTakesToActivate = Mathf.Max(0f, durationItTakesToActivate);
         durationItTakesToDesactivate = Mathf.Max(0f, durationItTakesToDesactivate);
     }

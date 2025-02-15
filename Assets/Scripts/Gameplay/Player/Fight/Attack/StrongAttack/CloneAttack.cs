@@ -13,9 +13,7 @@ public class CloneAttack : StrongAttack
     private SpriteRenderer cloneRenderer;
     private AmericanFistAttack cloneWeakAttack;
     private FightController fightController;
-    private bool isCloneRendererEnable = false;
     [HideInInspector] public bool isCloneAttackEnable = false;
-    private bool disableRegisteringData, pauseCloneFollow;
     private LayerMask charMask;
     private List<uint> charAlreadyToucheByDash;
 
@@ -33,22 +31,23 @@ public class CloneAttack : StrongAttack
         base.Awake();
         movement = GetComponent<CharacterController>();
         fightController = GetComponent<FightController>();
-        charAlreadyToucheByDash = new List<uint>();
+        charAlreadyToucheByDash = new List<uint>(4);
     }
 
     protected override void Start()
     {
         base.Start();
-        lstCloneDatas = new List<CloneData>();
+        lstCloneDatas = new List<CloneData>(duration.Floor() * SettingsManager.instance.currentConfig.targetedFPS.value.Floor());
         actionLastFrame = new Action(() => { });
         clone = Instantiate(clonePrefabs, transform.position, Quaternion.identity, transform);
         cloneAnimator = clone.GetComponent<Animator>();
         GetComponent<ToricObject>().chidrenToRemoveInClone.Add(clone);
         cloneRenderer = clone.GetComponent<SpriteRenderer>();
+        cloneRenderer.enabled = false;
+        StartCoroutine(EnableCloneRenderer());
         cloneWeakAttack = clone.GetComponent<AmericanFistAttack>();
         cloneWeakAttack.original = gameObject;
         cloneWeakAttack.originalCloneAttack = this;
-        cloneRenderer.enabled = false;
         charMask = LayerMask.GetMask("Char");
 
         PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
@@ -70,29 +69,19 @@ public class CloneAttack : StrongAttack
             return;
         }
 
-        if(!disableRegisteringData)
-            AddData();
+        AddData();
+        ApplyCloneModif();
+        HandleCloneAttack();
 
-        if(pauseCloneFollow)
+        while (Time.time - lstCloneDatas[0].time > latenessTime)
         {
-            for (int i = 0; i < lstCloneDatas.Count; i++)
-            {
-                CloneData tmp = lstCloneDatas[i];
-                tmp.time += Time.deltaTime;
-                lstCloneDatas[i] = tmp;
-            }
-        }
-        else
-        {
-            ApplyCloneModif();
-            HandleCloneAttack();
-            RemoveCloneData();
+            lstCloneDatas.RemoveAt(0);
         }
     }
 
     private void AddData()
     {
-        float rot = transform.rotation.eulerAngles.z * Mathf.Rad2Deg;
+        float rot = transform.rotation.eulerAngles.z;
         object[] attackData = null;
         bool attack = false, dash = false;
 
@@ -128,72 +117,50 @@ public class CloneAttack : StrongAttack
 
     private void HandleCloneAttack()
     {
-        if (lstCloneDatas.Count <= 0 || Time.time - lstCloneDatas[0].time < latenessTime)
+        if (lstCloneDatas.Count <= 0 || !isCloneAttackEnable)
             return;
 
         int index = 0;
-        do
+        while(true)
         {
-            if(Time.time - lstCloneDatas[index].time >= latenessTime)
-            {
-                CloneData cloneData = lstCloneDatas[index];
-                if(cloneData.madeADashThisFrame)
-                {
-                    cloneWeakAttack.activateCloneDash = true;
-                }
-                else if (cloneData.makeAnExplosionThisFrame)
-                {
-                    cloneWeakAttack.activateWallExplosion = true;
-                    cloneWeakAttack.cloneExplosionPosition = (Vector2)lstCloneDatas[index].attackData[0];
-                }
+            if(Time.time - lstCloneDatas[index].time < latenessTime)
+                break;
 
-                if(cloneData.isDashKillEnable)
+            CloneData cloneData = lstCloneDatas[index];
+            if (cloneData.madeADashThisFrame)
+            {
+                cloneWeakAttack.activateCloneDash = true;
+            }
+            else if (cloneData.makeAnExplosionThisFrame)
+            {
+                cloneWeakAttack.activateWallExplosion = true;
+                cloneWeakAttack.cloneExplosionPosition = (Vector2)cloneData.attackData[0];
+            }
+
+            if (cloneData.isDashKillEnable)
+            {
+                Vector2 center = (Vector2)clone.transform.position + fightController.dashHitboxOffset;
+                Collider2D[] cols = PhysicsToric.OverlapBoxAll(center, fightController.dashHitboxSize, 0f, charMask);
+                foreach (Collider2D col in cols)
                 {
-                    Vector2 center = (Vector2)clone.transform.position + fightController.dashHitboxOffset;
-                    Collider2D[] cols = PhysicsToric.OverlapBoxAll(center, fightController.dashHitboxSize, 0f, charMask);
-                    foreach (Collider2D col in cols)
+                    if (col.CompareTag("Char"))
                     {
-                        if(col.CompareTag("Char"))
+                        GameObject player = col.GetComponent<ToricObject>().original;
+                        PlayerCommon pc = player.GetComponent<PlayerCommon>();
+                        if (playerCommon.id != pc.id && !charAlreadyToucheByDash.Contains(pc.id))
                         {
-                            GameObject player = col.GetComponent<ToricObject>().original;
-                            PlayerCommon pc = player.GetComponent<PlayerCommon>();
-                            if (playerCommon.id != pc.id)
-                            {
-                                base.OnTouchEnemy(player, damageType);
-                                charAlreadyToucheByDash.Add(pc.id);
-                            }
+                            base.OnTouchEnemy(player, damageType);
+                            charAlreadyToucheByDash.Add(pc.id);
                         }
                     }
                 }
-                else
-                {
-                    charAlreadyToucheByDash.Clear();
-                }
-                index++;
             }
             else
             {
-                break;
+                charAlreadyToucheByDash.Clear();
             }
-        } while (true);
-    }
 
-    private void RemoveCloneData()
-    {
-        while(true)
-        {
-            if (lstCloneDatas.Count > 0 && Time.time - lstCloneDatas[0].time > latenessTime)
-            {
-                lstCloneDatas.RemoveAt(0);
-                if (!isCloneRendererEnable)
-                {
-                    isCloneRendererEnable = cloneRenderer.enabled = true;
-                }
-            }
-            else
-            {
-                break;
-            }
+            index++;
         }
     }
 
@@ -225,13 +192,11 @@ public class CloneAttack : StrongAttack
 
     private void OnPauseEnable()
     {
-        pauseCloneFollow = true;
         cloneAnimator.enabled = false;
     }
 
     private void OnPauseDisable()
     {
-        pauseCloneFollow = false;
         cloneAnimator.enabled = true;
     }
 
@@ -265,17 +230,16 @@ public class CloneAttack : StrongAttack
     {
         isCloneAttackEnable = true;
 
-        float timeCounter = 0f;
-        while (timeCounter < duration)
-        {
-            yield return null;
-            if (!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
+        yield return PauseManager.instance.Wait(duration);
 
         isCloneAttackEnable = false;
+    }
+
+    private IEnumerator EnableCloneRenderer()
+    {
+        yield return PauseManager.instance.Wait(latenessTime);
+
+        cloneRenderer.enabled = true;
     }
 
 #if UNITY_EDITOR

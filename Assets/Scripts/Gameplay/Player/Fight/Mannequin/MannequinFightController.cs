@@ -9,7 +9,6 @@ public class MannequinFightController : FightController
     [SerializeField] private bool enableIsDashing;
     [SerializeField] EffectType effectType;
     [SerializeField] bool applyEffect;
-    [SerializeField] FightState currentFightState;
     [SerializeField] DamageType damageType;
     [SerializeField] private bool touch;
     [SerializeField] private DamageProtectionType damageProtection;
@@ -20,6 +19,8 @@ public class MannequinFightController : FightController
         attackStrong = GetComponent<StrongAttack>();
         playerCommon = GetComponent<PlayerCommon>();
         eventController = GetComponent<EventController>();
+        base.isDashing = enableIsDashing;
+        base.damageProtectionType = damageProtection;
     }
 
     protected override void Start()
@@ -110,7 +111,6 @@ public class MannequinFightController : FightController
     protected override void OnValidate()
     {
         isDashing = enableIsDashing;
-        fightState = currentFightState;
         damageProtectionType = damageProtection;
 
         if (!Application.isPlaying)
@@ -119,13 +119,13 @@ public class MannequinFightController : FightController
         if (applyEffect)
         {
             applyEffect = false;
-            otherChar.GetComponent<ToricObject>().original.GetComponent<EventController>().OnAttackApplyEffect(attackWeak, gameObject, effectType, new StunEffectParams(2f));
+            otherChar.GetComponent<ToricObject>().original.GetComponent<EventController>().OnBeenAttackApplyEffect(attackWeak, gameObject, effectType, new StunEffectParams(2f));
         }
 
         if(touch)
         {
             touch = false;
-            otherChar.GetComponent<ToricObject>().original.GetComponent<EventController>().OnTouchAttack(attackWeak, gameObject, damageType);
+            otherChar.GetComponent<ToricObject>().original.GetComponent<EventController>().OnBeenTouchAttack(attackWeak, gameObject, damageType);
         }
     }
 }   

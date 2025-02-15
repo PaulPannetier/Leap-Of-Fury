@@ -17,7 +17,6 @@ public class CharacterController : MonoBehaviour
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
     private MapColliderData groundColliderData, lastGroundColliderData, leftWallColliderData, rightWallColliderData, apexJumpColliderData;
     private ToricObject toricObject;
-    private Rigidbody2D rb;
     private short disableMovementCounter, disableDashCounter, disableInstantTurnCounter;
     private bool isMovementDisabled => disableMovementCounter > 0;
     private bool isDashDisabled => disableDashCounter > 0;
@@ -453,7 +452,6 @@ public class CharacterController : MonoBehaviour
         mainCam = Camera.main;
         playerInput = GetComponent<CharacterInputs>();
         hitbox = GetComponent<BoxCollider2D>();
-        rb = GetComponent<Rigidbody2D>();
         onDash = (Vector2 dir) => { };
     }
 
@@ -504,7 +502,6 @@ public class CharacterController : MonoBehaviour
         }
 
         transform.position += (Vector3)shift;
-        //rb.MovePosition((Vector2)transform.position + shift);
 
         teleportationShift = Vector2.zero;
 
@@ -1561,48 +1558,30 @@ public class CharacterController : MonoBehaviour
                 return;
             }
 
-            //clamp, mauvais sens
-            if(playerInput.rawX != 0 && playerInput.rawX != convoyer.maxSpeed.Sign() && enableInput && !disableInstantTurn)
+            if(!enableInput || playerInput.rawX == 0)
             {
-                if (speedLerp > convoyer.speedLerp)
+                velocity = new Vector2(convoyer.maxSpeed, velocity.y);
+            }
+            else
+            {
+                if((int)convoyer.maxSpeed.Sign() == (int)(playerInput.x * walkSpeed).Sign())
                 {
-                    if (velocity.x.Sign() != playerInput.rawX)
-                    {
-                        velocity = new Vector2(0f, velocity.y);
-                    }
+                    float targetSpeed = playerInput.x * walkSpeed + convoyer.maxSpeed;
+                    float lerp = Mathf.Max(speedLerp, targetSpeed);
+                    float speedX = Mathf.MoveTowards(velocity.x, targetSpeed, lerp * Time.deltaTime);
+                    if (Mathf.Abs(speedX) < Mathf.Abs(convoyer.maxSpeed))
+                        speedX = convoyer.maxSpeed;
+                    velocity = new Vector2(speedX, velocity.y);
                 }
                 else
                 {
-                    if (velocity.x.Sign() != convoyer.maxSpeed.Sign())
+                    float targetSpeed = (playerInput.x * walkSpeed) + convoyer.maxSpeed;
+                    if((int)targetSpeed.Sign() != (int)velocity.x.Sign())
                     {
                         velocity = new Vector2(0f, velocity.y);
                     }
-                }
-            }
-
-            if(playerInput.rawX == 0 || !enableInput)
-            {
-                if (!onWall || (convoyer.maxSpeed >= 0f && !onRightWall) || (convoyer.maxSpeed <= 0f && !onLeftWall))
-                {
-                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, convoyer.maxSpeed, convoyer.speedLerp * Time.deltaTime), velocity.y);
-                }
-            }
-            else if (playerInput.rawX == convoyer.maxSpeed.Sign())
-            {
-                if (!onWall || (playerInput.rawX == 1 && !onRightWall) || (playerInput.rawX == -1 && !onLeftWall))
-                {
-                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, walkSpeed * playerInput.x + convoyer.maxSpeed, (convoyer.speedLerp + speedLerp) * Time.deltaTime), velocity.y);
-                }
-            }
-            else //playerInput.rawX != convoyer.maxSpeed.Sign()
-            {
-                float currentSpeedLerp = speedLerp - convoyer.speedLerp;
-                float targetedSpeed = Mathf.Abs(Mathf.Abs(walkSpeed * playerInput.x) - Mathf.Abs(convoyer.maxSpeed));
-                float sign = currentSpeedLerp > 0 ? playerInput.rawX : convoyer.maxSpeed.Sign();
-
-                if (!onWall || (sign == 1 && !onRightWall) || (sign == -1 && !onLeftWall))
-                {
-                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetedSpeed * sign, currentSpeedLerp * Time.deltaTime), velocity.y);
+                    float lerp = Mathf.Abs(playerInput.x * walkSpeed) > Mathf.Abs(convoyer.maxSpeed) ? speedLerp : convoyer.speedLerp;
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, lerp * Time.deltaTime), velocity.y);
                 }
             }
         }

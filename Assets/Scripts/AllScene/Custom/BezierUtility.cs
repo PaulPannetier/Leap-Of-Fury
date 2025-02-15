@@ -69,7 +69,7 @@ namespace BezierUtility
                     t[index] = -1f;
             }
 
-            List<Vector2> extremaPoints = new List<Vector2>()
+            List<Vector2> extremaPoints = new List<Vector2>(6)
             {
                 start, end
             };
@@ -1033,7 +1033,7 @@ namespace BezierUtility
                     t[index] = -1f;
             }
 
-            List<Vector2> extremaPoints = new List<Vector2>()
+            List<Vector2> extremaPoints = new List<Vector2>(6)
             {
                 Evaluate(P0, P1, P2, P3, 0f), Evaluate(P0, P1, P2, P3, 1f)
             };

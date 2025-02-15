@@ -77,7 +77,8 @@ public static class PhysicsToric
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Start()
     {
-        if (EventManager.instance == null){
+        if (EventManager.instance == null)
+        {
 			Debug.LogWarning("Could not start PhysicsToric (EventManager uninitialized)");
 			return;
 		}

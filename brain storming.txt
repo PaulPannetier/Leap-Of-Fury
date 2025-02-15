@@ -132,13 +132,12 @@ DA : jsp
 Name : Chaos
 
 TODO :
-Trad all text
+repair movable plateform
 test player attacks and gameplay
-Complete Maxwell house maps and méca
+test levels meca
 polish attacks
 Trad char controller tooltip
-coder des sol ou va va moins vite
-repair boomerang attack
+coder des sol ou va moins vite
 
 Huge test of ALL before V0.1
 

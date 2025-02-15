@@ -320,7 +320,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7517318192210892408}
+  - {fileID: 4439971217305944317}
   - {fileID: 2841070824395084486}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -360,66 +360,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &287968179668867152
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.22}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.125, y: 1.71875}
-    newSize: {x: 2, y: 2}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &620638204213342197
+--- !u!114 &550706576444589610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
+  m_GameObject: {fileID: 2206046124806098090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04ad49eaefde8364495eac14208db575, type: 3}
+  m_Script: {fileID: 11500000, guid: 6b490c0bca849d644af28cfea18730c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sr: {fileID: 0}
-  enableBehaviour: 1
 --- !u!61 &661937465144707232
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6208,6 +6160,19 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &770402375528017655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74d42ebc8423d940b04de9dcff94f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moverForceCoeff: 400
 --- !u!61 &880868996118771176
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6254,43 +6219,273 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3, y: 11}
   m_EdgeRadius: 0
---- !u!4 &1356845434354473954 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4917620840228563248, guid: be3f416bb8a45114cba96a4a0f4ece7a, type: 3}
-  m_PrefabInstance: {fileID: 7049813691826291215}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1367729823605988092
+--- !u!114 &893314245940803758
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
+  m_GameObject: {fileID: 2206046124806098090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ca7a74e760ec764085ddef1877135a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boundsOffset: {x: 0, y: -0.1}
-  boundsSize: {x: 2.5, y: 1.5}
-  enableHorizontal: 1
-  enableVertical: 1
-  isAClone: 0
-  componentsToDisableInClone:
-  - {fileID: 6461156727892864555}
-  - {fileID: 620638204213342197}
-  - {fileID: 8004376023370634527}
-  - {fileID: 7701371966766185346}
-  - {fileID: 5939003174404133039}
-  - {fileID: 6387380682541881066}
-  - {fileID: 2684736872279463512}
-  - {fileID: 8856065880487750708}
-  componentsToSynchroniseInClone:
-  - {fileID: 3778345897595871632}
-  - {fileID: 4056056739025305224}
-  chidrenToRemoveInClone: []
-  useCustomUpdate: 0
-  drawGizmos: 1
+  enableInput: 1
+  <velocity>k__BackingField: {x: 0, y: 0}
+  drawGizmos: 0
+  timeUntilCommandIsInvalid: 0.1
+  sideRayLength: 0.55
+  sideRayOffset: 0
+  grabRayOffset: -0.6
+  grabRayLength: 0.55
+  groundRaycastOffset: {x: 0.2, y: -0.35}
+  groundRaycastLength: 0.55
+  topRaycastOffset: {x: 0.2, y: 0}
+  topRaycastLength: 0.5
+  gapBetweenHitboxAndGround: 0.077
+  gapBetweenHitboxAndWall: 0.13
+  walkSpeed: 9
+  speedLerp: 25
+  initSpeed: 0.25
+  inertiaDurationWhenQuittingGround: 0.1
+  maxSlopeAngle: 22.5
+  slopeSpeed: 8.5
+  initSlopeSpeed: 0.3
+  slopeSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0000172
+      value: 0.64946747
+      inSlope: -0.3505265
+      outSlope: -0.3505265
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  slopeSpeedLerp: 2.5
+  isSlopingRight: 0
+  isSlopingLeft: 0
+  jumpInitSpeed: 5
+  jumpForce: 50
+  jumpGravityMultiplier: 4
+  jumpMinDuration: 0.05
+  jumpMaxDuration: 0.25
+  jumpMaxSpeed: {x: 8, y: 20}
+  jumpInitHorizontaSpeed: 0.3
+  jumpSpeedLerp: 35
+  enableDoubleJump: 1
+  doubleJumpSpeed: 12
+  doubleJumpAngle: 45
+  jumpCoyoteTime: 0.1
+  wallJumpInitSpeed: 7
+  wallJumpAngle: 40
+  wallJumpForce: 7
+  wallJumpMaxSpeed: {x: 5.5, y: 20}
+  wallJumpInitHorizontaSpeed: 0
+  wallJumpSpeedLerp: 4
+  wallJumpGravityMultiplier: 1
+  wallJumpMinDuration: 0.15
+  wallJumpMaxDuration: 0.3
+  enableWallJumpOnNonGrabableWall: 1
+  wallJumpAngleOnNonGrabableWall: 40
+  wallJumpInitSpeedOnNonGrabableWall: 10
+  wallJumpOnNonGrabableWallDuration: 0.3
+  enableJumpAlongWall: 0
+  wallJumpAlongSpeed: 11
+  wallJumpAlongCurveSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.00258255
+      value: 0.5597534
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3151685
+      value: 1.0006585
+      inSlope: -0.010668826
+      outSlope: -0.010668826
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13888833
+    - serializedVersion: 3
+      time: 0.6736536
+      value: 0.9031886
+      inSlope: -0.7620684
+      outSlope: -0.7620684
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.2202092
+    - serializedVersion: 3
+      time: 1.0004578
+      value: -0.00036621094
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpAlongWallDuration: 0.15
+  wallJumpAlongCooldown: 0.15
+  airGravityMultiplier: 3.75
+  airHorizontalSpeed: 7
+  airInitHorizontalSpeed: 0.4
+  airSpeedLerp: 10
+  fallGravityMultiplier: 2
+  fallInitHorizontalSpeed: 0.15
+  fallSpeedY: 15
+  beginFallSpeedX: 7
+  endFallSpeedX: 5.5
+  beginFallDuration: 0.75
+  fallSpeedLerp: 30
+  fallDecelerationSpeedLerp: 15
+  beginFallExtraGravity: 2
+  maxBeginFallSpeed: 0.3
+  fallClampSpeedMultiplierWhenDownPressed: 1.5
+  fallGravityMultiplierWhenDownPressed: 1.75
+  grabSpeed: 5
+  grabInitSpeed: 0.4
+  maxPreciseGrabValue: 0.3
+  grabSpeedMultiplierWhenPreciseGrab: 0.75
+  apexJumpSpeed: {x: 3, y: 6}
+  apexJumpSpeed2: {x: 3, y: -20}
+  grabSpeedLerp: 25
+  apexJumpSpeedLerp: 400
+  apexJumpSpeedLerp2: 400
+  apexJumpDuration: 0.15
+  apexJumpDuration2: 0.15
+  apexJumpInitSpeed: 0.4
+  apexJumpInitSpeed2: 0.4
+  dashSpeed: 20
+  dashDuration: 0.2
+  dashCooldown: 0.15
+  dashSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.00037384033
+      value: 0.20250702
+      inSlope: 2.509907
+      outSlope: 2.509907
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.04815577
+    - serializedVersion: 3
+      time: 0.074359864
+      value: 0.518713
+      inSlope: 3.5593827
+      outSlope: 3.5593827
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.16702767
+      value: 0.82015705
+      inSlope: 2.564514
+      outSlope: 2.564514
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.4215929
+      outWeight: 0.105106026
+    - serializedVersion: 3
+      time: 0.42891145
+      value: 0.9646738
+      inSlope: -0.56459093
+      outSlope: -0.56459093
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07793449
+    - serializedVersion: 3
+      time: 1.0001715
+      value: 0.20751953
+      inSlope: -1.3254107
+      outSlope: -1.3254107
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  antiKnockHead: 0.4
+  slideSpeed: 6
+  slideSpeedLerp: 30
+  slideSpeedLerpDeceleration: 100
+  initSlideSpeed: 0.223
+  minBumpSpeedX: 1
+  maxFallBumpSpeed: 20
+  bumpFrictionLerp: 40
+  bumpGravityScale: 2
+  maxBumpDuration: 1.5
+  minBumpDuration: 0.2
+  inertiaDurationWhenQuittingConvoyerBelt: 0.08
+  speedWhenQuittingConvoyerBelt: 1
+  dashParticle: {fileID: 0}
+  jumpParticle: {fileID: 0}
+  wallJumpParticle: {fileID: 0}
+  slideParticle: {fileID: 0}
+  enableCameraShaking: 0
+  cameraShakeSetting:
+    duration: 0.15
+    strengh: {x: 0.2, y: 0.2, z: 0.2}
+    vibrato: 14
+    randomness: 90
+    snapping: 0
+    fadeOut: 1
+--- !u!114 &967037789611540591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawGizmos: 0
+  enableBehavior: 1
+  bufferDuration: 0.1
+  dashBumpSpeed: 17
+  dashInvicibilityTimeOffset: 0
+  dashInvicibilityDuration: 0.3
+  dashKillTimeOffset: 0
+  dashKillDuration: 0.2
+  dashHitboxOffset: {x: 0, y: -0.22}
+  dashHitboxSize: {x: 0.75, y: 1.15}
+  damageProtectionType: 0
+--- !u!4 &1356845434354473954 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4917620840228563248, guid: be3f416bb8a45114cba96a4a0f4ece7a, type: 3}
+  m_PrefabInstance: {fileID: 7049813691826291215}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1393366166460120882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6438,6 +6633,7 @@ MonoBehaviour:
   relatifSpawnConfigsPath: /Save/GameData/Levels/ThePlain/Map4SpawnPoints
   tilemap: {fileID: 2853539516476445115}
   mapSize: {x: 32, y: 18}
+  maxWallDistancePenalty: 3
   pathfindingMapAccuracy: 1
 --- !u!212 &1777509119481615270
 SpriteRenderer:
@@ -6540,37 +6736,62 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4, y: 3}
   m_EdgeRadius: 0
---- !u!114 &2684736872279463512
+--- !u!1 &2206046124806098090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4439971217305944317}
+  - component: {fileID: 7891732890027534349}
+  - component: {fileID: 7034748847628007189}
+  - component: {fileID: 6210467004121501397}
+  - component: {fileID: 770402375528017655}
+  - component: {fileID: 893314245940803758}
+  - component: {fileID: 5130783437817056377}
+  - component: {fileID: 6724965465906035056}
+  - component: {fileID: 4240793022290985882}
+  - component: {fileID: 4553093444826492167}
+  - component: {fileID: 550706576444589610}
+  - component: {fileID: 967037789611540591}
+  - component: {fileID: 7010764864839398081}
+  - component: {fileID: 2448535084274176626}
+  - component: {fileID: 4509978771267299689}
+  - component: {fileID: 4107512508178045844}
+  m_Layer: 8
+  m_Name: Char 1
+  m_TagString: Char
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2448535084274176626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
+  m_GameObject: {fileID: 2206046124806098090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cd64418b8a39244bb5698c3499e080e, type: 3}
+  m_Script: {fileID: 11500000, guid: 928280bb0dad7004e9895e8bdc12f75d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 3
+    duration: 10
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  drawGizmos: 0
-  castDuration: 0.8
-  explosionRadius: 1.5
-  groundDetectionHitboxOffset: {x: 0, y: 0}
-  groundDetectionHeight: 0.3
-  fallSpeed: 3
-  maxFallDuration: 2
-  upForceWhenCancelFalling: 10
-  explosionForce: 1.2
-  floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}
-  floorShockWaveRaycastOffset: {x: 0, y: 0}
-  floorShockWaveRaycastLenght: 0
-  shockWaveHoriOffset: 0.2
-  shockWaveSpeed: 15
+  isCloneAttackEnable: 0
+  clonePrefabs: {fileID: 1266130988093312155, guid: f24f5fb0fc04f7c438b6ee7620e65224, type: 3}
+  latenessTime: 3
+  duration: 5
+  cloneTransparency: 0.4
+  originalDashThisFrame: 0
+  originalCreateExplosionThisFrame: 0
+  originalExplosionPosition: {x: 0, y: 0}
 --- !u!4 &2841070824395084486
 Transform:
   m_ObjectHideFlags: 0
@@ -6660,15 +6881,14 @@ MonoBehaviour:
   dashKillDuration: 0.5
   dashHitboxOffset: {x: 0, y: 0}
   dashHitboxSize: {x: 0, y: 0}
-  damageProtectionType: 0
+  damageProtectionType: 2
   otherCharName: null
   enableIsDashing: 0
   effectType: 0
   applyEffect: 0
-  currentFightState: 0
   damageType: 0
   touch: 0
-  damageProtection: 0
+  damageProtection: 2
 --- !u!61 &3538082264606947611
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6715,19 +6935,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 2, y: 7}
   m_EdgeRadius: 0
---- !u!114 &3546639662820579739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c74d42ebc8423d940b04de9dcff94f3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moverForceCoeff: 400
 --- !u!114 &3626399903037279063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6777,61 +6984,6 @@ MonoBehaviour:
   controllerType: 0
   useMovementLerpForKeyboard: 1
   movementLerpForKeyboard: 10
---- !u!212 &3778345897595871632
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 4294967295
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 09a095c92c75cdf4682cf08738fdf6b1, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ae297123f091bbf4e8f1835eb98fb293, type: 3}
-  m_Color: {r: 1, g: 0.22589473, b: 0.109803915, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
 --- !u!1839735485 &3867436111106896012
 Tilemap:
   m_ObjectHideFlags: 0
@@ -18807,28 +18959,82 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7320278589001595787, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
   m_PrefabInstance: {fileID: 5999535417922033477}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &4056056739025305224
-Animator:
-  serializedVersion: 7
+--- !u!114 &4107512508178045844
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
+  m_GameObject: {fileID: 2206046124806098090}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 99be3c53952a3aa44aabe49534a215a4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3908af4cbc1045b4a95f41c0d09565e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4240793022290985882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b10573594c7793340be8c69d6aa9f567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: 0
+  rawX: 0
+  rawY: 0
+  upPressed: 0
+  rightPressed: 0
+  downPressed: 0
+  leftPressed: 0
+  dashPressed: 0
+  grabPressed: 0
+  jumpPressed: 0
+  attackWeakPressed: 0
+  attackStrongPressed: 0
+  interactPressed: 0
+  upPressedDown: 0
+  rightPressedDown: 0
+  downPressedDown: 0
+  leftPressedDown: 0
+  dashPressedDown: 0
+  grabPressedDown: 0
+  jumpPressedDown: 0
+  attackWeakPressedDown: 0
+  attackStrongPressedDown: 0
+  interactPressedDown: 0
+  upPressedUp: 0
+  rightPressedUp: 0
+  downPressedUp: 0
+  leftPressedUp: 0
+  dashPressedUp: 0
+  grabPressedUp: 0
+  jumpPressedUp: 0
+  attackWeakPressedUp: 0
+  attackStrongPressedUp: 0
+  interactPressedUp: 0
+  controllerType: 0
+  useMovementLerpForKeyboard: 0
+  movementLerpForKeyboard: 10
+--- !u!4 &4439971217305944317
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.44, y: -2.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2085145699}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4494924586538259143
 Transform:
   m_ObjectHideFlags: 0
@@ -18847,6 +19053,57 @@ Transform:
   - {fileID: 9073845914567486001}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4509978771267299689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4770c9bf661a2d4491e84ebbd464610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown:
+    duration: 0
+  damageType: 1
+  effectType: 0
+  saveAttackStats: 0
+  enableBehaviour: 0
+  fireDecreasement: 0
+  drawFireGizmos: 1
+  fireSize: {x: 1, y: 1}
+  firePropagationGap: 24
+  firePropagationProbability: 0.3
+  minStrenghtForPropagation: 50
+  fireDecreasementAtPropagation: 20
+  fireDuration: 2
+  charMask:
+    serializedVersion: 2
+    m_Bits: 256
+  firePrefab: {fileID: 964394303801480267, guid: 030d8a50702c3024c82e995ac3b0a839, type: 3}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 16392
+--- !u!114 &4553093444826492167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73ca17b12eb7c0e48856c37778ef1f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  charIndex: 1
+  playerIndex: 1
+  color: {r: 0.34509805, g: 1, b: 0.10980393, a: 1}
+  id: 0
+  prefabs: {fileID: 9211636111085214947, guid: c1d8917dfae017f44883d94f4509433d, type: 3}
+  charImageUIPrefabs: {fileID: 651130587728809415, guid: 35f6a39d5a7092f49b8103af3b380806, type: 3}
 --- !u!1 &4846581986960027939
 GameObject:
   m_ObjectHideFlags: 0
@@ -19001,6 +19258,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5034790997836797167, guid: 72703d0d79c55814dbd7ab9e6a3ddbb6, type: 3}
   m_PrefabInstance: {fileID: 5034790997806034031}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5130783437817056377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boundsOffset: {x: 0, y: -0.1}
+  boundsSize: {x: 2.5, y: 1.5}
+  enableHorizontal: 1
+  enableVertical: 1
+  isAClone: 0
+  componentsToDisableInClone:
+  - {fileID: 893314245940803758}
+  - {fileID: 6724965465906035056}
+  - {fileID: 4240793022290985882}
+  - {fileID: 4553093444826492167}
+  - {fileID: 550706576444589610}
+  - {fileID: 967037789611540591}
+  - {fileID: 7010764864839398081}
+  - {fileID: 2448535084274176626}
+  - {fileID: 4509978771267299689}
+  componentsToSynchroniseInClone:
+  - {fileID: 7034748847628007189}
+  - {fileID: 7891732890027534349}
+  chidrenToRemoveInClone: []
+  useCustomUpdate: 0
+  drawGizmos: 0
 --- !u!4 &5142762164738271879
 Transform:
   m_ObjectHideFlags: 0
@@ -19082,49 +19372,6 @@ TilemapRenderer:
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
---- !u!1 &5427506183990991407
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7517318192210892408}
-  - component: {fileID: 4056056739025305224}
-  - component: {fileID: 3778345897595871632}
-  - component: {fileID: 287968179668867152}
-  - component: {fileID: 6461156727892864555}
-  - component: {fileID: 1367729823605988092}
-  - component: {fileID: 620638204213342197}
-  - component: {fileID: 8004376023370634527}
-  - component: {fileID: 7701371966766185346}
-  - component: {fileID: 5939003174404133039}
-  - component: {fileID: 6387380682541881066}
-  - component: {fileID: 8856065880487750708}
-  - component: {fileID: 2684736872279463512}
-  - component: {fileID: 9020215117210670106}
-  - component: {fileID: 3546639662820579739}
-  - component: {fileID: 9020215117210670107}
-  m_Layer: 8
-  m_Name: Char 2
-  m_TagString: Char
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &5939003174404133039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b490c0bca849d644af28cfea18730c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5999535417922033477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19247,6 +19494,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f10045b3e9b41946abf2c77507bf1ef, type: 3}
+--- !u!61 &6210467004121501397
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: -0.22}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.125, y: 1.71875}
+    newSize: {x: 2, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 0.5, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &6312042827346961809
 GameObject:
   m_ObjectHideFlags: 0
@@ -19264,268 +19557,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &6387380682541881066
+--- !u!114 &6724965465906035056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
+  m_GameObject: {fileID: 2206046124806098090}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7ff708d20ef5574ab1b2a7e0df3566e, type: 3}
+  m_Script: {fileID: 11500000, guid: 04ad49eaefde8364495eac14208db575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawGizmos: 1
-  enableBehavior: 1
-  bufferDuration: 0.1
-  dashBumpSpeed: 10
-  dashInvicibilityTimeOffset: 0
-  dashInvicibilityDuration: 0.5
-  dashKillTimeOffset: 0.1
-  dashKillDuration: 0.4
-  dashHitboxOffset: {x: 0, y: -0.22}
-  dashHitboxSize: {x: 0.75, y: 1.15}
-  damageProtectionType: 0
---- !u!114 &6461156727892864555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca7a74e760ec764085ddef1877135a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableInput: 1
-  <velocity>k__BackingField: {x: 0, y: 0}
-  drawGizmos: 0
-  timeUntilCommandIsInvalid: 0.1
-  sideRayLength: 0.55
-  sideRayOffset: 0
-  grabRayOffset: -0.6
-  grabRayLength: 0.55
-  groundRaycastOffset: {x: 0.2, y: -0.35}
-  groundRaycastLength: 0.55
-  topRaycastOffset: {x: 0.2, y: 0}
-  topRaycastLength: 0.5
-  gapBetweenHitboxAndGround: 0.077
-  gapBetweenHitboxAndWall: 0.13
-  walkSpeed: 9
-  speedLerp: 25
-  initSpeed: 0.25
-  inertiaDurationWhenQuittingGround: 0.1
-  maxSlopeAngle: 22.5
-  slopeSpeed: 8.5
-  initSlopeSpeed: 0.3
-  slopeSpeedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: -0.3505265
-      outSlope: -0.3505265
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1.0000172
-      value: 0.64946747
-      inSlope: -0.3505265
-      outSlope: -0.3505265
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  slopeSpeedLerp: 2.5
-  isSlopingRight: 0
-  isSlopingLeft: 0
-  jumpInitSpeed: 5
-  jumpForce: 50
-  jumpGravityMultiplier: 4
-  jumpMinDuration: 0.05
-  jumpMaxDuration: 0.25
-  jumpMaxSpeed: {x: 8, y: 20}
-  jumpInitHorizontaSpeed: 0.3
-  jumpSpeedLerp: 35
-  enableDoubleJump: 1
-  doubleJumpSpeed: 12
-  doubleJumpAngle: 45
-  jumpCoyoteTime: 0.1
-  wallJumpInitSpeed: 7
-  wallJumpAngle: 40
-  wallJumpForce: 7
-  wallJumpMaxSpeed: {x: 5.5, y: 20}
-  wallJumpInitHorizontaSpeed: 0
-  wallJumpSpeedLerp: 4
-  wallJumpGravityMultiplier: 1
-  wallJumpMinDuration: 0.15
-  wallJumpMaxDuration: 0.3
-  enableWallJumpOnNonGrabableWall: 1
-  wallJumpAngleOnNonGrabableWall: 40
-  wallJumpInitSpeedOnNonGrabableWall: 10
-  wallJumpOnNonGrabableWallDuration: 0.3
-  enableJumpAlongWall: 0
-  wallJumpAlongSpeed: 11
-  wallJumpAlongCurveSpeed:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: -0.00258255
-      value: 0.5597534
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.3151685
-      value: 1.0006585
-      inSlope: -0.010668826
-      outSlope: -0.010668826
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.13888833
-    - serializedVersion: 3
-      time: 0.6736536
-      value: 0.9031886
-      inSlope: -0.7620684
-      outSlope: -0.7620684
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.2202092
-    - serializedVersion: 3
-      time: 1.0004578
-      value: -0.00036621094
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  jumpAlongWallDuration: 0.15
-  wallJumpAlongCooldown: 0.15
-  airGravityMultiplier: 3.75
-  airHorizontalSpeed: 7
-  airInitHorizontalSpeed: 0.4
-  airSpeedLerp: 10
-  fallGravityMultiplier: 2
-  fallInitHorizontalSpeed: 0.15
-  fallSpeedY: 15
-  beginFallSpeedX: 7
-  endFallSpeedX: 5.5
-  beginFallDuration: 0.75
-  fallSpeedLerp: 30
-  fallDecelerationSpeedLerp: 15
-  beginFallExtraGravity: 2
-  maxBeginFallSpeed: 0.3
-  fallClampSpeedMultiplierWhenDownPressed: 1.5
-  fallGravityMultiplierWhenDownPressed: 1.75
-  grabSpeed: 5
-  grabInitSpeed: 0.4
-  maxPreciseGrabValue: 0.3
-  grabSpeedMultiplierWhenPreciseGrab: 0.75
-  apexJumpSpeed: {x: 3, y: 6}
-  apexJumpSpeed2: {x: 3, y: -20}
-  grabSpeedLerp: 25
-  apexJumpSpeedLerp: 400
-  apexJumpSpeedLerp2: 400
-  apexJumpDuration: 0.15
-  apexJumpDuration2: 0.15
-  apexJumpInitSpeed: 0.4
-  apexJumpInitSpeed2: 0.4
-  dashSpeed: 20
-  dashDuration: 0.2
-  dashCooldown: 0.15
-  dashSpeedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.00037384033
-      value: 0.20250702
-      inSlope: 2.509907
-      outSlope: 2.509907
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.04815577
-    - serializedVersion: 3
-      time: 0.074359864
-      value: 0.518713
-      inSlope: 3.5593827
-      outSlope: 3.5593827
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.16702767
-      value: 0.82015705
-      inSlope: 2.564514
-      outSlope: 2.564514
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.4215929
-      outWeight: 0.105106026
-    - serializedVersion: 3
-      time: 0.42891145
-      value: 0.9646738
-      inSlope: -0.56459093
-      outSlope: -0.56459093
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.07793449
-    - serializedVersion: 3
-      time: 1.0001715
-      value: 0.20751953
-      inSlope: -1.3254107
-      outSlope: -1.3254107
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  antiKnockHead: 0.4
-  slideSpeed: 6
-  slideSpeedLerp: 30
-  slideSpeedLerpDeceleration: 100
-  initSlideSpeed: 0.223
-  minBumpSpeedX: 1
-  maxFallBumpSpeed: 20
-  bumpFrictionLerp: 40
-  bumpGravityScale: 2
-  maxBumpDuration: 1.5
-  minBumpDuration: 0.2
-  inertiaDurationWhenQuittingConvoyerBelt: 0.08
-  speedWhenQuittingConvoyerBelt: 1
-  dashParticle: {fileID: 0}
-  jumpParticle: {fileID: 0}
-  wallJumpParticle: {fileID: 0}
-  slideParticle: {fileID: 0}
-  enableCameraShaking: 0
-  cameraShakeSetting:
-    duration: 0.15
-    strengh: {x: 0.2, y: 0.2, z: 0.2}
-    vibrato: 14
-    randomness: 90
-    snapping: 0
-    fadeOut: 1
+  sr: {fileID: 0}
+  enableBehaviour: 1
 --- !u!61 &6793996716307587988
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -19586,6 +19631,138 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalLightColor: {r: 1, g: 1, b: 1, a: 1}
   globalLightIntensity: 1
+--- !u!114 &7010764864839398081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6076f156ec0b7104084af103613515d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown:
+    duration: 4
+  damageType: 1
+  effectType: 0
+  saveAttackStats: 0
+  originalCloneAttack: {fileID: 0}
+  drawGizmos: 0
+  isAClone: 0
+  dashSpeed: 20
+  dashDuration: 0.25
+  minTimeBetweenDash: 0.1
+  maxTimeBetweenDash: 1.5
+  dashBufferTime: 0.1
+  castDuration: 0.2
+  dashSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0015487671
+      value: 0.3981247
+      inSlope: 1.2024701
+      outSlope: 1.2024701
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.47421142
+      value: 0.9664874
+      inSlope: 0.4397599
+      outSlope: 0.4397599
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.85814667
+      value: 0.84249544
+      inSlope: -1.4731337
+      outSlope: -1.4731337
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.31726992
+    - serializedVersion: 3
+      time: 1.0013428
+      value: 0.20751953
+      inSlope: -4.43431
+      outSlope: -4.43431
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  nbDash: 3
+  explosionForce: 1.1
+  explosionPrefabs: {fileID: 8565674110299712414, guid: 860caee9a72fd1344a67a5ee19dba4b6, type: 3}
+  colliderOffset: {x: 0, y: -0.22}
+  colliderSize: {x: 0.6, y: 1.15}
+  groundDetectionRadius: 0.25
+  activateCloneDash: 0
+  activateWallExplosion: 0
+  cloneExplosionPosition: {x: 0, y: 0}
+--- !u!212 &7034748847628007189
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2206046124806098090}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 4294967295
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 09a095c92c75cdf4682cf08738fdf6b1, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: ae297123f091bbf4e8f1835eb98fb293, type: 3}
+  m_Color: {r: 0.34343868, g: 1, b: 0.10849059, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 2, y: 2}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &7049813691826291215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19787,39 +19964,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7517318192210892408
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.4, y: -2.15, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2085145699}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7701371966766185346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73ca17b12eb7c0e48856c37778ef1f80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  charIndex: 2
-  playerIndex: 2
-  color: {r: 1, g: 0.042311423, b: 0.011612245, a: 1}
-  id: 1
-  prefabs: {fileID: 7980238354382693259, guid: aa58a5a6f8fdf214789324e95e303d49, type: 3}
-  charImageUIPrefabs: {fileID: 651130587728809415, guid: d3a5c9e61155d3246a1b16d851484aa4, type: 3}
 --- !u!4 &7760616467528172258
 Transform:
   m_ObjectHideFlags: 0
@@ -19835,55 +19979,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4494924586538259143}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8004376023370634527
-MonoBehaviour:
+--- !u!95 &7891732890027534349
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
+  m_GameObject: {fileID: 2206046124806098090}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b10573594c7793340be8c69d6aa9f567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  x: 0
-  y: 0
-  rawX: 0
-  rawY: 0
-  upPressed: 0
-  rightPressed: 0
-  downPressed: 0
-  leftPressed: 0
-  dashPressed: 0
-  grabPressed: 0
-  jumpPressed: 0
-  attackWeakPressed: 0
-  attackStrongPressed: 0
-  interactPressed: 0
-  upPressedDown: 0
-  rightPressedDown: 0
-  downPressedDown: 0
-  leftPressedDown: 0
-  dashPressedDown: 0
-  grabPressedDown: 0
-  jumpPressedDown: 0
-  attackWeakPressedDown: 0
-  attackStrongPressedDown: 0
-  interactPressedDown: 0
-  upPressedUp: 0
-  rightPressedUp: 0
-  downPressedUp: 0
-  leftPressedUp: 0
-  dashPressedUp: 0
-  grabPressedUp: 0
-  jumpPressedUp: 0
-  attackWeakPressedUp: 0
-  attackStrongPressedUp: 0
-  interactPressedUp: 0
-  controllerType: 0
-  useMovementLerpForKeyboard: 0
-  movementLerpForKeyboard: 10
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 99be3c53952a3aa44aabe49534a215a4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!61 &8256341692572911120
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20076,136 +20193,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8856065880487750708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8b457fea88e6e44593e520f86a69d3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown:
-    duration: 3
-  damageType: 1
-  effectType: 1
-  saveAttackStats: 0
-  drawGizmos: 0
-  castRadius: 0.5
-  minRange: 0.38
-  range: 7
-  charCollisionRadius: 0.8
-  collisionOffset: {x: 0, y: -0.14}
-  keepSpeedAtEnd: 1
-  waitingTimeWhenWallGrab: 0.25
-  maxWallGrabDuration: 0.6
-  wallDurationOverDistance:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallPositionOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallGapUp: 0.7
-  wallGapDown: 1.05
-  wallGapRight: 0.5
-  wallGapLeft: 0.5
-  stunEffectParams:
-    duration: 0
-  waitingTimeWhenCharGrab: 0.25
-  maxCharGrabDuration: 0.6
-  charDurationOverDistance:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  charPositionOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!61 &8869107046465196807
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20329,45 +20316,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1070ec7d1bf5a04099dd434ab7e02eb, type: 3}
---- !u!114 &9020215117210670106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3908af4cbc1045b4a95f41c0d09565e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!50 &9020215117210670107
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5427506183990991407}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.0001
-  m_LinearDamping: 0
-  m_AngularDamping: 0
-  m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 1
-  m_SleepingMode: 0
-  m_CollisionDetection: 1
-  m_Constraints: 4
 --- !u!4 &9073845914567486001
 Transform:
   m_ObjectHideFlags: 0

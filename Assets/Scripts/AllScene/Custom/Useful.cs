@@ -842,6 +842,36 @@ public class SortedList<T> : ICollection<T>, IEnumerable<T>, IEnumerable, IList<
     public int Count => list.Count;
     public bool IsReadOnly => ((ICollection<T>)list).IsReadOnly;
 
+    public SortedList()
+    {
+        if(!typeof(IComparable<T>).IsAssignableFrom(typeof(T)))
+        {
+            throw new InvalidOperationException($"Type {typeof(T)} does not implement IComparable<{typeof(T)}>. A comparison function must be provided.");
+        }
+
+        int Compare(T left, T right)
+        {
+            return ((IComparable<T>)left).CompareTo(right);
+        }
+        comparer = new DefaultComparer(Compare);
+        list = new List<T>();
+    }
+
+    public SortedList(int capacity)
+    {
+        if (!typeof(IComparable<T>).IsAssignableFrom(typeof(T)))
+        {
+            throw new InvalidOperationException($"Type {typeof(T)} does not implement IComparable<{typeof(T)}>. A comparison function must be provided.");
+        }
+
+        int Compare(T left, T right)
+        {
+            return ((IComparable<T>)left).CompareTo(right);
+        }
+        comparer = new DefaultComparer(Compare);
+        list = new List<T>(capacity);
+    }
+
     public SortedList(Func<T, T, int> compare)
     {
         comparer = new DefaultComparer(compare);

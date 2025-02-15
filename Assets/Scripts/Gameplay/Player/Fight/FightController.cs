@@ -11,7 +11,7 @@ public class FightController : MonoBehaviour
     {
         Normal,
         Dash,//can kill whith dash
-        Stun //cant attack and dash
+        Stun //can't attack and dash
     }
 
     public enum DamageProtectionType : byte
@@ -116,6 +116,9 @@ public class FightController : MonoBehaviour
 
         if (!enableBehavior)
             return;
+
+        DebugText.instance.text += $"FightState : {this.fightState}\n";
+        DebugText.instance.text += $"ProtectionType : {this.damageProtectionType}\n";
 
         UpdateState();
 
@@ -231,7 +234,8 @@ public class FightController : MonoBehaviour
                 {
                     fightState = FightState.Stun;
                 }
-                else if(Time.time - lastTimeDash >= dashKillTimeOffset + dashKillDuration) // dash => Normal
+                // dash => Normal
+                else if (Time.time - lastTimeDash >= dashKillTimeOffset + dashKillDuration)
                 {
                     fightState = FightState.Normal;
                 }
@@ -245,7 +249,7 @@ public class FightController : MonoBehaviour
                 }
                 else if(isDashing)
                 {
-                    if(Time.time - lastTimeDash > dashKillTimeOffset)
+                    if(Time.time - lastTimeDash > dashKillTimeOffset && !(Time.time - lastTimeDash >= dashKillTimeOffset + dashKillDuration))
                     {
                         fightState = FightState.Dash;
                     }
@@ -393,7 +397,11 @@ public class FightController : MonoBehaviour
 
     protected void OnDashCollision(FightController fc)
     {
-        if ((int)fc.damageProtectionType >= 1)
+        if(fc.fightState == FightState.Dash && (int)this.damageProtectionType < 1)
+        {
+            KillByOtherWithDash(fc);
+        }
+        else if ((int)fc.damageProtectionType >= 1)
         {
             ApplyDashBump(fc);
         }
