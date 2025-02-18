@@ -117,9 +117,6 @@ public class FightController : MonoBehaviour
         if (!enableBehavior)
             return;
 
-        DebugText.instance.text += $"FightState : {this.fightState}\n";
-        DebugText.instance.text += $"ProtectionType : {this.damageProtectionType}\n";
-
         UpdateState();
 
         if(fightState != FightState.Stun)

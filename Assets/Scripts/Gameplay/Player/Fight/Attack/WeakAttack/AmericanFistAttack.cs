@@ -17,6 +17,7 @@ public class AmericanFistAttack : WeakAttack
     private float lastTimeDash = -10;
     private LayerMask groundMask, charMask;
     private bool alreadyCreateExplosionWinthThisDash;
+    private List<uint> charAlreadyTouch;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -63,6 +64,7 @@ public class AmericanFistAttack : WeakAttack
         charController = GetComponent<CharacterController>();
         cloneAttack = GetComponent<CloneAttack>();
         originalCloneAttack = cloneAttack;
+        charAlreadyTouch = new List<uint>(4);
     }
 
     protected override void Start()
@@ -125,6 +127,7 @@ public class AmericanFistAttack : WeakAttack
             {
                 StartCoroutine(ApplyAttackCloneCorout());
                 activateCloneDash = false;
+                charAlreadyTouch.Clear();
             }
         }
 
@@ -149,6 +152,7 @@ public class AmericanFistAttack : WeakAttack
                 alreadyCreateExplosionWinthThisDash = false;
                 indexDash = 0;
                 charController.Freeze();
+                charAlreadyTouch.Clear();
             }
 
             if (isDashing)
@@ -252,15 +256,7 @@ public class AmericanFistAttack : WeakAttack
 
         charController.Freeze();
 
-        float timeCounter = 0f;
-        while (timeCounter < castDuration)
-        {
-            yield return null;
-            if (!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
+        yield return PauseManager.instance.Wait(castDuration);
 
         lastDir = dir;
         isAttackEnable = onLaunchAttack = true;
@@ -268,15 +264,7 @@ public class AmericanFistAttack : WeakAttack
 
     private IEnumerator ApplyAttackCloneCorout()
     {
-        float timeCounter = 0f;
-        while (timeCounter < castDuration)
-        {
-            yield return null;
-            if (!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
+        yield return PauseManager.instance.Wait(castDuration);
 
         lastTimeDash = Time.time;
         isDashing = true;
@@ -327,7 +315,7 @@ public class AmericanFistAttack : WeakAttack
 
         if (cols.Length <= 0)
         {
-            enemies = null;
+            enemies = Array.Empty<GameObject>();
             return false;
         }
 
@@ -337,9 +325,11 @@ public class AmericanFistAttack : WeakAttack
             if (col.CompareTag("Char"))
             {
                 GameObject player = col.GetComponent<ToricObject>().original;
-                if(playerCommon.id != player.GetComponent<PlayerCommon>().id)
+                uint enemyId = player.GetComponent<PlayerCommon>().id;
+                if (playerCommon.id != enemyId && !charAlreadyTouch.Contains(enemyId))
                 {
                     players.Add(player);
+                    charAlreadyTouch.Add(enemyId);
                 }
             }
         }
@@ -350,7 +340,7 @@ public class AmericanFistAttack : WeakAttack
             return true;
         }
 
-        enemies = null;
+        enemies = Array.Empty<GameObject>();
         return false;
     }
 

@@ -54,7 +54,7 @@ public class CloneAttack : StrongAttack
         PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
     }
 
-    protected override void Update()
+    protected void LateUpdate()
     {
         base.Update();
 
@@ -73,7 +73,7 @@ public class CloneAttack : StrongAttack
         ApplyCloneModif();
         HandleCloneAttack();
 
-        while (Time.time - lstCloneDatas[0].time > latenessTime)
+        while (Time.time - lstCloneDatas[0].time >= latenessTime)
         {
             lstCloneDatas.RemoveAt(0);
         }
@@ -117,15 +117,12 @@ public class CloneAttack : StrongAttack
 
     private void HandleCloneAttack()
     {
-        if (lstCloneDatas.Count <= 0 || !isCloneAttackEnable)
+        if (!isCloneAttackEnable)
             return;
 
         int index = 0;
-        while(true)
+        while(lstCloneDatas.Count > index && Time.time - lstCloneDatas[index].time >= latenessTime)
         {
-            if(Time.time - lstCloneDatas[index].time < latenessTime)
-                break;
-
             CloneData cloneData = lstCloneDatas[index];
             if (cloneData.madeADashThisFrame)
             {
@@ -256,11 +253,11 @@ public class CloneAttack : StrongAttack
     private struct CloneData
     {
         public Vector2 position;
-        public float rotationZ;//en deg
+        public float rotationZ; //in deg
         public Action action;
         public float time;
         public object[] attackData;
-        public bool madeADashThisFrame;
+        public bool madeADashThisFrame; //Do an american fist attaque dashing
         public bool makeAnExplosionThisFrame;
         public bool isDashKillEnable;
         public bool flipRenderer;

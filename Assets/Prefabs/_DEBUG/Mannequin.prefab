@@ -193,15 +193,14 @@ MonoBehaviour:
   dashKillDuration: 0.5
   dashHitboxOffset: {x: 0, y: 0}
   dashHitboxSize: {x: 0, y: 0}
-  damageProtectionType: 2
+  damageProtectionType: 0
   otherCharName: null
   enableIsDashing: 0
   effectType: 0
   applyEffect: 0
-  currentFightState: 0
   damageType: 0
   touch: 0
-  damageProtection: 2
+  damageProtection: 0
 --- !u!114 &5004232327855094864
 MonoBehaviour:
   m_ObjectHideFlags: 0
