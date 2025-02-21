@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Collision2D;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Explosion : MonoBehaviour
 {
@@ -9,8 +10,10 @@ public class Explosion : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private ToricObject toricObject;
     private bool isExploding = false;
+    private List<UnityEngine.Collider2D> colAlreadyTouch;
 
     public bool enableBehaviour = true;
+    public bool oneTouchPerCollider;
     public ExplosionData explosionData;
     public Action<UnityEngine.Collider2D> callbackOnTouch;
     public Action<Explosion> callbackOnDestroy;
@@ -21,6 +24,7 @@ public class Explosion : MonoBehaviour
         callbackOnDestroy = (Explosion arg) => { };
         toricObject = GetComponent<ToricObject>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        colAlreadyTouch = new List<UnityEngine.Collider2D>();
     }
 
     public void Launch(ExplosionData explosionData)
@@ -36,15 +40,8 @@ public class Explosion : MonoBehaviour
 
     private IEnumerator InvokeWithPause(Action method, float delay)
     {
-        float timeCounter = 0f;
-        while (timeCounter < delay)
-        {
-            yield return null;
-            if (!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
+        yield return PauseManager.instance.Wait(delay);
+
         method.Invoke();
     }
 
@@ -54,6 +51,7 @@ public class Explosion : MonoBehaviour
         lastTimeLauch = Time.time;
         isExploding = true;
         ExplosionManager.instance.CreateExplosion((Vector2)transform.position + explosionData.offset, explosionData.force);
+        colAlreadyTouch.Clear();
     }
 
     private void Update()
@@ -69,7 +67,19 @@ public class Explosion : MonoBehaviour
             UnityEngine.Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + explosionData.offset, explosionData.radius, explosionData.layerMask);
             foreach (UnityEngine.Collider2D col in cols)
             {
-                OnCollide(col);
+                if(oneTouchPerCollider)
+                {
+                    if(!colAlreadyTouch.Contains(col))
+                    {
+                        colAlreadyTouch.Add(col);
+                        OnCollide(col);
+                    }
+                }
+                else
+                {
+                    colAlreadyTouch.Add(col);
+                    OnCollide(col);
+                }
             }
         }
 

@@ -11,7 +11,7 @@ public class CloneAttack : StrongAttack
     private GameObject clone;
     private Animator cloneAnimator;
     private SpriteRenderer cloneRenderer;
-    private AmericanFistAttack cloneWeakAttack;
+    private AmericanFistAttack cloneWeakAttack, weakAttack;
     private FightController fightController;
     [HideInInspector] public bool isCloneAttackEnable = false;
     private LayerMask charMask;
@@ -22,7 +22,6 @@ public class CloneAttack : StrongAttack
     [SerializeField] private float duration = 5f;
     [Range(0f, 1f)] public float cloneTransparency = 0.4f;
 
-    [HideInInspector] public bool originalDashThisFrame;
     [HideInInspector] public bool originalCreateExplosionThisFrame;
     [HideInInspector] public Vector2 originalExplosionPosition;
 
@@ -32,6 +31,7 @@ public class CloneAttack : StrongAttack
         movement = GetComponent<CharacterController>();
         fightController = GetComponent<FightController>();
         charAlreadyToucheByDash = new List<uint>(4);
+        weakAttack = GetComponent<AmericanFistAttack>();
     }
 
     protected override void Start()
@@ -82,23 +82,19 @@ public class CloneAttack : StrongAttack
     private void AddData()
     {
         float rot = transform.rotation.eulerAngles.z;
-        object[] attackData = null;
-        bool attack = false, dash = false;
+        bool createExplosion = false;
+        bool weakAttackKillWithDash = weakAttack.isOriginalKillWithDash;
+        Vector2? explosionPosition = null;
 
-        if (originalDashThisFrame)
+        if(originalCreateExplosionThisFrame)
         {
-            attackData = new object[] { movement.GetCurrentDirection() };
-            dash = true;
-        }
-        else if(originalCreateExplosionThisFrame)
-        {
-            attackData = new object[] { originalExplosionPosition };
-            attack = true;
+            createExplosion = true;
+            explosionPosition = transform.position;
         }
 
-        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, attackData, attack, dash, originalCreateExplosionThisFrame, movement.flip, fightController.IsDashKillEnable());
+        CloneData data = new CloneData(transform.position, rot, actionLastFrame, Time.time, weakAttackKillWithDash, createExplosion, explosionPosition, movement.flip, fightController.IsDashKillEnable());
         lstCloneDatas.Add(data);
-        originalDashThisFrame = originalCreateExplosionThisFrame = false;
+        originalCreateExplosionThisFrame = false;
 
         actionLastFrame = new Action(() => { });
     }
@@ -117,24 +113,19 @@ public class CloneAttack : StrongAttack
 
     private void HandleCloneAttack()
     {
-        if (!isCloneAttackEnable)
-            return;
-
         int index = 0;
         while(lstCloneDatas.Count > index && Time.time - lstCloneDatas[index].time >= latenessTime)
         {
             CloneData cloneData = lstCloneDatas[index];
-            if (cloneData.madeADashThisFrame)
-            {
-                cloneWeakAttack.activateCloneDash = true;
-            }
-            else if (cloneData.makeAnExplosionThisFrame)
+
+            cloneWeakAttack.isCloneDashEnable = cloneData.isKillWithWeakAttack;
+            if (cloneData.makeAnExplosionThisFrame)
             {
                 cloneWeakAttack.activateWallExplosion = true;
-                cloneWeakAttack.cloneExplosionPosition = (Vector2)cloneData.attackData[0];
+                cloneWeakAttack.cloneExplosionPosition = (Vector2)cloneData.explosionPosition;
             }
 
-            if (cloneData.isDashKillEnable)
+            if (isCloneAttackEnable && cloneData.isDashKillEnable)
             {
                 Vector2 center = (Vector2)clone.transform.position + fightController.dashHitboxOffset;
                 Collider2D[] cols = PhysicsToric.OverlapBoxAll(center, fightController.dashHitboxSize, 0f, charMask);
@@ -252,27 +243,30 @@ public class CloneAttack : StrongAttack
 
     private struct CloneData
     {
+        private byte boolUnion;
         public Vector2 position;
         public float rotationZ; //in deg
         public Action action;
         public float time;
-        public object[] attackData;
-        public bool madeADashThisFrame; //Do an american fist attaque dashing
-        public bool makeAnExplosionThisFrame;
-        public bool isDashKillEnable;
-        public bool flipRenderer;
+        public Vector2? explosionPosition;
+        
+        public bool isKillWithWeakAttack => (boolUnion & 1) != 0; //Do an american fist attaque dashing
+        public bool makeAnExplosionThisFrame => (boolUnion & (1 << 1)) != 0;
+        public bool flipRenderer => (boolUnion & (1 << 2)) != 0;
+        public bool isDashKillEnable => (boolUnion & (1 << 3)) != 0;
 
-        public CloneData(in Vector2 position, float rotationZ, Action action,  float time, object[] attackData, bool makeAnAttack, bool madeADash, bool createExplosion, bool flipRenderer, bool isDashKillEnable)
+        public CloneData(in Vector2 position, float rotationZ, Action action, float time, bool isKillWithWeakAttack, bool createExplosion, in Vector2? explosionPosition, bool flipRenderer, bool isDashKillEnable)
         {
             this.position = position;
             this.rotationZ = rotationZ;
             this.action = action;
             this.time = time;
-            this.attackData = attackData;
-            this.makeAnExplosionThisFrame = createExplosion;
-            this.madeADashThisFrame = madeADash;
-            this.flipRenderer = flipRenderer;
-            this.isDashKillEnable = isDashKillEnable;
+            boolUnion = 0;
+            boolUnion = (byte)(isKillWithWeakAttack ? (boolUnion | 1) : boolUnion);
+            boolUnion = (byte)(createExplosion ? (boolUnion | (1 << 1)) : boolUnion);
+            this.explosionPosition = explosionPosition;
+            boolUnion = (byte)(flipRenderer ? (boolUnion | (1 << 2)) : boolUnion);
+            boolUnion = (byte)(isDashKillEnable ? (boolUnion | (1 << 3)) : boolUnion);
         }
     }
 

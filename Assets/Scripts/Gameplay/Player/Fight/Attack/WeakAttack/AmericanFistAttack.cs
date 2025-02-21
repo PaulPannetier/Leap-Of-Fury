@@ -30,15 +30,17 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private int nbDash = 3;
     [SerializeField] private float explosionForce = 1.1f;
     [SerializeField] private Explosion explosionPrefabs;
+    [SerializeField] private Explosion explosionInactivePrefabs;
 
     [Header("Collission")]
     [SerializeField] private Vector2 colliderOffset;
     [SerializeField] private Vector2 colliderSize;
     [SerializeField] private float groundDetectionRadius = 0.1f;
 
-    [HideInInspector] public bool activateCloneDash;//true one frame when the original char dash
+    [HideInInspector] public bool isCloneDashEnable;
     [HideInInspector] public bool activateWallExplosion;
     [HideInInspector] public Vector2 cloneExplosionPosition;
+    public bool isOriginalKillWithDash => isDashing && isAttackEnable;
 
     private GameObject _original;
     [HideInInspector] public GameObject original
@@ -56,15 +58,16 @@ public class AmericanFistAttack : WeakAttack
 
     protected override void Awake()
     {
-        if (isAClone)
-            return;
         base.Awake();
-
-        playerInput = GetComponent<CharacterInputs>();
-        charController = GetComponent<CharacterController>();
-        cloneAttack = GetComponent<CloneAttack>();
-        originalCloneAttack = cloneAttack;
         charAlreadyTouch = new List<uint>(4);
+
+        if (!isAClone)
+        {
+            playerInput = GetComponent<CharacterInputs>();
+            charController = GetComponent<CharacterController>();
+            cloneAttack = GetComponent<CloneAttack>();
+            originalCloneAttack = cloneAttack;
+        }
     }
 
     protected override void Start()
@@ -103,31 +106,14 @@ public class AmericanFistAttack : WeakAttack
 
     private void UpdateClone()
     {
-        if (isDashing)
+        if (isCloneDashEnable)
         {
-            if(originalCloneAttack.isCloneAttackEnable)
+            if(originalCloneAttack.isCloneAttackEnable && CollideWithEnemy(out GameObject[] enemies))
             {
-                if (CollideWithEnemy(out GameObject[] enemies))
+                foreach (GameObject enemy in enemies)
                 {
-                    foreach (GameObject enemy in enemies)
-                    {
-                        OnTouchEnemy(enemy);
-                    }
+                    OnTouchEnemy(enemy);
                 }
-            }
-
-            if (Time.time - lastTimeDash > dashDuration)
-            {
-                isDashing = false;
-            }
-        }
-        else
-        {
-            if(activateCloneDash)
-            {
-                StartCoroutine(ApplyAttackCloneCorout());
-                activateCloneDash = false;
-                charAlreadyTouch.Clear();
             }
         }
 
@@ -188,7 +174,6 @@ public class AmericanFistAttack : WeakAttack
             {
                 if (Time.time - lastTimeDash > minTimeBetweenDash)
                 {
-                    cloneAttack.originalDashThisFrame = true;
                     isDashing = true;
                     wantDash = false;
                     lastDir = charController.GetCurrentDirection(true);
@@ -260,14 +245,6 @@ public class AmericanFistAttack : WeakAttack
 
         lastDir = dir;
         isAttackEnable = onLaunchAttack = true;
-    }
-
-    private IEnumerator ApplyAttackCloneCorout()
-    {
-        yield return PauseManager.instance.Wait(castDuration);
-
-        lastTimeDash = Time.time;
-        isDashing = true;
     }
 
     #endregion
@@ -388,11 +365,13 @@ public class AmericanFistAttack : WeakAttack
 
     private void CreateExplosion(in Vector2 collisionPoint, bool disableExplosionEffet = false)
     {
-        Explosion explosion = Instantiate(explosionPrefabs, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
+        Explosion expPrefab = disableExplosionEffet ? explosionInactivePrefabs : explosionPrefabs;
+        Explosion explosion = Instantiate(expPrefab, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
         if(disableExplosionEffet)
         {
             explosion.enableBehaviour = false;
-            explosion.SetColor(originalCloneAttack.GetComponentInChildren<SpriteRenderer>().color * originalCloneAttack.cloneTransparency);
+            SpriteRenderer explosionRenderer = explosion.GetComponentInChildren<SpriteRenderer>();
+            explosion.SetColor(explosionRenderer.color * originalCloneAttack.cloneTransparency);
         }
         else
         {

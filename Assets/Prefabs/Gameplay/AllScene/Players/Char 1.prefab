@@ -641,6 +641,7 @@ MonoBehaviour:
   nbDash: 3
   explosionForce: 1.1
   explosionPrefabs: {fileID: 8565674110299712414, guid: 860caee9a72fd1344a67a5ee19dba4b6, type: 3}
+  explosionInactivePrefabs: {fileID: 8565674110299712414, guid: 758cc973e01a369478e0df22d526e268, type: 3}
   colliderOffset: {x: 0, y: -0.22}
   colliderSize: {x: 0.6, y: 1.15}
   groundDetectionRadius: 0.25
