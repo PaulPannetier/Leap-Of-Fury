@@ -18,7 +18,7 @@ public class AmericanFistAttack : WeakAttack
     private LayerMask groundMask, charMask;
     private bool alreadyCreateExplosionWinthThisDash;
     private List<uint> charAlreadyTouch;
-    private Explosion cloneExplosion;
+    private AmericanFistAttackExplosion cloneExplosion;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -173,7 +173,7 @@ public class AmericanFistAttack : WeakAttack
                         alreadyCreateExplosionWinthThisDash = true;
                         cloneAttack.originalCreateExplosionThisFrame = true;
                         cloneAttack.originalExplosionPosition = collisionPoint;
-                        CreateExplosion(collisionPoint);
+                        CreateExplosion(collisionPoint, false);
                         EndCurrentDash();
                     }
                 }
@@ -371,7 +371,7 @@ public class AmericanFistAttack : WeakAttack
         return false;
     }
 
-    private void CreateExplosion(in Vector2 collisionPoint, bool cloneExplosion = false)
+    private void CreateExplosion(in Vector2 collisionPoint, bool cloneExplosion)
     {
         AmericanFistAttackExplosion explosion = Instantiate(explosionPrefabs, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
         if(cloneExplosion)
@@ -380,12 +380,14 @@ public class AmericanFistAttack : WeakAttack
             {
                 this.cloneExplosion = null;
             }
+
             this.cloneExplosion = explosion;
             explosion.enableBehaviour = originalCloneAttack.isCloneAttackEnable;
             explosion.callbackOnDestroy += OnExplosionDestroy;
         }
         else
         {
+            explosion.enableBehaviour = true;
         }
 
         explosion.callbackOnTouch += OnExplosionTouchEnemy;

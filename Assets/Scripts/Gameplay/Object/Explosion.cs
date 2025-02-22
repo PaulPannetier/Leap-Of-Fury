@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class Explosion : MonoBehaviour
 {
     private float lastTimeLauch = -10;
-    private SpriteRenderer spriteRenderer;
+    protected SpriteRenderer spriteRenderer;
     private ToricObject toricObject;
     private bool isExploding = false;
     private List<UnityEngine.Collider2D> colAlreadyTouch;
@@ -15,8 +15,8 @@ public class Explosion : MonoBehaviour
     protected bool _enableBehaviour;
     public virtual bool enableBehaviour
     {
-        get => enableBehaviour;
-        set => enableBehaviour = value;
+        get => _enableBehaviour;
+        set => _enableBehaviour = value;
     }
     public bool oneTouchPerCollider;
     public ExplosionData explosionData;

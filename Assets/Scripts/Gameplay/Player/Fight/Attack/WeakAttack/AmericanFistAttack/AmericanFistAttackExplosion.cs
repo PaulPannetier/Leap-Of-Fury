@@ -3,16 +3,9 @@ using UnityEngine;
 public class AmericanFistAttackExplosion : Explosion
 {
     private AmericanFistAttack originalAttack;
-    private SpriteRenderer spriteRenderer;
 
     [SerializeField] private Color colorActivate;
     [SerializeField] private Color colorDesactivate;
-
-    protected override void Awake()
-    {
-        base.Awake();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-    }
 
     public override void Launch()
     {
@@ -37,6 +30,6 @@ public class AmericanFistAttackExplosion : Explosion
         if (PauseManager.instance.isPauseEnable)
             return;
 
-        spriteRenderer.color = enableBehaviour ? colorActivate : colorDesactivate;
+        spriteRenderer.color = enableBehaviour ? colorActivate : colorDesactivate * originalAttack.originalCloneAttack.cloneTransparency;
     }
 }

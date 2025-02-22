@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4009802760743927232}
   - component: {fileID: 1674583608520802225}
-  - component: {fileID: 8565674110299712414}
   - component: {fileID: 4505979394781261214}
+  - component: {fileID: 736140848453880161}
   m_Layer: 0
   m_Name: FistAttackExplosion
   m_TagString: Untagged
@@ -89,29 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8565674110299712414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086970572532762964}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28d3dd0d107daba418a733de11c11caf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableBehaviour: 1
-  oneTouchPerCollider: 1
-  explosionData:
-    offset: {x: 0, y: 0}
-    force: 1
-    radius: 1.6
-    delay: 0
-    duration: 1
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 256
 --- !u!114 &4505979394781261214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,8 +107,32 @@ MonoBehaviour:
   enableVertical: 1
   isAClone: 0
   componentsToDisableInClone:
-  - {fileID: 8565674110299712414}
+  - {fileID: 0}
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   useCustomUpdate: 0
   drawGizmos: 1
+--- !u!114 &736140848453880161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086970572532762964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ffc0e0a38107ac48a821bbfd4e688bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oneTouchPerCollider: 1
+  explosionData:
+    offset: {x: 0, y: 0}
+    force: 1
+    radius: 1.6
+    delay: 0
+    duration: 1
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 256
+  colorActivate: {r: 0.95294124, g: 0.47058827, b: 0.3647059, a: 1}
+  colorDesactivate: {r: 0.34509805, g: 1, b: 0.10980393, a: 1}
