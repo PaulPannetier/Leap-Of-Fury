@@ -12,13 +12,18 @@ public class Explosion : MonoBehaviour
     private bool isExploding = false;
     private List<UnityEngine.Collider2D> colAlreadyTouch;
 
-    public bool enableBehaviour = true;
+    protected bool _enableBehaviour;
+    public virtual bool enableBehaviour
+    {
+        get => enableBehaviour;
+        set => enableBehaviour = value;
+    }
     public bool oneTouchPerCollider;
     public ExplosionData explosionData;
     public Action<UnityEngine.Collider2D> callbackOnTouch;
     public Action<Explosion> callbackOnDestroy;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         callbackOnTouch = (UnityEngine.Collider2D arg) => { };
         callbackOnDestroy = (Explosion arg) => { };
@@ -27,13 +32,13 @@ public class Explosion : MonoBehaviour
         colAlreadyTouch = new List<UnityEngine.Collider2D>();
     }
 
-    public void Launch(ExplosionData explosionData)
+    public virtual void Launch(ExplosionData explosionData)
     {
         this.explosionData = explosionData;
         StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
     }
 
-    public void Launch()
+    public virtual void Launch()
     {
         StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
     }
@@ -54,7 +59,7 @@ public class Explosion : MonoBehaviour
         colAlreadyTouch.Clear();
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if(PauseManager.instance.isPauseEnable)
         {
@@ -87,11 +92,6 @@ public class Explosion : MonoBehaviour
         {
             Destroy();
         }
-    }
-
-    public void SetColor(in Color color)
-    {
-        spriteRenderer.color = color;
     }
 
     private void OnCollide(UnityEngine.Collider2D collider)

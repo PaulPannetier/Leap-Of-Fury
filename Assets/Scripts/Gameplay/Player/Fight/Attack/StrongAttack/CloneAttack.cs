@@ -249,7 +249,7 @@ public class CloneAttack : StrongAttack
         public Action action;
         public float time;
         public Vector2? explosionPosition;
-        
+
         public bool isKillWithWeakAttack => (boolUnion & 1) != 0; //Do an american fist attaque dashing
         public bool makeAnExplosionThisFrame => (boolUnion & (1 << 1)) != 0;
         public bool flipRenderer => (boolUnion & (1 << 2)) != 0;

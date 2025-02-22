@@ -18,6 +18,7 @@ public class AmericanFistAttack : WeakAttack
     private LayerMask groundMask, charMask;
     private bool alreadyCreateExplosionWinthThisDash;
     private List<uint> charAlreadyTouch;
+    private Explosion cloneExplosion;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -29,8 +30,7 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private AnimationCurve dashSpeedCurve;
     [SerializeField] private int nbDash = 3;
     [SerializeField] private float explosionForce = 1.1f;
-    [SerializeField] private Explosion explosionPrefabs;
-    [SerializeField] private Explosion explosionInactivePrefabs;
+    [SerializeField] private AmericanFistAttackExplosion explosionPrefabs;
 
     [Header("Collission")]
     [SerializeField] private Vector2 colliderOffset;
@@ -72,14 +72,14 @@ public class AmericanFistAttack : WeakAttack
 
     protected override void Start()
     {
-        if (isAClone)
-            return;
-
-        base.Start();
+        if (!isAClone)
+        {
+            base.Start();
+            PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
+            PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
+        }
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
         charMask = LayerMask.GetMask("Char");
-        PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
-        PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
     }
 
     #endregion
@@ -108,11 +108,14 @@ public class AmericanFistAttack : WeakAttack
     {
         if (isCloneDashEnable)
         {
-            if(originalCloneAttack.isCloneAttackEnable && CollideWithEnemy(out GameObject[] enemies))
+            if(originalCloneAttack.isCloneAttackEnable)
             {
-                foreach (GameObject enemy in enemies)
+                if(CollideWithEnemy(out GameObject[] enemies))
                 {
-                    OnTouchEnemy(enemy);
+                    foreach (GameObject enemy in enemies)
+                    {
+                        OnTouchEnemy(enemy);
+                    }
                 }
             }
         }
@@ -121,6 +124,11 @@ public class AmericanFistAttack : WeakAttack
         {
             activateWallExplosion = false;
             CreateExplosion(cloneExplosionPosition, !originalCloneAttack.isCloneAttackEnable);
+        }
+
+        if(cloneExplosion != null)
+        {
+            cloneExplosion.enableBehaviour = originalCloneAttack.isCloneAttackEnable;
         }
     }
 
@@ -363,21 +371,25 @@ public class AmericanFistAttack : WeakAttack
         return false;
     }
 
-    private void CreateExplosion(in Vector2 collisionPoint, bool disableExplosionEffet = false)
+    private void CreateExplosion(in Vector2 collisionPoint, bool cloneExplosion = false)
     {
-        Explosion expPrefab = disableExplosionEffet ? explosionInactivePrefabs : explosionPrefabs;
-        Explosion explosion = Instantiate(expPrefab, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
-        if(disableExplosionEffet)
+        AmericanFistAttackExplosion explosion = Instantiate(explosionPrefabs, collisionPoint, Quaternion.identity, CloneParent.cloneParent);
+        if(cloneExplosion)
         {
-            explosion.enableBehaviour = false;
-            SpriteRenderer explosionRenderer = explosion.GetComponentInChildren<SpriteRenderer>();
-            explosion.SetColor(explosionRenderer.color * originalCloneAttack.cloneTransparency);
+            void OnExplosionDestroy(Explosion _)
+            {
+                this.cloneExplosion = null;
+            }
+            this.cloneExplosion = explosion;
+            explosion.enableBehaviour = originalCloneAttack.isCloneAttackEnable;
+            explosion.callbackOnDestroy += OnExplosionDestroy;
         }
         else
         {
-            explosion.callbackOnTouch += OnExplosionTouchEnemy;
         }
-        explosion.Launch();
+
+        explosion.callbackOnTouch += OnExplosionTouchEnemy;
+        explosion.Launch(this);
         ExplosionManager.instance.CreateExplosion(collisionPoint, explosionForce);
     }
 
