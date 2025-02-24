@@ -1051,7 +1051,7 @@ namespace Collision2D
             float numerateur = Mathf.Abs(u.x * AC.y - u.y * AC.x);
             return numerateur < circle.radius * u.magnitude;
         }
-        public static bool CollideCircleStraightLine(Circle circle, StraightLine2D straightLine, out Vector2 collisionPoint) => CollideCircleStraightLine(circle, straightLine, out collisionPoint);
+        public static bool CollideCircleStraightLine(Circle circle, StraightLine2D straightLine, out Vector2 collisionPoint) => CollideCircleStraightLine(circle, straightLine.A, straightLine.B, out collisionPoint);
         public static bool CollideCircleStraightLine(Circle circle, in Vector2 A, in Vector2 B, out Vector2 collisionPoint)
         {
             if (!CollideCircleStraightLine(circle, A, B))

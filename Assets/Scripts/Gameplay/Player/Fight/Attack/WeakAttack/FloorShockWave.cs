@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class FloorShockWave : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class FloorShockWave : MonoBehaviour
     private FallAttack fallAttack;
     private PlayerCommon playerCommon;
     private LayerMask playersMask, groundMask;
+    private List<uint> charAlreadyTouch;
 
     [SerializeField] private Vector2 colliderOffset, colliderSize;
     [SerializeField] private float distanceFromFloor = 1f;
@@ -22,6 +24,7 @@ public class FloorShockWave : MonoBehaviour
     {
         playersMask = LayerMask.GetMask("Char");
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
+        charAlreadyTouch = new List<uint>(4);
     }
 
     public void Launch(bool right, float maxSpeed, FallAttack fallAttack)
@@ -41,14 +44,7 @@ public class FloorShockWave : MonoBehaviour
         this.right = right;
         playerCommon = fallAttack.GetComponent<PlayerCommon>();
         timeCreated = Time.time;
-    }
-
-    private void OnHitChar(GameObject player)
-    {
-        if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
-        {
-            fallAttack.OnTouchEnemyByShockWave(player, this);
-        }
+        charAlreadyTouch.Clear();
     }
 
     private void Update()
@@ -70,7 +66,13 @@ public class FloorShockWave : MonoBehaviour
         {
             if(col.CompareTag("Char"))
             {
-                OnHitChar(col.GetComponent<ToricObject>().original);
+                GameObject player = col.GetComponent<ToricObject>().original;
+                uint playerId = player.GetComponent<PlayerCommon>().id;
+                if (playerCommon.id != playerId && !charAlreadyTouch.Contains(playerId))
+                {
+                    fallAttack.OnTouchEnemyByShockWave(player, this);
+                    charAlreadyTouch.Add(playerId);
+                }
             }
         }
 

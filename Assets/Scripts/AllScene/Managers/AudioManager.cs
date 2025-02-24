@@ -124,7 +124,7 @@ public class AudioManager : MonoBehaviour
         float duration1 = duration * (currentSource.volume / (currentSource.volume + targetVolume));
         Coroutine changeVolCorout = StartCoroutine(SetVolumeSmoothCorout(currentSoundId, currentSource, 0f, duration1));
         changeVolumeCorout.Add(currentSoundId, changeVolCorout);
-        yield return Useful.GetWaitForSeconds(duration1);
+        yield return new WaitForSeconds(duration1);
         RmMusic(currentSoundId);
 
         SoundID newSoundId = PlaySoundPrivate(newSoundName, 0f);
@@ -331,7 +331,7 @@ public class AudioManager : MonoBehaviour
 
     private IEnumerator RemoveSoundCoroutine(SoundID id, float delay)
     {
-        yield return Useful.GetWaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
         RmMusic(id);
     }
 

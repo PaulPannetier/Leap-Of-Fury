@@ -1664,7 +1664,8 @@ public static class Useful
         return min;
     }
 
-    private static readonly uint[] fastExpMask = new uint[32] {
+    private static readonly uint[] fastExpMask = new uint[32]
+    {
         0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80,
         0x100, 0x200, 0x400, 0x800,
         0x1000, 0x2000, 0x4000, 0x8000,
@@ -2640,18 +2641,6 @@ public static class Useful
             UnityEngine.Object.Destroy(child.gameObject);
     }
 
-    private static Dictionary<float, WaitForSeconds> waitForSecondsCache = new Dictionary<float, WaitForSeconds>();
-    public static WaitForSeconds GetWaitForSeconds(float time)
-    {
-        if (waitForSecondsCache.TryGetValue(time, out WaitForSeconds waitForSeconds))
-        {
-            return waitForSeconds;
-        }
-        WaitForSeconds res = new WaitForSeconds(time);
-        waitForSecondsCache.Add(time, res);
-        return res;
-    }
-
     #endregion
 
     #region Invoke
@@ -2676,7 +2665,7 @@ public static class Useful
 
     private static IEnumerator InvokeCorout(Action method, float delay)
     {
-        yield return GetWaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
         method.Invoke();
     }
 
@@ -2691,7 +2680,7 @@ public static class Useful
 
     private static IEnumerator InvokeCorout<T>(Action<T> method, T param, float delay)
     {
-        yield return GetWaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
         method.Invoke(param);
     }
 
@@ -2702,7 +2691,7 @@ public static class Useful
 
     private static IEnumerator InvokeCorout<T1, T2>(Action<T1, T2> method, T1 param1, T2 param2, float delay)
     {
-        yield return GetWaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
         method.Invoke(param1, param2);
     }
 
@@ -2713,7 +2702,7 @@ public static class Useful
 
     private static IEnumerator InvokeCorout<T1, T2, T3>(Action<T1, T2, T3> method, T1 param1, T2 param2, T3 param3, float delay)
     {
-        yield return GetWaitForSeconds(delay);
+        yield return new WaitForSeconds(delay);
         method.Invoke(param1, param2, param3);
     }
 

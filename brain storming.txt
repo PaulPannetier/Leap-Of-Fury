@@ -46,7 +46,7 @@ perso 1 : *
 
 perso 2 : *
 	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
-	  attack forte 2ème idée : Le joueur accroche le mur ou le perso dans la direction des input (8dir). Si c'est un joueur il le tue, sinon il va sur le mur en tuant tout sur son passage.//ok
+	  attack forte : tir 5 projectiles en cone serré dans la dir des input (8 dir possibles) et qui lui applique une forte force de propulsion en arrière//ok**
 	  Passif :
 
 perso 3 : *
@@ -56,9 +56,13 @@ perso 3 : *
 
 perso 4 : *
 	  attack faible : lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur.//ok
-	  attack forte : tir 3 projectiles en cone dans la dir inverse des input (8 dir possibles) et qui lui applique une forte de propulsion//ok**
+	  attack forte : Le joueur accroche le mur ou le perso dans la direction des input (8dir). Si c'est un joueur il le tue, sinon il va sur le mur en tuant tout sur son passage.//ok
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
 
+perso 5 : *
+	  attack faible : Pose un boule électrique a sa position a chaque appuie (max 4 rm 1ere boule si tente d'en posé 5), la boule applique des dégats de zone en continue (une fois par char).
+	  attack forte : Toutes les boules sont relié pas un arc électrique qui tue les perso pendant 0.5sec puis les boules explose faisant une petites explosion.
+	  Passif : le perso est repoussé vers le haut quand il passe au dessus des boules.
 Niveau :
 - Composé de plusieurs cartes.
 - Homéomorphe à un tore.

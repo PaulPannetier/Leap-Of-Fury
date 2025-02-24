@@ -81,7 +81,7 @@ public class BouncingBallAttack : StrongAttack
             BouncingBall bb = ball.GetComponent<BouncingBall>();
             bb.Launch(randDir, ballSpeed, nbBounce, maxBallDuration, this);
 
-            yield return Useful.GetWaitForSeconds(shootTime);
+            yield return new WaitForSeconds(shootTime);
         }
     }
 

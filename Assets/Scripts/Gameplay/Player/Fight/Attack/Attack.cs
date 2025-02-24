@@ -34,7 +34,8 @@ public abstract class Attack : MonoBehaviour
 
     protected virtual void Update()
     {
-        cooldown.Update();
+        if (!PauseManager.instance.isPauseEnable)
+            cooldown.Update();
     }
 
     protected virtual void FixedUpdate()

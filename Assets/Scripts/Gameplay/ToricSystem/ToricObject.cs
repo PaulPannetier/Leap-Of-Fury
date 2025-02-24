@@ -117,15 +117,7 @@ public class ToricObject : MonoBehaviour
 
     private IEnumerator InvokePause(MonoBehaviour comp,  string methodName, float delay)
     {
-        float timeCounter = 0f;
-        while (timeCounter < delay)
-        {
-            yield return null;
-            if (!PauseManager.instance.isPauseEnable)
-            {
-                timeCounter += Time.deltaTime;
-            }
-        }
+        yield return PauseManager.instance.Wait(delay);
 
         comp.Invoke(methodName, 0f);
     }

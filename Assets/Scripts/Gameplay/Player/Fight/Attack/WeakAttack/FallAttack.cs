@@ -1,5 +1,6 @@
 using Collision2D;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Collider2D = UnityEngine.Collider2D;
 
@@ -15,12 +16,12 @@ public class FallAttack : WeakAttack
     private BoxCollider2D hitbox;
     private CharacterController charController;
     private ToricObject toricObject;
-    private Rigidbody2D rb;
     private LayerMask charMask, groundMask;
     private new Transform transform;
     private FallAttackPhase state;
     private float LastTimeBeginAPhase = -10f;
     private Action callbackEnableOtherAttack, callbackEnableThisAttack;
+    private List<uint> charAlreadyTouch;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -49,8 +50,8 @@ public class FallAttack : WeakAttack
         charController = GetComponent<CharacterController>();
         hitbox = GetComponent<BoxCollider2D>();
         toricObject = GetComponent<ToricObject>();
-        rb = GetComponent<Rigidbody2D>();
         state = FallAttackPhase.None;
+        charAlreadyTouch = new List<uint>(4);
     }
 
     protected override void Start()
@@ -86,7 +87,7 @@ public class FallAttack : WeakAttack
         charController.Freeze();
         if(Time.time - LastTimeBeginAPhase > castDuration)
         {
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            charAlreadyTouch.Clear();
             LastTimeBeginAPhase = Time.time;
             state = FallAttackPhase.Fall;
         }
@@ -104,9 +105,11 @@ public class FallAttack : WeakAttack
             if (col.CompareTag("Char"))
             {
                 GameObject player = col.GetComponent<ToricObject>().original;
-                if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
+                uint playerId = player.GetComponent<PlayerCommon>().id;
+                if (playerCommon.id != playerId && !charAlreadyTouch.Contains(playerId))
                 {
                     OnTouchEnemy(player, damageType);
+                    charAlreadyTouch.Add(playerId);
                 }
             }
         }
@@ -114,9 +117,8 @@ public class FallAttack : WeakAttack
         if (hitGround || Time.time - LastTimeBeginAPhase > maxFallDuration)
         {
             state = FallAttackPhase.None;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             charController.UnFreeze();
-            Vector2 newVel = hitGround ? fallSpeed * Vector2.down : upForceWhenCancelFalling * Vector2.up;
+            Vector2 newVel = hitGround ? Vector2.zero : upForceWhenCancelFalling * Vector2.up;
             charController.ForceApplyVelocity(newVel);
         }
 
@@ -128,9 +130,11 @@ public class FallAttack : WeakAttack
                 if (col.gameObject.CompareTag("Char"))
                 {
                     GameObject player = col.GetComponent<ToricObject>().original;
-                    if (playerCommon.id != player.GetComponent<PlayerCommon>().id)
+                    uint playerId = player.GetComponent<PlayerCommon>().id;
+                    if (playerCommon.id != playerId && !charAlreadyTouch.Contains(playerId))
                     {
                         OnTouchEnemy(player, damageType);
+                        charAlreadyTouch.Add(playerId);
                     }
                 }
             }
@@ -165,7 +169,7 @@ public class FallAttack : WeakAttack
         }
         else
         {
-            rb.MovePosition((Vector2)transform.position + Time.deltaTime * fallSpeed * Vector2.down);
+            transform.position += (Vector3)(Time.deltaTime * fallSpeed * Vector2.down);
         }
     }
 
@@ -197,7 +201,6 @@ public class FallAttack : WeakAttack
         this.callbackEnableOtherAttack = callbackEnableOtherAttack;
         this.callbackEnableThisAttack = callbackEnableThisAttack;
         state = FallAttackPhase.Freeze;
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
         LastTimeBeginAPhase = Time.time;
         return true;
     }
@@ -234,13 +237,12 @@ public class FallAttack : WeakAttack
 
         Vector2 size = new Vector2(hitbox.size.x, groundDetectionHeight);
         Hitbox.GizmosDraw((Vector2)transform.position + groundDetectionHitboxOffset, size, Color.red);
-        Circle.GizmosDraw(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), explosionRadius, Color.black, true);
+        Circle.GizmosDraw(new Vector2(transform.position.x, transform.position.y + charController.groundRaycastOffset.y), explosionRadius, Color.black);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine((Vector2)transform.position + floorShockWaveRaycastOffset, (Vector2)transform.position + floorShockWaveRaycastOffset + floorShockWaveRaycastLenght * Vector2.down);
+        Gizmos.DrawLine((Vector2)transform.position + floorShockWaveRaycastOffset, (Vector2)transform.position + floorShockWaveRaycastOffset + (floorShockWaveRaycastLenght * Vector2.down));
         Vector2 start = new Vector2(transform.position.x - floorShockWaveRaycastOffset.x, transform.position.y  + floorShockWaveRaycastOffset.y);
-        Gizmos.DrawLine(start, start + floorShockWaveRaycastLenght * Vector2.down);
-
+        Gizmos.DrawLine(start, start + (floorShockWaveRaycastLenght * Vector2.down));
     }
 
 #endif
