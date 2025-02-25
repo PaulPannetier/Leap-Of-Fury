@@ -5,27 +5,27 @@ using UnityEngine;
 public class ElectricBallAttack : WeakAttack
 {
     [SerializeField] private ElectricBall electricBallPrefab;
-    [SerializeField] private int maxBall;
 
-    public List<ElectricBall> currentBall {  get; private set; }
+    public int maxBall;
+    [HideInInspector] public List<ElectricBall> currentBalls {  get; private set; }
 
     protected override void Awake()
     {
         base.Awake();
-        currentBall = new List<ElectricBall>(maxBall);
+        currentBalls = new List<ElectricBall>(maxBall);
     }
 
     private void InstanciateBall()
     {
-        if(currentBall.Count > maxBall)
+        if(currentBalls.Count > maxBall)
         {
-            Destroy(currentBall[0]);
-            currentBall.RemoveAt(0);
+            Destroy(currentBalls[0]);
+            currentBalls.RemoveAt(0);
         }
 
         ElectricBall electricBall = Instantiate(electricBallPrefab, transform.position, Quaternion.identity, CloneParent.cloneParent);
         electricBall.Launch(this);
-        currentBall.Add(electricBall);
+        currentBalls.Add(electricBall);
     }
 
     public void OnCharTouchByElectricBall(GameObject charTouch, ElectricBall electricBall)
@@ -35,7 +35,7 @@ public class ElectricBallAttack : WeakAttack
 
     public void OnElectricBallDestroy(ElectricBall electricBall)
     {
-        currentBall.Remove(electricBall);
+        currentBalls.Remove(electricBall);
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)

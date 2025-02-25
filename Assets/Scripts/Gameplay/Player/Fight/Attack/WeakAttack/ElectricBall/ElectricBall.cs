@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class ElectricBall : MonoBehaviour
 {
+    private bool isLinking;
     private PlayerCommon playerCommon;
     private ElectricBallAttack electricBallAttack;
     private List<uint> charAlreadyTouch;
@@ -63,11 +64,21 @@ public class ElectricBall : MonoBehaviour
             }
         }
 
-        if(Time.time - timeInstanciate > maxDuration)
+        if(!isLinking && Time.time - timeInstanciate > maxDuration)
         {
             electricBallAttack.OnElectricBallDestroy(this);
             Destroy(gameObject);
         }
+    }
+
+    public void StartLinking()
+    {
+        isLinking = true;
+    }
+
+    public void EndLinking()
+    {
+        isLinking = false;
     }
 
     #region Gizmos/OnValidate
