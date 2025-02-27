@@ -6810,6 +6810,11 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
+  arcDuration: 0.5
+  electricBallExplosionRadius: 1
+  electricBallExplosionForce: 1
+  instanciateOneLineRendererPerLink: 1
+  linkPrefabs: {fileID: 2188808543721607070, guid: 260cb0d6b3da4754896328f0b6640d63, type: 3}
 --- !u!4 &2841070824395084486
 Transform:
   m_ObjectHideFlags: 0

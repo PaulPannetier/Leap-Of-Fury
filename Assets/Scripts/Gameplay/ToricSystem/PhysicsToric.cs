@@ -161,7 +161,7 @@ public static class PhysicsToric
             new Vector2(b.x, b.y - mapHitbox.size.y)
         };
 
-        Vector2 aKeep = possibleA[0], bKeep = possibleB[0];
+        Vector2 aKeep = new Vector2(), bKeep = new Vector2();
         float minSqrMag = float.MaxValue;
         float sqrMag;
         for (int i = 0; i < 5; i++)
@@ -184,6 +184,52 @@ public static class PhysicsToric
         }
 
         return (bKeep - aKeep) * (1f / Mathf.Sqrt(minSqrMag));
+    }
+
+    public static Tuple<Vector2, float> DirectionAndDistance(Vector2 a, Vector2 b)
+    {
+        Vector2[] possibleA = new Vector2[5]
+        {
+            a,
+            new Vector2(a.x + mapHitbox.size.x , a.y),
+            new Vector2(a.x - mapHitbox.size.x, a.y),
+            new Vector2(a.x, a.y + mapHitbox.size.y),
+            new Vector2(a.x, a.y - mapHitbox.size.y)
+        };
+
+        Vector2[] possibleB = new Vector2[5]
+        {
+            b,
+            new Vector2(b.x + mapHitbox.size.x , b.y),
+            new Vector2(b.x - mapHitbox.size.x, b.y),
+            new Vector2(b.x, b.y + mapHitbox.size.y),
+            new Vector2(b.x, b.y - mapHitbox.size.y)
+        };
+
+        Vector2 aKeep = new Vector2(), bKeep = new Vector2();
+        float minSqrMag = float.MaxValue;
+        float sqrMag;
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                sqrMag = possibleA[i].SqrDistance(possibleB[j]);
+                if (sqrMag < minSqrMag)
+                {
+                    minSqrMag = sqrMag;
+                    aKeep = possibleA[i];
+                    bKeep = possibleB[j];
+                }
+            }
+        }
+
+        if (minSqrMag <= 1e-5f)
+        {
+            return new Tuple<Vector2, float>(Vector2.zero, 0f);
+        }
+
+        float distance = Mathf.Sqrt(minSqrMag);
+        return new Tuple<Vector2, float>((bKeep - aKeep) * (1f / distance), distance);
     }
 
     public static bool GetToricIntersection(in Vector2 from, in Vector2 end, out Vector2 inter)
@@ -513,6 +559,21 @@ public static class PhysicsToric
                 return true;
         }
         return false;
+    }
+
+    public static Vector2[] RaycastToricIntersections(Vector2 from, in Vector2 dir, float length)
+    {
+        Vector2 end = from + (dir * length);
+        List<Vector2> inters = new List<Vector2>(3);
+        while(GetToricIntersection(from, end, out Vector2 inter) && length > 1e-3f)
+        {
+            inters.Add(inter);
+            length -= from.Distance(inter);
+            from = GetComplementaryPoint(inter);
+            end = from + (dir * length);
+        }
+
+        return inters.ToArray();
     }
 
     public static ToricRaycastHit2D Raycast(in Vector2 from, in Vector2 direction, float distance, LayerMask layerMask)

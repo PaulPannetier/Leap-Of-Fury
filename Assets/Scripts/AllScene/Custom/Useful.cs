@@ -2802,6 +2802,15 @@ public static class Useful
         return tex;
     }
 
+    public static void ResetPositions(this LineRenderer lineRenderer, Vector3[] position)
+    {
+        lineRenderer.positionCount = position.Length;
+        for (int i = 0; i < position.Length; i++)
+        {
+            lineRenderer.SetPosition(i, position[i]);
+        }
+    }
+
     public static void AddToDontDestroyOnLoad(this MonoBehaviour obj)
     {
         obj.transform.parent = null;

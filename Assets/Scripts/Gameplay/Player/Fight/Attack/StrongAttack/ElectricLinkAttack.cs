@@ -2,26 +2,28 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using System.Linq;
+using Collision2D;
+using Collider2D = UnityEngine.Collider2D;
 
 public class ElectricLinkAttack : StrongAttack
 {
-    private List<ElectricLink> currentLink;
+    private ElectricLink currentLink;
     private LayerMask charMask;
     private bool isLinking;
     private Action callbackEnableOtherAttack, callbackEnableThisAttack;
     private ElectricBallAttack electricBallAttack;
+    private float lineVisualToricDistance = 3f;
 
     [SerializeField] private float arcDuration = 0.5f;
     [SerializeField] private float electricBallExplosionRadius = 1f;
     [SerializeField] private float electricBallExplosionForce = 1f;
-    [SerializeField] private LineRenderer arcPrefabs;
+    [SerializeField] private bool instanciateOneLineRendererPerLink = true;
+    [SerializeField] private LineRenderer linkPrefabs;
 
     protected override void Awake()
     {
         base.Awake();
         electricBallAttack = GetComponent<ElectricBallAttack>();
-        currentLink = new List<ElectricLink>(electricBallAttack.maxBall);
         charMask = LayerMask.GetMask("Char");
     }
 
@@ -31,12 +33,9 @@ public class ElectricLinkAttack : StrongAttack
 
         if(isLinking)
         {
-            foreach (ElectricLink link in currentLink)
+            foreach (Line2D link in currentLink.collisionLine)
             {
-                Vector2 start = link.start.transform.position;
-                Vector2 dir = (Vector2)link.end.transform.position - start;
-                float length = dir.magnitude;
-                ToricRaycastHit2D[] raycasts = PhysicsToric.RaycastAll(start, dir, length, charMask);
+                ToricRaycastHit2D[] raycasts = PhysicsToric.RaycastAll(link.A, link.B - link.A, link.A.Distance(link.B) * 0.99f, charMask);
                 foreach (ToricRaycastHit2D raycast in raycasts)
                 {
                     if(raycast.collider == null || !raycast.collider.CompareTag("Char")) 
@@ -44,17 +43,16 @@ public class ElectricLinkAttack : StrongAttack
 
                     GameObject player = raycast.collider.GetComponent<ToricObject>().original;
                     uint id = player.GetComponent<PlayerCommon>().id;
-                    if(playerCommon.id != id && !link.charAlreadyTouch.Contains(id))
+                    List<uint> charAlreadyTouch = currentLink.charAlreadyTouch[link];
+                    if (playerCommon.id != id && !charAlreadyTouch.Contains(id))
                     {
-                        link.charAlreadyTouch.Add(id);
+                        charAlreadyTouch.Add(id);
                         base.OnTouchEnemy(player, damageType);
                     }
                 }
             }
         }
     }
-
-
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
@@ -78,16 +76,231 @@ public class ElectricLinkAttack : StrongAttack
 
     private void CreateLink()
     {
-        List<ElectricBall> electricBalls = electricBallAttack.currentBalls;
-        currentLink.Clear();
-        for (int i = 0; i < electricBalls.Count - 1; i++)
+        List<LineRenderer> CreateRenderer()
         {
-            currentLink.Add(new ElectricLink(electricBalls[i], electricBalls[i + 1]));
+            List<ElectricBall> electricBalls = electricBallAttack.currentBalls;
+            Vector2 start, end, dir;
+            float distance;
+            Vector2[] inters;
+            Vector3[] lineRendererPoints;
+            LineRenderer lineRenderer;
+            int i, j;
+            List<LineRenderer> res = new List<LineRenderer>();
+            if (electricBalls.Count == 2)
+            {
+                start = electricBalls[0].transform.position;
+                end = electricBalls[1].transform.position;
+                (dir, distance) = PhysicsToric.DirectionAndDistance(start, end);
+                inters = PhysicsToric.RaycastToricIntersections(start, dir, distance);
+                if (inters.Length <= 0)
+                {
+                    lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                    lineRendererPoints = new Vector3[2]
+                    {
+                        start, end
+                    };
+                    lineRenderer.ResetPositions(lineRendererPoints);
+                    res.Add(lineRenderer);
+                    return res;
+                }
+
+                Vector2 oldPoint = start;
+                for (i = 0; i < inters.Length; i++)
+                {
+                    lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                    Vector2 cache = (inters[i] - oldPoint).normalized * lineVisualToricDistance;
+                    lineRendererPoints = new Vector3[2]
+                    {
+                        oldPoint, inters[i] + cache
+                    };
+                    lineRenderer.ResetPositions(lineRendererPoints);
+                    res.Add(lineRenderer);
+                    oldPoint = PhysicsToric.GetComplementaryPoint(inters[i]) - cache;
+                }
+
+                lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                lineRendererPoints = new Vector3[2]
+                {
+                        oldPoint, end
+                };
+                lineRenderer.ResetPositions(lineRendererPoints);
+                res.Add(lineRenderer);
+                return res;
+            }
+
+            if(instanciateOneLineRendererPerLink)
+            {
+                for (i = 0; i < electricBalls.Count; i++)
+                {
+                    start = electricBalls[i].transform.position;
+                    end = electricBalls[(i + 1) % electricBalls.Count].transform.position;
+                    (dir, distance) = PhysicsToric.DirectionAndDistance(start, end);
+                    inters = PhysicsToric.RaycastToricIntersections(start, dir, distance);
+
+                    if (inters.Length <= 0)
+                    {
+                        lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                        lineRendererPoints = new Vector3[2]
+                        {
+                            start, end
+                        };
+                        lineRenderer.ResetPositions(lineRendererPoints);
+                        res.Add(lineRenderer);
+                    }
+                    else
+                    {
+                        Vector2 oldPoint = start;
+                        for (j = 0; j < inters.Length; j++)
+                        {
+                            lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                            Vector2 cache = (inters[j] - oldPoint).normalized * lineVisualToricDistance;
+                            lineRendererPoints = new Vector3[2]
+                            {
+                                oldPoint, inters[j] + cache
+                            };
+                            lineRenderer.ResetPositions(lineRendererPoints);
+                            res.Add(lineRenderer);
+                            oldPoint = PhysicsToric.GetComplementaryPoint(inters[j]) - cache;
+                        }
+
+                        lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                        lineRendererPoints = new Vector3[2]
+                        {
+                            oldPoint, end
+                        };
+                        lineRenderer.ResetPositions(lineRendererPoints);
+                        res.Add(lineRenderer);
+
+                    }
+                }
+
+                return res;
+            }
+
+            for (i = 0; i < electricBalls.Count; i++)
+            {
+                start = electricBalls[i].transform.position;
+                end = electricBalls[(i + 1) % electricBalls.Count].transform.position;
+                (dir, distance) = PhysicsToric.DirectionAndDistance(start, end);
+                inters = PhysicsToric.RaycastToricIntersections(start, dir, distance);
+
+                if (inters.Length <= 0)
+                {
+                    lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                    lineRendererPoints = new Vector3[2]
+                    {
+                            start, end
+                    };
+                    lineRenderer.ResetPositions(lineRendererPoints);
+                    res.Add(lineRenderer);
+                }
+                else
+                {
+                    Vector2 oldPoint = start;
+                    for (j = 0; j < inters.Length; j++)
+                    {
+                        lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                        Vector2 cache = (inters[j] - oldPoint).normalized * lineVisualToricDistance;
+                        lineRendererPoints = new Vector3[2]
+                        {
+                                oldPoint, inters[j] + cache
+                        };
+                        lineRenderer.ResetPositions(lineRendererPoints);
+                        res.Add(lineRenderer);
+                        oldPoint = PhysicsToric.GetComplementaryPoint(inters[j]) - cache;
+                    }
+
+                    lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                    lineRendererPoints = new Vector3[2]
+                    {
+                            oldPoint, end
+                    };
+                    lineRenderer.ResetPositions(lineRendererPoints);
+                    res.Add(lineRenderer);
+
+                }
+            }
+
+            return res;
+        }
+
+        List<Line2D> CreateLinkCollision()
+        {
+            List<ElectricBall> electricBalls = electricBallAttack.currentBalls;
+            Vector2 start, end, dir;
+            float distance;
+            Vector2[] inters;
+            int i, j;
+            List<Line2D> res = new List<Line2D>();
+            if (electricBalls.Count == 2)
+            {
+                start = electricBalls[0].transform.position;
+                end = electricBalls[1].transform.position;
+                (dir, distance) = PhysicsToric.DirectionAndDistance(start, end);
+                inters = PhysicsToric.RaycastToricIntersections(start, dir, distance);
+                if (inters.Length <= 0)
+                {
+                    res.Add(new Line2D(start, end));
+                    return res;
+                }
+
+                Vector2 oldPoint = start;
+                for (i = 0; i < inters.Length; i++)
+                {
+                    res.Add(new Line2D(oldPoint, inters[i]));
+                    oldPoint = PhysicsToric.GetComplementaryPoint(inters[i]);
+                }
+
+                res.Add(new Line2D(oldPoint, end));
+                return res;
+            }
+
+            for (i = 0; i < electricBalls.Count; i++)
+            {
+                start = electricBalls[i].transform.position;
+                end = electricBalls[(i + 1) % electricBalls.Count].transform.position;
+                (dir, distance) = PhysicsToric.DirectionAndDistance(start, end);
+                inters = PhysicsToric.RaycastToricIntersections(start, dir, distance);
+
+                if(inters.Length <= 0)
+                {
+                    res.Add(new Line2D(start, end));
+                }
+                else
+                {
+                    Vector2 oldPoint = start;
+                    for (j = 0; j < inters.Length; j++)
+                    {
+                        res.Add(new Line2D(oldPoint, inters[j]));
+                        oldPoint = PhysicsToric.GetComplementaryPoint(inters[j]);
+                    }
+                    res.Add(new Line2D(oldPoint, end));
+                }
+            }
+
+            return res;
+        }
+
+        List<ElectricBall> electricBalls = electricBallAttack.currentBalls;
+        currentLink = new ElectricLink();
+
+        List<Line2D> colLines = CreateLinkCollision();
+        currentLink.collisionLine = colLines;
+
+        Dictionary<Line2D, List<uint>> charAlreadyTouch = new Dictionary<Line2D, List<uint>>(colLines.Count);
+        foreach (Line2D line in colLines)
+        {
+            charAlreadyTouch.Add(line, new List<uint>());
+        }
+        currentLink.charAlreadyTouch = charAlreadyTouch;
+
+        List<LineRenderer> lineRenderer = CreateRenderer();
+        currentLink.lineRenderers = lineRenderer;
+
+        for (int i = 0; i < electricBalls.Count ; i++)
+        {
             electricBalls[i].StartLinking();
         }
-        electricBalls.Last().StartLinking();
-
-
     }
 
     private void HandleElectricBallExplosion(ElectricBall electricBall)
@@ -114,7 +327,7 @@ public class ElectricLinkAttack : StrongAttack
     {
         yield return PauseManager.instance.Wait(arcDuration);
 
-        currentLink.Clear();
+        currentLink = null;
         isLinking = false;
         foreach (ElectricBall electricBall in electricBallAttack.currentBalls)
         {
@@ -145,16 +358,17 @@ public class ElectricLinkAttack : StrongAttack
 
     #region Private Struct
 
-    private struct ElectricLink
+    private class ElectricLink
     {
-        public ElectricBall start, end;
-        public List<uint> charAlreadyTouch;
+        public Dictionary<Line2D, List<uint>> charAlreadyTouch;
+        public List<Line2D> collisionLine;
+        public List<LineRenderer> lineRenderers;
 
-        public ElectricLink(ElectricBall start, ElectricBall end)
+        public ElectricLink()
         {
-            this.start = start;
-            this.end = end;
-            charAlreadyTouch = new List<uint>(4);
+            charAlreadyTouch = new Dictionary<Line2D, List<uint>>();
+            collisionLine = new List<Line2D>();
+            lineRenderers = new List<LineRenderer>();
         }
     }
 
