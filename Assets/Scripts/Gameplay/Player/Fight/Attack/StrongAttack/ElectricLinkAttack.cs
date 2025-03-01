@@ -79,7 +79,7 @@ public class ElectricLinkAttack : StrongAttack
         List<LineRenderer> CreateRenderer()
         {
             List<ElectricBall> electricBalls = electricBallAttack.currentBalls;
-            Vector2 start, end, dir;
+            Vector2 start, end, dir, oldPoint;
             float distance;
             Vector2[] inters;
             Vector3[] lineRendererPoints;
@@ -104,7 +104,7 @@ public class ElectricLinkAttack : StrongAttack
                     return res;
                 }
 
-                Vector2 oldPoint = start;
+                oldPoint = start;
                 for (i = 0; i < inters.Length; i++)
                 {
                     lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
@@ -121,7 +121,7 @@ public class ElectricLinkAttack : StrongAttack
                 lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
                 lineRendererPoints = new Vector3[2]
                 {
-                        oldPoint, end
+                    oldPoint, end
                 };
                 lineRenderer.ResetPositions(lineRendererPoints);
                 res.Add(lineRenderer);
@@ -149,7 +149,7 @@ public class ElectricLinkAttack : StrongAttack
                     }
                     else
                     {
-                        Vector2 oldPoint = start;
+                        oldPoint = start;
                         for (j = 0; j < inters.Length; j++)
                         {
                             lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
@@ -177,6 +177,7 @@ public class ElectricLinkAttack : StrongAttack
                 return res;
             }
 
+            List<Vector2> currentPoints = new List<Vector2>(electricBalls.Count);
             for (i = 0; i < electricBalls.Count; i++)
             {
                 start = electricBalls[i].transform.position;
@@ -186,39 +187,71 @@ public class ElectricLinkAttack : StrongAttack
 
                 if (inters.Length <= 0)
                 {
-                    lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
-                    lineRendererPoints = new Vector3[2]
+                    if(currentPoints.Count <= 1)
                     {
-                            start, end
-                    };
-                    lineRenderer.ResetPositions(lineRendererPoints);
-                    res.Add(lineRenderer);
+                        currentPoints.Add(start);
+                        currentPoints.Add(end);
+                    }
+                    else
+                    {
+                        currentPoints.Add(end);
+                    }
                 }
                 else
                 {
-                    Vector2 oldPoint = start;
-                    for (j = 0; j < inters.Length; j++)
+                    if (currentPoints.Count <= 0)
+                    {
+                        currentPoints.Add(start);
+                    }
+
+                    currentPoints.Add(inters[0] + (dir * lineVisualToricDistance));
+                    lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                    lineRendererPoints = new Vector3[currentPoints.Count];
+                    for (j = 0; j < currentPoints.Count; j++)
+                    {
+                        lineRendererPoints[j] = currentPoints[j];
+                    }
+                    lineRenderer.ResetPositions(lineRendererPoints);
+                    res.Add(lineRenderer);
+                    currentPoints.Clear();
+
+                    oldPoint = PhysicsToric.GetComplementaryPoint(inters[0]) - (dir * lineVisualToricDistance);
+
+                    if (inters.Length == 1)
+                    {
+                        currentPoints.Add(oldPoint);
+                        continue;
+                    }
+
+                    for (j = 0; j < inters.Length - 1; j++)
                     {
                         lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
                         Vector2 cache = (inters[j] - oldPoint).normalized * lineVisualToricDistance;
                         lineRendererPoints = new Vector3[2]
                         {
-                                oldPoint, inters[j] + cache
+                            oldPoint, inters[j] + cache
                         };
                         lineRenderer.ResetPositions(lineRendererPoints);
                         res.Add(lineRenderer);
                         oldPoint = PhysicsToric.GetComplementaryPoint(inters[j]) - cache;
                     }
 
-                    lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
-                    lineRendererPoints = new Vector3[2]
-                    {
-                            oldPoint, end
-                    };
-                    lineRenderer.ResetPositions(lineRendererPoints);
-                    res.Add(lineRenderer);
-
+                    currentPoints.Add(oldPoint);
+                    currentPoints.Add(end);
                 }
+            }
+
+            if(currentPoints.Count > 0)
+            {
+                lineRenderer = Instantiate(linkPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+                lineRendererPoints = new Vector3[currentPoints.Count];
+                for (j = 0; j < currentPoints.Count; j++)
+                {
+                    lineRendererPoints[j] = currentPoints[j];
+                }
+                lineRenderer.ResetPositions(lineRendererPoints);
+                res.Add(lineRenderer);
+                currentPoints.Clear();
             }
 
             return res;
