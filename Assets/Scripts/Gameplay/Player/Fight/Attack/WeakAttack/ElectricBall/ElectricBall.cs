@@ -8,6 +8,7 @@ public class ElectricBall : MonoBehaviour
     private bool isLinking;
     private PlayerCommon playerCommon;
     private ElectricBallAttack electricBallAttack;
+    private ElectricFieldPassif electricFieldPassif;
     private List<uint> charAlreadyTouch;
     private LayerMask charMask;
     private float timeInstanciate = -10f;
@@ -28,6 +29,7 @@ public class ElectricBall : MonoBehaviour
     {
         electricBallAttack = attack;
         playerCommon = electricBallAttack.GetComponent<PlayerCommon>();
+        electricFieldPassif = electricBallAttack.GetComponent<ElectricFieldPassif>();
         timeInstanciate = Time.time;
     }
 
@@ -66,8 +68,7 @@ public class ElectricBall : MonoBehaviour
 
         if(!isLinking && Time.time - timeInstanciate > maxDuration)
         {
-            electricBallAttack.OnElectricBallDestroy(this);
-            Destroy(gameObject);
+            DestroyBall();
         }
     }
 
@@ -79,6 +80,14 @@ public class ElectricBall : MonoBehaviour
     public void EndLinking()
     {
         isLinking = false;
+        DestroyBall();
+    }
+
+    private void DestroyBall()
+    {
+        electricBallAttack.OnElectricBallDestroy(this);
+        electricFieldPassif.OnElectricBallDestroy(this);
+        Destroy(gameObject);
     }
 
     #region Gizmos/OnValidate

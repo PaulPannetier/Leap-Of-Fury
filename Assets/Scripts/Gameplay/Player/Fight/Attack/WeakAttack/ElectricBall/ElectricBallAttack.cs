@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ElectricBallAttack : WeakAttack
 {
+    private ElectricFieldPassif electricFieldPassif;
+
     [SerializeField] private ElectricBall electricBallPrefab;
 
     public int maxBall;
@@ -13,6 +15,7 @@ public class ElectricBallAttack : WeakAttack
     {
         base.Awake();
         currentBalls = new List<ElectricBall>(maxBall);
+        electricFieldPassif = GetComponent<ElectricFieldPassif>();
     }
 
     private void InstanciateBall()
@@ -25,6 +28,7 @@ public class ElectricBallAttack : WeakAttack
 
         ElectricBall electricBall = Instantiate(electricBallPrefab, transform.position, Quaternion.identity, CloneParent.cloneParent);
         electricBall.Launch(this);
+        electricFieldPassif.OnElectricBallCreate(electricBall);
         currentBalls.Add(electricBall);
     }
 

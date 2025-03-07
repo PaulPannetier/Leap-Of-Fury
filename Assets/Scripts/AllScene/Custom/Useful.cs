@@ -2318,13 +2318,34 @@ public static class Useful
 
     public static List<T> Distinct<T>(this List<T> lst)
     {
-        List<T> result = new List<T>();
+        List<T> result = new List<T>(lst.Count);
         foreach (T item in lst)
         {
             if(!result.Contains(item))
                 result.Add(item);
         }
         return result;
+    }
+
+    public static void Remove<T>(this List<T> lst, Func<T, bool> predicate)
+    {
+        for (int i = lst.Count - 1; i >= 0; i--)
+        {
+            if(predicate(lst[i]))
+            {
+                lst.RemoveAt(i);
+                return;
+            }
+        }
+    }
+
+    public static void RemoveAll<T>(this List<T> lst, Func<T, bool> predicate)
+    {
+        for (int i = lst.Count - 1; i >= 0; i--)
+        {
+            if (predicate(lst[i]))
+                lst.RemoveAt(i);
+        }
     }
 
     /// <summary>

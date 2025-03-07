@@ -102,12 +102,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundsOffset: {x: 0, y: 0}
-  boundsSize: {x: 3.5, y: 3.5}
+  boundsSize: {x: 1.5, y: 1.5}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
   componentsToDisableInClone:
-  - {fileID: 0}
+  - {fileID: 1300798702949888552}
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   useCustomUpdate: 0
@@ -126,3 +126,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageRadius: 0.5
   maxDuration: 10
+  drawGizmos: 1

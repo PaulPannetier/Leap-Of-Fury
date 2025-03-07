@@ -74,6 +74,8 @@ public class ElectricLinkAttack : StrongAttack
         return true;
     }
 
+    #region CreateLink
+
     private void CreateLink()
     {
         List<LineRenderer> CreateRenderer()
@@ -323,7 +325,7 @@ public class ElectricLinkAttack : StrongAttack
         Dictionary<Line2D, List<uint>> charAlreadyTouch = new Dictionary<Line2D, List<uint>>(colLines.Count);
         foreach (Line2D line in colLines)
         {
-            charAlreadyTouch.Add(line, new List<uint>());
+            charAlreadyTouch.Add(line, new List<uint>(4));
         }
         currentLink.charAlreadyTouch = charAlreadyTouch;
 
@@ -335,6 +337,8 @@ public class ElectricLinkAttack : StrongAttack
             electricBalls[i].StartLinking();
         }
     }
+
+    #endregion
 
     private void HandleElectricBallExplosion(ElectricBall electricBall)
     {
@@ -360,10 +364,17 @@ public class ElectricLinkAttack : StrongAttack
     {
         yield return PauseManager.instance.Wait(arcDuration);
 
+        foreach (LineRenderer lineRenderer in currentLink.lineRenderers)
+        {
+            Destroy(lineRenderer.gameObject);
+        }
+
         currentLink = null;
         isLinking = false;
-        foreach (ElectricBall electricBall in electricBallAttack.currentBalls)
+
+        for (int i = electricBallAttack.currentBalls.Count - 1; i >= 0; i--)
         {
+            ElectricBall electricBall = electricBallAttack.currentBalls[i];
             HandleElectricBallExplosion(electricBall);
             electricBall.EndLinking();
         }

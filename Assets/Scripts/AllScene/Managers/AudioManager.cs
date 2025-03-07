@@ -68,15 +68,16 @@ public class AudioManager : MonoBehaviour
         return default(SoundID);
     }
 
-    public uint PlaySound(string name, float volume) => PlaySoundPrivate(name, volume).id;
+    public uint PlaySound(string name, float volume) => PlaySoundInternal(name, volume).id;
 
-    private SoundID PlaySoundPrivate(string name, float volume)
+    private SoundID PlaySoundInternal(string name, float volume)
     {
         Sound sound = Array.Find(audioClips, item => item.name == name);
         if(sound == null)
         {
-            Debug.LogWarning("The sound " + name + " wasn't find in the AudioManager's audioClips array.");
-            LogManager.instance.AddLog("The sound " + name + " wasn't find in the AudioManager's audioClips array.", name);
+            string errorMsg = "The sound " + name + " wasn't find in the AudioManager's audioClips array.";
+            Debug.LogWarning(errorMsg);
+            LogManager.instance.AddLog(errorMsg, name, audioClips.Length);
             return default(SoundID);
         }
         AudioSource audioSource = Instantiate(sound.soundEffect ? soundEffectSourcePrefab : musicSourcePrefab, audioParent);
@@ -110,8 +111,9 @@ public class AudioManager : MonoBehaviour
     {
         if(!IsPlayingSound(currentSoundId))
         {
-            Debug.Log("The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName);
-            LogManager.instance.AddLog("The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName, currentSoundId.name, newSoundName);
+            string errorMsg = "The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName;
+            Debug.Log(errorMsg);
+            LogManager.instance.AddLog(errorMsg, currentSoundId.name, newSoundName);
             PlaySound(newSoundName, 0f);
             SetVolumeSmooth(newSoundName, newSoundVolume, duration);
             return;
@@ -127,7 +129,7 @@ public class AudioManager : MonoBehaviour
         yield return new WaitForSeconds(duration1);
         RmMusic(currentSoundId);
 
-        SoundID newSoundId = PlaySoundPrivate(newSoundName, 0f);
+        SoundID newSoundId = PlaySoundInternal(newSoundName, 0f);
         Coroutine changeVolCorout2 = StartCoroutine(SetVolumeSmoothCorout(newSoundId, currentSounds[newSoundId], targetVolume, duration - duration1));
         changeVolumeCorout.Add(newSoundId, changeVolCorout2);
     }
@@ -148,8 +150,9 @@ public class AudioManager : MonoBehaviour
             audioSource.volume = Mathf.Clamp01(newVolume) * sound.volume * masterVolume * (sound.soundEffect ? soundEffectsVolume : musicVolume);
             return;
         }
-        Debug.LogWarning("The sound " + id + " is not currently playing.");
-        LogManager.instance.AddLog("The sound with id:" + id + " is not currently playing.", id);
+        string errorMsg = "The sound " + id + " is not currently playing.";
+        Debug.LogWarning(errorMsg);
+        LogManager.instance.AddLog(errorMsg, id);
     }
 
     public void SetVolumeSmooth(string name, float newVolume, float duration) => SetVolumeSmooth(GetIdFromName(name), newVolume, duration);
@@ -158,14 +161,16 @@ public class AudioManager : MonoBehaviour
     {
         if(!currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
-            Debug.Log("The sound : " + id + " is not playing, can't set volume of a non playing sound.");
-            LogManager.instance.AddLog("The sound : " + id + " is not playing, can't set volume of a non playing sound.", id);
+            string errorMsg = "The sound : " + id + " is not playing, can't set volume of a non playing sound.";
+            Debug.Log(errorMsg);
+            LogManager.instance.AddLog(errorMsg, id);
             return;
         }
         if(changeVolumeCorout.ContainsKey(id))
         {
-            Debug.Log("The sound : " + id + " is already changing volume smootly.");
-            LogManager.instance.AddLog("The sound : " + id + " is already changing volume smootly.", id);
+            string errorMsg = "The sound : " + id + " is already changing volume smootly.";
+            Debug.Log(errorMsg);
+            LogManager.instance.AddLog(errorMsg, id);
             StopCoroutine(changeVolumeCorout[id]);
             changeVolumeCorout.Remove(id);
         }
@@ -201,12 +206,13 @@ public class AudioManager : MonoBehaviour
             audioSource.mute = true;
             return;
         }
-        Debug.LogWarning("The sound " + id + "is not currently playing, can't mute them.");
-        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't mute them.", id);
+        string errorMsg = "The sound " + id + "is not currently playing, can't mute them.";
+        Debug.LogWarning(errorMsg);
+        LogManager.instance.AddLog(errorMsg, id);
     }
 
-    public void UnMuteSound(string name) => MuteSound(GetIdFromName(name));
-    public void UnMuteSound(uint id) => MuteSound(GetSoundID(id));
+    public void UnMuteSound(string name) => UnMuteSound(GetIdFromName(name));
+    public void UnMuteSound(uint id) => UnMuteSound(GetSoundID(id));
     private void UnMuteSound(in SoundID id)
     {
         if (currentSounds.TryGetValue(id, out AudioSource audioSource))
@@ -214,8 +220,9 @@ public class AudioManager : MonoBehaviour
             audioSource.mute = false;
             return;
         }
-        Debug.LogWarning("The sound " + id + "is not currently playing, can't unmute them.");
-        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't unmute them.", id);
+        string errorMsg = "The sound " + id + "is not currently playing, can't unmute them.";
+        Debug.LogWarning(errorMsg);
+        LogManager.instance.AddLog(errorMsg, id);
     }
 
     public void PauseSound(string name) => PauseSound(GetIdFromName(name));
@@ -227,8 +234,9 @@ public class AudioManager : MonoBehaviour
             audioSource.Pause();
             return;
         }
-        Debug.LogWarning("The sound " + id + "is not currently playing, can't pause them.");
-        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't pause them.", id);
+        string errorMsg = "The sound " + id + "is not currently playing, can't pause them.";
+        Debug.LogWarning(errorMsg);
+        LogManager.instance.AddLog(errorMsg, id);
     }
 
     public void ResumeSound(string id) => ResumeSound(GetIdFromName(id));
@@ -240,8 +248,9 @@ public class AudioManager : MonoBehaviour
             audioSource.UnPause();
             return;
         }
-        Debug.LogWarning("The sound " + id + "is not currently playing, can't resume them.");
-        LogManager.instance.AddLog("The sound " + id + "is not currently playing, can't resume them.", id);
+        string errorMsg = "The sound " + id + "is not currently playing, can't resume them.";
+        Debug.LogWarning(errorMsg);
+        LogManager.instance.AddLog(errorMsg, id);
     }
 
     public void StopAllSound()
@@ -402,7 +411,7 @@ public class AudioManager : MonoBehaviour
 
         public static bool operator ==(SoundID a, SoundID b) => a.id == b.id;
 
-        public static bool operator !=(SoundID a, SoundID b) => !(a == b);
+        public static bool operator !=(SoundID a, SoundID b) => a.id != b.id;
     }
 
     [Serializable]

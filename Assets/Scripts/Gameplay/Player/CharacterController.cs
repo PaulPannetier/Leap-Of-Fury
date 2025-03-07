@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
@@ -12,6 +13,7 @@ public class CharacterController : MonoBehaviour
 
     private Camera mainCam;
     private CharacterInputs playerInput;
+    private PlayerCommon playerCommon;
     private BoxCollider2D hitbox;
     private ToricRaycastHit2D raycastRight, raycastLeft, groundRay, rightSlopeRay, leftSlopeRay, rightFootRay, leftFootRay, topRightRay, topLeftRay;
     private Collider2D groundCollider, oldGroundCollider, leftWallCollider, rightWallCollider;
@@ -23,7 +25,6 @@ public class CharacterController : MonoBehaviour
     private bool disableInstantTurn => disableInstantTurnCounter > 0;
 
     private new Transform transform;
-    private float oldDeltaTime;
 
     public bool enableInput = true;
     private bool _enableBehaviour = true;
@@ -40,8 +41,10 @@ public class CharacterController : MonoBehaviour
                 _enableBehaviour = true;
         }
     }
+    public bool enableMagneticField = false;
 
     [field:SerializeField, ShowOnly] public Vector2 velocity { get; private set; }
+
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -106,6 +109,7 @@ public class CharacterController : MonoBehaviour
     [Tooltip("La vitesse init horizontale en saut (%age de la vitesse max)")] [Range(0f, 1f)] [SerializeField] private float jumpInitHorizontaSpeed = 0.4f;
     [Tooltip("La vitesse d'interpolation de la vitesse horizontale de saut")] [SerializeField] private float jumpSpeedLerp = 20f;
     [SerializeField] private bool enableDoubleJump = true;
+    [Tooltip("The minimum delay after a normal jump to double jumps"), SerializeField] private float minDelayToDoubleJumpAfterNormalJump = 0.2f;
     [Tooltip("The speed of the second jump(magnitude of his velocity vector)"), SerializeField] private float doubleJumpSpeed = 6f;
     [Tooltip("The angle of the double jump"), SerializeField, Range(0f, 90f)] private float doubleJumpAngle = 45f;
     [Tooltip("Le temps apres avoir quité la plateforme ou le saut est possible")] [SerializeField] private float jumpCoyoteTime = 0.1f;
@@ -125,6 +129,7 @@ public class CharacterController : MonoBehaviour
     [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")][SerializeField] private float wallJumpGravityMultiplier = 1f;
     [Tooltip("La durée minimale ou le joueur doit avoir la touche de saut effective")][SerializeField] private float wallJumpMinDuration = 0.1f;
     [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")][SerializeField] private float wallJumpMaxDuration = 1f;
+    [Tooltip("The minimum delay after a wall jump to double jumps"), SerializeField] private float minDelayToDoubleJumpAfterWallJump = 0.2f;
     [Tooltip("Enable or not the jump on non grabable wall."), SerializeField] private bool enableWallJumpOnNonGrabableWall = false;
     [Tooltip("The angle in degrees between the non grabable wall and the horizontal."), Range(0f, 90f), SerializeField] private float wallJumpAngleOnNonGrabableWall = 45f;
     [Tooltip("la vitesse de début de saut de mur"), SerializeField] private float wallJumpInitSpeedOnNonGrabableWall = 20f;
@@ -138,6 +143,8 @@ public class CharacterController : MonoBehaviour
     [Tooltip("la courbe de vitesse saut de mur face au mur")][SerializeField] private AnimationCurve wallJumpAlongCurveSpeed;
     [Tooltip("La durée d'un saut face au mur")][SerializeField] private float jumpAlongWallDuration = 0.3f;
     [Tooltip("Le temps minimal entre 2 saut face au mur (sec)")][SerializeField] private float wallJumpAlongCooldown = 0.1f;
+    [Tooltip("The minimum delay after a jump along wall to double jumps"), SerializeField] private float minDelayToDoubleJumpAfterJumpAlongWall = 0.2f;
+
     private float lastTimeBeginWallJumpAlongWall = -10f;
 
     #endregion
@@ -291,6 +298,7 @@ public class CharacterController : MonoBehaviour
 
     [HideInInspector] public bool flip { get; private set; } = false;
     public Action<Vector2> onDash;
+
 
     #endregion
 
@@ -452,6 +460,7 @@ public class CharacterController : MonoBehaviour
         mainCam = Camera.main;
         playerInput = GetComponent<CharacterInputs>();
         hitbox = GetComponent<BoxCollider2D>();
+        playerCommon = GetComponent<PlayerCommon>();
         onDash = (Vector2 dir) => { };
     }
 
@@ -462,7 +471,6 @@ public class CharacterController : MonoBehaviour
         oldGroundCollider = null;
         PauseManager.instance.callBackOnPauseDisable += OnPauseDisable;
         PauseManager.instance.callBackOnPauseEnable += OnPauseEnable;
-        oldDeltaTime = Time.deltaTime;
         groundLayer = LayerMask.GetMask("Floor", "WallProjectile");
     }
 
@@ -504,8 +512,6 @@ public class CharacterController : MonoBehaviour
         transform.position += (Vector3)shift;
 
         teleportationShift = Vector2.zero;
-
-        oldDeltaTime = Time.deltaTime;
 
         toricObject.CustomUpdate();
 
@@ -1699,6 +1705,15 @@ public class CharacterController : MonoBehaviour
 
     private void HandleJump()
     {
+        bool IsDoubleJumpDelay()
+        {
+            return Time.time - lastTimeApexJump >= minDelayToDoubleJumpAfterNormalJump &&
+                Time.time - lastTimeBeginJump >= minDelayToDoubleJumpAfterNormalJump &&
+                Time.time - lastTimeBeginWallJump >= minDelayToDoubleJumpAfterWallJump &&
+                (!enableJumpAlongWall || Time.time - lastTimeBeginWallJumpAlongWall >= minDelayToDoubleJumpAfterJumpAlongWall) &&
+                Time.time - lastTimeBeginWallJumpOnNonGrabableWall >= minDelayToDoubleJumpAfterWallJump;
+        }
+
         if (doJump)
         {
             if (isGrounded && !wallGrab && !isBumping)
@@ -1716,7 +1731,7 @@ public class CharacterController : MonoBehaviour
                 WallJump();
                 doJump = false;
             }
-            else if (!isGrounded && !onWall && !hasDoubleJump && !isApexJumping && !isBumping && enableDoubleJump)
+            else if (!isGrounded && !onWall && !hasDoubleJump && !isApexJumping && !isBumping && IsDoubleJumpDelay() && enableDoubleJump)
             {
                 DoubleJump();
                 doJump = false;
@@ -1762,21 +1777,60 @@ public class CharacterController : MonoBehaviour
                 velocity = new Vector2(velocity.x, jumpMaxSpeed.y);
             }
 
-            //Horizontal movement
-            if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+            bool isAffectedByMagneticField = false;
+            Vector2 magneticFieldForce = Vector2.zero;
+            if (enableMagneticField)
             {
-                velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
+                List<ElectricFieldPassif.ElectricField> magneticFields = GetMagneticFields();
+                isAffectedByMagneticField = magneticFields.Count > 0;
+                foreach (ElectricFieldPassif.ElectricField field in magneticFields)
+                {
+                    float force = field.maxFieldForce * Mathf.Clamp01(field.fieldForceOverDistance.Evaluate(field.center.Distance(transform.position) / field.fieldRadius));
+                    Vector2 dir = ((Vector2)transform.position - field.center).normalized;
+                    magneticFieldForce += force * dir;
+                }
             }
 
-            if (Mathf.Abs(velocity.x) < jumpInitHorizontaSpeed * jumpMaxSpeed.x * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
+            //Horizontal movement
+            if(isAffectedByMagneticField)
             {
-                velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
+                if (enableInput && playerInput.rawX != 0 && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+                {
+                    float targetSpeedX = jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.rawX;
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeedX, jumpSpeedLerp * Time.deltaTime), velocity.y);
+                }
             }
             else
             {
-                float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * jumpMaxSpeed.x), jumpInitHorizontaSpeed * jumpMaxSpeed.x) : 0f;
-                velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, jumpSpeedLerp * Time.deltaTime), velocity.y);
+                if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+                {
+                    velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.rawX, velocity.y);
+                }
             }
+
+
+            if (isAffectedByMagneticField)
+            {
+                if(playerInput.rawX != 0)
+                {
+                    float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * jumpMaxSpeed.x), jumpInitHorizontaSpeed * jumpMaxSpeed.x) : 0f;
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, jumpSpeedLerp * Time.deltaTime), velocity.y);
+                }
+            }
+            else
+            {
+                if (Mathf.Abs(velocity.x) < jumpInitHorizontaSpeed * jumpMaxSpeed.x * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
+                {
+                    velocity = new Vector2(jumpInitHorizontaSpeed * jumpMaxSpeed.x * playerInput.rawX, velocity.y);
+                }
+                else
+                {
+                    float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * jumpMaxSpeed.x), jumpInitHorizontaSpeed * jumpMaxSpeed.x) : 0f;
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, jumpSpeedLerp * Time.deltaTime), velocity.y);
+                }
+            }
+
+            velocity += Time.deltaTime * magneticFieldForce;
         }
 
         #endregion
@@ -1793,6 +1847,20 @@ public class CharacterController : MonoBehaviour
             if (velocity.y > wallJumpMaxSpeed.y)
             {
                 velocity = new Vector2(velocity.x, wallJumpMaxSpeed.y);
+            }
+
+            bool isAffectedByMagneticField = false;
+            Vector2 magneticFieldForce = Vector2.zero;
+            if (enableMagneticField)
+            {
+                List<ElectricFieldPassif.ElectricField> magneticFields = GetMagneticFields();
+                isAffectedByMagneticField = magneticFields.Count > 0;
+                foreach (ElectricFieldPassif.ElectricField field in magneticFields)
+                {
+                    float force = field.maxFieldForce * Mathf.Clamp01(field.fieldForceOverDistance.Evaluate(field.center.Distance(transform.position) / field.fieldRadius));
+                    Vector2 dir = ((Vector2)transform.position - field.center).normalized;
+                    magneticFieldForce += force * dir;
+                }
             }
 
             //Horizontal movement
@@ -2245,6 +2313,22 @@ public class CharacterController : MonoBehaviour
             jumpParticle.Play();
     }
 
+    private List<ElectricFieldPassif.ElectricField> GetMagneticFields()
+    {
+        List<ElectricFieldPassif.ElectricField> fields = ElectricFieldPassif.electricFields;
+        for (int i = fields.Count - 1; i >= 0; i--)
+        {
+            ElectricFieldPassif.ElectricField electricField = fields[i];
+            if ((electricField.playerId < 0 || electricField.playerId == (int)playerCommon.id) && 
+                electricField.center.SqrDistance(transform.position) > electricField.fieldRadius * electricField.fieldRadius)
+            {
+                fields.RemoveAt(i);
+            }
+        }
+
+        return fields;
+    }
+
     #endregion
 
     #region Particles
@@ -2364,6 +2448,9 @@ public class CharacterController : MonoBehaviour
         beginFallDuration = Mathf.Max(0f, beginFallDuration);
         airHorizontalSpeed = Mathf.Max(0f, airHorizontalSpeed);
         jumpMaxSpeed = new Vector2(Mathf.Max(0f, jumpMaxSpeed.x), Mathf.Max(0f, jumpMaxSpeed.y));
+        minDelayToDoubleJumpAfterNormalJump = Mathf.Max(0f, minDelayToDoubleJumpAfterNormalJump);
+        minDelayToDoubleJumpAfterJumpAlongWall = Mathf.Max(0f, minDelayToDoubleJumpAfterJumpAlongWall);
+        minDelayToDoubleJumpAfterWallJump = Mathf.Max(0f, minDelayToDoubleJumpAfterWallJump);
         doubleJumpSpeed = Mathf.Max(doubleJumpSpeed, 0f);
         wallJumpMaxDuration = Mathf.Max(wallJumpMaxDuration, 0f);
         wallJumpMinDuration = Mathf.Clamp(wallJumpMinDuration, 0f, wallJumpMaxDuration);

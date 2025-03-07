@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
+  enableMagneticField: 0
   <velocity>k__BackingField: {x: 0, y: 0}
   drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
@@ -238,6 +239,7 @@ MonoBehaviour:
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
+  minDelayToDoubleJumpAfterNormalJump: 0
   doubleJumpSpeed: 12
   doubleJumpAngle: 45
   jumpCoyoteTime: 0.1
@@ -250,6 +252,7 @@ MonoBehaviour:
   wallJumpGravityMultiplier: 1
   wallJumpMinDuration: 0.15
   wallJumpMaxDuration: 0.3
+  minDelayToDoubleJumpAfterWallJump: 0.5
   enableWallJumpOnNonGrabableWall: 1
   wallJumpAngleOnNonGrabableWall: 40
   wallJumpInitSpeedOnNonGrabableWall: 10
@@ -300,6 +303,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
+  minDelayToDoubleJumpAfterJumpAlongWall: 0.5
   airGravityMultiplier: 3.75
   airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
@@ -614,14 +618,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 0
+    duration: 4
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  arcDuration: 0.5
+  arcDuration: 1
   electricBallExplosionRadius: 1
-  electricBallExplosionForce: 1
-  instanciateOneLineRendererPerLink: 0
+  electricBallExplosionForce: 2
+  instanciateOneLineRendererPerLink: 1
   linkPrefabs: {fileID: 2188808543721607070, guid: 260cb0d6b3da4754896328f0b6640d63, type: 3}
 --- !u!114 &3401157468052425429
 MonoBehaviour:
@@ -641,3 +645,29 @@ MonoBehaviour:
   effectType: 0
   saveAttackStats: 0
   enableBehaviour: 1
+  fieldRadius: 4
+  maxFieldForce: 10
+  fieldForceOverDistance:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0009651184
+      value: 1
+      inSlope: -1.0082014
+      outSlope: -1.0082014
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -0.009174347
+      inSlope: -1.0082014
+      outSlope: -1.0082014
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

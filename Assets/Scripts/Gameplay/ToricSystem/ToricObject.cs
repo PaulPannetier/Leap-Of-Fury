@@ -265,6 +265,7 @@ public class ToricObject : MonoBehaviour
                     else
                         Destroy(component);
                 }
+
                 foreach(GameObject go in clone.toricObject.chidrenToRemoveInClone)
                 {
                     go.SetActive(false);

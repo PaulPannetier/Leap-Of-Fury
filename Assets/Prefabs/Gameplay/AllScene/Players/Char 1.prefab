@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
+  enableMagneticField: 0
   <velocity>k__BackingField: {x: 0, y: 0}
   drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
@@ -251,6 +252,7 @@ MonoBehaviour:
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
+  minDelayToDoubleJumpAfterNormalJump: 0
   doubleJumpSpeed: 12
   doubleJumpAngle: 45
   jumpCoyoteTime: 0.1
@@ -263,6 +265,7 @@ MonoBehaviour:
   wallJumpGravityMultiplier: 1
   wallJumpMinDuration: 0.15
   wallJumpMaxDuration: 0.3
+  minDelayToDoubleJumpAfterWallJump: 0.5
   enableWallJumpOnNonGrabableWall: 1
   wallJumpAngleOnNonGrabableWall: 40
   wallJumpInitSpeedOnNonGrabableWall: 10
@@ -313,6 +316,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
+  minDelayToDoubleJumpAfterJumpAlongWall: 0.5
   airGravityMultiplier: 3.75
   airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
