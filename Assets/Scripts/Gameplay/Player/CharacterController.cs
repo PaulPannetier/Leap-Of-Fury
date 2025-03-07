@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Rendering;
 
 public class CharacterController : MonoBehaviour
 {
@@ -120,29 +121,32 @@ public class CharacterController : MonoBehaviour
     #region WallJump
 
     [Header("Wall jump Opposite Wall")]
-    [Tooltip("la vitesse de début de saut de mur")][SerializeField] private float wallJumpInitSpeed = 10f;
-    [Tooltip("The angle in degrees between the wall and the horizontal.")][Range(0f, 90f)][SerializeField] private float wallJumpAngle = 45f;
-    [Tooltip("L'accélération continue du saut depuis le mur.")][SerializeField] private float wallJumpForce = 20f;
-    [Tooltip("La vitesse maximal de saut depuis le mur (VMAX en l'air).")][SerializeField] private Vector2 wallJumpMaxSpeed = new Vector2(4f, 20f);
-    [Tooltip("La vitesse init horizontale en saut depuis le mur (%age de la vitesse max)"), Range(0f, 1f), SerializeField] private float wallJumpInitHorizontaSpeed = 0.4f;
+    [Tooltip("la vitesse de début de saut de mur"), SerializeField] private float wallJumpInitSpeed = 10f;
+    [Tooltip("The angle in degrees between the wall and the horizontal."), Range(0f, 90f), SerializeField] private float wallJumpAngle = 45f;
+    [Tooltip("L'accélération continue du saut depuis le mur."), SerializeField] private float wallJumpForce = 20f;
+    [Tooltip("La vitesse maximal de saut depuis le mur (VMAX en l'air)."), SerializeField] private Vector2 wallJumpMaxSpeed = new Vector2(4f, 20f);
     [SerializeField] private float wallJumpSpeedLerp = 15f;
-    [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter.")][SerializeField] private float wallJumpGravityMultiplier = 1f;
-    [Tooltip("La durée minimale ou le joueur doit avoir la touche de saut effective")][SerializeField] private float wallJumpMinDuration = 0.1f;
-    [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective")][SerializeField] private float wallJumpMaxDuration = 1f;
+    [Tooltip("Modifie la gravité lorsqu'on monte en l'air mais sans sauter."), SerializeField] private float wallJumpGravityMultiplier = 1f;
+    [Tooltip("La durée minimale ou le joueur doit avoir la touche de saut effective"), SerializeField] private float wallJumpMinDuration = 0.1f;
+    [Tooltip("La durée maximal ou le joueur peut avoir la touche de saut effective"), SerializeField] private float wallJumpMaxDuration = 1f;
     [Tooltip("The minimum delay after a wall jump to double jumps"), SerializeField] private float minDelayToDoubleJumpAfterWallJump = 0.2f;
+    [Tooltip("Allow to use the double jumps after a wall jumps in the opposite direction of the wall jump"), SerializeField] private bool allowDoubleJumpAfterWallJumpInOppositeDirection = false;
+    [Tooltip("The duration where the double jumps is desactivated after a wall jumps (if the double jumps is on theopposite direction of the wall jump)"), SerializeField]
+    private float delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection = 0.5f;
     [Tooltip("Enable or not the jump on non grabable wall."), SerializeField] private bool enableWallJumpOnNonGrabableWall = false;
     [Tooltip("The angle in degrees between the non grabable wall and the horizontal."), Range(0f, 90f), SerializeField] private float wallJumpAngleOnNonGrabableWall = 45f;
     [Tooltip("la vitesse de début de saut de mur"), SerializeField] private float wallJumpInitSpeedOnNonGrabableWall = 20f;
     [Tooltip(""), SerializeField] private float wallJumpOnNonGrabableWallDuration = 0.2f;
     private bool wallJumpOnNonGrabableWall;
     private float lastTimeBeginWallJump = -10f, lastTimeBeginWallJumpOnNonGrabableWall = -10f;
+    private bool isLastWallJumpsDirIsRight;
 
     [Header("Wall Jump Along Wall")]
     [SerializeField] private bool enableJumpAlongWall = true;
-    [Tooltip("la vitesse de début de saut de mur face au mur")][SerializeField] private float wallJumpAlongSpeed = 20f;
-    [Tooltip("la courbe de vitesse saut de mur face au mur")][SerializeField] private AnimationCurve wallJumpAlongCurveSpeed;
-    [Tooltip("La durée d'un saut face au mur")][SerializeField] private float jumpAlongWallDuration = 0.3f;
-    [Tooltip("Le temps minimal entre 2 saut face au mur (sec)")][SerializeField] private float wallJumpAlongCooldown = 0.1f;
+    [Tooltip("la vitesse de début de saut de mur face au mur"), SerializeField] private float wallJumpAlongSpeed = 20f;
+    [Tooltip("la courbe de vitesse saut de mur face au mur"), SerializeField] private AnimationCurve wallJumpAlongCurveSpeed;
+    [Tooltip("La durée d'un saut face au mur"), SerializeField] private float jumpAlongWallDuration = 0.3f;
+    [Tooltip("Le temps minimal entre 2 saut face au mur (sec)"), SerializeField] private float wallJumpAlongCooldown = 0.1f;
     [Tooltip("The minimum delay after a jump along wall to double jumps"), SerializeField] private float minDelayToDoubleJumpAfterJumpAlongWall = 0.2f;
 
     private float lastTimeBeginWallJumpAlongWall = -10f;
@@ -298,7 +302,6 @@ public class CharacterController : MonoBehaviour
 
     [HideInInspector] public bool flip { get; private set; } = false;
     public Action<Vector2> onDash;
-
 
     #endregion
 
@@ -1714,6 +1717,23 @@ public class CharacterController : MonoBehaviour
                 Time.time - lastTimeBeginWallJumpOnNonGrabableWall >= minDelayToDoubleJumpAfterWallJump;
         }
 
+        bool DoubleJumpAfterWallJumpsConditions()
+        {
+            if(allowDoubleJumpAfterWallJumpInOppositeDirection)
+                return true;
+
+            if (isWallJumping || Time.time - lastTimeBeginWallJump < delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection ||
+                Time.time - lastTimeBeginWallJumpOnNonGrabableWall < delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection)
+            {
+                if (playerInput.rawX == 0)
+                    return true;
+
+                bool rigth = playerInput.rawX == 1;
+                return isLastWallJumpsDirIsRight != rigth;
+            }
+            return true;
+        }
+
         if (doJump)
         {
             if (isGrounded && !wallGrab && !isBumping)
@@ -1731,7 +1751,7 @@ public class CharacterController : MonoBehaviour
                 WallJump();
                 doJump = false;
             }
-            else if (!isGrounded && !onWall && !hasDoubleJump && !isApexJumping && !isBumping && IsDoubleJumpDelay() && enableDoubleJump)
+            else if (!isGrounded && !onWall && !hasDoubleJump && !isApexJumping && !isBumping && IsDoubleJumpDelay() && DoubleJumpAfterWallJumpsConditions() && enableDoubleJump)
             {
                 DoubleJump();
                 doJump = false;
@@ -1864,28 +1884,67 @@ public class CharacterController : MonoBehaviour
             }
 
             //Horizontal movement
-            if (Time.time - lastTimeBeginWallJump < wallJumpMinDuration)
+            if (isAffectedByMagneticField)
             {
-                float targetedSpeed = velocity.x.Sign() * (playerInput.rawX == 0 ? wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x : wallJumpMaxSpeed.x);
-                velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetedSpeed, wallJumpSpeedLerp * Time.deltaTime), velocity.y);
-            }
-            else
-            {
-                if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+                if (Time.time - lastTimeBeginWallJump < wallJumpMinDuration)
                 {
-                    velocity = new Vector2(wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
-                }
-
-                if (Mathf.Abs(velocity.x) < wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
-                {
-                    velocity = new Vector2(wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x * playerInput.x.Sign(), velocity.y);
+                    if(playerInput.rawX != 0)
+                    {
+                        int velocitySign = (int)velocity.x.Sign();
+                        float targetedSpeed = 0f;
+                        if (playerInput.rawX == velocitySign)
+                        {
+                            targetedSpeed = velocitySign * wallJumpMaxSpeed.x;
+                        }
+                        else
+                        {
+                            float angle = velocitySign * wallJumpAngle * Mathf.Deg2Rad + Mathf.PI * 0.5f;
+                            targetedSpeed = wallJumpInitSpeed * Mathf.Cos(angle);
+                        }
+                        velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetedSpeed, wallJumpSpeedLerp * Time.deltaTime), velocity.y);
+                    }
                 }
                 else
                 {
-                    float targetSpeed = enableInput ? playerInput.rawX * Mathf.Max(Mathf.Abs(playerInput.x * wallJumpMaxSpeed.x), wallJumpInitHorizontaSpeed * wallJumpMaxSpeed.x) : 0f;
+                    if (enableInput && playerInput.rawX != 0 && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+                    {
+                        velocity = new Vector2(0f, velocity.y);
+                    }
+
+                    float targetSpeed = enableInput ? playerInput.x * wallJumpMaxSpeed.x : 0f;
                     velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, wallJumpSpeedLerp * Time.deltaTime), velocity.y);
                 }
             }
+            else
+            {
+                if (Time.time - lastTimeBeginWallJump < wallJumpMinDuration)
+                {
+                    int velocitySign = (int)velocity.x.Sign();
+                    float targetedSpeed = 0f;
+                    if(playerInput.rawX == velocitySign)
+                    {
+                        targetedSpeed = velocitySign * wallJumpMaxSpeed.x;
+                    }
+                    else
+                    {
+                        float angle = velocitySign * wallJumpAngle * Mathf.Deg2Rad + Mathf.PI * 0.5f;
+                        targetedSpeed = wallJumpInitSpeed * Mathf.Cos(angle);
+                    }
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetedSpeed, wallJumpSpeedLerp * Time.deltaTime), velocity.y);
+                }
+                else
+                {
+                    if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+                    {
+                        velocity = new Vector2(0f, velocity.y);
+                    }
+
+                    float targetSpeed = enableInput ? playerInput.x * wallJumpMaxSpeed.x : 0f;
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, wallJumpSpeedLerp * Time.deltaTime), velocity.y);
+                }
+            }
+
+            velocity += magneticFieldForce * Time.deltaTime;
         }
 
         #endregion
@@ -1915,6 +1974,21 @@ public class CharacterController : MonoBehaviour
             //Use fall parameters
             //Gravity
             velocity += Vector2.up * Physics2D.gravity.y * (airGravityMultiplier * Time.deltaTime);
+
+            bool isAffectedByMagneticField = false;
+            Vector2 magneticFieldForce = Vector2.zero;
+            if (enableMagneticField)
+            {
+                List<ElectricFieldPassif.ElectricField> magneticFields = GetMagneticFields();
+                isAffectedByMagneticField = magneticFields.Count > 0;
+                foreach (ElectricFieldPassif.ElectricField field in magneticFields)
+                {
+                    float force = field.maxFieldForce * Mathf.Clamp01(field.fieldForceOverDistance.Evaluate(field.center.Distance(transform.position) / field.fieldRadius));
+                    Vector2 dir = ((Vector2)transform.position - field.center).normalized;
+                    magneticFieldForce += force * dir;
+                }
+            }
+
             //Horizotal movement
             velocity = new Vector2(Mathf.MoveTowards(velocity.x, 0f, airSpeedLerp * Time.deltaTime), velocity.y);
         }
@@ -2074,11 +2148,20 @@ public class CharacterController : MonoBehaviour
         velocity = dir * wallJumpInitSpeed;
         wallJump = isWallJumping = true;
         lastTimeBeginWallJump = Time.time;
+        isLastWallJumpsDirIsRight = right;
     }
 
     void DoubleJump()
     {
-        bool right = playerInput.rawX != 0 ? playerInput.rawX == 1 : !flip;
+        bool right;
+        if(playerInput.rawX == 0)
+        {
+            right = isWallJumping ? isLastWallJumpsDirIsRight : !flip;
+        }
+        else
+        {
+            right = playerInput.rawX == 1;
+        }
         float angle = right ? doubleJumpAngle * Mathf.Deg2Rad : Mathf.PI - (doubleJumpAngle * Mathf.Deg2Rad);
         velocity = new Vector2(doubleJumpSpeed * Mathf.Cos(angle), doubleJumpSpeed * Mathf.Sin(angle));
         hasDoubleJump = doubleJump = true;

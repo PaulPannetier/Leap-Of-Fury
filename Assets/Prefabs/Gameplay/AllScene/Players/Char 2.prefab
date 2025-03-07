@@ -246,12 +246,12 @@ MonoBehaviour:
   wallJumpAngle: 40
   wallJumpForce: 7
   wallJumpMaxSpeed: {x: 5.5, y: 20}
-  wallJumpInitHorizontaSpeed: 0
   wallJumpSpeedLerp: 4
   wallJumpGravityMultiplier: 1
   wallJumpMinDuration: 0.15
   wallJumpMaxDuration: 0.3
-  minDelayToDoubleJumpAfterWallJump: 0.5
+  minDelayToDoubleJumpAfterWallJump: 0.15
+  allowDoubleJumpAfterWallJumpInOppositeDirection: 0
   enableWallJumpOnNonGrabableWall: 1
   wallJumpAngleOnNonGrabableWall: 40
   wallJumpInitSpeedOnNonGrabableWall: 10
