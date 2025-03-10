@@ -133,10 +133,6 @@ public class CharacterController : MonoBehaviour
     [Tooltip("Allow to use the double jumps after a wall jumps in the opposite direction of the wall jump"), SerializeField] private bool allowDoubleJumpAfterWallJumpInOppositeDirection = false;
     [Tooltip("The duration where the double jumps is desactivated after a wall jumps (if the double jumps is on theopposite direction of the wall jump)"), SerializeField]
     private float delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection = 0.5f;
-    [Tooltip("Enable or not the jump on non grabable wall."), SerializeField] private bool enableWallJumpOnNonGrabableWall = false;
-    [Tooltip("The angle in degrees between the non grabable wall and the horizontal."), Range(0f, 90f), SerializeField] private float wallJumpAngleOnNonGrabableWall = 45f;
-    [Tooltip("la vitesse de début de saut de mur"), SerializeField] private float wallJumpInitSpeedOnNonGrabableWall = 20f;
-    [Tooltip(""), SerializeField] private float wallJumpOnNonGrabableWallDuration = 0.2f;
     private bool wallJumpOnNonGrabableWall;
     private float lastTimeBeginWallJump = -10f, lastTimeBeginWallJumpOnNonGrabableWall = -10f;
     private bool isLastWallJumpsDirIsRight;
@@ -150,6 +146,16 @@ public class CharacterController : MonoBehaviour
     [Tooltip("The minimum delay after a jump along wall to double jumps"), SerializeField] private float minDelayToDoubleJumpAfterJumpAlongWall = 0.2f;
 
     private float lastTimeBeginWallJumpAlongWall = -10f;
+
+    #endregion
+
+    #region WallJump on Non Grabbable wall
+
+    [Header("Wall Jump on non Grabbable Wall")]
+    [Tooltip("Enable or not the jump on non grabable wall."), SerializeField] private bool enableWallJumpOnNonGrabableWall = false;
+    [Tooltip("The angle in degrees between the non grabable wall and the horizontal."), Range(0f, 90f), SerializeField] private float wallJumpAngleOnNonGrabableWall = 45f;
+    [Tooltip("la vitesse de début de saut de mur"), SerializeField] private float wallJumpInitSpeedOnNonGrabableWall = 20f;
+    [Tooltip(""), SerializeField] private float wallJumpOnNonGrabableWallDuration = 0.2f;
 
     #endregion
 
@@ -519,6 +525,7 @@ public class CharacterController : MonoBehaviour
         toricObject.CustomUpdate();
 
         // VIII-Debug
+        //DebugText.instance.text += $"ElecField : {enableMagneticField}\n";
         //DebugText.instance.text += $"OneWayPlateform : {isTraversingOneWayPlateform}\n";
         //DebugText.instance.text += $"OnWall : {onWall}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
@@ -1991,6 +1998,7 @@ public class CharacterController : MonoBehaviour
 
             //Horizotal movement
             velocity = new Vector2(Mathf.MoveTowards(velocity.x, 0f, airSpeedLerp * Time.deltaTime), velocity.y);
+            velocity += Time.deltaTime * magneticFieldForce;
         }
 
         #endregion
@@ -2178,72 +2186,156 @@ public class CharacterController : MonoBehaviour
         if (!isFalling)
             return;
 
-        if (velocity.y > 1e-5f)
+        bool isAffectedByMagneticField = false;
+        Vector2 magneticFieldForce = Vector2.zero;
+        if (enableMagneticField)
         {
-            //Gravity
-            float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
-            velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.deltaTime);
-
-            //Horizontal movement 
-            if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f) && !disableInstantTurn)
-                velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
-            if (enableInput && Mathf.Abs(velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f && !disableInstantTurn)
+            List<ElectricFieldPassif.ElectricField> magneticFields = GetMagneticFields();
+            isAffectedByMagneticField = magneticFields.Count > 0;
+            foreach (ElectricFieldPassif.ElectricField field in magneticFields)
             {
-                velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
+                float force = field.maxFieldForce * Mathf.Clamp01(field.fieldForceOverDistance.Evaluate(field.center.Distance(transform.position) / field.fieldRadius));
+                Vector2 dir = ((Vector2)transform.position - field.center).normalized;
+                magneticFieldForce += force * dir;
             }
-            else
+        }
+
+        if(isAffectedByMagneticField)
+        {
+            if (velocity.y > 1e-5f)
             {
+                //Gravity
+                float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
+                velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.deltaTime);
+
+                //Horizontal movement 
+                if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f) && !disableInstantTurn)
+                {
+                    if(playerInput.rawX != 0)
+                    {
+                        velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
+                    }
+                    else
+                    {
+                        velocity = new Vector2(Mathf.MoveTowards(velocity.x, 0f, airSpeedLerp * Time.deltaTime), velocity.y);
+                    }
+                }
                 float targetSpeed = !enableInput ? 0f : playerInput.x * airHorizontalSpeed;
                 velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, airSpeedLerp * Time.deltaTime), velocity.y);
-            }
-            lastTimefall = Time.time;
-        }
-        else
-        {
-            //Clamp the fall speed
-            float targetedSpeed;
-            if(playerInput.rawY == -1 && enableInput)
-            {
-                targetedSpeed = -fallSpeedY * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f);
+                lastTimefall = Time.time;
             }
             else
             {
-                targetedSpeed = -fallSpeedY;
-            }
-
-            if (velocity.y < targetedSpeed)//slow
-            {
-                velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, targetedSpeed, fallDecelerationSpeedLerp * Time.deltaTime));
-            }
-            else
-            {
-                float coeff = velocity.y >= -fallSpeedY * maxBeginFallSpeed ? fallGravityMultiplier * beginFallExtraGravity : fallGravityMultiplier;
-                coeff = enableInput && playerInput.rawY < 0 ? coeff * fallGravityMultiplierWhenDownPressed : coeff;
-                velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.deltaTime));
-            }
-
-            //Horizontal movement
-            if (isQuittingConvoyerBelt)
-            {
-                float speed = speedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
-                velocity = new Vector2(speed, velocity.y);
-            }
-            else if(playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)
-            {
-                float maxSpeedX = Mathf.Lerp(beginFallSpeedX, endFallSpeedX, (Time.time - lastTimefall) / beginFallDuration);
-                if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
-                    velocity = new Vector2(fallInitHorizontalSpeed * maxSpeedX * playerInput.x.Sign(), velocity.y);
-                if (enableInput && Mathf.Abs(velocity.x) < fallInitHorizontalSpeed * maxSpeedX * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
+                //Clamp the fall speed
+                float targetedSpeed;
+                if (playerInput.rawY == -1 && enableInput)
                 {
-                    velocity = new Vector2(fallInitHorizontalSpeed * maxSpeedX * playerInput.x.Sign(), velocity.y);
+                    targetedSpeed = -fallSpeedY * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f);
                 }
                 else
                 {
+                    targetedSpeed = -fallSpeedY;
+                }
+
+                if (velocity.y < targetedSpeed)//slow
+                {
+                    velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, targetedSpeed, fallDecelerationSpeedLerp * Time.deltaTime));
+                }
+                else
+                {
+                    float coeff = velocity.y >= -fallSpeedY * maxBeginFallSpeed ? fallGravityMultiplier * beginFallExtraGravity : fallGravityMultiplier;
+                    coeff = enableInput && playerInput.rawY < 0 ? coeff * fallGravityMultiplierWhenDownPressed : coeff;
+                    velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.deltaTime));
+                }
+
+                //Horizontal movement
+                if (isQuittingConvoyerBelt)
+                {
+                    float speed = speedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
+                    velocity = new Vector2(speed, velocity.y);
+                }
+                else if (playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)
+                {
+                    if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+                        velocity = new Vector2(Mathf.MoveTowards(velocity.x, 0f, fallSpeedLerp * Time.deltaTime), velocity.y);
+
+                    float maxSpeedX = Mathf.Lerp(beginFallSpeedX, endFallSpeedX, (Time.time - lastTimefall) / beginFallDuration);
                     float targetSpeed = !enableInput ? 0f : playerInput.x * maxSpeedX;
                     velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, fallSpeedLerp * Time.deltaTime), velocity.y);
                 }
             }
         }
+        else
+        {
+            if (velocity.y > 1e-5f)
+            {
+                //Gravity
+                float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
+                velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.deltaTime);
+
+                //Horizontal movement 
+                if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f) && !disableInstantTurn)
+                    velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
+                if (enableInput && Mathf.Abs(velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f && !disableInstantTurn)
+                {
+                    velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
+                }
+                else
+                {
+                    float targetSpeed = !enableInput ? 0f : playerInput.x * airHorizontalSpeed;
+                    velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, airSpeedLerp * Time.deltaTime), velocity.y);
+                }
+                lastTimefall = Time.time;
+            }
+            else
+            {
+                //Clamp the fall speed
+                float targetedSpeed;
+                if (playerInput.rawY == -1 && enableInput)
+                {
+                    targetedSpeed = -fallSpeedY * Mathf.Max(fallClampSpeedMultiplierWhenDownPressed * Mathf.Abs(playerInput.y), 1f);
+                }
+                else
+                {
+                    targetedSpeed = -fallSpeedY;
+                }
+
+                if (velocity.y < targetedSpeed)//slow
+                {
+                    velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, targetedSpeed, fallDecelerationSpeedLerp * Time.deltaTime));
+                }
+                else
+                {
+                    float coeff = velocity.y >= -fallSpeedY * maxBeginFallSpeed ? fallGravityMultiplier * beginFallExtraGravity : fallGravityMultiplier;
+                    coeff = enableInput && playerInput.rawY < 0 ? coeff * fallGravityMultiplierWhenDownPressed : coeff;
+                    velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, targetedSpeed, -Physics2D.gravity.y * coeff * Time.deltaTime));
+                }
+
+                //Horizontal movement
+                if (isQuittingConvoyerBelt)
+                {
+                    float speed = speedWhenQuittingConvoyerBelt * (isQuittingConvoyerBeltRight ? 1f : -1f);
+                    velocity = new Vector2(speed, velocity.y);
+                }
+                else if (playerInput.rawX != 0 || Time.time - lastTimeQuitGround > inertiaDurationWhenQuittingGround)
+                {
+                    float maxSpeedX = Mathf.Lerp(beginFallSpeedX, endFallSpeedX, (Time.time - lastTimefall) / beginFallDuration);
+                    if (enableInput && ((playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f)) && !disableInstantTurn)
+                        velocity = new Vector2(fallInitHorizontalSpeed * maxSpeedX * playerInput.x.Sign(), velocity.y);
+                    if (enableInput && Mathf.Abs(velocity.x) < fallInitHorizontalSpeed * maxSpeedX * 0.95f && playerInput.rawX != 0 && !disableInstantTurn)
+                    {
+                        velocity = new Vector2(fallInitHorizontalSpeed * maxSpeedX * playerInput.x.Sign(), velocity.y);
+                    }
+                    else
+                    {
+                        float targetSpeed = !enableInput ? 0f : playerInput.x * maxSpeedX;
+                        velocity = new Vector2(Mathf.MoveTowards(velocity.x, targetSpeed, fallSpeedLerp * Time.deltaTime), velocity.y);
+                    }
+                }
+            }
+        }
+
+        velocity += Time.deltaTime * magneticFieldForce;
     }
 
     #endregion
@@ -2398,7 +2490,7 @@ public class CharacterController : MonoBehaviour
 
     private List<ElectricFieldPassif.ElectricField> GetMagneticFields()
     {
-        List<ElectricFieldPassif.ElectricField> fields = ElectricFieldPassif.electricFields;
+        List<ElectricFieldPassif.ElectricField> fields = ElectricFieldPassif.electricFields.Clone();
         for (int i = fields.Count - 1; i >= 0; i--)
         {
             ElectricFieldPassif.ElectricField electricField = fields[i];

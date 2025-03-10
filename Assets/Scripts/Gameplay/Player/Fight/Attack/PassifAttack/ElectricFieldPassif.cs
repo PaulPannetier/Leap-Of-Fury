@@ -6,7 +6,7 @@ public class ElectricFieldPassif : PassifAttack
 {
     public const bool electricFieldsAffeectAllPlayerWithThisAttack = false;
 
-    public static List<ElectricField> electricFields {  get; private set; }
+    public static List<ElectricField> electricFields { get; private set; }
 
     private CharacterController characterController;
 
@@ -19,7 +19,8 @@ public class ElectricFieldPassif : PassifAttack
         base.Awake();
         characterController = GetComponent<CharacterController>();
         characterController.enableMagneticField = true;
-        electricFields = new List<ElectricField>();
+        if(electricFields == null)
+            electricFields = new List<ElectricField>();
     }
 
     public void OnElectricBallCreate(ElectricBall electricBall)
@@ -37,6 +38,7 @@ public class ElectricFieldPassif : PassifAttack
     {
         base.Update();
         characterController.enableMagneticField = enableBehaviour;
+        DebugText.instance.text += $"field : {electricFields.Count}";
     }
 
     #region Gizmos/OnValidate

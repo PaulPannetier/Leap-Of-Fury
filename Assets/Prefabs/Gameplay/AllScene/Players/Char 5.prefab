@@ -254,10 +254,6 @@ MonoBehaviour:
   minDelayToDoubleJumpAfterWallJump: 0.15
   allowDoubleJumpAfterWallJumpInOppositeDirection: 0
   delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection: 0.5
-  enableWallJumpOnNonGrabableWall: 1
-  wallJumpAngleOnNonGrabableWall: 40
-  wallJumpInitSpeedOnNonGrabableWall: 10
-  wallJumpOnNonGrabableWallDuration: 0.3
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -305,6 +301,10 @@ MonoBehaviour:
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
   minDelayToDoubleJumpAfterJumpAlongWall: 0.5
+  enableWallJumpOnNonGrabableWall: 1
+  wallJumpAngleOnNonGrabableWall: 40
+  wallJumpInitSpeedOnNonGrabableWall: 10
+  wallJumpOnNonGrabableWallDuration: 0.3
   airGravityMultiplier: 3.75
   airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
@@ -437,9 +437,9 @@ MonoBehaviour:
   - {fileID: 5907287823364622964}
   - {fileID: 7598047637200888153}
   - {fileID: 7187370182271411996}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2268699661119560233}
+  - {fileID: 6978831795063994480}
+  - {fileID: 3401157468052425429}
   componentsToSynchroniseInClone:
   - {fileID: 1113869503384375398}
   - {fileID: 238728056774250366}
@@ -647,27 +647,36 @@ MonoBehaviour:
   saveAttackStats: 0
   enableBehaviour: 1
   fieldRadius: 4
-  maxFieldForce: 25
+  maxFieldForce: 100
   fieldForceOverDistance:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.0009651184
-      value: 1
-      inSlope: -1.0082014
-      outSlope: -1.0082014
-      tangentMode: 34
+      time: 0
+      value: 0.99993896
+      inSlope: -0.15658176
+      outSlope: -0.15658176
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0.06992667
     - serializedVersion: 3
-      time: 1
-      value: -0.009174347
-      inSlope: -1.0082014
-      outSlope: -1.0082014
-      tangentMode: 34
+      time: 0.70181346
+      value: 0.6599798
+      inSlope: -1.1186069
+      outSlope: -1.1186069
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
+      outWeight: 0.116116524
+    - serializedVersion: 3
+      time: 1
+      value: 0.00008392334
+      inSlope: -4.1622725
+      outSlope: -4.1622725
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.07387134
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
