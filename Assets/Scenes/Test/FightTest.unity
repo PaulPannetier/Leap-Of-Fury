@@ -6544,6 +6544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableInput: 1
+  enableMagneticField: 0
   <velocity>k__BackingField: {x: 0, y: 0}
   drawGizmos: 0
   timeUntilCommandIsInvalid: 0.1
@@ -6600,6 +6601,7 @@ MonoBehaviour:
   jumpInitHorizontaSpeed: 0.3
   jumpSpeedLerp: 35
   enableDoubleJump: 1
+  minDelayToDoubleJumpAfterNormalJump: 0.2
   doubleJumpSpeed: 12
   doubleJumpAngle: 45
   jumpCoyoteTime: 0.1
@@ -6607,15 +6609,13 @@ MonoBehaviour:
   wallJumpAngle: 40
   wallJumpForce: 7
   wallJumpMaxSpeed: {x: 5.5, y: 20}
-  wallJumpInitHorizontaSpeed: 0
   wallJumpSpeedLerp: 4
   wallJumpGravityMultiplier: 1
   wallJumpMinDuration: 0.15
   wallJumpMaxDuration: 0.3
-  enableWallJumpOnNonGrabableWall: 1
-  wallJumpAngleOnNonGrabableWall: 40
-  wallJumpInitSpeedOnNonGrabableWall: 10
-  wallJumpOnNonGrabableWallDuration: 0.3
+  minDelayToDoubleJumpAfterWallJump: 0.2
+  allowDoubleJumpAfterWallJumpInOppositeDirection: 0
+  delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection: 0.5
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -6662,6 +6662,11 @@ MonoBehaviour:
     m_RotationOrder: 4
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
+  minDelayToDoubleJumpAfterJumpAlongWall: 0.2
+  enableWallJumpOnNonGrabableWall: 1
+  wallJumpAngleOnNonGrabableWall: 40
+  wallJumpInitSpeedOnNonGrabableWall: 10
+  wallJumpOnNonGrabableWallDuration: 0.3
   airGravityMultiplier: 3.75
   airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
@@ -19817,6 +19822,14 @@ MonoBehaviour:
   effectType: 0
   saveAttackStats: 0
   enableBehaviour: 1
+  fieldRadius: 0
+  maxFieldForce: 0
+  fieldForceOverDistance:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &7760616467528172258
 Transform:
   m_ObjectHideFlags: 0
