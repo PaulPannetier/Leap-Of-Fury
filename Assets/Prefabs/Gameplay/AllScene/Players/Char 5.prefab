@@ -605,6 +605,7 @@ MonoBehaviour:
   effectType: 0
   saveAttackStats: 0
   electricBallPrefab: {fileID: 1300798702949888552, guid: e1eae7c248243f94a862316b442f99f8, type: 3}
+  ballsSpawnDistance: 1.75
   maxBall: 4
 --- !u!114 &6978831795063994480
 MonoBehaviour:

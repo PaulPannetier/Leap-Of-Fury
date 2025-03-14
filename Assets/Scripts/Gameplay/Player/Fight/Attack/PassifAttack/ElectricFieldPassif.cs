@@ -38,7 +38,6 @@ public class ElectricFieldPassif : PassifAttack
     {
         base.Update();
         characterController.enableMagneticField = enableBehaviour;
-        DebugText.instance.text += $"field : {electricFields.Count}";
     }
 
     #region Gizmos/OnValidate

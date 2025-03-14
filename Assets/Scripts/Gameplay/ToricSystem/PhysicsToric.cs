@@ -14,12 +14,33 @@ using System;
 
 public struct ToricRaycastHit2D
 {
+    //
+    // Summary:
+    //     The world space position where the physics query shape intersected with the detected Collider2D surface.
     public Vector2 point;
+    //
+    // Summary:
+    //     The world space centroid (center) of the physics query shape when it intersects.
     public Vector2 centroid;
+    //
+    // Summary:
+    //     The Collider2D detected by the physics query.
     public UnityEngine.Collider2D collider;
+    //
+    // Summary:
+    //     The surface normal of the detected Collider2D.
     public Vector2 normal;
-    public Rigidbody2D rigidbody;
+    //
+    // Summary:
+    //     The Rigidbody2D that the Collider2D detected by the physics query is attached to.
+    public Rigidbody2D rigidbody => collider != null ? collider.attachedRigidbody : null;
+    //
+    // Summary:
+    //     The distance the physics query traversed before it detected a Collider2D.
     public float distance;
+    //
+    // Summary:
+    //     The Transform on the GameObject that the Collider2D is attached to.
     public Transform transform => rigidbody != null ? rigidbody.transform : (collider != null ? collider.transform : null);
 
     public ToricRaycastHit2D(Vector2 point, Vector2 centroid, UnityEngine.Collider2D collider, Vector2 normal, Rigidbody2D rb, float distance)
@@ -28,7 +49,6 @@ public struct ToricRaycastHit2D
         this.centroid = centroid;
         this.collider = collider;
         this.normal = normal;
-        this.rigidbody = rb;
         this.distance = distance;
     }
 
@@ -38,7 +58,6 @@ public struct ToricRaycastHit2D
         this.centroid = raycast.centroid;
         this.collider = raycast.collider;
         this.normal = raycast.normal;
-        this.rigidbody = raycast.rigidbody;
         this.distance = raycast.distance;
     }
 
@@ -900,7 +919,6 @@ public static class PhysicsToric
                 collide = true;
                 res = raycast;
                 res.collider = unityCol;
-                res.rigidbody = unityCol.attachedRigidbody;
                 bestDistanceFound = res.distance;
             }
         }
@@ -1207,7 +1225,6 @@ public static class PhysicsToric
             if (raycast.distance >= 0f)
             {
                 raycast.collider = unityCol;
-                raycast.rigidbody = unityCol.attachedRigidbody;
                 res.Add(raycast);
             }
         }

@@ -81,7 +81,7 @@ namespace Test
                 DrawCollider(Collider2D.FromUnityCollider2D(colliders[i]), collideColliders[i] ? colorTouch : colorUntouch, false);
             }
 
-            Circle.GizmosDraw(start, 0.1f);
+            Circle.GizmosDraw(start, 0.1f, false);
         }
 
         private int GetColliderIndex(UnityEngine.Collider2D collider)

@@ -15,6 +15,8 @@ public class ElectricBall : MonoBehaviour
     [SerializeField] private float damageRadius = 1f;
     [SerializeField] private float maxDuration = 10f;
 
+    public float visualRadius = 1f;
+
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
 #endif
@@ -83,7 +85,7 @@ public class ElectricBall : MonoBehaviour
         DestroyBall();
     }
 
-    private void DestroyBall()
+    public void DestroyBall()
     {
         electricBallAttack.OnElectricBallDestroy(this);
         electricFieldPassif.OnElectricBallDestroy(this);
@@ -100,11 +102,13 @@ public class ElectricBall : MonoBehaviour
             return;
 
         Circle.GizmosDraw(transform.position, damageRadius, Color.black);
+        Circle.GizmosDraw(transform.position, visualRadius, Color.green);
     }
 
     private void OnValidate()
     {
         damageRadius = Mathf.Max(0f, damageRadius);
+        visualRadius = Mathf.Max(0f, visualRadius);
         maxDuration = Mathf.Max(0f, maxDuration);
     }
 
