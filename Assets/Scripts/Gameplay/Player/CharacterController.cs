@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.Rendering;
 
 public class CharacterController : MonoBehaviour
 {
