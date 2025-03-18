@@ -126,4 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageRadius: 0.5
   maxDuration: 30
+  visualRadius: 0.5
   drawGizmos: 1
