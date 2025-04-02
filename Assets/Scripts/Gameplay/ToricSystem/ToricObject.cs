@@ -130,6 +130,12 @@ public class ToricObject : MonoBehaviour
             return;
         }
 
+        if (comp is SpriteRenderer sr)
+        {
+            SynchSpriteRenderer(sr);
+            return;
+        }
+
         foreach (ObjectClone clone in clones)
         {
             T cloneComp = (T)clone.go.GetComponent(comp.GetType());
@@ -155,6 +161,29 @@ public class ToricObject : MonoBehaviour
                     propertyInfo.SetValue(cloneComp, value);
                 }
             }
+        }
+    }
+
+    private void SynchSpriteRenderer(SpriteRenderer spriteRenderer)
+    {
+        foreach (ObjectClone clone in clones)
+        {
+            SpriteRenderer cloneRenderer = clone.go.GetComponent<SpriteRenderer>();
+            if(cloneRenderer == null)
+                continue;
+
+            cloneRenderer.sprite = spriteRenderer.sprite;
+            cloneRenderer.color = spriteRenderer.color;
+            cloneRenderer.flipX = spriteRenderer.flipX;
+            cloneRenderer.flipY = spriteRenderer.flipY;
+            cloneRenderer.drawMode = spriteRenderer.drawMode;
+            cloneRenderer.maskInteraction = spriteRenderer.maskInteraction;
+            cloneRenderer.spriteSortPoint = spriteRenderer.spriteSortPoint;
+            cloneRenderer.material = spriteRenderer.material;
+            cloneRenderer.sortingOrder = spriteRenderer.sortingOrder;
+            cloneRenderer.renderingLayerMask = spriteRenderer.renderingLayerMask;
+            cloneRenderer.sortingLayerID = spriteRenderer.sortingLayerID;
+            cloneRenderer.sortingLayerName = spriteRenderer.sortingLayerName;
         }
     }
 
