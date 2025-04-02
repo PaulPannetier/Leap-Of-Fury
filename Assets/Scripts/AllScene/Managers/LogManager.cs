@@ -87,33 +87,33 @@ public class LogManager : MonoBehaviour
 
     public void AddLog(string message, params object[] values)
     {
-        AddLog(new LogMessage(message, GetCurrentStackTrace(), values));
+        AddLog(new LogMessage(message, values));
     }
 
-    private string GetCurrentStackTrace()
-    {
-        StackTrace current = new StackTrace(true);
-        StringBuilder sb = new StringBuilder("at ");
-        StackFrame[] frames = current.GetFrames();
+    //private string GetCurrentStackTrace()
+    //{
+    //    StackTrace current = new StackTrace(true);
+    //    StringBuilder sb = new StringBuilder("at ");
+    //    StackFrame[] frames = current.GetFrames();
 
-        for (int i = 2; i < frames.Length; i++)
-        {
-            var method = frames[i].GetMethod();
-            sb.Append(method.DeclaringType.Name);
-            sb.Append(".");
-            sb.Append(method.Name);
-            sb.Append("() (at ");
-            string fileName = frames[i].GetFileName();
-            int index = fileName.IndexOf("Assets", StringComparison.OrdinalIgnoreCase);
-            string shortFileName = index < 0 ? string.Empty : fileName.Substring(index).Replace(@"\\", @"\");
-            sb.Append(shortFileName);
-            sb.Append(":");
-            sb.Append(frames[i].GetFileLineNumber());
-            sb.Append(") ");
-        }
+    //    for (int i = 2; i < frames.Length; i++)
+    //    {
+    //        var method = frames[i].GetMethod();
+    //        sb.Append(method.DeclaringType.Name);
+    //        sb.Append(".");
+    //        sb.Append(method.Name);
+    //        sb.Append("() (at ");
+    //        string fileName = frames[i].GetFileName();
+    //        int index = fileName.IndexOf("Assets", StringComparison.OrdinalIgnoreCase);
+    //        string shortFileName = index < 0 ? string.Empty : fileName.Substring(index).Replace(@"\\", @"\");
+    //        sb.Append(shortFileName);
+    //        sb.Append(":");
+    //        sb.Append(frames[i].GetFileLineNumber());
+    //        sb.Append(") ");
+    //    }
 
-        return sb.ToString();
-    }
+    //    return sb.ToString();
+    //}
 
     private void AddLog(LogMessage log)
     {
@@ -222,12 +222,10 @@ public class LogManager : MonoBehaviour
 
         [SerializeField] private string errorMessage;
         [SerializeField] private LogParams[] logParams;
-        [SerializeField] private string stackTrace;
 
-        public LogMessage(string errorMessage, string stackTrace, params object[] objs)
+        public LogMessage(string errorMessage, params object[] objs)
         {
             this.errorMessage = errorMessage;
-            this.stackTrace = stackTrace;
             logParams = new LogParams[objs.Length];
 
             StringBuilder sb = new StringBuilder(); 

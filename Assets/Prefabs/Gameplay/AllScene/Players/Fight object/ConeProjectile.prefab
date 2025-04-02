@@ -106,7 +106,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.31, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -133,9 +133,10 @@ MonoBehaviour:
   - {fileID: -4588608683324307721}
   componentsToSynchroniseInClone:
   - {fileID: -7745060150195183696}
+  - {fileID: 8264837857051938135}
   chidrenToRemoveInClone: []
   useCustomUpdate: 0
-  drawGizmos: 1
+  drawGizmos: 0
 --- !u!114 &-4588608683324307721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,3 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c985c7fc077c84fad5f12f23c15b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionOffset: {x: 0.15, y: 0}
+  collisionRadius: 0.24
+  maxDurationInAir: 5
+  minDurationBeforePick: 0.3

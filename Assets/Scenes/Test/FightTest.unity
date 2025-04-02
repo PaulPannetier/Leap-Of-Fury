@@ -6767,7 +6767,7 @@ Transform:
   m_GameObject: {fileID: 172584869456522570}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.68, y: -2.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19061,6 +19061,13 @@ MonoBehaviour:
   bumpForce: 30
   projectileSpeed: 0
   instanciateDistance: 0
+  delayBetweenProjectiles: 0
+  speedBonusPerPickProjectile:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   castDuration: 0
   useOnly8Dir: 1
 --- !u!114 &4732076154729060496
@@ -19521,7 +19528,7 @@ MonoBehaviour:
   - {fileID: 1971687079248291786}
   - {fileID: 1266582402043289999}
   - {fileID: 7815254907774607677}
-  - {fileID: 0}
+  - {fileID: 4500849789043228031}
   componentsToSynchroniseInClone:
   - {fileID: 9032009232988591861}
   - {fileID: 8177770586298796525}

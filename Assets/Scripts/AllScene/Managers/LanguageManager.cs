@@ -32,8 +32,9 @@ public class LanguageManager : MonoBehaviour
             }
             else
             {
-                LogManager.instance.AddLog("The language : " + value + " doesn't exist", value);
-                Debug.LogWarning("The language : " +  value + " doesn't exist");
+                string errorMessage = $"The language : {value} doesn't exist";
+                LogManager.instance.AddLog(errorMessage, value);
+                Debug.LogWarning(errorMessage);
             }
         }
     }

@@ -20,6 +20,12 @@ TextureImporter:
   - first:
       213: 6320981820891921061
     second: Kunai_5
+  - first:
+      213: -381674310069570246
+    second: Kunai_6
+  - first:
+      213: 2117380191076551494
+    second: Kunai_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -246,11 +252,55 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Kunai_6
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a353968bc3504baf0800000000000000
+      internalID: -381674310069570246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Kunai_7
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64b019fb012726d10800000000000000
+      internalID: 2117380191076551494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 30cf91629b902ea46806b209580fbf3c
+    spriteID: 3240e0965002d9a47862a59a2d43e9ec
     internalID: 0
     vertices: []
     indices: 
@@ -266,6 +316,8 @@ TextureImporter:
       Kunai_3: 3467520826912778777
       Kunai_4: 2993538259034487944
       Kunai_5: 6320981820891921061
+      Kunai_6: -381674310069570246
+      Kunai_7: 2117380191076551494
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

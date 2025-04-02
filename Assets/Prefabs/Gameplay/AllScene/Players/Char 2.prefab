@@ -437,13 +437,13 @@ MonoBehaviour:
   - {fileID: 8612698283953875211}
   - {fileID: 9027861815646793550}
   - {fileID: 49532349443289084}
-  - {fileID: 0}
+  - {fileID: 5957310748101030846}
   componentsToSynchroniseInClone:
   - {fileID: 1261712740702541876}
   - {fileID: 2136925604514613036}
   chidrenToRemoveInClone: []
   useCustomUpdate: 0
-  drawGizmos: 0
+  drawGizmos: 1
 --- !u!114 &3274420078070027857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,12 +578,19 @@ MonoBehaviour:
   effectType: 0
   saveAttackStats: 0
   drawGizmos: 1
-  nbProjectile: 5
-  coneAngle: 35
+  nbProjectile: 1
+  coneAngle: 10
   projectilePrefabs: {fileID: -4588608683324307721, guid: b6012b6b9c0da344d867713ee06a4153, type: 3}
   bumpForce: 30
   projectileSpeed: 30
   instanciateDistance: 0.5
+  delayBetweenProjectiles: 0.1
+  speedBonusPerPickProjectile:
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  - 0.5
   castDuration: 0.3
   useOnly8Dir: 1
 --- !u!114 &49532349443289084

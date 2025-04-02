@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Collision2D;
 
@@ -8,24 +9,39 @@ public class ConeProjectileAttack : StrongAttack
     private CharacterController charController;
     private bool isLaunchingProjectile = false;
     private Vector2 inputDir;
+    private int nbProjectilePick;
+    private List<ConeProjectile> currentProjectiles;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos;
 #endif
 
-    [SerializeField] private int nbProjectile;
+    [SerializeField] private byte nbProjectile;
     [SerializeField, Range(0f, 360f)] private float coneAngle;
     [SerializeField] private ConeProjectile projectilePrefabs;
     [SerializeField] private float bumpForce;
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float instanciateDistance;
+    [SerializeField] private float delayBetweenProjectiles;
+    [SerializeField] private float[] speedBonusPerPickProjectile;
     [SerializeField] private float castDuration;
     [SerializeField] private bool useOnly8Dir = true;
 
     protected override void Awake()
     {
+#if UNITY_EDITOR || ADVANCE_DEBUG
+        if(speedBonusPerPickProjectile.Length < nbProjectile)
+        {
+            string errorMsg = $"speedBonusPerPickProjectile must have a length  >= at nbProjectile, but got {speedBonusPerPickProjectile.Length} < {nbProjectile}";
+            Debug.LogError(errorMsg);
+            LogManager.instance.AddLog(errorMsg, speedBonusPerPickProjectile, nbProjectile);
+        }
+#endif
+
         base.Awake();
         charController = GetComponent<CharacterController>();
+        nbProjectilePick = 0;
+        currentProjectiles = new List<ConeProjectile>(nbProjectile);
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -46,7 +62,18 @@ public class ConeProjectileAttack : StrongAttack
         isLaunchingProjectile = true;
         inputDir = charController.GetCurrentDirection(useOnly8Dir);
         charController.Freeze();
+
         yield return PauseManager.instance.Wait(castDuration);
+
+        foreach (ConeProjectile projectile in currentProjectiles)
+        {
+            projectile.OnAttackReLaunch();
+        }
+
+        yield return InstanciateProjectiles();
+
+        nbProjectilePick = 0;
+
         charController.UnFreeze();
 
         cooldown.Reset();
@@ -55,36 +82,70 @@ public class ConeProjectileAttack : StrongAttack
         isLaunchingProjectile = false;
 
         charController.ApplyBump(-bumpForce * inputDir);
-
-        InstanciateProjectiles();
     }
 
-    private void InstanciateProjectiles()
+    private IEnumerator InstanciateProjectiles()
     {
-        int remainingProjectile = nbProjectile;
-        ConeProjectile coneProjectile;
-        Vector2 projectilePosition;
+        float[] angles = new float[nbProjectile];
+        float midAngle = Useful.AngleHori(Vector2.zero, inputDir);
+
         if (nbProjectile.IsOdd())
         {
-            projectilePosition = (Vector2)transform.position + (inputDir * instanciateDistance);
-            coneProjectile = Instantiate(projectilePrefabs, projectilePosition, Quaternion.identity, CloneParent.cloneParent);
-            coneProjectile.Launch(projectileSpeed, inputDir, this);
-            nbProjectile--;
+            angles[angles.Length >> 1] = midAngle;
+            if(nbProjectile > 1)
+            {
+                int end = (nbProjectile - 1) >> 1;
+                float angleStep = (coneAngle * Mathf.Deg2Rad) / (nbProjectile - 1);
+                for (int i = 0; i < end; i++)
+                {
+                    float angleOffset = (end - i) * angleStep;
+
+                    float lowAngle = Useful.WrapAngle(midAngle - angleOffset);
+                    float highAngle = Useful.WrapAngle(midAngle + angleOffset);
+
+                    angles[i] = lowAngle;
+                    angles[angles.Length - 1 - i] = highAngle;
+                }
+            }
         }
-
-        if (remainingProjectile <= 0)
-            return;
-
-        float currentAngle = Useful.WrapAngle(Useful.AngleHori(Vector2.zero, inputDir) - (coneAngle * 0.5f * Mathf.Deg2Rad));
-        float angleStep = coneAngle / remainingProjectile;
-        for (int i = 0; i < remainingProjectile; i++)
+        else
         {
-            Vector2 dir = Useful.Vector2FromAngle(currentAngle);
-            projectilePosition = (Vector2)transform.position + (instanciateDistance * dir);
-            coneProjectile = Instantiate(projectilePrefabs, projectilePosition, Quaternion.identity, CloneParent.cloneParent);
-            coneProjectile.Launch(projectileSpeed, (projectilePosition - (Vector2)transform.position).normalized, this);
-            currentAngle = Useful.WrapAngle(currentAngle + angleStep);
+            float startAngle = Useful.WrapAngle(midAngle - (coneAngle * Mathf.Deg2Rad * 0.5f));
+            float angleStep = coneAngle * Mathf.Deg2Rad / (nbProjectile - 1);
+
+            for(int i = 0; i < angles.Length; i++)
+            {
+                angles[i] = startAngle + (i * angleStep);
+            }
         }
+
+        float speedBonus = 1f + (nbProjectilePick > 0 ? speedBonusPerPickProjectile[nbProjectilePick] : 0f);
+        float projSpeed = speedBonus * projectileSpeed;
+        for (int i = 0; i < angles.Length; i++)
+        {
+            float angle = angles[i];
+            Vector2 dir = Useful.Vector2FromAngle(angle);
+            Vector2 projectilePosition = (Vector2)transform.position + (instanciateDistance * dir);
+            ConeProjectile coneProjectile = Instantiate(projectilePrefabs, projectilePosition, Quaternion.identity, CloneParent.cloneParent);
+            coneProjectile.Launch(projSpeed, dir, this);
+            if (i != angles.Length - 1)
+                yield return PauseManager.instance.Wait(delayBetweenProjectiles);
+        }
+    }
+
+    public void PickProjectile(ConeProjectile projectile)
+    {
+        nbProjectilePick++;
+    }
+
+    public void OnProjectileDestroy(ConeProjectile projectile)
+    {
+        currentProjectiles.Remove(projectile);
+    }
+
+    public void OnProjectileTouchPlayer(GameObject player)
+    {
+        base.OnTouchEnemy(player, damageType);
     }
 
     #region Gizmos/OnValidate
@@ -94,11 +155,12 @@ public class ConeProjectileAttack : StrongAttack
     protected override void OnValidate()
     {
         base.OnValidate();
-        nbProjectile = Mathf.Max(nbProjectile, 1);
+        nbProjectile = (byte)Mathf.Max(nbProjectile, 1);
         bumpForce = Mathf.Max(bumpForce, 0f);
         projectileSpeed = Mathf.Max(projectileSpeed, 0f);
         castDuration = Mathf.Max(castDuration, 0f);
         instanciateDistance = Mathf.Max(instanciateDistance, 0f);
+        delayBetweenProjectiles = Mathf.Max(delayBetweenProjectiles, 0f);
     }
 
     private void OnDrawGizmosSelected()

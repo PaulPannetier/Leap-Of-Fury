@@ -1698,12 +1698,24 @@ public static class Useful
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Lerp(int a, int b, float t) => (int)(a + (b - a) * t);
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int Lerp(short a, short b, float t) => (short)(a + (b - a) * t);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int Lerp(byte a, byte b, float t) => (byte)(a + (b - a) * t);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static float Lerp(float a, float b, float t) => a + (b - a) * t;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsOdd(this int number) => (number & 1) != 0;
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsEven(this int number) => (number & 1) == 0;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsOdd(this short number) => (number & 1) != 0;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsEven(this short number) => (number & 1) == 0;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsOdd(this byte number) => (number & 1) != 0;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsEven(this byte number) => (number & 1) == 0;
 
     public static Vector3[] GetVertices(in this Bounds bounds)
     {
