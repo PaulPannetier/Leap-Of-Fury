@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 5696250467530998310}
   - component: {fileID: 8612698283953875211}
   - component: {fileID: 9027861815646793550}
-  - component: {fileID: 6848550487051244944}
+  - component: {fileID: 5957310748101030846}
   - component: {fileID: 49532349443289084}
   - component: {fileID: -2827172850822402626}
   - component: {fileID: 1501336283833835583}
@@ -252,10 +252,7 @@ MonoBehaviour:
   wallJumpMaxDuration: 0.3
   minDelayToDoubleJumpAfterWallJump: 0.15
   allowDoubleJumpAfterWallJumpInOppositeDirection: 0
-  enableWallJumpOnNonGrabableWall: 1
-  wallJumpAngleOnNonGrabableWall: 40
-  wallJumpInitSpeedOnNonGrabableWall: 10
-  wallJumpOnNonGrabableWallDuration: 0.3
+  delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection: 0.5
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -303,6 +300,10 @@ MonoBehaviour:
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
   minDelayToDoubleJumpAfterJumpAlongWall: 0.5
+  enableWallJumpOnNonGrabableWall: 1
+  wallJumpAngleOnNonGrabableWall: 40
+  wallJumpInitSpeedOnNonGrabableWall: 10
+  wallJumpOnNonGrabableWallDuration: 0.3
   airGravityMultiplier: 3.75
   airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
@@ -436,7 +437,7 @@ MonoBehaviour:
   - {fileID: 8612698283953875211}
   - {fileID: 9027861815646793550}
   - {fileID: 49532349443289084}
-  - {fileID: 6848550487051244944}
+  - {fileID: 0}
   componentsToSynchroniseInClone:
   - {fileID: 1261712740702541876}
   - {fileID: 2136925604514613036}
@@ -559,7 +560,7 @@ MonoBehaviour:
   dashHitboxOffset: {x: 0, y: -0.22}
   dashHitboxSize: {x: 0.75, y: 1.15}
   damageProtectionType: 0
---- !u!114 &6848550487051244944
+--- !u!114 &5957310748101030846
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -568,127 +569,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7980238354382693259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8b457fea88e6e44593e520f86a69d3f, type: 3}
+  m_Script: {fileID: 11500000, guid: c83ad9343cc19e446abbd0efc6cb44fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 3
+    duration: 0
   damageType: 1
-  effectType: 1
+  effectType: 0
   saveAttackStats: 0
-  drawGizmos: 0
-  castRadius: 0.5
-  minRange: 0.38
-  range: 7
-  charCollisionRadius: 0.8
-  collisionOffset: {x: 0, y: -0.14}
-  keepSpeedAtEnd: 1
-  waitingTimeWhenWallGrab: 0.25
-  maxWallGrabDuration: 0.6
-  wallDurationOverDistance:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallPositionOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallGapUp: 0.7
-  wallGapDown: 1.05
-  wallGapRight: 0.5
-  wallGapLeft: 0.5
-  stunEffectParams:
-    duration: 10
-  waitingTimeWhenCharGrab: 0.25
-  maxCharGrabDuration: 0.6
-  charDurationOverDistance:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  charPositionOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  drawGizmos: 1
+  nbProjectile: 5
+  coneAngle: 35
+  projectilePrefabs: {fileID: -4588608683324307721, guid: b6012b6b9c0da344d867713ee06a4153, type: 3}
+  bumpForce: 30
+  projectileSpeed: 30
+  instanciateDistance: 0.5
+  castDuration: 0.3
+  useOnly8Dir: 1
 --- !u!114 &49532349443289084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,7 +603,7 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  drawGizmos: 1
+  drawGizmos: 0
   castDuration: 0.5
   explosionRadius: 1.5
   groundDetectionHitboxOffset: {x: 0, y: -0.85}
