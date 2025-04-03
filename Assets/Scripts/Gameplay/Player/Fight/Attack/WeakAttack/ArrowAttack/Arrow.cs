@@ -11,7 +11,7 @@ public class Arrow : MonoBehaviour
     private PlayerCommon playerCommon;
     private CapsuleCollider2D capsuleCollider;
     private ToricObject toricObject;
-    private bool isFlying;//true si la fl�che vole, false si elle est a terre.
+    private bool isFlying;//true si la fleche vole, false si elle est a terre.
     private bool isDestroy = false;
     private bool isMainArrow;
     private bool isGuiding = false;

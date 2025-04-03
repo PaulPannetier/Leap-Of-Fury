@@ -1,4 +1,6 @@
+using Collision2D;
 using UnityEngine;
+using System.Collections.Generic;
 using Collider2D = UnityEngine.Collider2D;
 
 public class ConeProjectile : MonoBehaviour
@@ -10,14 +12,23 @@ public class ConeProjectile : MonoBehaviour
     private bool isFalling;//true when the projectile fall and kill other player
     private ConeProjectileAttack attack;
     private Animator animator;
-    private float lastTimeLauch;
+    private float lastTimeLaunch;
     private PlayerCommon playerCommon;
     private Rigidbody2D rb;
     private CircleCollider2D circleCollider;
+    private List<uint> charAlreadyTouch;
 
+    [SerializeField] private Vector2 pickColliderSize;
+    [SerializeField] private Vector2 pickColliderOffset;
+    [SerializeField] private Vector2 charColliderOffset;
+    [SerializeField] private float charColliderRadius;
     [SerializeField] private float maxDurationInAir;
     [SerializeField] private float minDurationBeforePick;
     [SerializeField] private float gravityScale = 1f;
+
+#if UNITY_EDITOR
+    [SerializeField] private bool drawGizmos;
+#endif
 
     private void Awake()
     {
@@ -25,6 +36,7 @@ public class ConeProjectile : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
+        charAlreadyTouch = new List<uint>(4);
     }
 
     private void Start()
@@ -56,34 +68,75 @@ public class ConeProjectile : MonoBehaviour
 
         float angleDeg = Useful.AngleHori(Vector2.zero, dir) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, angleDeg);
-        lastTimeLauch = Time.time;
+        lastTimeLaunch = Time.time;
+    }
+
+    private Circle GetCharCollider()
+    {
+        float offsetAngle = Useful.AngleHori(Vector2.zero, charColliderOffset);
+        float dirAngle = transform.rotation.z * Mathf.Deg2Rad;
+        float totalAngle = Useful.WrapAngle(offsetAngle + dirAngle);
+        Vector2 offset = Useful.Vector2FromAngle(totalAngle, charColliderOffset.magnitude);
+        Vector2 center = (Vector2)transform.position + offset;
+        return new Circle(center, charColliderRadius);
     }
 
     private void FixedUpdate()
     {
         if(PauseManager.instance.isPauseEnable)
         {
-            lastTimeLauch += Time.fixedDeltaTime;
+            lastTimeLaunch += Time.fixedDeltaTime;
             return;
         }
 
-        bool isLauncherCollide = false;
         if(isFlying)
         {
-            if(Time.time - lastTimeLauch > maxDurationInAir)
+            if(Time.time - lastTimeLaunch > maxDurationInAir)
             {
                 DestroyProjectile();
                 return;
             }
         }
 
-        if(isLauncherCollide)
+        if(Time.time - lastTimeLaunch > minDurationBeforePick)
         {
-            Pick();
-            return;
+            Collider2D[] cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + pickColliderOffset, pickColliderSize, transform.rotation.z * Mathf.Deg2Rad, charMask);
+            foreach (Collider2D col in cols)
+            {
+                if (col.CompareTag("Char"))
+                {
+                    GameObject player = col.GetComponent<ToricObject>().original;
+                    uint id = player.GetComponent<PlayerCommon>().id;
+                    if (id == playerCommon.id)
+                    {
+                        Pick();
+                        return;
+                    }
+                }
+            }
         }
 
-        if(isLanding)
+        if (isFlying || isFalling)
+        {
+            Circle charCol = GetCharCollider();
+            Collider2D[] cols = PhysicsToric.OverlapCircleAll(charCol, charMask);
+
+            foreach (Collider2D col in cols)
+            {
+                if (col.CompareTag("Char"))
+                {
+                    GameObject player = col.GetComponent<ToricObject>().original;
+                    uint id = player.GetComponent<PlayerCommon>().id;
+                    if (id != playerCommon.id && !charAlreadyTouch.Contains(id))
+                    {
+                        PlayerTouch(player);
+                        charAlreadyTouch.Add(id);
+                    }
+                }
+            }
+        }
+
+        if (isLanding)
         {
             if (rb.linearVelocity.sqrMagnitude >= 0.25f)
             {
@@ -95,28 +148,6 @@ public class ConeProjectile : MonoBehaviour
     //collision.otherCollider <=> this.collider, collision.collider <=> collider this gameobject collide with
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
-        bool isPlayerCollision = charMask.Contain(collision.collider.gameObject.layer);
-        if(isPlayerCollision)
-        {
-            GameObject player = collision.collider.gameObject.GetComponent<ToricObject>().original;
-            uint id = player.GetComponent<PlayerCommon>().id;
-            if(id == playerCommon.id)
-            {
-                if (Time.time - lastTimeLauch > minDurationBeforePick)
-                {
-                    Pick();
-                }
-            }
-            else
-            {
-                if(isFalling || isFlying)
-                {
-                    PlayerTouch(player);
-                }
-            }
-            return;
-        }
-
         bool isGroundCollision = groundMask.Contain(collision.collider.gameObject.layer);
         if(isGroundCollision)
         {
@@ -181,11 +212,18 @@ public class ConeProjectile : MonoBehaviour
         this.transform = base.transform;
         maxDurationInAir = Mathf.Max(maxDurationInAir, 0f);
         minDurationBeforePick = Mathf.Max(minDurationBeforePick, 0f);
+        pickColliderSize = new Vector2(Mathf.Max(pickColliderSize.x, 0f), Mathf.Max(pickColliderSize.y, 0f));
+        charColliderRadius = Mathf.Max(charColliderRadius, 0f);
     }
 
     private void OnDrawGizmosSelected()
     {
-        
+        if(!drawGizmos)
+            return;
+        Hitbox h = new Hitbox((Vector2)transform.position + pickColliderOffset, pickColliderSize);
+        h.Rotate(transform.rotation.z * Mathf.Deg2Rad);
+        Hitbox.GizmosDraw(h, Color.red);
+        Circle.GizmosDraw((Vector2)transform.position + charColliderOffset, charColliderRadius, Color.red);
     }
 
 #endif

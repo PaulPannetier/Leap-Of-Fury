@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: -7745060150195183696}
   - component: {fileID: 3338645732102882786}
   - component: {fileID: 4856423264694286368}
+  - component: {fileID: 2780213322726743683}
   - component: {fileID: 4003849760498898580}
   - component: {fileID: -4588608683324307721}
-  m_Layer: 13
+  m_Layer: 9
   m_Name: ConeProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,8 +176,45 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.17, y: 0}
-  m_Radius: 0.25
+  m_Offset: {x: 0.16, y: 0}
+  m_Radius: 0.23
+--- !u!70 &2780213322726743683
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7531982363222716575}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.09, y: 0}
+  m_Size: {x: 0.76, y: 0.12}
+  m_Direction: 1
 --- !u!114 &4003849760498898580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +252,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c985c7fc077c84fad5f12f23c15b54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickColliderSize: {x: 0.81, y: 0.13}
+  pickColliderOffset: {x: -0.06, y: 0}
+  charColliderOffset: {x: 0.17, y: 0}
+  charColliderRadius: 0.25
   maxDurationInAir: 5
   minDurationBeforePick: 0.3
   gravityScale: 1
+  drawGizmos: 1

@@ -478,6 +478,14 @@ public static class PhysicsToric
 
     public static UnityEngine.Collider2D[] OverlapBoxAll(Hitbox hitbox, LayerMask layerMask) => OverlapBoxAll(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="size"></param>
+    /// <param name="angle">The rotation of the hitbox in radian</param>
+    /// <param name="layerMask"></param>
+    /// <returns></returns>
     public static UnityEngine.Collider2D[] OverlapBoxAll(in Vector2 point, in Vector2 size, float angle, LayerMask layerMask)
     {
         Hitbox hitbox = new Hitbox(GetPointInsideBounds(point), size);
@@ -530,6 +538,14 @@ public static class PhysicsToric
         return res.Length <= 0 ? res : res.Distinct().ToArray();
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="center"></param>
+    /// <param name="size"></param>
+    /// <param name="angle">The rotation of the capsule in radian</param>
+    /// <param name="layerMask"></param>
+    /// <returns></returns>
     public static UnityEngine.Collider2D OverlapCapsule(in Vector2 center, in Vector2 size, float angle, LayerMask layerMask)
     {
         Capsule c = new Capsule(center, size);
