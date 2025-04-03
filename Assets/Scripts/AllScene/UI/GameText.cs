@@ -2,21 +2,23 @@ using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class GameText {
+public class GameText
+{
 	private string text;
 	// Stuff used by Resolve
-	private PlayerIndex player;
 	private ControllerModel model;
 
 	private const string KEYBOARD_SPRITESHEET = "keyboard_keys";
 	private const string GAMEPAD_SPRITESHEET = "xbox_keys";
 
-	public GameText(string text){
+	public GameText(string text)
+	{
 		this.text = text;
 		this.model = ControllerModel.None;
 	}
 
-	public string Resolve(){
+	public string Resolve()
+	{
 		const string stat_pattern = @"\$stat=([\w\d]+?)\$"; // Ex: "SuperSpell has an impedance of only $stat=superspell_impedance$ !"
 		const string sprite_pattern = @"\$sprite=([\w\d]+?)\$"; // Ex: "Press $sprite=Key_Esc$ to pause"
 
@@ -26,16 +28,19 @@ public class GameText {
 		return res;
 	}
 
-	public string Resolve(ControllerModel model){
+	public string Resolve(ControllerModel model)
+	{
 		this.model = model;
 		return Resolve();
 	}
 
-	private string GetStatReplacement(Match m){
+	private string GetStatReplacement(Match m)
+	{
 		return GameStatisticManager.instance.GetStat(m.Groups[1].ToString());
 	}
 
-	private string GetSpriteReplacement(Match m){
+	private string GetSpriteReplacement(Match m)
+	{
 		string sprite_name = m.Groups[1].ToString();
 
 		if (model == ControllerModel.None)
@@ -45,7 +50,8 @@ public class GameText {
 		string spritesheet = isKeyboard ? KEYBOARD_SPRITESHEET : GAMEPAD_SPRITESHEET;
 		Sprite s;
 
-		switch (sprite_name) {
+		switch (sprite_name)
+		{
 			case "PlayerController":
 
 				return isKeyboard ?
@@ -61,6 +67,18 @@ public class GameText {
 				s = isKeyboard ?
 					InputIconManager.instance.GetButtonSprite(BaseController.Keyboard, InputKey.Return) :
 					InputIconManager.instance.GetButtonSprite(BaseController.Gamepad, InputKey.GPA);
+				return $"<sprite=\"{spritesheet}\" name=\"{s.name}\">";
+
+			case "Key_Left":
+				s = isKeyboard ?
+					InputIconManager.instance.GetButtonSprite(BaseController.Keyboard, InputKey.LeftArrow) :
+					InputIconManager.instance.GetButtonSprite(BaseController.Gamepad, InputKey.GPDPadLeft);
+				return $"<sprite=\"{spritesheet}\" name=\"{s.name}\">";
+
+			case "Key_Right":
+				s = isKeyboard ?
+					InputIconManager.instance.GetButtonSprite(BaseController.Keyboard, InputKey.RightArrow) :
+					InputIconManager.instance.GetButtonSprite(BaseController.Gamepad, InputKey.GPDPadRight);
 				return $"<sprite=\"{spritesheet}\" name=\"{s.name}\">";
 
 			default:

@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class MapSelectorController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class MapSelectorController : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput previousMapInput;
     [SerializeField] private InputManager.GeneralInput backInput;
     [SerializeField] private InputManager.GeneralInput applyInput;
+	[SerializeField] private GameObject buttonPromptLeft, buttonPromptContinue, buttonPromptRight;
 
     private void Awake()
     {
@@ -20,15 +22,19 @@ public class MapSelectorController : MonoBehaviour
 
     private void Start()
     {
-        if(controllerSelector == ControllerSelector.keyboard || controllerSelector == ControllerSelector.gamepad1 || controllerSelector == ControllerSelector.gamepad2 || controllerSelector == ControllerSelector.gamepad3
+		if(controllerSelector == ControllerSelector.keyboard || controllerSelector == ControllerSelector.gamepad1 || controllerSelector == ControllerSelector.gamepad2 || controllerSelector == ControllerSelector.gamepad3
             || controllerSelector == ControllerSelector.gamepad4 || controllerSelector == ControllerSelector.gamepadAll || controllerSelector == ControllerSelector.all)
         {
             isMapSelectorInit = true;
             controllerIndex = (ControllerType)controllerSelector;
+			InitPrompt();
         }
         else
         {
-            isMapSelectorInit = false;
+			isMapSelectorInit = false;
+
+            TextMeshProUGUI text = buttonPromptContinue.GetComponent<TextMeshProUGUI>();
+			text.text = LanguageManager.instance.GetText("UI_MapSelector_Join").Resolve();
         }
     }
 
@@ -79,6 +85,7 @@ public class MapSelectorController : MonoBehaviour
             {
                 isMapSelectorInit = isControllerIndexInit = true;
                 controllerIndex = controllerType;
+				InitPrompt();
             }
         }
 
@@ -91,6 +98,22 @@ public class MapSelectorController : MonoBehaviour
 
         //DebugText.instance.text += mapSelector.selectedItem.GetComponent<MapSelectorItemData>().sceneName;
     }
+
+	private void InitPrompt()
+	{
+		TextMeshProUGUI text;
+		ControllerModel model = (controllerIndex == ControllerType.Keyboard) ? ControllerModel.Keyboard : ControllerModel.XBoxSeries;
+
+		text = buttonPromptContinue.GetComponent<TextMeshProUGUI>();
+		text.text = LanguageManager.instance.GetText("UI_MapSelector_Continue").Resolve(model);
+
+		text = buttonPromptLeft.GetComponent<TextMeshProUGUI>();
+		text.text = LanguageManager.instance.GetText("UI_MapSelector_Left").Resolve(model);
+
+		text = buttonPromptRight.GetComponent<TextMeshProUGUI>();
+		text.text = LanguageManager.instance.GetText("UI_MapSelector_Right").Resolve(model);
+
+	}
 
     private void TryLoadNextScene()
     {

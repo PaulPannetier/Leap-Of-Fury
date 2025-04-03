@@ -194,6 +194,22 @@
             "content": "$sprite=PlayerController$ Ready !\n$sprite=Key_Back$ Back"
         },
 		{
+            "textID": "UI_MapSelector_Join",
+            "content": "Press any key to select a map..."
+        },
+		{
+            "textID": "UI_MapSelector_Continue",
+            "content": "$sprite=Key_Validate$ Validate\n$sprite=Key_Back$ Back"
+        },
+		{
+            "textID": "UI_MapSelector_Left",
+            "content": "$sprite=Key_Left$ Left"
+        },
+		{
+            "textID": "UI_MapSelector_Right",
+            "content": "$sprite=Key_Right$ Right"
+        },
+		{
             "textID": "Option_Menu_warning_unapply_settings_description",
             "content": "Unapply settings found."
         },
