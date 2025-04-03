@@ -39,25 +39,25 @@ public class ControlManagerSettingMenu : MonoBehaviour
 
     private void RefreshSettings()
     {
-        controlText.text = LanguageManager.instance.GetText("controlTextSettingMenu");
-        moveUp.SetNameText(LanguageManager.instance.GetText("moveUpTextSettingMenu"));
-        moveDown.SetNameText(LanguageManager.instance.GetText("moveDownTextSettingMenu"));
-        moveRight.SetNameText(LanguageManager.instance.GetText("moveRightTextSettingMenu"));
-        moveLeft.SetNameText(LanguageManager.instance.GetText("moveLeftTextSettingMenu"));
-        dashControl.SetNameText(LanguageManager.instance.GetText("dashTextSettingMenu"));
-        jumpControl.SetNameText(LanguageManager.instance.GetText("jumpTextSettingMenu"));
-        attack1Control.SetNameText(LanguageManager.instance.GetText("attack1TextSettingMenu"));
-        attack2Control.SetNameText(LanguageManager.instance.GetText("attack2TextSettingMenu"));
-        grapControl.SetNameText(LanguageManager.instance.GetText("grabTextSettingMenu"));
-        interactControl.SetNameText(LanguageManager.instance.GetText("interactTextSettingMenu"));
+        controlText.text = LanguageManager.instance.GetText("controlTextSettingMenu").Resolve();
+        moveUp.SetNameText(LanguageManager.instance.GetText("moveUpTextSettingMenu").Resolve());
+        moveDown.SetNameText(LanguageManager.instance.GetText("moveDownTextSettingMenu").Resolve());
+        moveRight.SetNameText(LanguageManager.instance.GetText("moveRightTextSettingMenu").Resolve());
+        moveLeft.SetNameText(LanguageManager.instance.GetText("moveLeftTextSettingMenu").Resolve());
+        dashControl.SetNameText(LanguageManager.instance.GetText("dashTextSettingMenu").Resolve());
+        jumpControl.SetNameText(LanguageManager.instance.GetText("jumpTextSettingMenu").Resolve());
+        attack1Control.SetNameText(LanguageManager.instance.GetText("attack1TextSettingMenu").Resolve());
+        attack2Control.SetNameText(LanguageManager.instance.GetText("attack2TextSettingMenu").Resolve());
+        grapControl.SetNameText(LanguageManager.instance.GetText("grabTextSettingMenu").Resolve());
+        interactControl.SetNameText(LanguageManager.instance.GetText("interactTextSettingMenu").Resolve());
     }
 
     private void RefreshControl(bool defaultControl)
     {
         inputTypeDropdown.options = new List<TMP_Dropdown.OptionData>()
         {
-            new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("keyboard") },
-            new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("gamepad") }
+            new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("keyboard").Resolve() },
+            new TMP_Dropdown.OptionData() { text = LanguageManager.instance.GetText("gamepad").Resolve() }
         };
 
         inputTypeDropdown.onValueChanged.RemoveAllListeners();

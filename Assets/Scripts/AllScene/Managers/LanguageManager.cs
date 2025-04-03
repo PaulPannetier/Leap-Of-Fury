@@ -81,73 +81,23 @@ public class LanguageManager : MonoBehaviour
         LoadLanguage(currentlanguage, @"/Save/GameData/Language/" + currentlanguage + "/text" + SettingsManager.saveFileExtension, ref languageData);
     }
 
-    private string ApplyGameStatsInText(string content)
+    public GameText GetText(string textID)
     {
-        List<Vector2Int> dollarsIndices = new List<Vector2Int>();
-
-        bool firstDollardFound = false;
-        int firstDollardIndex = -1;
-        for (int i = 0; i < content.Length; i++)
-        {
-            if (content[i] == '$')
-            {
-                if(firstDollardFound)
-                {
-                    dollarsIndices.Add(new Vector2Int(firstDollardIndex, i));
-                    firstDollardFound = false;
-                    firstDollardIndex = -1;
-                }
-                else
-                {
-                    firstDollardFound = true;
-                    firstDollardIndex = i;
-                }
-            }
-            else if(content[i] == ' ')
-            {
-                firstDollardFound = false;
-                firstDollardIndex = -1;
-            }
-        }
-
-        int Comparer(Vector2Int a, Vector2Int b)
-        {
-            if (a.x == b.x)
-                return 0;
-            return a.x < b.x ? 1 : -1; 
-        }
-
-        dollarsIndices.Sort(Comparer);
-
-        for (int i = 0; i < dollarsIndices.Count; i++)
-        {
-            Vector2Int indices = dollarsIndices[i];
-            string statsID = content.Substring(indices.x + 1, indices.y - indices.x - 1);
-            string stat = GameStatisticManager.instance.GetStat(statsID);
-            string start = content.Substring(0, indices.x);
-            string end = content.Substring(indices.y + 1, content.Length - indices.y - 1);
-            content = start + stat + end;
-        }
-
-        return content;
-    }
-
-    public string GetText(string textID)
-    {
-        string content;
+		string content;
         if(languageData.TryGetValue(textID, out content))
-            return ApplyGameStatsInText(content);
+            return new GameText(content);
+
         string errorMsg = $"The text with id : {textID} with the language : {currentlanguage} doesn't exist";
         Debug.LogWarning(errorMsg);
         LogManager.instance.AddLog(errorMsg, textID, currentlanguage);
 
         if (defaultLanguageData.TryGetValue(textID, out content))
-            return ApplyGameStatsInText(content);
+            return new GameText(content);
 
         errorMsg = $"The text with id : {textID} with the default language doesn't exist";
         Debug.LogWarning(errorMsg);
         LogManager.instance.AddLog(errorMsg, textID, defaultLanguage);
-        return string.Empty;
+        return null;
     }
 
     [Serializable]

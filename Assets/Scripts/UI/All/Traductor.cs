@@ -25,7 +25,7 @@ public class Traductor : MonoBehaviour
     {
         foreach (TraductableMessage message in messagesToTranslate)
         {
-            string translatedMessage = LanguageManager.instance.GetText(message.textId);
+            string translatedMessage = LanguageManager.instance.GetText(message.textId).Resolve();
             message.text = translatedMessage;
         }
     }

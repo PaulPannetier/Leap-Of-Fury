@@ -71,7 +71,7 @@ public class CharHelpCanvas : MonoBehaviour
         videoPlayer.clip = selectedData.video;
         videoPlayer.Play();
         selectedData.descriptionText.gameObject.SetActive(true);
-        selectedData.descriptionText.text = LanguageManager.instance.GetText(selectedData.descriptionKey);
+        selectedData.descriptionText.text = LanguageManager.instance.GetText(selectedData.descriptionKey).Resolve();
     }
 
     #region Gizmos/OnValidate

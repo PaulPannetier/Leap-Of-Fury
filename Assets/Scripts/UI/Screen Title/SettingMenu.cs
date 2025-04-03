@@ -67,8 +67,8 @@ public class SettingMenu : MonoBehaviour
         //Window dropdown
         List<TMP_Dropdown.OptionData> windowModeOptions = new List<TMP_Dropdown.OptionData>
         {
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode"), windowModeDropdown.options[0].image, Color.white),
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image, Color.white),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode").Resolve(), windowModeDropdown.options[0].image, Color.white),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode").Resolve(), windowModeDropdown.options[0].image, Color.white),
         };
         windowModeDropdown.options = windowModeOptions;
 
@@ -199,25 +199,25 @@ public class SettingMenu : MonoBehaviour
 
     private void RefreshText()
     {
-        masterText.text = LanguageManager.instance.GetText("masterVolume") + " :";
-        musicText.text = LanguageManager.instance.GetText("musicVolume") + " :";
-        soundFXText.text = LanguageManager.instance.GetText("soundFXVolume") + " :";
-        windowModeText.text = LanguageManager.instance.GetText("windowMode") + " :";
-        resolutionText.text = LanguageManager.instance.GetText("resolution") + " :";
-        framerateText.text = LanguageManager.instance.GetText("framerate") + " :";
-        languageText.text = LanguageManager.instance.GetText("language") + " :";
+        masterText.text = LanguageManager.instance.GetText("masterVolume").Resolve() + " :";
+        musicText.text = LanguageManager.instance.GetText("musicVolume").Resolve() + " :";
+        soundFXText.text = LanguageManager.instance.GetText("soundFXVolume").Resolve() + " :";
+        windowModeText.text = LanguageManager.instance.GetText("windowMode").Resolve() + " :";
+        resolutionText.text = LanguageManager.instance.GetText("resolution").Resolve() + " :";
+        framerateText.text = LanguageManager.instance.GetText("framerate").Resolve() + " :";
+        languageText.text = LanguageManager.instance.GetText("language").Resolve() + " :";
 
         //VSynch
-        vSynchText.text = LanguageManager.instance.GetText("vsync") + " :";
+        vSynchText.text = LanguageManager.instance.GetText("vsync").Resolve() + " :";
 
         //buttons
-        applyButtonText.text = LanguageManager.instance.GetText("applyOptionButton");
-        defaultButtonText.text = LanguageManager.instance.GetText("defaultOptionButton");
+        applyButtonText.text = LanguageManager.instance.GetText("applyOptionButton").Resolve();
+        defaultButtonText.text = LanguageManager.instance.GetText("defaultOptionButton").Resolve();
 
         List<TMP_Dropdown.OptionData> windowModeOptions = new List<TMP_Dropdown.OptionData>
         {
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode"), windowModeDropdown.options[0].image, Color.white),
-            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode"), windowModeDropdown.options[0].image, Color.white),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("fullscreenMode").Resolve(), windowModeDropdown.options[0].image, Color.white),
+            new TMP_Dropdown.OptionData(LanguageManager.instance.GetText("windowedMode").Resolve(), windowModeDropdown.options[0].image, Color.white),
         };
         windowModeDropdown.options = windowModeOptions;
     }

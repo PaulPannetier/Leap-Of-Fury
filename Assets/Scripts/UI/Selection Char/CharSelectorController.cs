@@ -52,7 +52,7 @@ public class CharSelectorController : MonoBehaviour
 	{
 		for (int i = 0; i < MAX_PLAYERS; i++)
         {
-			statusIndicators[i].GetComponent<TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Join");
+			statusIndicators[i].GetComponent<TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Join").Resolve();
 		}
 	}
 
@@ -141,21 +141,21 @@ public class CharSelectorController : MonoBehaviour
             {
                 isTurningSelectorsFinishSelection[i] = true;
 				TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
-				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready");
+				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready").Resolve(InputManager.GetControllerModel(controllers[i]));
 				curText.color = Color.green;
             }
             else if(isTurningSelectorsFinishSelection[i] && escapeButton.IsPressedUp())
             {
                 isTurningSelectorsFinishSelection[i] = false;
 				TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
-				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose");
+				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose").Resolve(InputManager.GetControllerModel(controllers[i]));
 				curText.color = Color.white;
             }
             else if(isTurningSelectorInit[i] && escapeButton.IsPressedUp())
             {
                 isTurningSelectorInit[i] = false;
                 TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
-                curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Join");
+                curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Join").Resolve();
                 curText.color = Color.white;
             }
         }
@@ -171,7 +171,7 @@ public class CharSelectorController : MonoBehaviour
             }
         }
 
-        //si il reste un char a init
+        // si il reste un char a init
         for (int i = 0; i < MAX_PLAYERS; i++)
         {
             if (isTurningSelectorInit[i])
@@ -181,7 +181,7 @@ public class CharSelectorController : MonoBehaviour
             {
                 isTurningSelectorInit[i] = true;
                 controllers[i] = controllerType;
-                statusIndicators[i].GetComponent<TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose");
+                statusIndicators[i].GetComponent<TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose").Resolve(InputManager.GetControllerModel(controllers[i]));
             }
             break;
         }
@@ -356,7 +356,7 @@ public class CharSelectorController : MonoBehaviour
 
             isTurningSelectorInit[i] = isTurningSelectorsFinishSelection[i] = true;
             TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
-            curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready");
+            curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready").Resolve();
             curText.color = Color.green;
             controllers[i] = controllerType;
         }

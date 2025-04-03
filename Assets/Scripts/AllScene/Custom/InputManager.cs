@@ -1,14 +1,14 @@
 ﻿/*
  * Copyright (c) 2023 Léonard Pannetier <email>
- * 
+ *
  * This asset was create to make a Input System ease to use and powerful for project in Unity.
  * It's base on the XInputDotNetPure wrapper made by speps, see detail on their repo https://github.com/speps/XInputDotNet/releases
  * The license of the XInputDotNetPure is the same of this Package, and is include in the subfolder XInputDotNetPure.
  * This asset is also based on the build in Input System of Unity (the old input system).
- * 
+ *
  * This asset can be use in any projet, no obligation of credit, but it is appreciated.
  * See the license file for more details.
- * 
+ *
 */
 
 
@@ -1827,7 +1827,7 @@ public static class InputManager
             {
                 get => keys[i];
                 set => keys[i] = value;
-            } 
+            }
 
             public void Add(int key) => keys.Add(key);
 
@@ -3090,7 +3090,7 @@ public static class InputManager
 
     public static void AddInputsAction(string action, KeyboardKey[] keys, BaseController controller, bool defaultConfig = false)
     {
-        AddInputsAction(action, keys, defaultConfig);   
+        AddInputsAction(action, keys, defaultConfig);
     }
 
     public static void AddInputsActions(string[] actions, KeyboardKey[] keys, BaseController controller, bool defaultConfig = false)
@@ -3871,7 +3871,7 @@ public static class InputManager
     public static bool SaveConfiguration(string fileName)
     {
         InputManagerConfigData InputManagerConfig = new InputManagerConfigData(defaultKBKeys.GetRawData(), defaultGPKeys.GetRawData(), kbKeys.GetRawData(), gpKeys.GetRawData(), GP1RightThumbStickDeadZone,
-            GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone, 
+            GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
             GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
         return Save.WriteJSONData(InputManagerConfig, fileName, true, true);
     }
@@ -3892,7 +3892,7 @@ public static class InputManager
         }
 
         InputManagerConfigData InputManagerConfig2 = new InputManagerConfigData(defaultKBKeys.GetRawData(), defaultGPKeys.GetRawData(), i.kbKeys, i.gpKeys,
-            i.GP1RightThumbStickDeadZone, i.GP1LeftThumbStickDeadZone, i.GP1TriggersDeadZone, i.GP2RightThumbStickDeadZone, i.GP2LeftThumbStickDeadZone, 
+            i.GP1RightThumbStickDeadZone, i.GP1LeftThumbStickDeadZone, i.GP1TriggersDeadZone, i.GP2RightThumbStickDeadZone, i.GP2LeftThumbStickDeadZone,
             i.GP2TriggersDeadZone, i.GP3RightThumbStickDeadZone, i.GP3LeftThumbStickDeadZone, i.GP3TriggersDeadZone, i.GP4RightThumbStickDeadZone, i.GP4LeftThumbStickDeadZone, i.GP4TriggersDeadZone);
         return Save.WriteJSONData(InputManagerConfig2, fileName, true);
     }
@@ -3907,7 +3907,7 @@ public static class InputManager
         if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData i))
         {
             InputManagerConfigData InputManagerConfig = new InputManagerConfigData(new InputData.InputDataRaw(Array.Empty<string>(), Array.Empty<InputData.ListInt>()), new InputData.InputDataRaw(Array.Empty<string>(), Array.Empty<InputData.ListInt>()),
-                kbKeys.GetRawData(), gpKeys.GetRawData(), GP1RightThumbStickDeadZone, GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, 
+                kbKeys.GetRawData(), gpKeys.GetRawData(), GP1RightThumbStickDeadZone, GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone,
                 GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone, GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
             return Save.WriteJSONData(InputManagerConfig, fileName, true);
         }
@@ -3925,7 +3925,7 @@ public static class InputManager
     {
         if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData data))
             return false;
-        
+
         defaultKBKeys = new InputData(ControllerType.Keyboard, data.defaultKBKeys);
         defaultGPKeys = new InputData(ControllerType.GamepadAny, data.defaultGPKeys);
         kbKeys = new InputData(ControllerType.Keyboard, data.kbKeys);
@@ -4029,12 +4029,12 @@ public static class InputManager
         if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData i))
         {
             InputManagerConfigData InputManagerConfig = new InputManagerConfigData(defaultKBKeys.GetRawData(), defaultGPKeys.GetRawData(), new InputData.InputDataRaw(Array.Empty<string>(), Array.Empty<InputData.ListInt>()),
-                new InputData.InputDataRaw(Array.Empty<string>(), Array.Empty<InputData.ListInt>()), GP1RightThumbStickDeadZone, GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, 
+                new InputData.InputDataRaw(Array.Empty<string>(), Array.Empty<InputData.ListInt>()), GP1RightThumbStickDeadZone, GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone,
                 GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone, GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
             return await Save.WriteJSONDataAsync(InputManagerConfig, fileName, callback, true);
         }
 
-        InputManagerConfigData InputManagerConfig2 = new InputManagerConfigData(defaultKBKeys.GetRawData(), defaultGPKeys.GetRawData(), i.kbKeys, i.gpKeys, i.GP1RightThumbStickDeadZone, i.GP1LeftThumbStickDeadZone, i.GP1TriggersDeadZone, i.GP2RightThumbStickDeadZone, i.GP2LeftThumbStickDeadZone, 
+        InputManagerConfigData InputManagerConfig2 = new InputManagerConfigData(defaultKBKeys.GetRawData(), defaultGPKeys.GetRawData(), i.kbKeys, i.gpKeys, i.GP1RightThumbStickDeadZone, i.GP1LeftThumbStickDeadZone, i.GP1TriggersDeadZone, i.GP2RightThumbStickDeadZone, i.GP2LeftThumbStickDeadZone,
             i.GP2TriggersDeadZone, i.GP3RightThumbStickDeadZone, i.GP3LeftThumbStickDeadZone, i.GP3TriggersDeadZone, i.GP4RightThumbStickDeadZone, i.GP4LeftThumbStickDeadZone, i.GP4TriggersDeadZone);
         return await Save.WriteJSONDataAsync(InputManagerConfig2, fileName, callback, true);
     }
@@ -4048,7 +4048,7 @@ public static class InputManager
     {
         if (!Save.ReadJSONData<InputManagerConfigData>(fileName, out InputManagerConfigData i))
         {
-            InputManagerConfigData InputManagerConfig = new InputManagerConfigData(new InputData.InputDataRaw(Array.Empty<string>(), Array.Empty<InputData.ListInt>()), new InputData.InputDataRaw(Array.Empty<string>(), 
+            InputManagerConfigData InputManagerConfig = new InputManagerConfigData(new InputData.InputDataRaw(Array.Empty<string>(), Array.Empty<InputData.ListInt>()), new InputData.InputDataRaw(Array.Empty<string>(),
                 Array.Empty<InputData.ListInt>()), kbKeys.GetRawData(), gpKeys.GetRawData(), GP1RightThumbStickDeadZone,
                 GP1LeftThumbStickDeadZone, GP1TriggersDeadZone, GP2RightThumbStickDeadZone, GP2LeftThumbStickDeadZone, GP2TriggersDeadZone, GP3RightThumbStickDeadZone, GP3LeftThumbStickDeadZone, GP3TriggersDeadZone,
                 GP4RightThumbStickDeadZone, GP4LeftThumbStickDeadZone, GP4TriggersDeadZone);
@@ -5181,7 +5181,7 @@ public static class InputManager
         SetNewGamepadSticksAndTriggersPositions();
 
         //vibration
-        List<VibrationSettings> stopSetting = new List<VibrationSettings>(); 
+        List<VibrationSettings> stopSetting = new List<VibrationSettings>();
         for (int i = vibrationSettings.Count - 1; i >= 0; i--)
         {
             VibrationSettings setting = vibrationSettings[i];

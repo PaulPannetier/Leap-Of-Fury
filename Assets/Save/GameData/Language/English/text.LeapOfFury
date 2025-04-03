@@ -20,7 +20,7 @@
 		{
             "textID": "controlTextSettingMenu",
             "content": "Controls"
-        },		
+        },
 		{
             "textID": "moveUpTextSettingMenu",
             "content": "Up"
@@ -36,7 +36,7 @@
 		{
             "textID": "moveLeftTextSettingMenu",
             "content": "Left"
-        },		
+        },
 		{
             "textID": "dashTextSettingMenu",
             "content": "Dash"
@@ -115,7 +115,7 @@
         },
 		{
             "textID": "helpMenuChar1StrongAttackDescription",
-            "content": "A clone always follow the player, when this attack is activated, all past attack made by the clone will be effective for $char1WeakAttackDuration$ sec."
+            "content": "A clone always follow the player, when this attack is activated, all past attack made by the clone will be effective for $stat=char1WeakAttackDuration$ sec."
         },
 		{
             "textID": "helpMenuChar1WeakAttackDescription",
@@ -187,11 +187,11 @@
         },
 		{
             "textID": "UI_StatusIndicator_Choose",
-            "content": "Choosing..."
+            "content": "$sprite=PlayerController$ Choosing...\n$sprite=Key_Validate$ Validate"
         },
 		{
             "textID": "UI_StatusIndicator_Ready",
-            "content": "Ready !"
+            "content": "$sprite=PlayerController$ Ready !\n$sprite=Key_Back$ Back"
         },
 		{
             "textID": "Option_Menu_warning_unapply_settings_description",
