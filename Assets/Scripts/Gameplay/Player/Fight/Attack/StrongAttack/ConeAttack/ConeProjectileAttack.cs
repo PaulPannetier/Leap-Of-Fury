@@ -65,9 +65,9 @@ public class ConeProjectileAttack : StrongAttack
 
         yield return PauseManager.instance.Wait(castDuration);
 
-        foreach (ConeProjectile projectile in currentProjectiles)
+        for (int i = currentProjectiles.Count - 1; i >= 0; i--)
         {
-            projectile.OnAttackReLaunch();
+            currentProjectiles[i].OnAttackReLaunch();
         }
 
         yield return InstanciateProjectiles();
@@ -119,7 +119,7 @@ public class ConeProjectileAttack : StrongAttack
             }
         }
 
-        float speedBonus = 1f + (nbProjectilePick > 0 ? speedBonusPerPickProjectile[nbProjectilePick] : 0f);
+        float speedBonus = 1f + (nbProjectilePick > 0 ? speedBonusPerPickProjectile[nbProjectilePick - 1] : 0f);
         float projSpeed = speedBonus * projectileSpeed;
         for (int i = 0; i < angles.Length; i++)
         {
@@ -127,6 +127,7 @@ public class ConeProjectileAttack : StrongAttack
             Vector2 dir = Useful.Vector2FromAngle(angle);
             Vector2 projectilePosition = (Vector2)transform.position + (instanciateDistance * dir);
             ConeProjectile coneProjectile = Instantiate(projectilePrefabs, projectilePosition, Quaternion.identity, CloneParent.cloneParent);
+            currentProjectiles.Add(coneProjectile);
             coneProjectile.Launch(projSpeed, dir, this);
             if (i != angles.Length - 1)
                 yield return PauseManager.instance.Wait(delayBetweenProjectiles);

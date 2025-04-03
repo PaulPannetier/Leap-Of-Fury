@@ -579,7 +579,7 @@ MonoBehaviour:
   saveAttackStats: 0
   drawGizmos: 1
   nbProjectile: 1
-  coneAngle: 10
+  coneAngle: 20
   projectilePrefabs: {fileID: -4588608683324307721, guid: b6012b6b9c0da344d867713ee06a4153, type: 3}
   bumpForce: 30
   projectileSpeed: 30
