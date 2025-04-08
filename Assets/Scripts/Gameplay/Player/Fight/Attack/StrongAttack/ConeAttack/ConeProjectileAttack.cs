@@ -18,6 +18,7 @@ public class ConeProjectileAttack : StrongAttack
 
     [SerializeField] private byte nbProjectile;
     [SerializeField, Range(0f, 360f)] private float coneAngle;
+    [SerializeField] private float coneRandomAngleVariation;
     [SerializeField] private ConeProjectile projectilePrefabs;
     [SerializeField] private float bumpForce;
     [SerializeField] private float projectileSpeed;
@@ -123,7 +124,8 @@ public class ConeProjectileAttack : StrongAttack
         float projSpeed = speedBonus * projectileSpeed;
         for (int i = 0; i < angles.Length; i++)
         {
-            float angle = angles[i];
+            float angleVariationRad = coneRandomAngleVariation * Mathf.Deg2Rad;
+            float angle = angles[i] + Random.Rand(-angleVariationRad, angleVariationRad);
             Vector2 dir = Useful.Vector2FromAngle(angle);
             Vector2 projectilePosition = (Vector2)transform.position + (instanciateDistance * dir);
             ConeProjectile coneProjectile = Instantiate(projectilePrefabs, projectilePosition, Quaternion.identity, CloneParent.cloneParent);
@@ -162,6 +164,7 @@ public class ConeProjectileAttack : StrongAttack
         castDuration = Mathf.Max(castDuration, 0f);
         instanciateDistance = Mathf.Max(instanciateDistance, 0f);
         delayBetweenProjectiles = Mathf.Max(delayBetweenProjectiles, 0f);
+        coneRandomAngleVariation = Mathf.Max(coneRandomAngleVariation, 0f);
     }
 
     private void OnDrawGizmosSelected()

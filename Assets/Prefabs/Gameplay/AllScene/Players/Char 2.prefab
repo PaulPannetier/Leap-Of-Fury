@@ -573,18 +573,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 0
+    duration: 5
   damageType: 1
   effectType: 0
   saveAttackStats: 0
   drawGizmos: 1
-  nbProjectile: 1
+  nbProjectile: 5
   coneAngle: 20
+  coneRandomAngleVariation: 0.5
   projectilePrefabs: {fileID: -4588608683324307721, guid: b6012b6b9c0da344d867713ee06a4153, type: 3}
   bumpForce: 30
-  projectileSpeed: 30
+  projectileSpeed: 20
   instanciateDistance: 0.5
-  delayBetweenProjectiles: 0.1
+  delayBetweenProjectiles: 0.08
   speedBonusPerPickProjectile:
   - 0.1
   - 0.2

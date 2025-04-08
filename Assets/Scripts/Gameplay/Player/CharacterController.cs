@@ -4,9 +4,93 @@ using System.Collections.Generic;
 using ToricCollider2D;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 public class CharacterController : MonoBehaviour
 {
+    #region Bonus
+
+    private class BonusHandler
+    {
+        private float initValue;
+        private List<float> bonusPercent;
+        private List<float> bonus;
+        private float _currentValue;
+        public float currentValue
+        {
+            get => _currentValue;
+            private set
+            {
+                _currentValue = value;
+            }
+        }
+
+        public BonusHandler(float initValue)
+        {
+            this.initValue = initValue;
+            _currentValue = initValue;
+            bonusPercent = new List<float>();
+            bonus = new List<float>();
+        }
+
+        private void RecalculateValue()
+        {
+            float newValue = initValue;
+            float currentBonus = bonus.Sum();
+            float currentBonusPercent = bonusPercent.Sum() * initValue;
+            currentValue = initValue + currentBonus + currentBonusPercent;
+        }
+
+        public void AddPercentBonus(float bonusValue)
+        {
+            bonusPercent.Add(bonusValue);
+            RecalculateValue();
+        }
+
+        public void AddBonus(float bonusValue)
+        {
+            bonus.Add(bonusValue);
+            RecalculateValue();
+        }
+
+        public bool RemovePercentBonus(float bonusValue)
+        {
+            bool remove = bonusPercent.Remove(bonusValue);
+            if(remove)
+                RecalculateValue();
+            return remove;
+        }
+
+        public bool RemoveBonus(float bonusValue)
+        {
+            bool remove = bonus.Remove(bonusValue);
+            if(remove)
+                RecalculateValue();
+            return remove;       
+        }
+
+        public void Reset()
+        {
+            bonus.Clear();
+            bonusPercent.Clear();
+            currentValue = initValue;
+        }
+    }
+
+    [Flags]
+    public enum BonusType : byte
+    {
+        None = 0,
+        Walk = 1,
+        Grab = 1 << 1,
+        Jump = 1 << 2, //increase jump init speed and continuous jump acceleration
+        WallJump = 1 << 3,
+        Fall = 1 << 4,
+        Dash = 1 << 5
+    }
+
+    #endregion
+
     #region Fields
 
     #region private field
@@ -42,6 +126,12 @@ public class CharacterController : MonoBehaviour
         }
     }
     public bool enableMagneticField = false;
+    private BonusHandler walkSpeedHandler;
+    private BonusHandler grabSpeedHandler;
+    private BonusHandler jumbForceHandler;
+    private BonusHandler wallJumpForceHandler;
+    private BonusHandler fallSpeedYHandler;
+    private BonusHandler dashSpeedHandler;
 
     [field:SerializeField, ShowOnly] public Vector2 velocity { get; private set; }
 
@@ -314,6 +404,69 @@ public class CharacterController : MonoBehaviour
 
     #region Public Methods
 
+    #region Bonus
+
+    private BonusHandler GetHandler(BonusType bonusType)
+    {
+        switch (bonusType)
+        {
+            case BonusType.Walk:
+                return walkSpeedHandler;
+            case BonusType.Grab:
+                return grabSpeedHandler;
+            case BonusType.Jump:
+                return jumbForceHandler;
+            case BonusType.WallJump:
+                return wallJumpForceHandler;
+            case BonusType.Fall:
+                return fallSpeedYHandler;
+            case BonusType.Dash:
+                return dashSpeedHandler;
+            default:
+                return null;
+        }
+    }
+
+    public void AddBonus(BonusType bonusType, float value)
+    {
+        BonusHandler bonusHandler = GetHandler(bonusType);
+        if (bonusHandler != null)
+        {
+            bonusHandler.AddBonus(value);
+        }
+    }
+
+    public void AddBonusPercent(BonusType bonusType, float value)
+    {
+        BonusHandler bonusHandler = GetHandler(bonusType);
+        if (bonusHandler != null)
+        {
+            bonusHandler.AddPercentBonus(value);
+        }
+    }
+
+    public bool RemoveBonus(BonusType bonusType, float value)
+    {
+        BonusHandler bonusHandler = GetHandler(bonusType);
+        if (bonusHandler != null)
+        {
+            return bonusHandler.RemoveBonus(value);
+        }
+        return false;
+    }
+
+    public bool RemoveBonusPercent(BonusType bonusType, float value)
+    {
+        BonusHandler bonusHandler = GetHandler(bonusType);
+        if (bonusHandler != null)
+        {
+            return bonusHandler.RemovePercentBonus(value);
+        }
+        return false;
+    }
+
+    #endregion
+
     private static Vector2[] directions8 = new Vector2[8]
     {
         new Vector2(0, 1),
@@ -470,7 +623,13 @@ public class CharacterController : MonoBehaviour
         hitbox = GetComponent<BoxCollider2D>();
         playerCommon = GetComponent<PlayerCommon>();
         onDash = (Vector2 dir) => { };
-    }
+        walkSpeedHandler = new BonusHandler(walkSpeed);
+        grabSpeedHandler = new BonusHandler(grabSpeed);
+        jumbForceHandler = new BonusHandler(jumpForce);
+        wallJumpForceHandler = new BonusHandler(wallJumpForce);
+        fallSpeedYHandler = new BonusHandler(fallSpeedY);
+        dashSpeedHandler = new BonusHandler(dashSpeed);
+}
 
     private void Start()
     {
@@ -538,7 +697,7 @@ public class CharacterController : MonoBehaviour
         //DebugText.instance.text += $"Gounded : {isGrounded}\n";
         //DebugText.instance.text += $"Bump : {isBumping}\n";
         //DebugText.instance.text += $"{velocity}\n";
-        //DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
+        DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
         //DebugText.instance.text += $"wallJump : {isWallJumping}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
     }
@@ -1084,6 +1243,7 @@ public class CharacterController : MonoBehaviour
         }
         else if(isDashing)
         {
+            float dashSpeed = dashSpeedHandler.currentValue;
             if (Mathf.Abs(velocity.x) >= dashSpeed * 0.5f)
             {
                 flip = velocity.x > 0f ? false : true;
@@ -1343,9 +1503,10 @@ public class CharacterController : MonoBehaviour
         {
             Vector2 groundVel = groundColliderData.velocity;
             Vector2 localVel = velocity - groundVel;
+            float walkSpeed = walkSpeedHandler.currentValue;
 
             //Avoid stick on side
-            if(enableInput && raycastLeft && playerInput.rawX == 1)
+            if (enableInput && raycastLeft && playerInput.rawX == 1)
             {
                 MapColliderData sideColliderData = raycastLeft.collider.GetComponent<MapColliderData>();
                 if((int)sideColliderData.velocity.x.Sign() == 1 && sideColliderData.velocity.x < walkSpeed)
@@ -1420,6 +1581,7 @@ public class CharacterController : MonoBehaviour
         {
             Vector2 groundVel = groundColliderData.velocity;
             Vector2 localVel = velocity - groundVel;
+            float walkSpeed = walkSpeedHandler.currentValue;
 
             //Avoid stick on side
             if (enableInput && raycastLeft && playerInput.rawX == 1)
@@ -1566,6 +1728,7 @@ public class CharacterController : MonoBehaviour
         void HandleConvoyerBeltWalk()
         {
             ConvoyerBelt convoyer = groundColliderData.GetComponent<ConvoyerBelt>();
+            float walkSpeed = walkSpeedHandler.currentValue;
 
             if(!convoyer.isActive)
             {
@@ -1643,6 +1806,7 @@ public class CharacterController : MonoBehaviour
             //On veut monter
             if(playerInput.rawY == 1)
             {
+                float grabSpeed = grabSpeedHandler.currentValue;
                 //clamp, on va dans le mauvais sens
                 if (velocity.y < grabInitSpeed * grabSpeed * 0.95f)
                 {
@@ -1794,6 +1958,7 @@ public class CharacterController : MonoBehaviour
         void HandleNormalJump()
         {
             //vertical movement
+            float jumpForce = wallJumpForceHandler.currentValue;
             velocity += Vector2.up * (Physics2D.gravity.y * jumpGravityMultiplier * Time.deltaTime);
             velocity += Vector2.up * (jumpForce * Time.deltaTime);
 
@@ -1866,6 +2031,7 @@ public class CharacterController : MonoBehaviour
         void HandleWallJump()
         {
             //Vertical movement
+            float wallJumpForce = wallJumpForceHandler.currentValue;
             velocity += Vector2.up * (Physics2D.gravity.y * wallJumpGravityMultiplier * Time.deltaTime);
             velocity += Vector2.up * (wallJumpForce * Time.deltaTime);
 
@@ -2185,6 +2351,7 @@ public class CharacterController : MonoBehaviour
         if (!isFalling)
             return;
 
+        float fallSpeedY = fallSpeedYHandler.currentValue;
         bool isAffectedByMagneticField = false;
         Vector2 magneticFieldForce = Vector2.zero;
         if (enableMagneticField)
@@ -2398,6 +2565,7 @@ public class CharacterController : MonoBehaviour
             }
         }
 
+        float dashSpeed = dashSpeedHandler.currentValue;
         lastTimeDashFinish = Time.time;
         float per100 = (Time.time - lastTimeDashBegin) / dashDuration;
         velocity = lastDashDir * (dashSpeedCurve.Evaluate(per100) * dashSpeed);
@@ -2464,6 +2632,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
+            float fallSpeedY = fallSpeedYHandler.currentValue;
             velocity = new Vector2(velocity.x, Mathf.MoveTowards(velocity.y, -fallSpeedY, -Physics2D.gravity.y * bumpGravityScale * Time.deltaTime));
         }
     }

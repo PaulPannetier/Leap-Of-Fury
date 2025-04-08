@@ -12,7 +12,7 @@ public class ConeProjectile : MonoBehaviour
     private bool isFalling;//true when the projectile fall and kill other player
     private ConeProjectileAttack attack;
     private Animator animator;
-    private float lastTimeLaunch;
+    private float lastTimeLaunch, lastTimeBeginToFall;
     private PlayerCommon playerCommon;
     private Rigidbody2D rb;
     private CircleCollider2D circleCollider;
@@ -25,6 +25,7 @@ public class ConeProjectile : MonoBehaviour
     [SerializeField] private float maxDurationInAir;
     [SerializeField] private float minDurationBeforePick;
     [SerializeField] private float gravityScale = 1f;
+    [SerializeField] private float minDurationToFall = 0.5f;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos;
@@ -37,6 +38,7 @@ public class ConeProjectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         circleCollider = GetComponent<CircleCollider2D>();
         charAlreadyTouch = new List<uint>(4);
+        lastTimeBeginToFall = -10f;
     }
 
     private void Start()
@@ -86,6 +88,7 @@ public class ConeProjectile : MonoBehaviour
         if(PauseManager.instance.isPauseEnable)
         {
             lastTimeLaunch += Time.fixedDeltaTime;
+            lastTimeBeginToFall = lastTimeBeginToFall >= 0f ? lastTimeBeginToFall + Time.fixedDeltaTime : lastTimeBeginToFall;
             return;
         }
 
@@ -138,9 +141,21 @@ public class ConeProjectile : MonoBehaviour
 
         if (isLanding)
         {
-            if (rb.linearVelocity.sqrMagnitude >= 0.25f)
+            if (rb.linearVelocity.y < -0.5f)
             {
-                Fall();
+                if(lastTimeBeginToFall < 0f)
+                {
+                    lastTimeBeginToFall = Time.time;
+                }
+
+                if(Time.time - lastTimeBeginToFall >= minDurationToFall)
+                {
+                    Fall();
+                }
+            }
+            else
+            {
+                lastTimeBeginToFall = -10f;
             }
         }
     }
@@ -190,6 +205,7 @@ public class ConeProjectile : MonoBehaviour
 
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.gravityScale = gravityScale;
+        lastTimeBeginToFall = -10f;
     }
 
     private void PlayerTouch(GameObject player)

@@ -42,12 +42,12 @@ Compétences des perso :
 perso 1 : *
 	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose (repetable 3fois).//ok
 	  attack forte : clone du joueur qui fait ces attaque avec un delai de 3 sec.//ok
-	  Passif : le joueur laisse un trainé de flamme sur le sol.//ok **
+	  Passif : Court et grimpe un peu plus vite.//ok
 
 perso 2 : *
 	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
 	  attack forte : tir 5 projectiles en cone serré dans la dir des input (8 dir possibles) et qui lui applique une forte force de propulsion en arrière//ok**
-	  Passif : Augmente la vitesse des projectile de la prtochaine attaque forte si ramùassage des projectiles.
+	  Passif : Augmente la vitesse des projectile de la prochaine attaque forte si ramassage des projectiles.
 
 perso 3 : *
 	  attack faible : tir de flèche légèrement téléguidé à récup, si on reclick la flèche se divise en 3.//ok

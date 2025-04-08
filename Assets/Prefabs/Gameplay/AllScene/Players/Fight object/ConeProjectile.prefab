@@ -131,7 +131,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 6200000, guid: 97f419bc0923b404ca01424cb1f19f13, type: 2}
+  m_Material: {fileID: 6200000, guid: e90710c3232c4fb4195988dd174088e0, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -234,6 +234,9 @@ MonoBehaviour:
   isAClone: 0
   componentsToDisableInClone:
   - {fileID: -4588608683324307721}
+  - {fileID: 4856423264694286368}
+  - {fileID: 2780213322726743683}
+  - {fileID: 3338645732102882786}
   componentsToSynchroniseInClone:
   - {fileID: -7745060150195183696}
   - {fileID: 8264837857051938135}
@@ -259,4 +262,5 @@ MonoBehaviour:
   maxDurationInAir: 5
   minDurationBeforePick: 0.3
   gravityScale: 1
+  minDurationToFall: 0.5
   drawGizmos: 1

@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 7791410703419052070}
   - component: {fileID: 249455240}
   - component: {fileID: 4661732284580921915}
-  - component: {fileID: 6907840903728363808}
+  - component: {fileID: 9163807024864640750}
   - component: {fileID: -2860931854293677091}
   m_Layer: 8
   m_Name: Char 1
@@ -266,10 +266,7 @@ MonoBehaviour:
   wallJumpMaxDuration: 0.3
   minDelayToDoubleJumpAfterWallJump: 0.15
   allowDoubleJumpAfterWallJumpInOppositeDirection: 0
-  enableWallJumpOnNonGrabableWall: 1
-  wallJumpAngleOnNonGrabableWall: 40
-  wallJumpInitSpeedOnNonGrabableWall: 10
-  wallJumpOnNonGrabableWallDuration: 0.3
+  delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection: 0.5
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -317,6 +314,10 @@ MonoBehaviour:
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
   minDelayToDoubleJumpAfterJumpAlongWall: 0.5
+  enableWallJumpOnNonGrabableWall: 1
+  wallJumpAngleOnNonGrabableWall: 40
+  wallJumpInitSpeedOnNonGrabableWall: 10
+  wallJumpOnNonGrabableWallDuration: 0.3
   airGravityMultiplier: 3.75
   airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
@@ -451,7 +452,7 @@ MonoBehaviour:
   - {fileID: 7791410703419052070}
   - {fileID: 249455240}
   - {fileID: 4661732284580921915}
-  - {fileID: 6907840903728363808}
+  - {fileID: 0}
   componentsToSynchroniseInClone:
   - {fileID: 66234244654983004}
   - {fileID: 922723625538123844}
@@ -675,39 +676,26 @@ MonoBehaviour:
   cloneTransparency: 0.4
   originalCreateExplosionThisFrame: 0
   originalExplosionPosition: {x: 0, y: 0}
---- !u!114 &6907840903728363808
+--- !u!114 &9163807024864640750
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9211636111085214947}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4770c9bf661a2d4491e84ebbd464610, type: 3}
+  m_Script: {fileID: 11500000, guid: 27d8791b3b9c07145ad28665909c705c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
     duration: 0
-  damageType: 1
+  damageType: 0
   effectType: 0
   saveAttackStats: 0
-  enableBehaviour: 0
-  fireDecreasement: 0
-  drawFireGizmos: 1
-  fireSize: {x: 1, y: 1}
-  firePropagationGap: 24
-  firePropagationProbability: 0.3
-  minStrenghtForPropagation: 50
-  fireDecreasementAtPropagation: 20
-  fireDuration: 2
-  charMask:
-    serializedVersion: 2
-    m_Bits: 256
-  firePrefab: {fileID: 964394303801480267, guid: 030d8a50702c3024c82e995ac3b0a839, type: 3}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 16392
+  enableBehaviour: 1
+  walkSpeedBonus: 0.15
+  grabSpeedBonus: 0.2
 --- !u!114 &-2860931854293677091
 MonoBehaviour:
   m_ObjectHideFlags: 0
