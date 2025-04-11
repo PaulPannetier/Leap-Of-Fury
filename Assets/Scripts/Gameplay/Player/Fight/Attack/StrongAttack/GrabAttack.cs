@@ -4,28 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using Collision2D;
 using Collider2D = UnityEngine.Collider2D;
-using System.Linq;
 
 public class GrabAttack : StrongAttack
 {
-    private GameObject charTouch, walltouch;
     private CharacterController charController;
-    private LayerMask charAndGroundMask, charMask;
-    private Vector2 collisionPoint;
+    private LayerMask groundMask, charMask;
     private new Transform transform;
     private List<uint> charAlreadyTouch;
-    private float currentWallGap;
-    private bool isCharTouch => charTouch != null;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
 #endif
 
-    [SerializeField] private float castRadius = 0.5f;
-    [SerializeField] private float minRange = 1.5f;
-    [SerializeField] private float range = 10f;
-    [SerializeField] private float charCollisionRadius = 1f;
-    [SerializeField] private Vector2 collisionOffset= Vector2.zero;
+    [Header("General Settings")]
+    [SerializeField, Range(0f, 180f)] private float castAngle;
+    [SerializeField] private float grabRange;
+    [SerializeField] private byte nbRaycast = 10;
+    [SerializeField] private float minGrabDistance;
+    [SerializeField] private bool only8Dir = true;
+    [SerializeField] private Vector2 killOffset;
+    [SerializeField] private float killRadius;
     [SerializeField] private bool keepSpeedAtEnd = true;
 
     [Header("Wall")]
@@ -34,6 +32,7 @@ public class GrabAttack : StrongAttack
     [SerializeField, Tooltip("The duration of the dash compare to the distance, in %age of maxWallGrabDuration")] private AnimationCurve wallDurationOverDistance;
     [SerializeField, Tooltip("The position (position progress) over time in %age")] private AnimationCurve wallPositionOverTime;
     [SerializeField] private float wallGapUp = 0.7f, wallGapDown, wallGapRight, wallGapLeft;
+    [SerializeField] private LineRenderer wallRendererPrefabs;
 
     [Header("Char")]
     [SerializeField] private StunEffectParams stunEffectParams = new StunEffectParams();
@@ -41,6 +40,7 @@ public class GrabAttack : StrongAttack
     [SerializeField] private float maxCharGrabDuration = 0.7f;
     [SerializeField, Tooltip("The duration of the dash compare to the distance, in %age of maxCharGrabDuration")] private AnimationCurve charDurationOverDistance;
     [SerializeField, Tooltip("The position (position progress) over time in %age")] private AnimationCurve charPositionOverTime;
+    [SerializeField] private LineRenderer charRendererPrefabs;
 
     #region Awake/Start
 
@@ -48,14 +48,16 @@ public class GrabAttack : StrongAttack
     {
         base.Awake();
         this.transform = base.transform;
-        charAlreadyTouch = new List<uint>();
         charController = GetComponent<CharacterController>();
+        charAlreadyTouch = new List<uint>(4);
+        if (nbRaycast.IsEven())
+            nbRaycast++;
     }
 
     protected override void Start()
     {
         base.Start();
-        charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
         charMask = LayerMask.GetMask("Char");
     }
 
@@ -63,7 +65,18 @@ public class GrabAttack : StrongAttack
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        if (!cooldown.isActive || !PerformSpherecast())
+        if (!cooldown.isActive)
+        {
+            callbackEnableOtherAttack.Invoke();
+            callbackEnableThisAttack.Invoke();
+            return false;
+        }
+
+        Vector2 dir = charController.GetCurrentDirection(only8Dir);
+        Tuple<ToricRaycastHit2D, ToricRaycastHit2D> raycasts = PerformRaycasts(dir);
+        ToricRaycastHit2D? finalRay = GetPreferedRaycast(raycasts.Item1, raycasts.Item2);
+
+        if (!finalRay.HasValue)
         {
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();
@@ -73,19 +86,90 @@ public class GrabAttack : StrongAttack
         base.Launch(callbackEnableOtherAttack, callbackEnableThisAttack);
         cooldown.Reset();
 
-        StartCoroutine(PerformAttack(callbackEnableOtherAttack, callbackEnableThisAttack));
+        StartCoroutine(PerformAttack(finalRay.Value, callbackEnableOtherAttack, callbackEnableThisAttack));
 
         return true;
     }
 
-    #region SphereCast
+    #region Raycast
 
-    private bool PerformSpherecast()
+    private ToricRaycastHit2D? GetPreferedRaycast(in ToricRaycastHit2D playerRaycast, in ToricRaycastHit2D groundRaycast)
     {
-        charTouch = walltouch = null;
+        ToricRaycastHit2D? finalRay = playerRaycast.collider == null ? null : playerRaycast;
+        if (finalRay.HasValue)
+        {
+            if (groundRaycast.collider != null && groundRaycast.distance < finalRay.Value.distance)
+                finalRay = groundRaycast;
+        }
+        else
+        {
+            if (groundRaycast.collider != null)
+                finalRay = groundRaycast;
+        }
+        return finalRay;
+    }
 
-        Vector2 dir = charController.GetCurrentDirection(true);
+    private Tuple<ToricRaycastHit2D, ToricRaycastHit2D> PerformRaycasts(in Vector2 dir)
+    {
+        ToricRaycastHit2D? playerRay = null;
+        float playerRayDistance = float.MaxValue;
+        ToricRaycastHit2D? groundRay = null;
+        float groundRayDistance = float.MaxValue;
 
+        float currentAngle = Useful.WrapAngle(Useful.AngleHori(Vector2.zero, dir) - (0.5f * castAngle * Mathf.Deg2Rad));
+        float angleStep = castAngle * Mathf.Deg2Rad / (nbRaycast - 1);
+        Vector2 start = transform.position;
+        for (int i = 0; i < nbRaycast; i++)
+        {
+            Vector2 currentDir = Useful.Vector2FromAngle(currentAngle);
+            ToricRaycastHit2D ground = PhysicsToric.Raycast(start, currentDir, grabRange, groundMask);
+            if(ground.collider != null)
+            {
+                if(ground.distance < groundRayDistance)
+                {
+                    groundRay = ground;
+                    groundRayDistance = ground.distance;
+                }
+            }
+
+            ToricRaycastHit2D[] playerRaycasts = PhysicsToric.RaycastAll(start, currentDir, grabRange, charMask);
+            ToricRaycastHit2D? closestPlayerRaycast = null;
+            float closestDistance = float.MinValue;
+
+            for (int j = 0; j < playerRaycasts.Length; j++)
+            {
+                ToricRaycastHit2D current = playerRaycasts[j];
+                if (current.collider != null && current.collider.CompareTag("Char"))
+                {
+                    uint id = current.collider.GetComponent<ToricObject>().original.GetComponent<PlayerCommon>().id;
+                    if(id != playerCommon.id)
+                    {
+                        if(closestDistance > current.distance)
+                        {
+                            closestDistance = current.distance;
+                            closestPlayerRaycast = current;
+                        }
+                    }
+                }
+            }
+
+            if(closestPlayerRaycast.HasValue && closestPlayerRaycast.Value.distance < playerRayDistance)
+            {
+                playerRayDistance = closestPlayerRaycast.Value.distance;
+                playerRay = closestPlayerRaycast.Value;
+            }
+
+            currentAngle = Useful.WrapAngle(currentAngle + angleStep);
+        }
+
+        return new Tuple<ToricRaycastHit2D, ToricRaycastHit2D>(playerRay.HasValue ? playerRay.Value : default(ToricRaycastHit2D), groundRay.HasValue ? groundRay.Value : default(ToricRaycastHit2D));
+    }
+
+    #endregion
+
+    private float GetWallCap(in Vector3 dir)
+    {
+        float currentWallGap;
         if (dir.x > Mathf.Epsilon)
         {
             if (dir.y > Mathf.Epsilon)
@@ -129,125 +213,78 @@ public class GrabAttack : StrongAttack
             else
             {
                 currentWallGap = (wallGapRight + wallGapLeft) * 0.5f;
-                Debug.LogWarning("Debug pls");
-                LogManager.instance.AddLog("Movement.GetCurrentDirection cannot return the vector : " + dir, dir, currentWallGap);
             }
         }
+        return currentWallGap;
+    }
 
-        ToricRaycastHit2D[] raycastAll = PhysicsToric.CircleCastAll(transform.position, dir, castRadius, range, charAndGroundMask);
-
-        int RaycastComparer(ToricRaycastHit2D r1, ToricRaycastHit2D r2)
+    private void PerformCharCollision(uint? ignoreId)
+    {
+        Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + killOffset, killRadius, charMask);
+        foreach(Collider2D col in cols)
         {
-            if (r1.distance < r2.distance)
-                return -1;
-            if (r1.distance > r2.distance)
-                return 1;
-            return 0;
-        }
-
-        Array.Sort(raycastAll, RaycastComparer);
-        ToricRaycastHit2D raycast = default(ToricRaycastHit2D);
-        bool isCharCollision = false;
-
-        for (int i = 0; i < raycastAll.Length; i++)
-        {
-            if (raycastAll[i].collider.CompareTag("Char"))
+            if(col.CompareTag("Char"))
             {
-                GameObject player = raycastAll[i].collider.gameObject;
-                if (player != gameObject)
+                GameObject player = col.GetComponent<ToricObject>().original;
+                uint id = player.GetComponent<PlayerCommon>().id;
+                if(id != playerCommon.id && (!ignoreId.HasValue || (ignoreId.Value != id)) && !charAlreadyTouch.Contains(id))
                 {
-                    FightController charFc = player.GetComponent<FightController>();
-                    if (raycastAll[i].distance > minRange && (int)charFc.damageProtectionType <= 1)
-                    {
-                        raycast = raycastAll[i];
-                        isCharCollision = true;
-                        break;
-                    }
+                    OnTouchEnemy(player, damageType);
+                    charAlreadyTouch.Add(id);
                 }
             }
-            else
-            {
-                if (raycastAll[i].distance > minRange)
-                {
-                    raycast = raycastAll[i];
-                    isCharCollision = false;
-                    break;
-                }
-            }
-        }
-
-        if (raycast.collider == null)
-            return false;
-
-        if (isCharCollision)
-        {
-            SetCharData(raycast);
-        }
-        else
-        {
-            SetWallData(raycast);
-        }
-
-        return true;
-
-        void SetCharData(in ToricRaycastHit2D raycastChar)
-        {
-            charTouch = raycastChar.collider.gameObject;
-            walltouch = null;
-            collisionPoint = raycastChar.point;
-        }
-
-        void SetWallData(in ToricRaycastHit2D raycastGround)
-        {
-            walltouch = raycastGround.collider.gameObject;
-            charTouch = null;
-            collisionPoint = raycastGround.point;
         }
     }
 
-    #endregion
-
-    private IEnumerator PerformAttack(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
+    private IEnumerator PerformAttack(ToricRaycastHit2D raycast, Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
         charAlreadyTouch.Clear();
-
-        if(isCharTouch)
-            yield return PerformCharTouch(callbackEnableOtherAttack, callbackEnableThisAttack);
+        bool isCharTouch = raycast.collider.CompareTag("Char");
+        if (isCharTouch)
+            yield return PerformCharTouch(raycast, callbackEnableOtherAttack, callbackEnableThisAttack);
         else
-            yield return PerformWallTouch(callbackEnableOtherAttack, callbackEnableThisAttack);
+            yield return PerformWallTouch(raycast, callbackEnableOtherAttack, callbackEnableThisAttack);
 
         charController.UnFreeze();
         callbackEnableOtherAttack.Invoke();
         callbackEnableThisAttack.Invoke();
 
-        IEnumerator PerformCharTouch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
+        IEnumerator PerformCharTouch(ToricRaycastHit2D raycast, Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
         {
-            ApplyEffect(charTouch, effectType, new StunEffectParams(waitingTimeWhenCharGrab * 2f));
+            GameObject playerTouch = raycast.collider.GetComponent<ToricObject>().original;
+            ApplyEffect(playerTouch, effectType, new StunEffectParams(waitingTimeWhenCharGrab * 2f));
             charController.Freeze();
 
             yield return PauseManager.instance.Wait(waitingTimeWhenCharGrab);
 
-            Vector2 begPos = transform.position;
-            Vector2 oldPos = begPos;
-            Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);
-
-            float totalDistance = PhysicsToric.Distance(begPos, collisionPoint);
-            float duration = maxCharGrabDuration * charDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / range));
+            Vector2 start = transform.position;
+            Vector2 oldPos = start;
+            Vector2 dir;
+            float totalDistance;
+            (dir, totalDistance) = PhysicsToric.DirectionAndDistance(start, raycast.point);
+            float duration = maxCharGrabDuration * charDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / grabRange));
 
             float timeCounter = 0f;
-            uint[] ignoreID = new uint[1] { charTouch.GetComponent<PlayerCommon>().id };
+            uint? ignoreID = playerTouch.GetComponent<PlayerCommon>().id;
+
+            LineRenderer lineRenderer = Instantiate(charRendererPrefabs, Vector3.zero, Quaternion.identity, CloneParent.cloneParent);
+            Vector3[] lineRendererPositions = new Vector3[] { start, playerTouch.transform.position };
+            lineRenderer.SetPositions(lineRendererPositions);
 
             while (timeCounter < duration)
             {
-                PerformCollision(ignoreID);
+                PerformCharCollision(ignoreID);
                 yield return null;
                 timeCounter += Time.deltaTime;
 
-                Vector2 newPos = begPos + (totalDistance * charPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
+                Vector2 newPos = start + (totalDistance * charPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
                 newPos = PhysicsToric.GetPointInsideBounds(newPos);
                 oldPos = transform.position;
                 charController.Teleport(newPos);
 
+                lineRendererPositions[0] = newPos;
+                lineRendererPositions[1] = playerTouch.transform.position;
+                lineRenderer.ResetPositions(lineRendererPositions);
                 while (PauseManager.instance.isPauseEnable)
                 {
                     yield return null;
@@ -259,30 +296,32 @@ public class GrabAttack : StrongAttack
                 charController.ForceApplyVelocity(((Vector2)transform.position - oldPos) / Time.deltaTime);
             }
 
-            OnTouchEnemy(charTouch.GetComponent<ToricObject>().original, damageType);
+            OnTouchEnemy(playerTouch, damageType);
+            lineRenderer.ResetPositions(Array.Empty<Vector3>());
+            Destroy(lineRenderer);
         }
 
-        IEnumerator PerformWallTouch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
+        IEnumerator PerformWallTouch(ToricRaycastHit2D raycast, Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
         {
             charController.Freeze();
             yield return PauseManager.instance.Wait(waitingTimeWhenWallGrab);
 
-            Vector2 begPos = transform.position;
-            Vector2 oldPos = begPos;
-            Vector2 dir = PhysicsToric.Direction(begPos, collisionPoint);            
-
-            Vector2 target = collisionPoint - currentWallGap * dir;
-            float totalDistance = PhysicsToric.Distance(begPos, target);
-            float duration = maxWallGrabDuration * wallDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / range));
+            Vector2 start = transform.position;
+            Vector2 oldPos = start;
+            Vector2 dir = PhysicsToric.Direction(start, raycast.point);
+            float wallGap = GetWallCap(dir);
+            Vector2 target = raycast.point - (wallGap * dir);
+            float totalDistance = PhysicsToric.Distance(start, target);
+            float duration = maxWallGrabDuration * wallDurationOverDistance.Evaluate(Mathf.Clamp01(totalDistance / grabRange));
 
             float timeCounter = 0f;
             while(timeCounter < duration)
             {
-                PerformCollision();
+                PerformCharCollision(null);
                 yield return null;
                 timeCounter += Time.deltaTime;
 
-                Vector2 newPos = begPos + (totalDistance * wallPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
+                Vector2 newPos = start + (totalDistance * wallPositionOverTime.Evaluate(Mathf.Clamp01(timeCounter / duration)) * dir);
                 newPos = PhysicsToric.GetPointInsideBounds(newPos);
                 oldPos = transform.position;
                 charController.Teleport(newPos);
@@ -300,24 +339,6 @@ public class GrabAttack : StrongAttack
         }
     }
 
-    private void PerformCollision(uint[] ignoreID = null)
-    {
-        Collider2D[] cols = PhysicsToric.OverlapCircleAll((Vector2)transform.position + collisionOffset, charCollisionRadius, charMask);
-
-        foreach (Collider2D col in cols)
-        {
-            if (col.CompareTag("Char") && col.gameObject != gameObject)
-            {
-                PlayerCommon pc = col.GetComponent<PlayerCommon>();
-                if (!charAlreadyTouch.Contains(pc.id) && (ignoreID == null || !ignoreID.Contains(pc.id)))
-                {
-                    charAlreadyTouch.Add(pc.id);
-                    base.OnTouchEnemy(col.gameObject, damageType);
-                }
-            }
-        }
-    }
-
     #region Gizmos/OnValidate
 
 #if UNITY_EDITOR
@@ -327,30 +348,53 @@ public class GrabAttack : StrongAttack
         if (!drawGizmos)
             return;
 
-        Circle.GizmosDraw(transform.position, range, Color.green);
-        Circle.GizmosDraw(transform.position, minRange, Color.green);
-        Circle.GizmosDraw((Vector2)transform.position + range * Vector2.up, castRadius, Color.green);
-        Circle.GizmosDraw((Vector2)transform.position + collisionOffset, charCollisionRadius, Color.green);
+        Circle.GizmosDraw(transform.position, grabRange, Color.green);
+        Circle.GizmosDraw(transform.position, minGrabDistance, Color.green);
+
+        Circle.GizmosDraw((Vector2)transform.position + killOffset, killRadius, Color.black);
+
+        //Raycast
+        Vector2 dir = Vector2.right;
+        int nbRaycast = this.nbRaycast.IsEven() ? this.nbRaycast + 1 : this.nbRaycast;
+
+        float currentAngle = Useful.WrapAngle(Useful.AngleHori(Vector2.zero, dir) - (0.5f * castAngle * Mathf.Deg2Rad));
+        float angleStep = castAngle * Mathf.Deg2Rad / (nbRaycast - 1);
+        Vector2 start = transform.position;
+        for (int i = 0; i < nbRaycast; i++)
+        {
+            Vector2 currentDir = Useful.Vector2FromAngle(currentAngle);
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(start, start + (grabRange * currentDir));
+            currentAngle = Useful.WrapAngle(currentAngle + angleStep);
+        }
+    }
+
+    private void Reset()
+    {
+        effectType = FightController.EffectType.Stun;
     }
 
     protected override void OnValidate()
     {
         base.OnValidate();
+        charMask = LayerMask.GetMask("Char");
+        groundMask = LayerMask.GetMask("Floor", "WallProjectile");
         this.transform = base.transform;
         stunEffectParams.OnValidate();
-        range = Mathf.Max(0f, range);
-        castRadius = Mathf.Max(0f, castRadius);
+        grabRange = Mathf.Max(0f, grabRange);
+        nbRaycast = (byte)Mathf.Max(0, nbRaycast);
+        minGrabDistance = Mathf.Max(0f, minGrabDistance);
+        nbRaycast = (byte)Mathf.Max(0, nbRaycast);
         waitingTimeWhenWallGrab = Mathf.Max(0f, waitingTimeWhenWallGrab);
         waitingTimeWhenCharGrab = Mathf.Max(0f, waitingTimeWhenCharGrab);
         maxWallGrabDuration = Mathf.Max(0f, maxWallGrabDuration);
         maxCharGrabDuration = Mathf.Max(0f, maxCharGrabDuration);
-        charCollisionRadius = Mathf.Max(0f, charCollisionRadius);
         wallGapUp = Mathf.Max(0f, wallGapUp);
         wallGapDown = Mathf.Max(0f, wallGapDown);
         wallGapLeft = Mathf.Max(0f, wallGapLeft);
         wallGapRight = Mathf.Max(0f, wallGapRight);
-        charAndGroundMask = LayerMask.GetMask("Char", "Floor", "WallProjectile");
-        charMask = LayerMask.GetMask("Char");
+        killRadius = Mathf.Max(0f, killRadius);
+        effectType = FightController.EffectType.Stun;
     }
 
 #endif

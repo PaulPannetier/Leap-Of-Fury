@@ -41,7 +41,7 @@ public struct ToricRaycastHit2D
     //
     // Summary:
     //     The Transform on the GameObject that the Collider2D is attached to.
-    public Transform transform => rigidbody != null ? rigidbody.transform : (collider != null ? collider.transform : null);
+    public Transform transform => collider != null ? collider.transform : (rigidbody != null ? rigidbody.transform : null);
 
     public ToricRaycastHit2D(Vector2 point, Vector2 centroid, UnityEngine.Collider2D collider, Vector2 normal, Rigidbody2D rb, float distance)
     {
@@ -160,24 +160,24 @@ public static class PhysicsToric
         return p2.Distance(new Vector2(x, y));
     }
 
-    public static Vector2 Direction(Vector2 a, Vector2 b)
+    public static Vector2 Direction(Vector2 from, Vector2 to)
     {
         Vector2[] possibleA = new Vector2[5]
         {
-            a,
-            new Vector2(a.x + mapHitbox.size.x , a.y),
-            new Vector2(a.x - mapHitbox.size.x, a.y),
-            new Vector2(a.x, a.y + mapHitbox.size.y),
-            new Vector2(a.x, a.y - mapHitbox.size.y)
+            from,
+            new Vector2(from.x + mapHitbox.size.x , from.y),
+            new Vector2(from.x - mapHitbox.size.x, from.y),
+            new Vector2(from.x, from.y + mapHitbox.size.y),
+            new Vector2(from.x, from.y - mapHitbox.size.y)
         };
 
         Vector2[] possibleB = new Vector2[5]
         {
-            b,
-            new Vector2(b.x + mapHitbox.size.x , b.y),
-            new Vector2(b.x - mapHitbox.size.x, b.y),
-            new Vector2(b.x, b.y + mapHitbox.size.y),
-            new Vector2(b.x, b.y - mapHitbox.size.y)
+            to,
+            new Vector2(to.x + mapHitbox.size.x , to.y),
+            new Vector2(to.x - mapHitbox.size.x, to.y),
+            new Vector2(to.x, to.y + mapHitbox.size.y),
+            new Vector2(to.x, to.y - mapHitbox.size.y)
         };
 
         Vector2 aKeep = new Vector2(), bKeep = new Vector2();
@@ -205,32 +205,32 @@ public static class PhysicsToric
         return (bKeep - aKeep) * (1f / Mathf.Sqrt(minSqrMag));
     }
 
-    public static Tuple<Vector2, float> DirectionAndDistance(Vector2 a, Vector2 b)
+    public static Tuple<Vector2, float> DirectionAndDistance(Vector2 from, Vector2 to)
     {
         Vector2[] possibleA = new Vector2[5]
         {
-            a,
-            new Vector2(a.x + mapHitbox.size.x , a.y),
-            new Vector2(a.x - mapHitbox.size.x, a.y),
-            new Vector2(a.x, a.y + mapHitbox.size.y),
-            new Vector2(a.x, a.y - mapHitbox.size.y)
+            from,
+            new Vector2(from.x + mapHitbox.size.x , from.y),
+            new Vector2(from.x - mapHitbox.size.x, from.y),
+            new Vector2(from.x, from.y + mapHitbox.size.y),
+            new Vector2(from.x, from.y - mapHitbox.size.y)
         };
 
         Vector2[] possibleB = new Vector2[5]
         {
-            b,
-            new Vector2(b.x + mapHitbox.size.x , b.y),
-            new Vector2(b.x - mapHitbox.size.x, b.y),
-            new Vector2(b.x, b.y + mapHitbox.size.y),
-            new Vector2(b.x, b.y - mapHitbox.size.y)
+            to,
+            new Vector2(to.x + mapHitbox.size.x , to.y),
+            new Vector2(to.x - mapHitbox.size.x, to.y),
+            new Vector2(to.x, to.y + mapHitbox.size.y),
+            new Vector2(to.x, to.y - mapHitbox.size.y)
         };
 
         Vector2 aKeep = new Vector2(), bKeep = new Vector2();
         float minSqrMag = float.MaxValue;
         float sqrMag;
-        for (int i = 0; i < 5; i++)
+        for (byte i = 0; i < 5; i++)
         {
-            for (int j = 0; j < 5; j++)
+            for (byte j = 0; j < 5; j++)
             {
                 sqrMag = possibleA[i].SqrDistance(possibleB[j]);
                 if (sqrMag < minSqrMag)
@@ -253,7 +253,7 @@ public static class PhysicsToric
 
     public static bool GetToricIntersection(in Vector2 from, in Vector2 end, out Vector2 inter)
     {
-        for (short i = 0; i < mapHitbox.vertices.Length; i++)
+        for (byte i = 0; i < mapHitbox.vertices.Length; i++)
         {
             if (Collider2D.CollideLines(from, end, mapHitbox.vertices[i], mapHitbox.vertices[(i + 1) % mapHitbox.vertices.Length], out inter))
             {

@@ -19,8 +19,8 @@ GameObject:
   - component: {fileID: 5696250467530998310}
   - component: {fileID: 8612698283953875211}
   - component: {fileID: 9027861815646793550}
-  - component: {fileID: 5957310748101030846}
   - component: {fileID: 49532349443289084}
+  - component: {fileID: 5957310748101030846}
   - component: {fileID: -2827172850822402626}
   - component: {fileID: 1501336283833835583}
   m_Layer: 8
@@ -560,6 +560,37 @@ MonoBehaviour:
   dashHitboxOffset: {x: 0, y: -0.22}
   dashHitboxSize: {x: 0.75, y: 1.15}
   damageProtectionType: 0
+--- !u!114 &49532349443289084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7980238354382693259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cd64418b8a39244bb5698c3499e080e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown:
+    duration: 3
+  damageType: 1
+  effectType: 0
+  saveAttackStats: 0
+  drawGizmos: 0
+  castDuration: 0.5
+  explosionRadius: 1.5
+  groundDetectionHitboxOffset: {x: 0, y: -0.85}
+  groundDetectionHeight: 0.25
+  fallSpeed: 30
+  maxFallDuration: 2
+  upForceWhenCancelFalling: 10
+  explosionForce: 1.2
+  floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}
+  floorShockWaveRaycastOffset: {x: 0.64, y: -0.4}
+  floorShockWaveRaycastLenght: 0.92
+  shockWaveHoriOffset: 0.2
+  shockWaveSpeed: 20
 --- !u!114 &5957310748101030846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -594,37 +625,6 @@ MonoBehaviour:
   - 0.5
   castDuration: 0.3
   useOnly8Dir: 1
---- !u!114 &49532349443289084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7980238354382693259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cd64418b8a39244bb5698c3499e080e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown:
-    duration: 3
-  damageType: 1
-  effectType: 0
-  saveAttackStats: 0
-  drawGizmos: 0
-  castDuration: 0.5
-  explosionRadius: 1.5
-  groundDetectionHitboxOffset: {x: 0, y: -0.85}
-  groundDetectionHeight: 0.25
-  fallSpeed: 30
-  maxFallDuration: 2
-  upForceWhenCancelFalling: 10
-  explosionForce: 1.2
-  floorShockWavePrefaps: {fileID: 7980275822135795115, guid: cbf14e1664898d54da6e94d5a2eafbe9, type: 3}
-  floorShockWaveRaycastOffset: {x: 0.64, y: -0.4}
-  floorShockWaveRaycastLenght: 0.92
-  shockWaveHoriOffset: 0.2
-  shockWaveSpeed: 20
 --- !u!114 &-2827172850822402626
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47,7 +47,7 @@ perso 1 : *
 perso 2 : *
 	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
 	  attack forte : tir 5 projectiles en cone serré dans la dir des input (8 dir possibles) et qui lui applique une forte force de propulsion en arrière//ok**
-	  Passif : Augmente la vitesse des projectile de la prochaine attaque forte si ramassage des projectiles.
+	  Passif : Augmente la vitesse des projectile de la prochaine attaque forte si ramassage des projectiles.//ok
 
 perso 3 : *
 	  attack faible : tir de flèche légèrement téléguidé à récup, si on reclick la flèche se divise en 3.//ok

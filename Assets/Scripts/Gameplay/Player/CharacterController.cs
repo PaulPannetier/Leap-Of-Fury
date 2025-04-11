@@ -697,7 +697,7 @@ public class CharacterController : MonoBehaviour
         //DebugText.instance.text += $"Gounded : {isGrounded}\n";
         //DebugText.instance.text += $"Bump : {isBumping}\n";
         //DebugText.instance.text += $"{velocity}\n";
-        DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
+        //DebugText.instance.text += $"shift : {shift / Time.deltaTime}\n";
         //DebugText.instance.text += $"wallJump : {isWallJumping}\n";
         //DebugText.instance.text += $"wallGrab : {wallGrab}\n";
     }
