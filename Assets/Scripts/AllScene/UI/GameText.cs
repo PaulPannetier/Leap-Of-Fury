@@ -19,12 +19,12 @@ public class GameText
 
 	public string Resolve()
 	{
-		const string stat_pattern = @"\$stat=([\w\d]+?)\$"; // Ex: "SuperSpell has an impedance of only $stat=superspell_impedance$ !"
-		const string sprite_pattern = @"\$sprite=([\w\d]+?)\$"; // Ex: "Press $sprite=Key_Esc$ to pause"
+		const string statPattern = @"\$stat=([\w\d]+?)\$"; // Ex: "SuperSpell has an impedance of only $stat=superspell_impedance$ !"
+		const string spritePattern = @"\$sprite=([\w\d]+?)\$"; // Ex: "Press $sprite=Key_Esc$ to pause"
 
 		string res = text;
-		res = Regex.Replace(res, stat_pattern, GetStatReplacement);
-		res = Regex.Replace(res, sprite_pattern, GetSpriteReplacement);
+		res = Regex.Replace(res, statPattern, GetStatReplacement);
+		res = Regex.Replace(res, spritePattern, GetSpriteReplacement);
 		return res;
 	}
 
