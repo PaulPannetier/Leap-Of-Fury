@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 public class GameStatisticManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GameStatisticManager : MonoBehaviour
     }
 
 #endif
+
+    private const string GAME_STAT_PATH = "/Save/GameData/gameStat" + SettingsManager.saveFileExtension;
 
     public static GameStatisticManager instance;
 
@@ -43,12 +46,11 @@ public class GameStatisticManager : MonoBehaviour
 
     private void LoadStat()
     {
-        string path = "/Save/GameData/gameStat"  + SettingsManager.saveFileExtension;
-        if (!Save.ReadJSONData<GameStatData>(path, out GameStatData gameStatData))
+        if (!Save.ReadJSONData<GameStatData>(GAME_STAT_PATH, out GameStatData gameStatData))
         {
-            string errorMessage = $"Can't load GameStatData at the path : {path}.";
+            string errorMessage = $"Can't load GameStatData at the path : {GAME_STAT_PATH}.";
             LogManager.instance.AddLog(errorMessage);
-            throw new Exception(errorMessage);
+            throw new IOException(errorMessage);
         }
 
         currentStat = new Dictionary<string, string>();
@@ -83,10 +85,9 @@ public class GameStatisticManager : MonoBehaviour
 
     public void WriteStats()
     {
-        string path = "/Save/GameData/gameStat" + SettingsManager.saveFileExtension;
-        if (!Save.WriteJSONData(gameStat, path))
+        if (!Save.WriteJSONData(gameStat, GAME_STAT_PATH))
         {
-            print($"Can't write GameStatData at the path : {path}.");
+            print($"Can't write GameStatData at the path : {GAME_STAT_PATH}.");
         }
     }
 

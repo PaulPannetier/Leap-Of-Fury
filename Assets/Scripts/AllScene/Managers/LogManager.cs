@@ -71,7 +71,7 @@ public class LogManager : MonoBehaviour
     {
         void Callback(bool readSuccess, LogMessages messages)
         {
-            if(readSuccess)
+            if(readSuccess && messages != null)
                 this.messages = messages;
             else
                 this.messages = new LogMessages();

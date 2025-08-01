@@ -4197,7 +4197,7 @@ public static class InputManager
     {
         if(controllerType == ControllerType.Any || controllerType == ControllerType.GamepadAny)
         {
-            string errorMsg = "Can't get the model of multiple devices";
+            string errorMsg = "Can't get the controler model of multiple devices";
             Debug.LogWarning(errorMsg);
             LogManager.instance.AddLog(errorMsg, new object[] { controllerType });
             return ControllerModel.None;
@@ -4224,7 +4224,7 @@ public static class InputManager
     {
         bool CheckGamepad(Gamepad gamePad, string name)
         {
-            string[] strToTests = new string[]
+            Span<string> strToTests = new string[]
             {
                 gamepad.name,
                 gamepad.displayName,

@@ -22,23 +22,40 @@ public class CharSelectorController : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput previousItemInput;
     [SerializeField] private InputManager.GeneralInput applyItemInput;
 
+    [SerializeField] private Transform turningSelectorsParent;
+    [SerializeField] private Transform statusIndicatorsParent;
+    [SerializeField] private bool enableHelpCanvas = true;
+
+    [SerializeField] private Color textColorJoin = Color.white;
+    [SerializeField] private Color textColorChoose = Color.white;
+    [SerializeField] private Color textColorReady = Color.green;
+
 #if UNITY_EDITOR
+
     [Header("DEBUG")]
     [Space]
     [SerializeField] private bool addSelectedGamepadCharacter;
     [SerializeField] private InputManager.GeneralInput addSelectedGamepadCharacterInput;
+
 #endif
 
     private void Awake()
     {
 	    turningSelectors = new TurningSelector[MAX_PLAYERS];
 		statusIndicators = new GameObject[MAX_PLAYERS];
-        for (int i = 0; i < MAX_PLAYERS; i++)
+
+        for (int i = 0; i < turningSelectorsParent.childCount; i++)
         {
-            // The children of the CharSelectorControllerUI (which this script is attached to)
-			// are: 4 TurningSelector (character selection wheel), 4 Image (status indicator)
-			turningSelectors[i] = transform.GetChild(i).gameObject.GetComponent<TurningSelector>();
-            statusIndicators[i] = transform.GetChild(i + MAX_PLAYERS).gameObject;
+            if (i >= MAX_PLAYERS)
+                break;
+            turningSelectors[i] = turningSelectorsParent.GetChild(i).GetComponent<TurningSelector>();
+        }
+
+        for (int i = 0; i < turningSelectorsParent.childCount; i++)
+        {
+            if (i >= MAX_PLAYERS)
+                break;
+            statusIndicators[i] = statusIndicatorsParent.GetChild(i).gameObject;
         }
 
         helpCanvas = new GameObject[MAX_PLAYERS];
@@ -50,9 +67,10 @@ public class CharSelectorController : MonoBehaviour
 
     private void Start()
 	{
-		for (int i = 0; i < MAX_PLAYERS; i++)
+        string statusIndicatorText = LanguageManager.instance.GetText("UI_StatusIndicator_Join").Resolve();
+        for (int i = 0; i < MAX_PLAYERS; i++)
         {
-			statusIndicators[i].GetComponent<TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Join").Resolve();
+			statusIndicators[i].GetComponent<TextMeshProUGUI>().text = statusIndicatorText;
 		}
 	}
 
@@ -101,21 +119,24 @@ public class CharSelectorController : MonoBehaviour
             if (!isTurningSelectorInit[i])
                 continue;
 
-            helpButton.controllerType = controllers[i];
+            if(enableHelpCanvas)
+            {
+                helpButton.controllerType = controllers[i];
 
-            if (isHelpCanvasOpen[i])
-            {
-                if (helpButton.IsPressedDown())
+                if (isHelpCanvasOpen[i])
                 {
-                    OnCloseHelpCanvas(i);
+                    if (helpButton.IsPressedDown())
+                    {
+                        OnCloseHelpCanvas(i);
+                    }
+                    continue;
                 }
-                continue;
-            }
-            else
-            {
-                if (helpButton.IsPressedDown())
+                else
                 {
-                    OpenHelpCanvas(i);
+                    if (helpButton.IsPressedDown())
+                    {
+                        OpenHelpCanvas(i);
+                    }
                 }
             }
 
@@ -142,21 +163,21 @@ public class CharSelectorController : MonoBehaviour
                 isTurningSelectorsFinishSelection[i] = true;
 				TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
 				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready").Resolve(InputManager.GetControllerModel(controllers[i]));
-				curText.color = Color.green;
+				curText.color = textColorReady;
             }
             else if(isTurningSelectorsFinishSelection[i] && escapeButton.IsPressedUp())
             {
                 isTurningSelectorsFinishSelection[i] = false;
 				TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
 				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose").Resolve(InputManager.GetControllerModel(controllers[i]));
-				curText.color = Color.white;
+				curText.color = textColorChoose;
             }
             else if(isTurningSelectorInit[i] && escapeButton.IsPressedUp())
             {
                 isTurningSelectorInit[i] = false;
                 TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
                 curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Join").Resolve();
-                curText.color = Color.white;
+                curText.color = textColorJoin;
             }
         }
 
@@ -171,7 +192,7 @@ public class CharSelectorController : MonoBehaviour
             }
         }
 
-        // si il reste un char a init
+        // Init selector
         for (int i = 0; i < MAX_PLAYERS; i++)
         {
             if (isTurningSelectorInit[i])
@@ -255,7 +276,6 @@ public class CharSelectorController : MonoBehaviour
     {
         if (index >= turningSelectors.Length)
             return;
-
 
         isTurningSelectorInit[index] = isTurningSelectorsFinishSelection[index] = false;
         controllers[index] = ControllerType.Keyboard;
@@ -357,7 +377,7 @@ public class CharSelectorController : MonoBehaviour
             isTurningSelectorInit[i] = isTurningSelectorsFinishSelection[i] = true;
             TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
             curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready").Resolve();
-            curText.color = Color.green;
+            curText.color = textColorReady;
             controllers[i] = controllerType;
         }
     }

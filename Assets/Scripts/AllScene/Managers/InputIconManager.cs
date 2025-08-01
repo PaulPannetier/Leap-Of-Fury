@@ -21,7 +21,7 @@ public class InputIconManager : MonoBehaviour
     {
         if(baseController == BaseController.KeyboardAndGamepad)
         {
-            string errorMsg = "Can't return the sprite button of KeyboardAndGamepad controller!";
+            string errorMsg = "Can't return the sprite button of Keyboard AND Gamepad controller!";
             Debug.LogError(errorMsg);
             LogManager.instance.AddLog(errorMsg);
             return unknowButton;

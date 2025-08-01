@@ -1,4 +1,3 @@
-using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -41,49 +40,51 @@ public class GameText
 
 	private string GetSpriteReplacement(Match m)
 	{
-		string sprite_name = m.Groups[1].ToString();
-
+		string spriteName = m.Groups[1].ToString();
 		if (model == ControllerModel.None)
-			throw new Exception("Cannot resolve player's controller, ControllerModel wasn't provided to the Resolve function. Please use the appropriate overload");
+		{
+			string errorMessage = "Cannot resolve player's controller, ControllerModel wasn't provided to the Resolve function. Please use the appropriate overload, use the default keyboard ControllerModel";
+			LogManager.instance.AddLog(errorMessage, new object[] { text });
+			Debug.Log(errorMessage);
+            model = ControllerModel.Keyboard;
+        }
 
-		bool isKeyboard = model == ControllerModel.Keyboard;
+        bool isKeyboard = model == ControllerModel.Keyboard;
 		string spritesheet = isKeyboard ? KEYBOARD_SPRITESHEET : GAMEPAD_SPRITESHEET;
-		Sprite s;
+		Sprite sprite;
 
-		switch (sprite_name)
+		switch (spriteName)
 		{
 			case "PlayerController":
-
-				return isKeyboard ?
-					$"<sprite=\"{KEYBOARD_SPRITESHEET}\" name=\"keyboard\">" : $"<sprite=\"{GAMEPAD_SPRITESHEET}\" name=\"gamepad\">";
+				return isKeyboard ? $"<sprite=\"{KEYBOARD_SPRITESHEET}\" name=\"keyboard\">" : $"<sprite=\"{GAMEPAD_SPRITESHEET}\" name=\"gamepad\">";
 
 			case "Key_Back":
-				s = isKeyboard ?
+				sprite = isKeyboard ?
 					InputIconManager.instance.GetButtonSprite(BaseController.Keyboard, InputKey.Escape) :
 					InputIconManager.instance.GetButtonSprite(BaseController.Gamepad, InputKey.GPB);
-				return $"<sprite=\"{spritesheet}\" name=\"{s.name}\">";
+				return $"<sprite=\"{spritesheet}\" name=\"{sprite.name}\">";
 
 			case "Key_Validate":
-				s = isKeyboard ?
+				sprite = isKeyboard ?
 					InputIconManager.instance.GetButtonSprite(BaseController.Keyboard, InputKey.Return) :
 					InputIconManager.instance.GetButtonSprite(BaseController.Gamepad, InputKey.GPA);
-				return $"<sprite=\"{spritesheet}\" name=\"{s.name}\">";
+				return $"<sprite=\"{spritesheet}\" name=\"{sprite.name}\">";
 
 			case "Key_Left":
-				s = isKeyboard ?
+				sprite = isKeyboard ?
 					InputIconManager.instance.GetButtonSprite(BaseController.Keyboard, InputKey.LeftArrow) :
 					InputIconManager.instance.GetButtonSprite(BaseController.Gamepad, InputKey.GPDPadLeft);
-				return $"<sprite=\"{spritesheet}\" name=\"{s.name}\">";
+				return $"<sprite=\"{spritesheet}\" name=\"{sprite.name}\">";
 
 			case "Key_Right":
-				s = isKeyboard ?
+				sprite = isKeyboard ?
 					InputIconManager.instance.GetButtonSprite(BaseController.Keyboard, InputKey.RightArrow) :
 					InputIconManager.instance.GetButtonSprite(BaseController.Gamepad, InputKey.GPDPadRight);
-				return $"<sprite=\"{spritesheet}\" name=\"{s.name}\">";
+				return $"<sprite=\"{spritesheet}\" name=\"{sprite.name}\">";
 
 			default:
 				// By default, we consider that we got a hardcoded value
-				return $"<sprite=\"{spritesheet}\" name=\"{sprite_name}\">";
+				return $"<sprite=\"{spritesheet}\" name=\"{spriteName}\">";
 		}
 	}
 }

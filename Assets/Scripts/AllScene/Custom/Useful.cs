@@ -101,7 +101,7 @@ public static class Save
         try
         {
             string s = Serialize(objToWrite, withIndentation);
-            if (s == "{}")
+            if (s == "" || s == "{}")
                 return false;
 			if (mkdir)
 				Directory.CreateDirectory(Application.dataPath + Path.GetDirectoryName(fileName));
@@ -121,12 +121,12 @@ public static class Save
     /// <param name="filename">the save path, begining to the game's folder</param>
     /// <param name="callback">The callback when the function end</param>
     /// <returns> true if the save complete successfully, false overwise</returns>
-    public static async Task<bool> WriteJSONDataAsync(object objToWrite, string fileName, Action<bool> callback, bool withIndentation = false)
+    public static async Task<bool> WriteJSONDataAsync(object objToWrite, string fileName, Action<bool>? callback, bool withIndentation = false)
     {
         try
         {
             string s = Serialize(objToWrite, withIndentation);
-            if (s == "{}")
+            if (s == "" || s == "{}")
             {
                 callback?.Invoke(false);
                 return false;
@@ -148,7 +148,7 @@ public static class Save
     /// <param name="objToWrite">The object to save</param>
     /// <param name="filename">the save path, begining to the game's folder</param>
     /// <returns> true if the save complete successfully, false overwise</returns>
-    public static void WriteJSONDataMultiThread(object objToWrite, string fileName, Action<bool> callback, bool withIndentation = false)
+    public static void WriteJSONDataMultiThread(object objToWrite, string fileName, Action<bool>? callback, bool withIndentation = false)
     {
         Thread thread = new Thread(func);
         thread.Priority = System.Threading.ThreadPriority.BelowNormal;
@@ -161,7 +161,7 @@ public static class Save
             try
             {
                 string s = Serialize(objToWrite, withIndentation);
-                if (s == "{}")
+                if (s == "" || s == "{}")
                 {
                     data.callbackWrite?.Invoke(false);
                     return;
@@ -186,7 +186,7 @@ public static class Save
         try
         {
             string jsonString = File.ReadAllText(Application.dataPath + fileName);
-            if (jsonString == "{}")
+            if (jsonString == "" || jsonString == "{}")
             {
                 objRead = default(T);
                 return false;
@@ -205,12 +205,12 @@ public static class Save
     /// <param name="fileName">The path of the file, begining to the game's folder</param>
     /// <param name="objRead"></param>
     /// <returns> true if the function complete successfully, false overwise</returns>
-    public static async Task<bool> ReadJSONDataAsync<T>(string fileName, Action<bool, T> callback)
+    public static async Task<bool> ReadJSONDataAsync<T>(string fileName, Action<bool, T>? callback)
     {
         try
         {
             string jsonString = await File.ReadAllTextAsync(Application.dataPath + fileName);
-            if (jsonString == "{}")
+            if (jsonString == "" || jsonString == "{}")
             {
                 callback?.Invoke(false, default(T));
                 return false;

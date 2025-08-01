@@ -543,6 +543,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 10603189, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[0].m_Text
+      value: 2560x1440
+      objectReference: {fileID: 0}
     - target: {fileID: 430348430, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_Name
       value: Options
@@ -550,6 +554,14 @@ PrefabInstance:
     - target: {fileID: 430348430, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439446768, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[0].m_Text
+      value: Fullscreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 439446768, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[1].m_Text
+      value: Windowed
       objectReference: {fileID: 0}
     - target: {fileID: 665915621, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_text
@@ -578,6 +590,10 @@ PrefabInstance:
     - target: {fileID: 1038452899, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_text
       value: set in runtime
+      objectReference: {fileID: 0}
+    - target: {fileID: 1405352481, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: m_Options.m_Options.Array.data[0].m_Text
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1892480579, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_IsActive
@@ -669,12 +685,16 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 43564d3cc4b13ea4388b81ddfc823e62, type: 3}
     - target: {fileID: 2097766501084685096, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_Options.m_Options.Array.data[0].m_Text
-      value: Set at Runtime
+      value: English
       objectReference: {fileID: 0}
     - target: {fileID: 2345021656928856187, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 176b38d1170dca54f9a1605ef9cf0165, type: 3}
+    - target: {fileID: 2424402398153895411, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
+      propertyPath: autoSelectDefaultUIWhenEnable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2605413665032455930, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -913,7 +933,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6631333187037895776, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_Options.m_Options.Array.data[0].m_Text
-      value: Set at runtime
+      value: Keyboard
       objectReference: {fileID: 0}
     - target: {fileID: 6815785766077100887, guid: bf3a6ffd2ee0af849a8bebe2621c83a1, type: 3}
       propertyPath: m_IsActive
