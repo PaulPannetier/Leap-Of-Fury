@@ -89,48 +89,6 @@ public static class Save
     public static T Deserialize<T>(string JSONString) => JsonUtility.FromJson<T>(JSONString);
 
     /// <summary>
-    /// Convert any Serializable object in JSON string.
-    /// </summary>
-    /// <param name="obj">The object to serialize</param>
-    /// <returns> A string represent the object in parameter</returns>
-    public static string SerializeDictionary<T>(Dictionary<string, T> dict, bool withIndentation = false)
-    {
-        StringBuilder sb = new StringBuilder("{");
-        if(withIndentation)
-        {
-            sb.Append("\n");
-        }
-
-        foreach(KeyValuePair<string, T> kvp in dict)
-        {
-            sb.Append("\"");
-            sb.Append(kvp.Key);
-            sb.Append("\":\"");
-            sb.Append(kvp.Value.ToString());
-            sb.Append("\",");
-            if (withIndentation)
-            {
-                sb.Append("\n");
-            }
-        }
-
-        if(dict.Count > 0)
-        {
-            if(withIndentation)
-            {
-                sb.Remove(sb.Length - 2, 1);
-            }
-            else
-            {
-                sb.Remove(sb.Length - 1, 1);
-            }
-        }
-
-        sb.Append("}");
-        return sb.ToString();
-    }
-
-    /// <summary>
     /// Write in the customer machine a file with the object inside
     /// </summary>
     /// <param name="objToWrite">The object to save</param>
@@ -1952,7 +1910,7 @@ public static class Useful
         return a;
     }
 
-    public static int GetIndexOf<T>(this T[] arr, T value, bool sortArray = false) where T : IComparable
+    public static int IndexOf<T>(this T[] arr, T value, bool sortArray = false) where T : IComparable
     {
         if(sortArray)
         {

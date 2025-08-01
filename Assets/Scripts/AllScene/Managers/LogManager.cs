@@ -1,13 +1,17 @@
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.RegularExpressions;
+using UnityEngine;
+using UnityEngine.Windows;
 
 public class LogManager : MonoBehaviour
 {
     private const string logPath = @"/Save/UserSave/Log.txt";
+    private const string scriptsDirectoryName = "Scripts";
     private static LogManager _instance;
     public static LogManager instance
     {
@@ -56,29 +60,12 @@ public class LogManager : MonoBehaviour
         WriteLogs();
     }
 
-    private void OnLogMessageReceive(string condition, string stackTrace, LogType type)
+    private void OnLogMessageReceive(string message, string stackTrace, LogType type)
     {
         if (type == LogType.Log || type == LogType.Assert)
             return;
 
-        string message;
-        switch (type)
-        {
-            case LogType.Error:
-                message = "An Error occur at runtime";
-                break;
-            case LogType.Warning:
-                message = "An Warning occur at runtime";
-                break;
-            case LogType.Exception:
-                message = "An Exeption occur at runtime";
-                break;
-            default:
-                message = "An Exeption occur at runtime";
-                break;
-        }
-
-        AddLog(new LogMessage(message, condition, stackTrace, type));
+        AddLog(new LogMessage(message, stackTrace, type));
     }
 
     private void LoadLogs()
@@ -107,9 +94,9 @@ public class LogManager : MonoBehaviour
     public void AddLog(string message, object[] logParams = null, [CallerMemberName] string? callerMemberName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = -1)
     {
         if(logParams == null)
-            AddLog(new LogMessage(message, callerMemberName, filePath, lineNumber, Array.Empty<object>()));
+            AddLog(new LogMessage(message, callerMemberName ?? "", filePath ?? "", lineNumber, Array.Empty<object>()));
         else
-            AddLog(new LogMessage(message, callerMemberName, filePath, lineNumber, logParams));
+            AddLog(new LogMessage(message, callerMemberName ?? "", filePath ?? "", lineNumber, logParams));
     }
 
     private void AddLog(LogMessage log)
@@ -153,8 +140,8 @@ public class LogManager : MonoBehaviour
 
     public void ClearLog()
     {
-        waitingLogs.Clear();
-        messages = new LogMessages();
+        waitingLogs?.Clear();
+        messages?.Clear();
         WriteLogs();
     }
 
@@ -209,6 +196,8 @@ public class LogManager : MonoBehaviour
         }
 
         public bool Contains(LogMessage logMessage) => messages.Contains(logMessage);
+
+        public void Clear() => messages.Clear();
     }
 
     [Serializable]
@@ -226,27 +215,35 @@ public class LogManager : MonoBehaviour
             set => _id = value;
         }
 
-        [SerializeField] private string infos;
+        [SerializeField] private string message;
+        [SerializeField] private string stackTrace;
+        [SerializeField] private string filePath;
         [SerializeField] private LogParams[] logParams;
 
-        public LogMessage(string message, string? callerMemberName, string? filePath, int lineNumber, params object[] objs)
+        public LogMessage(string message, string callerMemberName, string filePath, int lineNumber, params object[] objs)
         {
-            Dictionary<string, string> infoDict = new Dictionary<string, string>()
-            {
-                { "Message", message }
-            };
+            this.message = message;
 
-            if (callerMemberName != null)
-                infoDict.Add("CallFrom", callerMemberName);
-            if (filePath != null)
-                infoDict.Add("File", filePath);
-            if (lineNumber >= 0)
-                infoDict.Add("Line", lineNumber.ToString());
+            string[] subPath = filePath.Split('\\');
+            string fileName = subPath.Last();
+            fileName = fileName.Substring(0, fileName.Length - 3);
 
-            infos = Save.SerializeDictionary(infoDict, true);
-            logParams = new LogParams[objs.Length];
+            stackTrace = $"{fileName}::{callerMemberName}:{lineNumber}";
 
+            int startIndex = subPath.IndexOf(scriptsDirectoryName);
             StringBuilder sb = new StringBuilder();
+            for (int i = startIndex + 1; i < subPath.Length; i++)
+            {
+                sb.Append(subPath[i]);
+                sb.Append('/');
+            }
+            sb.Remove(sb.Length - 1, 1);
+
+            this.filePath = sb.ToString();
+            sb.Clear();
+
+            logParams = new LogParams[objs.Length];
+            sb = new StringBuilder();
             for (int i = 0; i < objs.Length; i++)
             {
                 object obj = objs[i];
@@ -319,17 +316,90 @@ public class LogManager : MonoBehaviour
             ComputeId();
         }
 
-        public LogMessage(string message, string condition, string stackTrace, LogType type)
+        public LogMessage(string message, string stackTrace, LogType type)
         {
-            Dictionary<string, string> infoDict = new Dictionary<string, string>()
-            {
-                { "Message", message },
-                { "Condition", condition },
-                { "StackTrace", stackTrace },
-                { "Type", type.ToString() }
-            };
+            this.message = message;
 
-            infos = Save.Serialize(infoDict, true);
+            if (stackTrace.EndsWith('\n'))
+                stackTrace = stackTrace.Remove(stackTrace.Length - 1, 1);
+
+            string[] functionsCall = stackTrace.Split('\n');
+            if(functionsCall.Length > 0)
+            {
+                // Computing FilePath
+                List<string> groups = new List<string>();
+                MatchCollection matches = Regex.Matches(functionsCall[0], @"\((.*?)\)");
+                foreach (Match match in matches)
+                {
+                    groups.Add(match.Groups[1].Value);
+                }
+                string[] subPath = groups.Last().Split('/');
+
+                int lastSubPathIndex = subPath[subPath.Length - 1].IndexOf(':');
+                string lastSubPath = string.Empty;
+                for (int i = 0; i < lastSubPathIndex; i++)
+                {
+                    lastSubPath += subPath[subPath.Length - 1][i];
+                }
+                subPath[subPath.Length - 1] = lastSubPath;
+
+                int startIndex = subPath.IndexOf(scriptsDirectoryName);
+                StringBuilder sb = new StringBuilder();
+                for (int i = startIndex + 1; i < subPath.Length; i++)
+                {
+                    sb.Append(subPath[i]);
+                    sb.Append('/');
+                }
+                sb.Remove(sb.Length - 1, 1);
+                filePath = sb.ToString();
+                sb.Clear();
+
+                // Compute stackTrace
+                for (int i = 0; i < functionsCall.Length; i++)
+                {
+                    string functionCall = functionsCall[i];
+                    matches = Regex.Matches(functionCall, @"\((.*?)\)");
+                    groups.Clear();
+                    foreach (Match match in matches)
+                    {
+                        groups.Add(match.Groups[1].Value);
+                    }
+
+                    if (groups.Count != 2)
+                        continue;
+
+                    startIndex = groups[1].IndexOf(':');
+                    string lineNumberStr = groups[1].Substring(startIndex + 1);
+                    int lineNumber = -1;
+                    if(int.TryParse(lineNumberStr, out int res))
+                    {
+                        lineNumber = res;
+                    }
+
+                    startIndex = functionCall.IndexOf('(');
+                    string functionName = functionCall.Substring(0, startIndex);
+                    if(functionName.EndsWith(' '))
+                    {
+                        functionName = functionName.Remove(functionName.Length - 1);
+                    }
+                    functionName = functionName.Replace(".", "::");
+                    functionName = functionName.Replace("+", "::");
+
+                    sb.Append(functionName);
+                    sb.Append(':');
+                    sb.Append(lineNumber.ToString());
+                    sb.Append(", ");
+                }
+
+                sb = sb.Remove(sb.Length - 2, 2);
+                this.stackTrace = sb.ToString();
+            }
+            else
+            {
+                filePath = string.Empty;
+                this.stackTrace = string.Empty;
+            }
+
             logParams = Array.Empty<LogParams>();
             _id = default(int);
             ComputeId();
@@ -364,12 +434,13 @@ public class LogManager : MonoBehaviour
 
         private int ComputeId()
         {
-            int logParamsHashCode = -640585942;
+            int logParamsHashCode = HashCode.Combine(-640585942, message, stackTrace, filePath);
+
             for (int i = 0; i < logParams.Length; i++)
             {
                 logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);
             }
-            return HashCode.Combine(infos, logParamsHashCode);
+            return logParamsHashCode;
         }
 
         public override int GetHashCode() => id;
