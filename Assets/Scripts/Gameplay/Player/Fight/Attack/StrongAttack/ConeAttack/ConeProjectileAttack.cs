@@ -35,7 +35,7 @@ public class ConeProjectileAttack : StrongAttack
         {
             string errorMsg = $"speedBonusPerPickProjectile must have a length  >= at nbProjectile, but got {speedBonusPerPickProjectile.Length} < {nbProjectile}";
             Debug.LogError(errorMsg);
-            LogManager.instance.AddLog(errorMsg, speedBonusPerPickProjectile, nbProjectile);
+            LogManager.instance.AddLog(errorMsg, new object[] { speedBonusPerPickProjectile, nbProjectile });
         }
 #endif
 

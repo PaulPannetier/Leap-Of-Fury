@@ -35,7 +35,7 @@ namespace PathFinding
             if (map == null)
             {
                 string errorMsg = "map cannot be null";
-                LogManager.instance.AddLog(errorMsg, "PathFinding::AStar::ctor");
+                LogManager.instance.AddLog(errorMsg);
                 map = new PathFindingMap(new int[0, 0]);
                 return;
             }
@@ -47,7 +47,7 @@ namespace PathFinding
             if (cost == null)
             {
                 string errorMsg = "cost cannot be null";
-                LogManager.instance.AddLog(errorMsg, "PathFinding::AStar::ctor");
+                LogManager.instance.AddLog(errorMsg);
                 map = new PathFindingMap(new int[0, 0]);
                 return;
             }

@@ -33,7 +33,7 @@ public class FloorShockWave : MonoBehaviour
         if(raycast.collider == null)
         {
             print("Debug pls");
-            LogManager.instance.AddLog("Raycast must collide with the ground!", raycast, "FloorShockWave::Launch");
+            LogManager.instance.AddLog("Raycast must collide with the ground!", new object[] { raycast });
             Destroy(gameObject);
             return;
         }

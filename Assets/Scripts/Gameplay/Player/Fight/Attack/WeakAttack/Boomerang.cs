@@ -190,7 +190,7 @@ public class Boomerang : MonoBehaviour
 
             if (path == null)
             {
-                LogManager.instance.AddLog("No valid path was found, destroying boomerang", "Boomerang::HandleGetBackState");
+                LogManager.instance.AddLog("No valid path was found, destroying boomerang");
                 StartDestroy();
                 return;
             }

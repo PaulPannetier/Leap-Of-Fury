@@ -1561,7 +1561,7 @@ public static class InputManager
                 {
                     string errorMsg = "An input data is for keyboard or gamepads not both!";
                     Debug.LogError(errorMsg);
-                    LogManager.instance.AddLog(errorMsg, "InputManager.InputData.controllerTypeSetter");
+                    LogManager.instance.AddLog(errorMsg);
                     return;
                 }
 
@@ -1582,7 +1582,7 @@ public static class InputManager
             {
                 string errorMsg = "An input data is for keyboard or gamepads not both!";
                 Debug.LogError(errorMsg);
-                LogManager.instance.AddLog(errorMsg, "InputManager.InputData.InputData(ControllerType controllerType)");
+                LogManager.instance.AddLog(errorMsg);
             }
 
             controlsDic = new Dictionary<string, ListInt>();
@@ -1596,7 +1596,7 @@ public static class InputManager
             {
                 string errorMsg = $"actions and keys must have the same length! actions length{actions.Length}, key length : {keys.Length}";
                 Debug.LogWarning(errorMsg);
-                LogManager.instance.AddLog(errorMsg, "InputManager.InputData.InputData(ControllerType controllerType, string[] actions, GeneralKey[] keys)", actions, keys);
+                LogManager.instance.AddLog(errorMsg, new object[] { actions, keys });
                 return;
             }
 #endif
@@ -1605,7 +1605,7 @@ public static class InputManager
             {
                 string errorMsg = "An input data is for keyboard or gamepads not both!";
                 Debug.LogError(errorMsg);
-                LogManager.instance.AddLog(errorMsg, "InputManager.InputData.InputData(ControllerType controllerType)");
+                LogManager.instance.AddLog(errorMsg);
             }
 
             _controllerType = controllerType;
@@ -1625,7 +1625,7 @@ public static class InputManager
             {
                 string errorMsg = "An input data is for keyboard or gamepads not both!";
                 Debug.LogError(errorMsg);
-                LogManager.instance.AddLog(errorMsg, "InputManager.InputData.InputData(ControllerType controllerType, in InputDataRaw inputDataRaw)");
+                LogManager.instance.AddLog(errorMsg);
             }
 
             _controllerType = controllerType;
@@ -2192,7 +2192,7 @@ public static class InputManager
         {
             string errorMsg = "Can't return the stick position of a keyboard!";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.GetGamepadStickPosition(ControllerType gamepadIndex, GamepadStick GamepadStick)");
+            LogManager.instance.AddLog(errorMsg);
             return Vector2.zero;
         }
 
@@ -2200,7 +2200,7 @@ public static class InputManager
         {
             string errorMsg = "Can't return the stick position of multiple device";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.GetGamepadStickPosition(ControllerType gamepadIndex, GamepadStick GamepadStick)");
+            LogManager.instance.AddLog(errorMsg);
             return Vector2.zero;
         }
 
@@ -2214,7 +2214,7 @@ public static class InputManager
         {
             string errorMsg = "Can't return the trigger of a keyboard!";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.GetGamepadTrigger(ControllerType gamepadIndex, GamepadTrigger gamepadTrigger)");
+            LogManager.instance.AddLog(errorMsg);
             return 0f;
         }
 
@@ -2222,7 +2222,7 @@ public static class InputManager
         {
             string errorMsg = "Can't return the trigger of multiple device";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.GetGamepadTrigger(ControllerType gamepadIndex, GamepadTrigger gamepadTrigger)");
+            LogManager.instance.AddLog(errorMsg);
             return 0f;
         }
 
@@ -2954,7 +2954,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions, KeyboardKey[] keys, bool defaultConfig = false)", actions, keys, defaultConfig);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, defaultConfig });
             return;
         }
 
@@ -2986,7 +2986,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions, GamepadKey[] keys, bool defaultConfig = false)", actions, keys, defaultConfig);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, defaultConfig });
             return;
         }
 
@@ -3018,7 +3018,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions, GeneralGamepadKey[] keys, bool defaultConfig = false)", actions, keys, defaultConfig);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, defaultConfig });
             return;
         }
 
@@ -3073,7 +3073,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions,  BaseController baseController, bool defaultConfig = false)", actions, keys, defaultConfig);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, defaultConfig });
             return;
         }
 
@@ -3178,7 +3178,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions, InputKey[] keys, bool defaultConfig = false)", actions, keys, player);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, player });
             return;
         }
 
@@ -3207,7 +3207,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions, KeyboardKey[] keys, bool defaultConfig = false)", actions, keys, player);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, player });
             return;
         }
 
@@ -3236,7 +3236,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions, GamepadKey[] keys, bool defaultConfig = false)", actions, keys, player);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, player });
             return;
         }
 
@@ -3265,7 +3265,7 @@ public static class InputManager
         {
             string errorMsg = $"actions and keys must have the same length! actions.length : {actions.Length}, keys.Length : {keys.Length}";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.AddInputsActions(string[] actions, GeneralGamepadKey[] keys, bool defaultConfig = false)", actions, keys, player);
+            LogManager.instance.AddLog(errorMsg, new object[] { actions, keys, player });
             return;
         }
 
@@ -3755,8 +3755,7 @@ public static class InputManager
         {
             string errorMsg = "Can't assign multiple player's inputs";
             Debug.LogWarning(errorMsg);
-            string methodSignature = "InputManger.SetCurrentController(PlayerIndex player, ControllerType controllerType, bool defaultConfig = false)";
-            LogManager.instance.AddLog(errorMsg, methodSignature, player, controllerType, defaultConfig);
+            LogManager.instance.AddLog(errorMsg, new object[] { player, controllerType, defaultConfig });
             return;
         }
 
@@ -3764,8 +3763,7 @@ public static class InputManager
         {
             string errorMsg = "Can't assign from multiples inputs";
             Debug.LogWarning(errorMsg);
-            string methodSignature = "InputManger.SetCurrentController(PlayerIndex player, ControllerType controllerType, bool defaultConfig = false)";
-            LogManager.instance.AddLog(errorMsg, methodSignature, player, controllerType, defaultConfig);
+            LogManager.instance.AddLog(errorMsg, new object[] { player, controllerType, defaultConfig });
             return;
         }
 
@@ -4173,7 +4171,7 @@ public static class InputManager
         {
             string errorMsg = "Can't get the name of multiple controller";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.GetControllerName", controller);
+            LogManager.instance.AddLog(errorMsg, new object[] { controller });
             return string.Empty;
         }
 
@@ -4201,7 +4199,7 @@ public static class InputManager
         {
             string errorMsg = "Can't get the model of multiple devices";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputManager.GetGamepadModel(ControllerType controllerType)", controllerType);
+            LogManager.instance.AddLog(errorMsg, new object[] { controllerType });
             return ControllerModel.None;
         }
 

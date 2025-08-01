@@ -33,7 +33,7 @@ public class LanguageManager : MonoBehaviour
             else
             {
                 string errorMessage = $"The language : {value} doesn't exist";
-                LogManager.instance.AddLog(errorMessage, value);
+                LogManager.instance.AddLog(errorMessage, new object[] { value });
                 Debug.LogWarning(errorMessage);
             }
         }
@@ -57,7 +57,7 @@ public class LanguageManager : MonoBehaviour
             {
                 string warningText = $"Can't load the language : {language} in the path : {path}.";
                 Debug.LogWarning(warningText);
-                LogManager.instance.AddLog(warningText, language, path);
+                LogManager.instance.AddLog(warningText, new object[] { language, path });
                 return;
             }
 
@@ -68,7 +68,7 @@ public class LanguageManager : MonoBehaviour
                 {
                     string warningText = $"The extID : {itemData.textID} already exist in the languagee : {language}";
                     Debug.LogWarning(warningText);
-                    LogManager.instance.AddLog(warningText, language, itemData);
+                    LogManager.instance.AddLog(warningText, new object[] { language, itemData });
                     continue;
                 }
                 dico.Add(itemData.textID, itemData.content);
@@ -89,14 +89,14 @@ public class LanguageManager : MonoBehaviour
 
         string errorMsg = $"The text with id : {textID} with the language : {currentlanguage} doesn't exist";
         Debug.LogWarning(errorMsg);
-        LogManager.instance.AddLog(errorMsg, textID, currentlanguage);
+        LogManager.instance.AddLog(errorMsg, new object[] { textID, currentlanguage });
 
         if (defaultLanguageData.TryGetValue(textID, out content))
             return new GameText(content);
 
         errorMsg = $"The text with id : {textID} with the default language doesn't exist";
         Debug.LogWarning(errorMsg);
-        LogManager.instance.AddLog(errorMsg, textID, defaultLanguage);
+        LogManager.instance.AddLog(errorMsg, new object[] { textID, defaultLanguage });
         return null;
     }
 

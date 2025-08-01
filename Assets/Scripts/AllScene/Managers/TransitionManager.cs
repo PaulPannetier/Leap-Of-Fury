@@ -87,9 +87,9 @@ public class TransitionManager : MonoBehaviour
     {
         if(isPreloadingAScene)
         {
-            string errorText = "Can't prelaod the scene" + sceneName + "because the scene : " + scenePreload + " is already preloaded. Unity SceneManagement class can't also preload multiple scenes.";
+            string errorText = $"Can't prelaod the scene {sceneName} because the scene : {scenePreload} is already preloaded. Unity SceneManagement class can't also preload multiple scenes.";
             Debug.LogWarning(errorText);
-            LogManager.instance.AddLog(errorText, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorText, new object[] { sceneName, scenePreload });
             return;
         }
         isPreloadingAScene = true;
@@ -103,9 +103,9 @@ public class TransitionManager : MonoBehaviour
     {
         if (isPreloadingAScene)
         {
-            string errorText = "Can't prelaod the scene" + sceneName + "because the scene : " + scenePreload + " is already preloaded. Unity SceneManagement class can't also preload multiple scenes.";
+            string errorText = $"Can't prelaod the scene {sceneName} because the scene : {scenePreload} is already preloaded. Unity SceneManagement class can't also preload multiple scenes.";
             Debug.LogWarning(errorText);
-            LogManager.instance.AddLog(errorText, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorText, new object[] { sceneName, scenePreload });
             return;
         }
         SetOldSceneData(oldSceneData);
@@ -116,9 +116,9 @@ public class TransitionManager : MonoBehaviour
     {
         if(!isPreloadingAScene || scenePreload != sceneName)
         {
-            string errorMessage = "The scene : " + sceneName + " is not preloaded.";
+            string errorMessage = $"The scene : {sceneName} is not preloaded.";
             Debug.LogWarning(errorMessage);
-            LogManager.instance.AddLog(errorMessage, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorMessage, new object[] { sceneName, scenePreload });
             return false;
         }
         return preloadSceneAsyncOperation.isDone;
@@ -128,9 +128,9 @@ public class TransitionManager : MonoBehaviour
     {
         if (!isPreloadingAScene || scenePreload != sceneName)
         {
-            string errorMessage = "The scene : " + sceneName + " is not preloaded.";
+            string errorMessage = $"The scene : {sceneName} is not preloaded.";
             Debug.LogWarning(errorMessage);
-            LogManager.instance.AddLog(errorMessage, sceneName, scenePreload);
+            LogManager.instance.AddLog(errorMessage, new object[] { sceneName, scenePreload });
             return;
         }
         isPreloadingAScene = false;

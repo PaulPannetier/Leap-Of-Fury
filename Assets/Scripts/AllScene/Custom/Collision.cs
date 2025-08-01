@@ -227,7 +227,7 @@ namespace Collision2D
             else if (collider is PolygonCollider2D poly)
                 return new Polygone(poly);
             Debug.LogWarning($"Cant convert a unity collider2D of type {collider.GetType()}!");
-            LogManager.instance.AddLog($"Cant convert a unity collider2D of type {collider.GetType()}!", collider);
+            LogManager.instance.AddLog($"Cant convert a unity collider2D of type {collider.GetType()}!", new object[] { collider });
             return null;
         }
 

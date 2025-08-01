@@ -46,8 +46,9 @@ public class GameStatisticManager : MonoBehaviour
         string path = "/Save/GameData/gameStat"  + SettingsManager.saveFileExtension;
         if (!Save.ReadJSONData<GameStatData>(path, out GameStatData gameStatData))
         {
-            LogManager.instance.AddLog("Can't load GameStatData at the path : " + path + ".");
-            throw new Exception("Can't load GameStatData at the path : " + path + ".");
+            string errorMessage = $"Can't load GameStatData at the path : {path}.";
+            LogManager.instance.AddLog(errorMessage);
+            throw new Exception(errorMessage);
         }
 
         currentStat = new Dictionary<string, string>();
@@ -85,7 +86,7 @@ public class GameStatisticManager : MonoBehaviour
         string path = "/Save/GameData/gameStat" + SettingsManager.saveFileExtension;
         if (!Save.WriteJSONData(gameStat, path))
         {
-            print("Can't write GameStatData at the path : " + path + ".");
+            print($"Can't write GameStatData at the path : {path}.");
         }
     }
 

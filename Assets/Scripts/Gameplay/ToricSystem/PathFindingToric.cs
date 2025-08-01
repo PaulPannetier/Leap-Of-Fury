@@ -29,7 +29,7 @@ public static class PathFinderToric
         if (tension > 0f && splineType != SplineType.Cardinal)
         {
             string errorMsg = $"Tension params is only for Cardinal spline, not for {splineType} spline in PathFinderToric::FindBestCurve";
-            LogManager.instance.AddLog(errorMsg, tension, splineType);
+            LogManager.instance.AddLog(errorMsg, new object[] { tension, splineType });
             Debug.LogWarning(errorMsg);
         }
 

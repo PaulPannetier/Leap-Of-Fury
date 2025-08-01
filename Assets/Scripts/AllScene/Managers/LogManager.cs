@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System;
-using System.Diagnostics;
 using System.Collections;
+using System.Runtime.CompilerServices;
 
 public class LogManager : MonoBehaviour
 {
@@ -61,7 +61,24 @@ public class LogManager : MonoBehaviour
         if (type == LogType.Log || type == LogType.Assert)
             return;
 
-        AddLog(new LogMessage("An Exeption occur at runtime", stackTrace, type, condition));
+        string message;
+        switch (type)
+        {
+            case LogType.Error:
+                message = "An Error occur at runtime";
+                break;
+            case LogType.Warning:
+                message = "An Warning occur at runtime";
+                break;
+            case LogType.Exception:
+                message = "An Exeption occur at runtime";
+                break;
+            default:
+                message = "An Exeption occur at runtime";
+                break;
+        }
+
+        AddLog(new LogMessage(message, condition, stackTrace, type));
     }
 
     private void LoadLogs()
@@ -78,6 +95,8 @@ public class LogManager : MonoBehaviour
             {
                 AddLog(waitingLogs[i]);
             }
+            waitingLogs.Clear();
+            waitingLogs = null;
         }
 
         waitingLogs = new List<LogMessage>();
@@ -85,35 +104,13 @@ public class LogManager : MonoBehaviour
         Save.ReadJSONDataAsync<LogMessages>(logPath, Callback).GetAwaiter();
     }
 
-    public void AddLog(string message, params object[] values)
+    public void AddLog(string message, object[] logParams = null, [CallerMemberName] string? callerMemberName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = -1)
     {
-        AddLog(new LogMessage(message, values));
+        if(logParams == null)
+            AddLog(new LogMessage(message, callerMemberName, filePath, lineNumber, Array.Empty<object>()));
+        else
+            AddLog(new LogMessage(message, callerMemberName, filePath, lineNumber, logParams));
     }
-
-    //private string GetCurrentStackTrace()
-    //{
-    //    StackTrace current = new StackTrace(true);
-    //    StringBuilder sb = new StringBuilder("at ");
-    //    StackFrame[] frames = current.GetFrames();
-
-    //    for (int i = 2; i < frames.Length; i++)
-    //    {
-    //        var method = frames[i].GetMethod();
-    //        sb.Append(method.DeclaringType.Name);
-    //        sb.Append(".");
-    //        sb.Append(method.Name);
-    //        sb.Append("() (at ");
-    //        string fileName = frames[i].GetFileName();
-    //        int index = fileName.IndexOf("Assets", StringComparison.OrdinalIgnoreCase);
-    //        string shortFileName = index < 0 ? string.Empty : fileName.Substring(index).Replace(@"\\", @"\");
-    //        sb.Append(shortFileName);
-    //        sb.Append(":");
-    //        sb.Append(frames[i].GetFileLineNumber());
-    //        sb.Append(") ");
-    //    }
-
-    //    return sb.ToString();
-    //}
 
     private void AddLog(LogMessage log)
     {
@@ -136,18 +133,27 @@ public class LogManager : MonoBehaviour
 
     public void WriteLogsAsync()
     {
-        // TODO add boolean check from the WriteJSONDataAsync function return
-		Save.WriteJSONDataAsync(messages, logPath, (bool b) => { }, true).GetAwaiter();
+        void WriteLogCallback(bool success)
+        {
+            if(!success)
+            {
+                Debug.Log($"Unable to write logs async at path {logPath}!");
+            }
+        }
+		Save.WriteJSONDataAsync(messages, logPath, WriteLogCallback, true).GetAwaiter();
     }
 
     public void WriteLogs()
     {
-        if (!Save.WriteJSONData(messages, logPath, withIndentation:true, mkdir:true))
-			UnityEngine.Debug.LogWarning("Couldn't save logs to disk !!!");
+        if (!Save.WriteJSONData(messages, logPath, true, true))
+        {
+            Debug.LogWarning($"Unable to save logs at path {logPath}!");
+        }
     }
 
     public void ClearLog()
     {
+        waitingLogs.Clear();
         messages = new LogMessages();
         WriteLogs();
     }
@@ -220,15 +226,27 @@ public class LogManager : MonoBehaviour
             set => _id = value;
         }
 
-        [SerializeField] private string errorMessage;
+        [SerializeField] private string infos;
         [SerializeField] private LogParams[] logParams;
 
-        public LogMessage(string errorMessage, params object[] objs)
+        public LogMessage(string message, string? callerMemberName, string? filePath, int lineNumber, params object[] objs)
         {
-            this.errorMessage = errorMessage;
+            Dictionary<string, string> infoDict = new Dictionary<string, string>()
+            {
+                { "Message", message }
+            };
+
+            if (callerMemberName != null)
+                infoDict.Add("CallFrom", callerMemberName);
+            if (filePath != null)
+                infoDict.Add("File", filePath);
+            if (lineNumber >= 0)
+                infoDict.Add("Line", lineNumber.ToString());
+
+            infos = Save.SerializeDictionary(infoDict, true);
             logParams = new LogParams[objs.Length];
 
-            StringBuilder sb = new StringBuilder(); 
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < objs.Length; i++)
             {
                 object obj = objs[i];
@@ -251,7 +269,7 @@ public class LogManager : MonoBehaviour
                     sb.Append("]");
                     value = sb.ToString();
                 }
-                if(obj.GetType().IsGenericType && obj.GetType().GetGenericTypeDefinition() == typeof(List<>))
+                if (obj.GetType().IsGenericType && obj.GetType().GetGenericTypeDefinition() == typeof(List<>))
                 {
                     IList lst = (IList)obj;
                     sb.Clear();
@@ -268,7 +286,7 @@ public class LogManager : MonoBehaviour
                     sb.Append("]");
                     value = sb.ToString();
                 }
-                else if(obj.GetType().IsGenericType && obj.GetType().GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                else if (obj.GetType().IsGenericType && obj.GetType().GetGenericTypeDefinition() == typeof(Dictionary<,>))
                 {
                     IDictionary dic = (IDictionary)obj;
                     sb.Clear();
@@ -297,7 +315,23 @@ public class LogManager : MonoBehaviour
                 logParams[i] = new LogParams(type, value);
             }
 
-            _id = 0;
+            _id = default(int);
+            ComputeId();
+        }
+
+        public LogMessage(string message, string condition, string stackTrace, LogType type)
+        {
+            Dictionary<string, string> infoDict = new Dictionary<string, string>()
+            {
+                { "Message", message },
+                { "Condition", condition },
+                { "StackTrace", stackTrace },
+                { "Type", type.ToString() }
+            };
+
+            infos = Save.Serialize(infoDict, true);
+            logParams = Array.Empty<LogParams>();
+            _id = default(int);
             ComputeId();
         }
 
@@ -335,7 +369,7 @@ public class LogManager : MonoBehaviour
             {
                 logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);
             }
-            return HashCode.Combine(errorMessage, logParamsHashCode);
+            return HashCode.Combine(infos, logParamsHashCode);
         }
 
         public override int GetHashCode() => id;

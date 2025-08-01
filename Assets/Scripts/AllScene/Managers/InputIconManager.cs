@@ -23,7 +23,7 @@ public class InputIconManager : MonoBehaviour
         {
             string errorMsg = "Can't return the sprite button of KeyboardAndGamepad controller!";
             Debug.LogError(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputIconManager.GetButtonSprite(BaseController baseController)");
+            LogManager.instance.AddLog(errorMsg);
             return unknowButton;
         }
 
@@ -47,7 +47,7 @@ public class InputIconManager : MonoBehaviour
         {
             string errorMsg = "InputControllerType.Keyboard is not a Gamepad controller!";
             Debug.LogError(errorMsg);
-            LogManager.instance.AddLog(errorMsg, "InputIconManager.GetGamepadButtonSprite(InputControllerType inputControllerType, GeneralGamepadKey key)");
+            LogManager.instance.AddLog(errorMsg);
             return unknowButton;
         }
 

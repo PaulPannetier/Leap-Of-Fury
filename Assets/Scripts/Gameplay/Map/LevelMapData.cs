@@ -165,7 +165,7 @@ public class LevelMapData : MonoBehaviour
         }
 
         string errorMsg = $"The type {collider.GetType()} of Collider is unsuported, a cast into an Hitbox is apply";
-        LogManager.instance.AddLog(errorMsg, collider, "LevelMapData::GetColliderBlockedPoints");
+        LogManager.instance.AddLog(errorMsg, new object[] { collider });
         Debug.LogWarning(errorMsg);
 
         Hitbox hitbox = Collision2D.Collider2D.FromUnityCollider2D(collider).ToHitbox();
@@ -378,7 +378,7 @@ public class LevelMapData : MonoBehaviour
         }
 
         string errorMsg = $"Can't open SpawnConfigsData's object at the path : {relatifSpawnConfigsPath + SettingsManager.saveFileExtension}.";
-        LogManager.instance.AddLog(errorMsg, "LevelMapData.LoadSpawnPoint(int nbChar)");
+        LogManager.instance.AddLog(errorMsg);
         Debug.LogWarning(errorMsg);
         spawnConfigs = null;
         return null;

@@ -353,14 +353,14 @@ public class AmericanFistAttack : WeakAttack
                 if(col != null)
                 {
                     Collision2D.Collider2D customCol = Collision2D.Collider2D.FromUnityCollider2D(col);
-                    if(Collision2D.Collider2D.Collide(circle, customCol, out collisionPoint))
+                    if (Collision2D.Collider2D.Collide(circle, customCol, out collisionPoint))
                     {
                         return true;
                     }
 #if UNITY_EDITOR || ADVANCE_DEBUG
                     else
                     {
-                        LogManager.instance.AddLog("Unity trigger a collision but Collision2D no", customCol, col);
+                        LogManager.instance.AddLog("Unity trigger a collision but Collision2D no", new object[] { customCol, col });
                     }
 #endif
                 }

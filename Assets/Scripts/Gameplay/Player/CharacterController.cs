@@ -733,8 +733,9 @@ public class CharacterController : MonoBehaviour
                 }
                 else
                 {
-                    print("Debug pls");
-                    LogManager.instance.AddLog($"The floor collider at pos {(Vector2)topRightRay.collider.transform.position + topRightRay.collider.offset} don't have a MapColliderData component.", topRightRay, topRightRay.collider, "CharacterController::UpdateState");
+                    string errorMessage = $"The floor collider at position {(Vector2)topRightRay.collider.transform.position + topRightRay.collider.offset} don't have a MapColliderData component.";
+                    LogManager.instance.AddLog(errorMessage, new object[] { topRightRay, topRightRay.collider});
+                    print(errorMessage);
                 }
             }
             if (isUpColliderIsOneWayPlateform && topLeftRay)
@@ -753,8 +754,9 @@ public class CharacterController : MonoBehaviour
                 }
                 else
                 {
-                    print("Debug pls");
-                    LogManager.instance.AddLog($"The floor collider at pos {(Vector2)topLeftRay.collider.transform.position + topLeftRay.collider.offset} don't have a MapColliderData component.", topLeftRay, topLeftRay.collider, "CharacterController::UpdateState");
+                    string errorMessage = $"The floor collider at pos {(Vector2)topLeftRay.collider.transform.position + topLeftRay.collider.offset} don't have a MapColliderData component.";
+                    LogManager.instance.AddLog(errorMessage, new object[] { topLeftRay, topLeftRay.collider });
+                    print(errorMessage);
                 }
             }
 
@@ -811,8 +813,9 @@ public class CharacterController : MonoBehaviour
             groundColliderData = groundCollider.GetComponent<MapColliderData>();
             if (rightSlopeRay && leftSlopeRay)
             {
-                print("Debug pls");
-                LogManager.instance.AddLog("Ground ray collider is null but the left and rigth ray are not null!", groundRay, rightSlopeRay, leftSlopeRay, "CharacterController::UpdateState");
+                string errorMessage = "Ground ray collider is null but the left and rigth ray are not null!";
+                LogManager.instance.AddLog(errorMessage, new object[] { groundRay, rightSlopeRay, leftSlopeRay });
+                print(errorMessage);
                 groundCollider = rightSlopeRay.collider;
                 groundColliderData = groundCollider.GetComponent<MapColliderData>();
             }
@@ -1608,7 +1611,7 @@ public class CharacterController : MonoBehaviour
             {
                 string logMessage = "Can't have a MapColliderData with groundType == ice which is not of type IceColliderData!";
                 print(logMessage);
-                LogManager.instance.AddLog(logMessage, groundColliderData, "CharacterController::HandleIceWalk");
+                LogManager.instance.AddLog(logMessage, new object[] { groundColliderData });
             }
 
             float targetedSpeed, speedLerp;
@@ -1664,7 +1667,7 @@ public class CharacterController : MonoBehaviour
             if((isSlopingRight && isSlopingLeft) || (!isSlopingRight && !isSlopingLeft))
             {
                 Debug.LogWarning("isSlopingRight == isSlopingLeft == " + isSlopingRight);
-                LogManager.instance.AddLog("Function HandleSlope in Movement script, paradox between sloping right and left", isSloping, isSlopingRight, isSlopingLeft, slopeAngleRight, slopeAngleLeft, "CharacterController.HandleSlope");
+                LogManager.instance.AddLog("Function HandleSlope in Movement script, paradox between sloping right and left", new object[] { isSloping, isSlopingRight, isSlopingLeft, slopeAngleRight, slopeAngleLeft });
             }
 
             if(playerInput.rawX != 0)
@@ -2212,7 +2215,7 @@ public class CharacterController : MonoBehaviour
             if (onRightWall == onLeftWall)
             {
                 print("Debug pls1 : " + onRightWall);
-                LogManager.instance.AddLog("onRightWall == onLeftWall which is not possible!", onRightWall, onLeftWall, "CharacterControler::WallJump");
+                LogManager.instance.AddLog("onRightWall == onLeftWall which is not possible!", new object[] { onRightWall, onLeftWall });
                 return;
             }
 
@@ -2241,7 +2244,7 @@ public class CharacterController : MonoBehaviour
             if (right == leftFootRay)//!bug
             {
                 print("Debug pls2 right : " + right);
-                LogManager.instance.AddLog("rightFootRay and leftFootRay are egal which is not possible!", leftFootRay, rightFootRay, right, "CharacterControler::WallJump");
+                LogManager.instance.AddLog("rightFootRay and leftFootRay are egal which is not possible!", new object[] { leftFootRay, rightFootRay, right });
                 //Avoid bigger bugs
                 isSliding = wallGrab = wallJump = false;
                 isFalling = true;

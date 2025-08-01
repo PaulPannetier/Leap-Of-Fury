@@ -73,11 +73,11 @@ public class AudioManager : MonoBehaviour
     private SoundID PlaySoundInternal(string name, float volume)
     {
         Sound sound = Array.Find(audioClips, item => item.name == name);
-        if(sound == null)
+        if (sound == null)
         {
             string errorMsg = "The sound " + name + " wasn't find in the AudioManager's audioClips array.";
             Debug.LogWarning(errorMsg);
-            LogManager.instance.AddLog(errorMsg, name, audioClips.Length);
+            LogManager.instance.AddLog(errorMsg, new object[] { name, audioClips.Length });
             return default(SoundID);
         }
         AudioSource audioSource = Instantiate(sound.soundEffect ? soundEffectSourcePrefab : musicSourcePrefab, audioParent);
@@ -113,7 +113,7 @@ public class AudioManager : MonoBehaviour
         {
             string errorMsg = "The sound " + currentSoundId.name + " (id:" + currentSoundId.id + ") is not playing, can't crossfade with the sound : " + newSoundName;
             Debug.Log(errorMsg);
-            LogManager.instance.AddLog(errorMsg, currentSoundId.name, newSoundName);
+            LogManager.instance.AddLog(errorMsg, new object[] { currentSoundId.name, newSoundName });
             PlaySound(newSoundName, 0f);
             SetVolumeSmooth(newSoundName, newSoundVolume, duration);
             return;
@@ -152,7 +152,7 @@ public class AudioManager : MonoBehaviour
         }
         string errorMsg = "The sound " + id + " is not currently playing.";
         Debug.LogWarning(errorMsg);
-        LogManager.instance.AddLog(errorMsg, id);
+        LogManager.instance.AddLog(errorMsg, new object[] { id });
     }
 
     public void SetVolumeSmooth(string name, float newVolume, float duration) => SetVolumeSmooth(GetIdFromName(name), newVolume, duration);
@@ -163,14 +163,14 @@ public class AudioManager : MonoBehaviour
         {
             string errorMsg = "The sound : " + id + " is not playing, can't set volume of a non playing sound.";
             Debug.Log(errorMsg);
-            LogManager.instance.AddLog(errorMsg, id);
+            LogManager.instance.AddLog(errorMsg, new object[] { id });
             return;
         }
         if(changeVolumeCorout.ContainsKey(id))
         {
             string errorMsg = "The sound : " + id + " is already changing volume smootly.";
             Debug.Log(errorMsg);
-            LogManager.instance.AddLog(errorMsg, id);
+            LogManager.instance.AddLog(errorMsg, new object[] { id });
             StopCoroutine(changeVolumeCorout[id]);
             changeVolumeCorout.Remove(id);
         }
@@ -208,7 +208,7 @@ public class AudioManager : MonoBehaviour
         }
         string errorMsg = "The sound " + id + "is not currently playing, can't mute them.";
         Debug.LogWarning(errorMsg);
-        LogManager.instance.AddLog(errorMsg, id);
+        LogManager.instance.AddLog(errorMsg, new object[] { id });
     }
 
     public void UnMuteSound(string name) => UnMuteSound(GetIdFromName(name));
@@ -222,7 +222,7 @@ public class AudioManager : MonoBehaviour
         }
         string errorMsg = "The sound " + id + "is not currently playing, can't unmute them.";
         Debug.LogWarning(errorMsg);
-        LogManager.instance.AddLog(errorMsg, id);
+        LogManager.instance.AddLog(errorMsg, new object[] { id });
     }
 
     public void PauseSound(string name) => PauseSound(GetIdFromName(name));
@@ -236,7 +236,7 @@ public class AudioManager : MonoBehaviour
         }
         string errorMsg = "The sound " + id + "is not currently playing, can't pause them.";
         Debug.LogWarning(errorMsg);
-        LogManager.instance.AddLog(errorMsg, id);
+        LogManager.instance.AddLog(errorMsg, new object[] { id });
     }
 
     public void ResumeSound(string id) => ResumeSound(GetIdFromName(id));
@@ -250,7 +250,7 @@ public class AudioManager : MonoBehaviour
         }
         string errorMsg = "The sound " + id + "is not currently playing, can't resume them.";
         Debug.LogWarning(errorMsg);
-        LogManager.instance.AddLog(errorMsg, id);
+        LogManager.instance.AddLog(errorMsg, new object[] { id });
     }
 
     public void StopAllSound()
