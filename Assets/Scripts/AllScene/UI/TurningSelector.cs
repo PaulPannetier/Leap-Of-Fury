@@ -4,20 +4,18 @@ using Collision2D;
 
 public class TurningSelector : MonoBehaviour
 {
+    private new Transform transform;
     private float turningAngle;
-    [SerializeField] private int selectedIndex = 0;
-    [SerializeField] private GameObject[] itemsGO;
+    private GameObject[] itemsGO;
     private float[] itemsAngles;
-    [SerializeField] private float[] itemsDepth;
+    private float[] itemsDepth;
     private float lastTimeMove = -10f;
     private float turningSign = 1f;
     private float angle = 0f;
-    private new Transform transform;
+    private int selectedIndex = 0;
 
 #if UNITY_EDITOR
-
     [SerializeField] private bool RecalculatePositionAndScale = false;
-
 #endif
 
     public bool enableBehaviour = true;
@@ -51,10 +49,11 @@ public class TurningSelector : MonoBehaviour
         itemsGO = new GameObject[transform.childCount];
         itemsAngles = new float[transform.childCount];
         itemsDepth = new float[transform.childCount];
+        
         for (int i = 0; i < itemsGO.Length; i++)
         {
             float angle = CalculateAngle(i);
-            (Vector2 pos, float depth) = CalculateCanvasPositionAndDepth(i);//depth € [-1, 1]
+            (Vector2 pos, float depth) = CalculateCanvasPositionAndDepth(angle);
             GameObject tmpGO = transform.GetChild(i).gameObject;
             tmpGO.transform.position = pos;
             itemsDepth[i] = depth;
@@ -63,16 +62,18 @@ public class TurningSelector : MonoBehaviour
             itemsGO[i] = tmpGO;
             itemsAngles[i] = angle;
         }
+
         SortChildren();
     }
 
     private float CalculateAngle(int index) => Useful.WrapAngle(angle + index * turningAngle);
 
-    private (Vector2, float) CalculateCanvasPositionAndDepth(int index) => CalculateCanvasPositionAndDepth(CalculateAngle(index));
-
+    //depth € [-1, 1]
     private (Vector2, float) CalculateCanvasPositionAndDepth(float angle)
     {
-        return isHorizontal ? (new Vector2(center.x + radius * Mathf.Sin(angle), center.y), Mathf.Cos(angle)) : (new Vector2(center.x, center.y + radius * Mathf.Sin(angle)), Mathf.Cos(angle));
+        Vector2 c = center;
+        Vector2 position = isHorizontal ? new Vector2(c.x + radius * Mathf.Sin(angle), c.y) : new Vector2(c.x, c.y + radius * Mathf.Sin(angle));
+        return (position, Mathf.Cos(angle));
     }
 
     /// <summary>
@@ -80,7 +81,7 @@ public class TurningSelector : MonoBehaviour
     /// </summary>
     /// <param name="pos"></param>
     /// <returns>a float between 0 and 1 proportional to the depth of the position</returns>
-    private float CalculateScale(float depth) => itemsScaleMultiplier * itemScaleByDistance.Evaluate((depth + 1) * 0.5f);
+    private float CalculateScale(float depth) => itemsScaleMultiplier * itemScaleByDistance.Evaluate((depth + 1f) * 0.5f);
 
     private void Update()
     {
@@ -89,16 +90,21 @@ public class TurningSelector : MonoBehaviour
 
         for (int i = 0; i < itemsGO.Length; i++)
         {
-            if(Useful.AngleDist(CalculateAngle(i), itemsAngles[i]) >= Time.deltaTime * angularSpeed * Mathf.Deg2Rad)
+            GameObject tmpCanvasGO = itemsGO[i];
+            if (Useful.AngleDist(CalculateAngle(i), itemsAngles[i]) >= Time.deltaTime * angularSpeed * Mathf.Deg2Rad)
             {
-                GameObject tmpCanvasGO = itemsGO[i];
                 itemsAngles[i] = Useful.WrapAngle(itemsAngles[i] + turningSign * Time.deltaTime * angularSpeed * Mathf.Deg2Rad);
-                (Vector2 pos, float depth) = CalculateCanvasPositionAndDepth(itemsAngles[i]);
-                itemsDepth[i] = depth;
-                tmpCanvasGO.transform.position = pos;
-                float scale = CalculateScale(depth);
-                tmpCanvasGO.transform.localScale = new Vector3(scale, scale, 1f);
             }
+            else
+            {
+                itemsAngles[i] = CalculateAngle(i);
+            }
+
+            (Vector2 pos, float depth) = CalculateCanvasPositionAndDepth(itemsAngles[i]);
+            itemsDepth[i] = depth;
+            tmpCanvasGO.transform.position = pos;
+            float scale = CalculateScale(depth);
+            tmpCanvasGO.transform.localScale = new Vector3(scale, scale, 1f);
         }
 
         SortChildren();
@@ -106,7 +112,7 @@ public class TurningSelector : MonoBehaviour
 
     public void SelectedNextItem()
     {
-        if (Time.time - lastTimeMove < minTimeBetweenMove && minTimeBetweenMove > 0f)
+        if (Time.time - lastTimeMove < minTimeBetweenMove)
             return;
         selectedIndex = (selectedIndex + 1) % itemsGO.Length;
         turningSign = isInvers ? 1f : -1f;
@@ -117,7 +123,7 @@ public class TurningSelector : MonoBehaviour
 
     public void SelectPreviousItem()
     {
-        if (Time.time - lastTimeMove < minTimeBetweenMove && minTimeBetweenMove > 0f)
+        if (Time.time - lastTimeMove < minTimeBetweenMove)
             return;
         selectedIndex--;
         if (selectedIndex < 0)
@@ -180,6 +186,7 @@ public class TurningSelector : MonoBehaviour
         this.transform = base.transform;
         radius = Mathf.Max(0f, radius);
         angularSpeed = Mathf.Max(0f, angularSpeed);
+        minTimeBetweenMove = Mathf.Max(minTimeBetweenMove, 0f);
 
         if(RecalculatePositionAndScale)
         {
