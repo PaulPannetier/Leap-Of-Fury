@@ -6,7 +6,6 @@ public class ButtonSelectableUI : SelectableUI
     [Space]
     public UnityEvent onButtonPressed;
 
-
     public override void OnPressedUp()
     {
 

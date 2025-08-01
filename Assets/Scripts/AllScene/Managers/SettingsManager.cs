@@ -16,7 +16,7 @@ public class SettingsManager : MonoBehaviour
 
     private const string configPath = @"/Save/UserSave/configuration" + saveFileExtension;
 
-    public const string saveFileExtension = ".LeapOfFury";
+    public const string saveFileExtension = ".lof";
     [HideInInspector] public ConfigurationData defaultConfig { get; private set; }
     [HideInInspector] public ConfigurationData currentConfig { get; private set; }
 

@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class LogManager : MonoBehaviour
 {
@@ -50,7 +49,7 @@ public class LogManager : MonoBehaviour
         }
 
         instance = this;
-        Application.logMessageReceived += OnLogMessageReceive;
+        Application.logMessageReceived += OnLogMessageReceived;
         Application.quitting += OnExit;
         LoadLogs();
     }
@@ -60,7 +59,7 @@ public class LogManager : MonoBehaviour
         WriteLogs();
     }
 
-    private void OnLogMessageReceive(string message, string stackTrace, LogType type)
+    private void OnLogMessageReceived(string message, string stackTrace, LogType type)
     {
         if (type == LogType.Log || type == LogType.Assert)
             return;
@@ -70,9 +69,9 @@ public class LogManager : MonoBehaviour
 
     private void LoadLogs()
     {
-        void Callback(bool readSucess, LogMessages messages)
+        void Callback(bool readSuccess, LogMessages messages)
         {
-            if(readSucess)
+            if(readSuccess)
                 this.messages = messages;
             else
                 this.messages = new LogMessages();
@@ -147,7 +146,7 @@ public class LogManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        Application.logMessageReceived -= OnLogMessageReceive;
+        Application.logMessageReceived -= OnLogMessageReceived;
         Application.quitting -= OnExit;
     }
 
@@ -195,7 +194,7 @@ public class LogManager : MonoBehaviour
             messages.RemoveAt(0);
         }
 
-        public bool Contains(LogMessage logMessage) => messages.Contains(logMessage);
+        public bool Contains(in LogMessage logMessage) => messages.Contains(logMessage);
 
         public void Clear() => messages.Clear();
     }
@@ -435,7 +434,6 @@ public class LogManager : MonoBehaviour
         private int ComputeId()
         {
             int logParamsHashCode = HashCode.Combine(-640585942, message, stackTrace, filePath);
-
             for (int i = 0; i < logParams.Length; i++)
             {
                 logParamsHashCode = HashCode.Combine(logParamsHashCode, logParams[i]);

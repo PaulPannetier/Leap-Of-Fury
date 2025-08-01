@@ -237,7 +237,6 @@ public class SelectableUIGroup : MonoBehaviour
         {
             if(!selectedUI.isActive)
             {
-                bool changeControllerType = false;
                 if (controllerSelector == ControllerSelector.last && !isCurrentUIPressed)
                 {
                     if (ControllerIsPressingAKey(out ControllerType controllerType, out InputKey key))
@@ -245,98 +244,94 @@ public class SelectableUIGroup : MonoBehaviour
                         if (this.controllerType != controllerType && IsControllerTypeAnAllowedController(controllerType))
                         {
                             this.controllerType = controllerType;
-                            changeControllerType = true;
                         }
                     }
                 }
 
-                if (!changeControllerType)
+                if (!isCurrentUIPressed)
                 {
-                    if(!isCurrentUIPressed)
-                    {
-                        UpdateSelectedUI(rightItemInput.IsPressedDown(), leftItemInput.IsPressedDown(), upItemInput.IsPressedDown(), downItemInput.IsPressedDown());
+                    UpdateSelectedUI(rightItemInput.IsPressedDown(), leftItemInput.IsPressedDown(), upItemInput.IsPressedDown(), downItemInput.IsPressedDown());
 
-                        if (applyInput.IsPressedDown())
+                    if (applyInput.IsPressedDown())
+                    {
+                        lastDirectionHit = 0;
+                        selectedUI.OnPressed();
+                        isCurrentUIPressed = true;
+                    }
+
+                    if (allowKeepPressed)
+                    {
+                        void ChangeSelectableUI()
                         {
-                            lastDirectionHit = 0;
-                            selectedUI.OnPressed();
-                            isCurrentUIPressed = true;
+                            switch (lastDirectionHit)
+                            {
+                                case 1:
+                                    UpdateSelectedUI(false, false, true, false, false);
+                                    break;
+                                case 2:
+                                    UpdateSelectedUI(false, false, false, true, false);
+                                    break;
+                                case 3:
+                                    UpdateSelectedUI(true, false, false, false, false);
+                                    break;
+                                case 4:
+                                    UpdateSelectedUI(false, true, false, false, false);
+                                    break;
+                                default:
+                                    lastTimeHitDirection = Time.time;
+                                    break;
+                            }
                         }
 
-                        if(allowKeepPressed)
+                        bool IsLastDirectionPress()
                         {
-                            void ChangeSelectableUI()
+                            switch (lastDirectionHit)
                             {
-                                switch (lastDirectionHit)
-                                {
-                                    case 1:
-                                        UpdateSelectedUI(false, false, true, false, false);
-                                        break;
-                                    case 2:
-                                        UpdateSelectedUI(false, false, false, true, false);
-                                        break;
-                                    case 3:
-                                        UpdateSelectedUI(true, false, false, false, false);
-                                        break;
-                                    case 4:
-                                        UpdateSelectedUI(false, true, false, false, false);
-                                        break;
-                                    default:
-                                        lastTimeHitDirection = Time.time;
-                                        break;
-                                }
+                                case 1:
+                                    return upItemInput.IsPressed();
+                                case 2:
+                                    return downItemInput.IsPressed();
+                                case 3:
+                                    return rightItemInput.IsPressed();
+                                case 4:
+                                    return leftItemInput.IsPressed();
+                                default:
+                                    return false;
                             }
+                        }
 
-                            bool IsLastDirectionPress()
+                        if (IsLastDirectionPress())
+                        {
+                            if (Time.time - lastTimeHitDirection > keepPressFirstDelay)
                             {
-                                switch (lastDirectionHit)
+                                if (timerKeepPress <= 1e-5f)
                                 {
-                                    case 1:
-                                        return upItemInput.IsPressed();
-                                    case 2:
-                                        return downItemInput.IsPressed();
-                                    case 3:
-                                        return rightItemInput.IsPressed();
-                                    case 4:
-                                        return leftItemInput.IsPressed();
-                                    default:
-                                        return false;
+                                    ChangeSelectableUI();
                                 }
-                            }
 
-                            if(IsLastDirectionPress())
-                            {
-                                if (Time.time - lastTimeHitDirection > keepPressFirstDelay)
+                                if (timerKeepPress > keepPressDelay)
                                 {
-                                    if (timerKeepPress <= 1e-5f)
-                                    {
-                                        ChangeSelectableUI();
-                                    }
-
-                                    if (timerKeepPress > keepPressDelay)
-                                    {
-                                        timerKeepPress -= keepPressDelay;
-                                        ChangeSelectableUI();
-                                    }
-                                    timerKeepPress += Time.deltaTime;
+                                    timerKeepPress -= keepPressDelay;
+                                    ChangeSelectableUI();
                                 }
-                                else
-                                {
-                                    timerKeepPress = 0f;
-                                }
+                                timerKeepPress += Time.deltaTime;
                             }
                             else
                             {
                                 timerKeepPress = 0f;
                             }
                         }
+                        else
+                        {
+                            timerKeepPress = 0f;
+                        }
                     }
+                }
 
-                    if (applyInput.IsPressedUp())
-                    {
-                        selectedUI.OnPressedUp();
-                        isCurrentUIPressed = false;
-                    }
+                if (applyInput.IsPressedUp())
+                {
+                    selectedUI.OnPressedUp();
+                    isCurrentUIPressed = false;
                 }
             }
             else
