@@ -28,9 +28,9 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 60, y: 60, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3854571407033417142}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -102,10 +102,10 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 315}
   m_LocalScale: {x: 0.32757568, y: 0.32757568, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2965259713827141872}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -125,6 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   charPrefabs: {fileID: 8090791378756873177, guid: 268e9aa85b6de5344bd29702ee3893e1, type: 3}
-  charNumber: 2
   playerIndex: 0
   controllerType: 0
+  helpCanvasPrefab: {fileID: 530312879522531200, guid: ed6fc100267d168478f7816d4c61a7a3, type: 3}
