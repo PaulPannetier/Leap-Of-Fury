@@ -536,33 +536,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: scoreMenu
+      propertyPath: charParent
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1653521282}
     - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: endLevelMenu
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: mapsPrefabs.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: playFirstMapAtLevelStart
+      propertyPath: enableDebugMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: 'mapsPrefabs.Array.data[2]'
-      value: 
-      objectReference: {fileID: 3282709313026859413, guid: 1ab7452454320dc43ba1a6c57d436dd8, type: 3}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: 'mapsPrefabs.Array.data[3]'
-      value: 
-      objectReference: {fileID: 701693720826892841, guid: c484ea0bd5416e24fa10f4a294b88a10, type: 3}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: 'mapsPrefabs.Array.data[4]'
-      value: 
-      objectReference: {fileID: 3537636130273019828, guid: 8101a1f93f28dd2418c3eeb9e7b11e52, type: 3}
+      propertyPath: suffleMapWhenLevelStart
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6537150797850709026, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
       propertyPath: m_Name
       value: LevelManager

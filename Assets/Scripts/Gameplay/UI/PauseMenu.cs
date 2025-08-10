@@ -22,6 +22,7 @@ public class PauseMenu : MonoBehaviour
         EventManager.instance.callbackOnLevelStart += OnLevelStart;
         EventManager.instance.callbackOnLevelRestart += OnLevelRestart;
         EventManager.instance.callbackOnLevelEnd += OnLevelEnd;
+        EventManager.instance.callbackOnLevelFinish += OnLevelFinish;
     }
 
     private void OnLevelStart(string levelName)
@@ -35,6 +36,11 @@ public class PauseMenu : MonoBehaviour
     }
 
     private void OnLevelEnd(LevelManager.EndLevelData endLevelData)
+    {
+        isLevelPlaying = false;
+    }
+
+    private void OnLevelFinish(LevelManager.FinishLevelData finishLevelData)
     {
         isLevelPlaying = false;
     }

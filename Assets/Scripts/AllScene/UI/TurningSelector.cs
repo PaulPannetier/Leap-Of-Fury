@@ -54,7 +54,7 @@ public class TurningSelector : MonoBehaviour
         {
             float angle = CalculateAngle(i);
             (Vector2 pos, float depth) = CalculateCanvasPositionAndDepth(angle);
-            GameObject tmpGO = transform.GetChild(i).gameObject;
+            GameObject tmpGO = transform.GetChild(transform.childCount - 1 - i).gameObject;
             tmpGO.transform.position = pos;
             itemsDepth[i] = depth;
             float scale = CalculateScale(depth);

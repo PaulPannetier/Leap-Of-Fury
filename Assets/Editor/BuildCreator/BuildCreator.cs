@@ -181,6 +181,7 @@ public class BuildCreator : Editor
             SceneAsset sceneAsset = sceneNoCast as SceneAsset;
             if (sceneAsset == null)
                 continue;
+
             string scenePath = AssetDatabase.GetAssetPath(sceneAsset);
             Scene scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
 
@@ -208,18 +209,6 @@ public class BuildCreator : Editor
                 {
                     singletonGO = go;
                     continue;
-                }
-            }
-
-            if (singletonGO != null)
-            {
-                foreach (Transform t in singletonGO.transform)
-                {
-                    if (t.name == "LevelManager")
-                    {
-                        t.gameObject.GetComponent<LevelManager>().enableBehaviour = true;
-                        break;
-                    }
                 }
             }
 
@@ -357,7 +346,8 @@ public class BuildCreator : Editor
             case BuildCreatorConfig.BuildPlateform.MacOSUniversal:
                 return PerformMacOSBuild();
             default:
-                Debug.LogWarning($"Unsupported plateform : {buildCreatorConfig.buildPlateform}");
+                string errorMessage = $"Unsupported plateform : {buildCreatorConfig.buildPlateform}";
+                Debug.LogWarning(errorMessage);
                 return false;
         }
     }

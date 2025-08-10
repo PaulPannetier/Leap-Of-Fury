@@ -11,7 +11,7 @@ public class EndLevelMenu : MonoBehaviour
     [SerializeField] private GameObject playerMenuDisplayerPrefabs;
     [SerializeField] private float displayDuration = 3f;
 
-    private void Awake()
+    private void Start()
     {
         EventManager.instance.callbackOnLevelEnd += OnLevelEnd;
     }

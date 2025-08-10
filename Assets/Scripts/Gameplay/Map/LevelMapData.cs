@@ -98,33 +98,29 @@ public class LevelMapData : MonoBehaviour
 
     private void Start()
     {
-        GameObject tilemapGo = null;
-        foreach (Transform child in transform)
-        {
-            if(child.CompareTag("Tilemap"))
-            {
-                tilemapGo = child.gameObject;
-                break;
-            }
-        }
-
-        grid = tilemapGo.GetComponent<Grid>();
-        Collider2D[] collliders = tilemap.GetComponentsInChildren<Collider2D>();
+        grid = tilemap.GetComponent<Grid>();
+        Collider2D[] colliders = tilemap.GetComponentsInChildren<Collider2D>();
         List<Collider2D> staticCol = new List<Collider2D>();
         List<Collider2D> nonStaticCol = new List<Collider2D>();
-        for (int i = 0; i < collliders.Length; i++)
+        for (int i = 0; i < colliders.Length; i++)
         {
-            MapColliderData colliderData = collliders[i].GetComponent<MapColliderData>();
+            MapColliderData colliderData = colliders[i].GetComponent<MapColliderData>();
             if (colliderData != null)
             {
                 if (colliderData.isStatic)
                 {
-                    staticCol.Add(collliders[i]);
+                    staticCol.Add(colliders[i]);
                 }
                 else
                 {
-                    nonStaticCol.Add(collliders[i]);
+                    nonStaticCol.Add(colliders[i]);
                 }
+            }
+            else
+            {
+                string errorMessage = $"A collider attached in the tilemap haven't a MapColliderData";
+                Debug.Log(errorMessage);
+                LogManager.instance.AddLog(errorMessage, new object[] { colliders[i], colliders.Length });
             }
         }
         staticMapColliders = staticCol.ToArray();

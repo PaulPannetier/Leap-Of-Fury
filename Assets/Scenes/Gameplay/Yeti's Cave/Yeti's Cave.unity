@@ -500,8 +500,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
     - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: charParent
+      value: 
+      objectReference: {fileID: 2085145699}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: nbKillsToWin
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: enableBehaviour
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: enableDebugMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 743840374822618050, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
+      propertyPath: durationToWaitAtBegining
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: 283c177b3177e7b4abc14dea666e806e, type: 3}
       propertyPath: m_Name

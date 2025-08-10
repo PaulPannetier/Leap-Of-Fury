@@ -128,7 +128,7 @@ public class CharacterController : MonoBehaviour
     public bool enableMagneticField = false;
     private BonusHandler walkSpeedHandler;
     private BonusHandler grabSpeedHandler;
-    private BonusHandler jumbForceHandler;
+    private BonusHandler jumpForceHandler;
     private BonusHandler wallJumpForceHandler;
     private BonusHandler fallSpeedYHandler;
     private BonusHandler dashSpeedHandler;
@@ -415,7 +415,7 @@ public class CharacterController : MonoBehaviour
             case BonusType.Grab:
                 return grabSpeedHandler;
             case BonusType.Jump:
-                return jumbForceHandler;
+                return jumpForceHandler;
             case BonusType.WallJump:
                 return wallJumpForceHandler;
             case BonusType.Fall:
@@ -625,7 +625,7 @@ public class CharacterController : MonoBehaviour
         onDash = (Vector2 dir) => { };
         walkSpeedHandler = new BonusHandler(walkSpeed);
         grabSpeedHandler = new BonusHandler(grabSpeed);
-        jumbForceHandler = new BonusHandler(jumpForce);
+        jumpForceHandler = new BonusHandler(jumpForce);
         wallJumpForceHandler = new BonusHandler(wallJumpForce);
         fallSpeedYHandler = new BonusHandler(fallSpeedY);
         dashSpeedHandler = new BonusHandler(dashSpeed);
@@ -1958,10 +1958,10 @@ public class CharacterController : MonoBehaviour
 
         #region Normal Jump
 
-        void HandleNormalJump()
+        void HandleNormalJump()  
         {
             //vertical movement
-            float jumpForce = wallJumpForceHandler.currentValue;
+            float jumpForce = jumpForceHandler.currentValue;
             velocity += Vector2.up * (Physics2D.gravity.y * jumpGravityMultiplier * Time.deltaTime);
             velocity += Vector2.up * (jumpForce * Time.deltaTime);
 
@@ -2174,7 +2174,7 @@ public class CharacterController : MonoBehaviour
 
     #region Jump
 
-    private void Jump(in Vector2 dir)
+    private void Jump(Vector2 dir)
     {
         if (slideParticle != null)
             slideParticle.transform.parent.localScale = new Vector3(flip ? -1 : 1, 1, 1);

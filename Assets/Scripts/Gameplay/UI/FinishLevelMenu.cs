@@ -1,5 +1,4 @@
 using UnityEngine;
-using static LevelManager;
 
 public class FinishLevelMenu : MonoBehaviour
 {
@@ -16,7 +15,7 @@ public class FinishLevelMenu : MonoBehaviour
         EventManager.instance.callbackOnLevelFinish += OnLevelFinish;
     }
 
-    private void OnLevelFinish(FinishLevelData finishLevelData)
+    private void OnLevelFinish(LevelManager.FinishLevelData finishLevelData)
     {
         PauseManager.instance.EnablePause();
 
@@ -25,15 +24,26 @@ public class FinishLevelMenu : MonoBehaviour
             child.gameObject.SetActive(true);
         }
 
-        foreach (PlayerScore score in finishLevelData.playersScore)
+        foreach (LevelManager.PlayerScore score in finishLevelData.playersScore)
         {
             GameObject playerDisplayer = Instantiate(finishMenuPlayerDisplayerPrefab, layoutGroup);
             FinishMenuPlayerDisplayer finishMenuPlayer = playerDisplayer.GetComponent<FinishMenuPlayerDisplayer>();
-            finishMenuPlayer.Init(score, score.nbKills >= PlayerScore.nbKillsToWin);
+            finishMenuPlayer.Init(score, score.nbKills >= LevelManager.PlayerScore.nbKillsToWin);
         }
 
         isMenuDisplayed = true;
         lastTimeOpenFinishMenu = Time.time;
+    }
+
+    private void Update()
+    {
+        if (!isMenuDisplayed)
+            return;
+
+        if (Time.time - lastTimeOpenFinishMenu >= minDurationInMenu && echapInput.IsPressedDown())
+        {
+            CloseMenu();
+        }
     }
 
     private void CloseMenu()
@@ -50,19 +60,8 @@ public class FinishLevelMenu : MonoBehaviour
 
         PauseManager.instance.DisablePause();
 
-        SelectionMapOldSceneData selectionMapSceneData = TransitionManager.instance.GetOldSceneData("Selection Map") as SelectionMapOldSceneData;
+        SelectionMapOldSceneData selectionMapSceneData = (SelectionMapOldSceneData)TransitionManager.instance.GetOldSceneData("Selection Map");
         TransitionManager.instance.LoadSceneAsync("Selection Map", new LevelOldSceneData(TransitionManager.instance.activeScene, selectionMapSceneData.charData));
-    }
-
-    private void Update()
-    {
-        if (!isMenuDisplayed)
-            return;
-
-        if(Time.time - lastTimeOpenFinishMenu >= minDurationInMenu && echapInput.IsPressedDown())
-        {
-            CloseMenu();
-        }
     }
 
     private void OnDestroy()

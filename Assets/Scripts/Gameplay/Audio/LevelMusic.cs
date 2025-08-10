@@ -30,7 +30,7 @@ public class LevelMusic : MonoBehaviour
 
     private void OnDestroy()
     {
-            EventManager.instance.callbackOnLevelFinish -= OnLevelFinish;
+        EventManager.instance.callbackOnLevelFinish -= OnLevelFinish;
     }
 
 #if UNITY_EDITOR

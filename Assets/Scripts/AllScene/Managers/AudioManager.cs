@@ -161,14 +161,14 @@ public class AudioManager : MonoBehaviour
     {
         if(!currentSounds.TryGetValue(id, out AudioSource audioSource))
         {
-            string errorMsg = "The sound : " + id + " is not playing, can't set volume of a non playing sound.";
+            string errorMsg = $"The sound : {id} is not playing, can't set volume of a non playing sound.";
             Debug.Log(errorMsg);
             LogManager.instance.AddLog(errorMsg, new object[] { id });
             return;
         }
         if(changeVolumeCorout.ContainsKey(id))
         {
-            string errorMsg = "The sound : " + id + " is already changing volume smootly.";
+            string errorMsg = $"The sound : {id} is already changing volume smoothly.";
             Debug.Log(errorMsg);
             LogManager.instance.AddLog(errorMsg, new object[] { id });
             StopCoroutine(changeVolumeCorout[id]);
@@ -206,7 +206,7 @@ public class AudioManager : MonoBehaviour
             audioSource.mute = true;
             return;
         }
-        string errorMsg = "The sound " + id + "is not currently playing, can't mute them.";
+        string errorMsg = $"The sound {id} is not currently playing, can't mute them.";
         Debug.LogWarning(errorMsg);
         LogManager.instance.AddLog(errorMsg, new object[] { id });
     }
@@ -390,7 +390,7 @@ public class AudioManager : MonoBehaviour
 
         public SoundID(uint id)
         {
-            this.name = string.Empty;
+            name = string.Empty;
             this.id = id;
         }
 
@@ -402,10 +402,10 @@ public class AudioManager : MonoBehaviour
 
         public override bool Equals(object obj)
         {
-            return obj is SoundID soundID ? this == soundID : false;
+            return obj is SoundID soundID ? id == soundID.id : false;
         }
 
-        public override string ToString() => "{id:" + id + ",name:" + name + "}";
+        public override string ToString() => string.Concat("{id:", id, ",name:", name, "}");
 
         public override int GetHashCode() => id.GetHashCode();
 

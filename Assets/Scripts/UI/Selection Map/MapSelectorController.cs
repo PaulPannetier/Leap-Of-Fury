@@ -5,7 +5,6 @@ public class MapSelectorController : MonoBehaviour
 {
     private TurningSelector mapSelector;
     private ControllerType controllerIndex;
-    private bool isMapSelectorInit;
     private bool isControllerIndexInit = false;
 
     [SerializeField] private ControllerSelector controllerSelector = ControllerSelector.last;
@@ -13,11 +12,12 @@ public class MapSelectorController : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput previousMapInput;
     [SerializeField] private InputManager.GeneralInput backInput;
     [SerializeField] private InputManager.GeneralInput applyInput;
-	[SerializeField] private GameObject buttonPromptLeft, buttonPromptContinue, buttonPromptRight;
+	[SerializeField] private TextMeshProUGUI buttonPromptLeft, buttonPromptContinue, buttonPromptRight;
+    [SerializeField] private TextMeshProUGUI levelNameText;
 
     private void Awake()
     {
-        mapSelector = transform.GetChild(0).gameObject.GetComponent<TurningSelector>();
+        mapSelector = GetComponentInChildren<TurningSelector>();
     }
 
     private void Start()
@@ -25,23 +25,40 @@ public class MapSelectorController : MonoBehaviour
 		if(controllerSelector == ControllerSelector.keyboard || controllerSelector == ControllerSelector.gamepad1 || controllerSelector == ControllerSelector.gamepad2 || controllerSelector == ControllerSelector.gamepad3
             || controllerSelector == ControllerSelector.gamepad4 || controllerSelector == ControllerSelector.gamepadAll || controllerSelector == ControllerSelector.all)
         {
-            isMapSelectorInit = true;
+            isControllerIndexInit = true;
             controllerIndex = (ControllerType)controllerSelector;
 			InitPrompt();
         }
         else
         {
-			isMapSelectorInit = false;
-
+			isControllerIndexInit = false;
             TextMeshProUGUI text = buttonPromptContinue.GetComponent<TextMeshProUGUI>();
 			text.text = LanguageManager.instance.GetText("UI_MapSelector_Join").Resolve();
         }
+
+        RefreshSelectedItemDisplay();
     }
 
     private void Update()
     {
-        if(isMapSelectorInit)
+        if(!isControllerIndexInit)
         {
+            if (AnyKeyPressed(out ControllerType controllerType, out InputKey key))
+            {
+                isControllerIndexInit = true;
+                controllerIndex = controllerType;
+                InitPrompt();
+            }
+        }
+
+        if (isControllerIndexInit)
+        {
+            if (controllerSelector == ControllerSelector.last)
+            {
+                if (AnyKeyPressed(out ControllerType controllerType, out InputKey key))
+                    controllerIndex = controllerType;
+            }
+
             nextMapInput.controllerType = controllerIndex;
             previousMapInput.controllerType = controllerIndex;
             backInput.controllerType = controllerIndex;
@@ -50,22 +67,18 @@ public class MapSelectorController : MonoBehaviour
             if (nextMapInput.IsPressedDown())
             {
                 mapSelector.SelectedNextItem();
+                RefreshSelectedItemDisplay();
             }
 
             if (previousMapInput.IsPressedDown())
             {
                 mapSelector.SelectPreviousItem();
+                RefreshSelectedItemDisplay();
             }
 
             if (applyInput.IsPressedDown())
             {
                 TryLoadNextScene();
-            }
-
-            if(controllerSelector == ControllerSelector.last)
-            {
-                if (AnyKeyPressed(out ControllerType controllerType, out InputKey key))
-                    controllerIndex = controllerType;
             }
 
             if (InputManager.GetGamepadUnPluggedAll(out ControllerType[] controllerTypes))
@@ -74,18 +87,9 @@ public class MapSelectorController : MonoBehaviour
                 {
                     if (controllerTypes[i] == controllerIndex)
                     {
-                        isMapSelectorInit = false;
+                        isControllerIndexInit = false;
                     }
                 }
-            }
-        }
-        else
-        {
-            if (AnyKeyPressed(out ControllerType controllerType, out InputKey key))
-            {
-                isMapSelectorInit = isControllerIndexInit = true;
-                controllerIndex = controllerType;
-				InitPrompt();
             }
         }
 
@@ -95,24 +99,20 @@ public class MapSelectorController : MonoBehaviour
         {
             TransitionManager.instance.LoadScene("Selection Char");
         }
+    }
 
-        //DebugText.instance.text += mapSelector.selectedItem.GetComponent<MapSelectorItemData>().sceneName;
+    private void RefreshSelectedItemDisplay()
+    {
+        MapSelectorItemData selectedItemData = mapSelector.selectedItem.GetComponent<MapSelectorItemData>();
+        levelNameText.text = selectedItemData.sceneName;
     }
 
 	private void InitPrompt()
 	{
-		TextMeshProUGUI text;
 		ControllerModel model = (controllerIndex == ControllerType.Keyboard) ? ControllerModel.Keyboard : ControllerModel.XBoxSeries;
-
-		text = buttonPromptContinue.GetComponent<TextMeshProUGUI>();
-		text.text = LanguageManager.instance.GetText("UI_MapSelector_Continue").Resolve(model);
-
-		text = buttonPromptLeft.GetComponent<TextMeshProUGUI>();
-		text.text = LanguageManager.instance.GetText("UI_MapSelector_Left").Resolve(model);
-
-		text = buttonPromptRight.GetComponent<TextMeshProUGUI>();
-		text.text = LanguageManager.instance.GetText("UI_MapSelector_Right").Resolve(model);
-
+        buttonPromptContinue.text = LanguageManager.instance.GetText("UI_MapSelector_Continue").Resolve(model);
+        buttonPromptLeft.text = LanguageManager.instance.GetText("UI_MapSelector_Left").Resolve(model);
+		buttonPromptRight.text = LanguageManager.instance.GetText("UI_MapSelector_Right").Resolve(model);
 	}
 
     private void TryLoadNextScene()

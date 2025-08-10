@@ -32,9 +32,15 @@ public class PauseManager : MonoBehaviour
         pauseCounter = 0;
         EventManager.instance.callbackPreUpdate += PreUpdate;
         EventManager.instance.callbackOnLevelEnd += OnLevelEnd;
+        EventManager.instance.callbackOnLevelFinish += OnLevelFinish;
     }
 
     private void OnLevelEnd(LevelManager.EndLevelData levelData)
+    {
+        StopAllCoroutines();
+    }
+
+    private void OnLevelFinish(LevelManager.FinishLevelData levelData)
     {
         StopAllCoroutines();
     }
@@ -43,7 +49,7 @@ public class PauseManager : MonoBehaviour
     {
         isPauseEnableThisFrame = _isPauseEnableThisFrame;
         isPauseDisableThisFrame = _isPauseDisableThisFrame;
-        _isPauseEnableThisFrame = _isPauseDisableThisFrame = false; ;
+        _isPauseEnableThisFrame = _isPauseDisableThisFrame = false;
     }
 
     public void EnablePause()
@@ -93,5 +99,7 @@ public class PauseManager : MonoBehaviour
     private void OnDestroy()
     {
         EventManager.instance.callbackPreUpdate -= PreUpdate;
+        EventManager.instance.callbackOnLevelEnd -= OnLevelEnd;
+        EventManager.instance.callbackOnLevelFinish -= OnLevelFinish;
     }
 }

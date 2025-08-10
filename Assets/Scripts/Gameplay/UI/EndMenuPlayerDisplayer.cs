@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class EndMenuPlayerDisplayer : MonoBehaviour
@@ -9,7 +8,7 @@ public class EndMenuPlayerDisplayer : MonoBehaviour
     [SerializeField] private Transform skullsLine;
     [SerializeField] private Transform charImage;
 
-    public void Display(DisplaySettings displaySettings)
+    public void Display(in DisplaySettings displaySettings)
     {
         skulls = new GameObject[displaySettings.nbKillToWin];
         for (int i = 0; i < displaySettings.nbKillToWin; i++)

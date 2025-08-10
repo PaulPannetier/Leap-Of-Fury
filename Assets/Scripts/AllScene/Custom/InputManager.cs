@@ -2013,8 +2013,6 @@ public static class InputManager
         }
     }
 
-    private static GamePadState GetState(PlayerIndex playerIndex) => GetState(GetInputData(playerIndex).controllerType);
-
     private static ControllerType GetControllerType(PlayerIndex playerIndex)
     {
         switch (playerIndex)
