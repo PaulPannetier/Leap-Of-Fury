@@ -51,42 +51,33 @@ public class PauseMenu : MonoBehaviour
         {
             if(PauseManager.instance.isPauseEnable)
             {
-                OnPauseDisable();
+                DisablePause();
             }
             else
             {
-                OnPauseEnable();
+                EnablePause();
             }
         }
     }
 
     public void OnResumeButtonDown()
     {
-        OnPauseDisable();
+        DisablePause();
     }
 
     public void OnMapSelectionButtonDown()
     {
-        PauseManager.instance.DisablePause();
         SelectionMapOldSceneData selectionMapSceneData = TransitionManager.instance.GetOldSceneData("Selection Map") as SelectionMapOldSceneData;
         TransitionManager.instance.LoadSceneAsync("Selection Map", new LevelOldSceneData(TransitionManager.instance.activeScene, selectionMapSceneData.charData));
     }
 
     public void OnMainTitleButtonDown()
     {
-        PauseManager.instance.DisablePause();
         TransitionManager.instance.LoadSceneAsync("TitleScreen");
     }
 
-    public void OnPauseEnable()
+    public void EnablePause()
     {
-        StartCoroutine(OnPauseEnableCorout());
-    }
-
-    private IEnumerator OnPauseEnableCorout()
-    {
-        yield return null;
-        yield return null;
         foreach (Transform t in transform)
         {
             t.gameObject.SetActive(true);
@@ -97,15 +88,8 @@ public class PauseMenu : MonoBehaviour
         InputManager.ShowMouseCursor();
     }
 
-    private void OnPauseDisable()
+    private void DisablePause()
     {
-        StartCoroutine(OnPauseDisableCorout());
-    }
-
-    private IEnumerator OnPauseDisableCorout()
-    {
-        yield return null;
-        yield return null;
         selectableUIGroup.ResetToDefault();
         foreach (Transform t in transform)
         {

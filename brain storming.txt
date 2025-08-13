@@ -136,6 +136,8 @@ DA : jsp
 Name : Chaos
 
 TODO :
+review apex grab
+verify hide cursor on build
 repair movable plateform
 test player attacks and gameplay
 test levels meca

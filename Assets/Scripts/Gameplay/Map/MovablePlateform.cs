@@ -549,10 +549,19 @@ public class MovablePlateform : PathFindingBlocker
 
     private void OnCrushChar(GameObject player, GameObject killer)
     {
-        charAlreadyCrush.Add(player.GetComponent<PlayerCommon>().id);
-        player.GetComponent<EventController>().OnBeenTouchByEnvironnement(gameObject, FightController.DamageType.AlwaysKill);
-        killer.GetComponent<EventController>().OnKill(player);
-        EventManager.instance.OnPlayerDie(player, killer);
+        PlayerCommon playerPlayerCommon = player.GetComponent<PlayerCommon>();
+        PlayerCommon killerPlayerCommon = killer.GetComponent<PlayerCommon>();
+        charAlreadyCrush.Add(playerPlayerCommon.id);
+
+        if(playerPlayerCommon.id == killerPlayerCommon.id)
+        {
+            player.GetComponent<EventController>().OnBeenTouchByEnvironnement(gameObject, FightController.DamageType.AlwaysKill);
+        }
+        else
+        {
+            killer.GetComponent<EventController>().OnKill(player);
+            EventManager.instance.OnPlayerDie(player, killer);
+        }
     }
 
     #endregion

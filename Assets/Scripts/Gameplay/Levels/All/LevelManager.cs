@@ -252,6 +252,8 @@ public abstract class LevelManager : MonoBehaviour
 
         SpawnChar(spawnPoints);
 
+        currentNbPlayerAlive = selectionMapOldSceneData.charData.Length;
+
         lastTimeBeginLevel = Time.time;
         BlockPlayers();
 
@@ -319,7 +321,7 @@ public abstract class LevelManager : MonoBehaviour
         {
             if (playerIndex == playersScore[i].playerIndex)
             {
-                playersScore[i].nbKills = Mathf.Max(0, playersScore[i].nbKills);
+                playersScore[i].nbKills = Mathf.Max(0, playersScore[i].nbKills - 1);
                 break;
             }
         }

@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: 6264509854169554235}
   - component: {fileID: 3112457484048425201}
   - component: {fileID: 299310299462171991}
-  - component: {fileID: 8496452321927903596}
   - component: {fileID: 7240525843777044602}
   - component: {fileID: 6842532504228175351}
   - component: {fileID: 3639208383533933286}
@@ -128,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enableListenKeyCode: 0
+  listenKeyType: 0
   printControllerModel: 0
   inputsKeyForKeyboard:
   - keys: 13010000
@@ -243,18 +243,6 @@ MonoBehaviour:
     soundEffect: 0
   musicSourcePrefab: {fileID: 160324979959570180, guid: 0a7f32685a478654e8d8a72a1a7434f2, type: 3}
   soundEffectSourcePrefab: {fileID: 837524125875579688, guid: bedb528f517e4a2459d8d3e2162723ad, type: 3}
---- !u!114 &8496452321927903596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8970924279353906143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27346870f9e1be8448b9170559d9cec1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7240525843777044602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,6 +297,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameStat:
-    statDatas: []
+    statDatas:
+    - id: char1WeakAttackDuration
+      value: 5
   writeCurrentStats: 0
   loadStats: 0

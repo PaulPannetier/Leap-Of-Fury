@@ -353,19 +353,18 @@ public class AudioManager : MonoBehaviour
     public void OnMusicDestroy(uint id)
     {
         SoundID soundID = GetSoundID(id);
-        if (removeCorout.ContainsKey(soundID))
+        Coroutine coroutine;
+        if (removeCorout.TryGetValue(soundID, out coroutine))
         {
-            Coroutine coroutine = removeCorout[soundID];
             StopCoroutine(coroutine);
             removeCorout.Remove(soundID);
         }
-        if (changeVolumeCorout.ContainsKey(soundID))
+        if (changeVolumeCorout.TryGetValue(soundID, out coroutine))
         {
-            Coroutine coroutine = changeVolumeCorout[soundID];
             StopCoroutine(coroutine);
             changeVolumeCorout.Remove(soundID);
         }
-        if (currentSounds.ContainsKey(soundID))
+        if (changeVolumeCorout.ContainsKey(soundID))
         {
             currentSounds.Remove(soundID);
         }

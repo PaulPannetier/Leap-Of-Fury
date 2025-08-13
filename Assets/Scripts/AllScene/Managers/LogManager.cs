@@ -139,8 +139,8 @@ public class LogManager : MonoBehaviour
 
     public void ClearLog()
     {
-        waitingLogs?.Clear();
-        messages?.Clear();
+        waitingLogs = new List<LogMessage>();
+        messages = new LogMessages();
         WriteLogs();
     }
 
