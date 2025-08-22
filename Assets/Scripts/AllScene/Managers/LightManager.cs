@@ -9,7 +9,7 @@ public class LightManager : MonoBehaviour
     private static LightManager _instance;
     public static LightManager instance
     {
-        get 
+        get
         {
 #if UNITY_EDITOR
             if(!Application.isPlaying)
@@ -35,7 +35,7 @@ public class LightManager : MonoBehaviour
                 return GameObject.FindObjectsByType<Light2D>(FindObjectsSortMode.None).Where((Light2D light) => light.lightType != Light2D.LightType.Global).ToArray();
             return _lights;
 #else
-            return _lights; 
+            return _lights;
 #endif
         }
 

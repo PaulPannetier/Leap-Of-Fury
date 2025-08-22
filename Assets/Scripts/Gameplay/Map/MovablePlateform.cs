@@ -124,7 +124,7 @@ public class MovablePlateform : PathFindingBlocker
             lastTimeActivated = Time.time - pauseData.lastTimeBeginMoveDeltaTime;
             pauseWasEnableLastFrame = false;
         }
-        
+
         if(isMoving)
         {
             HandleMoving();
@@ -635,7 +635,7 @@ public class MovablePlateform : PathFindingBlocker
         if (drawCrushHiboxSimpleGizmos)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Char");
-            if(player != null) 
+            if(player != null)
             {
                 Vector2 charSize = player.GetComponent<BoxCollider2D>().size;
                 Gizmos.color = colorCrushDetectionHitbox;

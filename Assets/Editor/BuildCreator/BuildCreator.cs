@@ -340,7 +340,7 @@ public class BuildCreator : Editor
             case BuildCreatorConfig.BuildPlateform.Linux:
                 return PerformLinuxBuild();
             case BuildCreatorConfig.BuildPlateform.MacOSAppleSilicon:
-                return PerformMacOSBuild();                
+                return PerformMacOSBuild();
             case BuildCreatorConfig.BuildPlateform.MacOSIntel:
                 return PerformMacOSBuild();
             case BuildCreatorConfig.BuildPlateform.MacOSUniversal:

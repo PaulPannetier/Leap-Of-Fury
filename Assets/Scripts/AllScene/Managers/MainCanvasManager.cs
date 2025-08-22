@@ -7,6 +7,6 @@ public class MainCanvasManager : MonoBehaviour
 
     private void Awake()
     {
-        mainCanvas = gameObject;    
+        mainCanvas = gameObject;
     }
 }

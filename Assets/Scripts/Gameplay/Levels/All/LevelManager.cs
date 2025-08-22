@@ -21,7 +21,7 @@ public abstract class LevelManager : MonoBehaviour
     [SerializeField] protected float durationToWaitAtBegining = 3f;
     [SerializeField] protected int nbKillsToWin = 7;
     [SerializeField] protected float waitingTimeAfterLastKill = 2f;
-    [SerializeField] protected Transform charParent; 
+    [SerializeField] protected Transform charParent;
 
     [Header("Maps")]
     [SerializeField] private bool suffleMapWhenLevelStart = true;

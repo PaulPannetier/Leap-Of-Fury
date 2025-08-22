@@ -66,7 +66,7 @@ public class CharacterController : MonoBehaviour
             bool remove = bonus.Remove(bonusValue);
             if(remove)
                 RecalculateValue();
-            return remove;       
+            return remove;
         }
 
         public void Reset()
@@ -367,7 +367,7 @@ public class CharacterController : MonoBehaviour
     public bool onRightWall { get; private set; } // touche le mur droit
     public bool onLeftWall { get; private set; }//touche le mur gauche
     public bool wallGrab { get; private set; } //accroche ou monte le mur droit/gauche, monte au dessus d'une plateforme
-    public bool isDashing { get; private set; } 
+    public bool isDashing { get; private set; }
     public bool isSliding { get; private set; }//grab vers le bas ou chute contre un mur en appuyant la direction vers le mur
     public bool isJumping { get; private set; }//dans la phase montante apres un saut
     public bool isJumpingAlongWall { get; private set; } //dans la phase montante d'un saut face au mur
@@ -830,7 +830,7 @@ public class CharacterController : MonoBehaviour
         }
 
         //Traversing one way platefrom down
-        if(playerInput.oneWayPlateformPressedDown && enableInput && isGrounded && !isBumping && !isDashing && !wallGrab) 
+        if(playerInput.oneWayPlateformPressedDown && enableInput && isGrounded && !isBumping && !isDashing && !wallGrab)
         {
             bool isOnlyOneWayPlateformBelow = (groundRay ? groundRay.collider.GetComponent<MapColliderData>().groundType == MapColliderData.GroundType.oneWayPlateform : true);
             isOnlyOneWayPlateformBelow = isOnlyOneWayPlateformBelow && rightSlopeRay ? rightSlopeRay.collider.GetComponent<MapColliderData>().groundType == MapColliderData.GroundType.oneWayPlateform : true;
@@ -1264,7 +1264,7 @@ public class CharacterController : MonoBehaviour
             }
         }
 
-        //Polish 
+        //Polish
         WallParticle(playerInput.y);
 
         // VII-old / trigger
@@ -1366,7 +1366,7 @@ public class CharacterController : MonoBehaviour
             {
                 ToricRaycastHit2D hit = onRightWall ? ref raycastRight : ref rightFootRay;
                 Vector2 wallSpeed = hit.collider.GetComponent<MapColliderData>().velocity;
-                float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;  
+                float deltaX = (velocity.x - wallSpeed.x) * Time.deltaTime;
                 ToricHitbox extendedHitbox = new ToricHitbox(new Vector2(hitboxCenter.x + deltaX, hitboxCenter.y), new Vector2(hitbox.size.x + (2f * gapBetweenHitboxAndWall), hitbox.size.y));
                 if (forceHorizontalStick || extendedHitbox.Contains(hit.point))
                 {
@@ -1958,7 +1958,7 @@ public class CharacterController : MonoBehaviour
 
         #region Normal Jump
 
-        void HandleNormalJump()  
+        void HandleNormalJump()
         {
             //vertical movement
             float jumpForce = jumpForceHandler.currentValue;
@@ -2377,7 +2377,7 @@ public class CharacterController : MonoBehaviour
                 float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
                 velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.deltaTime);
 
-                //Horizontal movement 
+                //Horizontal movement
                 if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f) && !disableInstantTurn)
                 {
                     if(playerInput.rawX != 0)
@@ -2442,7 +2442,7 @@ public class CharacterController : MonoBehaviour
                 float coeff = playerInput.rawY == -1 && enableInput ? fallGravityMultiplierWhenDownPressed * airGravityMultiplier : airGravityMultiplier;
                 velocity += Vector2.up * (Physics2D.gravity.y * coeff * Time.deltaTime);
 
-                //Horizontal movement 
+                //Horizontal movement
                 if (enableInput && (playerInput.x >= 0f && velocity.x <= 0f) || (playerInput.x <= 0f && velocity.x >= 0f) && !disableInstantTurn)
                     velocity = new Vector2(airInitHorizontalSpeed * airHorizontalSpeed * playerInput.x.Sign(), velocity.y);
                 if (enableInput && Mathf.Abs(velocity.x) < airInitHorizontalSpeed * airHorizontalSpeed * 0.95f && Mathf.Abs(playerInput.x) > 0.01f && !disableInstantTurn)
@@ -2665,7 +2665,7 @@ public class CharacterController : MonoBehaviour
         for (int i = fields.Count - 1; i >= 0; i--)
         {
             ElectricFieldPassif.ElectricField electricField = fields[i];
-            if ((electricField.playerId < 0 || electricField.playerId == (int)playerCommon.id) && 
+            if ((electricField.playerId < 0 || electricField.playerId == (int)playerCommon.id) &&
                 electricField.center.SqrDistance(transform.position) > electricField.fieldRadius * electricField.fieldRadius)
             {
                 fields.RemoveAt(i);

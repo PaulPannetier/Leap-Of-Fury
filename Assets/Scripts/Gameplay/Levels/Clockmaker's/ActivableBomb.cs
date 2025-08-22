@@ -68,7 +68,7 @@ public class ActivableBomb : PendulumActivable
 
     protected override void OnDesactivated()
     {
-        
+
     }
 
     #region OnValidate/Gizmos

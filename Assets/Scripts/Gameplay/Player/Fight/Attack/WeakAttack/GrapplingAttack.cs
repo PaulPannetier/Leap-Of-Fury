@@ -56,7 +56,7 @@ public class GrapplingAttack : WeakAttack
         rb = GetComponent<Rigidbody2D>();
         springJoint = GetComponent<SpringJoint2D>();
         lstlineRenderers = new List<LineRenderer>()
-        { 
+        {
             lineRendererPrefabs
         };
         playerInput = GetComponent<CharacterInputs>();

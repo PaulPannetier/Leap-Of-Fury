@@ -332,7 +332,7 @@ public class LevelMapData : MonoBehaviour
     {
         Vector2 pathfindingMapSize = mapSize * pathfindingMapAccuracy;
         Vector2 size = mapSize * cellSize;
-        float x = ((mapPoint.x / pathfindingMapSize.x) * size.x) - (size.x * 0.5f); 
+        float x = ((mapPoint.x / pathfindingMapSize.x) * size.x) - (size.x * 0.5f);
         float y = ((mapPoint.y / pathfindingMapSize.y) * size.y) - (size.y * 0.5f);
         return new Vector2(x + (cellSize.x * 0.5f / pathfindingMapAccuracy), y + (cellSize.y * 0.5f / pathfindingMapAccuracy));
     }

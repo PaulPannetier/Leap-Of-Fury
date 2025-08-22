@@ -49,7 +49,7 @@ public class TurningSelector : MonoBehaviour
         itemsGO = new GameObject[transform.childCount];
         itemsAngles = new float[transform.childCount];
         itemsDepth = new float[transform.childCount];
-        
+
         for (int i = 0; i < itemsGO.Length; i++)
         {
             float angle = CalculateAngle(i);
@@ -77,7 +77,7 @@ public class TurningSelector : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="pos"></param>
     /// <returns>a float between 0 and 1 proportional to the depth of the position</returns>
@@ -157,7 +157,7 @@ public class TurningSelector : MonoBehaviour
         {
             this.transform = transform;
             this.depth = depth;
-        }   
+        }
     }
 
     private class SortingChildrenClassComparer : IComparer<SortingChildrenClass>

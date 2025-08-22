@@ -68,7 +68,7 @@ public class FirePassif : PassifAttack
                     pos = d1 <= d2 ? raycast1.point : raycast2.point;
                 }
             }
-            
+
             if(createFire)
             {
                 pos += Vector2.up * (fireSize.y * 0.5f);

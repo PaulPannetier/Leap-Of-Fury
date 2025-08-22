@@ -153,7 +153,7 @@ public class SelectableUIGroup : MonoBehaviour
 
         if (selectedUI != null)
         {
-            selectedUI.OnDeselected();    
+            selectedUI.OnDeselected();
         }
         selectedUI = selectableUI;
         isControlByMouse = true;

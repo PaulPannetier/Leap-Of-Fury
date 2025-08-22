@@ -318,7 +318,7 @@ public class AmericanFistAttack : WeakAttack
                 }
             }
         }
-        
+
         if(players.Count > 0)
         {
             enemies = players.ToArray();

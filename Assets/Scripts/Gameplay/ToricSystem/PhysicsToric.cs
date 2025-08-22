@@ -479,7 +479,7 @@ public static class PhysicsToric
     public static UnityEngine.Collider2D[] OverlapBoxAll(Hitbox hitbox, LayerMask layerMask) => OverlapBoxAll(hitbox.center, hitbox.size, hitbox.AngleHori(), layerMask);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="point"></param>
     /// <param name="size"></param>
@@ -539,7 +539,7 @@ public static class PhysicsToric
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="center"></param>
     /// <param name="size"></param>

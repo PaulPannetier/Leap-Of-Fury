@@ -98,7 +98,7 @@ public class MannequinFightController : FightController
 
     protected override void OnDrawGizmosSelected() { }
 
-    protected override void OnDestroy() 
+    protected override void OnDestroy()
     {
         eventController.callbackBeenAttackApplyEffect -= OnBeenApplyEffect;
         eventController.callBackBeenTouchAttack -= OnBeenTouch;
@@ -128,6 +128,6 @@ public class MannequinFightController : FightController
             otherChar.GetComponent<ToricObject>().original.GetComponent<EventController>().OnBeenTouchAttack(attackWeak, gameObject, damageType);
         }
     }
-}   
+}
 
 #endif

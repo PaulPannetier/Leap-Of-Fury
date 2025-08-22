@@ -48,7 +48,7 @@ public class Arrow : MonoBehaviour
         if (!enableBehaviour)
             return;
 
-        if(PauseManager.instance.isPauseEnable) 
+        if(PauseManager.instance.isPauseEnable)
         {
             timeWhenLaunch += Time.deltaTime;
             return;
@@ -282,7 +282,7 @@ public class Arrow : MonoBehaviour
     }
 
     #region Gizmos/OnValidate/Pause
-    
+
     private void OnPauseEnable()
     {
         StartCoroutine(PauseCorout());

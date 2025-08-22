@@ -14,7 +14,7 @@ namespace Tarodev {
     /// and decided not to implement... so take that information as you'd like. I personally
     /// like the idea and it's worked well for me during my limited testing. If you find any bugs
     /// please report them on the repo: https://github.com/Matthew-J-Spencer/Unity-AutoSave
-    /// 
+    ///
     /// Love your friendly neighborhood Tarodev
     /// </summary>
     [CustomEditor(typeof(AutoSaveConfig))]
@@ -74,7 +74,7 @@ namespace Tarodev {
                 if (_config.Logging) Debug.Log($"Auto-saved at {DateTime.Now:h:mm:ss tt}");
             }
         }
-        
+
         [MenuItem("Window/Auto save/Find config")]
         public static void ShowConfig() {
             FetchConfig();

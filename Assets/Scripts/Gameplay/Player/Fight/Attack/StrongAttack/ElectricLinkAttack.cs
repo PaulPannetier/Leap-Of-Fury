@@ -38,7 +38,7 @@ public class ElectricLinkAttack : StrongAttack
                 ToricRaycastHit2D[] raycasts = PhysicsToric.RaycastAll(link.A, link.B - link.A, link.A.Distance(link.B) * 0.99f, charMask);
                 foreach (ToricRaycastHit2D raycast in raycasts)
                 {
-                    if(raycast.collider == null || !raycast.collider.CompareTag("Char")) 
+                    if(raycast.collider == null || !raycast.collider.CompareTag("Char"))
                         continue;
 
                     GameObject player = raycast.collider.GetComponent<ToricObject>().original;

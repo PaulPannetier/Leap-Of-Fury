@@ -96,7 +96,7 @@ public class ColliderDrawer : MonoBehaviour
             removeAllHitbox = false;
         }
     }
-    
+
     private void SaveCollider()
     {
         Vector2[] centers = new Vector2[recToAdd.Count], sizes = new Vector2[recToAdd.Count];

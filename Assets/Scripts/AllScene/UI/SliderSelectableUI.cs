@@ -28,7 +28,7 @@ public class SliderSelectableUI : SelectableUI
     }
 
     public override SelectableUIGroup selectableUIGroup
-    { 
+    {
         get => base.selectableUIGroup;
         set
         {
@@ -43,7 +43,7 @@ public class SliderSelectableUI : SelectableUI
 
                 inputIncrease.controllerType = inputDecrease.controllerType = inputDesactive.controllerType = controllerType;
             }
-        }    
+        }
     }
 
 #if UNITY_EDITOR
@@ -117,7 +117,7 @@ public class SliderSelectableUI : SelectableUI
             ColorFader fillAreaFader = new ColorFader(Color.white, new Color(0.9607843f, 0.9607843f, 0.9607843f), new Color(0.7843137f, 0.7843137f, 0.7843137f), new Color(0.9607843f, 0.9607843f, 0.9607843f), new Color(0.94117647f, 0.94117647f, 0.94117647f), null, fillImage, 0.1f);
             Image bgImage = slider.transform.GetChild(0).GetComponent<Image>();
             ColorFader bgFader = new ColorFader(new Color(0.9843137f, 0.9843137f, 0.9843137f), new Color(0.94117647f, 0.94117647f, 0.94117647f), new Color(0.7843137f, 0.7843137f, 0.7843137f), new Color(0.94117647f, 0.94117647f, 0.94117647f), new Color(0.94117647f, 0.94117647f, 0.94117647f), null, bgImage, 0.1f);
-            
+
             colors = new ColorFader[3]
             {
                 handleFader,

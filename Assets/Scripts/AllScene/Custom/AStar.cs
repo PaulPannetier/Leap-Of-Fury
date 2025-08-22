@@ -95,12 +95,12 @@ namespace PathFinding
             {
                 if (!open.Contains(node))
                 {
-                    if (!close.Contains(node)) 
+                    if (!close.Contains(node))
                         open.AddDichotomic(node);
                 }
                 else
                 {
-                    if (node.CostWillBe() < open[node].cost) 
+                    if (node.CostWillBe() < open[node].cost)
                         node.parent = current;
                 }
             }
@@ -138,7 +138,7 @@ namespace PathFinding
         {
             this.parent = parent;
             // Refresh the cost : the cost of the parent + the cost of the current point
-            if (parent != null) 
+            if (parent != null)
                 costG = parent.cost + map.GetCost(currentPoint);
         }
 
@@ -160,13 +160,13 @@ namespace PathFinding
             // Top
             mapPt.x = currentPoint.x;
             mapPt.y = currentPoint.y + 1;
-            if (!map.IsWall(mapPt)) 
+            if (!map.IsWall(mapPt))
                 nodes.Add(new MapNode(this, mapPt.Clone()));
 
             // Right
             mapPt.x = currentPoint.x + 1;
             mapPt.y = currentPoint.y;
-            if (!map.IsWall(mapPt)) 
+            if (!map.IsWall(mapPt))
                 nodes.Add(new MapNode(this, mapPt.Clone()));
 
             // Left
@@ -178,7 +178,7 @@ namespace PathFinding
             // Bottom
             mapPt.x = currentPoint.x;
             mapPt.y = currentPoint.y - 1;
-            if (!map.IsWall(mapPt)) 
+            if (!map.IsWall(mapPt))
                 nodes.Add(new MapNode(this, mapPt.Clone()));
 
             return nodes;
@@ -209,7 +209,7 @@ namespace PathFinding
             {
                 foreach (T n in this)
                 {
-                    if (n.currentPoint == node.currentPoint) 
+                    if (n.currentPoint == node.currentPoint)
                         return n;
                 }
                 return default(T);
@@ -232,11 +232,11 @@ namespace PathFinding
             while (left <= right)
             {
                 center = (left + right) / 2;
-                if (node.F < this[center].F) 
+                if (node.F < this[center].F)
                     right = center - 1;
-                else if (node.F > this[center].F) 
+                else if (node.F > this[center].F)
                     left = center + 1;
-                else 
+                else
                 {
                     left = center;
                     break;

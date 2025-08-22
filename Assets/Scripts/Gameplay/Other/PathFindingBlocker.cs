@@ -11,7 +11,7 @@ namespace PathFinding
         public static List<PathFindingBlocker> GetPathFindingBlockers() => blockers;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>The list of cell where the blocker block the pathFinder algorithme, note that (0,0) is the left down corner of the map</returns>
         public abstract List<MapPoint> GetBlockedCells(PathFindingMap map);
@@ -38,7 +38,7 @@ namespace PathFinding
             List<Rectangle> rectangles = SliceRectangle(new Rectangle(PhysicsToric.GetPointInsideBounds(pos), size));
 
             List<Rectangle> SliceRectangle(Rectangle rectangle)
-            {       
+            {
                 List<Rectangle> res = new List<Rectangle>() { };
                 Vector2 mapSize = LevelMapData.currentMap.mapSize * LevelMapData.currentMap.cellSize;
                 float xMax = 0.5f * mapSize.x;

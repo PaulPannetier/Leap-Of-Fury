@@ -20,8 +20,8 @@ public class DropDownSelectableUI : SelectableUI
     [SerializeField] private InputManager.GeneralInput applyInput;
     [SerializeField] private InputManager.GeneralInput desactivateInput;
 
-    public override bool interactable 
-    { 
+    public override bool interactable
+    {
         get => base.interactable;
         set
         {
@@ -32,7 +32,7 @@ public class DropDownSelectableUI : SelectableUI
 
     public List<TMP_Dropdown.OptionData> options
     {
-        get => dropdown.options; 
+        get => dropdown.options;
         set => dropdown.options = value;
     }
 

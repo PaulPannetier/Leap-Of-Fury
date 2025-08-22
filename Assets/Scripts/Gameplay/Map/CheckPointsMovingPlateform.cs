@@ -21,7 +21,7 @@ public class CheckPointsMovingPlateform : MonoBehaviour
     [SerializeField] private Vector2[] checkPoints;
     [SerializeField] private float[] waitingTimeCheckPoints;
     [SerializeField] private float[] speeds;
-    [SerializeField] private float detectionHitboxSize; 
+    [SerializeField] private float detectionHitboxSize;
 
     private void Awake()
     {

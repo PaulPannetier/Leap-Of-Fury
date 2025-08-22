@@ -198,7 +198,7 @@ public static class Save
         {
             objRead = default(T);
             return false;
-        }        
+        }
     }
 
     /// <typeparam name="T">The object to read's type</typeparam>
@@ -530,7 +530,7 @@ public static class Random
     }
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -1514,7 +1514,7 @@ public static class Useful
     public static Vector3 ToVector3(in this Vector4 v) => new Vector3(v.x, v.y, v.z);
 
     /// <summary>
-    /// 
+    ///
     /// </summary>
     /// <param name="a">le point de début du vecteur</param>
     /// <param name="b">le point de fin du vecteur</param>
@@ -2366,7 +2366,7 @@ public static class Useful
     /// <param name="lst1">La première liste</param>
     /// <param name="lst2">La seconde liste</param>
     /// <param name="doublon">SI on autorise ou pas les doublons</param>
-    /// <returns></returns>     
+    /// <returns></returns>
     public static List<T> Merge<T>(this List<T> lst1, in List<T> lst2, bool doublon = false)//pas de doublon par defaut
     {
         return Merge(lst1, lst2);

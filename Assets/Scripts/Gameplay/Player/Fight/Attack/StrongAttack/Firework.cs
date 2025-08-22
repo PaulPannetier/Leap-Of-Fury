@@ -7,7 +7,7 @@ using System;
 
 public class Firework : MonoBehaviour
 {
-    private ToricObject toricObject; 
+    private ToricObject toricObject;
     private FireworkAttack fireworkAttack;
     private PlayerCommon playerCommon;
     private Capsule capsuleCollider;

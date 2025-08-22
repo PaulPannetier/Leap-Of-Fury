@@ -6,12 +6,12 @@ namespace CustomAI
     {
         public Sequence() : base()
         {
-        
+
         }
 
         public Sequence(List<Node> children) : base(children)
         {
-        
+
         }
 
         public override NodeState Evaluate()

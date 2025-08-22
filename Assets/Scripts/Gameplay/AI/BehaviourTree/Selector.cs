@@ -6,12 +6,12 @@ namespace CustomAI
     {
         public Selector() : base()
         {
-        
+
         }
 
         public Selector(List<Node> children) : base(children)
         {
-        
+
         }
 
         public override NodeState Evaluate()

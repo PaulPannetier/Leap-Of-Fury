@@ -27,7 +27,7 @@ namespace Collision2D
 
         public bool Contain(in Vector2 point) => Contain(A, B, point);
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>true if point € [A,B], false otherwise</returns>
         public static bool Contain(in Vector2 A, in Vector2 B, in Vector2 point)
@@ -59,7 +59,7 @@ namespace Collision2D
 
         public Vector2 Normal() => Normal(A, B);
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>A vector normal of the line</returns>
         public static Vector2 Normal(in Vector2 A, in Vector2 B)
@@ -105,7 +105,7 @@ namespace Collision2D
 
         public Vector2 Symetric(in Vector2 M) => Symetric(M, A, B);
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="M"></param>
         /// <param name="D"></param>
@@ -128,7 +128,7 @@ namespace Collision2D
 
         public Vector2 OrthogonalProjection(in Vector2 M) => OrthogonalProjection(M, A, B);
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="M"></param>
         /// <param name="D"></param>
@@ -147,7 +147,7 @@ namespace Collision2D
 
         public bool Contain(in Vector2 point) => Contain(A, B, point);
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>if point € (A,B)</returns>
         public static bool Contain(in Vector2 A, in Vector2 B, in Vector2 point)
@@ -180,7 +180,7 @@ namespace Collision2D
 
         public Vector2 Normal() => Normal(A, B);
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns>A vector normal of the droite</returns>
         public static Vector2 Normal(in Vector2 A, in Vector2 B)
@@ -214,7 +214,7 @@ namespace Collision2D
 
     #region Collider2D
 
-    public abstract class Collider2D : ICloneable<Collider2D> 
+    public abstract class Collider2D : ICloneable<Collider2D>
     {
         public static Collider2D FromUnityCollider2D(UnityEngine.Collider2D collider)
         {
@@ -369,7 +369,7 @@ namespace Collision2D
                     { typeof(Capsule),  (Collider2D c1, Collider2D c2) => (CollideCapsules((Capsule)c1, (Capsule)c2, out Vector2 v, out Vector2 v2, out Vector2 v3),v, v2, v3) },
                 }
             },
-           
+
         };
 
         private static readonly Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>> collisionLine1 = new Dictionary<Type, Func<Collider2D, Vector2, Vector2, bool>>()
@@ -843,7 +843,7 @@ namespace Collision2D
                 i1 = new Vector2(-C * (b + sqrtDelta), -m * (b + sqrtDelta) + p);
                 i2 = new Vector2(C * (sqrtDelta - b), m * (sqrtDelta - b) + p);
 
-                float minX, maxX, minY, maxY; 
+                float minX, maxX, minY, maxY;
                 if (A.x >= B.x)
                 {
                     minX = B.x - 1e-4f;
@@ -1549,7 +1549,7 @@ namespace Collision2D
                     normal = (polygone.vertices[(minIndex + 1) % polygone.vertices.Length] - polygone.vertices[minIndex]).NormalVector();
                     if (!polygone.IsNormalOnRightDirection(collisionPoint, normal, minIndex))
                         normal *= -1f;
-    
+
                     return true;
                 }
 
@@ -1736,7 +1736,7 @@ namespace Collision2D
                 maxY = end.y + 1e-4f;
                 minY = start.y - 1e-4f;
             }
-            
+
             for (int i = 0; i < polygone.vertices.Length; i++)
             {
                 if(CollideLineStraightLine(polygone.vertices[i], polygone.vertices[(i + 1) % polygone.vertices.Length], start, end, out Vector2 inter))
@@ -2773,7 +2773,7 @@ namespace Collision2D
                 {
                     float d1 = beg.SqrDistance(cp1);
                     float d2 = beg.SqrDistance(cp2);
-                    collisionPoint = d1 <= d2 ? cp1 : cp2;  
+                    collisionPoint = d1 <= d2 ? cp1 : cp2;
                     return true;
                 }
 
@@ -3008,12 +3008,12 @@ namespace Collision2D
 
         protected Collider2D()
         {
-            
+
         }
 
         protected Collider2D(UnityEngine.Collider2D collider)
         {
-            
+
         }
 
         public abstract Collider2D Clone();
@@ -3689,7 +3689,7 @@ namespace Collision2D
 
         #region Ctor
 
-        private Capsule() : base() { } 
+        private Capsule() : base() { }
 
         public Capsule(in Vector2 center, in Vector2 size) : base()
         {

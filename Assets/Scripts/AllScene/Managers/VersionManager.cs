@@ -67,7 +67,7 @@ public static class VersionManager
         {
             if(conversionFunctions[i].Item1 == version)
             {
-                indexVersion = i; 
+                indexVersion = i;
                 break;
             }
         }
@@ -105,7 +105,7 @@ public static class VersionManager
         public string version;
 
         public VersionData(string version)
-        { 
+        {
             this.version = version;
         }
     }
