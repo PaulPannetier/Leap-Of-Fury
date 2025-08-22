@@ -1,29 +1,32 @@
-Notes, toute infos noté par * sera suseptible d'être légèrement changé, ** sera plus ou moins changé, *** est juste une idée.
-Toute info notée par //ok est actuellement déjà programmer correctement.
-Toute info notée par //~ok est partiellement programmer ou possèdes des bugs.
-Toute info précèdé de := est juste un note
+Légende:
+- 'info *': suseptible d'être légèrement changé
+- 'info **': sera plus ou moins changé
+- 'info ***': juste une idée.
+- 'info //ok': feature implémentée correctement
+- 'info //~ok': feature partiellement implémentée ou buggée
+- 'info :=': simplement une note
 
-Pour tout le document, la DA est à titre indivative (des idées que jai eu) mais c'est le graphiste qui la choisira du moment qu'elle est adapté au gameplay.
+Pour tout le document, la DA est à titre indicative (des idées que jai eu) mais c'est le graphiste qui la choisira du moment qu'elle est adaptée au gameplay.
 
-Nom du jeu : 
+Nom du jeu :
 Leap of Fury **
 
-2 mode de jeu :
-Campagne (solo ou coop) := On vera se mode dans un second temps apres avoir fini le mode duel local
+2 modes de jeu :
+Campagne (solo ou coop) := On verra ce mode dans un second temps, après avoir fini le mode duel local
 Duel local (2 a 4 joueurs)
 
 Duel local :
-- le but est d'être le premier a atteigne 9 kills
-- 1er tour, tout less joueurs apparaisent un un endroit aléatoire de la carte choisi, s'entre tue, des qu'il n'y a qu'un survivant le niveau recommence tant qu'aucun joueur n'a atteint n kills.
+- le but est d'être le premier a atteindre n=9 kills
+- 1er tour, tous les joueurs apparaissent à un endroit aléatoire de la carte, s'entre-tuent, dès qu'il n'y a qu'un survivant le niveau recommence tant qu'aucun joueur n'a atteint n kills.
 
 
 Plusieurs perso jouable (objectif 4 pour l'instant)
-Plusieurs niveau (meme pour la campagne et le mode duel) (objectif 5 niveau min)
-ATTENTION : chaque niveau et chaque perso doivent etre VRAIMENT different niveau gameplay et visuel.
+Plusieurs niveaux (même pour la campagne et le mode duel) (objectif 5 niveaux min)
+ATTENTION : chaque niveau et chaque perso doivent être VRAIMENT different niveau gameplay et visuel.
 
 Perso :
 - Une couleur par perso
-- Une compétence passif
+- Une compétence passive
 - Une attaque faible/attaque 1
 - Une attaque forte/attaque 2
 - Un dash (invincibilité + compte comme une attaque)
@@ -34,10 +37,10 @@ Caracter Controller
 - un double jump //ok
 - un dash//ok
 - grimper sur les murs //ok
-- saut a partir des mur //ok
-- controlle du personage en l'air //ok
+- saut à partir des mur //ok
+- contrôle du personage en l'air //ok
 
-Compétences des perso : 
+Compétences des perso :
 
 perso 1 : *
 	  attack faible : dash coup de poing américain qui dash est si il touche une surface explose (repetable 3fois).//ok
@@ -91,8 +94,8 @@ Celui qui fait bouger la plateforme gagne un kill. //~ok*
 DA : Un temple maya/jungle amazonienne.
 Name : Maya's Temple
 
-//Pas a mettre pour l'instant
-Carte 3 : 
+//Pas à mettre pour l'instant
+Carte 3 :
 Méca : Une horloge est sur la carte. Quand elle sonne (mettre un compteur) trigger un event (un piège de pique, une bombe, une arraigné qui immobilise, ferme une porte, ect)
 De + le pendule de l'hormoge tangue et tue tout sur son passage//ok
 Mettre des porte de téléportation qui nous téléporte de l'une vers l'autre.
@@ -107,31 +110,31 @@ Name : Into the jungle
 
 carte 5 :
 Au centre de la map il y a un bouton, quand un joueur passe devant, active les tapis roulant de la map//ok
-De + des paires d'electrode s'active est crée un éclair en eux a un rythme régulier, 
+De + des paires d'electrode s'active est crée un éclair en eux a un rythme régulier,
 tuant les joueur entre les 2 électrode.//ok
 DA : Une usine électrique/electromagnétique avec des bobine, des électrode des fil ect.
 name : Maxwell house
 
-/Pas a mettre pour l'instant
+/Pas à mettre pour l'instant
 Carte 6 : *** := plus j'y pense plus je trouve l'idée éclaté
 Méca : Un clown transparent effraye (immobilise) les joueurs.
 + des ascenseurs verticaux et/ou horizontaux + des plateforme traversable dans un sens et pas dans l'autre.
 DA : Une fete foraine
 Name : La fete foraine
 
-/Pas a mettre pour l'instant
-Carte 7 : 
-Méca : Plusieurs levier sont activable par ls joueurs :
+/Pas à mettre pour l'instant
+Carte 7 :
+Méca : Plusieurs levier sont activable par les joueurs :
 - un pont levis peu etre levée/baissé
 - Un pendule pique peut etre déverrouiler
 - certaint sol desuus de la lave peuvent etre enlever
 - Décrroche une bombe accrocher a une corde
 DA : Un chateau fort
-Name : The queen Castle 
+Name : Queen's Castle
 
-/Pas a mettre pour l'instant
+/Pas à mettre pour l'instant
 Dernière carte (carte n):***
-Méca : réunnit toute les méca de toutes les autres cartes
+Méca : réunit toutes les mécas de toutes les autres cartes
 DA : jsp
 Name : Chaos
 
@@ -143,7 +146,6 @@ test player attacks and gameplay
 test levels meca
 polish attacks
 Trad char controller tooltip
-coder des sol ou va moins vite
+coder des sols où on va moins vite
 
-Huge test of ALL before V0.1
-
+Huge test of EVERYTHING before V0.1
