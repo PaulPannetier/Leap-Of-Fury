@@ -91,7 +91,7 @@ public class BounceShotAttack : StrongAttack
                     }
                     else
                     {
-                        //Version générale bugger
+                        //Version generale buggee (CPT) (c dla merde) (CLAQUE AU SOL) (NUL A CHIER N U L A C H I E R (merci Isabelle))
                         Vector2 sim = Collision2D.StraightLine2D.Symetric(oldPoint, raycast.point, raycast.point + raycast.normal);
                         data.lastDirection = (sim - raycast.point).normalized;
                     }

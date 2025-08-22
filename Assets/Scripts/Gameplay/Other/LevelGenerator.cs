@@ -10,7 +10,7 @@ public enum LevelType : byte
     fontaine
 }
 
-// Contient toutes les info pour générer un niveau
+// Contient toutes les info pour generer un niveau
 public struct LevelData
 {
     public int numeroEtage; //1, 2, 3 ou 4
@@ -25,7 +25,7 @@ public struct LevelData
 
 public struct GenerationData
 {
-    //mettre l'ensemble des paramètre de génération des niveau
+    //mettre l'ensemble des parametre de generation des niveaux
     //Seul nombreDembranchement et profondeur est obligatoire
     public int nombreDembranchement;
     public int profondeur;
@@ -33,28 +33,28 @@ public struct GenerationData
     public int nombreMaximalDeMiniBossParEtage;
 }
 
-//Une class accessible partout implémentant lalgo de génération aléatoire de niveau
-// Cest la ou le gros du taff se fait, je suppose que tu as une fonction qui prend en entrée tout les anciens niveau effectuer par le joueur
-// et les eventuelles autre niveau frère (meme etage/profondeur dans l'arbre) et qui renvoie le nouveau LevelData a associé au node.
+//Une class accessible partout implementant l'algo de generation aleatoire de niveau
+// Cest la ou le gros du taff se fait, je suppose que tu as une fonction qui prend en entree tout les anciens niveau effectuer par le joueur
+// et les eventuelles autre niveaux frere (meme etage/profondeur dans l'arbre) et qui renvoie le nouveau LevelData a associer au node.
 public static class LevelGenerator
 {
     public static LevelData GenerateNextLevelData(List<LevelNode> parents, List<LevelData> levelFreres, in GenerationData generationData)
     {
-        // todo ; implémenté l'algo de genération aléatoire
+        // todo ; implementer l'algo de generation aleatoire
         // attention levelFreres peut etre vide
         return new LevelData(0, LevelType.enemyNormal);
     }
 
-    //fonction qui crée le 1er niveau
+    //fonction qui cree le 1er niveau
     public static LevelData GenerateRootLevelData(in GenerationData generationData)
     {
         return new LevelData(0, LevelType.enemyNormal);
     }
 
-    // La fonction a appelé avec un autre script pour lancer tout lalgo de génération et qui renvoie l'arbre généré aléatoirement
+    // La fonction a appeler avec un autre script pour lancer tout lalgo de generation et qui renvoie l'arbre genere aleatoirement
     public static LevelTree GenerateLevels(in GenerationData generationData)
     {
-        //On crée le 1er niveau
+        //On cree le 1er niveau
         LevelNode root = new LevelNode(null, GenerateRootLevelData(generationData));
 
         List<LevelNode> parents = new List<LevelNode>(generationData.profondeur)
@@ -62,13 +62,13 @@ public static class LevelGenerator
             root
         };
 
-        // on crée récursivement les autres
+        // on cree recursivement les autres
         GenerateChildrenRecur(parents, generationData, 1);
 
         return new LevelTree(root);
     }
 
-    // Prend en entré les parents d'un niveau et les parametre de génération et ajouter une profoncdeur de l'arbre par appel
+    // Prend en entree les parents d'un niveau et les parametre de generation et ajouter une profoncdeur de l'arbre par appel
     private static void GenerateChildrenRecur(List<LevelNode> parents, in GenerationData generationData, int depth)
     {
         if(depth > generationData.profondeur)
@@ -76,14 +76,14 @@ public static class LevelGenerator
 
         List<LevelData> levelsFreres = new List<LevelData>(generationData.nombreDembranchement);
 
-        //On crée les sous niveaux
+        //On cree les sous niveaux
         for (int i = 0; i < generationData.nombreDembranchement; i++)
         {
             LevelData levelData = GenerateNextLevelData(parents, levelsFreres, generationData);
             levelsFreres.Add(levelData);
         }
 
-        // on ajoute les sopus niveau crée au dernier parent puis on continue récursivement
+        // on ajoute les sopus niveau cree au dernier parent puis on continue recursivement
         LevelNode lastParent = parents[parents.Count - 1];
         depth++;
         foreach (LevelData levelData in levelsFreres)

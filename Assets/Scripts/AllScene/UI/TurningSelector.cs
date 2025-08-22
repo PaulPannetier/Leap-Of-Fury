@@ -68,7 +68,7 @@ public class TurningSelector : MonoBehaviour
 
     private float CalculateAngle(int index) => Useful.WrapAngle(angle + index * turningAngle);
 
-    //depth € [-1, 1]
+    //depth â‚¬ [-1, 1]
     private (Vector2, float) CalculateCanvasPositionAndDepth(float angle)
     {
         Vector2 c = center;

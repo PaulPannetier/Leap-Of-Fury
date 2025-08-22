@@ -121,7 +121,7 @@ public class TPAttack : StrongAttack
             }
             else
             {
-                //nouveau point vers l'extérieur du joueur
+                //nouveau point vers l'exterieur du joueur
                 do
                 {
                     newPos += dir * detectionStep;

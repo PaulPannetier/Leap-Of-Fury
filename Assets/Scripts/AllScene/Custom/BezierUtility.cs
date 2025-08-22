@@ -21,7 +21,7 @@ namespace BezierUtility
     {
         internal static Hitbox ComputeBezierHitbox(in Vector2 start, in Vector2 handle1, in Vector2 handle2, in Vector2 end)
         {
-            //Search t €[0,1] | P'(t).x == 0 || P'(t).y == 0
+            //Search tâ‚¬[0,1] | P'(t).x == 0 || P'(t).y == 0
             float[] t = new float[4] { -1f, -1f, -1f, -1f };
             Vector2 a = -3f * start + 9f * handle1 - 9f * handle2 + 3f * end;
             Vector2 b = 6f * start - 12f * handle1 + 6f * handle2;
@@ -84,7 +84,7 @@ namespace BezierUtility
                 }
             }
 
-            //on crée la boite de collision avec les points extremes
+            //on cree la boite de collision avec les points extremes
             float xMin = extremaPoints[0].x, xMax = extremaPoints[0].x, yMin = extremaPoints[0].y, yMax = extremaPoints[0].y;
 
             for (int i = 1; i < extremaPoints.Count; i++)
@@ -985,7 +985,7 @@ namespace BezierUtility
 
         private Hitbox ComputeCurveHitbox(in Vector2 P0, in Vector2 P1, in Vector2 P2, in Vector2 P3)
         {
-            //Search t €[0,1] | P'(t).x == 0 || P'(t).y == 0
+            //Search tâ‚¬[0,1] | P'(t).x == 0 || P'(t).y == 0
             float[] t = new float[4] { -1f, -1f, -1f, -1f };
             Vector2 a = 3f * (M[3, 0] * P0 + M[3, 1] * P1 + M[3, 2] * P2 + M[3, 3] * P3);
             Vector2 b = 2f * (M[2, 0] * P0 + M[2, 1] * P1 + M[2, 2] * P2 + M[2, 3] * P3);
@@ -1055,7 +1055,7 @@ namespace BezierUtility
                 return C0 + t * C1 + cache0 * C2 + cache0 * t * C3;
             }
 
-            //on crée la boite de collision avec les points extremes
+            //on cree la boite de collision avec les points extremes
             float xMin = extremaPoints[0].x, xMax = extremaPoints[0].x, yMin = extremaPoints[0].y, yMax = extremaPoints[0].y;
 
             for (int i = 1; i < extremaPoints.Count; i++)

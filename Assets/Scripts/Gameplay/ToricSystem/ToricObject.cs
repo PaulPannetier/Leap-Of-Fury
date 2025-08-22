@@ -97,7 +97,7 @@ public class ToricObject : MonoBehaviour
     {
         if(isAClone)
         {
-            //on applique la fonction à l'original
+            //on applique la fonction a l'original
             MonoBehaviour comp = cloner.GetComponent<T>();
             if(comp != null)
             {

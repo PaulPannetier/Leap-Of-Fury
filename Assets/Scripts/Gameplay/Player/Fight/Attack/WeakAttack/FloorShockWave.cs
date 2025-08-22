@@ -107,7 +107,7 @@ public class FloorShockWave : MonoBehaviour
         Gizmos.DrawLine(beg, beg + Vector2.down * rayLengthVerti);
         beg = (Vector2)transform.position + new Vector2(-offsetVertiRaycast.x, offsetVertiRaycast.y);
         Gizmos.DrawLine(beg, beg + Vector2.down * rayLengthVerti);
-        //sur les coté
+        //sur les cotes
         beg = (Vector2)transform.position + offsetHoriRaycast;
         Gizmos.DrawLine(beg, beg + Vector2.right * rayLengthHori);
         beg = (Vector2)transform.position + new Vector2(-offsetHoriRaycast.x, offsetHoriRaycast.y);

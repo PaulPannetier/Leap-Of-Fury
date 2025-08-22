@@ -8,7 +8,7 @@ public class FirePassif : PassifAttack
 
     public bool drawFireGizmos = true;
     public Vector2 fireSize;
-    [Tooltip("L'écart de strenght pour déclencher un dédoublement")][Range(0f, 100f)] public float firePropagationGap;
+    [Tooltip("L'ecart de strengh pour declencher un dedoublement")][Range(0f, 100f)] public float firePropagationGap;
     [Range(0f, 1f)] public float firePropagationProbability;
     [Range(0f, 100f)] public float minStrenghtForPropagation;
     [Range(0f, 100f)] public float fireDecreasementAtPropagation;
@@ -92,7 +92,7 @@ public class FirePassif : PassifAttack
     }
 
     /// <summary>
-    /// On vérifie uniquement que le feu soit au dessus d'un sol, on ne vérif pas qu'il n'y a pas de feu a cette emplacement
+    /// On verifie uniquement que le feu soit au dessus d'un sol, on ne verif pas qu'il n'y a pas de feu a cet emplacement
     /// </summary>
     /// <param name="strenght"></param>
     /// <param name="position"></param>

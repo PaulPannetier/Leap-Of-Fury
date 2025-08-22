@@ -49,7 +49,7 @@ public class Fire : MonoBehaviour
         playerCommon = this.fireAttack.GetComponent<PlayerCommon>();
     }
 
-    //le joueur aillant crée le feu marche dessus;
+    //le joueur ayant cree le feu marche dessus;
     public void OnWalk()
     {
         if(strength < 100f - fireAttack.firePropagationGap)

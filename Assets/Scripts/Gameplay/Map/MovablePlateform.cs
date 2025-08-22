@@ -37,8 +37,8 @@ public class MovablePlateform : PathFindingBlocker
     public bool enableBehaviour = true;
     [SerializeField] private bool enableHorizontalDash, enableVerticalDash;
     [SerializeField, Range(0f, 1f)] private float groundCollisionHitboxSafeZone = 1f;
-    [SerializeField, Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushPadding = 1.05f;
-    [SerializeField, Range(0f, 1f), Tooltip("La marge d'erreur de détection de crush (%age total)")] private float crushZone = 0.95f;
+    [SerializeField, Tooltip("La marge d'erreur de detection de crush (%age total)")] private float crushPadding = 1.05f;
+    [SerializeField, Range(0f, 1f), Tooltip("La marge d'erreur de detection de crush (%age total)")] private float crushZone = 0.95f;
     [SerializeField, Tooltip("The dash detection hitbox size")] private float dashHitboxSize = 1f;
     [SerializeField, Tooltip("The dash detection hitbox size"), Range(0f, 1f)] private float dashHitboxSafeZone = 0.9f;
     [SerializeField] private bool enableActivationWhenMoving;
