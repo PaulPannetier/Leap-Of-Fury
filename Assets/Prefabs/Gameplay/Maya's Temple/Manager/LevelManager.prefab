@@ -60,7 +60,7 @@ MonoBehaviour:
   - {fileID: 635306758543450081, guid: 77f96886e5b97bc41b9c0d903aebe800, type: 3}
   - {fileID: 2889853000194525038, guid: e1bb0a524771b2047a23ddddc05132d6, type: 3}
   - {fileID: 2907163850566459797, guid: 14b45c0a98c548d49950b15d63a33fff, type: 3}
-  enableDebugMode: 1
+  enableDebugMode: 0
   disableDeathCount: 0
 --- !u!114 &128159696010217862
 MonoBehaviour:

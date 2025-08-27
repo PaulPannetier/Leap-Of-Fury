@@ -354,44 +354,59 @@ public class LogManager : MonoBehaviour
                 sb.Clear();
 
                 // Compute stackTrace
-                for (int i = 0; i < functionsCall.Length; i++)
+                if(functionsCall.Length <= 0)
                 {
-                    string functionCall = functionsCall[i];
-                    matches = Regex.Matches(functionCall, @"\((.*?)\)");
-                    groups.Clear();
-                    foreach (Match match in matches)
-                    {
-                        groups.Add(match.Groups[1].Value);
-                    }
-
-                    if (groups.Count != 2)
-                        continue;
-
-                    startIndex = groups[1].IndexOf(':');
-                    string lineNumberStr = groups[1].Substring(startIndex + 1);
-                    int lineNumber = -1;
-                    if(int.TryParse(lineNumberStr, out int res))
-                    {
-                        lineNumber = res;
-                    }
-
-                    startIndex = functionCall.IndexOf('(');
-                    string functionName = functionCall.Substring(0, startIndex);
-                    if(functionName.EndsWith(' '))
-                    {
-                        functionName = functionName.Remove(functionName.Length - 1);
-                    }
-                    functionName = functionName.Replace(".", "::");
-                    functionName = functionName.Replace("+", "::");
-
-                    sb.Append(functionName);
-                    sb.Append(':');
-                    sb.Append(lineNumber.ToString());
-                    sb.Append(", ");
+                    sb.Append("None");
                 }
+                else
+                {
+                    for (int i = 0; i < functionsCall.Length; i++)
+                    {
+                        string functionCall = functionsCall[i];
+                        matches = Regex.Matches(functionCall, @"\((.*?)\)");
+                        groups.Clear();
+                        foreach (Match match in matches)
+                        {
+                            groups.Add(match.Groups[1].Value);
+                        }
 
-                sb = sb.Remove(sb.Length - 2, 2);
+                        if (groups.Count > 2)
+                            continue;
+
+                        int lineNumber = -1;
+                        if (groups.Count == 2)
+                        {
+                            startIndex = groups[1].IndexOf(':');
+                            string lineNumberStr = groups[1].Substring(startIndex + 1);
+                            if (int.TryParse(lineNumberStr, out int res))
+                            {
+                                lineNumber = res;
+                            }
+                        }
+
+                        startIndex = functionCall.IndexOf('(');
+                        string functionName = functionCall.Substring(0, startIndex);
+                        if (functionName.EndsWith(' '))
+                        {
+                            functionName = functionName.Remove(functionName.Length - 1);
+                        }
+                        functionName = functionName.Replace(".", "::");
+                        functionName = functionName.Replace("+", "::");
+
+                        sb.Append(functionName);
+                        sb.Append(':');
+                        sb.Append(lineNumber.ToString());
+                        sb.Append(", ");
+                    }
+
+                    if(sb.Length >= 2)
+                    {
+                        sb = sb.Remove(sb.Length - 2, 2);
+                    }
+                }
+                    
                 this.stackTrace = sb.ToString();
+                this.stackTrace = string.IsNullOrEmpty(this.stackTrace) ? "None" : this.stackTrace;
             }
             else
             {

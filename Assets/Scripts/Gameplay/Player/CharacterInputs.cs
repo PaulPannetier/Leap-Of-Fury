@@ -19,6 +19,11 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
     [SerializeField] private bool useMovementLerpForKeyboard = true;
     [SerializeField] private float movementLerpForKeyboard = 10f;
 
+#if UNITY_EDITOR
+    [Header("DEBUG")]
+    [SerializeField] private bool enableInputInDebugMode = false;
+#endif
+
     private void Awake()
     {
         playerCommon = GetComponent<PlayerCommon>();
@@ -28,6 +33,13 @@ public class CharacterInputs : MonoBehaviour, ICloneable<CharacterInputs>
     {
         x = y = 0f;
         rawX = rawY = 0;
+
+#if UNITY_EDITOR
+        if(enableInputInDebugMode)
+        {
+            InputManager.SetCurrentController(playerCommon.playerIndex, controllerType, false);
+        }
+#endif
     }
 
     private void Update()

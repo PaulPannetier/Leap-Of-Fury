@@ -539,14 +539,6 @@ PrefabInstance:
       propertyPath: charParent
       value: 
       objectReference: {fileID: 1653521282}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: enableDebugMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2120661509617684752, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
-      propertyPath: suffleMapWhenLevelStart
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6537150797850709026, guid: 8dd1015baa3a00f4ebe24dc861c902cf, type: 3}
       propertyPath: m_Name
       value: LevelManager

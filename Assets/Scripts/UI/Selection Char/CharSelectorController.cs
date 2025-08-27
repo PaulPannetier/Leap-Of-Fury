@@ -238,9 +238,13 @@ public class CharSelectorController : MonoBehaviour
 
     private void OpenHelpCanvas(int indexTuringSelector)
     {
-        // we shouldn't need the check, but better safe than sorry
 		if (isHelpCanvasOpen[indexTuringSelector])
-			return;
+        {
+            string errorMsg = $"The help canvas N°{indexTuringSelector} is already open! Can't reopen it!";
+            LogManager.instance.AddLog(errorMsg);
+            Debug.Log(errorMsg);
+            return;
+        }
 
         isHelpCanvasOpen[indexTuringSelector] = true;
         GameObject selectedChar = turningSelectors[indexTuringSelector].selectedItem;

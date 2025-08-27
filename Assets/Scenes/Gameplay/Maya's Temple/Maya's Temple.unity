@@ -295,10 +295,6 @@ PrefabInstance:
       propertyPath: charParent
       value: 
       objectReference: {fileID: 460496059}
-    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
-      propertyPath: enableDebugMode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7320278589001595780, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
       propertyPath: m_Name
       value: LevelManager

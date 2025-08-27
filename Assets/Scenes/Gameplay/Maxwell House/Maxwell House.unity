@@ -128,33 +128,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 1229850466}
     m_Modifications:
     - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
-      propertyPath: scoreMenu
+      propertyPath: charParent
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
-      propertyPath: endLevelMenu
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
-      propertyPath: enableBehaviour
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
-      propertyPath: mapsPrefabs.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
-      propertyPath: playFirstMapAtLevelStart
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
-      propertyPath: 'mapsPrefabs.Array.data[1]'
-      value: 
-      objectReference: {fileID: 287112535440810687, guid: 06933d1dc087dc641b0ddcbdb52230cd, type: 3}
-    - target: {fileID: 2181117585642853210, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
-      propertyPath: 'mapsPrefabs.Array.data[2]'
-      value: 
-      objectReference: {fileID: 5121326753093883477, guid: 28544d907d89dce43aea27373b8def03, type: 3}
+      objectReference: {fileID: 1153782674}
     - target: {fileID: 7320278589001595780, guid: f926bfe0f36ce7845b3fddf165cc36e5, type: 3}
       propertyPath: m_Name
       value: LevelManager

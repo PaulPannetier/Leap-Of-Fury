@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2120661509617684752}
   - component: {fileID: 8730217457083865252}
   - component: {fileID: 7694862400118319360}
+  - component: {fileID: 2151907140918862497}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -51,7 +52,7 @@ MonoBehaviour:
   nbKillsToWin: 5
   waitingTimeAfterLastKill: 2
   charParent: {fileID: 0}
-  suffleMapWhenLevelStart: 1
+  suffleMapWhenLevelStart: 0
   playFirstMapAtLevelStart: 0
   mapsPrefabs:
   - {fileID: 6462490999691983995, guid: 28ef629c5f6483444be80e242b5fd977, type: 3}
@@ -59,7 +60,7 @@ MonoBehaviour:
   - {fileID: 3282709313026859413, guid: 1ab7452454320dc43ba1a6c57d436dd8, type: 3}
   - {fileID: 701693720826892841, guid: c484ea0bd5416e24fa10f4a294b88a10, type: 3}
   - {fileID: 3537636130273019828, guid: 8101a1f93f28dd2418c3eeb9e7b11e52, type: 3}
-  enableDebugMode: 1
+  enableDebugMode: 0
   disableDeathCount: 0
 --- !u!114 &8730217457083865252
 MonoBehaviour:
@@ -125,3 +126,15 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &2151907140918862497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6537150797850709026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27346870f9e1be8448b9170559d9cec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseManager
