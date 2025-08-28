@@ -113,7 +113,6 @@ public class BuildCreator : Editor
                 Directory.Delete(buildDir, true);
             Directory.CreateDirectory(buildDir);
 
-            //Performing Build
             bool buildSuccess = PerformBuild(buildDir, scenesPath.ToArray());
 
             //Copy save content

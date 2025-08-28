@@ -158,7 +158,7 @@ public class CharSelectorController : MonoBehaviour
 				}
 			}
 
-            if(applyItemInput.IsPressedDown())
+            if (applyItemInput.IsPressedDown())
             {
                 isTurningSelectorsFinishSelection[i] = true;
 				TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
