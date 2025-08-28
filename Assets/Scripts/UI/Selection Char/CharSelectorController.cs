@@ -162,14 +162,30 @@ public class CharSelectorController : MonoBehaviour
             {
                 isTurningSelectorsFinishSelection[i] = true;
 				TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
-				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready").Resolve(InputManager.GetControllerModel(controllers[i]));
+                ControllerModel model = InputManager.GetControllerModel(controllers[i]);
+                Dictionary<string, InputKey> keys = new Dictionary<string, InputKey>
+                {
+                    { "Key_Back", controllers[i] == ControllerType.Keyboard ? (InputKey)escapeButton.keysKeyboard[0] : (InputKey)escapeButton.keyGamepad1[0] },
+                    { "Key_Info", controllers[i] == ControllerType.Keyboard ? (InputKey)helpButton.keysKeyboard[0] : (InputKey)helpButton.keyGamepad1[0] },
+                };
+
+                GameText.ControllerInfo controllerInfo = new GameText.ControllerInfo(controllers[i], keys, model);
+                curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Ready").Resolve(controllerInfo);
 				curText.color = textColorReady;
             }
             else if(isTurningSelectorsFinishSelection[i] && escapeButton.IsPressedUp())
             {
                 isTurningSelectorsFinishSelection[i] = false;
 				TextMeshProUGUI curText = statusIndicators[i].GetComponent<TextMeshProUGUI>();
-				curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose").Resolve(InputManager.GetControllerModel(controllers[i]));
+                ControllerModel model = InputManager.GetControllerModel(controllers[i]);
+                Dictionary<string, InputKey> keys = new Dictionary<string, InputKey>
+                {
+                    { "Key_Validate", controllers[i] == ControllerType.Keyboard ? (InputKey)applyItemInput.keysKeyboard[0] : (InputKey)applyItemInput.keyGamepad1[0] },
+                    { "Key_Info", controllers[i] == ControllerType.Keyboard ? (InputKey)helpButton.keysKeyboard[0] : (InputKey)helpButton.keyGamepad1[0] },
+                };
+
+                GameText.ControllerInfo controllerInfo = new GameText.ControllerInfo(controllers[i], keys, model);
+                curText.text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose").Resolve(controllerInfo);
 				curText.color = textColorChoose;
             }
             else if(isTurningSelectorInit[i] && escapeButton.IsPressedUp())
@@ -202,7 +218,14 @@ public class CharSelectorController : MonoBehaviour
             {
                 isTurningSelectorInit[i] = true;
                 controllers[i] = controllerType;
-                statusIndicators[i].GetComponent<TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose").Resolve(InputManager.GetControllerModel(controllers[i]));
+                ControllerModel model = InputManager.GetControllerModel(controllerType);
+                Dictionary<string, InputKey> keys = new Dictionary<string, InputKey>
+                {
+                    { "Key_Validate", controllerType == ControllerType.Keyboard ? (InputKey)applyItemInput.keysKeyboard[0] : (InputKey)applyItemInput.keyGamepad1[0] },
+                    { "Key_Info", controllerType == ControllerType.Keyboard ? (InputKey)helpButton.keysKeyboard[0] : (InputKey)helpButton.keyGamepad1[0] },
+                };
+                GameText.ControllerInfo controllerInfo = new GameText.ControllerInfo(controllerType, keys, model);
+                statusIndicators[i].GetComponent<TextMeshProUGUI>().text = LanguageManager.instance.GetText("UI_StatusIndicator_Choose").Resolve(controllerInfo);
             }
             break;
         }

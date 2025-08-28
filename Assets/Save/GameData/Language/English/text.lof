@@ -187,11 +187,11 @@
         },
 		{
             "textID": "UI_StatusIndicator_Choose",
-            "content": "$sprite=PlayerController$ Choosing...\n$sprite=Key_Validate$ Validate"
+            "content": "$sprite=PlayerController$ Choosing...\n$sprite=Key_Validate$ Validate\n$sprite=Key_Info$ Info"
         },
 		{
             "textID": "UI_StatusIndicator_Ready",
-            "content": "$sprite=PlayerController$ Ready !\n$sprite=Key_Back$ Back"
+            "content": "$sprite=PlayerController$ Ready !\n$sprite=Key_Back$ Back\n$sprite=Key_Info$ Info"
         },
 		{
             "textID": "UI_MapSelector_Join",

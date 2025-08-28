@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
 using TMPro;
+using static GameText;
 
 public class MapSelectorController : MonoBehaviour
 {
@@ -109,10 +111,23 @@ public class MapSelectorController : MonoBehaviour
 
 	private void InitPrompt()
 	{
-		ControllerModel model = (controllerIndex == ControllerType.Keyboard) ? ControllerModel.Keyboard : ControllerModel.XBoxSeries;
-        buttonPromptContinue.text = LanguageManager.instance.GetText("UI_MapSelector_Continue").Resolve(model);
-        buttonPromptLeft.text = LanguageManager.instance.GetText("UI_MapSelector_Left").Resolve(model);
-		buttonPromptRight.text = LanguageManager.instance.GetText("UI_MapSelector_Right").Resolve(model);
+		ControllerModel model = InputManager.GetControllerModel(controllerIndex);
+        bool isKb = controllerIndex == ControllerType.Keyboard || controllerIndex == ControllerType.Any;
+        Dictionary<string, InputKey> keys = new Dictionary<string, InputKey>(2)
+        {
+            { "Key_Validate", isKb ? (InputKey)applyInput.keysKeyboard[0] : (InputKey)applyInput.keyGamepad1[0] },
+            { "Key_Back", isKb ? (InputKey)backInput.keysKeyboard[0] : (InputKey)backInput.keyGamepad1[0]  }
+        };
+        ControllerInfo controllerInfo = new ControllerInfo(controllerIndex, keys, model);
+        buttonPromptContinue.text = LanguageManager.instance.GetText("UI_MapSelector_Continue").Resolve(controllerInfo);
+
+        controllerInfo.inputsKeys.Clear();
+        controllerInfo.inputsKeys.Add("Key_Left", isKb ? (InputKey)previousMapInput.keysKeyboard[0] : (InputKey)previousMapInput.keyGamepad1[0]);
+        buttonPromptLeft.text = LanguageManager.instance.GetText("UI_MapSelector_Left").Resolve(controllerInfo);
+
+        controllerInfo.inputsKeys.Clear();
+        controllerInfo.inputsKeys.Add("Key_Right", isKb ? (InputKey)nextMapInput.keysKeyboard[0] : (InputKey)nextMapInput.keyGamepad1[0]);
+        buttonPromptRight.text = LanguageManager.instance.GetText("UI_MapSelector_Right").Resolve(controllerInfo);
 	}
 
     private void TryLoadNextScene()

@@ -187,11 +187,11 @@
         },
 		{
             "textID": "UI_StatusIndicator_Choose",
-            "content": "Choix en cours..."
+            "content": "$sprite=PlayerController$ Choix en cour...\n$sprite=Key_Validate$ Valider\n$sprite=Key_Info$ Info"
         },
 		{
             "textID": "UI_StatusIndicator_Ready",
-            "content": "Prêt !"
+            "content": "$sprite=PlayerController$ Prêt !\n$sprite=Key_Back$ Retour\n$sprite=Key_Info$ Info"
         },
 		{
             "textID": "Option_Menu_warning_unapply_settings_description",

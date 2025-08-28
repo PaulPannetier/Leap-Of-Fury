@@ -6,7 +6,7 @@ using UnityEngine.TextCore;
 
 public class TestScript : MonoBehaviour
 {
-    public TMP_SpriteAsset rootAsset;
+    public TMP_SpriteAsset[] spriteAssets;
 
     public float BX, BY;
     public bool setFallback;
@@ -17,7 +17,7 @@ public class TestScript : MonoBehaviour
         {
             setFallback = false;
 
-            foreach(TMP_SpriteAsset spriteAsset in rootAsset.fallbackSpriteAssets)
+            foreach(TMP_SpriteAsset spriteAsset in spriteAssets)
             {
                 if(spriteAsset == null)
                     continue;
