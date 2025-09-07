@@ -48,12 +48,12 @@ perso 1 : *
 	  Passif : Court et grimpe un peu plus vite.//ok
 
 perso 2 : *
-	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage.//ok
-	  attack forte : tir 5 projectiles en cone serré dans la dir des input (8 dir possibles) et qui lui applique une forte force de propulsion en arrière//ok**
-	  Passif : Augmente la vitesse des projectile de la prochaine attaque forte si ramassage des projectiles.//ok
+	  attack faible : Le perso se penche vers le sol et crée une mini explosion, il tue tout sur son passage, Puis, une onde de choque longeant le sol se propage des 2 coté du joueur.//ok
+	  attack forte : tir 5 projectiles en cone serré dans la dir des input (8 dir possibles) et qui lui applique une forte force de propulsion en arrière. Le projectile touche un mur, se plante dessus puis retombe au bout de 1 sec. Doit être récupéré pour être relancé.//ok**
+	  Passif : Si l'onde de choque croise un projectile, celui si et renvoyer dans une direction aléatoire.
 
 perso 3 : *
-	  attack faible : tir de flèche légèrement téléguidé à récup, si on reclick la flèche se divise en 3.//ok
+	  attack faible : tir de flèche légèrement téléguidé à récupéré pour la retirer, si on reclick la flèche se divise en 3. Peut tirer jusqu'a n flèches//ok
 	  attack forte : tp a moyenne porté (traversé de mur possible) qui explose //ok
 	  Passif : Deviens quasi completement invisible si il ne bouge plus pendant X sec.
 
@@ -140,6 +140,7 @@ Name : Chaos
 
 TODO :
 review apex grab
+add UI to char 3 arrow attack to indicate the nb of arrow
 verify hide cursor on build
 repair movable plateform
 test player attacks and gameplay
@@ -147,5 +148,6 @@ test levels meca
 polish attacks
 Trad char controller tooltip
 coder des sols où on va moins vite
+sync particle system visual in toric space (TNT and kunai explosion)
 
 Huge test of EVERYTHING before V0.1

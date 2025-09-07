@@ -6,7 +6,7 @@ using UnityEngine;
 public class ArrowAttack : WeakAttack
 {
     private CharacterController movement;
-    [SerializeField] private int nbArrow;
+    private int nbArrow;
     private bool arrowIsFlying = false;
     private Arrow arrowWhoFly;
 
@@ -17,7 +17,7 @@ public class ArrowAttack : WeakAttack
     public float delayBetweenLauchAndRecoverArrow = 0.7f;
     [SerializeField] private float arrowInitSpeed = 4f;
     [SerializeField] private int initArrow = 1;
-    [SerializeField, Tooltip("L'angle entre les arrow lors de la r�activation"), Range(0f, 180f)] private float arrowActivationAngle = 15f;
+    [SerializeField, Tooltip("Angle between arrows when split"), Range(0f, 180f)] private float arrowActivationAngle = 15f;
 
     protected override void Awake()
     {

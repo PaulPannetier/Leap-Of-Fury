@@ -9,6 +9,7 @@ public class FloorShockWave : MonoBehaviour
     private PlayerCommon playerCommon;
     private LayerMask playersMask, groundMask;
     private List<uint> charAlreadyTouch;
+    private List<GameObject> kunaiAlreadyTouch;
 
     [SerializeField] private Vector2 colliderOffset, colliderSize;
     [SerializeField] private float distanceFromFloor = 1f;
@@ -19,12 +20,14 @@ public class FloorShockWave : MonoBehaviour
     [SerializeField] private float rayLengthVerti = 1f;
     [SerializeField] private Vector2 offsetVertiRaycast = new Vector2(1f, 0.2f);
     [SerializeField] private float maxDuration = 5f;
+    [SerializeField] private LayerMask kunaiMask;
 
     private void Awake()
     {
         playersMask = LayerMask.GetMask("Char");
         groundMask = LayerMask.GetMask("Floor", "WallProjectile");
         charAlreadyTouch = new List<uint>(4);
+        kunaiAlreadyTouch = new List<GameObject>(5);
     }
 
     public void Launch(bool right, float maxSpeed, FallAttack fallAttack)
@@ -76,6 +79,18 @@ public class FloorShockWave : MonoBehaviour
             }
         }
 
+        cols = PhysicsToric.OverlapBoxAll((Vector2)transform.position + colliderOffset, colliderSize, 0f, kunaiMask);
+        foreach (Collider2D col in cols)
+        {
+            GameObject kunaiGO = col.GetComponent<ToricObject>().original;
+            if(!kunaiAlreadyTouch.Contains(kunaiGO))
+            {
+                ConeProjectile kunai = kunaiGO.GetComponent<ConeProjectile>();
+                kunai?.ExplodeByShockWave(this);
+                kunaiAlreadyTouch.Add(kunaiGO);
+            }
+        }
+
         Vector2 beg = (Vector2)transform.position + (right ? offsetVertiRaycast : new Vector2(-offsetVertiRaycast.x, offsetVertiRaycast.y));
         ToricRaycastHit2D raycast = PhysicsToric.Raycast(beg, Vector2.down, rayLengthVerti, groundMask);
         bool hitground = raycast.collider != null;
@@ -91,6 +106,11 @@ public class FloorShockWave : MonoBehaviour
         }
 
         transform.position += (Vector3)(Vector2.right * (speedX * Time.deltaTime));
+    }
+
+    public void OnKunaiExplosionTouchPlayer(GameObject player)
+    {
+        fallAttack.OnTouchEnemyByKunaiExplosion(player, this);
     }
 
     #region Gizmos/OnValidate

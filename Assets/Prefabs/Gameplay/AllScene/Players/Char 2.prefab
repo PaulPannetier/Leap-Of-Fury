@@ -87,6 +87,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -108,6 +110,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -507,6 +510,7 @@ MonoBehaviour:
   controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 10
+  enableInputInDebugMode: 0
 --- !u!114 &5696250467530998310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -604,25 +608,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 5
+    duration: 0
   damageType: 1
   effectType: 0
   saveAttackStats: 0
+  remainingProjectiles: 0
   drawGizmos: 1
-  nbProjectile: 5
+  nbProjectile: 1
   coneAngle: 20
   coneRandomAngleVariation: 0.5
   projectilePrefabs: {fileID: -4588608683324307721, guid: b6012b6b9c0da344d867713ee06a4153, type: 3}
-  bumpForce: 30
+  bumpForce: 15
   projectileSpeed: 20
   instanciateDistance: 0.5
   delayBetweenProjectiles: 0.08
-  speedBonusPerPickProjectile:
-  - 0.1
-  - 0.2
-  - 0.3
-  - 0.4
-  - 0.5
   castDuration: 0.3
   useOnly8Dir: 1
 --- !u!114 &-2827172850822402626

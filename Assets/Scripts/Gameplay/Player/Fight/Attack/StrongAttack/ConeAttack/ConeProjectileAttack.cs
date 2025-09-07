@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Collision2D;
 
@@ -9,8 +8,7 @@ public class ConeProjectileAttack : StrongAttack
     private CharacterController charController;
     private bool isLaunchingProjectile = false;
     private Vector2 inputDir;
-    private int nbProjectilePick;
-    private List<ConeProjectile> currentProjectiles;
+    [SerializeField] private byte remainingProjectiles;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos;
@@ -24,30 +22,19 @@ public class ConeProjectileAttack : StrongAttack
     [SerializeField] private float projectileSpeed;
     [SerializeField] private float instanciateDistance;
     [SerializeField] private float delayBetweenProjectiles;
-    [SerializeField] private float[] speedBonusPerPickProjectile;
     [SerializeField] private float castDuration;
     [SerializeField] private bool useOnly8Dir = true;
 
     protected override void Awake()
     {
-#if UNITY_EDITOR || ADVANCE_DEBUG
-        if(speedBonusPerPickProjectile.Length < nbProjectile)
-        {
-            string errorMsg = $"speedBonusPerPickProjectile must have a length  >= at nbProjectile, but got {speedBonusPerPickProjectile.Length} < {nbProjectile}";
-            Debug.LogError(errorMsg);
-            LogManager.instance.AddLog(errorMsg, new object[] { speedBonusPerPickProjectile, nbProjectile });
-        }
-#endif
-
         base.Awake();
         charController = GetComponent<CharacterController>();
-        nbProjectilePick = 0;
-        currentProjectiles = new List<ConeProjectile>(nbProjectile);
+        remainingProjectiles = nbProjectile;
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
     {
-        if (!cooldown.isActive || isLaunchingProjectile)
+        if (!cooldown.isActive || isLaunchingProjectile || remainingProjectiles <= 0)
         {
             callbackEnableOtherAttack.Invoke();
             callbackEnableThisAttack.Invoke();
@@ -66,14 +53,7 @@ public class ConeProjectileAttack : StrongAttack
 
         yield return PauseManager.instance.Wait(castDuration);
 
-        for (int i = currentProjectiles.Count - 1; i >= 0; i--)
-        {
-            currentProjectiles[i].OnAttackReLaunch();
-        }
-
         yield return InstanciateProjectiles();
-
-        nbProjectilePick = 0;
 
         charController.UnFreeze();
 
@@ -87,16 +67,16 @@ public class ConeProjectileAttack : StrongAttack
 
     private IEnumerator InstanciateProjectiles()
     {
-        float[] angles = new float[nbProjectile];
+        float[] angles = new float[remainingProjectiles];
         float midAngle = Useful.AngleHori(Vector2.zero, inputDir);
 
-        if (nbProjectile.IsOdd())
+        if (remainingProjectiles.IsOdd())
         {
             angles[angles.Length >> 1] = midAngle;
-            if(nbProjectile > 1)
+            if(remainingProjectiles > 1)
             {
-                int end = (nbProjectile - 1) >> 1;
-                float angleStep = (coneAngle * Mathf.Deg2Rad) / (nbProjectile - 1);
+                int end = (remainingProjectiles - 1) >> 1;
+                float angleStep = (coneAngle * Mathf.Deg2Rad) / (remainingProjectiles - 1);
                 for (int i = 0; i < end; i++)
                 {
                     float angleOffset = (end - i) * angleStep;
@@ -112,16 +92,13 @@ public class ConeProjectileAttack : StrongAttack
         else
         {
             float startAngle = Useful.WrapAngle(midAngle - (coneAngle * Mathf.Deg2Rad * 0.5f));
-            float angleStep = coneAngle * Mathf.Deg2Rad / (nbProjectile - 1);
-
+            float angleStep = coneAngle * Mathf.Deg2Rad / (remainingProjectiles - 1);
             for(int i = 0; i < angles.Length; i++)
             {
                 angles[i] = startAngle + (i * angleStep);
             }
         }
 
-        float speedBonus = 1f + (nbProjectilePick > 0 ? speedBonusPerPickProjectile[nbProjectilePick - 1] : 0f);
-        float projSpeed = speedBonus * projectileSpeed;
         for (int i = 0; i < angles.Length; i++)
         {
             float angleVariationRad = coneRandomAngleVariation * Mathf.Deg2Rad;
@@ -129,21 +106,16 @@ public class ConeProjectileAttack : StrongAttack
             Vector2 dir = Useful.Vector2FromAngle(angle);
             Vector2 projectilePosition = (Vector2)transform.position + (instanciateDistance * dir);
             ConeProjectile coneProjectile = Instantiate(projectilePrefabs, projectilePosition, Quaternion.identity, CloneParent.cloneParent);
-            currentProjectiles.Add(coneProjectile);
-            coneProjectile.Launch(projSpeed, dir, this);
+            coneProjectile.Launch(projectileSpeed, dir, this);
             if (i != angles.Length - 1)
                 yield return PauseManager.instance.Wait(delayBetweenProjectiles);
         }
+        remainingProjectiles = 0;
     }
 
     public void PickProjectile(ConeProjectile projectile)
     {
-        nbProjectilePick++;
-    }
-
-    public void OnProjectileDestroy(ConeProjectile projectile)
-    {
-        currentProjectiles.Remove(projectile);
+        remainingProjectiles++;
     }
 
     public void OnProjectileTouchPlayer(GameObject player)

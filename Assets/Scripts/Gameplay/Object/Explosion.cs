@@ -1,8 +1,8 @@
-using System;
-using UnityEngine;
 using Collision2D;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Explosion : MonoBehaviour
 {
@@ -35,12 +35,18 @@ public class Explosion : MonoBehaviour
     public virtual void Launch(ExplosionData explosionData)
     {
         this.explosionData = explosionData;
-        StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
+        Launch();
     }
 
     public virtual void Launch()
     {
-        StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
+        if(explosionData.delay > 0f)
+        {
+            StartCoroutine(InvokeWithPause(StartExplode, explosionData.delay));
+            return;
+        }
+
+        StartExplode();
     }
 
     private IEnumerator InvokeWithPause(Action method, float delay)
@@ -127,7 +133,7 @@ public class Explosion : MonoBehaviour
     #region Custom Struct
 
     [Serializable]
-    public struct ExplosionData
+    public struct ExplosionData : ICloneable<ExplosionData>
     {
         public Vector2 offset;
         public float force;

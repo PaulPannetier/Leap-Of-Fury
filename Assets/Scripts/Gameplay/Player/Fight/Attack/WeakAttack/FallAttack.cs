@@ -210,6 +210,11 @@ public class FallAttack : WeakAttack
         OnTouchEnemy(enemy, damageType);
     }
 
+    public void OnTouchEnemyByKunaiExplosion(GameObject enemy, FloorShockWave shockWave)
+    {
+        OnTouchEnemy(enemy, damageType);
+    }
+
     #region Gizmos/OnValidate
 
 #if UNITY_EDITOR

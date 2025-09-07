@@ -222,7 +222,8 @@ public abstract class LevelManager : MonoBehaviour
                 }
             }
 
-            tmpGO.GetComponent<CharacterController>().Teleport(spawnPoint);
+            CharacterController charController = tmpGO.GetComponent<CharacterController>();
+            charController?.Teleport(spawnPoint);
         }
     }
 
@@ -267,9 +268,9 @@ public abstract class LevelManager : MonoBehaviour
         EventManager.instance.OnLevelRestart(levelName);
     }
 
-    #endregion
+#endregion
 
-    #endregion
+#endregion
 
     #region Block/Release Player
 
