@@ -7,6 +7,7 @@ public class BoomerangAttack : WeakAttack
 {
     private CharacterController movement;
     private Boomerang currentBoomerang;
+    private BoomrangAttractorAttack boomrangAttractorAttack;
 
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
@@ -26,6 +27,12 @@ public class BoomerangAttack : WeakAttack
         base.Awake();
         movement = GetComponent<CharacterController>();
         currentBoomerang = null;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        boomrangAttractorAttack = GetComponent<BoomrangAttractorAttack>();
     }
 
     public override bool Launch(Action callbackEnableOtherAttack, Action callbackEnableThisAttack)
@@ -53,7 +60,7 @@ public class BoomerangAttack : WeakAttack
     private BoomerangLaunchData CreateLaunchData(in Vector2 dir)
     {
         return new BoomerangLaunchData(dir, speedCurvePhase1, speedCurvePhase2, maxSpeedPhase1, durationPhase1,
-            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, minDelayBetweenPathfinfindSearch);
+            accelerationDurationPhase2, this, maxSpeedPhase2, recuperationRange, minDelayBetweenPathfinfindSearch, boomrangAttractorAttack.GetAttractors());
     }
 
     public void GetBack()

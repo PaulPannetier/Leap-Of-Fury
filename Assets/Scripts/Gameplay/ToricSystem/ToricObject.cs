@@ -10,6 +10,8 @@ using UnityEditor.SceneManagement;
 
 public class ToricObject : MonoBehaviour
 {
+    #region fields
+
     private static Hitbox[] mapsHitboxesAround;
     private static Vector2[] camOffsets;
     private static short[] invertCamOffsetIndex = new short[4] { 1, 0, 3, 2 };
@@ -40,6 +42,8 @@ public class ToricObject : MonoBehaviour
 #if UNITY_EDITOR
     [SerializeField] private bool drawGizmos = true;
 #endif
+
+    #endregion
 
     #region Awake/Start
 

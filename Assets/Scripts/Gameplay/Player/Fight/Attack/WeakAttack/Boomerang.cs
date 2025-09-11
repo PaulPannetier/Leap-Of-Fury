@@ -32,6 +32,7 @@ public class Boomerang : MonoBehaviour
     private List<uint> charAlreadyTouch;
     private PathFindingMap pathFindingMap;
     private float minDelayBetweenPathfindingSearch;
+    private BoomerangAttractor[] attractors;
 
     [SerializeField] private Vector2 groundCircleOffset;
     [SerializeField] private float groundCircleRadius;
@@ -65,6 +66,7 @@ public class Boomerang : MonoBehaviour
         recuperationRange = boomerangLauchData.recuperationRange;
         accelerationDurationPhase2 = boomerangLauchData.accelerationDurationPhase2;
         minDelayBetweenPathfindingSearch = boomerangLauchData.minDelayBetweenPathfindingSearch;
+        attractors = boomerangLauchData.attractors;
 
         state = State.go;
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate(0f) * dir;
@@ -334,9 +336,10 @@ public class Boomerang : MonoBehaviour
         public float maxSpeedPhase2;
         public float recuperationRange;
         public float minDelayBetweenPathfindingSearch;
+        public BoomerangAttractor[] attractors;
 
-        public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1,
-            float durationPhase1, float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange, float minDelayBetweenPathfindingSearch)
+        public BoomerangLaunchData(in Vector2 dir, AnimationCurve speedCurvePhase1, AnimationCurve accelerationCurvePhase2, float maxSpeedPhase1, float durationPhase1, 
+            float accelerationDurationPhase2, BoomerangAttack sender, float maxSpeedPhase2, float recuperationRange, float minDelayBetweenPathfindingSearch, BoomerangAttractor[] attractors)
         {
             this.dir = dir;
             this.speedCurvePhase1 = speedCurvePhase1;
@@ -348,6 +351,7 @@ public class Boomerang : MonoBehaviour
             this.maxSpeedPhase2 = maxSpeedPhase2;
             this.recuperationRange = recuperationRange;
             this.minDelayBetweenPathfindingSearch = minDelayBetweenPathfindingSearch;
+            this.attractors = attractors;
         }
     }
 

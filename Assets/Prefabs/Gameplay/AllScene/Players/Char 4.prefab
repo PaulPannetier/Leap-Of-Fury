@@ -20,8 +20,8 @@ GameObject:
   - component: {fileID: 7598047637200888153}
   - component: {fileID: 7187370182271411996}
   - component: {fileID: 8225929942963548096}
-  - component: {fileID: 8772814098921323935}
   - component: {fileID: 1455914444206811459}
+  - component: {fileID: 6810351067515710340}
   - component: {fileID: -9218597178057366274}
   - component: {fileID: 9133659135209447674}
   m_Layer: 8
@@ -88,6 +88,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -109,6 +111,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -509,6 +512,7 @@ MonoBehaviour:
   controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 10
+  enableInputInDebugMode: 0
 --- !u!114 &5907287823364622964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -681,140 +685,6 @@ MonoBehaviour:
   accelerationDurationPhase2: 0.75
   recuperationRange: 0.9
   minDelayBetweenPathfinfindSearch: 0.5
---- !u!114 &8772814098921323935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8090791378756873177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8b457fea88e6e44593e520f86a69d3f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown:
-    duration: 5
-  damageType: 1
-  effectType: 1
-  saveAttackStats: 0
-  drawGizmos: 1
-  castAngle: 10
-  grabRange: 5
-  nbRaycast: 7
-  minGrabDistance: 0.5
-  only8Dir: 1
-  killOffset: {x: 0, y: -0.2}
-  killRadius: 0.5
-  keepSpeedAtEnd: 1
-  waitingTimeWhenWallGrab: 0.3
-  maxWallGrabDuration: 1.2
-  wallDurationOverDistance:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallPositionOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  wallGapUp: 0.7
-  wallGapDown: 0.077
-  wallGapRight: 0.38
-  wallGapLeft: 0.38
-  wallRendererPrefabs: {fileID: 2604678237996722220, guid: 7eaeeb20e10e40347a78b65f7ba34ca3, type: 3}
-  stunEffectParams:
-    duration: 0
-  waitingTimeWhenCharGrab: 0.2
-  maxCharGrabDuration: 1
-  charDurationOverDistance:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  charPositionOverTime:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  charRendererPrefabs: {fileID: 2604678237996722220, guid: 7eaeeb20e10e40347a78b65f7ba34ca3, type: 3}
 --- !u!114 &1455914444206811459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,6 +705,26 @@ MonoBehaviour:
   enableBehaviour: 1
   minTransparency: 0.3
   transitionTime: 0.2
+--- !u!114 &6810351067515710340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090791378756873177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f099b51c5af8140bbba63b8343858a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoomrangAttractorAttack
+  cooldown:
+    duration: 5
+  damageType: 1
+  effectType: 0
+  saveAttackStats: 0
+  attractorPrefabs: {fileID: 0}
+  maxAttractor: 5
+  maxFallSpeed: 10
 --- !u!114 &-9218597178057366274
 MonoBehaviour:
   m_ObjectHideFlags: 0
