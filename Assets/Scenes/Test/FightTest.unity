@@ -19135,27 +19135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b490c0bca849d644af28cfea18730c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5180568992736419868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7579116031719006273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5f099b51c5af8140bbba63b8343858a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoomrangAttractorAttack
-  cooldown:
-    duration: 5
-  damageType: 1
-  effectType: 0
-  saveAttackStats: 0
-  attractorPrefabs: {fileID: 0}
-  maxAttractor: 5
-  buildDuration: 0.2
-  maxDistanceFromGround: 0.5
 --- !u!483693784 &5215712614798527952
 TilemapRenderer:
   m_ObjectHideFlags: 0
@@ -19686,7 +19665,6 @@ GameObject:
   - component: {fileID: 8851971449394130052}
   - component: {fileID: 7732242442813678680}
   - component: {fileID: 959931112254235355}
-  - component: {fileID: 5180568992736419868}
   - component: {fileID: 1834892006605991782}
   - component: {fileID: 7469053598201408354}
   m_Layer: 8

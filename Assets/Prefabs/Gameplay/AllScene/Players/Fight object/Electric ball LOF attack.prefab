@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3604314682442880516
+--- !u!1 &7295266410334006363
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8076649698132536614}
-  - component: {fileID: 5954806483966566164}
-  - component: {fileID: 4603778544786702198}
-  - component: {fileID: 3335232465735334964}
-  - component: {fileID: 4488807305103867509}
+  - component: {fileID: 3810974421068689301}
+  - component: {fileID: 7899377082103135873}
+  - component: {fileID: 6033679100289738825}
+  - component: {fileID: -8890992416196568727}
   m_Layer: 0
-  m_Name: BoomerangAttractor
+  m_Name: Electric ball LOF attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8076649698132536614
+--- !u!4 &3810974421068689301
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3604314682442880516}
+  m_GameObject: {fileID: 7295266410334006363}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -35,13 +34,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5954806483966566164
+--- !u!212 &7899377082103135873
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3604314682442880516}
+  m_GameObject: {fileID: 7295266410334006363}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -82,28 +81,28 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 6010608223010618213, guid: 0c39112578171ea46990237287112437, type: 3}
+  m_Sprite: {fileID: 6492718321895212031, guid: 9be98b89f0132184c8c1896a459f562c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &4603778544786702198
+--- !u!95 &6033679100289738825
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3604314682442880516}
+  m_GameObject: {fileID: 7295266410334006363}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: db060e4d4efa8774e84a09c77dfb242a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 16402a45590205a4b97cd2a293d1abbc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -115,41 +114,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3335232465735334964
+--- !u!114 &-8890992416196568727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3604314682442880516}
+  m_GameObject: {fileID: 7295266410334006363}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 83751c831284677468a45571fdb25768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToricObject
   boundsOffset: {x: 0, y: 0}
-  boundsSize: {x: 1, y: 1}
+  boundsSize: {x: 1.2, y: 1.2}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  componentsToDisableInClone:
-  - {fileID: 4488807305103867509}
-  componentsToSynchroniseInClone:
-  - {fileID: 5954806483966566164}
-  - {fileID: 4603778544786702198}
+  componentsToDisableInClone: []
+  componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   useCustomUpdate: 0
   drawGizmos: 1
---- !u!114 &4488807305103867509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3604314682442880516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb93247eefcfb4441a388bec2b062d13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoomerangAttractor
-  distanceFromGround: 0.5

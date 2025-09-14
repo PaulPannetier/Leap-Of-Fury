@@ -59,7 +59,7 @@ perso 3 : *
 
 perso 4 : *
 	  attack faible : lance un boomerang qui revient apres avoir touché un mur ou avancé trop longtemps puis qui reviens au joueur.//ok
-	  attack forte : Le joueur pose une antenne sur le sol, au lancement du boommerang, le boomerang va sur l'antenne  avant de revenir au personage. 
+	  attack forte : Fait un grand saut vers le haut suivit d'une explosion électique
 	  Passif : le perso est + transparent lorsqu'il ne touche pas le sol ou un mur//ok ***
 
 perso 5 : *
@@ -140,6 +140,7 @@ Name : Chaos
 
 TODO :
 review apex grab
+test PAUSE
 add UI to char 3 arrow attack to indicate the nb of arrow
 Add other char UI
 verify hide cursor on build

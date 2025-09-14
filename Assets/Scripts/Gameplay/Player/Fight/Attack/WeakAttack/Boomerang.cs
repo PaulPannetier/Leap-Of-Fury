@@ -5,6 +5,7 @@ using Collider2D = UnityEngine.Collider2D;
 using static PathFinderToric;
 using BezierUtility;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Boomerang : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class Boomerang : MonoBehaviour
     private List<uint> charAlreadyTouch;
     private PathFindingMap pathFindingMap;
     private float minDelayBetweenPathfindingSearch;
-    private BoomerangAttractor[] attractors;
+    private List<BoomerangAttractor> attractors;
 
     [SerializeField] private Vector2 groundCircleOffset;
     [SerializeField] private float groundCircleRadius;
@@ -66,7 +67,7 @@ public class Boomerang : MonoBehaviour
         recuperationRange = boomerangLauchData.recuperationRange;
         accelerationDurationPhase2 = boomerangLauchData.accelerationDurationPhase2;
         minDelayBetweenPathfindingSearch = boomerangLauchData.minDelayBetweenPathfindingSearch;
-        attractors = boomerangLauchData.attractors;
+        attractors = boomerangLauchData.attractors.ToList();
 
         state = State.go;
         velocity = maxSpeedPhase1 * speedCurvePhase1.Evaluate(0f) * dir;
@@ -192,7 +193,9 @@ public class Boomerang : MonoBehaviour
 
             if (path == null)
             {
-                LogManager.instance.AddLog("No valid path was found, destroying boomerang");
+                string errorMsg = "No valid path was found, destroying boomerang";
+                LogManager.instance.AddLog(errorMsg);
+                Debug.LogWarning(errorMsg);
                 StartDestroy();
                 return;
             }

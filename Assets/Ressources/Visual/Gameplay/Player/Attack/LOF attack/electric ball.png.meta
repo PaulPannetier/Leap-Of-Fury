@@ -1,34 +1,10 @@
 fileFormatVersion: 2
-guid: 0c39112578171ea46990237287112437
+guid: 9be98b89f0132184c8c1896a459f562c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6010608223010618213
-    second: wifi_0
-  - first:
-      213: -282332362840517431
-    second: wifi_1
-  - first:
-      213: 3685890569525003487
-    second: wifi_2
-  - first:
-      213: 107041130348426547
-    second: wifi_3
-  - first:
-      213: 384146834060908940
-    second: wifi_4
-  - first:
-      213: -7039851822894693920
-    second: wifi_5
-  - first:
-      213: 6219522102249543970
-    second: wifi_6
-  - first:
-      213: -6459911850397066103
-    second: wifi_7
-  - first:
-      213: -2158619858076186491
-    second: wifi_8
+      213: 6492718321895212031
+    second: electric ball_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -124,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wifi_0
+      name: electric ball_0
       rect:
         serializedVersion: 2
         x: 0
@@ -139,14 +115,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 56bf6905558f96350800000000000000
-      internalID: 6010608223010618213
+      spriteID: ff30c33f9e4ca1a50800000000000000
+      internalID: 6492718321895212031
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wifi_1
+      name: electric ball_1
       rect:
         serializedVersion: 2
         x: 16
@@ -159,54 +135,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 9c45b4c3634f41cf0800000000000000
-      internalID: -282332362840517431
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wifi_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: fd4008db1f9e62330800000000000000
-      internalID: 3685890569525003487
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wifi_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 33536c647594c7100800000000000000
-      internalID: 107041130348426547
+      spriteID: a5e05ae923e12054a91ed0a580967906
+      internalID: -513299590
       vertices: []
       indices: 
       edges: []
@@ -215,7 +147,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 0a370999d686b1b4a9d65f22fc6159e6
+    spriteID: 9a8ef546d3375144e9e022832f6b850f
     internalID: 0
     vertices: []
     indices: 
@@ -227,10 +159,8 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      wifi_0: 6010608223010618213
-      wifi_1: -282332362840517431
-      wifi_2: 3685890569525003487
-      wifi_3: 107041130348426547
+      electric ball_0: 6492718321895212031
+      electric ball_1: -513299590
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

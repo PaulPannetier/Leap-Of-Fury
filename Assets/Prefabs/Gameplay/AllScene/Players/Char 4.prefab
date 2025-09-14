@@ -20,8 +20,8 @@ GameObject:
   - component: {fileID: 7598047637200888153}
   - component: {fileID: 7187370182271411996}
   - component: {fileID: 8225929942963548096}
+  - component: {fileID: 6153229357324786337}
   - component: {fileID: 1455914444206811459}
-  - component: {fileID: 6810351067515710340}
   - component: {fileID: -9218597178057366274}
   - component: {fileID: 9133659135209447674}
   m_Layer: 8
@@ -685,6 +685,32 @@ MonoBehaviour:
   accelerationDurationPhase2: 0.75
   recuperationRange: 0.9
   minDelayBetweenPathfinfindSearch: 0.5
+--- !u!114 &6153229357324786337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090791378756873177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf1defd6f3692a4386adb2359bb9d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LeapOfFuryAttack
+  cooldown:
+    duration: 5
+  damageType: 1
+  effectType: 0
+  saveAttackStats: 0
+  castDuration: 0
+  maxJumpSpeed: 0
+  jumpDuration: 0
+  jumpSpeedOverTime:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &1455914444206811459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -705,26 +731,6 @@ MonoBehaviour:
   enableBehaviour: 1
   minTransparency: 0.3
   transitionTime: 0.2
---- !u!114 &6810351067515710340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8090791378756873177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5f099b51c5af8140bbba63b8343858a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BoomrangAttractorAttack
-  cooldown:
-    duration: 5
-  damageType: 1
-  effectType: 0
-  saveAttackStats: 0
-  attractorPrefabs: {fileID: 0}
-  maxAttractor: 5
-  maxFallSpeed: 10
 --- !u!114 &-9218597178057366274
 MonoBehaviour:
   m_ObjectHideFlags: 0
