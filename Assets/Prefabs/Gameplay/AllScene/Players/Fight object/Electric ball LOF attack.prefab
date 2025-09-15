@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7899377082103135873}
   - component: {fileID: 6033679100289738825}
   - component: {fileID: -8890992416196568727}
+  - component: {fileID: 1422813508297451249}
   m_Layer: 0
   m_Name: Electric ball LOF attack
   m_TagString: Untagged
@@ -136,3 +137,25 @@ MonoBehaviour:
   chidrenToRemoveInClone: []
   useCustomUpdate: 0
   drawGizmos: 1
+--- !u!114 &1422813508297451249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295266410334006363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d3dd0d107daba418a733de11c11caf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Explosion
+  oneTouchPerCollider: 1
+  explosionData:
+    offset: {x: 0, y: 0}
+    force: 0
+    radius: 0
+    delay: 0
+    duration: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
