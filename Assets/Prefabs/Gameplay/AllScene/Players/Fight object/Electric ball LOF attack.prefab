@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToricObject
   boundsOffset: {x: 0, y: 0}
-  boundsSize: {x: 1.2, y: 1.2}
+  boundsSize: {x: 1, y: 1}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0

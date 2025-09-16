@@ -702,9 +702,9 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  castDuration: 0.25
+  castDuration: 0.5
   maxJumpSpeed: 30
-  jumpDuration: 1.5
+  jumpDuration: 0.3
   jumpSpeedOverTime:
     serializedVersion: 2
     m_Curve:
@@ -718,19 +718,19 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.061482843
     - serializedVersion: 3
-      time: 0.8453049
-      value: 0.6130503
-      inSlope: -1.8039762
-      outSlope: -1.8039762
+      time: 0.77523655
+      value: 0.6087473
+      inSlope: -1.6067598
+      outSlope: -1.6067598
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.19455583
+      outWeight: 0.16181266
     - serializedVersion: 3
-      time: 1
-      value: -0.0000076293945
-      inSlope: -3.9630082
-      outSlope: -3.9630082
+      time: 1.0000184
+      value: 0.000021262094
+      inSlope: -2.708075
+      outSlope: -2.708075
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -738,38 +738,43 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ceilRaycastLength: 0.45
+  ceilingBoxHeight: 0.65
   explosionPrefab: {fileID: 1422813508297451249, guid: 0c675fea74850a343a4014e7ffabe599, type: 3}
   explosionData:
   - offset: {x: 0, y: 0}
-    force: 0
+    force: 1
     radius: 1.25
     delay: 0
-    duration: 0
+    duration: 0.45000002
     layerMask:
       serializedVersion: 2
-      m_Bits: 16392
+      m_Bits: 256
   - offset: {x: 0, y: 0}
-    force: 0
+    force: 1
     radius: 0.75
     delay: 0
-    duration: 0
+    duration: 0.3
     layerMask:
       serializedVersion: 2
-      m_Bits: 16392
+      m_Bits: 256
   - offset: {x: 0, y: 0}
-    force: 0
+    force: 1
     radius: 0.4
     delay: 0
-    duration: 0
+    duration: 0.15
     layerMask:
       serializedVersion: 2
-      m_Bits: 16392
+      m_Bits: 256
   explosionDistances:
   - 1.5
   - 3.5
   - 4.65
-  durationBetweenExplosion: 0.25
+  durationBetweenExplosion: 0.15
+  initSpeed: 0.7
+  horizontalSpeed: 10
+  horizontalSpeedLerp: 20
+  hitboxOffset: {x: 0.4, y: -0.22}
+  hitboxWidth: 0.3
 --- !u!114 &1455914444206811459
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -256,7 +256,8 @@ public class ToricObject : MonoBehaviour
                 {
                     if (clone.boundsIndex == i)
                     {
-                        Vector3 oldPos = transform.position, tmpScale = transform.localScale;
+                        Vector3 oldPos = transform.position;
+                        Vector3 tmpScale = transform.localScale;
                         Quaternion tmpRot = transform.rotation;
                         Vector2 newPos = (Vector2)transform.position + clone.offset;
                         transform.SetPositionAndRotation(newPos, clone.go.transform.rotation);
@@ -265,8 +266,6 @@ public class ToricObject : MonoBehaviour
 
                         onTeleportCallback.Invoke(newPos, oldPos);
 
-                        clone.go.transform.position = oldPos;
-                        clone.go.transform.rotation = tmpRot;
                         clone.go.transform.SetPositionAndRotation(oldPos, tmpRot);
                         clone.go.transform.localScale = tmpScale;
                         clone.offset *= -1f;
@@ -349,14 +348,12 @@ public class ToricObject : MonoBehaviour
 #endif
             RemoveClones();
             transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
-            print("Debug pls");
         }
 
         //Anti bug 2
         if (clones.Count <= 0 && !PhysicsToric.IsPointInsideBound((Vector2)transform.position + boundsOffset))
         {
             transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
-            print("Debug pls");
         }
 
         //Anti bug 3
@@ -376,7 +373,6 @@ public class ToricObject : MonoBehaviour
             {
                 RemoveClones();
                 transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
-                print("Debug pls");
             }
         }
     }
