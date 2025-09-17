@@ -7,7 +7,6 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
     private float lastTimeLauch = -10;
-    protected SpriteRenderer spriteRenderer;
     private ToricObject toricObject;
     private bool isExploding = false;
     private List<UnityEngine.Collider2D> colAlreadyTouch;
@@ -28,7 +27,6 @@ public class Explosion : MonoBehaviour
         callbackOnTouch = (UnityEngine.Collider2D arg) => { };
         callbackOnDestroy = (Explosion arg) => { };
         toricObject = GetComponent<ToricObject>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         colAlreadyTouch = new List<UnityEngine.Collider2D>();
     }
 
@@ -61,13 +59,14 @@ public class Explosion : MonoBehaviour
         toricObject.boundsSize = new Vector2(2f * explosionData.radius, 2f * explosionData.radius);
         lastTimeLauch = Time.time;
         isExploding = true;
+        enableBehaviour = true;
         ExplosionManager.instance.CreateExplosion((Vector2)transform.position + explosionData.offset, explosionData.force);
         colAlreadyTouch.Clear();
     }
 
     protected virtual void Update()
     {
-        if(PauseManager.instance.isPauseEnable)
+        if (PauseManager.instance.isPauseEnable)
         {
             lastTimeLauch += Time.deltaTime;
             return;

@@ -60,7 +60,7 @@ public abstract class Attack : MonoBehaviour
     {
         enemy = enemy.GetComponent<ToricObject>().original;
         eventController.OnTouchAttack(this, enemy, damageType);
-        enemy.GetComponent<ToricObject>().original.GetComponent<EventController>().OnBeenTouchAttack(this, gameObject, damageType);
+        enemy.GetComponent<EventController>().OnBeenTouchAttack(this, gameObject, damageType);
     }
 
     protected virtual void OnTriggerAnimatorSetFloat(string name, float value)

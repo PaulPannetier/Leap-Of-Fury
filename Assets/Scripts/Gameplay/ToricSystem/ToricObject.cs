@@ -4,6 +4,8 @@ using UnityEngine;
 using Collision2D;
 using System.Collections;
 using System.Reflection;
+using System.Diagnostics.Contracts;
+
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 #endif
@@ -20,6 +22,7 @@ public class ToricObject : MonoBehaviour
     private new Transform transform;
     private List<ObjectClone> clones;
     private Hitbox currentHitbox;
+    private Dictionary<int, HashSet<int>> childrenCloneMapping; // map child InstanceID from original to clones child 
 
     [SerializeField] private Vector2 boundsOffset;
     public Vector2 boundsSize;
@@ -31,6 +34,7 @@ public class ToricObject : MonoBehaviour
     [SerializeField] private List<Component> componentsToDisableInClone;
     [SerializeField] private List<Component> componentsToSynchroniseInClone;
     public List<GameObject> chidrenToRemoveInClone;
+    [Tooltip("Synchronise all component of the child"), SerializeField] private Transform[] childrenToSynchronise;
 
     [Tooltip("Allow to call the update methods externally (via other script).")] public bool useCustomUpdate = false;
 
@@ -54,6 +58,7 @@ public class ToricObject : MonoBehaviour
         onCloneDestroyCallback = (GameObject clone) => { };
         EventManager.instance.callbackOnMapChanged += OnMapChange;
         clones = new List<ObjectClone>(4);
+        childrenCloneMapping = new Dictionary<int, HashSet<int>>(childrenToSynchronise.Length);
         this.transform = base.transform;
     }
 
@@ -101,7 +106,7 @@ public class ToricObject : MonoBehaviour
     {
         if(isAClone)
         {
-            //on applique la fonction a l'original
+            //Apply the method for  the original gameobject
             MonoBehaviour comp = cloner.GetComponent<T>();
             if(comp != null)
             {
@@ -126,96 +131,108 @@ public class ToricObject : MonoBehaviour
         comp.Invoke(methodName, 0f);
     }
 
-    private void SynchComponent<T>(T comp) where T : Component
+    private void SynchComponent<T>(GameObject clone, T comp) where T : Component
     {
-        if(comp is Animator animator)
+        if (comp is Animator animator)
         {
-            SynchAnimator(animator);
+            SynchAnimator(clone, animator);
             return;
         }
 
-        if (comp is SpriteRenderer sr)
+        if (comp is SpriteRenderer spriteRenderer)
         {
-            SynchSpriteRenderer(sr);
+            SynchSpriteRenderer(clone, spriteRenderer);
             return;
         }
 
-        foreach (ObjectClone clone in clones)
+        if (comp is ParticleSystem particleSystem)
         {
-            T cloneComp = (T)clone.go.GetComponent(comp.GetType());
-            Type type = cloneComp.GetType();
+            SynchParticleSystem(clone, particleSystem);
+            return;
+        }
 
-            FieldInfo[] fields = type.GetFields();
-            PropertyInfo[] properties = type.GetProperties();
+        T cloneComp = (T)clone.GetComponent(comp.GetType());
+        Type type = cloneComp.GetType();
 
-            foreach (FieldInfo field in fields)
+        FieldInfo[] fields = type.GetFields();
+        PropertyInfo[] properties = type.GetProperties();
+
+        foreach (FieldInfo field in fields)
+        {
+            if (field.IsPublic || field.GetCustomAttribute<SerializeField>() != null)
             {
-                if (field.IsPublic || field.GetCustomAttribute<SerializeField>() != null)
-                {
-                    object value = field.GetValue(comp);
-                    field.SetValue(cloneComp, value);
-                }
+                object value = field.GetValue(comp);
+                field.SetValue(cloneComp, value);
             }
+        }
 
-            foreach (PropertyInfo propertyInfo in properties)
+        foreach (PropertyInfo propertyInfo in properties)
+        {
+            if (propertyInfo.CanWrite && propertyInfo.CanRead)
             {
-                if (propertyInfo.CanWrite && propertyInfo.CanRead)
-                {
-                    object value = propertyInfo.GetValue(comp);
-                    propertyInfo.SetValue(cloneComp, value);
-                }
+                object value = propertyInfo.GetValue(comp);
+                propertyInfo.SetValue(cloneComp, value);
             }
         }
     }
 
-    private void SynchSpriteRenderer(SpriteRenderer spriteRenderer)
+    private void SynchSpriteRenderer(GameObject clone, SpriteRenderer spriteRenderer)
     {
-        foreach (ObjectClone clone in clones)
-        {
-            SpriteRenderer cloneRenderer = clone.go.GetComponent<SpriteRenderer>();
-            if(cloneRenderer == null)
-                continue;
+        SpriteRenderer cloneRenderer = clone.GetComponentInChildren<SpriteRenderer>();
+        if (cloneRenderer == null)
+            return;
 
-            cloneRenderer.sprite = spriteRenderer.sprite;
-            cloneRenderer.color = spriteRenderer.color;
-            cloneRenderer.flipX = spriteRenderer.flipX;
-            cloneRenderer.flipY = spriteRenderer.flipY;
-            cloneRenderer.drawMode = spriteRenderer.drawMode;
-            cloneRenderer.maskInteraction = spriteRenderer.maskInteraction;
-            cloneRenderer.spriteSortPoint = spriteRenderer.spriteSortPoint;
-            cloneRenderer.material = spriteRenderer.material;
-            cloneRenderer.sortingOrder = spriteRenderer.sortingOrder;
-            cloneRenderer.renderingLayerMask = spriteRenderer.renderingLayerMask;
-            cloneRenderer.sortingLayerID = spriteRenderer.sortingLayerID;
-            cloneRenderer.sortingLayerName = spriteRenderer.sortingLayerName;
-        }
+        cloneRenderer.sprite = spriteRenderer.sprite;
+        cloneRenderer.color = spriteRenderer.color;
+        cloneRenderer.flipX = spriteRenderer.flipX;
+        cloneRenderer.flipY = spriteRenderer.flipY;
+        cloneRenderer.drawMode = spriteRenderer.drawMode;
+        cloneRenderer.maskInteraction = spriteRenderer.maskInteraction;
+        cloneRenderer.spriteSortPoint = spriteRenderer.spriteSortPoint;
+        cloneRenderer.material = spriteRenderer.material;
+        cloneRenderer.sortingOrder = spriteRenderer.sortingOrder;
+        cloneRenderer.renderingLayerMask = spriteRenderer.renderingLayerMask;
+        cloneRenderer.sortingLayerID = spriteRenderer.sortingLayerID;
+        cloneRenderer.sortingLayerName = spriteRenderer.sortingLayerName;
     }
 
-    private void SynchAnimator(Animator animator)
+    private void SynchAnimator(GameObject clone, Animator animator)
     {
-        foreach (ObjectClone clone in clones)
+        Animator cloneAnimator = clone.GetComponentInChildren<Animator>();
+        if(cloneAnimator == null)
+            return;
+
+        foreach (AnimatorControllerParameter animParam in animator.parameters)
         {
-            if(clone.animator != null)
+            switch (animParam.type)
             {
-                foreach (AnimatorControllerParameter animParam in animator.parameters)
-                {
-                    switch (animParam.type)
-                    {
-                        case AnimatorControllerParameterType.Float:
-                            clone.animator.SetFloat(animParam.nameHash, animator.GetFloat(animParam.nameHash));
-                            break;
-                        case AnimatorControllerParameterType.Int:
-                            clone.animator.SetInteger(animParam.nameHash, animator.GetInteger(animParam.nameHash));
-                            break;
-                        case AnimatorControllerParameterType.Bool:
-                            clone.animator.SetBool(animParam.nameHash, animator.GetBool(animParam.nameHash));
-                            break;
-                        default:
-                            break;
-                    }
-                }
+                case AnimatorControllerParameterType.Float:
+                    cloneAnimator.SetFloat(animParam.nameHash, animator.GetFloat(animParam.nameHash));
+                    break;
+                case AnimatorControllerParameterType.Int:
+                    cloneAnimator.SetInteger(animParam.nameHash, animator.GetInteger(animParam.nameHash));
+                    break;
+                case AnimatorControllerParameterType.Bool:
+                    cloneAnimator.SetBool(animParam.nameHash, animator.GetBool(animParam.nameHash));
+                    break;
+                default:
+                    break;
             }
         }
+        cloneAnimator.speed = animator.speed;
+    }
+
+    private void SynchParticleSystem(GameObject clone, ParticleSystem particleSystem)
+    {
+        ParticleSystem cloneParticleSystem = clone.GetComponentInChildren<ParticleSystem>();
+        if (cloneParticleSystem == null)
+            return;
+
+        cloneParticleSystem.Clear(true);
+        ParticleSystem.Particle[] particles = new ParticleSystem.Particle[particleSystem.particleCount];
+        particleSystem.GetParticles(particles);
+        cloneParticleSystem.SetParticles(particles);
+        cloneParticleSystem.Play();
     }
 
     #endregion
@@ -224,6 +241,14 @@ public class ToricObject : MonoBehaviour
 
     public void CustomUpdate()
     {
+        if (isAClone)
+        {
+            string errorMsg = "Can't call CustomUpdate on a clone!";
+            LogManager.instance.AddLog(errorMsg);
+            Debug.LogWarning(errorMsg);
+            return;
+        }
+
         UpdateInternal();
     }
 
@@ -251,7 +276,7 @@ public class ToricObject : MonoBehaviour
         {
             if (oldCollideCamBounds[i] && mapsHitboxesAround[i].Contains(currentHitbox.center))
             {
-                //On switch le clone est l'original
+                //Switch the clone and the original
                 foreach (ObjectClone clone in clones)
                 {
                     if (clone.boundsIndex == i)
@@ -289,6 +314,21 @@ public class ToricObject : MonoBehaviour
             if(collideWithCamBounds[i] && !oldCollideCamBounds[i])
             {
                 GameObject tmpGO = Instantiate(gameObject, CloneParent.cloneParent);
+                foreach(Transform child in transform)
+                {
+                    GameObject childClone = Instantiate(child.gameObject, tmpGO.transform);
+
+                    int childInstanceId = child.GetInstanceID();
+                    if (childrenCloneMapping.ContainsKey(childInstanceId))
+                    {
+                        childrenCloneMapping[childInstanceId].Add(childClone.GetInstanceID());
+                    }
+                    else
+                    {
+                        childrenCloneMapping.Add(childInstanceId, new HashSet<int>(4) { childClone.GetInstanceID() });
+                    }
+                }
+
                 ObjectClone clone = new ObjectClone(tmpGO, gameObject, camOffsets[i], i);
                 foreach(Component component in clone.toricObject.componentsToDisableInClone)
                 {
@@ -312,7 +352,7 @@ public class ToricObject : MonoBehaviour
         {
             if (oldCollideCamBounds[i] && !collideWithCamBounds[i])
             {
-                //Remove ieme clone
+                //Remove clone N°i
                 foreach (ObjectClone clone in clones)
                 {
                     if (clone.boundsIndex == i)
@@ -332,20 +372,50 @@ public class ToricObject : MonoBehaviour
 
             foreach (Component comp in componentsToSynchroniseInClone)
             {
-                SynchComponent(comp);
+                SynchComponent(clone.go, comp);
+            }
+        }
+
+        foreach (Transform child in childrenToSynchronise)
+        {
+            if(!childrenCloneMapping.TryGetValue(child.gameObject.GetInstanceID(), out HashSet<int> clonesInstanceID))
+                continue;
+
+            foreach(ObjectClone clone in clones)
+            {
+                GameObject GetChildCloneWithID(GameObject clone, HashSet<int> clonesInstanceID)
+                {
+                    foreach (Transform childClone in clone.transform)
+                    {
+                        if (clonesInstanceID.Contains(childClone.gameObject.GetInstanceID()))
+                            return childClone.gameObject;
+                    }
+                    return null;
+                }
+
+                GameObject childClone = GetChildCloneWithID(clone.go, clonesInstanceID);
+                if (childClone == null)
+                    continue;
+
+                //Sync each of it's component
+                int componentCout = childClone.GetComponentCount();
+                for (int i = 0; i < componentCout; i++)
+                {
+                    Component component = childClone.GetComponentAtIndex(i);
+                    if(component is not Transform)
+                    {
+                        SynchComponent<Component>(childClone, component);
+                    }
+                }
             }
         }
 
         oldCollideCamBounds = collideWithCamBounds;
 
         //Anti bug
-
         int maxClone = enableHorizontal ? (enableVertical ? 3 : 1) : (enableVertical ? 1 : 0);
         if(clones.Count > maxClone)
         {
-#if false && (UNITY_EDITOR || ADVANCE_DEBUG)
-            LogManager.instance.WriteLog($"The number of clones of the GO cannot exceed {maxClone} but reach {clones.Count}", clones, maxClone, transform.position, gameObject);
-#endif
             RemoveClones();
             transform.position = PhysicsToric.GetPointInsideBounds((Vector2)transform.position + boundsOffset) - boundsOffset;
         }
@@ -469,7 +539,7 @@ public class ToricObject : MonoBehaviour
 
     #endregion
 
-    #region Class
+    #region Custom class
 
     [Serializable]
     public class ObjectClone

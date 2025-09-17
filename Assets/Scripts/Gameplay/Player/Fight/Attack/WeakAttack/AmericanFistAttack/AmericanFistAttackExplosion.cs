@@ -3,9 +3,16 @@ using UnityEngine;
 public class AmericanFistAttackExplosion : Explosion
 {
     private AmericanFistAttack originalAttack;
+    private SpriteRenderer spriteRenderer;
 
     [SerializeField] private Color colorActivate;
     [SerializeField] private Color colorDesactivate;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public override void Launch()
     {

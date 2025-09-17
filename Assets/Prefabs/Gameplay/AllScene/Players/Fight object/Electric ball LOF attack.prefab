@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6033679100289738825}
   - component: {fileID: -8890992416196568727}
   - component: {fileID: 1422813508297451249}
+  - component: {fileID: 3324937222897575695}
   m_Layer: 0
   m_Name: Electric ball LOF attack
   m_TagString: Untagged
@@ -132,8 +133,11 @@ MonoBehaviour:
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
-  componentsToDisableInClone: []
-  componentsToSynchroniseInClone: []
+  componentsToDisableInClone:
+  - {fileID: 1422813508297451249}
+  componentsToSynchroniseInClone:
+  - {fileID: 7899377082103135873}
+  - {fileID: 6033679100289738825}
   chidrenToRemoveInClone: []
   useCustomUpdate: 0
   drawGizmos: 1
@@ -159,3 +163,18 @@ MonoBehaviour:
     layerMask:
       serializedVersion: 2
       m_Bits: 0
+--- !u!114 &3324937222897575695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295266410334006363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DisableComponentAtPause
+  componentsToDisable: []
+  componentsToStopAtPause:
+  - {fileID: 6033679100289738825}

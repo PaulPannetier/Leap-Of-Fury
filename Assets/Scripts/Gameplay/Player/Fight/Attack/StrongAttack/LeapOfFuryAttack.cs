@@ -142,8 +142,11 @@ public class LeapOfFuryAttack : StrongAttack
 
     private void OnPlayerTouchByExplosion(UnityEngine.Collider2D collider)
     {
-        print($"Touch!{collider.gameObject.name}");
-        OnTouchEnemy(collider.gameObject, damageType);
+        PlayerCommon playerCommon = collider.GetComponent<ToricObject>().original.GetComponent<PlayerCommon>();
+        if(playerCommon.id != this.playerCommon.id)
+        {
+            OnTouchEnemy(playerCommon.gameObject, damageType);
+        }
     }
 
     private void CreateExplosion()
