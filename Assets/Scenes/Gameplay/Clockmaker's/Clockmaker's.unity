@@ -299,7 +299,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2085145699}
-  - component: {fileID: 2085145700}
   m_Layer: 0
   m_Name: Chars Parent
   m_TagString: CharsParent
@@ -322,18 +321,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2085145700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2085145698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e240486d8fd34e4b91c10d995dc5084, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &44957649341675005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8808050203249306459, guid: 94798736e1029384e86486a081cf79c8, type: 3}
@@ -861,6 +848,22 @@ PrefabInstance:
       propertyPath: charParent
       value: 
       objectReference: {fileID: 2085145699}
+    - target: {fileID: 7072152997207064235, guid: 54d90e73067c4ba4e82a10c8ff9e6a70, type: 3}
+      propertyPath: enableDebugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072152997207064235, guid: 54d90e73067c4ba4e82a10c8ff9e6a70, type: 3}
+      propertyPath: mapsPrefabs.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072152997207064235, guid: 54d90e73067c4ba4e82a10c8ff9e6a70, type: 3}
+      propertyPath: playFirstMapAtLevelStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7072152997207064235, guid: 54d90e73067c4ba4e82a10c8ff9e6a70, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 4724754146340651324, guid: 4cfeb1ec56c9cdd408293a5c40e9ccb7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

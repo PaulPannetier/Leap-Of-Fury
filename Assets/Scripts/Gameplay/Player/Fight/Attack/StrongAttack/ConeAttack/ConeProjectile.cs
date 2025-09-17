@@ -1,5 +1,6 @@
 using Collision2D;
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using Collider2D = UnityEngine.Collider2D;
 
@@ -102,6 +103,9 @@ public class ConeProjectile : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(PauseManager.instance.isPauseEnable)
+            return;
+
         HandleFly();
 
         HandleProjectileInTheWall();
@@ -369,8 +373,28 @@ public class ConeProjectile : MonoBehaviour
         }
     }
 
+    #region Pause
+
+    private IEnumerator PauseCorout()
+    {
+        Vector2 velocity = rb.linearVelocity;
+        float angularVelocity = rb.angularVelocity;
+        rb.linearVelocity = Vector2.zero;
+        rb.angularVelocity = 0f;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+
+        while(PauseManager.instance.isPauseEnable)
+            yield return null;
+
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.angularVelocity = angularVelocity;
+        rb.linearVelocity = velocity;
+    }
+
     private void OnPauseEnable()
     {
+        StartCoroutine(PauseCorout());
+
         animator.speed = 0f;
     }
 
@@ -378,6 +402,10 @@ public class ConeProjectile : MonoBehaviour
     {
         animator.speed = 1f;
     }
+
+    #endregion
+
+
 
     #region Gizmos / OnValidate
 

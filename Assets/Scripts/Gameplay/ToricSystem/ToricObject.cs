@@ -4,7 +4,6 @@ using UnityEngine;
 using Collision2D;
 using System.Collections;
 using System.Reflection;
-using System.Diagnostics.Contracts;
 
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
@@ -229,10 +228,12 @@ public class ToricObject : MonoBehaviour
             return;
 
         cloneParticleSystem.Clear(true);
+        float mainTime = particleSystem.time;
         ParticleSystem.Particle[] particles = new ParticleSystem.Particle[particleSystem.particleCount];
         particleSystem.GetParticles(particles);
         cloneParticleSystem.SetParticles(particles);
-        cloneParticleSystem.Play();
+        cloneParticleSystem.Simulate(mainTime, true, true, false);
+        cloneParticleSystem.Play(true);
     }
 
     #endregion

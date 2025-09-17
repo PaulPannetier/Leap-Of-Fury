@@ -15,6 +15,8 @@ public class DisableComponentAtPause : MonoBehaviour
         PauseManager.instance.callBackOnPauseEnable += DisablePause;
     }
 
+    #region Animator
+
     private void StopAnimator(Animator animator)
     {
         objects[$"animator{animator.GetHashCode()}speed"] = animator.speed;
@@ -26,6 +28,22 @@ public class DisableComponentAtPause : MonoBehaviour
         object animSpeedObj = objects[$"animator{animator.GetHashCode()}speed"];
         animator.speed = animSpeedObj == null ? 1f : (float)animSpeedObj;
     }
+
+    #endregion
+
+    #region ParticleSystem
+
+    private void StopParticleSystem(ParticleSystem particleSystem)
+    {
+        particleSystem.Play(false);
+    }
+
+    private void ResumeParticleSystem(ParticleSystem particleSystem)
+    {
+        particleSystem.Pause();
+    }
+
+    #endregion
 
     private void DisablePause()
     {
@@ -39,6 +57,11 @@ public class DisableComponentAtPause : MonoBehaviour
             if (comp is Animator animator)
             {
                 ResumeAnimator(animator);
+            }
+
+            if (comp is ParticleSystem particleSystem)
+            {
+                ResumeParticleSystem(particleSystem);
             }
 
             string errorMsg = $"Component of type:{comp.GetType()} is not supported to resume at pause";
@@ -59,6 +82,11 @@ public class DisableComponentAtPause : MonoBehaviour
             if(comp is Animator animator)
             {
                 StopAnimator(animator);
+            }
+
+            if (comp is ParticleSystem particleSystem)
+            {
+                StopParticleSystem(particleSystem);
             }
 
             string errorMsg = $"Component of type:{comp.GetType()} is not supported to stop at pause";
