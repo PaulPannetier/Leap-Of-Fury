@@ -3,7 +3,7 @@ using UnityEngine;
 public class AmericanFistAttackExplosion : Explosion
 {
     private AmericanFistAttack originalAttack;
-    private SpriteRenderer spriteRenderer;
+    private ParticleSystem[] particleSystems;
 
     [SerializeField] private Color colorActivate;
     [SerializeField] private Color colorDesactivate;
@@ -11,22 +11,31 @@ public class AmericanFistAttackExplosion : Explosion
     protected override void Awake()
     {
         base.Awake();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        particleSystems = GetComponentsInChildren<ParticleSystem>();
     }
 
-    public override void Launch()
+    private void SetParticleSystemColor()
     {
-        base.Launch();
-    }
+        Color color = enableBehaviour ? colorActivate: colorDesactivate* originalAttack.originalCloneAttack.cloneTransparency;
 
-    public override void Launch(ExplosionData explosionData)
-    {
-        base.Launch(explosionData);
+        foreach (ParticleSystem particleSystem in particleSystems)
+        {
+            try
+            {
+                ParticleSystem.MainModule main = particleSystem.main;
+                main.startColor = color;
+            }
+            catch
+            {
+
+            }
+        }
     }
 
     public void Launch(AmericanFistAttack originalAttack)
     {
         this.originalAttack = originalAttack;
+        SetParticleSystemColor();
         Launch();
     }
 
@@ -37,6 +46,6 @@ public class AmericanFistAttackExplosion : Explosion
         if (PauseManager.instance.isPauseEnable)
             return;
 
-        spriteRenderer.color = enableBehaviour ? colorActivate : colorDesactivate * originalAttack.originalCloneAttack.cloneTransparency;
+        SetParticleSystemColor();
     }
 }

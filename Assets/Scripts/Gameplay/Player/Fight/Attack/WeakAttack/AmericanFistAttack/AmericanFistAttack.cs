@@ -29,7 +29,6 @@ public class AmericanFistAttack : WeakAttack
     [SerializeField] private float castDuration;
     [SerializeField] private AnimationCurve dashSpeedCurve;
     [SerializeField] private int nbDash = 3;
-    [SerializeField] private float explosionForce = 1.1f;
     [SerializeField] private AmericanFistAttackExplosion explosionPrefabs;
 
     [Header("Collission")]
@@ -392,7 +391,6 @@ public class AmericanFistAttack : WeakAttack
 
         explosion.callbackOnTouch += OnExplosionTouchEnemy;
         explosion.Launch(this);
-        ExplosionManager.instance.CreateExplosion(collisionPoint, explosionForce);
     }
 
     private void OnExplosionTouchEnemy(UnityEngine.Collider2D collider)

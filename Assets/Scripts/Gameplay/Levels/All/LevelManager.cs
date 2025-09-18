@@ -16,12 +16,15 @@ public abstract class LevelManager : MonoBehaviour
     private int currentMapIndex;
     protected SelectionMapOldSceneData selectionMapOldSceneData;
 
+
     [Header("Level Management")]
     [SerializeField] private string levelName;
     [SerializeField] protected float durationToWaitAtBegining = 3f;
     [SerializeField] protected int nbKillsToWin = 7;
     [SerializeField] protected float waitingTimeAfterLastKill = 2f;
     [SerializeField] protected Transform charParent;
+    [SerializeField] private EndLevelMenu endLevelMenu;
+    [SerializeField] private FinishLevelMenu finishLevelMenu;
 
     [Header("Maps")]
     [SerializeField] private bool suffleMapWhenLevelStart = true;
@@ -75,6 +78,18 @@ public abstract class LevelManager : MonoBehaviour
 
     protected virtual void Start()
     {
+        if(endLevelMenu == null)
+        {
+            print("EndLevelMenu is not set in the levelManager, search it");
+            endLevelMenu = FindFirstObjectByType<EndLevelMenu>();
+        }
+
+        if (finishLevelMenu == null)
+        {
+            print("FinishLevelMenu is not set in the levelManager, search it");
+            finishLevelMenu = FindFirstObjectByType<FinishLevelMenu>();
+        }
+
         this.InvokeWaitAFrame(nameof(StartLevel));
     }
 
@@ -236,7 +251,6 @@ public abstract class LevelManager : MonoBehaviour
 
     public void OnEndDisplayEndMenu()
     {
-        PauseManager.instance.DisablePause();
         RestartLevel();
     }
 
@@ -272,7 +286,7 @@ public abstract class LevelManager : MonoBehaviour
 
 #endregion
 
-    #region Block/Release Player
+    #region Block / Release Player
 
     private void BlockPlayers()
     {
@@ -358,7 +372,9 @@ public abstract class LevelManager : MonoBehaviour
 
         if (playerWin.Count == 1)
         {
-            EventManager.instance.OnLevelFinish(new FinishLevelData(levelName, playersScore));
+            FinishLevelData finishLevelData = new FinishLevelData(levelName, playersScore);
+            finishLevelMenu.OnLevelFinish(finishLevelData);
+            EventManager.instance.OnLevelFinish(finishLevelData);
             return;
         }
         else if (playerWin.Count > 1)
@@ -372,8 +388,9 @@ public abstract class LevelManager : MonoBehaviour
             }
         }
 
-        PauseManager.instance.EnablePause();
-        EventManager.instance.OnLevelEnd(new EndLevelData(levelName, playersScore));
+        EndLevelData endLevelData = new EndLevelData(levelName, playersScore);
+        endLevelMenu.OnLevelEnd(endLevelData);
+        EventManager.instance.OnLevelEnd(endLevelData);
     }
 
     #endregion

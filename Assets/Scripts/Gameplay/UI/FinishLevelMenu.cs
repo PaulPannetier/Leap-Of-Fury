@@ -10,12 +10,7 @@ public class FinishLevelMenu : MonoBehaviour
     [SerializeField] private InputManager.GeneralInput echapInput;
     [SerializeField] private float minDurationInMenu;
 
-    private void Start()
-    {
-        EventManager.instance.callbackOnLevelFinish += OnLevelFinish;
-    }
-
-    private void OnLevelFinish(LevelManager.FinishLevelData finishLevelData)
+    public void OnLevelFinish(in LevelManager.FinishLevelData finishLevelData)
     {
         PauseManager.instance.EnablePause();
 
@@ -62,11 +57,6 @@ public class FinishLevelMenu : MonoBehaviour
 
         SelectionMapOldSceneData selectionMapSceneData = (SelectionMapOldSceneData)TransitionManager.instance.GetOldSceneData("Selection Map");
         TransitionManager.instance.LoadSceneAsync("Selection Map", new LevelOldSceneData(TransitionManager.instance.activeScene, selectionMapSceneData.charData));
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.instance.callbackOnLevelFinish -= OnLevelFinish;
     }
 
 #if UNITY_EDITOR

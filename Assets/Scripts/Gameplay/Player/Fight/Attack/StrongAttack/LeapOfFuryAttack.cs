@@ -26,6 +26,10 @@ public class LeapOfFuryAttack : StrongAttack
     private ToricObject toricObject;
     private Vector2 speed;
 
+#if UNITY_EDITOR
+    [SerializeField] private bool drawGizmos;
+#endif
+
     [SerializeField] private float castDuration;
     [SerializeField] private float maxJumpSpeed;
     [SerializeField] private float jumpDuration;
@@ -197,13 +201,15 @@ public class LeapOfFuryAttack : StrongAttack
 
     protected void OnDrawGizmosSelected()
     {
+        if (!drawGizmos)
+            return;
+
         this.transform = base.transform;
         hitbox = GetComponent<BoxCollider2D>();
         Vector2 center = (Vector2)transform.position + (0.5f * ceilingBoxHeight * Vector2.up);
         Hitbox.GizmosDraw(center, new Vector2(hitbox.size.x, ceilingBoxHeight), Color.red, true);
         Hitbox.GizmosDraw((Vector2)transform.position + hitboxOffset, new Vector2(hitboxWidth, hitbox.size.y), Color.red, true);
         Hitbox.GizmosDraw((Vector2)transform.position + new Vector2(-hitboxOffset.x, hitboxOffset.y), new Vector2(hitboxWidth, hitbox.size.y), Color.red, true);
-
 
         for (int i = 0; i < Mathf.Min(explosionDistances.Length, explosionData.Length); i++)
         {

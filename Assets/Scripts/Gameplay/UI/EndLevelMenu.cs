@@ -11,13 +11,9 @@ public class EndLevelMenu : MonoBehaviour
     [SerializeField] private GameObject playerMenuDisplayerPrefabs;
     [SerializeField] private float displayDuration = 3f;
 
-    private void Start()
+    public void OnLevelEnd(LevelManager.EndLevelData endLevelData)
     {
-        EventManager.instance.callbackOnLevelEnd += OnLevelEnd;
-    }
-
-    private void OnLevelEnd(LevelManager.EndLevelData endLevelData)
-    {
+        PauseManager.instance.EnablePause();
         displayers = new EndMenuPlayerDisplayer[endLevelData.playersScore.Length];
 
         for (int i = 0; i < endLevelData.playersScore.Length; i++)
@@ -41,12 +37,8 @@ public class EndLevelMenu : MonoBehaviour
         }
 
         displayers = Array.Empty<EndMenuPlayerDisplayer>();
+        PauseManager.instance.DisablePause();
         LevelManager.instance.OnEndDisplayEndMenu();
-    }
-
-    private void OnDestroy()
-    {
-        EventManager.instance.callbackOnLevelEnd -= OnLevelEnd;
     }
 
 #if UNITY_EDITOR

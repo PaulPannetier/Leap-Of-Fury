@@ -441,6 +441,28 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+--- !u!114 &1393366166460120883 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1726505649173843610, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+  m_PrefabInstance: {fileID: 1393366166460120882}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0bfd7c6a72f3764dbd30d7bd5231cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1393366166460120884 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1324313074577578858, guid: 6ef894869da3a844bbc4c8e0babd415d, type: 3}
+  m_PrefabInstance: {fileID: 1393366166460120882}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d158fa302b63274dbe3bdd09b468ba2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2057464065667852210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -514,6 +536,14 @@ PrefabInstance:
       propertyPath: charParent
       value: 
       objectReference: {fileID: 1817097862}
+    - target: {fileID: 4235235567787367747, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
+      propertyPath: endLevelMenu
+      value: 
+      objectReference: {fileID: 1393366166460120884}
+    - target: {fileID: 4235235567787367747, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
+      propertyPath: finishLevelMenu
+      value: 
+      objectReference: {fileID: 1393366166460120883}
     - target: {fileID: 8778289041252250656, guid: e72531238f74fa148a01f45a2d62ab59, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

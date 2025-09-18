@@ -11,15 +11,20 @@ public class DisableComponentAtPause : MonoBehaviour
     private void Start()
     {
         objects = new Dictionary<string, object>();
-        PauseManager.instance.callBackOnPauseDisable += EnablePause;
-        PauseManager.instance.callBackOnPauseEnable += DisablePause;
+        PauseManager.instance.callBackOnPauseEnable += EnablePause;
+        PauseManager.instance.callBackOnPauseDisable += DisablePause;
     }
 
     #region Animator
 
     private void StopAnimator(Animator animator)
     {
-        objects[$"animator{animator.GetHashCode()}speed"] = animator.speed;
+        string key = $"animator{animator.GetHashCode()}speed";
+        if (objects.ContainsKey(key))
+            objects[key] = animator.speed;
+        else
+            objects.Add(key, animator.speed);
+
         animator.speed = 0f;
     }
 
@@ -57,11 +62,13 @@ public class DisableComponentAtPause : MonoBehaviour
             if (comp is Animator animator)
             {
                 ResumeAnimator(animator);
+                continue;
             }
 
             if (comp is ParticleSystem particleSystem)
             {
                 ResumeParticleSystem(particleSystem);
+                continue;
             }
 
             string errorMsg = $"Component of type:{comp.GetType()} is not supported to resume at pause";
@@ -82,11 +89,13 @@ public class DisableComponentAtPause : MonoBehaviour
             if(comp is Animator animator)
             {
                 StopAnimator(animator);
+                continue;
             }
 
             if (comp is ParticleSystem particleSystem)
             {
                 StopParticleSystem(particleSystem);
+                continue;
             }
 
             string errorMsg = $"Component of type:{comp.GetType()} is not supported to stop at pause";
@@ -97,7 +106,7 @@ public class DisableComponentAtPause : MonoBehaviour
 
     private void OnDestroy()
     {
-        PauseManager.instance.callBackOnPauseEnable -= DisablePause;
-        PauseManager.instance.callBackOnPauseDisable -= EnablePause;
+        PauseManager.instance.callBackOnPauseDisable -= DisablePause;
+        PauseManager.instance.callBackOnPauseEnable -= EnablePause;
     }
 }

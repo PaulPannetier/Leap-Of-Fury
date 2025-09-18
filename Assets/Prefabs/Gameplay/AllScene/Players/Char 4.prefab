@@ -447,6 +447,7 @@ MonoBehaviour:
   - {fileID: 1113869503384375398}
   - {fileID: 238728056774250366}
   chidrenToRemoveInClone: []
+  childrenToSynchronise: []
   useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &3712884546189942275
@@ -583,7 +584,7 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  drawGizmos: 0
+  drawGizmos: 1
   boomerangPrefab: {fileID: 7860480450128939081, guid: 3bbb4ea1b5bc78a4f9336bbb1c9faaeb, type: 3}
   distanceToInstantiate: 0.5
   speedCurvePhase1:
@@ -698,10 +699,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LeapOfFuryAttack
   cooldown:
-    duration: 0
+    duration: 4
   damageType: 1
   effectType: 0
   saveAttackStats: 0
+  drawGizmos: 0
   castDuration: 0.5
   maxJumpSpeed: 30
   jumpDuration: 0.3

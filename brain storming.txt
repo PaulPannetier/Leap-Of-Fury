@@ -139,8 +139,6 @@ DA : jsp
 Name : Chaos
 
 TODO :
-review apex grab
-test PAUSE
 add UI to char 3 arrow attack to indicate the nb of arrow
 Add other char UI
 verify hide cursor on build
