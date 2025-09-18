@@ -53,10 +53,10 @@ MonoBehaviour:
   waitingTimeAfterLastKill: 2
   charParent: {fileID: 0}
   suffleMapWhenLevelStart: 1
-  playFirstMapAtLevelStart: 0
+  playFirstMapAtLevelStart: 1
   mapsPrefabs:
-  - {fileID: 537159171673598514, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
   - {fileID: 3045429992128422392, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+  - {fileID: 537159171673598514, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
   - {fileID: 635306758543450081, guid: 77f96886e5b97bc41b9c0d903aebe800, type: 3}
   - {fileID: 2889853000194525038, guid: e1bb0a524771b2047a23ddddc05132d6, type: 3}
   - {fileID: 2907163850566459797, guid: 14b45c0a98c548d49950b15d63a33fff, type: 3}
