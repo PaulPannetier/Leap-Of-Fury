@@ -48,10 +48,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelName: Maxwell House
-  durationToWaitAtBegining: 1
+  durationToWaitAtBegining: 2
   nbKillsToWin: 7
   waitingTimeAfterLastKill: 2
   charParent: {fileID: 0}
+  endLevelMenu: {fileID: 0}
+  finishLevelMenu: {fileID: 0}
   suffleMapWhenLevelStart: 1
   playFirstMapAtLevelStart: 0
   mapsPrefabs:

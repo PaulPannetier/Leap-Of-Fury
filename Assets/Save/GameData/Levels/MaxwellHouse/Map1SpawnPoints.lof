@@ -1,1 +1,1 @@
-{"spawnConfigPoints2Char":[],"spawnConfigPoints3Char":[],"spawnConfigPoints4Char":[]}
+{"spawnConfigPoints2Char":[{"points":[{"x":-7.0,"y":0.0},{"x":7.0,"y":0.0}]}],"spawnConfigPoints3Char":[{"points":[{"x":-1.5,"y":-3.5},{"x":-3.5,"y":3.5},{"x":12.0,"y":5.5}]}],"spawnConfigPoints4Char":[{"points":[{"x":1.5,"y":-3.5},{"x":-3.5,"y":3.5},{"x":8.0,"y":-8.0},{"x":12.0,"y":5.5}]}]}

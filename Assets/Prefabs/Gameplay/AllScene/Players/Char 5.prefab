@@ -530,7 +530,7 @@ MonoBehaviour:
   charIndex: 4
   playerIndex: 1
   color: {r: 0, g: 0.69411767, b: 0.95294124, a: 1}
-  id: 3
+  id: 5
   prefabs: {fileID: 8090791378756873177}
   charImageUIPrefabs: {fileID: 651130587728809415, guid: 4a72c308368c2ba4bb01271cd559b770, type: 3}
 --- !u!114 &7598047637200888153

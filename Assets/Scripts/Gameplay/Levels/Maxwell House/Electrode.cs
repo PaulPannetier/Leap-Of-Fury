@@ -12,16 +12,16 @@ public class Electrode : MonoBehaviour
 
     [SerializeField] private bool enableBehaviour = true;
 
-    [Header("Position")]
+    [Header("Position"), Space(3)]
     [SerializeField] private Transform electrode1;
     [SerializeField] private Transform electrode2;
     [SerializeField] private Transform ray;
 
-    [Header("Use with trigger")]
+    [Header("Use with trigger"), Space(3)]
     [SerializeField] private bool useByInterruptor = false;
     [SerializeField] private Interruptor interruptor;
 
-    [Header("Duration Setings")]
+    [Header("Duration Setings"), Space(3)]
     [SerializeField] private float timeOffset = 0f;
     [SerializeField] private float activationDuration;
     [SerializeField] private float durationBetween2Activation;
@@ -130,12 +130,14 @@ public class Electrode : MonoBehaviour
         isActive = true;
         ray.gameObject.SetActive(true);
         lastTimeTriggerIsActive = Time.time;
+        charAlreadyTouch.Clear();
     }
 
     private void DisableElectrode()
     {
         isActive = false;
         ray.gameObject.SetActive(false);
+        charAlreadyTouch.Clear();
     }
 
     #endregion
