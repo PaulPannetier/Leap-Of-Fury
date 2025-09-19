@@ -445,6 +445,7 @@ MonoBehaviour:
   - {fileID: 1261712740702541876}
   - {fileID: 2136925604514613036}
   chidrenToRemoveInClone: []
+  childrenToSynchronise: []
   useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &3274420078070027857
@@ -614,7 +615,7 @@ MonoBehaviour:
   saveAttackStats: 0
   remainingProjectiles: 0
   drawGizmos: 1
-  nbProjectile: 1
+  nbProjectile: 3
   coneAngle: 20
   coneRandomAngleVariation: 0.5
   projectilePrefabs: {fileID: -4588608683324307721, guid: b6012b6b9c0da344d867713ee06a4153, type: 3}

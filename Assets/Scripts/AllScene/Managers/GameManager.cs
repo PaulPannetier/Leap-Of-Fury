@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector2Int maxResolution = new Vector2Int(1920, 1080);
     public Vector2Int currentResolution = new Vector2Int(1920, 1080);
 
+#if UNITY_EDITOR
+    [SerializeField] private bool deterministicMode = true;
+    [SerializeField] private int seed = 54134782;
+#endif
+
     private void Awake()
     {
         if(instance != null)
@@ -30,7 +35,15 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Application.quitting += OnQuitApplication;
+
+#if UNITY_EDITOR
+        if (deterministicMode)
+            Random.SetSeed(seed);
+        else
+            Random.SetRandomSeed();
+#else
         Random.SetRandomSeed();
+#endif
         InputManager.ShowMouseCursor();
     }
 

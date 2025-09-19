@@ -35,6 +35,7 @@ public class FightController : MonoBehaviour
         Stun
     }
 
+    private bool isDied;
     protected WeakAttack attackWeak;
     protected StrongAttack attackStrong;
     protected EventController eventController;
@@ -84,6 +85,9 @@ public class FightController : MonoBehaviour
         playerCommon = GetComponent<PlayerCommon>();
         playerInput = GetComponent<CharacterInputs>();
         charController = GetComponent<CharacterController>();
+        fightState = FightState.Normal;
+        damageProtectionType = DamageProtectionType.Normal;
+        isDied = false;
     }
 
     protected virtual void Start()
@@ -95,8 +99,6 @@ public class FightController : MonoBehaviour
         eventController.callBackBeenApplyEffectByEnvironnement += OnBeenApplyEffectByEnvironnement;
         eventController.callBackBeenKillByDash += OnBeenKillByDash;
         charController.onDash += StartDashing;
-        fightState = FightState.Normal;
-        damageProtectionType = DamageProtectionType.Normal;
         charMask = LayerMask.GetMask("Char");
     }
 
@@ -536,8 +538,9 @@ public class FightController : MonoBehaviour
 
     protected virtual void OnBeenTouch(Attack attack, GameObject enemy, DamageType damageType)
     {
-        if(damageType != DamageType.NeverKill && (int)damageType > (int)damageProtectionType)
+        if(!isDied && damageType != DamageType.NeverKill && (int)damageType > (int)damageProtectionType)
         {
+            isDied = true;
             eventController.OnBeenKill(enemy);
             enemy.GetComponent<EventController>().OnKill(gameObject);
             EventManager.instance.OnPlayerDie(gameObject, enemy);
@@ -551,8 +554,9 @@ public class FightController : MonoBehaviour
 
     protected virtual void OnBeenTouchByEnvironement(GameObject go, DamageType damageType)
     {
-        if (damageType != DamageType.NeverKill && (int)damageType > (int)damageProtectionType)
+        if (!isDied && damageType != DamageType.NeverKill && (int)damageType > (int)damageProtectionType)
         {
+            isDied = true;
             eventController.OnBeenKill(go);
             EventManager.instance.OnPlayerDieByEnvironnement(gameObject, go);
         }

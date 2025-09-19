@@ -30,7 +30,7 @@ TagManager:
   - Light
   - Char
   - NoCharCollision
-  - 
+  - GroundCollision
   - 
   - NoCollision
   - Projectile

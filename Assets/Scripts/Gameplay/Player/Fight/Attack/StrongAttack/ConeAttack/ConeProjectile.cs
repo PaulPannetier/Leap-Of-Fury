@@ -230,6 +230,13 @@ public class ConeProjectile : MonoBehaviour
             charAlreadyTouch.Clear();
             isFalling = true;
         }
+
+        if (IsPickUp())
+        {
+            attack.PickProjectile(this);
+            DestroyProjectile();
+            return;
+        }
     }
 
     private void HandleFall()

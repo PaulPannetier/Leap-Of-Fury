@@ -48,10 +48,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelName: The Plain
-  durationToWaitAtBegining: 0.5
+  durationToWaitAtBegining: 2
   nbKillsToWin: 5
   waitingTimeAfterLastKill: 2
   charParent: {fileID: 0}
+  endLevelMenu: {fileID: 0}
+  finishLevelMenu: {fileID: 0}
   suffleMapWhenLevelStart: 0
   playFirstMapAtLevelStart: 0
   mapsPrefabs:
