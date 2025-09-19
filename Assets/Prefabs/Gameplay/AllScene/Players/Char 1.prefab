@@ -88,6 +88,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -109,6 +111,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -452,11 +455,13 @@ MonoBehaviour:
   - {fileID: 7791410703419052070}
   - {fileID: 249455240}
   - {fileID: 4661732284580921915}
-  - {fileID: 0}
+  - {fileID: 9163807024864640750}
+  - {fileID: -2860931854293677091}
   componentsToSynchroniseInClone:
   - {fileID: 66234244654983004}
   - {fileID: 922723625538123844}
   chidrenToRemoveInClone: []
+  childrenToSynchronise: []
   useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &4330454076875467065
@@ -522,6 +527,7 @@ MonoBehaviour:
   controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 10
+  enableInputInDebugMode: 0
 --- !u!114 &6801819870953356622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,7 +650,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   nbDash: 3
-  explosionForce: 1.1
   explosionPrefabs: {fileID: 736140848453880161, guid: 860caee9a72fd1344a67a5ee19dba4b6, type: 3}
   colliderOffset: {x: 0, y: -0.22}
   colliderSize: {x: 0.6, y: 1.15}

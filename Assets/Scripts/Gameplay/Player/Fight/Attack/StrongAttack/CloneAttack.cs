@@ -41,7 +41,9 @@ public class CloneAttack : StrongAttack
         actionLastFrame = new Action(() => { });
         clone = Instantiate(clonePrefabs, transform.position, Quaternion.identity, transform);
         cloneAnimator = clone.GetComponent<Animator>();
-        GetComponent<ToricObject>().chidrenToRemoveInClone.Add(clone);
+        ToricObject toricObject = GetComponent<ToricObject>();
+        toricObject.childrenToNotClone.Add(clone.transform);
+        toricObject.chidrenToRemoveInClone.Add(clone);
         cloneRenderer = clone.GetComponent<SpriteRenderer>();
         cloneRenderer.enabled = false;
         StartCoroutine(EnableCloneRenderer());

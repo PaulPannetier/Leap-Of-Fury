@@ -4,6 +4,8 @@ using UnityEngine;
 using Collision2D;
 using System.Collections;
 using System.Reflection;
+using System.Linq;
+
 
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
@@ -34,6 +36,7 @@ public class ToricObject : MonoBehaviour
     [SerializeField] private List<Component> componentsToSynchroniseInClone;
     public List<GameObject> chidrenToRemoveInClone;
     [Tooltip("Synchronise all component of the child"), SerializeField] private Transform[] childrenToSynchronise;
+    [Tooltip("This child will not be clone")] public List<Transform> childrenToNotClone;
 
     [Tooltip("Allow to call the update methods externally (via other script).")] public bool useCustomUpdate = false;
 
@@ -317,6 +320,9 @@ public class ToricObject : MonoBehaviour
                 GameObject tmpGO = Instantiate(gameObject, CloneParent.cloneParent);
                 foreach(Transform child in transform)
                 {
+                    if(childrenToNotClone.Contains(child))
+                        continue;
+
                     GameObject childClone = Instantiate(child.gameObject, tmpGO.transform);
 
                     int childInstanceId = child.GetInstanceID();

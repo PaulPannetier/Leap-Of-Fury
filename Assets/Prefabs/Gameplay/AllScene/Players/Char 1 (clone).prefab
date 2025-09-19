@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5204881842461756488}
   - component: {fileID: 4122206886715545145}
   - component: {fileID: 7945613426209977072}
-  - component: {fileID: 3574144944466291032}
   - component: {fileID: 6351519299945200209}
   m_Layer: 0
   m_Name: Char 1 (clone)
@@ -80,6 +79,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -101,6 +102,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -134,11 +136,14 @@ MonoBehaviour:
   isAClone: 0
   componentsToDisableInClone:
   - {fileID: 7945613426209977072}
-  - {fileID: 0}
-  componentsToSynchroniseInClone: []
+  - {fileID: 4122206886715545145}
+  componentsToSynchroniseInClone:
+  - {fileID: 7100577302219647036}
+  - {fileID: 7975649410831873828}
   chidrenToRemoveInClone: []
+  childrenToSynchronise: []
   useCustomUpdate: 0
-  drawGizmos: 1
+  drawGizmos: 0
 --- !u!114 &4122206886715545145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +174,7 @@ MonoBehaviour:
   effectType: 0
   saveAttackStats: 0
   originalCloneAttack: {fileID: 0}
-  drawGizmos: 1
+  drawGizmos: 0
   isAClone: 1
   dashSpeed: 20
   dashDuration: 0.25
@@ -220,7 +225,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   nbDash: 3
-  explosionForce: 1.1
   explosionPrefabs: {fileID: 736140848453880161, guid: 860caee9a72fd1344a67a5ee19dba4b6, type: 3}
   colliderOffset: {x: 0, y: -0.22}
   colliderSize: {x: 0.6, y: 1.15}
@@ -228,39 +232,6 @@ MonoBehaviour:
   isCloneDashEnable: 0
   activateWallExplosion: 0
   cloneExplosionPosition: {x: 0, y: 0}
---- !u!114 &3574144944466291032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1266130988093312155}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4770c9bf661a2d4491e84ebbd464610, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cooldown:
-    duration: 0
-  damageType: 0
-  effectType: 0
-  saveAttackStats: 0
-  enableBehaviour: 0
-  fireDecreasement: 0
-  drawFireGizmos: 1
-  fireSize: {x: 1, y: 1}
-  firePropagationGap: 24
-  firePropagationProbability: 0.3
-  minStrenghtForPropagation: 0
-  fireDecreasementAtPropagation: 20
-  fireDuration: 2
-  charMask:
-    serializedVersion: 2
-    m_Bits: 0
-  firePrefab: {fileID: 964394303801480267, guid: 030d8a50702c3024c82e995ac3b0a839, type: 3}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 16392
 --- !u!114 &6351519299945200209
 MonoBehaviour:
   m_ObjectHideFlags: 0
