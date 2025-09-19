@@ -10,7 +10,7 @@ public class TeemoPassif : PassifAttack
     private bool isTransparent;
 
     [SerializeField] private float durationToWait;
-    [SerializeField, Range(0f, 1f)] private float transparency = 0.1f;
+    [SerializeField] private Color transparentColor;
     [SerializeField] private float maxSpeedWhenNotMove = 0.2f;
     [SerializeField] private float colorFadeDuration = 0.2f;
 
@@ -56,8 +56,7 @@ public class TeemoPassif : PassifAttack
         {
             if(!isTransparent)
             {
-                Color target = new Color(playerCommon.color.r, playerCommon.color.g, playerCommon.color.b, playerCommon.color.a * transparency);
-                ChangeColor(target);
+                ChangeColor(transparentColor);
                 isTransparent = true;
             }
         }

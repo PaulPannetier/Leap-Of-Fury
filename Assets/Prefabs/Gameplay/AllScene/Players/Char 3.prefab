@@ -88,6 +88,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -109,6 +111,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -253,10 +256,7 @@ MonoBehaviour:
   wallJumpMaxDuration: 0.3
   minDelayToDoubleJumpAfterWallJump: 0.15
   allowDoubleJumpAfterWallJumpInOppositeDirection: 0
-  enableWallJumpOnNonGrabableWall: 1
-  wallJumpAngleOnNonGrabableWall: 40
-  wallJumpInitSpeedOnNonGrabableWall: 10
-  wallJumpOnNonGrabableWallDuration: 0.3
+  delayDesactivateDoubleJumpAfterWallJumpInOppositeDirection: 0.5
   enableJumpAlongWall: 0
   wallJumpAlongSpeed: 11
   wallJumpAlongCurveSpeed:
@@ -304,6 +304,10 @@ MonoBehaviour:
   jumpAlongWallDuration: 0.15
   wallJumpAlongCooldown: 0.15
   minDelayToDoubleJumpAfterJumpAlongWall: 0.5
+  enableWallJumpOnNonGrabableWall: 1
+  wallJumpAngleOnNonGrabableWall: 40
+  wallJumpInitSpeedOnNonGrabableWall: 10
+  wallJumpOnNonGrabableWallDuration: 0.3
   airGravityMultiplier: 3.75
   airHorizontalSpeed: 7
   airInitHorizontalSpeed: 0.4
@@ -442,6 +446,8 @@ MonoBehaviour:
   - {fileID: 1113869503384375398}
   - {fileID: 238728056774250366}
   chidrenToRemoveInClone: []
+  childrenToSynchronise: []
+  childrenToNotClone: []
   useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &3712884546189942275
@@ -507,6 +513,7 @@ MonoBehaviour:
   controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 10
+  enableInputInDebugMode: 0
 --- !u!114 &5907287823364622964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,7 +528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charIndex: 3
   playerIndex: 1
-  color: {r: 3.6078432, g: 0, b: 2.6980393, a: 1}
+  color: {r: 1, g: 0, b: 1, a: 1}
   id: 2
   prefabs: {fileID: 8090791378756873177}
   charImageUIPrefabs: {fileID: 651130587728809415, guid: 66cffd6e0a49b2648a3a87cee693e959, type: 3}
@@ -577,13 +584,12 @@ MonoBehaviour:
   damageType: 1
   effectType: 0
   saveAttackStats: 0
-  nbArrow: 0
   arrowPrefab: {fileID: 2636146267762325801, guid: 5b220040db271064fbc957e9a98a1c11, type: 3}
   castDuration: 0.2
   arrowLaunchDistance: 0.2
   delayBetweenLauchAndRecoverArrow: 0.7
   arrowInitSpeed: 16.5
-  initArrow: 3
+  initArrow: 2
   arrowActivationAngle: 20.5
 --- !u!114 &8331574599252283194
 MonoBehaviour:
@@ -630,7 +636,7 @@ MonoBehaviour:
   saveAttackStats: 0
   enableBehaviour: 1
   durationToWait: 1
-  transparency: 0.06
+  transparentColor: {r: 1, g: 0, b: 1, a: 0.09803922}
   maxSpeedWhenNotMove: 0.1
   colorFadeDuration: 0.5
 --- !u!114 &-951241358715958971

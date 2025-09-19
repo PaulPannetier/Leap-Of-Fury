@@ -88,6 +88,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -109,6 +111,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -444,6 +447,8 @@ MonoBehaviour:
   - {fileID: 1113869503384375398}
   - {fileID: 238728056774250366}
   chidrenToRemoveInClone: []
+  childrenToSynchronise: []
+  childrenToNotClone: []
   useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &3712884546189942275
@@ -509,6 +514,7 @@ MonoBehaviour:
   controllerType: 0
   useMovementLerpForKeyboard: 0
   movementLerpForKeyboard: 10
+  enableInputInDebugMode: 0
 --- !u!114 &5907287823364622964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,7 +532,7 @@ MonoBehaviour:
   color: {r: 0, g: 0.69411767, b: 0.95294124, a: 1}
   id: 3
   prefabs: {fileID: 8090791378756873177}
-  charImageUIPrefabs: {fileID: 651130587728809415, guid: 5182227b5ebb7764ea246c84c310b89a, type: 3}
+  charImageUIPrefabs: {fileID: 651130587728809415, guid: 4a72c308368c2ba4bb01271cd559b770, type: 3}
 --- !u!114 &7598047637200888153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,7 +606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 1
+    duration: 3
   damageType: 1
   effectType: 0
   saveAttackStats: 0
@@ -620,7 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 4
+    duration: 7
   damageType: 1
   effectType: 0
   saveAttackStats: 0

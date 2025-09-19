@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4009802760743927232}
+  - component: {fileID: 5475475599048737353}
   - component: {fileID: 1674583608520802225}
   - component: {fileID: 4505979394781261214}
   - component: {fileID: 1300798702949888552}
+  - component: {fileID: 4597140180348228300}
   m_Layer: 0
   m_Name: ElectricBall
   m_TagString: Untagged
@@ -34,6 +36,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &5475475599048737353
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086970572532762964}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 16402a45590205a4b97cd2a293d1abbc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!212 &1674583608520802225
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -54,6 +78,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,10 +101,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Sprite: {fileID: 6492718321895212031, guid: 9be98b89f0132184c8c1896a459f562c, type: 3}
   m_Color: {r: 0.9811321, g: 0.8100516, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,8 +135,12 @@ MonoBehaviour:
   isAClone: 0
   componentsToDisableInClone:
   - {fileID: 1300798702949888552}
-  componentsToSynchroniseInClone: []
+  componentsToSynchroniseInClone:
+  - {fileID: 1674583608520802225}
+  - {fileID: 5475475599048737353}
   chidrenToRemoveInClone: []
+  childrenToSynchronise: []
+  childrenToNotClone: []
   useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &1300798702949888552
@@ -128,3 +159,18 @@ MonoBehaviour:
   maxDuration: 30
   visualRadius: 0.5
   drawGizmos: 1
+--- !u!114 &4597140180348228300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086970572532762964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DisableComponentAtPause
+  componentsToDisable: []
+  componentsToStopAtPause:
+  - {fileID: 5475475599048737353}

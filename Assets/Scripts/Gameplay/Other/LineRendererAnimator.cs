@@ -35,7 +35,7 @@ public class LineRendererAnimator : MonoBehaviour
 
     private void Update()
     {
-        if(!enableBehaviour)
+        if(!enableBehaviour || PauseManager.instance.isPauseEnable)
             return;
 
         counter += Time.deltaTime;
@@ -45,6 +45,8 @@ public class LineRendererAnimator : MonoBehaviour
             counter -= 1f / animationFPS;
         }
     }
+
+    #region OnValidate
 
 #if UNITY_EDITOR
 
@@ -59,4 +61,6 @@ public class LineRendererAnimator : MonoBehaviour
     }
 
 #endif
+
+    #endregion
 }

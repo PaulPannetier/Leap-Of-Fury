@@ -23,6 +23,17 @@ public class ElectricFieldPassif : PassifAttack
             electricFields = new List<ElectricField>();
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        EventManager.instance.callbackOnLevelRestart += OnLevelRestart;
+    }
+
+    private void OnLevelRestart(string levelName)
+    {
+        electricFields.Clear();
+    }
+
     public void OnElectricBallCreate(ElectricBall electricBall)
     {
         int playerId = electricFieldsAffeectAllPlayerWithThisAttack ? -1 : (int)playerCommon.id;
@@ -38,6 +49,12 @@ public class ElectricFieldPassif : PassifAttack
     {
         base.Update();
         characterController.enableMagneticField = enableBehaviour;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        EventManager.instance.callbackOnLevelRestart -= OnLevelRestart;
     }
 
     #region Gizmos/OnValidate
@@ -59,6 +76,8 @@ public class ElectricFieldPassif : PassifAttack
 
     #endregion
 
+    #region Custom Class
+
     public class ElectricField
     {
         public Vector2 center;
@@ -77,4 +96,6 @@ public class ElectricFieldPassif : PassifAttack
             this.playerId = playerId;
         }
     }
+
+    #endregion
 }
