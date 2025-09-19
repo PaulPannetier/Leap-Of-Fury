@@ -35,6 +35,9 @@ public class PeriodicIterruptor : MonoBehaviour
 
     private void Update()
     {
+        if (PauseManager.instance.isPauseEnable)
+            return;
+
         timer += Time.deltaTime;
         float delayDuration = isActivated ? delayActivatedToDesactivated : delayDesactivatedToActivated;
         animator.speed = Mathf.Lerp(animationStartSpeed, animationEndSpeed, Mathf.Clamp01((Time.time - lastTimeChangeState) / delayDuration));

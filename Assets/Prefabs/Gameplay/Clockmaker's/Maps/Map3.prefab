@@ -47303,6 +47303,8 @@ TilemapRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -47324,6 +47326,7 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -5
@@ -47425,6 +47428,7 @@ MonoBehaviour:
   relatifSpawnConfigsPath: /Save/GameData/Levels/Clockmakers/Map3SpawnPoints
   tilemap: {fileID: 8194832789679470622}
   mapSize: {x: 64, y: 36}
+  maxWallDistancePenalty: 3
   pathfindingMapAccuracy: 1
 --- !u!1 &4227170838155896359
 GameObject:
@@ -71778,6 +71782,8 @@ TilemapRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -71799,6 +71805,7 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -3
@@ -72750,6 +72757,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9048190087750724846}
     - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
+      propertyPath: exitDuration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
+      propertyPath: enteringDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
+      propertyPath: teleportationDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
       propertyPath: teleportationOffset.y
       value: 0.25
       objectReference: {fileID: 0}
@@ -73027,6 +73046,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6177425090205416798}
     - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
+      propertyPath: exitDuration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
+      propertyPath: enteringDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
+      propertyPath: teleportationDuration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6484449325563616076, guid: fe04c1fad49d7c948aca0102fb4f28a0, type: 3}
       propertyPath: teleportationOffset.y
       value: 0.25
       objectReference: {fileID: 0}
@@ -73198,16 +73229,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
+      propertyPath: delayoffset
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
       propertyPath: animationEndSpeed
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
       propertyPath: animationStartSpeed
-      value: 0.2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
       propertyPath: delayActivatedToDesactivated
-      value: 15
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2875285992895624380, guid: f09790b82183fd24fae6a80396cb636e, type: 3}
       propertyPath: delayDesactivatedToActivated

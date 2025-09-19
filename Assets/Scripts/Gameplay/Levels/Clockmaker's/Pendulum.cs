@@ -17,6 +17,10 @@ public class Pendulum : MonoBehaviour
     [HideInInspector] public Action callbackOnPendulumTick;
     public float oscilatingDuration => 2f * Mathf.PI * Mathf.Sqrt(length / -Physics2D.gravity.y);
 
+#if UNITY_EDITOR
+    [ShowOnly, Space(3), SerializeField] private float OscilatingDuration;
+#endif
+
     private void Awake()
     {
         callbackOnPendulumTick = () => { };
@@ -98,6 +102,7 @@ public class Pendulum : MonoBehaviour
         gravityScale = Mathf.Max(0f, gravityScale);
         transform.rotation = Quaternion.Euler(0f, 0f, angleInit);
         ang = angleInit * Mathf.Deg2Rad;
+        OscilatingDuration = oscilatingDuration;
     }
 
 #endif

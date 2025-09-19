@@ -462,6 +462,7 @@ MonoBehaviour:
   - {fileID: 922723625538123844}
   chidrenToRemoveInClone: []
   childrenToSynchronise: []
+  childrenToNotClone: []
   useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &4330454076875467065

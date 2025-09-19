@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class TeleportationPortal : MonoBehaviour
 {
@@ -144,6 +145,7 @@ public class TeleportationPortal : MonoBehaviour
             currentChar = null;
             lastTimer = Time.time;
             state = TeleporterState.Reloading;
+            otherPortal.RequestReloadingByOtherPortal();
         }
     }
 
@@ -165,6 +167,16 @@ public class TeleportationPortal : MonoBehaviour
     #endregion
 
     #region Reload
+
+    private void RequestReloadingByOtherPortal()
+    {
+        if (state != TeleporterState.Waiting)
+            return;
+
+        currentChar = null;
+        lastTimer = Time.time;
+        state = TeleporterState.Reloading;
+    }
 
     private void HandleReloading()
     {

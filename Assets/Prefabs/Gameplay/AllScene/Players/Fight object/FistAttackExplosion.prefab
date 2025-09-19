@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boundsOffset: {x: 0, y: 0}
-  boundsSize: {x: 3.5, y: 3.5}
+  boundsSize: {x: 4, y: 4}
   enableHorizontal: 1
   enableVertical: 1
   isAClone: 0
@@ -58,6 +58,7 @@ MonoBehaviour:
   componentsToSynchroniseInClone: []
   chidrenToRemoveInClone: []
   childrenToSynchronise: []
+  childrenToNotClone: []
   useCustomUpdate: 0
   drawGizmos: 1
 --- !u!114 &736140848453880161
@@ -76,7 +77,7 @@ MonoBehaviour:
   explosionData:
     offset: {x: 0, y: 0}
     force: 5
-    radius: 1.6
+    radius: 2
     delay: 0
     duration: 1
     layerMask:

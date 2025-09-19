@@ -50,6 +50,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -71,6 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -87,7 +93,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &9052396335745010011
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -101,6 +107,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -116,6 +123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8526345430146259242}
   - component: {fileID: 85104266400828049}
+  - component: {fileID: 7343145629224955522}
   m_Layer: 0
   m_Name: BombActivablePendulum
   m_TagString: Untagged
@@ -132,7 +140,7 @@ Transform:
   m_GameObject: {fileID: 7974114055852348103}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.32816824, y: -1.0815451, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -153,14 +161,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startActivated: 0
-  usePendulum: 1
   pendulum: {fileID: 0}
+  tickOffset: 0
   nbTickActivatedToDesactivated: 0
   nbTickDesactivatedToActivated: 15
-  useByInterruptor: 0
-  interruptor: {fileID: 0}
   explosionRadius: 2
   explosionOffset: {x: 0, y: 0}
+  triggerRadius: 0
+  triggerOffset: {x: 0, y: 0}
   colorGradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -192,6 +200,23 @@ MonoBehaviour:
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   explosionParticlesPrefabs: {fileID: 6395068507869165326, guid: 7df30bbf006e3074abab77b7eae727df, type: 3}
+  explosionForce: 30
+--- !u!114 &7343145629224955522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7974114055852348103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b28be91d961321419758a98e0dadfcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DisableComponentAtPause
+  componentsToDisable: []
+  componentsToStopAtPause:
+  - {fileID: 9052396335745010011}
+  - {fileID: 4546533666142621291}
 --- !u!1001 &1125174336299779937
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -252,5 +277,10 @@ PrefabInstance:
 --- !u!4 &2993719206650595678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2744591962666733119, guid: fc2d7466ee71f1e47ac41df72f8fcad8, type: 3}
+  m_PrefabInstance: {fileID: 1125174336299779937}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4546533666142621291 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3496451782668830986, guid: fc2d7466ee71f1e47ac41df72f8fcad8, type: 3}
   m_PrefabInstance: {fileID: 1125174336299779937}
   m_PrefabAsset: {fileID: 0}
