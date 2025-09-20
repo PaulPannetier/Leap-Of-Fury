@@ -17011,19 +17011,19 @@ MonoBehaviour:
   spawnConfigs:
     spawnConfigPoints2Char:
     - points:
-      - {x: -8, y: -7}
-      - {x: 14, y: -0.5}
+      - {x: -8.15, y: -6.08}
+      - {x: 8.89, y: -6.08}
     spawnConfigPoints3Char:
     - points:
-      - {x: -15, y: 4.5}
-      - {x: 0, y: 5.5}
-      - {x: 16, y: -0.5}
+      - {x: -14.5, y: -4.5}
+      - {x: 10, y: -6}
+      - {x: 0, y: 0}
     spawnConfigPoints4Char:
     - points:
-      - {x: -2, y: 5.5}
-      - {x: 1, y: -3.5}
-      - {x: 13, y: -0.5}
-      - {x: -15, y: 0}
+      - {x: -1, y: 0}
+      - {x: 0.5, y: 3.5}
+      - {x: -13, y: -5}
+      - {x: 5, y: -5.5}
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
@@ -64645,7 +64645,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapColliderCreator
   createColliders: 0
-  levelMapData: {fileID: 0}
 --- !u!1 &9091130434144025604
 GameObject:
   m_ObjectHideFlags: 0
@@ -74205,7 +74204,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapColliderCreator
   createColliders: 0
-  levelMapData: {fileID: 8010790035041706275}
 --- !u!1001 &4369796304920669377
 PrefabInstance:
   m_ObjectHideFlags: 0
