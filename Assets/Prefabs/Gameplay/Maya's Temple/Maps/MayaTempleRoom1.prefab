@@ -97,30 +97,30 @@ MonoBehaviour:
   spawnConfigs:
     spawnConfigPoints2Char:
     - points:
-      - {x: -8, y: -7}
-      - {x: 14, y: -0.5}
+      - {x: -11, y: -2}
+      - {x: 0.25, y: 2}
     spawnConfigPoints3Char:
     - points:
-      - {x: -15, y: 4.5}
-      - {x: 0, y: 5.5}
-      - {x: 16, y: -0.5}
+      - {x: 0.25, y: -5.5}
+      - {x: -11, y: -2}
+      - {x: 0.25, y: 2}
     spawnConfigPoints4Char:
     - points:
-      - {x: -2, y: 5.5}
-      - {x: 1, y: -3.5}
-      - {x: 13, y: -0.5}
-      - {x: -15, y: 0}
+      - {x: -14, y: 1}
+      - {x: 0.25, y: 2}
+      - {x: 0.25, y: -5.5}
+      - {x: -11, y: -2}
   applyCurrentConfig: 0
   addSpawnConfig: 0
   loadSpawnConfig: 0
   unloadSpawnConfig: 0
   clearSpawnConfig: 0
   spawnConfig: []
-  relatifSpawnConfigsPath: /Save/GameData/Levels/MayasTemple/Map1SpawnPoints
+  relatifSpawnConfigsPath: /Save/GameData/Levels/MayasTemple/Room1SpawnPoints
   tilemap: {fileID: 4607286660551963609}
   mapSize: {x: 64, y: 36}
   maxWallDistancePenalty: 3
-  pathfindingMapAccuracy: 1
+  pathfindingMapAccuracy: 2
 --- !u!1 &4607286660551963609
 GameObject:
   m_ObjectHideFlags: 0
@@ -34330,7 +34330,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapColliderCreator
   createColliders: 0
-  levelMapData: {fileID: 0}
 --- !u!1 &9091130434144025604
 GameObject:
   m_ObjectHideFlags: 0
@@ -34343,8 +34342,6 @@ GameObject:
   - component: {fileID: 4431269442530514340}
   - component: {fileID: 2255197188245662149}
   - component: {fileID: 7432343751434073271}
-  - component: {fileID: 1190740780514172815}
-  - component: {fileID: 3433370993882803903}
   - component: {fileID: 6723271508204038477}
   - component: {fileID: 7743012358925934818}
   - component: {fileID: 7682476098263458961}
@@ -46196,34 +46193,6 @@ MonoBehaviour:
   grabableLeft: 1
   frictionCoefficient: 1
   isStatic: 1
---- !u!114 &1190740780514172815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9091130434144025604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 592615210cc7e7e43adeaff38d1ecc5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapColliderCreator
-  createColliders: 0
-  levelMapData: {fileID: 8010790035041706275}
---- !u!114 &3433370993882803903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9091130434144025604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 592615210cc7e7e43adeaff38d1ecc5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MapColliderCreator
-  createColliders: 0
-  levelMapData: {fileID: 8010790035041706275}
 --- !u!61 &6723271508204038477
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -47984,9 +47953,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: SquareBumpZone
       objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124312, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.x
-      value: 6.31
+      value: 6.77
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.y
@@ -48114,13 +48087,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: CircularBumpZone
       objectReference: {fileID: 0}
+    - target: {fileID: 3675151854774281689, guid: 4756b4ec21672934f8193d654862d20f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7731413257695864894, guid: 4756b4ec21672934f8193d654862d20f, type: 3}
       propertyPath: collisionDetectionScale.x
-      value: 0.5
+      value: 0.59
       objectReference: {fileID: 0}
     - target: {fileID: 7731413257695864894, guid: 4756b4ec21672934f8193d654862d20f, type: 3}
       propertyPath: collisionDetectionScale.y
-      value: 0.5
+      value: 0.65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -48145,12 +48122,24 @@ PrefabInstance:
       value: SquareBumpZone (2)
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableUpBump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableDownBump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableLeftBump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.x
-      value: 2.93
+      value: 3.2
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.y
-      value: 0.12
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124317, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: m_LocalScale.x
@@ -48158,7 +48147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124317, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.09
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124317, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -48222,13 +48211,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: SquareBumpZone (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124312, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: drawGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableUpBump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableDownBump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableLeftBump
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
+      propertyPath: enableRightBump
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.x
       value: 3.32
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124315, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: collisionDetectionScale.y
-      value: 0.76
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 380787851878124317, guid: 0c378567eda6aef419978b64ccddc98c, type: 3}
       propertyPath: m_LocalScale.x
