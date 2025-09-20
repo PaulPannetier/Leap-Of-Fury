@@ -303,6 +303,42 @@ PrefabInstance:
       propertyPath: finishLevelMenu
       value: 
       objectReference: {fileID: 1393366166460120883}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: mapsPrefabs.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3045429992128422392, guid: c73ae5bb2e6f41d428de2001ff1258c1, type: 3}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3045429992128422392, guid: 5bb9cc0daa9effdc98573d0641f12e0b, type: 3}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 3045429992128422392, guid: 8d6ca0319ccfa62a2a937c82a89c1352, type: 3}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 537159171673598514, guid: 4b9b5f220998ae446a2d64437780c8c2, type: 3}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 3045429992128422392, guid: 735b7c7bfdf4c004c9416491d58dba27, type: 3}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 635306758543450081, guid: 77f96886e5b97bc41b9c0d903aebe800, type: 3}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[6]'
+      value: 
+      objectReference: {fileID: 2889853000194525038, guid: e1bb0a524771b2047a23ddddc05132d6, type: 3}
+    - target: {fileID: 3487002476488345230, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
+      propertyPath: 'mapsPrefabs.Array.data[7]'
+      value: 
+      objectReference: {fileID: 2907163850566459797, guid: 14b45c0a98c548d49950b15d63a33fff, type: 3}
     - target: {fileID: 7320278589001595780, guid: 060016d7e2e7ff544af404895bb755ee, type: 3}
       propertyPath: m_Name
       value: LevelManager
