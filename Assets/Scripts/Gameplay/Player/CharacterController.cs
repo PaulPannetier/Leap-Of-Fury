@@ -716,7 +716,7 @@ public class CharacterController : MonoBehaviour
         if(velocity.y > 0)
         {
             bool isUpColliderIsOneWayPlateform = true;
-            bool isoOneWayPlateform = false;
+            bool isOnOneWayPlateform = false;
             if (topRightRay)
             {
                 MapColliderData topRightColliderData = topRightRay.collider.GetComponent<MapColliderData>();
@@ -724,7 +724,7 @@ public class CharacterController : MonoBehaviour
                 {
                     if(topRightColliderData.groundType == MapColliderData.GroundType.oneWayPlateform)
                     {
-                        isUpColliderIsOneWayPlateform = isoOneWayPlateform = true;
+                        isUpColliderIsOneWayPlateform = isOnOneWayPlateform = true;
                     }
                     else
                     {
@@ -745,7 +745,7 @@ public class CharacterController : MonoBehaviour
                 {
                     if (topLeftColliderData.groundType == MapColliderData.GroundType.oneWayPlateform)
                     {
-                        isUpColliderIsOneWayPlateform = isoOneWayPlateform = true;
+                        isUpColliderIsOneWayPlateform = isOnOneWayPlateform = true;
                     }
                     else
                     {
@@ -760,7 +760,7 @@ public class CharacterController : MonoBehaviour
                 }
             }
 
-            if(isUpColliderIsOneWayPlateform && isoOneWayPlateform && !wallGrab && !isGrounded)
+            if(isUpColliderIsOneWayPlateform && isOnOneWayPlateform && !wallGrab && !isGrounded)
             {
                 isTraversingOneWayPlateformUp = true;
             }

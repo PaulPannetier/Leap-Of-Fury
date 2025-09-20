@@ -2431,7 +2431,9 @@ public static class InputManager
 #if UNITY_EDITOR
         Cursor.lockState = CursorLockMode.None;
 #else
-        Cursor.lockState = CursorLockMode.Confined;
+        FullScreenMode screenMode = SettingsManager.instance.currentConfig.windowMode;
+        bool confined = screenMode == FullScreenMode.FullScreenWindow || screenMode == FullScreenMode.ExclusiveFullScreen;
+        Cursor.lockState = confined ? CursorLockMode.Confined : CursorLockMode.None;
 #endif
     }
 

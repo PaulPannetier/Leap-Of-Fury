@@ -448,6 +448,7 @@ MonoBehaviour:
   - {fileID: 238728056774250366}
   chidrenToRemoveInClone: []
   childrenToSynchronise: []
+  childrenToNotClone: []
   useCustomUpdate: 0
   drawGizmos: 0
 --- !u!114 &3712884546189942275
@@ -580,7 +581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cooldown:
-    duration: 0.5
+    duration: 5
   damageType: 1
   effectType: 0
   saveAttackStats: 0

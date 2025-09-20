@@ -6,7 +6,7 @@ public class LucioleManager : MonoBehaviour
 {
     public static LucioleManager instance;
 
-    [HideInInspector] public List<Luciole> lstLucioles = new List<Luciole>();
+    [HideInInspector] public List<Luciole> lstLucioles;
 
     [SerializeField] private GameObject luciolePrefab;
     [SerializeField] private int lucioleCount = 10;
@@ -15,11 +15,14 @@ public class LucioleManager : MonoBehaviour
     {
         if(instance != null)
         {
-            Debug.LogWarning("Another instance of LucioleManager is create in the scene");
+            string errorMsg = "Another instance of LucioleManager is create in the scene";
+            Debug.LogWarning(errorMsg);
+            LogManager.instance.AddLog(errorMsg);
             Destroy(this);
             return;
         }
         instance = this;
+        lstLucioles = new List<Luciole>(lucioleCount);
     }
 
     private void Start()

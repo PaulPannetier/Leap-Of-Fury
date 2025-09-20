@@ -6,8 +6,9 @@ using System.Collections.Generic;
 
 public class MapColliderCreator : MonoBehaviour
 {
+    private LevelMapData levelMapData;
+
     [SerializeField] private bool createColliders;
-    [SerializeField] private LevelMapData levelMapData;
 
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class MapColliderCreator : MonoBehaviour
     private void CreateColliders()
     {
         Tilemap tilemap = GetComponent<Tilemap>();
+        levelMapData = GetComponentInParent<LevelMapData>();
 
         List<Vector2Int> CreateTilesIndices()
         {
@@ -213,28 +215,11 @@ public class MapColliderCreator : MonoBehaviour
         AddHitbox(rec);
     }
 
-    private void FindLevelMapData()
-    {
-        Transform current = transform;
-        while(current != null)
-        {
-            levelMapData = current.GetComponent<LevelMapData>();
-            if(levelMapData != null)
-            {
-                return;
-            }
-            current = current.parent;
-        }
-    }
-
     private void OnValidate()
     {
         if (createColliders)
         {
             createColliders = false;
-
-            if(levelMapData == null)
-                FindLevelMapData();
 
             CreateColliders();
             DestroyImmediate(this);
